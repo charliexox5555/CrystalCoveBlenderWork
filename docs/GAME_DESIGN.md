@@ -294,6 +294,7 @@ These play when **your** glassy wins, on the opponent's shatter. Every opponent 
 - **Group join reward** (a Golden Cork), which grows your community
 - Codes posted on Discord and socials with every update
 - Leaderboards: Most Wins, Tournament Wins, Best Win Streak, Most Glassies Shattered
+- **Index** (like a Pokédex): uncaught glassies show as silhouettes, with rewards for completing each zone
 - **Weekly updates:** 2–3 new glassies plus one feature, and a bigger event each season
 - On Discord, the **community votes on the next glassy** and you build it with the Blender pipeline
 
@@ -309,9 +310,105 @@ These play when **your** glassy wins, on the opponent's shatter. Every opponent 
   - Valentine's: heart perfume bottles, glass roses
   - Halloween 2027: Pumpkin Patch zone, ghost jars, glass bats
 
-## 12. Technical plan
+## 12. UI
 
-### 12.1 Where the code lives
+### 12.1 Style: "candy glass"
+
+The UI should look like it's made of the same thing as the game: **glossy, tinted glass**. No single reference fits, so take a different part from each:
+
+| Reference | Take | Skip |
+|---|---|---|
+| Blue glass inventory (Spade Studios) | Glass tiles with a diagonal glare streak, rarity filter chips | The dark sci-fi grid background |
+| Purple quests (CHN Visuals) | Sparkle glints, gradient energy, slanted header banner, yellow "Special" highlight, green Claim | The dark, moody purple as the main color |
+| Yellow store | Chunky shapes, thick outlines, big readable text, green R$ buttons, red X. This is what kids on phones need. | The LEGO-stud texture, which is generic and doesn't say glass |
+| Units screen (GokkanDev) | Inventory grid plus detail panel, Equip Best | The spiky, dark anime look, which reads as a teen anime battler |
+| HUD (Ang3lz UI) | Where things sit on screen (12.2) | — |
+
+**Signature touch:** make panel headers look like a **jagged shard of broken glass**. Two of the references already use jagged banners; here the jag is a glass break.
+
+**Colors**
+- **Panels:** frosted glass with a cyan → violet gradient, slightly see-through, a white inner highlight, and a dark navy outer stroke so they stay readable over any background.
+- **Buttons:** solid candy colors, each with one meaning everywhere: **green** = buy / claim / equip, **red** = close / cancel, **yellow** = special / limited, **blue** = neutral.
+- **Rarity:** Common gray, Uncommon green, Rare blue, Epic purple, Legendary gold, Mythic animated pink → cyan gradient. Rainbow variants get an animated iridescent shimmer on the tile.
+- **Types:** Heavy orange with a weight icon, Sharp ice-blue with a diamond icon, Fizzy pink with a bubbles icon. The icon carries the meaning and the color backs it up.
+
+**Fonts**
+- `Enum.Font.FredokaOne` for all UI text.
+- `Enum.Font.LuckiestGuy` for big pop-ups (PERFECT!, SHATTERED!, CHAMPION!).
+- Every piece of text gets a dark `UIStroke` (2–3 px).
+
+**Motion**
+- Panels pop open with a bounce (scale 0.8 → 1.05 → 1.0) and a soft glass clink.
+- Buttons squash slightly when pressed.
+- Only one panel is open at a time.
+
+### 12.2 HUD layout
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│ (Roblox menu)    [ TOURNAMENT IN 0:42 · JOIN ]   Coins 1,250 + │
+│                                                  Corks     5 + │
+│ [Shop]   [Glassies]                    ▶ Beat 3 trainers 1/3   │
+│ [Crates] [Quests]                      ▶ Catch a glassy  0/1   │
+│ [FX]     [Index]                                               │
+│                                                                │
+│ Gifts 2:00 5:00                                [Limited offer] │
+│ (thumbstick zone)                                (jump zone)   │
+└──────────────────────────────────────────────────────────────┘
+```
+
+- **On mobile, keep the bottom-left corner (thumbstick) and bottom-right corner (jump) clear.** Keep the top-left clear for Roblox's menu, using `GuiService.TopbarInset`.
+- Lay everything out with Scale and `UIAspectRatioConstraint`, and set a minimum size with `UISizeConstraint` so buttons stay easy to tap on small phones.
+- The quest tracker on the right always shows the next objective. New players should never wonder what to do.
+
+### 12.3 Battle screen
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│ [ Pop  Lv12  Fizzy  ████████░░ ]  VS  [ ░░██████  Jam  Lv10 ] │
+│                                                                │
+│               (side view of the Clash Stand)                   │
+│                                                                │
+│             [ weak | good | great |PERFECT| ... ]              │
+│ [Cork] (wild only)                                   ( HOLD )  │
+└──────────────────────────────────────────────────────────────┘
+```
+
+- The HUD menu buttons hide during battle.
+- HP bars are at the top. Yours is on the left, with name, level and type icon. A crack icon appears at 75 / 50 / 25 %.
+- The power meter sits bottom-center and is wide.
+- A big round **HOLD** button sits bottom-right, where the thumb already rests on the jump button. On PC it's Space or mouse; on console, A or R2.
+
+### 12.4 Screens
+
+| Screen | Based on | Contents |
+|---|---|---|
+| **Glassies** (inventory) | blue inventory grid + units detail panel | Glass tiles with icon, level, rarity border, type icon and Rainbow shimmer. Search, rarity chips, sort and **Equip Best**. The detail panel shows the glassy **spinning in a 3D `ViewportFrame`**, plus stats, an XP bar, a silhouette preview of its evolution ("Evolves at Lv 15"), and Equip / Fuse / Rename. |
+| **Index** | Pokédex | Every glassy, with uncaught ones as dark silhouettes. Completion rewards per zone. |
+| **Quests** | purple quests | Daily / Weekly / Special tabs. A list plus a detail view with progress bar, rewards and Claim. |
+| **Shop** | yellow store | Featured crate, gamepass cards, coin packs, green R$ buttons. |
+| **Crates** | — | **Shows every possible glassy with its odds.** Don't use the "???" mystery slots from the store reference, because paid crates must show odds. Opening one plays a crate-shatter reveal. |
+| **Shatter FX** | — | Selecting an effect previews it on a test bottle. |
+| **Tournament** | the real-life bracket graphic | Bracket board, Join, Pick the Winner. |
+
+### 12.5 Building it with the AI pipeline
+
+- Put all styling in **one `Theme` module** (colors, fonts, stroke sizes, texture IDs). Build a few **reusable components** (`Panel`, `Button`, `Tile`, `ProgressBar`, `Popup`, `CurrencyPill`) and use them for every screen. A later reskin, for example after commissioning an artist, then means changing the Theme and component textures, not 20 screens.
+- Code alone gets most of the look with `UIGradient`, `UIStroke`, `UICorner` and `UIScale`. The rest needs a **small texture kit**:
+  - frosted panel (9-slice)
+  - glossy button (9-slice)
+  - glare-streak overlay
+  - sparkle
+  - diamond/halftone pattern
+  - shard-shaped header
+  - rarity tile frames
+- **Icons** (coins, corks, crates, gift, trophy, quests, codes): render them in Blender with the same camera and lighting as the glassy icons, so everything matches.
+- **Option:** commission a UI artist (like the ones in the references) for only the texture kit and header. The code doesn't change.
+- **Order:** build the screens with a placeholder skin first, then do the final skin before soft launch (week 5).
+
+## 13. Technical plan
+
+### 13.1 Where the code lives
 
 Codex writes scripts **directly into Roblox Studio through the Roblox MCP server**. Keep this hierarchy so every session finds things in the same place:
 
@@ -345,7 +442,11 @@ StarterPlayer/StarterPlayerScripts/
   Controllers/ (ModuleScripts)
     BattleController               -- pendulum animation, meter, input
     ShatterController              -- cracks, shards, slow-mo, sounds
-    UIController
+    UIController                   -- opens/closes screens, HUD
+  UI/ (ModuleScripts)
+    Theme                          -- colors, fonts, strokes, texture IDs
+    Components/  Panel, Button, Tile, ProgressBar, Popup, CurrencyPill
+    Screens/     Glassies, Index, Quests, Shop, Crates, ShatterFX, Tournament, Battle
 ```
 
 - **`Formula` is pure functions.** After any balance change, Codex runs `ServerStorage.Tests` through the MCP's code-execution tool and checks the output, so balance stays testable without anyone playing.
@@ -353,7 +454,7 @@ StarterPlayer/StarterPlayerScripts/
 - `StreamingEnabled` is on. For the MVP all zones are areas in one place.
 - **Backups:** Roblox keeps place version history on every publish, so publish at least at each milestone. This repo holds the design doc and Blender source files. Optionally, have Codex copy script sources into `src/` here at milestones so changes can be reviewed in git.
 
-### 12.2 Save data (ProfileStore)
+### 13.2 Save data (ProfileStore)
 
 ```lua
 {
@@ -379,7 +480,7 @@ StarterPlayer/StarterPlayerScripts/
 
 Evolution changes `Id` and keeps everything else.
 
-### 12.3 Blender asset spec (per glassy)
+### 13.3 Blender asset spec (per glassy)
 
 | File | Spec |
 |---|---|
@@ -393,7 +494,7 @@ Evolution changes `Id` and keeps everything else.
 - Roblox's `Glass` material looks different depending on device graphics quality. Test on low-end phones, and fall back to `SmoothPlastic` with Transparency 0.3 and some Reflectance.
 - Export FBX, import with the Roblox MCP or the 3D Importer, and record the mesh IDs in `Config/Glassies`.
 
-## 13. Milestones
+## 14. Milestones
 
 Roblox traffic peaks over **winter break**, so launch by mid-November and ship a winter event in mid-December.
 
@@ -403,7 +504,7 @@ Roblox traffic peaks over **winter break**, so launch by mid-November and ship a
 | 2 | Oct 19–25 | Save data, starters and their evolutions, NPC trainers, Repair Bench, Zone 1 layout |
 | 3 | Oct 26–Nov 1 | Wild glassies and catching, crates, leveling, launch roster from the Blender pipeline |
 | 4 | Nov 2–8 | Tournaments, octagon arena and bracket board, PvP, cosmetics (Shatter FX, Fills) |
-| 5 | Nov 9–15 | Monetization, daily rewards, quests, codes, UI polish, mobile testing |
+| 5 | Nov 9–15 | Monetization, daily rewards, quests, codes, **final UI skin** (section 12), mobile testing |
 | 6 | Nov 16–22 | **Soft launch** (cross-promoted from your existing game). Watch the analytics and fix issues. |
 | 7–8 | Nov 23–Dec 6 | Update 1: Zone 2 (Sunny Beach), winter event prep |
 | 9 | ~Dec 12 | **Winter event** (snow globes, ornaments, glass reindeer) and a marketing push for winter break |
@@ -411,13 +512,13 @@ Roblox traffic peaks over **winter break**, so launch by mid-November and ship a
 **If you fall behind, cut in this order:** Rainbow variants → PvP challenges (tournaments already cover PvP) → stars and fusing → catching (crates and trainer rewards only).
 **Never cut:** the shatter feel, starter evolutions, tournaments, saving.
 
-## 14. Metrics
+## 15. Metrics
 
 - **Roblox Analytics:** D1 and D7 retention, average session length, payer conversion, ARPDAU. Compare them with your existing game.
 - **Custom events:** battles per session, % of battles with at least one Perfect, time to first evolution, tournament join rate, catch attempts, crate opens, first item purchased.
 - **Funnel:** join → pick starter → first win → first catch → **first evolution** → first tournament.
 
-## 15. Open questions
+## 16. Open questions
 
 - Final game name, and the final name for the collectibles ("glassies" is a placeholder).
 - **Trading** drives retention and value in kids' games but needs scam and dupe protection. Post-launch.

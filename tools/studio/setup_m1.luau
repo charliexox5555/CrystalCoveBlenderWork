@@ -74,6 +74,7 @@ for _, id in { "clash_stand", "pop", "jam", "prism" } do
 		assert(#shards:GetChildren() == 16)
 		assert(model.Body:GetPivot().Position.Magnitude < 0.001)
 	end
+	model.WorldPivot = CFrame.identity
 	model:SetAttribute("M1Asset", true)
 	model.Parent = id == "clash_stand" and assets or glassies
 	original.Parent = backups
@@ -82,17 +83,28 @@ end
 local stand = assets.ClashStand:Clone()
 stand.Name = "ClashStand"
 stand:PivotTo(CFrame.new(0, 0.4, 0))
+stand.ModelStreamingMode = Enum.ModelStreamingMode.Persistent
 stand.Parent = workspace
 local base = workspace:FindFirstChild("Baseplate")
 if base then
 	base.Color = Color3.fromHex("#728A84")
 	base.Material = Enum.Material.SmoothPlastic
 	base.Size, base.Position = Vector3.new(160, 1, 160), Vector3.new(0, -0.5, 0)
+	for _, child in base:GetChildren() do
+		if child:IsA("Texture") or child:IsA("Decal") then
+			child.Transparency = 1
+		end
+	end
 end
 local spawn = workspace:FindFirstChildWhichIsA("SpawnLocation")
 if spawn then
 	spawn.CFrame = CFrame.new(0, 0.5, 22)
 	spawn.Transparency = 1
+	for _, child in spawn:GetChildren() do
+		if child:IsA("Texture") or child:IsA("Decal") then
+			child.Transparency = 1
+		end
+	end
 end
 local floor = Instance.new("Part")
 floor.Name = "ArenaWalkFloor"

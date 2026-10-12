@@ -14,6 +14,20 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-12 — Codex — M1 Step 4 gameplay pass
+Done:
+- Built battle camera, anchored glassies/details and Beam strings, responsive Theme HUD, PC/gamepad input and screen-wide touch hold. User-directed continuous curved swing now runs on a fixed server cadence; releasing locks a bonus without stopping motion. Added elastic recoil, impact spark burst, 80 ms hitstop, damage/Perfect/crit popups, haptics and final side-on slow-motion shatter with flash, 16 shards plus cap/lid, sparkles, layered sound and cleanup.
+- Replaced floating planar cracks with Blender-projected surface paths for all three starters. Blender BVH confirms Pop/Jam contact begins at 0.10815 radians; configured contact is 0.11. Corrected template WorldPivot so hooks stay left/right and marked stand Persistent for streaming.
+- Galaxy A06 landscape: real emulated Touch inputs completed a five-clash Pop win; Great releases accepted. iPhone 17 Pro checked landscape and portrait. Desktop Space input registered Perfect. Fixed-RNG comparison: Weak deals 24, Perfect 44. Timeout/loss, victory and reset cleanup checked; HUD, movement and camera restore, shards expire. Studio reset to default viewport.
+- All four user-approved audio clips load as parented Sound instances (raw URL preload was incorrect); source links and IDs recorded. Lune and Studio RunAll: 28 passed, 0 failed; 14 server validation checks pass; gameplay Output clean.
+Next:
+- User authorized further polish while away: improve the M1 HUD from a generated visual reference, then retest. Real-phone feel/listening check remains necessary.
+Problems / questions for the user:
+- Publishing through AssetService in the MCP Edit context fails: "Game:SavePlace can only be called from a server script". Use Studio File > Publish to Roblox after the final polish; no runtime-server snapshot was published.
+- User-added assets/Free Icon Pack v3.1 (Basic) remains untouched and excluded from this commit.
+Balance sim (3000 battles/matchup):
+- Damage/stat math unchanged: even starters 4.24–5.77 clashes; Pop vs Jam 85.1% wins / 5.32 clashes. Zone 1 non-boss 73.9–99.9%; Rusty 45.5–49.2%. Skill 0 vs 0.5: 23.8%; skill 1 vs 0.5: 74.6%. Evolution level 15 after 24 wins.
+
 ## 2026-10-12 — Codex — M1 Step 3 complete
 Done:
 - Added shared remote definitions and BattleService: distance-checked/rate-limited stand prompt, level-10 Pop vs Jam (NPC skill 0.35), per-player state, server RNG, validated one-shot releases, Weak timeout, scheduled impacts, server HP application at impact and respawn/leave cleanup.

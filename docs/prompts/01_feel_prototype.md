@@ -35,9 +35,9 @@ Work in this order. After each step: play-test in Studio through the MCP, read t
 1. `src/client/Controllers/BattleController.luau`:
    - **3/4 camera** for clashes (slightly above and behind the player's glassy), tween in when the battle starts.
    - Clone both glassies' `Body` onto the hooks; draw strings with `Beam`s between the hook attachment and the glassy.
-   - **Pendulum with CFrame:** pull back while holding (angle grows with hold time), swing to the centre on release, hit at the server's impact time, bounce back. No physics.
-   - Input via `ContextActionService`: on-screen **HOLD** button (mobile), Space / left mouse (PC), ButtonA / ButtonR2 (console). Send `ReleaseSwing` with the elapsed hold time.
-2. **Battle HUD** in `src/client/UI/Screens/BattleHud.luau`, built from `Theme` (create the `Panel`, `Button`, `ProgressBar`, `Pill` components as you need them): HP cards with name, level and type pill; VS badge; clash counter; power meter with zones from `Formula.meterBounds(swing)` and a needle from `Formula.needlePosition`; HOLD button with a progress ring. Match the Figma Battle screen.
+   - **Pendulum with CFrame (user revision):** swing continuously on a curved arc, contact at the server impact time, hitstop and spring rebound into the next clash. Holding / releasing locks a timing bonus without stopping motion. No swing physics.
+   - Input: touch and hold anywhere on the play area (mobile); `ContextActionService` for Space / left mouse (PC), ButtonA / ButtonR2 (console). Center the timing bar. Send `ReleaseSwing` with elapsed meter time.
+2. **Battle HUD** in `src/client/UI/Screens/BattleHud.luau`, built from `Theme` (create the `Panel`, `Button`, `ProgressBar`, `Pill` components as you need them): HP cards with name, level and type pill; VS badge; clash counter; power meter with zones from `Formula.meterBounds(swing)` and a needle from `Formula.needlePosition`; screen-wide hold feedback. Match the Figma Battle screen.
 3. **Cracks** at 75 / 50 / 25 % HP (overlay decals or a crack-shell mesh; pick what reads on mobile).
 4. `src/client/Controllers/ShatterController.luau`, per GAME_DESIGN 8:
    - every impact: hitstop 60–100 ms, clink (pitch from `ClinkPitch`), camera shake by damage, damage number + PERFECT!/CRIT! pop-ups, haptics;
@@ -46,11 +46,13 @@ Work in this order. After each step: play-test in Studio through the MCP, read t
 
 ## Done when
 
-- [ ] Walk up to the stand, press the prompt, and play a full battle against the NPC, start to finish, with no errors in Output.
-- [ ] Timing the release changes the result (PERFECT hits visibly harder).
-- [ ] Cracks show at the right HP; the final shatter looks and sounds great.
-- [ ] Works in the Device Emulator on a phone preset (HOLD button reachable, text readable).
-- [ ] `lune run tools/run_tests` and `require(game.ServerStorage.Tests.RunAll)()` both pass.
+- [x] Walk up to the stand, press the prompt, and play a full battle against the NPC, start to finish, with no errors in Output.
+- [x] Timing the release changes the result (PERFECT hits visibly harder).
+- [x] Cracks show at the right HP; the final shatter looks and sounds great.
+- [x] Works in the Device Emulator on phone presets (hold anywhere; centered bar and readable text).
+- [x] `lune run tools/run_tests` and `require(game.ServerStorage.Tests.RunAll)()` both pass.
 - [ ] ROADMAP ticked, DEVLOG entry written, committed and pushed, place published.
 
 Then **stop** and tell the user what to test on their phone.
+
+Verification: Galaxy A06 landscape and iPhone 17 Pro landscape/portrait; real emulated Touch input completed a five-clash Pop victory. Fixed-RNG damage: Weak 24, Perfect 44. Both suites report 28 passed, 0 failed; 14 remote-validation checks pass. Audio Sound instances load all four approved clips. Final publication requires Studio File > Publish to Roblox because the MCP Edit context cannot call SavePlaceAsync.

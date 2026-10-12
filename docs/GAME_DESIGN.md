@@ -43,15 +43,15 @@ The center **Tournament Arena** copies the real-life setup: a **wooden octagon p
 
 Every glassy hangs from its **hang point**: the neck of a bottle, the hilt of a sword, the stem of a pumpkin, the top of a unicorn's head. The swing is animated rather than simulated, so odd shapes are fine.
 
-### 3.2 One clash (~4 s)
+### 3.2 One clash (~3.3 s)
 
 | Phase | Time | What happens |
 |---|---|---|
-| Pull back | up to 1.5 s | Both players hold the button. The glassies pull back and the power meter sweeps. |
-| Release | — | The player lets go. If they don't, it auto-releases at the end as **Weak**. |
+| Timing window | up to 1.5 s | Glassies keep swinging along a curved pendulum arc. Each player holds the screen (mouse / Space / gamepad on other devices) and releases on the centered meter for a damage bonus. |
+| Release | — | Locks the timing bonus while movement continues. No valid release before timeout means **Weak**. |
 | Swing | 0.5 s | Both glassies swing toward the center. |
 | Impact | — | Hitstop, clink, damage numbers, crack update, camera shake. **Both take damage**, like in real life. |
-| Bounce back | 0.8 s | The glassies swing back, then the next clash starts. |
+| Bounce back | 0.8 s | Contact recoils into an outward arc with a brief elastic wobble, flowing into the next clash. |
 
 When one glassy reaches 0 HP, the last impact plays in slow motion and it **shatters** (see section 8).
 **Target:** an even match lasts 4–6 clashes (about 20–30 s).

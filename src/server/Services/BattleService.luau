@@ -89,14 +89,15 @@ function BattleService:RunBattle(player, state)
 		state.Index, state.Phase, state.Released = index, "Meter", false
 		state.Zone, state.JudgedElapsed = "Weak", nil
 		state.StartTime = now() + Balance.Battle.ClashLeadSeconds
-		Remotes.ClashStarted:FireClient(
-			player,
-			{ BattleId = state.Id, ClashIndex = index, StartTime = state.StartTime }
-		)
 		local deadline = state.StartTime + Balance.Meter.MaxHoldTime + Balance.Meter.LatencyAllowance
-		while not state.Released and not state.Cancelled and now() < deadline do
-			task.wait(Balance.Battle.PollSeconds)
-		end
+		Remotes.ClashStarted:FireClient(player, {
+			BattleId = state.Id,
+			ClashIndex = index,
+			StartTime = state.StartTime,
+			ApproachTime = deadline + Balance.Battle.ClashLeadSeconds + Balance.Battle.SwingSeconds,
+		})
+		-- Releasing locks a bonus, never stops or accelerates the shared swing cycle.
+		waitUntil(deadline, state)
 		if state.Cancelled then
 			return
 		end
@@ -114,6 +115,7 @@ function BattleService:RunBattle(player, state)
 			ClashIndex = index,
 			LaunchTime = launch,
 			ImpactTime = impact,
+			JudgedElapsed = state.JudgedElapsed,
 			Result = result,
 		})
 		waitUntil(impact, state)

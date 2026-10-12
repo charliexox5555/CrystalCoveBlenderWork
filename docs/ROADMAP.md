@@ -13,15 +13,15 @@ Owner key: **C** = Codex (code / Studio MCP), **B** = Codex with Blender MCP, **
 - [x] Tests and balance simulator (`lune run tools/run_tests`, `lune run tools/balance_sim`)
 - [x] UI `Theme` tokens matching Figma
 - [x] Blender helper script (`tools/blender/glassclash_blender.py`)
-- [ ] **U:** clone the repo, install Rokit + Rojo, connect Rojo in Studio (README "Setup")
+- [x] **U:** clone the repo, install Rokit + Rojo, connect Rojo in Studio (README "Setup")
 
 ## M1 — Feel prototype (Oct 12–18)
 
 Goal: one Clash Stand, two glassies, the meter, cracks and a great shatter. **Nothing else until this feels great on a phone.**
 
-- [ ] **C:** Rojo connected; `ServerStorage.Tests.RunAll` passes in Studio
-- [ ] **B:** low-poly Clash Stand (posts, crossbar, hooks) + octagon pen floor and low wall
-- [ ] **B:** starter glassies `pop`, `jam`, `prism`: body (origin at hang point), 12–20 shards, icon
+- [x] **C:** Rojo connected; `ServerStorage.Tests.RunAll` passes in Studio
+- [x] **B:** low-poly Clash Stand (posts, crossbar, hooks) + octagon pen floor and low wall
+- [x] **B:** starter glassies `pop`, `jam`, `prism`: body (origin at hang point), 12–20 shards, icon
 - [ ] **C:** import stand and starters; folder `ReplicatedStorage.Assets.Glassies.<id>` with `Body` + `Shards`
 - [ ] **C:** `BattleService` (server): runs a battle with `BattleLogic`, sends each clash to clients, validates `ReleaseSwing`
 - [ ] **C:** `BattleController` (client): pendulum animation with CFrame, string `Beam`s, 3/4 battle camera

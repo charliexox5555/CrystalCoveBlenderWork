@@ -19,8 +19,8 @@ Main functions
 
 Conventions (docs/art/ART_BIBLE.md): 1 Blender unit = 1 Roblox stud. Glassies are smooth and
 glossy; the world is low-poly, flat-shaded and coloured from one shared palette texture.
-Everything this script creates goes into the "GlassClash" collection, so it never touches
-your other objects.
+Builders use a "GlassClash" collection; batch exports use isolated asset scenes and
+collections, preserving your other objects and your original active scene.
 """
 
 import math
@@ -68,7 +68,8 @@ def set_repo(path):
 COLLECTION = "GlassClash"
 
 
-def gc_collection(name=COLLECTION):
+def gc_collection(name=None):
+    name = name or COLLECTION
     col = bpy.data.collections.get(name)
     if col is None:
         col = bpy.data.collections.new(name)
@@ -159,14 +160,16 @@ def lathe(name, profile, segments=24, flat=False, hang_z=None):
 
 # Profiles are (radius, z) in studs, bottom to top. Glassies are about 2-3 studs tall.
 STARTER_PROFILES = {
-    # Pop: classic soda bottle with a cap ring
+    # Pop: rounded soda bottle, raised belt and a chunky cap ring.
     "pop": dict(
         segments=24,
         flat=False,
         profile=[
-            (0.0, 0.0), (0.50, 0.0), (0.60, 0.06), (0.62, 0.20), (0.62, 1.20), (0.58, 1.38),
-            (0.42, 1.62), (0.26, 1.82), (0.22, 1.98), (0.22, 2.12), (0.28, 2.14), (0.28, 2.30),
-            (0.24, 2.34), (0.0, 2.34),
+            (0.0, 0.0), (0.46, 0.0), (0.59, 0.05), (0.65, 0.16), (0.67, 0.28),
+            (0.65, 0.40), (0.61, 0.51), (0.61, 0.64), (0.65, 0.69), (0.65, 0.76),
+            (0.62, 0.81), (0.62, 1.24), (0.64, 1.29), (0.64, 1.36), (0.60, 1.42),
+            (0.52, 1.59), (0.36, 1.79), (0.25, 1.94), (0.23, 2.06), (0.23, 2.20),
+            (0.31, 2.23), (0.32, 2.38), (0.28, 2.46), (0.0, 2.46),
         ],
     ),
     # Jam: short, wide jar with a chunky screw lid
@@ -174,25 +177,28 @@ STARTER_PROFILES = {
         segments=24,
         flat=False,
         profile=[
-            (0.0, 0.0), (0.70, 0.0), (0.82, 0.08), (0.86, 0.25), (0.86, 1.15), (0.80, 1.30),
-            (0.70, 1.36), (0.74, 1.40), (0.78, 1.44), (0.78, 1.68), (0.72, 1.74), (0.0, 1.74),
+            (0.0, 0.0), (0.65, 0.0), (0.79, 0.05), (0.88, 0.17), (0.91, 0.32),
+            (0.91, 1.20), (0.88, 1.39), (0.80, 1.51), (0.75, 1.55), (0.75, 1.62),
+            (0.87, 1.65), (0.91, 1.72), (0.91, 1.79), (0.87, 1.82),
+            (0.91, 1.86), (0.91, 1.96), (0.83, 2.04), (0.0, 2.04),
         ],
     ),
-    # Prism: faceted perfume bottle with a gem stopper (6 sides, flat shaded = crystal look)
+    # Prism: eight broad polished crystal facets and a diamond stopper.
     "prism": dict(
-        segments=6,
+        segments=8,
         flat=True,
         profile=[
-            (0.0, 0.0), (0.50, 0.0), (0.72, 0.42), (0.72, 0.95), (0.52, 1.30), (0.20, 1.42),
-            (0.16, 1.56), (0.32, 1.62), (0.40, 1.80), (0.26, 2.02), (0.0, 2.10),
+            (0.0, 0.0), (0.47, 0.0), (0.63, 0.10), (0.80, 0.43), (0.80, 1.10),
+            (0.61, 1.46), (0.24, 1.64), (0.20, 1.70), (0.20, 1.83),
+            (0.28, 1.86), (0.28, 1.94), (0.21, 1.99), (0.43, 2.15),
+            (0.43, 2.28), (0.25, 2.48), (0.0, 2.52),
         ],
     ),
 }
 
 
 def build_starter(gid):
-    """Builds the v0 body for a starter glassy. Improve the shape freely; keep the origin
-    at the hang point (top centre) and the size around 2-2.5 studs."""
+    """Builds a chunky starter with its origin at the top-centre hang point."""
     spec = STARTER_PROFILES[gid]
     obj = lathe(f"{gid}_Body", spec["profile"], spec["segments"], spec["flat"])
     obj["glassy_id"] = gid
@@ -232,8 +238,9 @@ def make_shards(body, pieces=16, seed=1, min_volume_ratio=0.01):
     """Cuts the body into `pieces` closed shards with random planes. Each shard keeps the body's
     origin (the hang point), so in Roblox the shards line up exactly where the body was."""
     rng = random.Random(seed)
-    total = _volume(_bm_from_object(body)) or 1.0
-    parts = [_bm_from_object(body)]
+    source = _bm_from_object(body)
+    total = _volume(source) or 1.0
+    parts = [source]
     attempts = 0
     while len(parts) < pieces and attempts < pieces * 20:
         attempts += 1
@@ -294,13 +301,13 @@ def glossy_preview_material(name, tint_hex):
         bsdf = mat.node_tree.nodes.new("ShaderNodeBsdfPrincipled")
     rgb = hex_to_rgb(tint_hex)
     _set_input(bsdf, "Base Color", (*rgb, 1.0))
-    _set_input(bsdf, "Roughness", 0.12)
-    _set_input(bsdf, ["Coat Weight", "Clearcoat"], 1.0)
+    _set_input(bsdf, "Roughness", 0.055)
+    _set_input(bsdf, ["Coat Weight", "Clearcoat"], 0.5)
     _set_input(bsdf, ["Coat Roughness", "Clearcoat Roughness"], 0.03)
-    _set_input(bsdf, ["Transmission Weight", "Transmission"], 0.35)
+    _set_input(bsdf, ["Transmission Weight", "Transmission"], 0.9)
     _set_input(bsdf, "IOR", 1.45)
     _set_input(bsdf, ["Emission Color", "Emission"], (*rgb, 1.0))
-    _set_input(bsdf, "Emission Strength", 0.15)
+    _set_input(bsdf, "Emission Strength", 0.015)
     return mat
 
 
@@ -408,6 +415,39 @@ def prism_column(name, radius, height, sides=8, location=(0, 0, 0), top_radius=N
     return _mesh_object(name, bm)
 
 
+def chamfer_box(name, size, location=(0, 0, 0), bevel=0.06):
+    obj = box(name, size, location)
+    bm = _bm_from_object(obj)
+    bmesh.ops.bevel(bm, geom=list(bm.edges), offset=bevel, segments=1)
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    bm.to_mesh(obj.data)
+    bm.free()
+    obj.data.update()
+    return obj
+
+
+def hook_ring(name, location):
+    """Small metal eyelet in the XZ plane, not a rope loop."""
+    bm = bmesh.new()
+    rows = []
+    for i in range(12):
+        a = i * math.tau / 12
+        row = []
+        for j in range(6):
+            b = j * math.tau / 6
+            r = 0.26 + 0.075 * math.cos(b)
+            row.append(bm.verts.new((location[0] + r * math.cos(a),
+                                     location[1] + 0.075 * math.sin(b),
+                                     location[2] + r * math.sin(a))))
+        rows.append(row)
+    for i in range(12):
+        for j in range(6):
+            bm.faces.new((rows[i][j], rows[(i + 1) % 12][j],
+                          rows[(i + 1) % 12][(j + 1) % 6], rows[i][(j + 1) % 6]))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    return _mesh_object(name, bm)
+
+
 def build_clash_stand(span=20.0, height=16.0, hook_gap=3.0, pen_radius=15.0):
     """Low-poly Clash Stand inside a wooden octagon pen (the real-life setup).
 
@@ -418,11 +458,26 @@ def build_clash_stand(span=20.0, height=16.0, hook_gap=3.0, pen_radius=15.0):
     half = span / 2
     objs["PostA"] = paint(prism_column("PostA", 0.55, height, 8, (-half, 0, 0), top_radius=0.48), "wood")
     objs["PostB"] = paint(prism_column("PostB", 0.55, height, 8, (half, 0, 0), top_radius=0.48), "wood")
-    objs["FootA"] = paint(box("FootA", (2.6, 2.6, 0.5), (-half, 0, 0.25)), "wood_dark")
-    objs["FootB"] = paint(box("FootB", (2.6, 2.6, 0.5), (half, 0, 0.25)), "wood_dark")
-    objs["Crossbar"] = paint(box("Crossbar", (span + 2.0, 1.1, 1.1), (0, 0, height + 0.3)), "wood_light")
+    objs["FootA"] = paint(chamfer_box("FootA", (2.8, 4.0, 0.5), (-half, 0, 0.25)), "wood_dark")
+    objs["FootB"] = paint(chamfer_box("FootB", (2.8, 4.0, 0.5), (half, 0, 0.25)), "wood_dark")
+    objs["Crossbar"] = paint(chamfer_box("Crossbar", (span + 2.0, 1.3, 1.3), (0, 0, height + 0.3), 0.12), "wood_light")
+    # Braces and end caps make the frame read as sturdy playground equipment.
+    for label, x in (("A", -half), ("B", half)):
+        objs[f"PostCap{label}"] = paint(chamfer_box(f"PostCap{label}", (1.45, 1.45, 0.5), (x, 0, height + 1.15)), "wood_dark")
+        for side in (-1, 1):
+            start = Vector((x, 0, height - 3.4))
+            end = Vector((x - math.copysign(2.8, x), 0, height - 0.35))
+            if side == -1:
+                start = Vector((x, -1.5, 0.6))
+                end = Vector((x, 0, 4.0))
+            name = f"Brace{label}_{side}"
+            brace = chamfer_box(name, (0.55, 0.55, (end - start).length), bevel=0.04)
+            brace.location = (start + end) / 2
+            brace.rotation_euler = (end - start).to_track_quat("Z", "Y").to_euler()
+            objs[name] = paint(brace, "wood_light")
     for key, x in (("HookA", -hook_gap / 2), ("HookB", hook_gap / 2)):
-        hook = paint(prism_column(key, 0.18, 0.6, 6, (x, 0, height - 0.85)), "metal")
+        hook = paint(hook_ring(key, (x, 0, height - 0.65)), "metal")
+        hook["attachment_position"] = [x, 0, height - 0.91]
         objs[key] = hook
 
     # Octagon pen: floor + 8 low wall segments, flat-shaded wood
@@ -431,12 +486,35 @@ def build_clash_stand(span=20.0, height=16.0, hook_gap=3.0, pen_radius=15.0):
     objs["PenFloor"] = floor
     apothem = pen_radius * math.cos(math.pi / 8)
     side = 2 * pen_radius * math.sin(math.pi / 8)
+    # Individual clipped boards give the floor readable seams without texture noise.
+    for i in range(17):
+        name = f"FloorBoard_{i + 1:02d}"
+        board = box(name, (pen_radius * 2, 1.57, 0.12), (0, (i - 8) * 1.60, 0.03))
+        bm = _bm_from_object(board)
+        for j in range(8):
+            a = j * math.tau / 8
+            no = Vector((math.cos(a), math.sin(a), 0))
+            clipped = _cut(bm, no * (apothem - 0.12), no, True)
+            bm.free()
+            bm = clipped
+        bm.to_mesh(board.data)
+        bm.free()
+        board.data.update()
+        objs[name] = paint(board, "wood" if i % 3 else "wood_light")
     for i in range(8):
         angle = i * math.tau / 8
-        wall = paint(box(f"PenWall_{i + 1}", (side, 0.5, 2.4), (0, 0, 1.2)), "wood")
+        wall = paint(chamfer_box(f"PenWall_{i + 1}", (side, 0.5, 2.4), (0, 0, 1.2)), "wood")
         wall.location = (math.cos(angle) * (apothem - 0.25), math.sin(angle) * (apothem - 0.25), 0)
         wall.rotation_euler.z = angle + math.pi / 2
         objs[wall.name] = wall
+        rail = paint(chamfer_box(f"RailCap_{i + 1}", (side + 0.25, 0.76, 0.28), (0, 0, 2.4)), "wood_light")
+        rail.location = wall.location
+        rail.rotation_euler.z = wall.rotation_euler.z
+        objs[rail.name] = rail
+        a = angle + math.pi / 8
+        name = f"CornerPost_{i + 1}"
+        objs[name] = paint(prism_column(name, 0.48, 2.8, 8,
+                                      (math.cos(a) * pen_radius, math.sin(a) * pen_radius, 0)), "wood_dark")
     for obj in objs.values():
         obj["glassclash"] = "clash_stand"
     return objs
@@ -474,6 +552,7 @@ def render_icon(objects, path, tint_hex=None, size=512, samples=48, engine="CYCL
         for o in scene.objects:
             o.hide_render = o not in objects
 
+        bpy.context.view_layer.update()
         lo, hi = _world_bounds(objects)
         centre = (lo + hi) / 2
         radius = max((hi - lo).length / 2, 0.1)
@@ -514,8 +593,8 @@ def render_icon(objects, path, tint_hex=None, size=512, samples=48, engine="CYCL
             pass
         bg = next((n for n in world.node_tree.nodes if n.type == "BACKGROUND"), None)
         if bg:
-            bg.inputs["Color"].default_value = (0.75, 0.82, 1.0, 1.0)
-            bg.inputs["Strength"].default_value = 0.6
+            bg.inputs["Color"].default_value = (0.18, 0.24, 0.36, 1.0)
+            bg.inputs["Strength"].default_value = 0.45
         scene.world = world
 
         render.engine = engine
@@ -573,40 +652,53 @@ def export_fbx(objects, path):
     objects = list(objects)
     os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
     view_layer = bpy.context.view_layer
-    previous = [o for o in view_layer.objects if o.select_get()]
+    view_layer.update()
+    previous = [o for o in view_layer.objects if o.select_get(view_layer=view_layer)]
     active = view_layer.objects.active
+    visibility = {o: (o.hide_get(view_layer=view_layer), o.hide_viewport) for o in objects}
     for o in previous:
-        o.select_set(False)
+        o.select_set(False, view_layer=view_layer)
     for o in objects:
-        o.select_set(True)
+        o.hide_viewport = False
+        o.hide_set(False, view_layer=view_layer)
+        o.select_set(True, view_layer=view_layer)
     view_layer.objects.active = objects[0]
     try:
-        bpy.ops.export_scene.fbx(
-            filepath=os.path.abspath(path),
-            use_selection=True,
-            object_types={"MESH"},
-            apply_unit_scale=True,
-            bake_space_transform=True,
-            use_mesh_modifiers=True,
-            mesh_smooth_type="FACE",
-            use_triangles=True,
-            add_leaf_bones=False,
-            path_mode="COPY",
-            embed_textures=True,
-        )
+        with bpy.context.temp_override(selected_objects=objects, selected_editable_objects=objects,
+                                       active_object=objects[0], object=objects[0]):
+            bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
+            bpy.ops.export_scene.fbx(
+                filepath=os.path.abspath(path),
+                use_selection=True,
+                object_types={"MESH"},
+                apply_unit_scale=True,
+                axis_forward="-Z",
+                axis_up="Y",
+                bake_space_transform=True,
+                use_mesh_modifiers=True,
+                mesh_smooth_type="FACE",
+                use_triangles=True,
+                use_custom_props=True,
+                add_leaf_bones=False,
+                path_mode="COPY",
+                embed_textures=True,
+            )
     finally:
         for o in objects:
-            o.select_set(False)
+            o.select_set(False, view_layer=view_layer)
+            hidden, disabled = visibility[o]
+            o.hide_set(hidden, view_layer=view_layer)
+            o.hide_viewport = disabled
         for o in previous:
-            o.select_set(True)
+            o.select_set(True, view_layer=view_layer)
         view_layer.objects.active = active
     return os.path.abspath(path)
 
 
 def save_blend_copy(path):
-    """Saves a copy of the current file (your open file keeps its own path)."""
+    """Saves only the current asset scene and dependencies, preserving the open file."""
     os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
-    bpy.ops.wm.save_as_mainfile(filepath=os.path.abspath(path), copy=True)
+    bpy.data.libraries.write(os.path.abspath(path), {bpy.context.scene}, fake_user=True, compress=True)
     return os.path.abspath(path)
 
 
@@ -617,6 +709,7 @@ def export_glassy(gid, body, shards, icon=True, blend=True):
     body.name = "Body"
     for i, s in enumerate(shards, start=1):
         s.name = f"Shard_{i:02d}"
+    assign_material([body, *shards], glossy_preview_material(f"GC_Preview_{gid}", glassy_tint(gid)))
     out = {
         "body": export_fbx([body], os.path.join(folder, f"{gid}_body.fbx")),
         "shards": export_fbx(shards, os.path.join(folder, f"{gid}_shards.fbx")),
@@ -624,17 +717,36 @@ def export_glassy(gid, body, shards, icon=True, blend=True):
     if icon:
         out["icon"] = render_icon([body], repo_path("assets", "icons", f"{gid}.png"), glassy_tint(gid))
     if blend:
+        for s in shards:
+            s.hide_render = True
+            s.hide_set(True)
         out["blend"] = save_blend_copy(os.path.join(folder, f"{gid}.blend"))
     return out
 
 
 def export_clash_stand(icon=True):
-    objs = build_clash_stand()
-    folder = repo_path("assets", "blender", "map")
-    out = {"fbx": export_fbx(objs.values(), os.path.join(folder, "clash_stand.fbx"))}
-    if icon:
-        out["preview"] = render_icon(objs.values(), os.path.join(folder, "clash_stand_preview.png"), size=768)
-    return out
+    """Builds and exports the stand in an isolated scene, preserving existing work."""
+    global COLLECTION
+    previous_scene = bpy.context.window.scene
+    previous_collection = COLLECTION
+    scene = bpy.data.scenes.new("GlassClash_ClashStand")
+    scene.unit_settings.system = "NONE"
+    scene.unit_settings.scale_length = 1.0
+    bpy.context.window.scene = scene
+    COLLECTION = scene.name
+    try:
+        with bpy.context.temp_override(scene=scene, view_layer=scene.view_layers[0]):
+            objs = build_clash_stand()
+            folder = repo_path("assets", "blender", "map")
+            out = {"fbx": export_fbx(objs.values(), os.path.join(folder, "clash_stand.fbx"))}
+            if icon:
+                out["preview"] = render_icon(objs.values(), os.path.join(folder, "clash_stand_preview.png"), size=768)
+            palette_image().pack()
+            out["blend"] = save_blend_copy(os.path.join(folder, "clash_stand.blend"))
+            return out
+    finally:
+        bpy.context.window.scene = previous_scene
+        COLLECTION = previous_collection
 
 
 # --------------------------------------------------------------------------------------------
@@ -663,12 +775,27 @@ def self_check():
 
 
 def build_all_starters(pieces=16):
-    """Convenience: builds, fractures and exports the three starters."""
+    """Builds each starter in an isolated scene without clearing existing work."""
+    global COLLECTION
     results = {}
-    for gid in ("pop", "jam", "prism"):
-        clear_collection()
-        body = build_starter(gid)
-        shards = make_shards(body, pieces, seed=sum(map(ord, gid)))
-        results[gid] = export_glassy(gid, body, shards)
-    clear_collection()
+    previous_scene = bpy.context.window.scene
+    previous_collection = COLLECTION
+    try:
+        for gid in ("pop", "jam", "prism"):
+            scene = bpy.data.scenes.new(f"GlassClash_{gid}")
+            scene.unit_settings.system = "NONE"
+            scene.unit_settings.scale_length = 1.0
+            bpy.context.window.scene = scene
+            COLLECTION = scene.name
+            with bpy.context.temp_override(scene=scene, view_layer=scene.view_layers[0]):
+                body = build_starter(gid)
+                shards = make_shards(body, pieces, seed=sum(map(ord, gid)))
+                results[gid] = export_glassy(gid, body, shards)
+            # Blender names are global across scenes; free export names for the next asset.
+            body.name = f"{gid}_Body"
+            for i, shard in enumerate(shards, start=1):
+                shard.name = f"{gid}_Shard_{i:02d}"
+    finally:
+        bpy.context.window.scene = previous_scene
+        COLLECTION = previous_collection
     return results

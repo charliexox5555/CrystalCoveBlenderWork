@@ -1,0 +1,171 @@
+{
+  "blender": "5.2.2 LTS",
+  "units": "1 Blender unit = 1 stud",
+  "fbx_axes": {
+    "forward": "-Z",
+    "up": "Y"
+  },
+  "starters": {
+    "pop": {
+      "triangles": 1056,
+      "non_manifold_edges": 0,
+      "volume": 2.1881079292334045,
+      "origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "height": 2.46,
+      "hang_point_z": 0.0,
+      "shard_count": 16,
+      "shard_triangles": 2372,
+      "shard_non_manifold_edges": 0,
+      "shard_volume_error": 1.7501892161249165e-08,
+      "saved_objects": [
+        "Shard_16",
+        "Shard_15",
+        "Shard_14",
+        "Shard_13",
+        "Shard_12",
+        "Shard_11",
+        "Shard_10",
+        "Shard_09",
+        "Shard_08",
+        "Shard_07",
+        "Shard_06",
+        "Shard_05",
+        "Shard_04",
+        "Shard_03",
+        "Shard_02",
+        "Shard_01",
+        "Body"
+      ],
+      "fbx_roundtrip_height": 2.46,
+      "fbx_body_mesh_count": 1,
+      "fbx_shards_mesh_count": 16,
+      "icon_size": [
+        512,
+        512
+      ]
+    },
+    "jam": {
+      "triangles": 768,
+      "non_manifold_edges": 0,
+      "volume": 4.941371192428393,
+      "origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "height": 2.04,
+      "hang_point_z": 0.0,
+      "shard_count": 16,
+      "shard_triangles": 2080,
+      "shard_non_manifold_edges": 0,
+      "shard_volume_error": 2.8476111051836585e-08,
+      "saved_objects": [
+        "Shard_16",
+        "Shard_15",
+        "Shard_14",
+        "Shard_13",
+        "Shard_12",
+        "Shard_11",
+        "Shard_10",
+        "Shard_09",
+        "Shard_08",
+        "Shard_07",
+        "Shard_06",
+        "Shard_05",
+        "Shard_04",
+        "Shard_03",
+        "Shard_02",
+        "Shard_01",
+        "Body"
+      ],
+      "fbx_roundtrip_height": 2.04,
+      "fbx_body_mesh_count": 1,
+      "fbx_shards_mesh_count": 16,
+      "icon_size": [
+        512,
+        512
+      ]
+    },
+    "prism": {
+      "triangles": 224,
+      "non_manifold_edges": 0,
+      "volume": 2.6249208997299927,
+      "origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "height": 2.52,
+      "hang_point_z": 0.0,
+      "shard_count": 16,
+      "shard_triangles": 812,
+      "shard_non_manifold_edges": 0,
+      "shard_volume_error": 2.9807887175767104e-08,
+      "saved_objects": [
+        "Shard_16",
+        "Shard_15",
+        "Shard_14",
+        "Shard_13",
+        "Shard_12",
+        "Shard_11",
+        "Shard_10",
+        "Shard_09",
+        "Shard_08",
+        "Shard_07",
+        "Shard_06",
+        "Shard_05",
+        "Shard_04",
+        "Shard_03",
+        "Shard_02",
+        "Shard_01",
+        "Body"
+      ],
+      "fbx_roundtrip_height": 2.52,
+      "fbx_body_mesh_count": 1,
+      "fbx_shards_mesh_count": 16,
+      "icon_size": [
+        512,
+        512
+      ]
+    }
+  },
+  "stand": {
+    "meshes": 55,
+    "triangles": 1916,
+    "largest_mesh_triangles": 144,
+    "non_manifold_edges": 0,
+    "hook_positions": {
+      "HookA": [
+        -1.5,
+        0.0,
+        15.09
+      ],
+      "HookB": [
+        1.5,
+        0.0,
+        15.09
+      ]
+    },
+    "fbx_mesh_count": 55
+  },
+  "ok": true
+}

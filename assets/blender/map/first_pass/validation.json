@@ -1,0 +1,68 @@
+{
+  "passed": true,
+  "exports": [
+    {
+      "chunk": "glass_town",
+      "meshes": 17,
+      "triangles": 3740,
+      "maxBoundsError": 2.41696834564209e-05,
+      "passed": true
+    },
+    {
+      "chunk": "yard_01",
+      "meshes": 16,
+      "triangles": 2396,
+      "maxBoundsError": 1.7642974853515625e-05,
+      "passed": true
+    },
+    {
+      "chunk": "yard_02",
+      "meshes": 16,
+      "triangles": 3764,
+      "maxBoundsError": 2.384185791015625e-05,
+      "passed": true
+    },
+    {
+      "chunk": "yard_03",
+      "meshes": 16,
+      "triangles": 2608,
+      "maxBoundsError": 3.0517578125e-05,
+      "passed": true
+    },
+    {
+      "chunk": "yard_04",
+      "meshes": 16,
+      "triangles": 3488,
+      "maxBoundsError": 3.471970558166504e-05,
+      "passed": true
+    },
+    {
+      "chunk": "yard_05",
+      "meshes": 16,
+      "triangles": 2672,
+      "maxBoundsError": 4.100799560546875e-05,
+      "passed": true
+    },
+    {
+      "chunk": "yard_06",
+      "meshes": 16,
+      "triangles": 2040,
+      "maxBoundsError": 6.103515625e-05,
+      "passed": true
+    },
+    {
+      "chunk": "yard_rusty",
+      "meshes": 15,
+      "triangles": 3588,
+      "maxBoundsError": 6.103515625e-05,
+      "passed": true
+    }
+  ],
+  "totalTriangles": 24296,
+  "StudioWalk": {
+    "routeSeconds": 37.48,
+    "townSeconds": 17.63,
+    "groundSamples": 305,
+    "missingGround": 0
+  }
+}

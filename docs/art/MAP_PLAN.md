@@ -40,3 +40,24 @@ Lobby gate → Kevin → wild patch A → Sam → Cora → Repair Bench → wild
 2. **Kit:** model the kit pieces in `kit_<zone>.blend` using the palette texture.
 3. **Layout:** in `layout_<zone>.blend`, place kit pieces as **linked duplicates**; export in chunks (one chunk per area) to keep each mesh under limits and allow streaming.
 4. **Import** chunks into `Workspace.Map.<zone>`, add spawn points, trainer markers, wild-spawn regions (invisible parts tagged with CollectionService) and Clash Stand placements in Studio.
+
+## First pass — Oct 12, user requested early map work
+
+Sources and import handoff: [assets/blender/map/first_pass](../../assets/blender/map/first_pass/README.md).
+
+- Town spans X/Z ±160 around the existing M1 stand. Spawn is south at Z=122;
+  Route 1 gate is north at Z=-154. Keep the central arena, champion podium and
+  gate visible from the spawn approach. Four extra stands are placement-only.
+- Recycling Yard runs north from Z=-160 to Rusty at Z=-610. The winding path
+  measures 600.43 studs and is 18 studs wide. Kevin, wild A, Sam, Cora, Repair,
+  wild B, Jo, Bo and Rusty follow the documented order.
+- Six route chunks plus Rusty and Town exports merge visuals by color within
+  each area: 128 meshes, 24,296 triangles. The editable layout retains linked
+  kit meshes. Approved stand previews are excluded from FBX exports and reused
+  from the existing Studio template.
+- Native-Part proxies currently allow walking in Studio. Detailed faceted trees,
+  pitched roofs and other kit geometry await FBX import. Trainer/repair/wild
+  markers are tagged for future gameplay; no new trainer battles or shop logic.
+- Measured town crossing: 17.63 s. Route: 37.48 s at WalkSpeed 16, with no stuck
+  segment and all 305 sampled ground checks passing. Final terrain shape,
+  boundary treatment, landmark art and phone performance remain a later pass.

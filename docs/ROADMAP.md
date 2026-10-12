@@ -21,7 +21,7 @@ Goal: one Clash Stand, two glassies, the meter, cracks and a great shatter. **No
 
 Art review: all starters and the revised A-frame stand approved and imported.
 Scale normalized to Blender measurements; colors/materials assigned in Studio.
-Gameplay and compact HUD implemented and tested; publish and [real-phone feel approval](testing/M1_PHONE_CHECK.md) remain. M2 stays gated on that check.
+Gameplay and compact HUD implemented and tested; publish and [real-phone feel approval](testing/M1_PHONE_CHECK.md) remain. Remaining M2 gameplay stays gated on that check. The user explicitly requested early map construction on Oct 12.
 
 - [x] **C:** Rojo connected; `ServerStorage.Tests.RunAll` passes in Studio
 - [x] **B:** low-poly Clash Stand (posts, crossbar, hooks) + octagon pen floor and low wall
@@ -34,6 +34,14 @@ Gameplay and compact HUD implemented and tested; publish and [real-phone feel ap
 - [x] **C:** `ShatterController`: hitstop, camera shake, slow-mo + side-on final shot, flash, shards, sparkles, layered sound
 - [x] **C:** a test NPC on the stand to fight (uses `BattleLogic.npcChooser`)
 - [ ] **U:** publish from Studio (MCP Edit cannot publish), then play it on a phone, record a clip, decide if the shatter feels great
+
+### Early map pass — user requested Oct 12
+
+- [x] **B:** Glass Town 320 × 320 blockout plus 600-stud Recycling Yard path, trainer clearings, wild areas, repair stop and Rusty's platform
+- [x] **B:** first 16-piece low-poly kit, linked layout, eight FBX chunks, render previews and export validation
+- [x] **C:** temporary Blender-derived walking proxies in Studio, tagged placement markers, town/route traversal and M1 battle regression checks
+- [ ] **U/C:** import the eight detailed FBX chunks, normalize/color them and replace proxy visuals ([handoff](../assets/blender/map/first_pass/README.md))
+- [ ] **C/B:** refine terrain/silhouettes, collision boundaries, landmark art and mobile performance after layout review
 
 ## M2 — Core loop (Oct 19–25)
 

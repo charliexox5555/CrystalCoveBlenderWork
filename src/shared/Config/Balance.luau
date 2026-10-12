@@ -128,6 +128,34 @@ Balance.Battle = {
 	PullBackSeconds = 1.5,
 	SwingSeconds = 0.5,
 	BounceSeconds = 0.8,
+	StartLeadSeconds = 0.35,
+	ClashLeadSeconds = 0.15,
+	ReleaseRateSeconds = 0.08,
+	PromptRateSeconds = 2,
+	PromptDistance = 12,
+	PollSeconds = 0.03,
+	ResultSeconds = 3.5,
+}
+
+-- Presentation and the temporary M1 matchup; no persistence/rewards yet.
+Balance.Prototype = { PlayerId = "pop", OpponentId = "jam", Level = 10, NpcSkill = 0.35 }
+Balance.Feel = {
+	StringLength = 5,
+	PullAngle = 0.8,
+	ContactAngle = 0.11,
+	BounceAngle = 0.35,
+	HitstopSeconds = 0.08,
+	SlowMotionRate = 0.3,
+	SlowMotionSeconds = 1,
+	ShardSeconds = 3,
+	MaxShards = 150,
+	ShardSpeed = 13,
+	ShardSpin = 12,
+	Sparkles = 45,
+	CrackThresholds = { 0.75, 0.5, 0.25 },
+	ShakeSeconds = 0.22,
+	ShakeMax = 0.25,
+	HapticSeconds = 0.08,
 }
 
 return Balance

@@ -14,6 +14,18 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-12 — Codex — M1 Step 3 complete
+Done:
+- Added shared remote definitions and BattleService: distance-checked/rate-limited stand prompt, level-10 Pop vs Jam (NPC skill 0.35), per-player state, server RNG, validated one-shot releases, Weak timeout, scheduled impacts, server HP application at impact and respawn/leave cleanup.
+- Added M1 presentation/pacing constants to Balance without changing existing damage/stat math. Added tools/studio/verify_m1_server.luau with 14 meaningful invalid-input/rate-limit/duplicate/expiry checks.
+- Play-tested real prompt/remotes: four Perfect clashes ended in Pop victory and clean BattleEnded; separate no-input test produced seven Weak releases. Reset cleaned up the active battle. Fresh play session Output clean. Lune and Roblox RunAll: 28 passed, 0 failed.
+Next:
+- Step 4 battle visuals, responsive HUD/input, cracks and final shatter; audio selection and phone Device Simulator verification.
+Problems / questions for the user:
+- Figma battle link could not be fetched; using the repository's Battle layout and Theme as the documented visual reference.
+Balance sim (3000 battles/matchup):
+- Even starter matches average 4.24–5.77 clashes; level-10 Pop vs Jam wins 85.1%, average 5.32 clashes. Zone 1 non-boss wins 73.9–99.9%; Rusty wins 45.5–49.2%. Skill 0 vs 0.5 wins 23.8%; skill 1 vs 0.5 wins 74.6%. Evolution level 15 after 24 wins. Damage/stat balance unchanged.
+
 ## 2026-10-12 — Codex — M1 Step 2 complete
 Done:
 - Imported assets supplied by user; corrected glassies' 100x FBX scale and the stand's separate importer limit scale against approved Blender measurements. Heights: Pop 2.46, Jam 2.04, Prism 2.52 studs; stand 28.68 wide / 17.80 high. Restored common hang pivots and preserved raw imports in ServerStorage.M1ImportedSources.

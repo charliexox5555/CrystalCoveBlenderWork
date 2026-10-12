@@ -26,12 +26,12 @@ Scale normalized to Blender measurements; colors/materials assigned in Studio.
 - [x] **B:** low-poly Clash Stand (posts, crossbar, hooks) + octagon pen floor and low wall
 - [x] **B:** starter glassies `pop`, `jam`, `prism`: body (origin at hang point), 12–20 shards, icon
 - [x] **C:** import stand and starters; folder `ReplicatedStorage.Assets.Glassies.<id>` with `Body` + `Shards`
-- [ ] **C:** `BattleService` (server): runs a battle with `BattleLogic`, sends each clash to clients, validates `ReleaseSwing`
+- [x] **C:** `BattleService` (server): runs a battle with `BattleLogic`, sends each clash to clients, validates `ReleaseSwing`
 - [ ] **C:** `BattleController` (client): pendulum animation with CFrame, string `Beam`s, 3/4 battle camera
 - [ ] **C:** power meter UI + HOLD button (mobile, PC Space, console button), using `Theme`
 - [ ] **C:** crack stages at 75 / 50 / 25 % HP
 - [ ] **C:** `ShatterController`: hitstop, camera shake, slow-mo + side-on final shot, flash, shards, sparkles, layered sound
-- [ ] **C:** a test NPC on the stand to fight (uses `BattleLogic.npcChooser`)
+- [x] **C:** a test NPC on the stand to fight (uses `BattleLogic.npcChooser`)
 - [ ] **U:** play it on a phone, record a clip, decide if the shatter feels great
 
 ## M2 — Core loop (Oct 19–25)

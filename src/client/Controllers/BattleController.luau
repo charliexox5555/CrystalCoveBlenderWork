@@ -64,6 +64,7 @@ function Controller:CreateFighter(id, hook, stats)
 		Stats = stats,
 		CrackStage = 0,
 	}
+	model.WorldPivot = CFrame.identity
 	self:Pose(fighter, 0)
 	return fighter
 end
@@ -76,11 +77,8 @@ function Controller:Pose(fighter, angle)
 		* CFrame.Angles(curve * Feel.DepthAngle, 0, angle)
 		* CFrame.new(0, -Feel.StringLength, 0)
 		* CFrame.Angles(0, curve * Feel.BodyTwist, fighter.Recoil or 0)
-	for _, parts in { fighter.Parts, fighter.Cracks or {} } do
-		for _, part in parts do
-			part:PivotTo(fighter.Pivot)
-		end
-	end
+	-- One model move lets Roblox batch the body, details and surface cracks together.
+	fighter.Model:PivotTo(fighter.Pivot)
 end
 function Controller:MakeScene(a, b)
 	if self.Root then
@@ -101,24 +99,32 @@ function Controller:Idle()
 end
 
 function Controller:Begin(inputToken)
-	if not self.Active or self.Phase ~= "Meter" or self.Holding or now() < self.StartTime then
+	if not self.Active or self.PressedToken then
 		return
 	end
-	if now() - self.StartTime >= Balance.Meter.MaxHoldTime then
-		return
+	self.PressedToken = inputToken
+	if self.Phase == "Meter" and now() - self.StartTime < Balance.Meter.MaxHoldTime then
+		self.Holding, self.InputToken = true, inputToken
 	end
-	self.Holding, self.InputToken = true, inputToken
 end
 function Controller:Release(inputToken)
+	if inputToken ~= self.PressedToken then
+		return
+	end
+	self.PressedToken = nil
 	if not self.Active or self.Phase ~= "Meter" or not self.Holding or inputToken ~= self.InputToken then
 		return
 	end
 	self.Holding = false
 	local elapsed = now() - self.StartTime
+	-- Releasing during the short ready lead allows another attempt in this window.
+	if elapsed < 0 then
+		return
+	end
 	self.Phase = "Waiting"
 	self.Hud:Release()
 	if elapsed <= Balance.Meter.MaxHoldTime then
-		Remotes.ReleaseSwing:FireServer(self.BattleId, self.ClashIndex, math.max(0, elapsed))
+		Remotes.ReleaseSwing:FireServer(self.BattleId, self.ClashIndex, elapsed)
 	end
 end
 
@@ -187,7 +193,7 @@ function Controller:EndBattle()
 		GuiService.TouchControlsEnabled = self.OldTouchControls
 		self.OldTouchControls = nil
 	end
-	self.Active, self.Holding, self.InputToken = false, false, nil
+	self.Active, self.Holding, self.InputToken, self.PressedToken = false, false, nil, nil
 	if self.Hud then
 		self.Hud:Destroy()
 		self.Hud = nil
@@ -220,7 +226,7 @@ function Controller:Clash(data)
 		return
 	end
 	self.ClashIndex, self.StartTime, self.Phase = data.ClashIndex, data.StartTime, "Meter"
-	self.Holding, self.InputToken, self.Resolution = false, nil, nil
+	self.Holding, self.InputToken, self.Resolution = self.PressedToken ~= nil, self.PressedToken, nil
 	self.ApproachStart = data.StartTime - Balance.Battle.ClashLeadSeconds
 	self.ApproachTime = data.ApproachTime
 	self.InitialA, self.InitialB = self.A.Angle, self.B.Angle
@@ -260,6 +266,11 @@ end
 
 function Controller:Frame(dt)
 	if not self.Active then
+		if self.Root and self.Root.Parent and self.A and self.B then
+			local angle = math.sin(now() * Feel.IdleSpeed) * Feel.IdleAngle
+			self:Pose(self.A, angle)
+			self:Pose(self.B, -angle)
+		end
 		return
 	end
 	local time = now()
@@ -361,12 +372,17 @@ function Controller:Start()
 		end
 	end)
 	UIS.WindowFocusReleased:Connect(function()
-		if self.Holding then
-			self:Release(self.InputToken)
+		if self.PressedToken then
+			self:Release(self.PressedToken)
 		end
 	end)
 	self.Player.CharacterRemoving:Connect(function()
 		self:EndBattle()
+	end)
+	self.Player.CharacterAdded:Connect(function()
+		if not self.Active then
+			self:Idle()
+		end
 	end)
 	RunService:BindToRenderStep("GlassClashBattle", Enum.RenderPriority.Camera.Value + 1, function(dt)
 		self:Frame(dt)

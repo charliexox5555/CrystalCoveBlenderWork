@@ -82,6 +82,7 @@ Theme.Fonts = {
 	Body = Font.fromName("Montserrat", Enum.FontWeight.Bold),
 	Heading = Font.fromName("Montserrat", Enum.FontWeight.ExtraBold),
 	PopUp = Font.fromName("Montserrat", Enum.FontWeight.Heavy, Enum.FontStyle.Italic),
+	Caption = Font.fromName("Montserrat", Enum.FontWeight.Medium),
 }
 
 Theme.TextSize = {
@@ -99,6 +100,16 @@ Theme.Motion = {
 	PanelOpenScaleFrom = 0.95,
 	ButtonPress = TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
 	ButtonPressScale = 0.96,
+}
+
+-- Compact battle skin, derived from the same crisp-glass palette.
+Theme.Battle = {
+	PanelTop = Theme.Colors.PanelTop:Lerp(Theme.Colors.Shadow, 0.65),
+	PanelBottom = Theme.Colors.PanelBottom:Lerp(Theme.Colors.Shadow, 0.55),
+	PanelTransparency = 0.2,
+	EdgeTransparency = 0.45,
+	HpTop = hex("#9CF6BC"),
+	HpBottom = hex("#38D98B"),
 }
 
 return Theme

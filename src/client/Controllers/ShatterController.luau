@@ -133,7 +133,9 @@ function Shatter:Break(fighter, root)
 		shard.Name = "LocalShard"
 		shard:PivotTo(fighter.Pivot)
 		shard.PivotOffset = CFrame.identity
-		shard.CanCollide, shard.CanTouch, shard.CanQuery = false, false, false
+		shard.CanCollide, shard.CanTouch, shard.CanQuery = true, false, false
+		shard.CustomPhysicalProperties =
+			PhysicalProperties.new(Feel.ShardDensity, Feel.ShardFriction, Feel.ShardBounce, 1, 1)
 		shard.CastShadow = false
 		shard.Parent = root
 		shard.Anchored = false
@@ -158,6 +160,7 @@ function Shatter:Break(fighter, root)
 			if shard.Parent then
 				force:Destroy()
 				shard.AssemblyLinearVelocity /= Feel.SlowMotionRate
+				shard.AssemblyAngularVelocity /= Feel.SlowMotionRate
 				shard.AssemblyAngularVelocity /= Feel.SlowMotionRate
 			end
 		end)

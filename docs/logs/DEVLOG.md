@@ -14,6 +14,20 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-12 — Codex — M1 feel and HUD refinement
+Done:
+- Followed user's expanded polish request after the gameplay pass: generated and saved an image-led HUD reference plus exact prompt; rebuilt compact Theme glass cards with native mesh portraits, type glyphs, thin animated HP rails/damage trails, diamond needle, centered meter and caption contrast backdrop. No new external assets/library/plugin used; the user-added icon pack remains untouched.
+- Batched anchored fighter movement with Model:PivotTo; five-clash full-effect retest kept body/details/cracks aligned within 0.000003 studs, reached 17 fragments and restored the Custom camera with no Output errors.
+- Buffered screen/Space holds during rebound into the next timing window; real input registered Perfect after an early hold. Added gentle idle sway, closer portrait framing, floor collisions/restitution for client-only shards and proper spin restoration after slow motion.
+- Galaxy A06 landscape Touch battle: five-clash win with four Perfect releases, peak 17 fragments, floor rebounds observed. iPhone 17 Pro landscape/portrait checked; all visible text fits, touch release accepted. Active-battle reset returns Interrupted, clears HUD/effects/backdrop, restores Custom camera/WalkSpeed 16 and idle models after respawn. Fresh Output clean. Four audio templates loaded; no cache growth across battles.
+- Lune and Roblox RunAll: 28 passed, 0 failed. Updated design/brief/UI spec, roadmap, Proposed decisions 17–19 and a precise phone checklist in docs/testing/M1_PHONE_CHECK.md. Studio left in Edit with default viewport.
+Next:
+- Publish from Studio, then user checks motion, input, audio and final shatter on a real phone. User has since requested that map construction begin while that check is pending; other M2 systems remain gated.
+Problems / questions for the user:
+- MCP Edit publication is still blocked by the SavePlaceAsync server-context restriction. No runtime snapshot was published. Use File > Publish to Roblox in the open place.
+Balance sim (3000 battles/matchup; presentation-only changes):
+- Even starters 4.24–5.77 clashes; Pop vs Jam 85.1% / 5.32 clashes. Zone 1 non-boss 73.9–99.9%; Rusty 45.5–49.2%. Skill 0 vs 0.5: 23.8%; skill 1 vs 0.5: 74.6%. Evolution level 15 after 24 wins. Damage/stat math unchanged.
+
 ## 2026-10-12 — Codex — M1 Step 4 gameplay pass
 Done:
 - Built battle camera, anchored glassies/details and Beam strings, responsive Theme HUD, PC/gamepad input and screen-wide touch hold. User-directed continuous curved swing now runs on a fixed server cadence; releasing locks a bonus without stopping motion. Added elastic recoil, impact spark burst, 80 ms hitstop, damage/Perfect/crit popups, haptics and final side-on slow-motion shatter with flash, 16 shards plus cap/lid, sparkles, layered sound and cleanup.

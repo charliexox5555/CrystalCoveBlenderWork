@@ -26,7 +26,7 @@ The pink "NOTE" labels in Figma are annotations, not UI. The stand, glassies and
 
 | Screen | Milestone | Status |
 |---|---|---|
-| Battle HUD (HP cards, VS, meter, HOLD, Cork) | M1 | Mockup done |
+| Battle HUD (HP cards, VS, centered meter, screen-wide hold) | M1 | Implemented; real-phone approval pending |
 | Starter pick | M2 | To design |
 | Glassies (inventory + details) | M3 | Mockup done |
 | Index | M3 | To design |
@@ -42,3 +42,9 @@ The pink "NOTE" labels in Figma are annotations, not UI. The stand, glassies and
 - Interactive UI in `ScreenInsets = CoreUISafeInsets`. Keep the bottom-left (thumbstick) and bottom-right (jump) corners clear outside battles.
 - Scale-based layout + `UIAspectRatioConstraint` + `UISizeConstraint` minimums. Test in the Device Emulator (phone presets) before calling a screen done.
 - Gamepad: every button selectable; B / Escape closes the open panel.
+
+## M1 refinement
+
+User requested screen-wide holding and a centered timing bar, then authorized an image-led HUD polish. Visual reference and its exact generation prompt are in `assets/concepts/ui/m1_battle_hud_reference.png` and `m1_battle_hud_prompt.txt` (built-in image_gen). The live HUD uses native Roblox components: compact dark glass cards, viewport portraits from the approved meshes, type glyphs, thin HP rails with delayed damage trails, a white diamond-tipped needle and a full-width fading caption backdrop. Theme.Battle derives its compact skin from the existing Theme palette; Montserrat and the cyan/violet edge remain. The generated scene is illustrative and does not replace the approved Blender models.
+
+Mobile holds anywhere on the play area; mouse / Space and gamepad A / R2 remain supported. Holding during rebound is buffered into the next timing window. The final shatter's physical fragments are client-only and bounce against the arena floor before fading. Real-phone feel and audio approval remain pending.

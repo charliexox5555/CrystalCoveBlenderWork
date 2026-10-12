@@ -1,7 +1,7 @@
 local Theme = require(script.Parent.Parent.Theme)
 local U = require(script.Parent.Util)
 local Pill = {}
-function Pill.new(parent, kind, size, position)
+function Pill.new(parent, kind, size, position, compact)
 	local pill = U.make("Frame", parent, {
 		Name = "Type",
 		Size = size,
@@ -39,6 +39,20 @@ function Pill.new(parent, kind, size, position)
 		U.make("UIStroke", handle, { Color = Theme.Colors.Text, Thickness = 2 })
 	end
 	U.text(pill, "Label", string.upper(kind), UDim2.fromScale(0.65, 0.8), UDim2.fromScale(0.32, 0.1))
+	if compact then
+		pill.BackgroundTransparency = 1
+		pill.Label.Visible = false
+		icon.Position, icon.Size = UDim2.fromScale(0, 0), UDim2.fromScale(1, 1)
+		for _, shapePart in icon:GetChildren() do
+			if shapePart:IsA("Frame") then
+				shapePart.BackgroundColor3 = Theme.Types[kind]
+				local stroke = shapePart:FindFirstChildWhichIsA("UIStroke")
+				if stroke then
+					stroke.Color = Theme.Types[kind]
+				end
+			end
+		end
+	end
 	return pill
 end
 return Pill

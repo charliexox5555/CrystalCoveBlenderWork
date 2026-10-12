@@ -48,7 +48,7 @@ Work in this order. After each step: play-test in Studio through the MCP, read t
 
 - [x] Walk up to the stand, press the prompt, and play a full battle against the NPC, start to finish, with no errors in Output.
 - [x] Timing the release changes the result (PERFECT hits visibly harder).
-- [x] Cracks show at the right HP; the final shatter looks and sounds great.
+- [ ] Cracks show at the right HP; the final shatter looks and sounds great. (Implemented and Studio-verified; real-phone feel approval pending.)
 - [x] Works in the Device Emulator on phone presets (hold anywhere; centered bar and readable text).
 - [x] `lune run tools/run_tests` and `require(game.ServerStorage.Tests.RunAll)()` both pass.
 - [ ] ROADMAP ticked, DEVLOG entry written, committed and pushed, place published.
@@ -56,3 +56,5 @@ Work in this order. After each step: play-test in Studio through the MCP, read t
 Then **stop** and tell the user what to test on their phone.
 
 Verification: Galaxy A06 landscape and iPhone 17 Pro landscape/portrait; real emulated Touch input completed a five-clash Pop victory. Fixed-RNG damage: Weak 24, Perfect 44. Both suites report 28 passed, 0 failed; 14 remote-validation checks pass. Audio Sound instances load all four approved clips. Final publication requires Studio File > Publish to Roblox because the MCP Edit context cannot call SavePlaceAsync.
+
+Final phone test instructions: [M1_PHONE_CHECK.md](../testing/M1_PHONE_CHECK.md). Follow-up polish adds compact native glass UI from a generated reference, mesh portraits, type icons, HP damage trails, buffered holds, idle sway and bouncing final shards.

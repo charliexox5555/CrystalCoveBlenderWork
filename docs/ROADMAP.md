@@ -21,6 +21,7 @@ Goal: one Clash Stand, two glassies, the meter, cracks and a great shatter. **No
 
 Art review: all starters and the revised A-frame stand approved and imported.
 Scale normalized to Blender measurements; colors/materials assigned in Studio.
+Gameplay and compact HUD implemented and tested; publish and [real-phone feel approval](testing/M1_PHONE_CHECK.md) remain. M2 stays gated on that check.
 
 - [x] **C:** Rojo connected; `ServerStorage.Tests.RunAll` passes in Studio
 - [x] **B:** low-poly Clash Stand (posts, crossbar, hooks) + octagon pen floor and low wall

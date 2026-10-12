@@ -9,8 +9,8 @@ Work in this order. After each step: play-test in Studio through the MCP, read t
 ## Step 1 — Art (Blender MCP)
 
 1. Load the helper in Blender: `exec(open(r"<repo>/tools/blender/glassclash_blender.py").read())`, then run `self_check()`.
-2. **Clash Stand + arena:** `build_clash_stand()` gives a low-poly starting point (two posts, crossbar, two hooks, octagon pen floor and low wall). Improve it if you can, keeping the style in ART_BIBLE. Export to `assets/blender/map/`.
-3. **Starters:** `build_starter("pop")`, `build_starter("jam")`, `build_starter("prism")` create a body with its origin at the hang point. Then `make_shards(body, 16)`, `render_icon(body, ...)` and `export_glassy(...)`. Improve the shapes if they look plain: chunky, toy-like, readable on a phone.
+2. **Clash Stand + arena:** `export_clash_stand()` builds and exports a low-poly starting point (two posts, crossbar, two hooks, octagon pen floor and low wall). Improve it if you can, keeping the style in ART_BIBLE. Export to `assets/blender/map/`.
+3. **Starters:** `build_all_starters()` builds, fractures (16 shards), renders icons and exports `pop`, `jam` and `prism` in one go (tested in Blender 5.2, about 20 s). The v0 shapes are simple lathe shapes; improve them (chunky, toy-like, readable on a phone) with `build_starter(gid)`, `make_shards(body, 16)` and `export_glassy(gid, body, shards)`.
 4. Save each `.blend` under `assets/blender/glassies/<id>/` and the icons under `assets/icons/`.
 
 ## Step 2 — Import (Studio MCP)

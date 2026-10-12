@@ -19,3 +19,4 @@ Newest at the bottom. Agents: don't reverse an **Accepted** decision without ask
 | 13 | 2026-10-12 | Working names: game **Glass Clash**, collectibles **glassies**. Both can change. | Proposed |
 | 14 | 2026-10-12 | In-game colouring is primarily done in **Studio**. Blender uses untextured preview materials; textures are used only when useful. Separate cap/lid meshes allow independent Studio colours. | Accepted (user directed) |
 | 15 | 2026-10-12 | Preserve `Body` + `Shards` and add an optional `Details` folder for separate caps, lids and bubbles, exported as `<id>_details.fbx`. All parts share the glassy's hang-point origin and animate together. | Proposed |
+| 16 | 2026-10-12 | On current Studio builds, use `LightingStyle = Realistic` and `PrioritizeLightingQuality = true` for ART_BIBLE's Future lighting intent; `Technology` is legacy and unavailable to the Studio MCP. | Proposed |

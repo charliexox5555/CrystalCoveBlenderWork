@@ -14,6 +14,17 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-12 — Codex — M1 Step 2 complete
+Done:
+- Imported assets supplied by user; corrected glassies' 100x FBX scale and the stand's separate importer limit scale against approved Blender measurements. Heights: Pop 2.46, Jam 2.04, Prism 2.52 studs; stand 28.68 wide / 17.80 high. Restored common hang pivots and preserved raw imports in ServerStorage.M1ImportedSources.
+- Organized ReplicatedStorage.Assets.ClashStand and Glassies.<id> Body/Shards/Details. Applied Glass/Tint/0.3 transparency, red Pop cap, pale bubbles and gold Jam lid in Studio. Added HookA/HookB attachments and a Workspace stand, walkable floor and arena spotlight.
+- Applied bright Realistic lighting, quality priority, soft atmosphere, slight saturation and low bloom. Proposed current-engine replacement for legacy Future setting (decision 16). Saved repeatable setup in tools/studio/setup_m1.luau.
+- MCP play-test started cleanly; runtime checks verified every 16-shard set, Glass material and hang pivot. Output: no gameplay errors. Lune and Studio tests: 28 passed, 0 failed. Stopped play mode.
+Next:
+- Step 3 server-authoritative NPC battle, then Step 4 anchored animations/HUD/cracks/shatter.
+Problems / questions for the user:
+- No blocker. Publishing the finished milestone remains pending.
+
 ## 2026-10-12 — Codex — M1 Step 2 import handoff
 Done:
 - User approved all revised art and authorized Steps 2–4. Rojo is serving and the expected synced folders exist in Studio.

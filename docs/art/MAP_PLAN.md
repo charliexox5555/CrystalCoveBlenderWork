@@ -1,3 +1,5 @@
+> **Superseded by [MAP_BLUEPRINT.md](MAP_BLUEPRINT.md)** (Kilnport glassblower village on a sea cliff + Cullet Yard). The notes below describe the earlier first pass.
+
 # Map Plan
 
 Low-poly, built mostly in Blender (see ART_BIBLE). Walk speed is 16 studs/s, so 160 studs ≈ 10 seconds of walking.

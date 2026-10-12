@@ -41,7 +41,8 @@ Gameplay and compact HUD implemented and tested; publish and [real-phone feel ap
 - [x] **B:** first 16-piece low-poly kit, linked layout, eight FBX chunks, render previews and export validation
 - [x] **C:** temporary Blender-derived walking proxies in Studio, tagged placement markers, town/route traversal and M1 battle regression checks
 - [x] **U/C:** import the eight detailed FBX chunks, normalize/color them and replace proxy visuals ([handoff](../assets/blender/map/first_pass/README.md))
-- [ ] **C/B:** refine terrain/silhouettes, collision boundaries, landmark art and mobile performance after layout review
+- [x] **Claude:** map blueprint chosen with the user: Kilnport + Cullet Yard ([MAP_BLUEPRINT](art/MAP_BLUEPRINT.md)), layout data, SVG blueprints, Blender blockout script
+- [ ] **U:** build the map in Blender from the blockout (MAP_BLUEPRINT section 6); the first-pass map is superseded
 
 ## M2 — Core loop (Oct 19–25)
 

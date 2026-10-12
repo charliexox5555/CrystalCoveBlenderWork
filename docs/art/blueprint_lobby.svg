@@ -1,0 +1,175 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1438" height="968" viewBox="0 0 1438 968" font-family="Montserrat, Arial, sans-serif">
+<defs><pattern id="waves" width="40" height="20" patternUnits="userSpaceOnUse"><path d="M0 10 Q10 4 20 10 T40 10" fill="none" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="2"/></pattern><pattern id="grid" width="44.0" height="44.0" patternUnits="userSpaceOnUse"><path d="M 44.0 0 L 0 0 0 44.0" fill="none" stroke="#1A1E4A" stroke-opacity="0.06" stroke-width="1"/></pattern></defs>
+<rect width="968" height="968" fill="#7FC4E8"/><rect width="968" height="968" fill="url(#waves)"/>
+<polygon points="44.0,924.0 33.0,374.0 132.0,198.0 330.0,92.4 594.0,92.4 770.0,136.4 858.0,286.0 862.4,638.0 792.0,836.0 660.0,935.0" fill="#BFE3A0" stroke="#6B5B3E" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="132.0,1375.0 -198.0,1397.0 -550.0,1309.0 -616.0,836.0 -605.0,374.0 -473.0,143.0 -198.0,110.0 11.0,176.0 33.0,374.0 44.0,924.0 660.0,935.0 814.0,1166.0 770.0,1364.0 506.0,1386.0" fill="#A9CF8C" stroke="#6B5B3E" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="198.0,1540.0 154.0,1386.0 770.0,1364.0 902.0,1452.0 946.0,1562.0" fill="#F2DFA6" stroke="#6B5B3E" stroke-width="1.5" stroke-linejoin="round"/>
+<polygon points="44.0,924.0 33.0,374.0 132.0,198.0 330.0,92.4 594.0,92.4 770.0,136.4 858.0,286.0 862.4,638.0 792.0,836.0 660.0,935.0" fill="none" stroke="#3D2E1E" stroke-width="5" stroke-dasharray="2 6" stroke-linecap="round"/>
+<circle cx="-506.0" cy="374.0" r="154.0" fill="#7DBB6A" stroke="#4E8A43" stroke-width="2"/><circle cx="-506.0" cy="374.0" r="84.7" fill="#93CC7E"/>
+<circle cx="-528.0" cy="770.0" r="176.0" fill="#7DBB6A" stroke="#4E8A43" stroke-width="2"/><circle cx="-528.0" cy="770.0" r="96.8" fill="#93CC7E"/>
+<circle cx="-506.0" cy="1166.0" r="165.0" fill="#7DBB6A" stroke="#4E8A43" stroke-width="2"/><circle cx="-506.0" cy="1166.0" r="90.8" fill="#93CC7E"/>
+<circle cx="-264.0" cy="1474.0" r="154.0" fill="#7DBB6A" stroke="#4E8A43" stroke-width="2"/><circle cx="-264.0" cy="1474.0" r="84.7" fill="#93CC7E"/>
+<circle cx="-88.0" cy="308.0" r="132.0" fill="#7DBB6A" stroke="#4E8A43" stroke-width="2"/><circle cx="-88.0" cy="308.0" r="72.6" fill="#93CC7E"/>
+<circle cx="-198.0" cy="242.0" r="121.0" fill="#7DBB6A" stroke="#4E8A43" stroke-width="2"/><circle cx="-198.0" cy="242.0" r="66.6" fill="#93CC7E"/>
+<polyline points="462.0,836.0 462.0,664.4" fill="none" stroke="#B9A57A" stroke-width="61.2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="462.0,836.0 462.0,664.4" fill="none" stroke="#F3E6C4" stroke-width="57.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="308.0,567.6 198.0,594.0 88.0,594.0" fill="none" stroke="#B9A57A" stroke-width="48.0" stroke-linecap="round" stroke-linejoin="round"/><polyline points="308.0,567.6 198.0,594.0 88.0,594.0" fill="none" stroke="#F3E6C4" stroke-width="44.0" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="620.4,550.0 704.0,528.0 737.0,462.0" fill="none" stroke="#B9A57A" stroke-width="43.6" stroke-linecap="round" stroke-linejoin="round"/><polyline points="620.4,550.0 704.0,528.0 737.0,462.0" fill="none" stroke="#F3E6C4" stroke-width="39.6" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="462.0,347.6 462.0,286.0" fill="none" stroke="#B9A57A" stroke-width="52.4" stroke-linecap="round" stroke-linejoin="round"/><polyline points="462.0,347.6 462.0,286.0" fill="none" stroke="#F3E6C4" stroke-width="48.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="572.0,374.0 704.0,264.0 792.0,180.4" fill="none" stroke="#B9A57A" stroke-width="34.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="572.0,374.0 704.0,264.0 792.0,180.4" fill="none" stroke="#F3E6C4" stroke-width="30.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="77.0,594.0 -11.0,594.0 -114.4,605.0 -237.6,686.4 -275.0,814.0 -268.4,957.0 -198.0,1082.4 -77.0,1166.0 70.4,1205.6 220.0,1214.4 356.4,1205.6 479.6,1223.2" fill="none" stroke="#B9A57A" stroke-width="48.0" stroke-linecap="round" stroke-linejoin="round"/><polyline points="77.0,594.0 -11.0,594.0 -114.4,605.0 -237.6,686.4 -275.0,814.0 -268.4,957.0 -198.0,1082.4 -77.0,1166.0 70.4,1205.6 220.0,1214.4 356.4,1205.6 479.6,1223.2" fill="none" stroke="#F3E6C4" stroke-width="44.0" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="554.4,1188.0 620.4,1095.6" fill="none" stroke="#B9A57A" stroke-width="34.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="554.4,1188.0 620.4,1095.6" fill="none" stroke="#F3E6C4" stroke-width="30.8" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="462.0" cy="506.0" r="162.8" fill="#EFE3C8" stroke="#1A1E4A" stroke-width="2.5"/>
+<circle cx="462.0" cy="836.0" r="52.8" fill="#EFE3C8" stroke="#1A1E4A" stroke-width="2.5"/>
+<circle cx="752.4" cy="473.0" r="101.2" fill="#EFE3C8" stroke="#1A1E4A" stroke-width="2.5"/>
+<circle cx="90.6" cy="852.2" r="11.0" fill="#3FA874" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="91.4" cy="879.6" r="11.0" fill="#3FA874" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="70.5" cy="875.5" r="11.0" fill="#3FA874" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="131.2" cy="856.7" r="11.0" fill="#3FA874" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="130.0" cy="861.6" r="11.0" fill="#3FA874" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="112.2" cy="862.8" r="11.0" fill="#3FA874" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="59.8" cy="848.9" r="11.0" fill="#3FA874" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="110.2" cy="242.1" r="11.0" fill="#3FA874" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="43.3" cy="310.1" r="11.0" fill="#3FA874" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="51.2" cy="283.4" r="11.0" fill="#3FA874" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="102.1" cy="266.1" r="11.0" fill="#3FA874" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="110.4" cy="291.6" r="11.0" fill="#3FA874" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="102.0" cy="246.2" r="11.0" fill="#3FA874" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="66.6" cy="208.4" r="11.0" fill="#3FA874" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="109.2" cy="218.4" r="11.0" fill="#3FA874" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="62.1" cy="294.9" r="11.0" fill="#3FA874" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="207.4" cy="124.9" r="14.3" fill="#62CF9C" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="242.3" cy="112.2" r="14.3" fill="#62CF9C" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="205.4" cy="152.3" r="14.3" fill="#62CF9C" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="204.2" cy="83.8" r="14.3" fill="#62CF9C" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="192.3" cy="112.6" r="14.3" fill="#62CF9C" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="232.2" cy="163.4" r="14.3" fill="#62CF9C" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="727.4" cy="843.3" r="14.3" fill="#62CF9C" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="681.3" cy="887.1" r="14.3" fill="#62CF9C" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="722.7" cy="905.8" r="14.3" fill="#62CF9C" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="742.5" cy="882.1" r="14.3" fill="#62CF9C" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="689.3" cy="859.3" r="14.3" fill="#62CF9C" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="745.6" cy="852.4" r="14.3" fill="#62CF9C" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="361.4" cy="883.1" r="14.3" fill="#62CF9C" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="332.7" cy="920.9" r="14.3" fill="#62CF9C" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="345.7" cy="906.6" r="14.3" fill="#62CF9C" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="319.7" cy="919.7" r="14.3" fill="#62CF9C" stroke="#2E7A52" stroke-width="1"/>
+<circle cx="306.6" cy="903.9" r="14.3" fill="#62CF9C" stroke="#2E7A52" stroke-width="1"/>
+<polygon points="561.7,424.1 573.1,440.3 585.7,431.5 574.4,415.2" fill="#C2553D" stroke="#1A1E4A" stroke-width="1.5"/>
+<polygon points="521.8,391.6 538.6,402.1 546.8,389.0 530.0,378.6" fill="#3F6FB5" stroke="#1A1E4A" stroke-width="1.5"/>
+<polygon points="385.4,402.1 402.2,391.6 394.0,378.6 377.2,389.0" fill="#3FA874" stroke="#1A1E4A" stroke-width="1.5"/>
+<polygon points="350.9,440.3 362.3,424.1 349.6,415.2 338.3,431.5" fill="#FFC93C" stroke="#1A1E4A" stroke-width="1.5"/>
+<polygon points="378.0,604.0 364.0,590.0 353.1,600.9 367.1,614.9" fill="#3F6FB5" stroke="#1A1E4A" stroke-width="1.5"/>
+<polygon points="416.6,626.8 398.6,618.5 392.1,632.4 410.1,640.8" fill="#C2553D" stroke="#1A1E4A" stroke-width="1.5"/>
+<polygon points="525.4,618.5 507.4,626.8 513.9,640.8 531.9,632.4" fill="#3FA874" stroke="#1A1E4A" stroke-width="1.5"/>
+<polygon points="564.3,584.8 551.0,599.5 562.5,609.8 575.7,595.1" fill="#FFC93C" stroke="#1A1E4A" stroke-width="1.5"/>
+<circle cx="424.6" cy="796.4" r="3.5" fill="#FFE45C" stroke="#1A1E4A" stroke-width="1"/>
+<circle cx="499.4" cy="796.4" r="3.5" fill="#FFE45C" stroke="#1A1E4A" stroke-width="1"/>
+<circle cx="424.6" cy="752.4" r="3.5" fill="#FFE45C" stroke="#1A1E4A" stroke-width="1"/>
+<circle cx="499.4" cy="752.4" r="3.5" fill="#FFE45C" stroke="#1A1E4A" stroke-width="1"/>
+<circle cx="605.0" cy="480.7" r="3.5" fill="#FFE45C" stroke="#1A1E4A" stroke-width="1"/>
+<circle cx="487.3" cy="363.0" r="3.5" fill="#FFE45C" stroke="#1A1E4A" stroke-width="1"/>
+<circle cx="436.7" cy="363.0" r="3.5" fill="#FFE45C" stroke="#1A1E4A" stroke-width="1"/>
+<circle cx="319.0" cy="480.7" r="3.5" fill="#FFE45C" stroke="#1A1E4A" stroke-width="1"/>
+<circle cx="319.0" cy="531.3" r="3.5" fill="#FFE45C" stroke="#1A1E4A" stroke-width="1"/>
+<circle cx="436.7" cy="649.0" r="3.5" fill="#FFE45C" stroke="#1A1E4A" stroke-width="1"/>
+<circle cx="487.3" cy="649.0" r="3.5" fill="#FFE45C" stroke="#1A1E4A" stroke-width="1"/>
+<circle cx="605.0" cy="531.3" r="3.5" fill="#FFE45C" stroke="#1A1E4A" stroke-width="1"/>
+<circle cx="132.0" cy="572.0" r="3.5" fill="#FFE45C" stroke="#1A1E4A" stroke-width="1"/>
+<circle cx="132.0" cy="620.4" r="3.5" fill="#FFE45C" stroke="#1A1E4A" stroke-width="1"/>
+<circle cx="492.8" cy="319.0" r="3.5" fill="#FFE45C" stroke="#1A1E4A" stroke-width="1"/>
+<circle cx="431.2" cy="319.0" r="3.5" fill="#FFE45C" stroke="#1A1E4A" stroke-width="1"/>
+<polygon points="393.8,272.8 530.2,272.8 530.2,189.2 393.8,189.2" fill="#6E3B2E" stroke="#1A1E4A" stroke-width="2"/>
+<line x1="427.9" y1="272.8" x2="496.1" y2="272.8" stroke="#FFE45C" stroke-width="4"/>
+<circle cx="462.0" cy="231.0" r="10" fill="#FFFFFF" stroke="#1A1E4A" stroke-width="2"/><text x="462.0" y="235.0" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">2</text>
+<polygon points="213.4,433.4 213.4,499.4 261.8,499.4 261.8,433.4" fill="#C2553D" stroke="#1A1E4A" stroke-width="2"/>
+<line x1="213.4" y1="449.9" x2="213.4" y2="482.9" stroke="#FFE45C" stroke-width="4"/>
+<circle cx="237.6" cy="466.4" r="10" fill="#FFFFFF" stroke="#1A1E4A" stroke-width="2"/><text x="237.6" y="470.4" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">3</text>
+<polygon points="595.9,338.1 649.3,307.3 627.3,269.1 573.9,299.9" fill="#3F6FB5" stroke="#1A1E4A" stroke-width="2"/>
+<line x1="609.3" y1="330.4" x2="635.9" y2="315.0" stroke="#FFE45C" stroke-width="4"/>
+<circle cx="611.6" cy="303.6" r="10" fill="#FFFFFF" stroke="#1A1E4A" stroke-width="2"/><text x="611.6" y="307.6" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">4</text>
+<polygon points="300.8,307.0 335.0,326.8 350.4,300.2 316.2,280.4" fill="#3FA874" stroke="#1A1E4A" stroke-width="2"/>
+<line x1="309.3" y1="312.0" x2="326.5" y2="321.9" stroke="#FFE45C" stroke-width="4"/>
+<circle cx="325.6" cy="303.6" r="10" fill="#FFFFFF" stroke="#1A1E4A" stroke-width="2"/><text x="325.6" y="307.6" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">5</text>
+<polygon points="347.4,742.4 362.8,769.0 374.2,762.4 358.8,735.8" fill="#8C5A2B" stroke="#1A1E4A" stroke-width="2"/>
+<line x1="351.2" y1="749.0" x2="358.9" y2="762.4" stroke="#FFE45C" stroke-width="4"/>
+<circle cx="360.8" cy="752.4" r="10" fill="#FFFFFF" stroke="#1A1E4A" stroke-width="2"/><text x="360.8" y="756.4" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">6</text>
+<polygon points="570.7,782.2 594.9,740.2 564.5,722.6 540.3,764.6" fill="#7A5CFF" stroke="#1A1E4A" stroke-width="2"/>
+<line x1="576.8" y1="771.7" x2="588.9" y2="750.7" stroke="#FFE45C" stroke-width="4"/>
+<circle cx="567.6" cy="752.4" r="10" fill="#FFFFFF" stroke="#1A1E4A" stroke-width="2"/><text x="567.6" y="756.4" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">7</text>
+<polygon points="171.6,724.4 199.6,752.4 224.4,727.6 196.4,699.6" fill="#C2553D" stroke="#1A1E4A" stroke-width="2"/>
+<line x1="178.6" y1="731.4" x2="192.6" y2="745.4" stroke="#FFE45C" stroke-width="4"/>
+<circle cx="198.0" cy="726.0" r="10" fill="#FFFFFF" stroke="#1A1E4A" stroke-width="2"/><text x="198.0" y="730.0" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">8</text>
+<polygon points="140.5,327.3 132.8,370.6 167.5,376.7 175.2,333.4" fill="#3F6FB5" stroke="#1A1E4A" stroke-width="2"/>
+<line x1="138.6" y1="338.1" x2="134.8" y2="359.8" stroke="#FFE45C" stroke-width="4"/>
+<circle cx="154.0" cy="352.0" r="10" fill="#FFFFFF" stroke="#1A1E4A" stroke-width="2"/><text x="154.0" y="356.0" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">9</text>
+<polygon points="262.4,174.8 228.2,194.6 243.6,221.2 277.8,201.4" fill="#C2553D" stroke="#1A1E4A" stroke-width="2"/>
+<line x1="253.9" y1="179.7" x2="236.7" y2="189.6" stroke="#FFE45C" stroke-width="4"/>
+<circle cx="253.0" cy="198.0" r="10" fill="#FFFFFF" stroke="#1A1E4A" stroke-width="2"/><text x="253.0" y="202.0" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">10</text>
+<polygon points="711.9,765.0 743.0,733.9 718.1,709.0 687.0,740.1" fill="#3FA874" stroke="#1A1E4A" stroke-width="2"/>
+<line x1="719.7" y1="757.2" x2="735.2" y2="741.7" stroke="#FFE45C" stroke-width="4"/>
+<circle cx="715.0" cy="737.0" r="10" fill="#FFFFFF" stroke="#1A1E4A" stroke-width="2"/><text x="715.0" y="741.0" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">11</text>
+<polygon points="275.2,844.5 308.3,856.5 318.8,827.5 285.7,815.5" fill="#3F6FB5" stroke="#1A1E4A" stroke-width="2"/>
+<line x1="283.5" y1="847.5" x2="300.0" y2="853.5" stroke="#FFE45C" stroke-width="4"/>
+<circle cx="297.0" cy="836.0" r="10" fill="#FFFFFF" stroke="#1A1E4A" stroke-width="2"/><text x="297.0" y="840.0" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">12</text>
+<polygon points="637.7,856.5 670.8,844.5 660.3,815.5 627.2,827.5" fill="#C2553D" stroke="#1A1E4A" stroke-width="2"/>
+<line x1="646.0" y1="853.5" x2="662.5" y2="847.5" stroke="#FFE45C" stroke-width="4"/>
+<circle cx="649.0" cy="836.0" r="10" fill="#FFFFFF" stroke="#1A1E4A" stroke-width="2"/><text x="649.0" y="840.0" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">13</text>
+<circle cx="462.0" cy="215.6" r="37.0" fill="#FF9A2E" fill-opacity="0.35"/><circle cx="462.0" cy="215.6" r="26.4" fill="#8C4A35" stroke="#1A1E4A" stroke-width="2"/><circle cx="462.0" cy="215.6" r="13.1" fill="#8FE3FF" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="497.2" cy="193.6" r="10" fill="#FF9A2E" stroke="#1A1E4A" stroke-width="2"/><text x="497.2" y="197.6" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">14</text>
+<circle cx="462.0" cy="506.0" r="70.4" fill="#D8CDB4" stroke="#9C8B6A" stroke-width="2"/><circle cx="462.0" cy="506.0" r="52.8" fill="#E5DAC0" stroke="#9C8B6A" stroke-width="1.5"/>
+<polygon points="492.5,518.6 474.6,536.5 449.4,536.5 431.5,518.6 431.5,493.4 449.4,475.5 474.6,475.5 492.5,493.4" fill="#C98B4E" stroke="#1A1E4A" stroke-width="2"/>
+<circle cx="462.0" cy="550.0" r="10" fill="#C98B4E" stroke="#1A1E4A" stroke-width="2"/><text x="462.0" y="554.0" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">15</text>
+<polygon points="754.6,569.8 754.6,521.4 732.6,521.4 732.6,569.8" fill="#4FA8FF" stroke="#1A1E4A" stroke-width="1.5" fill-opacity="0.9"/>
+<circle cx="743.6" cy="545.6" r="10" fill="#4FA8FF" stroke="#1A1E4A" stroke-width="2"/><text x="743.6" y="549.6" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">16</text>
+<polygon points="798.6,512.6 798.6,464.2 776.6,464.2 776.6,512.6" fill="#4FA8FF" stroke="#1A1E4A" stroke-width="1.5" fill-opacity="0.9"/>
+<circle cx="787.6" cy="488.4" r="10" fill="#4FA8FF" stroke="#1A1E4A" stroke-width="2"/><text x="787.6" y="492.4" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">17</text>
+<polygon points="798.6,446.6 798.6,398.2 776.6,398.2 776.6,446.6" fill="#4FA8FF" stroke="#1A1E4A" stroke-width="1.5" fill-opacity="0.9"/>
+<circle cx="787.6" cy="422.4" r="10" fill="#4FA8FF" stroke="#1A1E4A" stroke-width="2"/><text x="787.6" y="426.4" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">18</text>
+<polygon points="754.6,402.6 754.6,354.2 732.6,354.2 732.6,402.6" fill="#4FA8FF" stroke="#1A1E4A" stroke-width="1.5" fill-opacity="0.9"/>
+<circle cx="743.6" cy="378.4" r="10" fill="#4FA8FF" stroke="#1A1E4A" stroke-width="2"/><text x="743.6" y="382.4" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">19</text>
+<polygon points="560.9,382.4 602.9,358.2 591.9,339.2 549.9,363.4" fill="#FF9BE0" stroke="#1A1E4A" stroke-width="1.5" fill-opacity="0.9"/>
+<circle cx="576.4" cy="360.8" r="10" fill="#FF9BE0" stroke="#1A1E4A" stroke-width="2"/><text x="576.4" y="364.8" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">20</text>
+<text x="462.0" y="651.2" text-anchor="middle" font-size="13" font-weight="800" fill="#1A1E4A" fill-opacity="0.7">VILLAGE SQUARE</text>
+<text x="761.2" y="587.4" text-anchor="middle" font-size="13" font-weight="800" fill="#1A1E4A" fill-opacity="0.7">SEAVIEW TERRACE</text>
+<circle cx="462.0" cy="836.0" r="11" fill="#FFE45C" stroke="#1A1E4A" stroke-width="2"/><text x="462.0" y="840.0" text-anchor="middle" font-size="12" font-weight="800" fill="#1A1E4A">21</text>
+<circle cx="528.0" cy="690.8" r="10" fill="#FFD54A" stroke="#1A1E4A" stroke-width="2"/><text x="528.0" y="694.8" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">22</text>
+<circle cx="462.0" cy="277.2" r="10" fill="#FFFFFF" stroke="#1A1E4A" stroke-width="2"/><text x="462.0" y="281.2" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">23</text>
+<circle cx="396.0" cy="690.8" r="10" fill="#C9D2F5" stroke="#1A1E4A" stroke-width="2"/><text x="396.0" y="694.8" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">24</text>
+<circle cx="77.0" cy="594.0" r="10" fill="#2FCB3A" stroke="#1A1E4A" stroke-width="2"/><text x="77.0" y="598.0" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">25</text>
+<circle cx="796.4" cy="176.0" r="10" fill="#9AA5B8" stroke="#1A1E4A" stroke-width="2"/><text x="796.4" y="180.0" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">26</text>
+<line x1="462.0" y1="822.0" x2="462.0" y2="233.6" stroke="#FF9A2E" stroke-width="2" stroke-dasharray="3 7" stroke-opacity="0.8"/>
+<text x="792.0" y="44.0" text-anchor="middle" font-size="15" font-weight="800" fill="#1A1E4A" fill-opacity="0.55">SEA — cliffs drop 60 studs</text>
+<text x="913.0" y="55.0" text-anchor="middle" font-size="13" font-weight="800" fill="#1A1E4A" fill-opacity="0.55">Harbor below</text>
+<rect width="968" height="968" fill="url(#grid)"/>
+<g transform="translate(20,938)"><rect x="-8" y="-24" width="290" height="40" rx="8" fill="#FFFFFF" fill-opacity="0.85"/><rect x="0" y="0" width="220" height="6" fill="#1A1E4A"/><text x="228" y="7" font-size="13" fill="#1A1E4A" font-weight="700">100 studs</text><text x="0" y="-8" font-size="11" fill="#1A1E4A">≈ 6 s walk</text></g>
+<g transform="translate(918,918)"><circle r="30" fill="#FFFFFF" fill-opacity="0.85"/><path d="M0 -24 L8 4 L0 -2 L-8 4 Z" fill="#1A1E4A"/><text y="20" text-anchor="middle" font-size="14" font-weight="800" fill="#1A1E4A">N</text></g>
+<rect x="968" y="0" width="470" height="968" fill="#141344"/>
+<text x="988" y="38" font-size="22" font-weight="800" fill="#FFFFFF">Kilnport — Lobby</text>
+<text x="988" y="62" font-size="13" fill="#C9D2F5">Compact glassblower village on a sea cliff. 1 grid square = 20 studs.</text>
+<circle cx="1000" cy="91" r="10" fill="#FFC93C" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="95" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">1</text><text x="1020" y="96" font-size="13" fill="#FFFFFF">Market stalls (ring the square)</text>
+<circle cx="1000" cy="117" r="10" fill="#6E3B2E" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="121" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">2</text><text x="1020" y="122" font-size="13" fill="#FFFFFF">The Great Furnace</text>
+<circle cx="1000" cy="143" r="10" fill="#C2553D" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="147" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">3</text><text x="1020" y="148" font-size="13" fill="#FFFFFF">Bottle Bazaar (crates)</text>
+<circle cx="1000" cy="169" r="10" fill="#3F6FB5" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="173" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">4</text><text x="1020" y="174" font-size="13" fill="#FFFFFF">Sparkle Studio (Shatter FX &amp; Fills)</text>
+<circle cx="1000" cy="195" r="10" fill="#3FA874" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="199" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">5</text><text x="1020" y="200" font-size="13" fill="#FFFFFF">Glue &amp; Glaze (Repair Bench)</text>
+<circle cx="1000" cy="221" r="10" fill="#8C5A2B" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="225" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">6</text><text x="1020" y="226" font-size="13" fill="#FFFFFF">Notice Board (quests, daily, codes)</text>
+<circle cx="1000" cy="247" r="10" fill="#7A5CFF" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="251" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">7</text><text x="1020" y="252" font-size="13" fill="#FFFFFF">Starter Hall</text>
+<circle cx="1000" cy="273" r="10" fill="#C2553D" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="277" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">8</text><text x="1020" y="278" font-size="13" fill="#FFFFFF">Cottage</text>
+<circle cx="1000" cy="299" r="10" fill="#3F6FB5" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="303" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">9</text><text x="1020" y="304" font-size="13" fill="#FFFFFF">Cottage</text>
+<circle cx="1000" cy="325" r="10" fill="#C2553D" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="329" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">10</text><text x="1020" y="330" font-size="13" fill="#FFFFFF">Cottage</text>
+<circle cx="1000" cy="351" r="10" fill="#3FA874" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="355" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">11</text><text x="1020" y="356" font-size="13" fill="#FFFFFF">Workshop</text>
+<circle cx="1000" cy="377" r="10" fill="#3F6FB5" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="381" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">12</text><text x="1020" y="382" font-size="13" fill="#FFFFFF">Cottage</text>
+<circle cx="1000" cy="403" r="10" fill="#C2553D" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="407" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">13</text><text x="1020" y="408" font-size="13" fill="#FFFFFF">Cottage</text>
+<circle cx="1000" cy="429" r="10" fill="#FF9A2E" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="433" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">14</text><text x="1020" y="434" font-size="13" fill="#FFFFFF">Furnace Tower (130 studs + glass bottle)</text>
+<circle cx="1000" cy="455" r="10" fill="#C98B4E" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="459" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">15</text><text x="1020" y="460" font-size="13" fill="#FFFFFF">Octagon Arena (tournaments)</text>
+<circle cx="1000" cy="481" r="10" fill="#4FA8FF" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="485" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">16</text><text x="1020" y="486" font-size="13" fill="#FFFFFF">PvP stand</text>
+<circle cx="1000" cy="507" r="10" fill="#4FA8FF" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="511" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">17</text><text x="1020" y="512" font-size="13" fill="#FFFFFF">PvP stand</text>
+<circle cx="1000" cy="533" r="10" fill="#4FA8FF" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="537" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">18</text><text x="1020" y="538" font-size="13" fill="#FFFFFF">PvP stand</text>
+<circle cx="1000" cy="559" r="10" fill="#4FA8FF" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="563" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">19</text><text x="1020" y="564" font-size="13" fill="#FFFFFF">PvP stand</text>
+<circle cx="1000" cy="585" r="10" fill="#FF9BE0" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="589" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">20</text><text x="1020" y="590" font-size="13" fill="#FFFFFF">FX test stand</text>
+<circle cx="1000" cy="611" r="10" fill="#FFE45C" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="615" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">21</text><text x="1020" y="616" font-size="13" fill="#FFFFFF">SPAWN (faces north)</text>
+<circle cx="1000" cy="637" r="10" fill="#FFD54A" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="641" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">22</text><text x="1020" y="642" font-size="13" fill="#FFFFFF">Champion Pedestal (off-axis, never blocks the arena)</text>
+<circle cx="1000" cy="663" r="10" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="667" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">23</text><text x="1020" y="668" font-size="13" fill="#FFFFFF">Bracket Board (on the furnace facade, above the mouth)</text>
+<circle cx="1000" cy="689" r="10" fill="#C9D2F5" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="693" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">24</text><text x="1020" y="694" font-size="13" fill="#FFFFFF">Leaderboards (flank the square entrance)</text>
+<circle cx="1000" cy="715" r="10" fill="#2FCB3A" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="719" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">25</text><text x="1020" y="720" font-size="13" fill="#FFFFFF">Kiln Gate -&gt; Route 1</text>
+<circle cx="1000" cy="741" r="10" fill="#9AA5B8" stroke="#FFFFFF" stroke-width="1.5"/><text x="1000" y="745" text-anchor="middle" font-size="11" font-weight="800" fill="#1A1E4A">26</text><text x="1020" y="746" font-size="13" fill="#FFFFFF">Harbor Stairs (boats to later zones, locked)</text>
+</svg>

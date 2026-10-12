@@ -2,6 +2,7 @@
 
 > Working title. Alternatives: **Bottle Battles**, **Shatter Showdown**. Search Roblox for name conflicts before picking.
 > **Glassies** is a placeholder name for the collectibles (like "Pokémon" or "pets"). They start as everyday bottles and become fantasy glass creations as you progress.
+> **UI mockups:** [Figma — Glass Clash UI](https://www.figma.com/design/r3guIIk5deo7vNxLzJN0RZ). **Tools, plugins and best practices:** [RESOURCES.md](RESOURCES.md).
 
 ## 1. Pitch
 
@@ -34,7 +35,9 @@ Battle (NPC trainer / wild glassy / tournament / PvP)
 
 ### 3.1 Setup
 
-A **Clash Stand** is a frame that looks like a **Newton's cradle or a playground swing set**. Don't make anything look like a gallows or noose. Two glassies hang from strings (rendered with a `Beam`) and the camera looks from the side.
+A **Clash Stand** is a frame that looks like a **Newton's cradle or a playground swing set**. Don't make anything look like a gallows or noose. Two glassies hang from strings (rendered with a `Beam`).
+
+**Camera (3D):** the battle is a 3D scene, not a flat side view. During clashes the camera sits at a **three-quarter angle**, slightly above and behind your glassy, so both glassies, the strings and the impact read clearly. On the **final blow** it cuts to a **side-on slow-motion shot**, like the real-life videos, then returns. The map and the glassies are 3D in-game objects; only the HUD is UI.
 
 The center **Tournament Arena** copies the real-life setup: a **wooden octagon pen** with a crossbar above, so clips look like the videos people already know.
 
@@ -239,7 +242,7 @@ Walk up to another player, send a **Challenge** and they accept. The battle move
 - [ ] Haptic pulse on mobile and controller (`HapticService`)
 
 **Final blow**
-- [ ] Slow motion at 0.3× for about 1 s, with the camera pushing in on the impact
+- [ ] Slow motion at 0.3× for about 1 s, with the camera cutting to a side-on shot and pushing in on the impact
 - [ ] One white flash frame
 - [ ] Swap the glassy for its pre-fractured shards, with outward and downward velocity and spin
 - [ ] Liquid splash if it's filled, plus glitter particles
@@ -312,34 +315,38 @@ These play when **your** glassy wins, on the opponent's shatter. Every opponent 
 
 ## 12. UI
 
-### 12.1 Style: "candy glass"
+### 12.1 Style: "crisp glass"
 
-The UI should look like it's made of the same thing as the game: **glossy, tinted glass**. No single reference fits, so take a different part from each:
+The UI should look like it's made of the same thing as the game, **glass**, and it should look **crisp, not cartoony**: thin edges, clean type and soft glows rather than thick outlines and bubbly fonts. The [Figma mockups](https://www.figma.com/design/r3guIIk5deo7vNxLzJN0RZ) are the reference. No single reference image fits, so take a different part from each:
 
 | Reference | Take | Skip |
 |---|---|---|
 | Blue glass inventory (Spade Studios) | Glass tiles with a diagonal glare streak, rarity filter chips | The dark sci-fi grid background |
 | Purple quests (CHN Visuals) | Sparkle glints, gradient energy, slanted header banner, yellow "Special" highlight, green Claim | The dark, moody purple as the main color |
-| Yellow store | Chunky shapes, thick outlines, big readable text, green R$ buttons, red X. This is what kids on phones need. | The LEGO-stud texture, which is generic and doesn't say glass |
+| Yellow store | Big readable text and buttons, green R$ buttons, red X. This is what kids on phones need. | The LEGO-stud texture and thick cartoon outlines |
 | Units screen (GokkanDev) | Inventory grid plus detail panel, Equip Best | The spiky, dark anime look, which reads as a teen anime battler |
 | HUD (Ang3lz UI) | Where things sit on screen (12.2) | — |
 
 **Signature touch:** make panel headers look like a **jagged shard of broken glass**. Two of the references already use jagged banners; here the jag is a glass break.
 
-**Colors**
-- **Panels:** frosted glass with a cyan → violet gradient, slightly see-through, a white inner highlight, and a dark navy outer stroke so they stay readable over any background.
-- **Buttons:** solid candy colors, each with one meaning everywhere: **green** = buy / claim / equip, **red** = close / cancel, **yellow** = special / limited, **blue** = neutral.
+**Colors and surfaces**
+- **Panels:** dark frosted glass (deep navy, about 90% opaque) with a **thin 2 px cyan → violet edge** and a faint diagonal glare. No thick outlines.
+- **Buttons:** gradient fills with a thin light edge, a 1 px top highlight and a soft colored glow underneath. Each color has one meaning everywhere: **green** = buy / claim / equip, **red** = close / cancel, **yellow** = special / limited, **blue** = neutral, **purple** = fuse / evolve.
+- **Glassy tiles:** dark glass tinted with the rarity color toward the bottom, plus a thin rarity-colored edge.
 - **Rarity:** Common gray, Uncommon green, Rare blue, Epic purple, Legendary gold, Mythic animated pink → cyan gradient. Rainbow variants get an animated iridescent shimmer on the tile.
 - **Types:** Heavy orange with a weight icon, Sharp ice-blue with a diamond icon, Fizzy pink with a bubbles icon. The icon carries the meaning and the color backs it up.
+- **Corners:** 8–20 px radius (tags 8, buttons 12, tiles 14, panels 20). No fully round pills except currency counters.
+- **Shadows:** soft and blurred (`UIStroke` is only for thin edges). Avoid hard offset drop shadows, which read as cartoony.
 
-**Fonts**
-- `Enum.Font.FredokaOne` for all UI text.
-- `Enum.Font.LuckiestGuy` for big pop-ups (PERFECT!, SHATTERED!, CHAMPION!).
-- Every piece of text gets a dark `UIStroke` (2–3 px).
+**Fonts** (check each is in Studio's font list)
+- **Montserrat ExtraBold / Bold** for all UI text (`Font.fromName("Montserrat", Enum.FontWeight.ExtraBold)`). **BuilderSans** (Roblox's own) is a good alternative.
+- **Montserrat Black Italic** for pop-ups only (PERFECT!, damage numbers, SHATTERED!).
+- No thick text outlines. Use a soft dark shadow behind text, or a thin 1–2 px `UIStroke` only for pop-ups over the 3D scene.
+- ALL-CAPS labels get slightly wider letter spacing.
 
 **Motion**
-- Panels pop open with a bounce (scale 0.8 → 1.05 → 1.0) and a soft glass clink.
-- Buttons squash slightly when pressed.
+- Panels open with a quick, small scale-and-fade (0.95 → 1.0, about 0.15 s) and a soft glass clink. Keep it snappy, not bouncy.
+- Buttons dip slightly when pressed.
 - Only one panel is open at a time.
 
 ### 12.2 HUD layout
@@ -367,7 +374,7 @@ The UI should look like it's made of the same thing as the game: **glossy, tinte
 ┌──────────────────────────────────────────────────────────────┐
 │ [ Pop  Lv12  Fizzy  ████████░░ ]  VS  [ ░░██████  Jam  Lv10 ] │
 │                                                                │
-│               (side view of the Clash Stand)                   │
+│          (3D view of the Clash Stand, 3/4 camera)              │
 │                                                                │
 │             [ weak | good | great |PERFECT| ... ]              │
 │ [Cork] (wild only)                                   ( HOLD )  │

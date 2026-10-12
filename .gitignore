@@ -18,3 +18,7 @@ Thumbs.db
 # Secrets (never commit API keys, cookies or Open Cloud keys)
 .env
 *.key
+
+# Python
+__pycache__/
+*.pyc

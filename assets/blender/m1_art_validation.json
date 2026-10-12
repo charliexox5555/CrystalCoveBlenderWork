@@ -7,94 +7,98 @@
   },
   "starters": {
     "pop": {
-      "triangles": 1056,
+      "triangles": 912,
       "non_manifold_edges": 0,
-      "volume": 2.1881079292334045,
-      "origin": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ],
-      "height": 2.46,
-      "hang_point_z": 0.0,
+      "volume": 2.1126404542471198,
+      "assembly_triangles": 1344,
       "shard_count": 16,
-      "shard_triangles": 2372,
+      "shard_triangles": 2072,
       "shard_non_manifold_edges": 0,
-      "shard_volume_error": 1.7501892161249165e-08,
-      "saved_objects": [
-        "Shard_16",
-        "Shard_15",
-        "Shard_14",
-        "Shard_13",
-        "Shard_12",
-        "Shard_11",
-        "Shard_10",
-        "Shard_09",
-        "Shard_08",
-        "Shard_07",
-        "Shard_06",
-        "Shard_05",
-        "Shard_04",
-        "Shard_03",
-        "Shard_02",
-        "Shard_01",
-        "Body"
+      "shard_volume_error": 2.0722706638973662e-08,
+      "detail_meshes": [
+        "Cap",
+        "Bubble_01",
+        "Bubble_02",
+        "Bubble_03",
+        "Bubble_04",
+        "Bubble_05"
       ],
-      "fbx_roundtrip_height": 2.46,
+      "assembly_height": 2.46,
+      "assembly_hang_point_z": 0.0,
+      "origins_coincide": true,
+      "colour_workflow": "Studio Color/Material; untextured Blender previews",
+      "saved_objects": [
+        "Body",
+        "Bubble_01",
+        "Bubble_02",
+        "Bubble_03",
+        "Bubble_04",
+        "Bubble_05",
+        "Cap",
+        "Shard_01",
+        "Shard_02",
+        "Shard_03",
+        "Shard_04",
+        "Shard_05",
+        "Shard_06",
+        "Shard_07",
+        "Shard_08",
+        "Shard_09",
+        "Shard_10",
+        "Shard_11",
+        "Shard_12",
+        "Shard_13",
+        "Shard_14",
+        "Shard_15",
+        "Shard_16"
+      ],
       "fbx_body_mesh_count": 1,
       "fbx_shards_mesh_count": 16,
+      "fbx_details_mesh_count": 6,
       "icon_size": [
         512,
         512
       ]
     },
     "jam": {
-      "triangles": 768,
+      "triangles": 480,
       "non_manifold_edges": 0,
-      "volume": 4.941371192428393,
-      "origin": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": [
-        1.0,
-        1.0,
-        1.0
-      ],
-      "height": 2.04,
-      "hang_point_z": 0.0,
+      "volume": 3.971469627520712,
+      "assembly_triangles": 816,
       "shard_count": 16,
-      "shard_triangles": 2080,
+      "shard_triangles": 1496,
       "shard_non_manifold_edges": 0,
-      "shard_volume_error": 2.8476111051836585e-08,
-      "saved_objects": [
-        "Shard_16",
-        "Shard_15",
-        "Shard_14",
-        "Shard_13",
-        "Shard_12",
-        "Shard_11",
-        "Shard_10",
-        "Shard_09",
-        "Shard_08",
-        "Shard_07",
-        "Shard_06",
-        "Shard_05",
-        "Shard_04",
-        "Shard_03",
-        "Shard_02",
-        "Shard_01",
-        "Body"
+      "shard_volume_error": 1.67663774730703e-08,
+      "detail_meshes": [
+        "Lid"
       ],
-      "fbx_roundtrip_height": 2.04,
+      "assembly_height": 2.04,
+      "assembly_hang_point_z": 0.0,
+      "origins_coincide": true,
+      "colour_workflow": "Studio Color/Material; untextured Blender previews",
+      "saved_objects": [
+        "Body",
+        "Lid",
+        "Shard_01",
+        "Shard_02",
+        "Shard_03",
+        "Shard_04",
+        "Shard_05",
+        "Shard_06",
+        "Shard_07",
+        "Shard_08",
+        "Shard_09",
+        "Shard_10",
+        "Shard_11",
+        "Shard_12",
+        "Shard_13",
+        "Shard_14",
+        "Shard_15",
+        "Shard_16"
+      ],
       "fbx_body_mesh_count": 1,
       "fbx_shards_mesh_count": 16,
+      "fbx_details_mesh_count": 1,
       "icon_size": [
         512,
         512
@@ -150,9 +154,12 @@
   },
   "stand": {
     "meshes": 55,
-    "triangles": 1916,
-    "largest_mesh_triangles": 144,
+    "triangles": 1948,
     "non_manifold_edges": 0,
+    "frame": "4 splayed A-frame legs; no diagonal bar braces",
+    "preserved_pen_and_post_cap_meshes": 44,
+    "fbx_mesh_count": 55,
+    "textured_materials": 0,
     "hook_positions": {
       "HookA": [
         -1.5,
@@ -164,8 +171,8 @@
         0.0,
         15.09
       ]
-    },
-    "fbx_mesh_count": 55
+    }
   },
-  "ok": true
+  "ok": true,
+  "prism_approved_unchanged": true
 }

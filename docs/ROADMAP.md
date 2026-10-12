@@ -19,6 +19,9 @@ Owner key: **C** = Codex (code / Studio MCP), **B** = Codex with Blender MCP, **
 
 Goal: one Clash Stand, two glassies, the meter, cracks and a great shatter. **Nothing else until this feels great on a phone.**
 
+Art review: Prism approved. Revised A-frame stand, cyan Pop with red cap/bubbles,
+and Jam with separate gold lid await approval before any Studio import.
+
 - [x] **C:** Rojo connected; `ServerStorage.Tests.RunAll` passes in Studio
 - [x] **B:** low-poly Clash Stand (posts, crossbar, hooks) + octagon pen floor and low wall
 - [x] **B:** starter glassies `pop`, `jam`, `prism`: body (origin at hang point), 12–20 shards, icon

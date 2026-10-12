@@ -17,3 +17,5 @@ Newest at the bottom. Agents: don't reverse an **Accepted** decision without ask
 | 11 | 2026-10-12 | World is **low-poly**, built mostly in **Blender** as a modular kit. Glassies stay glossy and smooth so they pop against it. | Accepted |
 | 12 | 2026-10-12 | Code lives in this repo and syncs to Studio with **Rojo**; the world is built in Studio through the Roblox Studio MCP. | Accepted |
 | 13 | 2026-10-12 | Working names: game **Glass Clash**, collectibles **glassies**. Both can change. | Proposed |
+| 14 | 2026-10-12 | In-game colouring is primarily done in **Studio**. Blender uses untextured preview materials; textures are used only when useful. Separate cap/lid meshes allow independent Studio colours. | Accepted (user directed) |
+| 15 | 2026-10-12 | Preserve `Body` + `Shards` and add an optional `Details` folder for separate caps, lids and bubbles, exported as `<id>_details.fbx`. All parts share the glassy's hang-point origin and animate together. | Proposed |

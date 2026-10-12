@@ -18,7 +18,8 @@ Main functions
     export_clash_stand()                 builds it and exports to assets/blender/map/
 
 Conventions (docs/art/ART_BIBLE.md): 1 Blender unit = 1 Roblox stud. Glassies are smooth and
-glossy; the world is low-poly, flat-shaded and coloured from one shared palette texture.
+glossy; the world is low-poly and flat-shaded. Materials here preview Studio colours;
+in-game colours and materials are assigned in Studio, without baked colour textures.
 Builders use a "GlassClash" collection; batch exports use isolated asset scenes and
 collections, preserving your other objects and your original active scene.
 """
@@ -70,9 +71,12 @@ COLLECTION = "GlassClash"
 
 def gc_collection(name=None):
     name = name or COLLECTION
-    col = bpy.data.collections.get(name)
+    # Collection datablock names are global, but builders must stay in the asset scene.
+    col = next((c for c in bpy.context.scene.collection.children
+                if c.name == name or c.get("gc_collection_key") == name), None)
     if col is None:
         col = bpy.data.collections.new(name)
+        col["gc_collection_key"] = name
         bpy.context.scene.collection.children.link(col)
     return col
 
@@ -200,9 +204,63 @@ STARTER_PROFILES = {
 def build_starter(gid):
     """Builds a chunky starter with its origin at the top-centre hang point."""
     spec = STARTER_PROFILES[gid]
-    obj = lathe(f"{gid}_Body", spec["profile"], spec["segments"], spec["flat"])
+    profile = spec["profile"]
+    hang_z = max(z for _, z in profile)
+    if gid in ("pop", "jam"):
+        # Caps/lids are separate Studio-colourable meshes sharing the hang origin.
+        cut_z = 2.20 if gid == "pop" else 1.65
+        profile = [(r, z) for r, z in profile if z <= cut_z] + [(0.0, cut_z)]
+    obj = lathe(f"{gid}_Body", profile, spec["segments"], spec["flat"], hang_z=hang_z)
     obj["glassy_id"] = gid
     return obj
+
+
+def preview_solid_material(name, tint, metallic=0.0, roughness=0.3):
+    """Untextured preview only; Studio assigns the final Color/Material."""
+    mat = bpy.data.materials.get(name) or bpy.data.materials.new(name)
+    mat.use_nodes = True
+    bsdf = next(n for n in mat.node_tree.nodes if n.type == "BSDF_PRINCIPLED")
+    _set_input(bsdf, "Base Color", (*hex_to_rgb(tint), 1.0))
+    _set_input(bsdf, "Metallic", metallic)
+    _set_input(bsdf, "Roughness", roughness)
+    return mat
+
+
+def build_starter_details(gid):
+    details = []
+    if gid == "pop":
+        cap = lathe("Cap", [(0, 2.20), (0.29, 2.20), (0.34, 2.23),
+                             (0.34, 2.38), (0.30, 2.46), (0, 2.46)], hang_z=2.46)
+        assign_material([cap], preview_solid_material("GC_PopCap", "#F33142", metallic=0.1))
+        cap["studio_color"] = "#F33142"
+        cap["studio_material"] = "SmoothPlastic"
+        details.append(cap)
+        # Five lightweight bubble meshes, all below the glass surface.
+        for i, (x, y, z, radius) in enumerate([
+            (-0.24, -0.27, -1.99, 0.085), (0.17, -0.30, -1.69, 0.070),
+            (-0.15, -0.29, -1.34, 0.095), (0.20, -0.25, -1.03, 0.065),
+            (-0.07, -0.17, -0.72, 0.055),
+        ], 1):
+            bm = bmesh.new()
+            bmesh.ops.create_uvsphere(bm, u_segments=8, v_segments=4, radius=radius)
+            bmesh.ops.translate(bm, verts=bm.verts, vec=(x, y, z))
+            bubble = set_shading(_mesh_object(f"Bubble_{i:02d}", bm), smooth=True)
+            assign_material([bubble], preview_solid_material("GC_PopBubbles", "#DEFAFF", roughness=0.08))
+            bubble["studio_color"] = "#DEFAFF"
+            bubble["studio_material"] = "Glass"
+            details.append(bubble)
+    elif gid == "jam":
+        lid = lathe("Lid", [(0, 1.65), (0.87, 1.65), (0.91, 1.72), (0.91, 1.79),
+                             (0.87, 1.82), (0.91, 1.86), (0.91, 1.96),
+                             (0.83, 2.04), (0, 2.04)], hang_z=2.04)
+        assign_material([lid], preview_solid_material("GC_JamLid", "#E8BB57", metallic=0.75, roughness=0.23))
+        lid["studio_color"] = "#E8BB57"
+        lid["studio_material"] = "Metal"
+        details.append(lid)
+    for obj in details:
+        obj["glassy_id"] = gid
+        obj["asset_role"] = "Detail"
+    return details
 
 
 # --------------------------------------------------------------------------------------------
@@ -377,16 +435,11 @@ def palette_material():
 
 
 def paint(obj, swatch):
-    """Colours a whole low-poly object with one palette swatch (all UVs on the swatch centre)."""
-    row, col, _ = PALETTE[swatch]
-    u = (col + 0.5) / PALETTE_CELLS
-    v = 1 - (row + 0.5) / PALETTE_CELLS
-    mesh = obj.data
-    if not mesh.uv_layers:
-        mesh.uv_layers.new(name="UVMap")
-    for loop_uv in mesh.uv_layers.active.data:
-        loop_uv.uv = (u, v)
-    assign_material([obj], palette_material())
+    """Preview swatch on a separate mesh; final colouring happens in Studio."""
+    tint = PALETTE[swatch][2]
+    obj["studio_color"] = tint
+    obj["studio_material"] = "SmoothPlastic"
+    assign_material([obj], preview_solid_material(f"GC_World_{swatch}", tint, roughness=0.85))
     set_shading(obj, smooth=False)
     return obj
 
@@ -456,25 +509,21 @@ def build_clash_stand(span=20.0, height=16.0, hook_gap=3.0, pen_radius=15.0):
     """
     objs = {}
     half = span / 2
-    objs["PostA"] = paint(prism_column("PostA", 0.55, height, 8, (-half, 0, 0), top_radius=0.48), "wood")
-    objs["PostB"] = paint(prism_column("PostB", 0.55, height, 8, (half, 0, 0), top_radius=0.48), "wood")
-    objs["FootA"] = paint(chamfer_box("FootA", (2.8, 4.0, 0.5), (-half, 0, 0.25)), "wood_dark")
-    objs["FootB"] = paint(chamfer_box("FootB", (2.8, 4.0, 0.5), (half, 0, 0.25)), "wood_dark")
     objs["Crossbar"] = paint(chamfer_box("Crossbar", (span + 2.0, 1.3, 1.3), (0, 0, height + 0.3), 0.12), "wood_light")
-    # Braces and end caps make the frame read as sturdy playground equipment.
+    # Two complete A-frames, splayed perpendicular to the bar like a playground swing.
+    # Keep the original post caps; no braces between legs and crossbar.
     for label, x in (("A", -half), ("B", half)):
         objs[f"PostCap{label}"] = paint(chamfer_box(f"PostCap{label}", (1.45, 1.45, 0.5), (x, 0, height + 1.15)), "wood_dark")
         for side in (-1, 1):
-            start = Vector((x, 0, height - 3.4))
-            end = Vector((x - math.copysign(2.8, x), 0, height - 0.35))
-            if side == -1:
-                start = Vector((x, -1.5, 0.6))
-                end = Vector((x, 0, 4.0))
-            name = f"Brace{label}_{side}"
-            brace = chamfer_box(name, (0.55, 0.55, (end - start).length), bevel=0.04)
-            brace.location = (start + end) / 2
-            brace.rotation_euler = (end - start).to_track_quat("Z", "Y").to_euler()
-            objs[name] = paint(brace, "wood_light")
+            start = Vector((x, side * 4.3, 0.35))
+            end = Vector((x, side * 0.25, height + 0.45))
+            name = f"Leg{label}_{'Front' if side < 0 else 'Back'}"
+            leg = chamfer_box(name, (1.05, 1.05, (end - start).length), bevel=0.07)
+            leg.location = (start + end) / 2
+            leg.rotation_euler = (end - start).to_track_quat("Z", "Y").to_euler()
+            objs[name] = paint(leg, "wood")
+            name = f"Foot{label}_{'Front' if side < 0 else 'Back'}"
+            objs[name] = paint(chamfer_box(name, (2.0, 2.0, 0.35), (x, side * 4.3, 0.175)), "wood_dark")
     for key, x in (("HookA", -hook_gap / 2), ("HookB", hook_gap / 2)):
         hook = paint(hook_ring(key, (x, 0, height - 0.65)), "metal")
         hook["attachment_position"] = [x, 0, height - 0.91]
@@ -702,20 +751,32 @@ def save_blend_copy(path):
     return os.path.abspath(path)
 
 
-def export_glassy(gid, body, shards, icon=True, blend=True):
+def export_glassy(gid, body, shards, icon=True, blend=True, details=None):
     """Writes assets/blender/glassies/<gid>/<gid>_body.fbx, <gid>_shards.fbx, the .blend copy,
     and assets/icons/<gid>.png."""
     folder = repo_path("assets", "blender", "glassies", gid)
+    details = list(details or [])
     body.name = "Body"
+    body["studio_color"] = glassy_tint(gid)
+    body["studio_material"] = "Glass"
+    body["studio_transparency"] = 0.3
     for i, s in enumerate(shards, start=1):
         s.name = f"Shard_{i:02d}"
     assign_material([body, *shards], glossy_preview_material(f"GC_Preview_{gid}", glassy_tint(gid)))
+    if gid == "pop":
+        # Slight cyan fill compensates for the dark reflection studio in the icon only.
+        bsdf = next(n for n in body.data.materials[0].node_tree.nodes if n.type == "BSDF_PRINCIPLED")
+        _set_input(bsdf, "Emission Strength", 0.18)
+        _set_input(bsdf, "Transmission Weight", 0.95)
+        bpy.context.scene.view_settings.view_transform = "Standard"
     out = {
         "body": export_fbx([body], os.path.join(folder, f"{gid}_body.fbx")),
         "shards": export_fbx(shards, os.path.join(folder, f"{gid}_shards.fbx")),
     }
+    if details:
+        out["details"] = export_fbx(details, os.path.join(folder, f"{gid}_details.fbx"))
     if icon:
-        out["icon"] = render_icon([body], repo_path("assets", "icons", f"{gid}.png"), glassy_tint(gid))
+        out["icon"] = render_icon([body, *details], repo_path("assets", "icons", f"{gid}.png"))
     if blend:
         for s in shards:
             s.hide_render = True
@@ -741,7 +802,6 @@ def export_clash_stand(icon=True):
             out = {"fbx": export_fbx(objs.values(), os.path.join(folder, "clash_stand.fbx"))}
             if icon:
                 out["preview"] = render_icon(objs.values(), os.path.join(folder, "clash_stand_preview.png"), size=768)
-            palette_image().pack()
             out["blend"] = save_blend_copy(os.path.join(folder, "clash_stand.blend"))
             return out
     finally:
@@ -774,14 +834,14 @@ def self_check():
     return report
 
 
-def build_all_starters(pieces=16):
+def build_all_starters(pieces=16, gids=("pop", "jam", "prism")):
     """Builds each starter in an isolated scene without clearing existing work."""
     global COLLECTION
     results = {}
     previous_scene = bpy.context.window.scene
     previous_collection = COLLECTION
     try:
-        for gid in ("pop", "jam", "prism"):
+        for gid in gids:
             scene = bpy.data.scenes.new(f"GlassClash_{gid}")
             scene.unit_settings.system = "NONE"
             scene.unit_settings.scale_length = 1.0
@@ -790,11 +850,14 @@ def build_all_starters(pieces=16):
             with bpy.context.temp_override(scene=scene, view_layer=scene.view_layers[0]):
                 body = build_starter(gid)
                 shards = make_shards(body, pieces, seed=sum(map(ord, gid)))
-                results[gid] = export_glassy(gid, body, shards)
+                details = build_starter_details(gid)
+                results[gid] = export_glassy(gid, body, shards, details=details)
             # Blender names are global across scenes; free export names for the next asset.
             body.name = f"{gid}_Body"
             for i, shard in enumerate(shards, start=1):
                 shard.name = f"{gid}_Shard_{i:02d}"
+            for detail in details:
+                detail.name = f"{gid}_{detail.name}"
     finally:
         bpy.context.window.scene = previous_scene
         COLLECTION = previous_collection

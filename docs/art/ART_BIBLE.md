@@ -6,7 +6,7 @@
 
 - **Look:** flat shading, faceted surfaces, chunky readable silhouettes, slightly exaggerated proportions, soft rounded bevels only on big shapes. Think toy diorama, not realism.
 - **Built mostly in Blender** as a **modular kit** (ground tiles, paths, cliffs, fences, trees, bins, crates, buildings, props), assembled into layouts, then exported in chunks. Studio is used for placement fixes, lighting, gameplay objects and spawn points.
-- **Colour:** one shared **palette texture** (256×256, a grid of flat swatches). UV each face onto a swatch. Every map mesh uses the same texture, so it stays cheap and consistent. Each zone gets its own palette row (see Zones config `Palette`).
+- **Colour:** primarily set mesh `Color` and `Material` in **Studio**, as directed by the user. Keep differently coloured elements as separate meshes. Blender materials are for icon/preview rendering. Use textures only when they add useful detail; the shared 256×256 palette remains available for textured kit pieces (see Zones config `Palette`). Do not bake plain colours into textures.
 - **Matte:** environment materials are matte (`SmoothPlastic` or the palette texture, no reflectance), so glass stands out.
 - **Budgets (triangles):** small props 50–500, medium props 500–2,000, buildings 1,000–5,000, terrain chunks up to 8,000. Stay under Roblox's per-mesh triangle limit and split big pieces.
 - **Collision:** decorative props `CanCollide = false`. Walkable chunks use `CollisionFidelity = Hull` or simple invisible boxes. Never `PreciseConvexDecomposition` on big meshes.
@@ -19,6 +19,7 @@
 - **Smooth shading** (unlike the world). Up to 1,500 tris (3,000 for Legendary/Mythic).
 - **Hang point:** the object's **origin** sits where the string attaches (bottle neck, sword hilt, pumpkin stem, top of a creature's head). The swing rotates around it.
 - **Shards:** 12–20 pre-broken pieces (up to 30 for Mythic) with the same origin and scale, inside faces included.
+- **Separate details:** Pop's cap/bubbles and Jam's lid export in `<id>_details.fbx`, with the same hang-point origin as Body. Apply their colours/materials in Studio; the Blender file contains untextured preview materials. Keep the core `Body` + `Shards` contract; optional `Details` is proposed for import.
 - **Evolutions** keep a family resemblance (colour, a shape cue) so kids recognise the line.
 
 ## 3. Icons and renders

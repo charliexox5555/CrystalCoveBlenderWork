@@ -14,6 +14,17 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-12 — Codex — M1 Step 2 import handoff
+Done:
+- User approved all revised art and authorized Steps 2–4. Rojo is serving and the expected synced folders exist in Studio.
+- Prepared four FBX bundles in assets/blender/import from the approved saved .blend files, with stable mesh names and a bounds/material manifest. Original approved source files and icons are unchanged. Blender FBX round-trip verified all 113 meshes and bounds (maximum error below 0.000002 units).
+- Added a reproducible Blender bundling script and Studio import instructions. Updated roadmap art approval; import/gameplay tasks remain unchecked.
+- Lune reports 28 passed, 0 failed; Studio RunAll returns true. No gameplay, world or lighting changes yet; imported-art play-test is pending.
+Next:
+- User imports the four M1_*.fbx bundles into Workspace using Studio's File > Import, preserving separate meshes, imported pivots and Studs scale. Then finish Step 2 organization/colors/lighting, play-test, commit/push; continue Steps 3 and 4.
+Problems / questions for the user:
+- Studio MCP exposes no local FBX import/upload operation; AssetImportService is unavailable in this connection. Manual file import is required. No third-party library, plugin or Toolbox asset added.
+
 ## 2026-10-12 — Codex — M1 Step 1 art revisions
 Done:
 - Replaced the rejected upright/braced frame with four splayed A-frame swing-set legs and individual foot pads. No braces under the bar. Verified all 44 pen/plank/rail/corner/post-cap meshes are geometrically unchanged. Revised stand: 55 meshes / 1,948 triangles.

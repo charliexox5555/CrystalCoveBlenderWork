@@ -19,8 +19,9 @@ Owner key: **C** = Codex (code / Studio MCP), **B** = Codex with Blender MCP, **
 
 Goal: one Clash Stand, two glassies, the meter, cracks and a great shatter. **Nothing else until this feels great on a phone.**
 
-Art review: Prism approved. Revised A-frame stand, cyan Pop with red cap/bubbles,
-and Jam with separate gold lid await approval before any Studio import.
+Art review: all starters and the revised A-frame stand approved. Step 2 awaits
+manual FBX import into Studio; four ready-to-import bundles are in
+`assets/blender/import/`. Studio organization, coloring and gameplay follow.
 
 - [x] **C:** Rojo connected; `ServerStorage.Tests.RunAll` passes in Studio
 - [x] **B:** low-poly Clash Stand (posts, crossbar, hooks) + octagon pen floor and low wall

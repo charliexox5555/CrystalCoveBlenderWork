@@ -64,5 +64,19 @@
     "townSeconds": 17.63,
     "groundSamples": 305,
     "missingGround": 0
+  },
+  "StudioImport": {
+    "verified": true,
+    "visualMeshes": 128,
+    "mapColliders": 56,
+    "townImportScale": 6.4,
+    "yardImportScale": 8.533333333333333,
+    "yawCorrectionDegrees": 180,
+    "postImportRouteSeconds": 37.46,
+    "groundSamples": 305,
+    "missingGround": 0,
+    "practiceClashes": 5,
+    "battleEnded": "Shattered",
+    "outputErrors": 0
   }
 }

@@ -55,8 +55,8 @@ Sources and import handoff: [assets/blender/map/first_pass](../../assets/blender
   each area: 128 meshes, 24,296 triangles. The editable layout retains linked
   kit meshes. Approved stand previews are excluded from FBX exports and reused
   from the existing Studio template.
-- Native-Part proxies currently allow walking in Studio. Detailed faceted trees,
-  pitched roofs and other kit geometry await FBX import. Trainer/repair/wild
+- All eight detailed FBX chunks are imported and colored in Studio, including
+  faceted trees and pitched roofs. Simple invisible collision proxies remain. Trainer/repair/wild
   markers are tagged for future gameplay; no new trainer battles or shop logic.
 - Measured town crossing: 17.63 s. Route: 37.48 s at WalkSpeed 16, with no stuck
   segment and all 305 sampled ground checks passing. Final terrain shape,

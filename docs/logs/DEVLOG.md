@@ -19,11 +19,12 @@ Done:
 - User requested map construction while M1 phone approval is pending. Built isolated Blender kit/layout scenes without changing approved art: 16 original kit pieces, 320-stud Glass Town plaza and 600.43-stud Recycling Yard path with six trainer clearings, two wild regions, repair stop, conveyors and Rusty's arena. Kept Studio-first coloring; no texture/library/Toolbox additions.
 - Saved linked source scenes, two previews and eight color-separated FBX chunks (128 meshes / 24,296 triangles). Final FBX round-trip checks passed; maximum bounds error below 0.000062 studs. Fixed coplanar ground overlap and evaluated the loaded approved stand's transforms before preview duplication.
 - Created explicitly temporary native-Part walking proxies from Blender transforms in Workspace.Map, reused approved stands, preserved the practice stand/baseplate, moved spawn to the plaza and tagged future trainer/wild/repair placements. Shops and non-practice stands have no gameplay yet. Proposed implementation decision 20.
+- User imported all eight FBXs. Normalized town 6.4x / yard 8.5333x importer scale and horizontal-axis orientation; applied Studio colors/SmoothPlastic, disabled mesh collision and organized 128 visual meshes in Map. Preserved raw imports and all proxy decorations in ServerStorage; retained 56 simple invisible map colliders. Recorded all mesh IDs/transforms in studio_assets.json and normalization in tools/studio/finalize_map_import.luau. Post-import route walk passed in 37.46 s with 305/305 ground hits; full five-clash practice battle ended Shattered with clean camera/HUD restoration and Output.
 - Actual Humanoid MoveTo traversal: town 17.63 s, route 37.48 s; no blocked segment. All 305 route ground samples passed. Practice prompt/Space input still enters battle; reset clears HUD, returns Custom camera/WalkSpeed 16 and respawns in town. Output clean. Lune and Studio RunAll: 28 passed, 0 failed.
 Next:
-- Import the eight local FBXs (handoff in assets/blender/map/first_pass/README.md), verify scale/orientation, color in Studio and replace proxy visuals while retaining simple collision. Then refine terrain/landmarks and measure phone performance. M1 still awaits publishing and real-phone feel feedback; other M2 systems remain pending.
+- Publish the open Studio place, review the first map pass on a phone, then refine terrain boundaries, building fronts, landmarks and performance. M1 still awaits real-phone feel feedback; other M2 systems remain pending.
 Problems / questions for the user:
-- Local FBX import and Edit publishing are unavailable through the connected MCP; Studio File > Import / Publish is required. No new approval needed for the original assets.
+- User completed local imports. Edit publishing remains unavailable through the connected MCP; use Studio File > Publish to Roblox to save the world online.
 
 ## 2026-10-12 — Codex — M1 feel and HUD refinement
 Done:

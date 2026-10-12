@@ -40,7 +40,7 @@ Gameplay and compact HUD implemented and tested; publish and [real-phone feel ap
 - [x] **B:** Glass Town 320 × 320 blockout plus 600-stud Recycling Yard path, trainer clearings, wild areas, repair stop and Rusty's platform
 - [x] **B:** first 16-piece low-poly kit, linked layout, eight FBX chunks, render previews and export validation
 - [x] **C:** temporary Blender-derived walking proxies in Studio, tagged placement markers, town/route traversal and M1 battle regression checks
-- [ ] **U/C:** import the eight detailed FBX chunks, normalize/color them and replace proxy visuals ([handoff](../assets/blender/map/first_pass/README.md))
+- [x] **U/C:** import the eight detailed FBX chunks, normalize/color them and replace proxy visuals ([handoff](../assets/blender/map/first_pass/README.md))
 - [ ] **C/B:** refine terrain/silhouettes, collision boundaries, landmark art and mobile performance after layout review
 
 ## M2 — Core loop (Oct 19–25)

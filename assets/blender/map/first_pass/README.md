@@ -10,10 +10,20 @@ The central M1 practice stand remains playable.
 
 ## Already in Studio
 
-`Workspace.Map.GlassTown` and `RecyclingYard` contain temporary native-Part
-proxies generated from the Blender transforms. Trees and roofs are approximate
-until the FBX visuals are imported. The existing practice stand is preserved;
-ten other placements reuse its approved model. Spawn is now at `(0, 0.5, 122)`.
+All eight FBX chunks have been imported and organized under
+`Workspace.Map.GlassTown.Visuals` and `RecyclingYard.Visuals`. Their 128 meshes
+use Studio colors and SmoothPlastic, with no textures or mesh collision.
+Simple invisible Blender-derived boxes/cylinders remain as walkable collision.
+Raw imports are preserved in `ServerStorage.MapImportedSources`; temporary
+proxy decorations are backed up in `ServerStorage.MapBlockoutVisuals`.
+The existing practice stand is preserved; ten other placements reuse its
+approved model. Spawn is now at `(0, 0.5, 122)`.
+
+The importer produced 6.4x town and 8.5333x yard scale; both were corrected to
+exact manifest dimensions. A 180-degree Y correction aligns the FBX horizontal
+axes with the authored layout. `studio_assets.json` records all 128 mesh IDs,
+colors, positions and sizes. `tools/studio/finalize_map_import.luau` reproduces
+normalization and organization from the imports and `manifest.exports`.
 The original baseplate is preserved, hidden and non-colliding, with its previous
 properties stored in attributes. The original spawn position is also stored.
 
@@ -22,7 +32,7 @@ reads `manifest.json` and calls it in Edit mode: `begin`, one `chunk` call per
 export with that chunk's proxies, then `finish` with markers and route metadata.
 The script refuses to overwrite an existing Map. It does not edit any synced code.
 
-## Import handoff
+## Re-import instructions (first import complete)
 
 1. Stop Play. In Studio, use **File > Import** and select these eight files:
    `layout_glass_town.fbx`, `layout_yard_01.fbx` through `layout_yard_06.fbx`,
@@ -51,7 +61,9 @@ already owns that template and its placement instances.
 - 305 route ground raycasts passed; no missing ground or stuck MoveTo segment.
 - Eight exports round-tripped through Blender: **128 meshes / 24,296 triangles**.
   Maximum bounds error below 0.000062 studs; each exported mesh under 8,000 tris.
+- Post-import route walk: 37.46 seconds with 305/305 ground hits. Full five-clash
+  practice battle ended Shattered and restored the normal camera/HUD cleanly.
 - Practice battle starts in the new plaza; reset restores normal camera,
   movement, HUD cleanup and the town spawn. Studio Output clean.
-- `validation.json` contains measurements. Detailed meshes still need their
-  first actual Studio import and a phone performance check.
+- `validation.json` contains measurements. Detailed meshes are now imported and aligned; a phone performance
+  check, final environment art and publishing remain.

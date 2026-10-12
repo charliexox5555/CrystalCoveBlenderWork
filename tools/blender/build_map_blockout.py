@@ -443,6 +443,6 @@ def export_chunk(cname):
 for cname in CHUNKS: export_chunk(cname)
 manifest=dict(version=1,units="1 Blender unit = 1 stud",routeLength=DIST[-1],pathWidth=18,
     path=[[x,.4,-y] for x,y in PATH],markers=MARKERS,proxies=proxy,exports=EXPORTS,
-    note="FBX visual import pending. Native Parts are temporary layout/walking proxies; no gameplay trainers or shops yet.")
+    note="Offline layout source; Studio Map attributes track current import status. Native Parts provide layout/collision proxies; trainer/shop gameplay remains pending.")
 with open(os.path.join(OUT,"manifest.json"),"w",encoding="utf-8") as f: json.dump(manifest,f,separators=(",",":"))
 result={"pathLength":DIST[-1],"kitPieces":len(KIT),"sourceObjects":len(proxy),"chunks":EXPORTS,"markers":len(MARKERS),"folder":OUT}

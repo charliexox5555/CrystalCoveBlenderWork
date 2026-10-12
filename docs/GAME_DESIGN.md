@@ -68,21 +68,22 @@ When one glassy reaches 0 HP, the last impact plays in slow motion and it **shat
 ### 3.4 Damage
 
 ```
-damage    = attacker.Power × swingMult × typeMult × critMult × random(0.9, 1.1)
+damage    = attacker.Power × swingMult × typeMult × critMult × random(0.75, 1.25)
 critChance = min(0.05 + attacker.Swing × 0.0025, 0.30)   -- crit = ×1.5
-typeMult  = 1.25 (strong) | 0.8 (weak) | 1.0 (neutral)
+typeMult  = 1.1 (strong) | 0.92 (weak) | 1.0 (neutral)
 ```
 
 - **Double KO:** if both glassies hit 0 in the same clash, the one that went less far below 0 survives on 1 HP and shows **"CLUTCH!"**.
-- **Balance target:** HP ≈ 5 × an equal opponent's Power.
+- **Balance targets** (checked by `src/tests/BalanceTests.luau`): even fights last 4–6.5 clashes; a type advantage wins about 80% of even fights; fight strength is roughly Power × HP, so each type keeps that product about equal.
+- All numbers live in `src/shared/Config/Balance.luau`; the formulas are in `src/shared/Formula.luau` and `BattleLogic.luau`.
 
 ### 3.5 Types (rock-paper-scissors)
 
 | Type | Beats | Everyday examples | Fantasy examples | Stat lean |
 |---|---|---|---|---|
-| **Heavy** | Sharp | jars, jugs | pumpkin, honey bear, dragon | high Power and HP, low Swing |
-| **Sharp** | Fizzy | perfume, vases | sword, unicorn (horn), crown | high Swing and crits, low HP |
-| **Fizzy** | Heavy | soda, potions | crystal ball, lollipop, galaxy orb | balanced |
+| **Heavy** | Sharp | jars, jugs | pumpkin, honey bear, dragon | high HP, lower Power and Swing (base 19 / 118 / 5) |
+| **Sharp** | Fizzy | perfume, vases | sword, unicorn (horn), crown | high Power and Swing, low HP (base 22 / 99 / 16) |
+| **Fizzy** | Heavy | soda, potions | crystal ball, lollipop, galaxy orb | balanced (base 20 / 111 / 10) |
 
 Show types as large colored icons, since kids read icons, not text.
 
@@ -132,11 +133,13 @@ Rarity also signals **how fantastical** a glassy is. Commons are things in your 
 | Rarity | Feel | Stat multiplier | Coin crate odds |
 |---|---|---|---|
 | Common | everyday bottles and jars | 1.00 | 60% |
-| Uncommon | nicer everyday glass | 1.15 | 25% |
-| Rare | fancy glass (perfume, potions, light bulbs) | 1.30 | 10% |
-| Epic | **fantasy begins** (pumpkins, crystal balls, candy) | 1.50 | 4% |
-| Legendary | fantasy weapons and creatures (sword, unicorn, crown) | 1.75 | 0.9% |
-| Mythic | big fantasy (dragon, galaxy orb) | 2.00 | 0.1% |
+| Uncommon | nicer everyday glass | 1.08 | 25% |
+| Rare | fancy glass (perfume, potions, light bulbs) | 1.16 | 10% |
+| Epic | **fantasy begins** (pumpkins, crystal balls, candy) | 1.26 | 4% |
+| Legendary | fantasy weapons and creatures (sword, unicorn, crown) | 1.38 | 0.9% |
+| Mythic | big fantasy (dragon, galaxy orb) | 1.52 | 0.1% |
+
+Starters use ×1.15 (plus ×1.2 per evolution). The spread is modest on purpose: fight strength grows with the multiplier squared, so a Mythic is still more than twice as strong as a Common at the same level.
 
 **Rainbow variant** (the game's version of a shiny): any glassy has a 1-in-500 chance to roll Rainbow, with iridescent glass and +5% stats.
 
@@ -164,7 +167,7 @@ Starter evolutions are **in the MVP**. Evolutions for other glassies come later.
 | Rarity | Glassies |
 |---|---|
 | Common | Milk bottle, Pickle jar, Ketchup bottle, Glass cup, Water jug, Lemonade bottle |
-| Uncommon | Mason jar, Hot sauce bottle |
+| Uncommon | Mason jar, Hot sauce bottle, Crystal tumbler |
 | Rare | Perfume bottle, Potion flask, Message in a Bottle, Light bulb |
 | Epic | **Jack-o'-Glass** (pumpkin), **Crystal Ball**, **Glass Lollipop**, **Glass Duck** |
 | Legendary | **Glass Sword**, **Glass Unicorn**, **Crystal Crown** |
@@ -185,6 +188,10 @@ The **Tournament Arena** (wooden octagon pen) sits in the center, with a big **b
 ### 5.2 Zones: eight badges, from kitchen to fantasy
 
 Each zone has 5–6 trainers in a line of rising level, wild glassies, a Repair Bench halfway, and a boss (**Shelf Champion**) at the end. The boss gives a **badge**, unlocks the next zone and adds their signature glassy to crates. The zones get more fantastical as you go.
+
+**Bosses send out a glassy of the same type as yours** (each boss has a Heavy, a Fizzy and a Sharp glassy). With a single fixed boss glassy, one starter would face a near-impossible fight (the simulator showed 3–13% win rates), so the boss fight is about level and timing instead. Target: about 45% for a player at the zone's top level.
+
+**Art direction:** the world is **low-poly and flat-shaded, built mostly in Blender** as a modular kit, so the glossy glassies stand out (`docs/art/ART_BIBLE.md`, `docs/art/MAP_PLAN.md`).
 
 | # | Zone | Wild glassies | Ships in |
 |---|---|---|---|
@@ -417,49 +424,48 @@ The UI should look like it's made of the same thing as the game, **glass**, and 
 
 ### 13.1 Where the code lives
 
-Codex writes scripts **directly into Roblox Studio through the Roblox MCP server**. Keep this hierarchy so every session finds things in the same place:
+All code lives in this repo under `src/` and is **synced into Studio with Rojo** (`default.project.json`), so the repo is the single source of truth that Codex and Claude can read. Codex uses the **Roblox Studio MCP** for everything that isn't code: building the world, importing assets, running tests and play-testing. The resulting hierarchy in Studio:
 
 ```
-ServerScriptService/
-  Main (Script)                    -- requires and starts every service
+ServerScriptService/Server/          <- src/server
+  Main (Script)                      -- loads Services: Init(services) on all, then Start()
   Services/ (ModuleScripts)
-    DataService                    -- ProfileStore, schema, migrations
-    BattleService                  -- battle state machine, damage, results
-    TournamentService              -- schedule, bracket, bots
-    NPCService                     -- trainers, daily cooldowns
-    WildService                    -- spawns, catching
-    EvolutionService               -- level thresholds, model swap
-    CrateService                   -- odds, PolicyService checks
-    MonetizationService            -- gamepasses, ProcessReceipt
-    QuestService                   -- login, daily, playtime
-ServerStorage/
-  Tests/ (ModuleScripts)
-    FormulaTests                   -- asserts on Formula
-    BalanceSim                     -- runs 10,000 battles, prints win rates
-ReplicatedStorage/
-  Shared/
-    Config/ (ModuleScripts)  Glassies, Rarities, Types, Trainers, Zones, Cosmetics
-    Formula (ModuleScript)         -- pure damage / catch / XP math
-  Remotes/                         -- created by the server at startup
-  Assets/
-    Glassies/<id>/  Body, Shards (Folder), Fill
-    ShatterFX/<id>/
-StarterPlayer/StarterPlayerScripts/
-  Main (LocalScript)
-  Controllers/ (ModuleScripts)
-    BattleController               -- pendulum animation, meter, input
-    ShatterController              -- cracks, shards, slow-mo, sounds
-    UIController                   -- opens/closes screens, HUD
-  UI/ (ModuleScripts)
-    Theme                          -- colors, fonts, strokes, texture IDs
-    Components/  Panel, Button, Tile, ProgressBar, Popup, CurrencyPill
-    Screens/     Glassies, Index, Quests, Shop, Crates, ShatterFX, Tournament, Battle
+    DataService                      -- ProfileStore, schema, migrations
+    BattleService                    -- battle state machine; uses BattleLogic
+    TournamentService                -- schedule, bracket, bots
+    NPCService                       -- trainers, daily cooldowns
+    WildService                      -- spawns, catching
+    EvolutionService                 -- level thresholds, model swap
+    CrateService                     -- odds, PolicyService checks
+    MonetizationService              -- gamepasses, ProcessReceipt
+    QuestService                     -- login, daily, playtime
+ServerStorage/Tests/                 <- src/tests
+  RunAll, ConfigTests, FormulaTests, BalanceTests, BalanceSim, Sim, Deps, Harness
+ReplicatedStorage/Shared/            <- src/shared
+  Config/  Balance, Glassies, Trainers, Zones, Cosmetics
+  Formula                            -- pure stats / meter / damage / XP / catch math
+  BattleLogic                        -- pure clash resolution and simulation
+  Rng                                -- deterministic RNG for tests and sims
+  Remotes                            -- (M1) creates/fetches RemoteEvents
+ReplicatedStorage/Assets/            <- built in Studio (not Rojo)
+  Glassies/<id>/  Body, Shards (Folder), Fill
+  ClashStand, ShatterFX/<id>/
+StarterPlayer/StarterPlayerScripts/Client/   <- src/client
+  Main (LocalScript)                 -- loads Controllers like the server Main
+  Controllers/
+    BattleController                 -- pendulum animation, meter, input, camera
+    ShatterController                -- cracks, shards, slow-mo, sounds
+    UIController                     -- opens/closes screens, HUD
+  UI/
+    Theme                            -- colours, fonts, radii, motion (matches Figma)
+    Components/  Panel, Button, GlassyTile, ProgressBar, Pill, CurrencyPill, Popup, Toast
+    Screens/     BattleHud, Glassies, Index, Quests, Shop, Crates, ShatterFX, Tournament
 ```
 
-- **`Formula` is pure functions.** After any balance change, Codex runs `ServerStorage.Tests` through the MCP's code-execution tool and checks the output, so balance stays testable without anyone playing.
+- **`Formula`, `BattleLogic` and `Config` are pure** (no Roblox APIs), so they run in Lune too: `lune run tools/run_tests` and `lune run tools/balance_sim`. In Studio: `require(game.ServerStorage.Tests.RunAll)()`.
 - **Remotes** (client → server): `ReleaseSwing(battleId, clashIndex, t)`, `ThrowCork`, `ChallengePlayer`, `JoinTournament`, `PickWinner`. Rate-limit and validate every one on the server.
 - `StreamingEnabled` is on. For the MVP all zones are areas in one place.
-- **Backups:** Roblox keeps place version history on every publish, so publish at least at each milestone. This repo holds the design doc and Blender source files. Optionally, have Codex copy script sources into `src/` here at milestones so changes can be reviewed in git.
+- **Backups:** code is in git. The world (map, placed models, lighting) lives in the place, so publish at least at each milestone (Roblox keeps version history), and optionally save `.rbxl` snapshots to `places/`.
 
 ### 13.2 Save data (ProfileStore)
 

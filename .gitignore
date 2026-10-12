@@ -1,0 +1,20 @@
+# Build output
+*.rbxl.lock
+*.rbxlx.lock
+/build/
+sourcemap.json
+
+# Blender autosaves and backups
+*.blend1
+*.blend2
+*.blend@
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Secrets (never commit API keys, cookies or Open Cloud keys)
+.env
+*.key

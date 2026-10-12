@@ -1,0 +1,20 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  luau-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache Lune
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin/lune
+          key: lune-0.11.0-${{ runner.os }}
+      - name: Install Lune
+        run: command -v lune || cargo install lune --version 0.11.0 --locked
+      - name: Run tests
+        run: lune run tools/run_tests

@@ -1,0 +1,312 @@
+--!strict
+-- Match rules (GAME_DESIGN 2): 1v1, 3 hearts each, a roll of 3 glassies from your own collection
+-- every round, rerolls, aim, and match rewards. Pure: no Roblox APIs, randomness from `rng`.
+-- MatchService (server) owns the timers and calls these functions; FightRules runs each round.
+--
+--   local match = MatchLogic.new({ { Collection = profileA.Glassies }, { Collection = bot.Collection, IsBot = true, Skill = 0.4 } }, rng)
+--   MatchLogic.startRound(match)               -- rolls offers + the sweet spot
+--   MatchLogic.pick(match, 1, "pop")           -- from the remote (validated)
+--   MatchLogic.reroll(match, 1)                -- returns the Marble cost to charge
+--   MatchLogic.setAim(match, 1, 0.9)
+--   local setup = MatchLogic.fightSetup(match) -- pass to FightRules.new
+--   MatchLogic.endRound(match, winnerSide)     -- returns true when the match is over
+--   MatchLogic.rewards(match, side)            -- coins and trophies for the results screen
+
+local Balance = if script then require(script.Parent.Config.Balance) else require("./Config/Balance")
+local Glassies = if script then require(script.Parent.Config.Glassies) else require("./Config/Glassies")
+local FightRules = if script then require(script.Parent.FightRules) else require("./FightRules")
+
+-- A player's collection: glassy id -> { Stars, Rainbow }. Starters are always included.
+export type Owned = { Stars: number?, Rainbow: boolean? }
+export type Collection = { [string]: Owned }
+
+export type PlayerSetup = {
+	Collection: Collection,
+	IsBot: boolean?,
+	Skill: number?, -- bots only, 0..1
+}
+
+export type Side = {
+	Collection: Collection,
+	IsBot: boolean,
+	Skill: number,
+	Hearts: number,
+	RoundsWon: number,
+	RerollsUsed: number,
+	Offers: { string },
+	Pick: string?,
+	Aim: number?,
+	LastPick: string?,
+}
+
+export type Match = {
+	Sides: { Side },
+	Rng: () -> number,
+	Round: number,
+	SweetSpot: number?,
+	Over: boolean,
+	Winner: number?,
+	History: { { Picks: { string }, Winner: number } },
+}
+
+local MatchLogic = {}
+local B = Balance.Match
+
+local function shuffle<T>(list: { T }, rng: () -> number)
+	for i = #list, 2, -1 do
+		local j = math.floor(rng() * i) + 1
+		list[i], list[j] = list[j], list[i]
+	end
+end
+
+-- Owned ids in a stable order (sorted) so rolls are deterministic for a given rng.
+function MatchLogic.ownedIds(collection: Collection): { string }
+	local ids = {}
+	for id in collection do
+		if Glassies.ById[id] then
+			table.insert(ids, id)
+		end
+	end
+	for _, id in Glassies.Starters do
+		if collection[id] == nil then
+			table.insert(ids, id)
+		end
+	end
+	table.sort(ids)
+	return ids
+end
+
+-- `count` different glassies from the collection, uniformly at random (all of them if fewer).
+function MatchLogic.rollOffers(collection: Collection, count: number, rng: () -> number): { string }
+	local ids = MatchLogic.ownedIds(collection)
+	shuffle(ids, rng)
+	local offers = {}
+	for i = 1, math.min(count, #ids) do
+		offers[i] = ids[i]
+	end
+	return offers
+end
+
+function MatchLogic.new(players: { PlayerSetup }, rng: () -> number): Match
+	assert(#players == 2, "MatchLogic.new expects two players")
+	local sides = {}
+	for i, p in players do
+		sides[i] = {
+			Collection = p.Collection,
+			IsBot = p.IsBot == true,
+			Skill = p.Skill or 0,
+			Hearts = B.Hearts,
+			RoundsWon = 0,
+			RerollsUsed = 0,
+			Offers = {},
+			Pick = nil,
+			Aim = nil,
+			LastPick = nil,
+		}
+	end
+	return { Sides = sides, Rng = rng, Round = 0, SweetSpot = nil, Over = false, Winner = nil, History = {} }
+end
+
+-- Starts the next round: fresh offers for both sides and a new Perfect Release band.
+function MatchLogic.startRound(match: Match)
+	assert(not match.Over, "match is over")
+	match.Round += 1
+	for _, side in match.Sides do
+		side.Offers = MatchLogic.rollOffers(side.Collection, B.RollChoices, match.Rng)
+		side.Pick = nil
+		side.Aim = nil
+	end
+	match.SweetSpot = FightRules.rollSweetSpot(match.Rng)
+end
+
+-- Rerolls ------------------------------------------------------------------------------------
+
+-- Marbles the next reroll costs (0 = free).
+function MatchLogic.rerollCost(rerollsUsed: number): number
+	if rerollsUsed < B.FreeRerollsPerMatch then
+		return 0
+	end
+	local paid = rerollsUsed - B.FreeRerollsPerMatch + 1
+	local costs = B.RerollMarbleCosts
+	return costs[math.min(paid, #costs)]
+end
+
+-- Rerolls a side's offers. The caller checks and charges `cost` Marbles first (use
+-- MatchLogic.rerollCost) and only calls this once the payment succeeded.
+function MatchLogic.reroll(match: Match, sideIndex: number): (boolean, string?)
+	local side = match.Sides[sideIndex]
+	if not side or match.Over then
+		return false, "invalid"
+	end
+	if side.Pick then
+		return false, "picked"
+	end
+	if #MatchLogic.ownedIds(side.Collection) <= B.RollChoices then
+		return false, "nothing_new" -- the roll would offer the same glassies
+	end
+	side.RerollsUsed += 1
+	side.Offers = MatchLogic.rollOffers(side.Collection, B.RollChoices, match.Rng)
+	return true
+end
+
+-- Picks and aim ------------------------------------------------------------------------------
+
+function MatchLogic.pick(match: Match, sideIndex: number, id: any): (boolean, string?)
+	local side = match.Sides[sideIndex]
+	if not side or match.Over then
+		return false, "invalid"
+	end
+	if side.Pick then
+		return false, "picked"
+	end
+	if type(id) ~= "string" or not table.find(side.Offers, id) then
+		return false, "not_offered"
+	end
+	side.Pick = id
+	return true
+end
+
+-- When the roll timer runs out (or for bots). Bots with higher skill pick the offer with the
+-- best type matchup against the opponent's last pick, then the strongest rarity.
+function MatchLogic.autoPick(match: Match, sideIndex: number): string
+	local side = match.Sides[sideIndex]
+	if side.Pick then
+		return side.Pick
+	end
+	local choice = side.Offers[1]
+	if side.IsBot and match.Rng() < side.Skill then
+		local foeLast = match.Sides[3 - sideIndex].LastPick
+		local foeType = if foeLast then Glassies.get(foeLast).Type else nil
+		local bestScore = -math.huge
+		for _, id in side.Offers do
+			local def = Glassies.get(id)
+			local score = Balance.Rarities[def.Rarity].StatMultiplier
+			if foeType and Balance.Types.Beats[def.Type] == foeType then
+				score += 0.5
+			elseif foeType and Balance.Types.Beats[foeType] == def.Type then
+				score -= 0.5
+			end
+			if score > bestScore then
+				bestScore = score
+				choice = id
+			end
+		end
+	elseif side.IsBot then
+		choice = side.Offers[math.floor(match.Rng() * #side.Offers) + 1]
+	end
+	side.Pick = choice
+	return choice
+end
+
+function MatchLogic.setAim(match: Match, sideIndex: number, aim: any): number
+	local side = match.Sides[sideIndex]
+	side.Aim = FightRules.clampAim(aim)
+	return side.Aim :: number
+end
+
+-- Bots aim when the aim phase starts; players who never aimed get AimDefault.
+function MatchLogic.autoAim(match: Match, sideIndex: number): number
+	local side = match.Sides[sideIndex]
+	if side.Aim then
+		return side.Aim
+	end
+	if side.IsBot and match.SweetSpot then
+		side.Aim = FightRules.botAim(match.SweetSpot, side.Skill, match.Rng)
+	else
+		side.Aim = Balance.Motion.AimDefault
+	end
+	return side.Aim :: number
+end
+
+-- Setup for FightRules.new. Both sides must have picked.
+function MatchLogic.fightSetup(match: Match): FightRules.Setup
+	local function fighter(i: number): FightRules.FighterSetup
+		local side = match.Sides[i]
+		local id = side.Pick or MatchLogic.autoPick(match, i)
+		local owned = side.Collection[id] or {}
+		return {
+			Id = id,
+			Stars = owned.Stars,
+			Rainbow = owned.Rainbow,
+			Aim = side.Aim or MatchLogic.autoAim(match, i),
+			AutoSpecial = side.IsBot,
+		}
+	end
+	return { A = fighter(1), B = fighter(2), Rng = match.Rng, SweetSpot = match.SweetSpot }
+end
+
+-- Round end ----------------------------------------------------------------------------------
+
+-- The loser of the round loses a heart. Returns true when the match is over.
+function MatchLogic.endRound(match: Match, winnerSide: number): boolean
+	assert(winnerSide == 1 or winnerSide == 2, "winner must be 1 or 2")
+	local loser = match.Sides[3 - winnerSide]
+	local winner = match.Sides[winnerSide]
+	loser.Hearts -= 1
+	winner.RoundsWon += 1
+	table.insert(match.History, {
+		Picks = { match.Sides[1].Pick or "", match.Sides[2].Pick or "" },
+		Winner = winnerSide,
+	})
+	for _, side in match.Sides do
+		side.LastPick = side.Pick
+	end
+	if loser.Hearts <= 0 then
+		match.Over = true
+		match.Winner = winnerSide
+	end
+	return match.Over
+end
+
+-- Rewards (GAME_DESIGN 8.1). `trophies` = the player's current trophies (never goes below 0).
+function MatchLogic.rewards(match: Match, sideIndex: number, trophies: number?): { Coins: number, Trophies: number }
+	local r = B.Rewards
+	local side = match.Sides[sideIndex]
+	local won = match.Winner == sideIndex
+	local vsBot = match.Sides[3 - sideIndex].IsBot
+	local coins = side.RoundsWon * r.RoundWinCoins + (if won then r.MatchWinCoins else r.MatchLossCoins)
+	if vsBot then
+		coins = math.floor(coins * r.BotMatchFraction + 0.5)
+	end
+	local delta = if won then r.WinTrophies else -r.LossTrophies
+	if vsBot then
+		delta = if won then r.BotWinTrophies else 0
+	end
+	if trophies then
+		delta = math.max(delta, -trophies)
+	end
+	return { Coins = coins, Trophies = delta }
+end
+
+-- A bot's collection for a player: the starters plus random glassies up to the player's best
+-- rarity, about the same size as the player's collection.
+function MatchLogic.botCollection(playerCollection: Collection, rng: () -> number): Collection
+	local best = 1
+	local size = 0
+	for id in playerCollection do
+		local def = Glassies.ById[id]
+		if def then
+			size += 1
+			best = math.max(best, Balance.Rarities[def.Rarity].Order)
+		end
+	end
+	local pool = {}
+	for _, def in Glassies.List do
+		local order = Balance.Rarities[def.Rarity].Order
+		if order >= 1 and order <= best then
+			table.insert(pool, def.Id)
+		end
+	end
+	table.sort(pool)
+	shuffle(pool, rng)
+	local collection: Collection = {}
+	for _, id in Glassies.Starters do
+		collection[id] = {}
+	end
+	for i = 1, math.min(math.max(size - #Glassies.Starters, 0), #pool) do
+		collection[pool[i]] = {}
+	end
+	return collection
+end
+
+return MatchLogic

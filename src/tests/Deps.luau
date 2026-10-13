@@ -16,10 +16,10 @@ end
 return {
 	Balance = load({ "Config", "Balance" }, "../shared/Config/Balance"),
 	Glassies = load({ "Config", "Glassies" }, "../shared/Config/Glassies"),
-	Trainers = load({ "Config", "Trainers" }, "../shared/Config/Trainers"),
-	Zones = load({ "Config", "Zones" }, "../shared/Config/Zones"),
+	Powers = load({ "Config", "Powers" }, "../shared/Config/Powers"),
 	Cosmetics = load({ "Config", "Cosmetics" }, "../shared/Config/Cosmetics"),
 	Formula = load({ "Formula" }, "../shared/Formula"),
-	BattleLogic = load({ "BattleLogic" }, "../shared/BattleLogic"),
+	FightRules = load({ "FightRules" }, "../shared/FightRules"),
+	MatchLogic = load({ "MatchLogic" }, "../shared/MatchLogic"),
 	Rng = load({ "Rng" }, "../shared/Rng"),
 }

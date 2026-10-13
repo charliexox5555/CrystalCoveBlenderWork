@@ -5,12 +5,15 @@
 local Deps = if script then require(script.Parent.Deps) else require("./Deps")
 local Harness = if script then require(script.Parent.Harness) else require("./Harness")
 
-local suites = {
-	ConfigTests = if script then require(script.Parent.ConfigTests) else require("./ConfigTests"),
-	FormulaTests = if script then require(script.Parent.FormulaTests) else require("./FormulaTests"),
-	BalanceTests = if script then require(script.Parent.BalanceTests) else require("./BalanceTests"),
-}
-local order = { "ConfigTests", "FormulaTests", "BalanceTests" }
+local function suite(name: string)
+	return if script then require(script.Parent:FindFirstChild(name)) else require("./" .. name)
+end
+
+local order = { "ConfigTests", "FormulaTests", "FightRulesTests", "MatchLogicTests", "BalanceTests", "EconomyTests" }
+local suites = {}
+for _, name in order do
+	suites[name] = suite(name)
+end
 
 return function(): (boolean, string)
 	local passed, failed, lines = 0, 0, {}

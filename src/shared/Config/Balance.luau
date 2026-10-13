@@ -9,9 +9,14 @@ local Balance = {}
 -- (approach speed + who moved into it) to FightRules, and reads FightRules.swingMultiplier /
 -- isFrozen / knockbackMultiplier to apply powers to the swing.
 Balance.Motion = {
-	Gravity = 55, -- "game gravity": with StringLength 5 one full swing takes ~1.9 s
-	StringLength = 5,
-	HookGap = 2.6, -- distance between the two hooks; measure on the Clash Stand model
+	-- At true scale glassies (~2.5 studs) look tiny under the 17-stud stand (all 4 map concepts),
+	-- so arenas show them GlassyScale times bigger, with longer strings and wider hooks to match.
+	-- The swing uses Glassy.Radius * GlassyScale. The stand model's hooks sit at +-1.5 today;
+	-- move them to +-HookGap/2 in Studio (DECISIONS 30).
+	GlassyScale = 1.75,
+	Gravity = 77, -- "game gravity": with StringLength 7 one full swing takes ~1.9 s
+	StringLength = 7,
+	HookGap = 6, -- distance between the two hooks on the crossbar
 	MassByType = { Heavy = 1.3, Fizzy = 1.0, Sharp = 0.85 },
 	Restitution = 0.7,
 	AmplitudeBase = 0.78, -- radians the glassy keeps swinging to, at Swing 0

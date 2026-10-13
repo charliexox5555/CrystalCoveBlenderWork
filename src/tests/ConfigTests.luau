@@ -22,7 +22,8 @@ return function(t, deps)
 		for _, g in Glassies.List do
 			biggest = math.max(biggest, g.Radius)
 		end
-		t.ok(biggest * 2 < Balance.Motion.HookGap, "two radius-" .. biggest .. " glassies overlap at rest")
+		local scaled = biggest * Balance.Motion.GlassyScale
+		t.ok(scaled * 2 < Balance.Motion.HookGap, "two radius-" .. scaled .. " glassies overlap at rest")
 	end)
 
 	t.test("power stat products are close across types (fair base stats)", function()

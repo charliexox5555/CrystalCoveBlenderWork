@@ -81,7 +81,7 @@ Keep each piece under its triangle budget (ART_BIBLE 1). Reuse pieces as linked 
 
 ## 6. How to build it yourself (step by step)
 
-1. **Blockout:** in Blender, Scripting tab → Open `tools/blender/blockout_village.py` → set `REPO` at the top if needed → Run. You get every building, path, stand and landmark as a grey box at true stud scale, in the `Blockout` collection.
+1. **Blockout:** in Blender, Scripting tab → Open `tools/blender/blockout_village.py` → Run Script (leave `REPO` empty; it finds the folder itself). You get every building, path, stand and landmark as a grey box at true stud scale, in the `Blockout` collection.
 2. **Walk it in Studio first:** export the blockout (or the parts you're unsure about) as FBX, import it, and walk it with a character. Check the spawn view and the timings in section 1 before modelling anything detailed.
 3. **Model the kit** (section 5) in a separate `kit_village.blend`, one piece at a time.
 4. **Replace the boxes:** place kit pieces on top of the blockout, then hide the `Blockout` collection.

@@ -2,8 +2,9 @@
 
 How to use (Blender 4.2+ / 5.x):
   1. Open Blender, go to the Scripting tab, click Open and pick this file.
-  2. Set REPO below to your repo folder if the default guess is wrong.
+  2. Leave REPO empty unless you get a "Couldn't find" error.
   3. Click Run Script (or Alt+P). Everything lands in the "Blockout" collection.
+     (No need to edit REPO; the repo folder is found automatically.)
 
 The layout comes from tools/map/village_layout.py (same data as docs/art/blueprint_*.svg).
 Colours here are preview materials only; final colours are set in Studio (DECISIONS #14).
@@ -14,24 +15,45 @@ import math
 import os
 import random
 
-REPO = r""  # e.g. r"C:\Users\you\Documents\CrystalCoveBlenderWork". Empty = guess from this file.
+REPO = r""  # Leave empty: the folder is found automatically. Only set it if you get a "Couldn't find" error.
+
+
+def _is_repo(path):
+    return bool(path) and os.path.isfile(os.path.join(path, "tools", "map", "village_layout.py"))
 
 
 def _repo():
-    if REPO:
-        return REPO
+    """Finds the repo folder. You normally don't need to set REPO: opening this file in
+    Blender's Text Editor (Scripting tab > Open) is enough."""
+    candidates = []
+    if REPO and "<" not in REPO:
+        candidates.append(REPO)
     try:
         import bpy
 
         for text in bpy.data.texts:
-            if text.filepath and text.filepath.endswith("blockout_village.py"):
-                return os.path.abspath(os.path.join(os.path.dirname(bpy.path.abspath(text.filepath)), "..", ".."))
+            if text.filepath and "blockout_village" in text.filepath:
+                candidates.append(os.path.join(os.path.dirname(bpy.path.abspath(text.filepath)), "..", ".."))
+        if bpy.data.filepath:
+            candidates.append(os.path.dirname(bpy.data.filepath))
     except Exception:
         pass
     here = globals().get("__file__")
-    if here and os.path.exists(here):
-        return os.path.abspath(os.path.join(os.path.dirname(here), "..", ".."))
-    return os.getcwd()
+    if here:
+        candidates.append(os.path.join(os.path.dirname(here), "..", ".."))
+    home = os.path.expanduser("~")
+    candidates += [os.path.join(home, "Documents", "CrystalCoveBlenderWork"), os.path.join(home, "OneDrive", "Documents", "CrystalCoveBlenderWork"), os.getcwd()]
+    for c in candidates:
+        c = os.path.abspath(c)
+        # walk up a few levels in case a subfolder was given
+        for _ in range(4):
+            if _is_repo(c):
+                return c
+            c = os.path.dirname(c)
+    raise RuntimeError(
+        "Couldn't find the CrystalCoveBlenderWork folder. Set REPO at the top of this script to its full path, "
+        'for example REPO = r"C:\\Users\\YourName\\Documents\\CrystalCoveBlenderWork"'
+    )
 
 
 def _load_layout(repo):

@@ -1,7 +1,7 @@
 # Roadmap
 
 Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DESIGN v0.3](GAME_DESIGN.md).
-**Current milestone: F1 — Fight prototype.**
+**Current milestone: L1 — Sky lobby (islands + arenas).** Then F1.
 
 Owner key: **C** = Codex (code / Studio MCP), **B** = Codex with Blender MCP, **CL** = Claude (research, design, pure rules, docs), **U** = you.
 
@@ -13,9 +13,22 @@ Owner key: **C** = Codex (code / Studio MCP), **B** = Codex with Blender MCP, **
 - [x] **CL:** balance + economy simulators and tests (`lune run tools/run_tests`, `balance_sim`, `economy_sim`)
 - [x] **CL:** removed the meter battle, trainers, zones, Kilnport map tools (all in git history)
 - [x] **CL:** lobby map concepts ([art/MAP_PLAN.md](art/MAP_PLAN.md))
-- [ ] **U:** pick a lobby concept; answer the open questions in GAME_DESIGN 17
+- [x] **U:** picked the lobby: **Crystal Isles** (sky islands)
+- [ ] **U:** answer the open questions in GAME_DESIGN 17 (rerolls, free pick, names)
 
-## F1 — Fight prototype (Oct 13–19)
+## L1 — Sky lobby (Oct 13–15)
+
+Prompt: [prompts/02_sky_lobby.md](prompts/02_sky_lobby.md).
+
+- [ ] **B:** 5 floating island platforms (grass / dirt / rock), exported to `assets/blender/map/sky/` with manifest and preview
+- [ ] **U:** back up the place, import the 5 FBX files
+- [ ] **C:** clear the old place (keep code, glassies, ClashStand, audio, icons; old props → `ServerStorage.LegacyKit`)
+- [ ] **C:** place islands, invisible collision, placeholder bridges, lighting and sky
+- [ ] **C:** 7 arena stands (hooks at ±3), tagged queue pads and lobby spots, SpawnLocation, FallService
+- [ ] **C:** walk test, phone check, screenshots
+- [ ] **U:** fences, trees, decor; publish
+
+## F1 — Fight prototype (Oct 15–21)
 
 Goal: one Clash Stand, two glassies swinging and smashing with powers, aim, the special button and a great shatter. **Nothing else until this feels great on a phone.** Prompt: [prompts/01_fight_prototype.md](prompts/01_fight_prototype.md).
 
@@ -32,8 +45,7 @@ Goal: one Clash Stand, two glassies swinging and smashing with powers, aim, the 
 
 - [ ] **C:** `ArenaService` pads + queue + bot fill; `MatchService` phases with `MatchLogic`
 - [ ] **C:** Roll screen (3 cards, reroll), Aim, Countdown, Round end (glass heart pops), Results
-- [ ] **C:** lobby blockout in Studio from the chosen concept; 8 arena stands along the path
-- [ ] **B:** any Blender kit pieces the chosen concept needs (MAP_PLAN)
+- [ ] **B:** sky kit: crystal kit (3 meshes), Kiln crystal, featured arch, clouds (MAP_PLAN / CONCEPT.md "Pieces")
 
 ## F3 — Data, Kiln and collection (Oct 27–Nov 2)
 

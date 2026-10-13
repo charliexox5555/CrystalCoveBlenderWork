@@ -170,11 +170,12 @@ Starters Pop (Fizzy), Jam (Heavy), Prism (Sharp) plus 28 in the Kiln: see `Confi
 
 ## 5. World: the lobby
 
-One compact lobby, **linear**: spawn at one end, a path lined with arenas, shops and the Kiln along it, and the best arenas at the far end. Map concepts and the chosen direction: [art/MAP_PLAN.md](art/MAP_PLAN.md).
+**Crystal Isles** (DECISIONS 28): a row of floating grassy islands above the clouds, joined by short bridges, climbing gently away from spawn. Layout and build plan: [art/MAP_PLAN.md](art/MAP_PLAN.md).
 
-- **Spawn plaza** with the Kiln (or close by) and the daily rewards.
-- **8 arena stands** along the path (more later), each with 2 pads, a scoreboard and a few spectator benches. Arenas are 1v1; their pens are visible from the path so walking past means watching fights.
-- **Champion Arena** at the end: same rules, highest-trophy players' fights get shown on a big board.
+- **Lobby island:** spawn, the Kiln, shop, daily reward, codes, Index, leaderboards and the champion statue.
+- **3 arena islands**, 2 stands each (arenas 1–6), with a viewing walkway down the middle so passers-by see every swing side-on. Each stand has 2 queue pads (A blue, B orange) with a floating free/busy marker.
+- **Featured island** at the end (arena 7) under a crystal arch, with bleachers: same rules, highest-trophy players' fights get shown on a big board.
+- Falling off teleports you back onto the island (no death).
 - Shops: Shatter FX booth, Marble shop (with the Kiln odds board), leaderboards (Trophies, Wins, Shatters).
 - No routes or zones for the MVP. Later: seasonal decorations, a second themed arena row.
 
@@ -330,6 +331,5 @@ What we take is the structure (lobby pads, draft from your collection, hearts, a
 ## 17. Open questions
 
 - Final names (game, glassies, Marbles, Kiln).
-- Lobby theme: pick one of the map concepts (MAP_PLAN).
 - Paid rerolls: keep (user's call) or make them earn-only (research recommendation)? See DECISIONS 25.
 - Should each player get one free "pick any glassy" per match (Ball VS Ball has this)? Proposed, not in code yet.

@@ -1,88 +1,63 @@
 # Roadmap
 
-Tick items as they're done (`- [x]`). One milestone at a time. Dates are targets from GAME_DESIGN 14.
-**Current milestone: M1 — Feel prototype.**
+Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DESIGN v0.3](GAME_DESIGN.md).
+**Current milestone: F1 — Fight prototype.**
 
-Owner key: **C** = Codex (code / Studio MCP), **B** = Codex with Blender MCP, **U** = you (the user).
+Owner key: **C** = Codex (code / Studio MCP), **B** = Codex with Blender MCP, **CL** = Claude (research, design, pure rules, docs), **U** = you.
 
-## M0 — Setup (done by Claude, Oct 12)
+## F0 — Restructure (Claude, Oct 13)
 
-- [x] Design doc, resources doc, UI mockups in Figma
-- [x] Repo structure, AGENTS.md, Rojo project, toolchain files
-- [x] Pure game logic: `Balance`, `Formula`, `BattleLogic`, `Rng`, content config (glassies, trainers, zones, cosmetics)
-- [x] Tests and balance simulator (`lune run tools/run_tests`, `lune run tools/balance_sim`)
-- [x] UI `Theme` tokens matching Figma
-- [x] Blender helper script (`tools/blender/glassclash_blender.py`)
-- [x] **U:** clone the repo, install Rokit + Rojo, connect Rojo in Studio (README "Setup")
+- [x] **CL:** Ball VS Ball research brief ([research/BALL_VS_BALL.md](research/BALL_VS_BALL.md))
+- [x] **CL:** GAME_DESIGN v0.3, DECISIONS 22–29, ECONOMY, this roadmap
+- [x] **CL:** pure rules: `FightRules` (damage, powers, specials, shatter, timeout), `MatchLogic` (roll, reroll, pick, aim, hearts, rewards, bots), `Formula` (stats, types, Kiln), `Config/Powers`, 31 glassies with powers
+- [x] **CL:** balance + economy simulators and tests (`lune run tools/run_tests`, `balance_sim`, `economy_sim`)
+- [x] **CL:** removed the meter battle, trainers, zones, Kilnport map tools (all in git history)
+- [x] **CL:** lobby map concepts ([art/MAP_PLAN.md](art/MAP_PLAN.md))
+- [ ] **U:** pick a lobby concept; answer the open questions in GAME_DESIGN 17
 
-## M1 — Feel prototype (Oct 12–18)
+## F1 — Fight prototype (Oct 13–19)
 
-Goal: one Clash Stand, two glassies, the meter, cracks and a great shatter. **Nothing else until this feels great on a phone.**
+Goal: one Clash Stand, two glassies swinging and smashing with powers, aim, the special button and a great shatter. **Nothing else until this feels great on a phone.** Prompt: [prompts/01_fight_prototype.md](prompts/01_fight_prototype.md).
 
-Art review: all starters and the revised A-frame stand approved and imported.
-Scale normalized to Blender measurements; colors/materials assigned in Studio.
-Gameplay and compact HUD implemented and tested; publish and [real-phone feel approval](testing/M1_PHONE_CHECK.md) remain. Remaining M2 gameplay stays gated on that check. The user explicitly requested early map construction on Oct 12.
+- [ ] **C:** `FightService`: server pendulum swing (Balance.Motion), hit detection → `FightRules.hit`, `FightRules.tick`, powers applied to the motion (swingMultiplier / isFrozen / knockbackMultiplier)
+- [ ] **C:** stream `FightSnapshot` (20 Hz, unreliable) + `FightEvents`; `UseSpecial` remote validated and rate-limited
+- [ ] **C:** `FightController`: interpolated CFrame animation of anchored glassies, string Beams, 3/4 camera, side-on slow-mo final blow
+- [ ] **C:** aim input (drag the glassy back on its arc, Perfect band, lock), 3-2-1 release
+- [ ] **C:** Fight HUD: HP bars, crack stages, SPECIAL button with charge ring, power popups, CRIT!/SMASH!
+- [ ] **C:** reuse `ShatterController` + `CrackPaths`; effects for each special
+- [ ] **C:** debug command: bot vs bot on the stand with any two glassy ids; log hits/s and average speed and update `Balance.SimModel`
+- [ ] **U:** publish, play on a phone, record a clip, approve the feel
 
-- [x] **C:** Rojo connected; `ServerStorage.Tests.RunAll` passes in Studio
-- [x] **B:** low-poly Clash Stand (posts, crossbar, hooks) + octagon pen floor and low wall
-- [x] **B:** starter glassies `pop`, `jam`, `prism`: body (origin at hang point), 12–20 shards, icon
-- [x] **C:** import stand and starters; folder `ReplicatedStorage.Assets.Glassies.<id>` with `Body` + `Shards`
-- [x] **C:** `BattleService` (server): runs a battle with `BattleLogic`, sends each clash to clients, validates `ReleaseSwing`
-- [x] **C:** `BattleController` (client): pendulum animation with CFrame, string `Beam`s, 3/4 battle camera
-- [x] **C:** centered power meter + hold anywhere (mobile, PC Space, console button), using `Theme`
-- [x] **C:** crack stages at 75 / 50 / 25 % HP
-- [x] **C:** `ShatterController`: hitstop, camera shake, slow-mo + side-on final shot, flash, shards, sparkles, layered sound
-- [x] **C:** a test NPC on the stand to fight (uses `BattleLogic.npcChooser`)
-- [ ] **U:** publish from Studio (MCP Edit cannot publish), then play it on a phone, record a clip, decide if the shatter feels great
+## F2 — Match flow and lobby blockout (Oct 20–26)
 
-### Early map pass — user requested Oct 12
+- [ ] **C:** `ArenaService` pads + queue + bot fill; `MatchService` phases with `MatchLogic`
+- [ ] **C:** Roll screen (3 cards, reroll), Aim, Countdown, Round end (glass heart pops), Results
+- [ ] **C:** lobby blockout in Studio from the chosen concept; 8 arena stands along the path
+- [ ] **B:** any Blender kit pieces the chosen concept needs (MAP_PLAN)
 
-- [x] **B:** Glass Town 320 × 320 blockout plus 600-stud Recycling Yard path, trainer clearings, wild areas, repair stop and Rusty's platform
-- [x] **B:** first 16-piece low-poly kit, linked layout, eight FBX chunks, render previews and export validation
-- [x] **C:** temporary Blender-derived walking proxies in Studio, tagged placement markers, town/route traversal and M1 battle regression checks
-- [x] **U/C:** import the eight detailed FBX chunks, normalize/color them and replace proxy visuals ([handoff](../assets/blender/map/first_pass/README.md))
-- [x] **Claude:** map blueprint chosen with the user: Kilnport + Cullet Yard ([MAP_BLUEPRINT](art/MAP_BLUEPRINT.md)), layout data, SVG blueprints, Blender blockout script
-- [ ] **U:** build the map in Blender from the blockout (MAP_BLUEPRINT section 6); the first-pass map is superseded
+## F3 — Data, Kiln and collection (Oct 27–Nov 2)
 
-## M2 — Core loop (Oct 19–25)
+- [ ] **C:** ProfileStore `DataService` (schema in GAME_DESIGN 14)
+- [ ] **C:** `KilnService` + Kiln screen with the odds list, glassblowing reveal, duplicates → stars
+- [ ] **C:** Collection + Index screens
+- [ ] **B:** 9 more glassies (body, details, shards, icon): 6 Commons + 3 Uncommons first
+- [ ] **C:** lobby art pass
 
-- [ ] **C:** ProfileStore `DataService` with the schema in GAME_DESIGN 13.2
-- [ ] **C:** starter pick screen; glassy follows the player like a pet
-- [ ] **C:** NPC trainers from `Config/Trainers` (Zone 1), daily cooldowns, rewards
-- [ ] **C:** XP, levels, evolution at level 15 / 35 (big transformation moment)
-- [ ] **C:** Repair Bench with reverse-shatter animation
-- [ ] **B:** Zone 1 "Recycling Yard" low-poly kit + layout (MAP_PLAN)
-- [ ] **B:** evolution forms `rocket_pop`, `honey_bear`, `prism_blade`
+## F4 — Retention and monetization (Nov 3–9)
 
-## M3 — Catching and collection (Oct 26–Nov 1)
+- [ ] **C:** daily quests, playtime gifts, login streak, first win bonus, codes, group reward
+- [ ] **C:** Marbles, Marble packs, gamepasses, idempotent `ProcessReceipt`, PolicyService checks
+- [ ] **C:** Shatter FX shop + 3 effects; leaderboards
+- [ ] **C:** analytics events (GAME_DESIGN 15b)
 
-- [ ] **C:** wild glassies (spawns from `Config/Zones`), Cork catching
-- [ ] **C:** coin crate with odds screen; `PolicyService` check
-- [ ] **C:** Glassies inventory screen (Figma), Index screen
-- [ ] **B:** Zone 1 wild glassies + crate roster (about 18 models with shards and icons)
+## F5 — Polish and soft launch (Nov 10–16)
 
-## M4 — Tournaments and social (Nov 2–8)
+- [ ] **C:** phone UI pass (Device Emulator presets), performance (MicroProfiler), exploit and rate-limit pass
+- [ ] **B:** remaining launch glassies (target 18+ playable)
+- [ ] **U:** maturity questionnaire, icon, thumbnails, description; cross-promote from your other game
 
-- [ ] **C:** lobby tournament (8-slot bracket, bots, Rookie/Open cups, Pick the Winner, Champion Pedestal)
-- [ ] **C:** PvP challenges
-- [ ] **C:** Shatter FX and Fills cosmetics
-- [ ] **B:** lobby "Glass Town" low-poly + octagon arena + bracket board
+## After launch
 
-## M5 — Monetization and polish (Nov 9–15)
-
-- [ ] **C:** gamepasses, dev products, `ProcessReceipt`
-- [ ] **C:** daily login, quests, playtime gifts, group reward, codes
-- [ ] **C:** final UI skin (texture kit), loading screen (RESOURCES 6)
-- [ ] **C:** analytics events (GAME_DESIGN 15)
-- [ ] **U:** test on low-end phone; MicroProfiler check
-
-## M6 — Soft launch (Nov 16–22)
-
-- [ ] **U:** maturity questionnaire, thumbnails, icon, description
-- [ ] **U:** cross-promote from existing game
-- [ ] **C:** fix issues from analytics and player reports
-
-## M7+ — Updates
-
-- [ ] Update 1: Zone 2 Sunny Beach (late Nov – early Dec)
-- [ ] Winter event: snow globes, ornaments, glass reindeer (~Dec 12)
+- [ ] Weekly: 2–3 new glassies + a code
+- [ ] Winter event (~Dec 12): snow globes, ornaments, glass reindeer
+- [ ] Bracket tournament event, 2v2, party pads, Rainbow "re-melt"

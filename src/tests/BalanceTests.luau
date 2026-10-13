@@ -35,7 +35,7 @@ return function(t, deps)
 	end)
 
 	t.test("rarity and stars help without deciding the fight", function()
-		local mythic = BalanceSim.matchup("glass_dragon", "milk_bottle", N).WinRate
+		local mythic = BalanceSim.matchup("galaxy_orb", "lemonade_bottle", N).WinRate -- both Fizzy
 		t.between(mythic, 0.6, 0.95, "Mythic vs Common")
 		t.between(BalanceSim.matchup("pop", "pop", N, { StarsA = 5 }).WinRate, 0.6, 0.98, "5 stars vs 0")
 	end)

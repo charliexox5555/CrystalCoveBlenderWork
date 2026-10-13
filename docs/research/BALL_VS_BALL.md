@@ -1,3 +1,5 @@
+> **Note (Oct 13):** this brief was written before the user's answers. The user chose **auto-battle after the pick** (no timing meter), **paid rerolls with Marbles**, and **one special tap**; see GAME_DESIGN v0.3 and DECISIONS 22–29. Sections 5–6 below are the research team's recommendations as written; where they differ, GAME_DESIGN wins.
+
 # Ball VS Ball: research brief and restructure proposal for Glass Clash
 
 *Prepared 2026-10-13. Read this first:* the research agents could not open any source page. Every page fetch failed (DNS errors or proxy 403s), and the shared web-search budget ran out before verification. Every fact about Ball VS Ball below comes from search-result snippets of fan wikis, guide sites and tracker pages. The fact-checkers marked almost all of it **unverifiable**, not confirmed. Where sources disagree I say so. Before any decision here becomes final, someone (ideally you) should **play Ball VS Ball for 20–30 minutes on a phone** and check the items marked *(unverified)*.

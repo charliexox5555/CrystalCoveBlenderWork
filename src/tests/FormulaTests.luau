@@ -66,4 +66,15 @@ return function(t, deps)
 			t.near((counts[entry.Rarity] or 0) / n, entry.Chance, 0.012, entry.Rarity .. " roll rate")
 		end
 	end)
+
+	t.test("each glassy is less likely than any glassy of a lower rarity", function()
+		local byRarity = {}
+		for _, entry in Formula.kilnOdds() do
+			byRarity[entry.Rarity] = entry.Chance
+		end
+		local order = Formula.crateOdds()
+		for i = 2, #order do
+			t.ok(byRarity[order[i].Rarity] < byRarity[order[i - 1].Rarity], order[i].Rarity .. " glassies are rarer than " .. order[i - 1].Rarity)
+		end
+	end)
 end

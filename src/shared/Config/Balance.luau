@@ -84,8 +84,8 @@ Balance.Types = {
 -- Starters are not in crates. Fight strength scales with Power x HP, i.e. roughly with
 -- StatMultiplier squared, so keep the spread modest.
 Balance.Rarities = {
-	Common = { Order = 1, StatMultiplier = 1.00, CrateWeight = 50 },
-	Uncommon = { Order = 2, StatMultiplier = 1.02, CrateWeight = 28.25 },
+	Common = { Order = 1, StatMultiplier = 1.00, CrateWeight = 56.25 },
+	Uncommon = { Order = 2, StatMultiplier = 1.02, CrateWeight = 22 },
 	Rare = { Order = 3, StatMultiplier = 1.04, CrateWeight = 14 },
 	Epic = { Order = 4, StatMultiplier = 1.06, CrateWeight = 6 },
 	Legendary = { Order = 5, StatMultiplier = 1.08, CrateWeight = 1.5 },

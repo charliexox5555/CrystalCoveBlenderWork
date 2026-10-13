@@ -14,6 +14,21 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-13 — Claude — F0 restructure (lobby arena matches)
+Done:
+- User pivoted to a Ball VS Ball-style structure: simple linear lobby, arena pads, 1v1, 3 hearts, roll 3 from your collection (gem/Marble rerolls), aim, release, watch, one special tap. Research brief in docs/research/BALL_VS_BALL.md (sources could only be read as search snippets; marked unverified).
+- New pure rules: FightRules (damage from hit speed/share/mass/type/crit, 9 passives, 6 specials, double KO, overtime, timeout), MatchLogic (rolls, rerolls, picks, aim, hearts, rewards, bot collections and counter-picks), Formula trimmed (stats, stars, types, crits, Kiln odds/rolls). Glassies rewritten with powers and radii (31). Remotes contract updated.
+- The swing itself is Codex's job (DECISIONS 24); Balance.Motion has starting values. Simulators use src/tests/FightModel.luau as a stand-in; Codex should measure the real swing and update Balance.SimModel.
+- Balance + economy simulators and tests: 51 passed. Removed the meter battle, trainers, zones, Kilnport map tools/docs and M1 Studio scripts (in git history at 8119b7b).
+- Docs: GAME_DESIGN v0.3, ECONOMY, DECISIONS 22–29, ROADMAP (F0–F5), UI_SPEC, ART_BIBLE, AGENTS, Codex prompt docs/prompts/01_fight_prototype.md.
+Next:
+- User picks a lobby concept (MAP_PLAN). Codex builds F1 (fight prototype) from the prompt.
+Problems / questions for the user:
+- Paid rerolls kept as asked; research suggests earn-only (DECISIONS 25). Free "pick any" once per match? Final names (Marbles, the Kiln)?
+Balance sim (200 rounds per matchup, FightModel stand-in):
+- Mirror rounds 21–39 s (17–33 hits), 0% timeouts, side bias 50%. Starters: pop>jam 64%, jam>prism 76%, prism>pop 62%. Perfect vs worst aim 61%. Special used vs never 70% (64–75% per special). Fizzy rarity ladder vs Common: Rare 75%, Legendary 94%, Mythic 86%; 5 stars vs 0: 92%. Equal-stat power table 42–58% for every glassy.
+- Economy: match ~3.7 min; 4 Kiln pulls on day 1; first Rare ~47 min, Epic ~2.1 h, Legendary ~9 h of play; 20% get a Mythic in 30 days.
+
 ## 2026-10-12 — Codex — Early map first pass
 Done:
 - User requested map construction while M1 phone approval is pending. Built isolated Blender kit/layout scenes without changing approved art: 16 original kit pieces, 320-stud Glass Town plaza and 600.43-stud Recycling Yard path with six trainer clearings, two wild regions, repair stop, conveyors and Rusty's arena. Kept Studio-first coloring; no texture/library/Toolbox additions.

@@ -200,10 +200,10 @@ function BalanceSim.report(roundsPerMatchup: number?): string
 	end
 
 	add("")
-	add("Rarity ladder vs Common milk_bottle:")
-	for _, id in { "pop", "pickle_jar", "mason_jar", "perfume", "rocket_pop", "glass_unicorn", "glass_dragon" } do
+	add("Rarity ladder, all Fizzy, vs Common lemonade_bottle:")
+	for _, id in { "milk_bottle", "pop", "hot_sauce", "potion_flask", "rocket_pop", "comet", "galaxy_orb" } do
 		local def = Glassies.get(id)
-		add("  %-14s %-9s %s", id, def.Rarity, pct(BalanceSim.matchup(id, "milk_bottle", n).WinRate))
+		add("  %-14s %-9s %s", id, def.Rarity, pct(BalanceSim.matchup(id, "lemonade_bottle", n).WinRate))
 	end
 	add("Stars: pop 5 stars vs pop 0 stars: %s", pct(BalanceSim.matchup("pop", "pop", n, { StarsA = 5 }).WinRate))
 

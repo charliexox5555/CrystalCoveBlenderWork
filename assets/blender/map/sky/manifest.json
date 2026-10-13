@@ -1,0 +1,505 @@
+{
+  "schema_version": 1,
+  "units": "1 Blender unit = 1 stud; choose Studs in Studio importer",
+  "coordinate_mapping": "Blender (x,y,z) -> Roblox (x,z,-y)",
+  "origin_contract": "All exported meshes have identity transforms and origin at grass top centre.",
+  "export_helper": "tools/blender/glassclash_blender.py:export_fbx",
+  "fbx_axes": {
+    "forward": "-Z",
+    "up": "Y",
+    "bake_space_transform": true,
+    "apply_unit_scale": true
+  },
+  "islands": [
+    {
+      "name": "Isle_Lobby",
+      "fbx": "Isle_Lobby.fbx",
+      "top_size_xy_studs": [
+        96,
+        56
+      ],
+      "superellipse_exponent": 4.0,
+      "depth_studs": 33,
+      "hanging_chunks": 3,
+      "intended_world_position_blender_xyz": [
+        0,
+        0,
+        0
+      ],
+      "intended_world_position_roblox_xyz": [
+        0,
+        0,
+        0
+      ],
+      "meshes": [
+        {
+          "name": "Isle_Lobby_Grass",
+          "triangle_count": 160,
+          "local_bounds_blender_xyz_studs": {
+            "min": [
+              -48.0,
+              -28.0,
+              -1.4
+            ],
+            "max": [
+              48.0,
+              28.0,
+              0.0
+            ]
+          },
+          "origin_blender_xyz": [
+            0,
+            0,
+            0
+          ],
+          "preview_color": "#7CCB5B",
+          "closed_manifold": true,
+          "self_intersections": 0,
+          "volume_studs3": 6741.9647
+        },
+        {
+          "name": "Isle_Lobby_Dirt",
+          "triangle_count": 160,
+          "local_bounds_blender_xyz_studs": {
+            "min": [
+              -47.5,
+              -27.5,
+              -3.9
+            ],
+            "max": [
+              47.5,
+              27.5,
+              -1.4
+            ]
+          },
+          "origin_blender_xyz": [
+            0,
+            0,
+            0
+          ],
+          "preview_color": "#9A6B43",
+          "closed_manifold": true,
+          "self_intersections": 0,
+          "volume_studs3": 11468.6041
+        },
+        {
+          "name": "Isle_Lobby_Rock",
+          "triangle_count": 522,
+          "local_bounds_blender_xyz_studs": {
+            "min": [
+              -53.207043,
+              -32.538181,
+              -33.0
+            ],
+            "max": [
+              46.549999,
+              34.033405,
+              -3.9
+            ]
+          },
+          "origin_blender_xyz": [
+            0,
+            0,
+            0
+          ],
+          "preview_color": "#9787A0",
+          "closed_manifold": true,
+          "self_intersections": 0,
+          "volume_studs3": 54703.5658
+        }
+      ]
+    },
+    {
+      "name": "Isle_Arena1",
+      "fbx": "Isle_Arena1.fbx",
+      "top_size_xy_studs": [
+        92,
+        46
+      ],
+      "superellipse_exponent": 4.0,
+      "depth_studs": 30,
+      "hanging_chunks": 2,
+      "intended_world_position_blender_xyz": [
+        0,
+        56,
+        2
+      ],
+      "intended_world_position_roblox_xyz": [
+        0,
+        2,
+        -56
+      ],
+      "meshes": [
+        {
+          "name": "Isle_Arena1_Grass",
+          "triangle_count": 160,
+          "local_bounds_blender_xyz_studs": {
+            "min": [
+              -46.0,
+              -23.0,
+              -1.4
+            ],
+            "max": [
+              46.0,
+              23.0,
+              0.0
+            ]
+          },
+          "origin_blender_xyz": [
+            0,
+            0,
+            0
+          ],
+          "preview_color": "#7CCB5B",
+          "closed_manifold": true,
+          "self_intersections": 0,
+          "volume_studs3": 5327.8756
+        },
+        {
+          "name": "Isle_Arena1_Dirt",
+          "triangle_count": 160,
+          "local_bounds_blender_xyz_studs": {
+            "min": [
+              -45.5,
+              -22.5,
+              -3.9
+            ],
+            "max": [
+              45.5,
+              22.5,
+              -1.4
+            ]
+          },
+          "origin_blender_xyz": [
+            0,
+            0,
+            0
+          ],
+          "preview_color": "#9A6B43",
+          "closed_manifold": true,
+          "self_intersections": 0,
+          "volume_studs3": 9023.1749
+        },
+        {
+          "name": "Isle_Arena1_Rock",
+          "triangle_count": 508,
+          "local_bounds_blender_xyz_studs": {
+            "min": [
+              -45.366268,
+              -29.087093,
+              -30.0
+            ],
+            "max": [
+              44.59,
+              30.549835,
+              -3.9
+            ]
+          },
+          "origin_blender_xyz": [
+            0,
+            0,
+            0
+          ],
+          "preview_color": "#9787A0",
+          "closed_manifold": true,
+          "self_intersections": 0,
+          "volume_studs3": 37438.51
+        }
+      ]
+    },
+    {
+      "name": "Isle_Arena2",
+      "fbx": "Isle_Arena2.fbx",
+      "top_size_xy_studs": [
+        92,
+        46
+      ],
+      "superellipse_exponent": 4.0,
+      "depth_studs": 34,
+      "hanging_chunks": 4,
+      "intended_world_position_blender_xyz": [
+        0,
+        107,
+        4
+      ],
+      "intended_world_position_roblox_xyz": [
+        0,
+        4,
+        -107
+      ],
+      "meshes": [
+        {
+          "name": "Isle_Arena2_Grass",
+          "triangle_count": 160,
+          "local_bounds_blender_xyz_studs": {
+            "min": [
+              -46.0,
+              -23.0,
+              -1.4
+            ],
+            "max": [
+              46.0,
+              23.0,
+              0.0
+            ]
+          },
+          "origin_blender_xyz": [
+            0,
+            0,
+            0
+          ],
+          "preview_color": "#7CCB5B",
+          "closed_manifold": true,
+          "self_intersections": 0,
+          "volume_studs3": 5375.7005
+        },
+        {
+          "name": "Isle_Arena2_Dirt",
+          "triangle_count": 160,
+          "local_bounds_blender_xyz_studs": {
+            "min": [
+              -45.5,
+              -22.5,
+              -3.9
+            ],
+            "max": [
+              45.5,
+              22.5,
+              -1.4
+            ]
+          },
+          "origin_blender_xyz": [
+            0,
+            0,
+            0
+          ],
+          "preview_color": "#9A6B43",
+          "closed_manifold": true,
+          "self_intersections": 0,
+          "volume_studs3": 9104.17
+        },
+        {
+          "name": "Isle_Arena2_Rock",
+          "triangle_count": 536,
+          "local_bounds_blender_xyz_studs": {
+            "min": [
+              -51.964165,
+              -29.725922,
+              -34.0
+            ],
+            "max": [
+              49.970936,
+              28.579342,
+              -3.9
+            ]
+          },
+          "origin_blender_xyz": [
+            0,
+            0,
+            0
+          ],
+          "preview_color": "#9787A0",
+          "closed_manifold": true,
+          "self_intersections": 0,
+          "volume_studs3": 45297.6958
+        }
+      ]
+    },
+    {
+      "name": "Isle_Arena3",
+      "fbx": "Isle_Arena3.fbx",
+      "top_size_xy_studs": [
+        92,
+        46
+      ],
+      "superellipse_exponent": 4.0,
+      "depth_studs": 31,
+      "hanging_chunks": 3,
+      "intended_world_position_blender_xyz": [
+        0,
+        158,
+        6
+      ],
+      "intended_world_position_roblox_xyz": [
+        0,
+        6,
+        -158
+      ],
+      "meshes": [
+        {
+          "name": "Isle_Arena3_Grass",
+          "triangle_count": 160,
+          "local_bounds_blender_xyz_studs": {
+            "min": [
+              -46.0,
+              -23.0,
+              -1.4
+            ],
+            "max": [
+              46.0,
+              23.0,
+              0.0
+            ]
+          },
+          "origin_blender_xyz": [
+            0,
+            0,
+            0
+          ],
+          "preview_color": "#7CCB5B",
+          "closed_manifold": true,
+          "self_intersections": 0,
+          "volume_studs3": 5401.0882
+        },
+        {
+          "name": "Isle_Arena3_Dirt",
+          "triangle_count": 160,
+          "local_bounds_blender_xyz_studs": {
+            "min": [
+              -45.5,
+              -22.5,
+              -3.9
+            ],
+            "max": [
+              45.5,
+              22.5,
+              -1.4
+            ]
+          },
+          "origin_blender_xyz": [
+            0,
+            0,
+            0
+          ],
+          "preview_color": "#9A6B43",
+          "closed_manifold": true,
+          "self_intersections": 0,
+          "volume_studs3": 9147.1664
+        },
+        {
+          "name": "Isle_Arena3_Rock",
+          "triangle_count": 522,
+          "local_bounds_blender_xyz_studs": {
+            "min": [
+              -44.59,
+              -22.768494,
+              -31.0
+            ],
+            "max": [
+              47.318119,
+              29.921913,
+              -3.9
+            ]
+          },
+          "origin_blender_xyz": [
+            0,
+            0,
+            0
+          ],
+          "preview_color": "#9787A0",
+          "closed_manifold": true,
+          "self_intersections": 0,
+          "volume_studs3": 37844.0201
+        }
+      ]
+    },
+    {
+      "name": "Isle_Featured",
+      "fbx": "Isle_Featured.fbx",
+      "top_size_xy_studs": [
+        72,
+        48
+      ],
+      "superellipse_exponent": 3.0,
+      "depth_studs": 32,
+      "hanging_chunks": 3,
+      "intended_world_position_blender_xyz": [
+        0,
+        210,
+        9
+      ],
+      "intended_world_position_roblox_xyz": [
+        0,
+        9,
+        -210
+      ],
+      "meshes": [
+        {
+          "name": "Isle_Featured_Grass",
+          "triangle_count": 160,
+          "local_bounds_blender_xyz_studs": {
+            "min": [
+              -36.0,
+              -24.0,
+              -1.4
+            ],
+            "max": [
+              36.0,
+              24.0,
+              0.0
+            ]
+          },
+          "origin_blender_xyz": [
+            0,
+            0,
+            0
+          ],
+          "preview_color": "#7CCB5B",
+          "closed_manifold": true,
+          "self_intersections": 0,
+          "volume_studs3": 4232.8962
+        },
+        {
+          "name": "Isle_Featured_Dirt",
+          "triangle_count": 160,
+          "local_bounds_blender_xyz_studs": {
+            "min": [
+              -35.5,
+              -23.5,
+              -3.9
+            ],
+            "max": [
+              35.5,
+              23.5,
+              -1.4
+            ]
+          },
+          "origin_blender_xyz": [
+            0,
+            0,
+            0
+          ],
+          "preview_color": "#9A6B43",
+          "closed_manifold": true,
+          "self_intersections": 0,
+          "volume_studs3": 7153.4764
+        },
+        {
+          "name": "Isle_Featured_Rock",
+          "triangle_count": 522,
+          "local_bounds_blender_xyz_studs": {
+            "min": [
+              -40.965305,
+              -30.292831,
+              -32.0
+            ],
+            "max": [
+              34.790001,
+              24.135075,
+              -3.9
+            ]
+          },
+          "origin_blender_xyz": [
+            0,
+            0,
+            0
+          ],
+          "preview_color": "#9787A0",
+          "closed_manifold": true,
+          "self_intersections": 0,
+          "volume_studs3": 32729.0205
+        }
+      ]
+    }
+  ]
+}

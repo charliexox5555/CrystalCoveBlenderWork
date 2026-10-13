@@ -20,7 +20,7 @@ Owner key: **C** = Codex (code / Studio MCP), **B** = Codex with Blender MCP, **
 
 Prompt: [prompts/02_sky_lobby.md](prompts/02_sky_lobby.md).
 
-- [ ] **B:** 5 floating island platforms (grass / dirt / rock), exported to `assets/blender/map/sky/` with manifest and preview
+- [x] **B:** 5 floating island platforms (grass / dirt / rock), exported to `assets/blender/map/sky/` with manifest and preview
 - [ ] **U:** back up the place, import the 5 FBX files
 - [ ] **C:** clear the old place (keep code, glassies, ClashStand, audio, icons; old props → `ServerStorage.LegacyKit`)
 - [ ] **C:** place islands, invisible collision, placeholder bridges, lighting and sky

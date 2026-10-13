@@ -14,6 +14,16 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-13 — Codex — L1 Part A island platforms
+Done:
+- Built five Crystal Isles platforms only: exact 96×56 / 92×46 / 72×48 grass footprints, flat Z=0 tops, 1.4-stud grass, inset 2.5-stud dirt bands, and 30–34-stud faceted rock undersides. Arena variants have distinct rims, ledges, depths and 2–4 connected hanging chunks; Featured has a rounder outline.
+- Saved five FBXs using the unchanged glassy export helper, isolated asset scenes plus the row preview in `sky_islands.blend`, local bounds/top-centre origins and Part B positions in `manifest.json`, and manual import instructions. Reviewed renders and improved camera, matte lighting, rim variation and chunk proportions. Added reproducible build/validation scripts.
+- All 15 meshes pass closed-manifold, winding, positive-volume, nondegenerate-triangle and self-intersection checks. Grass tops are exactly flat. 4,210 triangles total; largest mesh 536. Saved-source/FBX round trips preserve all vertices/bounds within 0.000005 studs and all pivots at zero; results in `validation.json`. Lune: 51 passed, 0 failed.
+Next:
+- User backs up the place, imports the five FBXs with Studs scale / separate meshes / imported pivots / anchored, then says “islands imported, backup done” to begin Part B.
+Problems / questions for the user:
+- None. Studio was not accessed; import, collision and placement testing are deliberately deferred to Part B. No new design decisions. Existing unrelated untracked assets were left untouched.
+
 ## 2026-10-13 — Claude — F0 restructure (lobby arena matches)
 Done:
 - User pivoted to a Ball VS Ball-style structure: simple linear lobby, arena pads, 1v1, 3 hearts, roll 3 from your collection (gem/Marble rerolls), aim, release, watch, one special tap. Research brief in docs/research/BALL_VS_BALL.md (sources could only be read as search snippets; marked unverified).

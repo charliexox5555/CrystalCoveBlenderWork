@@ -24,6 +24,7 @@ Theme.Colors = {
 	TextDark = hex("#1A1E4A"),
 	Highlight = hex("#FFE45C"), -- selection glow, PERFECT!, evolution hints
 	Damage = hex("#C2183A"), -- outline on damage numbers
+	Heart = hex("#FF5C7A"), -- glass hearts (lives) everywhere
 }
 
 -- Buttons: each colour has exactly one meaning everywhere
@@ -44,6 +45,12 @@ Theme.Rarity = {
 	Epic = { Top = hex("#EBD6FF"), Bottom = hex("#A25CFF") },
 	Legendary = { Top = hex("#FFF3BF"), Bottom = hex("#FFB92E") },
 	Mythic = { Top = hex("#FFB3E6"), Bottom = hex("#6FE3FF") }, -- animate this gradient
+}
+
+-- Arena sides match the queue pad glows (A blue, B orange) so a glassy, its HUD panel and its pad read as one.
+Theme.Sides = {
+	hex("#4FB8FF"),
+	hex("#FF9F43"),
 }
 
 Theme.Types = {

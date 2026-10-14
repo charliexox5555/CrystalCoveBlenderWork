@@ -14,6 +14,7 @@ local Rules = require(RS.Shared.FightRules)
 local Remotes = require(RS.Shared.Remotes)
 local Scene = require(script.Parent.Parent.Presentation.FightScene)
 local Hud = require(script.Parent.Parent.UI.Screens.FightHud)
+local Theme = require(script.Parent.Parent.UI.Theme)
 local M, Feel = Balance.Motion, Balance.Feel
 local Controller = {}
 
@@ -66,6 +67,7 @@ end
 
 function Controller:Init(controllers)
 	self.Shatter, self.Player = controllers.ShatterController, Players.LocalPlayer
+	self.MatchController = controllers.MatchController
 	self.Snapshots, self.Events = {}, {}
 	local playerModule = self.Player:WaitForChild("PlayerScripts"):FindFirstChild("PlayerModule")
 	self.Controls = playerModule and require(playerModule):GetControls()
@@ -110,6 +112,7 @@ function Controller:EndFight()
 	self.FinalTime, self.FinalSide, self.SlowUntil, self.HoldUntil, self.ShakeUntil, self.LastSnapshotWall =
 		nil, nil, nil, nil, nil, nil
 	self.Locked, self.Focus, self.LastCountdown = false, nil, nil
+	self.ShatterShown, self.PendingHearts, self.PendingAt = false, nil, nil
 	if self.Post then
 		self.Post:Destroy()
 		self.Post = nil
@@ -162,6 +165,9 @@ function Controller:Begin(data)
 		self.Hud = Hud.new(data, maxima, function()
 			self:Lock()
 		end)
+		if self.Participant then
+			self.Scene:Tag(self.Side, "YOU", Theme.Sides[self.Side])
+		end
 		if self.Controls then
 			self.Controls:Disable()
 		end
@@ -189,7 +195,12 @@ function Controller:State(data)
 	end
 	self.Data = data
 	if self.Hud and data.Hearts then
-		self.Hud.Hearts = data.Hearts
+		-- RoundEnd reaches us before the interpolated shatter plays; don't spoil it by popping a heart early.
+		if data.Phase == "RoundEnd" and not self.ShatterShown then
+			self.PendingHearts, self.PendingAt = data.Hearts, os.clock()
+		else
+			self.Hud.Hearts = data.Hearts
+		end
 	end
 	self.Phase = data.Phase
 	if data.Phase ~= "Aiming" then
@@ -289,6 +300,7 @@ function Controller:Event(e)
 		end
 	elseif e.Type == "Shatter" then
 		self.Phase = "RoundEnd"
+		self:ShowRoundResult()
 		self.ShakeUntil, self.ShakePower = now + Feel.ShakeSeconds, Feel.ShakeMax
 		if self.Viewing then
 			-- A double KO can emit two Shatters; keep one owned flash for cleanup.
@@ -301,9 +313,26 @@ function Controller:Event(e)
 	end
 end
 
+function Controller:ShowRoundResult()
+	if self.ShatterShown then
+		return
+	end
+	self.ShatterShown = true
+	if self.Hud and self.PendingHearts then
+		self.Hud.Hearts = self.PendingHearts
+	end
+	self.PendingHearts = nil
+	if self.Participant and self.MatchController and self.Data then
+		self.MatchController:ShatterShown(self.Data.Id)
+	end
+end
+
 function Controller:Render(dt)
 	if not self.Data then
 		return
+	end
+	if self.PendingHearts and os.clock() - self.PendingAt > Feel.RoundBannerFallbackSeconds then
+		self:ShowRoundResult()
 	end
 	local newest = self.Snapshots[#self.Snapshots]
 	if not self.Viewing and newest and workspace:GetServerTimeNow() - newest.SentAt > 1 and #self.Events == 0 then

@@ -52,14 +52,24 @@ function Hud.new(data, maxima, lock)
 			pip.BackgroundColor3 = tint
 			table.insert(self.Rings[side], pip)
 		end
-		local displayName = if data.PlayerIds
-				and data.PlayerIds[side] == (Players.LocalPlayer and Players.LocalPlayer.UserId or 0)
-			then "YOU • " .. string.upper(def.Name)
+		-- Owner first so mirror matches (Jam vs Jam) still read at a glance.
+		local you = data.PlayerIds and data.PlayerIds[side] == (Players.LocalPlayer and Players.LocalPlayer.UserId or 0)
+		local owner = if you then "YOU" else data.Names and data.Names[side]
+		local displayName = if owner
+			then string.upper(owner) .. " • " .. string.upper(def.Name)
 			else string.upper(def.Name)
 		U.text(panel, "Name", displayName, UDim2.fromScale(0.7, 0.25), UDim2.fromScale(0.26, 0.08), Theme.Fonts.Heading)
+		local stripe = U.make("Frame", panel, {
+			Name = "SideStripe",
+			Size = UDim2.fromScale(0.012, 0.76),
+			Position = UDim2.fromScale(if side == 1 then 0.004 else 0.984, 0.12),
+			BackgroundColor3 = Theme.Sides[side],
+			BorderSizePixel = 0,
+		})
+		U.corner(stripe, UDim.new(1, 0))
 		self.Bars[side] = Bar.new(panel, UDim2.fromScale(0.69, 0.28), UDim2.fromScale(0.26, 0.35), true)
 		local hearts = U.text(panel, "Hearts", "♥ ♥ ♥", UDim2.fromScale(0.28, 0.19), UDim2.fromScale(0.26, 0.68))
-		hearts.TextColor3 = tint
+		hearts.TextColor3 = Theme.Colors.Heart
 		self.Status[side] = U.text(
 			panel,
 			"Status",
@@ -99,13 +109,17 @@ function Hud.new(data, maxima, lock)
 	U.corner(rail, Theme.Radius.Bar)
 	local m = Balance.Motion
 	local lo = (data.SweetSpot - m.SweetSpotWidth - m.AimMin) / (m.AimMax - m.AimMin)
-	U.make("Frame", rail, {
+	local band = U.make("Frame", rail, {
 		Name = "PerfectBand",
 		Size = UDim2.fromScale(2 * m.SweetSpotWidth / (m.AimMax - m.AimMin), 2),
 		Position = UDim2.fromScale(lo, -0.5),
 		BackgroundColor3 = Theme.Colors.Highlight,
 		BorderSizePixel = 0,
 	})
+	-- The band is game state (this round's sweet spot), so it must move even when the template authored a
+	-- placement. Keep any authored vertical styling; only the horizontal span follows the round.
+	band.Position = UDim2.new(lo, 0, band.Position.Y.Scale, band.Position.Y.Offset)
+	band.Size = UDim2.new(2 * m.SweetSpotWidth / (m.AimMax - m.AimMin), 0, band.Size.Y.Scale, band.Size.Y.Offset)
 	self.Marker = U.make("Frame", rail, {
 		Name = "Marker",
 		AnchorPoint = Vector2.new(0.5, 0.5),
@@ -163,15 +177,8 @@ function Hud:Update(r)
 			Bar.set(self.Bars[side], hp, self.Maxima[side])
 			self.LastHP[side] = hp
 		end
-		local cracks = 0
-		for _, threshold in Balance.Feel.CrackThresholds do
-			if hp / self.Maxima[side] <= threshold then
-				cracks += 1
-			end
-		end
-		self.CrackLabels[side].Text = string.rep("♥ ", self.Hearts[side])
-			.. string.rep("◇ ", Balance.Match.Hearts - self.Hearts[side])
-			.. string.rep("·", cracks)
+		local hearts = math.clamp(self.Hearts[side] or 0, 0, Balance.Match.Hearts)
+		self.CrackLabels[side].Text = string.rep("♥ ", hearts) .. string.rep("♡ ", Balance.Match.Hearts - hearts)
 		for i, pip in self.Rings[side] do
 			pip.BackgroundTransparency = if i <= math.ceil((r.Power[side] or 0) * 16) then 0 else 0.85
 		end

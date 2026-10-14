@@ -107,23 +107,19 @@ function Controller:State(data)
 		self:Movement(true)
 	elseif data.Phase == "RoundEnd" then
 		self:CloseScreen()
-		local gui = U.screen("RoundEnd", 15)
-		local label = U.text(
-			gui,
-			"Round",
-			"ROUND " .. data.Round .. " → " .. (if data.RoundWinner == side then "YOU" else data.Names[3 - side]),
-			UDim2.fromScale(0.6, 0.08),
-			UDim2.fromScale(0.2, 0.83),
-			Theme.Fonts.Heading
-		)
-		label.TextColor3 = Theme.Colors.Highlight
-		self.Screen = {
-			Gui = gui,
-			Destroy = function()
-				gui:Destroy()
-			end,
-			Render = function() end,
-		}
+		self.Screen = Screens.roundEnd(data, side)
+		self.RoundShownAt = os.clock()
+		if self.LastShatter == data.Id then
+			self.Screen:Reveal()
+		end
+	end
+end
+
+-- Called by the participant's fight view once the final blow has been rendered.
+function Controller:ShatterShown(fightId)
+	self.LastShatter = fightId
+	if self.Screen and self.Screen.Gui.Name == "RoundEnd" and self.Screen.Data.Id == fightId then
+		self.Screen:Reveal()
 	end
 end
 

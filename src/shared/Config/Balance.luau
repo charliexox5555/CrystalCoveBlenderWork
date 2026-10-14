@@ -308,6 +308,9 @@ Balance.Feel = {
 	ShakeSeconds = 0.22,
 	ShakeMax = 0.25,
 	HapticSeconds = 0.08,
+	OwnerTagSize = 3.2, -- studs; "YOU" marker over the local player's glassy
+	OwnerTagHeight = 0.9,
+	RoundBannerFallbackSeconds = 1.6, -- show the round result even if the shatter was never rendered
 }
 
 return Balance

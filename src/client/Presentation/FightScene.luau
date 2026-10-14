@@ -188,6 +188,9 @@ function Scene:HideBroken(side)
 	end
 	f.Beam.Enabled, f.Trail.Enabled, f.Highlight.Enabled = false, false, false
 	f.Glints.Rate, f.Bubble.Transparency = 0, 1
+	if f.Tag then
+		f.Tag.Enabled = false
+	end
 end
 
 function Scene:Update(r, time)
@@ -325,9 +328,11 @@ function Scene:Event(e, hud)
 		f.Broken = true
 		f.Bubble.Transparency, f.Glints.Enabled, f.Trail.Enabled = 1, false, false
 		f.Highlight.Enabled = false
+		if f.Tag then
+			f.Tag.Enabled = false
+		end
 		if hud then
 			hud:Phase("RoundEnd", "SHATTERED!")
-			hud.CrackLabels[e.Side].Text = "♥ ♥ ◇"
 		end
 	elseif e.Type == "Overtime" and hud then
 		hud:Phase("Fighting", "OVERTIME • HITS GET STRONGER!")
@@ -352,6 +357,26 @@ function Scene:Heart(side)
 	TweenService:Create(text, TweenInfo.new(0.6), { Rotation = 25, TextTransparency = 1 }):Play()
 	TweenService:Create(anchor, TweenInfo.new(0.6), { Position = anchor.Position + Vector3.yAxis * 1.5 }):Play()
 	Debris:AddItem(anchor, 1)
+end
+
+-- A small marker over the local player's glassy; mirror matches otherwise look identical.
+function Scene:Tag(side, text, color)
+	local f = self.Fighters[side]
+	if not f or f.Broken then
+		return
+	end
+	local gui = f.Tag or Instance.new("BillboardGui")
+	gui.Name, gui.Adornee, gui.AlwaysOnTop, gui.LightInfluence = "OwnerTag", f.Body, true, 0
+	gui.Size = UDim2.fromScale(Feel.OwnerTagSize, Feel.OwnerTagSize * 0.55)
+	gui.StudsOffsetWorldSpace = Vector3.yAxis * (f.Body.Size.Y * 0.5 + Feel.OwnerTagHeight)
+	local label = gui:FindFirstChild("Text") or Instance.new("TextLabel")
+	label.Name, label.Size, label.BackgroundTransparency = "Text", UDim2.fromScale(1, 1), 1
+	label.Text, label.TextScaled, label.TextColor3 = text .. "\n▼", true, color
+	label.FontFace = Font.fromName("Montserrat", Enum.FontWeight.Heavy)
+	label.TextStrokeTransparency, label.TextStrokeColor3 = 0.2, Color3.fromHex("#05071C")
+	label.Parent = gui
+	gui.Parent = self.Root
+	f.Tag = gui
 end
 
 function Scene:GetStand()

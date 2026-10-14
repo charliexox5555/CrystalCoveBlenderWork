@@ -227,6 +227,55 @@ function Screens:PowerInfo(id)
 	copy.TextWrapped, copy.TextXAlignment = true, Enum.TextXAlignment.Left
 end
 
+local function hearts(count)
+	local total = require(RS.Shared.Config.Balance).Match.Hearts
+	count = math.clamp(count or 0, 0, total)
+	return string.rep("♥", count) .. string.rep("♡", total - count)
+end
+
+-- Round result banner. Hidden until the fight view has actually played the shatter.
+function Screens.roundEnd(data, side)
+	local self = Screens.new("RoundEnd")
+	self.Gui.Enabled = false
+	local rival = data.Names and data.Names[3 - side] or "RIVAL"
+	local won = data.RoundWinner == side
+	local matchOver = (data.Hearts[1] or 1) <= 0 or (data.Hearts[2] or 1) <= 0
+	local title = if won
+		then (if matchOver then "YOU WIN THE MATCH!" else "YOU WIN ROUND " .. data.Round .. "!")
+		else string.upper(rival) .. (if matchOver then " WINS THE MATCH" else " WINS ROUND " .. data.Round)
+	local label =
+		U.text(self.Gui, "Round", title, UDim2.fromScale(0.7, 0.1), UDim2.fromScale(0.15, 0.58), Theme.Fonts.Heading)
+	label.UITextSizeConstraint.MaxTextSize = Theme.TextSize.Title
+	label.TextColor3 = if won then Theme.Colors.Highlight else Theme.Colors.Text
+	U.make("UIStroke", label, { Thickness = 2, Color = Theme.Colors.Shadow, Transparency = 0.2 })
+	local summary = U.text(
+		self.Gui,
+		"Hearts",
+		"YOU " .. hearts(data.Hearts[side]) .. "     " .. string.upper(rival) .. " " .. hearts(data.Hearts[3 - side]),
+		UDim2.fromScale(0.6, 0.06),
+		UDim2.fromScale(0.2, 0.69),
+		Theme.Fonts.Body
+	)
+	summary.TextColor3 = Theme.Colors.Heart
+	U.make("UIStroke", summary, { Thickness = 1.5, Color = Theme.Colors.Shadow, Transparency = 0.2 })
+	self.Data, self.Started = data, os.clock()
+	self.Scale = U.make("UIScale", label, { Name = "PopScale" })
+	return self
+end
+
+function Screens:Reveal()
+	if self.Gui.Enabled then
+		return
+	end
+	self.Gui.Enabled = true
+	if self.Scale then
+		self.Scale.Scale = 1.35
+		game:GetService("TweenService")
+			:Create(self.Scale, TweenInfo.new(0.25, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 })
+			:Play()
+	end
+end
+
 function Screens.results(data, replay, lobby)
 	local self = Screens.new("ResultsScreen")
 	self.Result = data
@@ -347,6 +396,11 @@ function Screens:Render(now)
 					part:PivotTo(CFrame.Angles(0, os.clock() * 0.5, math.rad(-8)))
 				end
 			end
+		end
+	elseif self.Gui.Name == "RoundEnd" then
+		local fallback = require(RS.Shared.Config.Balance).Feel.RoundBannerFallbackSeconds
+		if not self.Gui.Enabled and os.clock() - self.Started > fallback then
+			self:Reveal()
 		end
 	elseif self.Result then
 		local progress = math.clamp((os.clock() - self.Started) / 0.8, 0, 1)

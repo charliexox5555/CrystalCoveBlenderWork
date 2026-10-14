@@ -14,6 +14,13 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-14 — Codex — editable UI placeholders
+Done:
+- Applied creator's updated direction: scale-only layout, editable StarterGui ScreenGuis, final artwork left to creator. Installed 13 templates through a one-time builder that refuses to overwrite existing UI. Controllers bind named parts and preserve authored geometry; list prototypes and Icon slots support later art replacement. Editing guide in docs/ui/EDITING_UI.md.
+- Removed ScreenGui layout offsets; source/runtime audit found zero. Verified authored Size survives binding while Text changes. Fixed Results/lobby overlap and shared touch ownership. Lune/Studio: 65 passed, 0 failed. Studio API access is now available, but test profiles remain isolated mocks.
+Next:
+- Blender sky kit/common glassies, free retention and multiplayer/security checks. Current Studio playtest left running for the returning creator.
+
 ## 2026-10-14 — Codex — F3 screens / UI pass started
 Done:
 - Added Theme-based safe-inset lobby HUD, collection/Index grids with filters/sort and scrolling stats/power details, odds-first Kiln and bubble/reveal/duplicate/Skip flow. Missing art stays unknown; empty Kiln disables pulls. Studio-only visual fixtures grant nothing. Screenshots/report in docs/testing/F3_DATA_KILN.md.

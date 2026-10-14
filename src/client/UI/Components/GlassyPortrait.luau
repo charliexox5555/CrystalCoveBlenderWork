@@ -3,9 +3,9 @@ local U = require(script.Parent.Util)
 local Portrait = {}
 
 -- The approved meshes provide a sharp portrait without another texture upload.
-function Portrait.new(parent, id, size, position)
+function Portrait.new(parent, id, size, position, name)
 	local viewport = U.make("ViewportFrame", parent, {
-		Name = "Portrait",
+		Name = name or "Portrait",
 		Size = size,
 		Position = position,
 		BackgroundTransparency = 1,
@@ -13,8 +13,27 @@ function Portrait.new(parent, id, size, position)
 		LightColor = Color3.new(1, 1, 1),
 		LightDirection = Vector3.new(-1, -1, -2),
 	})
+	for _, child in viewport:GetChildren() do
+		if child:IsA("WorldModel") or child:IsA("Camera") then
+			child:Destroy()
+		end
+	end
+	local icon = viewport:FindFirstChild("Icon")
+		or U.make(
+			"ImageLabel",
+			viewport,
+			{ Name = "Icon", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Image = "" }
+		)
+	icon.Visible = icon.Image ~= ""
+	local placeholder = viewport:FindFirstChild("Placeholder")
+	if placeholder then
+		placeholder.Visible = false
+	end
 	local world = Instance.new("WorldModel")
 	world.Parent = viewport
+	if icon.Visible then
+		return viewport
+	end
 	local def = require(RS.Shared.Config.Glassies).get(id)
 	local source = RS.Assets.Glassies:FindFirstChild(id)
 		or RS.Assets.Glassies[if def.Type == "Heavy" then "jam" elseif def.Type == "Sharp" then "prism" else "pop"]

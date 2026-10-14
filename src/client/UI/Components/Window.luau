@@ -9,32 +9,31 @@ Window.__index = Window
 
 function Window.new(name, title, close)
 	local self = setmetatable({ Connections = {} }, Window)
-	self.Gui = U.make("ScreenGui", Players.LocalPlayer.PlayerGui, {
-		Name = name,
-		ResetOnSpawn = false,
-		ScreenInsets = Enum.ScreenInsets.CoreUISafeInsets,
-		DisplayOrder = 20,
-		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
-	})
+	self.Gui = U.screen(name, 20)
 	self.Panel = Panel.new(self.Gui, "Panel", UDim2.fromScale(0.94, 0.94), UDim2.fromScale(0.03, 0.03))
 	self.Panel.Active = true
 	local scale = U.make("UIScale", self.Panel, { Scale = Theme.Motion.PanelOpenScaleFrom })
 	TweenService:Create(scale, Theme.Motion.PanelOpen, { Scale = 1 }):Play()
-	self.Title =
-		U.text(self.Panel, "Title", title, UDim2.new(1, -88, 0, 44), UDim2.fromOffset(16, 4), Theme.Fonts.Heading)
+	self.Title = U.text(
+		self.Panel,
+		"Title",
+		title,
+		UDim2.fromScale(0.8, 0.12),
+		UDim2.fromScale(0.025, 0.015),
+		Theme.Fonts.Heading
+	)
 	self.Title.TextXAlignment = Enum.TextXAlignment.Left
 	self.Title.UITextSizeConstraint.MaxTextSize = Theme.TextSize.Heading
-	self:Connect(Button.new(self.Panel, "Close", "X", "Red", UDim2.fromOffset(48, 44), UDim2.new(1, -60, 0, 6)), close)
-	self.Content = U.make(
-		"Frame",
-		self.Panel,
-		{
-			Name = "Content",
-			BackgroundTransparency = 1,
-			Size = UDim2.new(1, -24, 1, -64),
-			Position = UDim2.fromOffset(12, 56),
-		}
+	self:Connect(
+		Button.new(self.Panel, "Close", "X", "Red", UDim2.fromScale(0.085, 0.13), UDim2.fromScale(0.895, 0.015)),
+		close
 	)
+	self.Content = U.make("Frame", self.Panel, {
+		Name = "Content",
+		BackgroundTransparency = 1,
+		Size = UDim2.fromScale(0.95, 0.82),
+		Position = UDim2.fromScale(0.025, 0.16),
+	})
 	return self
 end
 

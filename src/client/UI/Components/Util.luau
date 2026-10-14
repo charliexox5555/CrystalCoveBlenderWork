@@ -1,9 +1,77 @@
 local Theme = require(script.Parent.Parent.Theme)
 local Util = {}
-function Util.make(class, parent, properties)
-	local object = Instance.new(class)
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local StarterGui = game:GetService("StarterGui")
+local authored = {
+	Size = true,
+	Position = true,
+	AnchorPoint = true,
+	FontFace = true,
+	TextColor3 = true,
+	BackgroundColor3 = true,
+	BackgroundTransparency = true,
+	BorderSizePixel = true,
+	Color = true,
+	Thickness = true,
+	Transparency = true,
+	CornerRadius = true,
+	Rotation = true,
+	MinTextSize = true,
+	MaxTextSize = true,
+}
+local singletons = {
+	UICorner = true,
+	UIGradient = true,
+	UIStroke = true,
+	UITextSizeConstraint = true,
+	UIAspectRatioConstraint = true,
+	UIScale = true,
+	UIListLayout = true,
+	UIGridLayout = true,
+	UISizeConstraint = true,
+}
+
+function Util.screen(name, order)
+	local parent = if RunService:IsRunning() then Players.LocalPlayer:WaitForChild("PlayerGui") else StarterGui
+	local gui = parent:FindFirstChild(name)
+	if not gui then
+		local source = StarterGui:FindFirstChild(name)
+		gui = if source then source:Clone() else Instance.new("ScreenGui")
+		gui.Name, gui.Parent = name, parent
+	end
+	gui.ResetOnSpawn, gui.ScreenInsets = false, Enum.ScreenInsets.CoreUISafeInsets
+	gui.DisplayOrder, gui.ZIndexBehavior, gui.Enabled = order or 15, Enum.ZIndexBehavior.Sibling, true
+	gui:SetAttribute("TemplateBacked", true)
+	return gui
+end
+
+function Util.prototype(parent, name, target)
+	local templates = parent:FindFirstChild("Templates")
+	local source = templates and templates:FindFirstChild(name)
+	if source then
+		local object = source:Clone()
+		object.Name, object.Parent = target, parent
+		if object:IsA("GuiObject") then
+			object.Visible = true
+		end
+		return object
+	end
+	return nil
+end
+
+function Util.make(class, parent, properties, transient)
+	local key = properties and properties.Name or (singletons[class] and class)
+	local object = not transient and key and parent and parent:FindFirstChild(key)
+	if object and not object:IsA(class) then
+		object = nil
+	end
+	local reuse = object ~= nil and object ~= false
+	object = object or Instance.new(class)
 	for key, value in properties or {} do
-		object[key] = value
+		if not (reuse and authored[key]) then
+			object[key] = value
+		end
 	end
 	object.Parent = parent
 	return object
@@ -14,7 +82,7 @@ end
 function Util.gradient(parent, top, bottom, rotation)
 	return Util.make("UIGradient", parent, { Color = ColorSequence.new(top, bottom), Rotation = rotation or 90 })
 end
-function Util.text(parent, name, text, size, position, font)
+function Util.text(parent, name, text, size, position, font, transient)
 	local label = Util.make("TextLabel", parent, {
 		Name = name,
 		BackgroundTransparency = 1,
@@ -24,7 +92,7 @@ function Util.text(parent, name, text, size, position, font)
 		TextColor3 = Theme.Colors.Text,
 		FontFace = font or Theme.Fonts.Body,
 		TextScaled = true,
-	})
+	}, transient)
 	Util.make("UITextSizeConstraint", label, { MinTextSize = 10, MaxTextSize = Theme.TextSize.Label })
 	return label
 end

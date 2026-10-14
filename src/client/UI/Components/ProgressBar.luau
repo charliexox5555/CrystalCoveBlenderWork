@@ -22,14 +22,18 @@ function ProgressBar.new(parent, size, position, compact)
 		track.BackgroundTransparency = 1
 		fill.Position, fill.Size = UDim2.fromScale(0, 0.34), UDim2.fromScale(0.67, 0.32)
 		fill.UIGradient.Color = ColorSequence.new(Theme.Battle.HpTop, Theme.Battle.HpBottom)
-		local rail = fill:Clone()
+		local rail = track:FindFirstChild("Rail") or fill:Clone()
 		rail.Name, rail.BackgroundColor3 = "Rail", Theme.Colors.TextMuted
-		rail.UIGradient:Destroy()
+		if rail:FindFirstChild("UIGradient") then
+			rail.UIGradient:Destroy()
+		end
 		rail.BackgroundTransparency, rail.ZIndex = 0.8, 0
 		rail.Parent = track
-		damage = fill:Clone()
+		damage = track:FindFirstChild("DamageTrail") or fill:Clone()
 		damage.Name, damage.BackgroundColor3 = "DamageTrail", Theme.Colors.Highlight
-		damage.UIGradient:Destroy()
+		if damage:FindFirstChild("UIGradient") then
+			damage.UIGradient:Destroy()
+		end
 		damage.Parent = track
 		damage.ZIndex, fill.ZIndex = 1, 2
 		label.Position, label.Size = UDim2.fromScale(0.7, 0), UDim2.fromScale(0.3, 1)

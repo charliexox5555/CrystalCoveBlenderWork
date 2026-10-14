@@ -7,6 +7,7 @@ Work is continuing through the overnight backlog. This file is updated at each c
 1. Publish from Studio after the implementation checks below are complete. Nothing is published automatically.
 2. On your real phone, start Arena 1, drag to the gold aim band, lock, watch powers and the final shatter. Repeat a few times and check readability, sound and frame rate.
 3. Asset imports and any required IDs will be listed here as they become ready.
+4. UI is now editable under StarterGui (13 ScreenGuis). Follow [the editing guide](../ui/EDITING_UI.md); keep names/Templates folders, replace Icon images, and save the place locally. Final UI artwork is yours under the latest direction.
 
 ## Progress
 
@@ -14,6 +15,7 @@ Work is continuing through the overnight backlog. This file is updated at each c
 - F2 complete: seven arenas, pad queues/bot fill, full multi-round match flow, Roll/Aim/Countdown/round end/results, free-only rerolls, spectator labels and asset gating. **60 Lune/Studio tests pass.** Seven concurrent matches ended cleanly (~60 desktop FPS sample). Native phone side-B aim/LOCK and reset/forfeit checks passed. See [F2 report](../testing/F2_MATCH_FLOW.md). Rewards are session-only until the next data step. Two-client integration remains on the later security/bug-hunt pass.
 - F3 backend: official ProfileStore pinned/reviewed (see docs/vendor), locked profiles, starter grants, match rewards/stats, duplicate stars/overflow, welcome-pull eligibility, filtered Kiln odds and single-use pull quotes implemented. **65 Lune/Studio tests pass.** Studio API access is off; isolated ProfileStore mock save/reload retained 321 test coins and a duplicate Pop ★1. Empty Kiln pool rejected a pull without a debit (321 coins, 0 pulls). Published servers use persistent `GlassClash_v2`; Studio defaults to isolated mock data. Kiln/collection UI is next.
 - F3 screens: Lobby coins/trophies, Kiln odds/reveal, collection filters/sort/details and Index implemented. Phone images and limitations in [F3 report](../testing/F3_DATA_KILN.md). Reveal tested with Studio-only fixtures (no grants); real pulls remain gated on non-starter art. Index completion rewards need a configured rule. UI-wide pass is underway; F4 and Blender exports remain next.
+- Latest UI direction implemented: 13 editable StarterGui templates, zero Position/Size offsets in source and runtime audit, named image/list placeholders, authored geometry preserved by binding. Fixed Results/lobby overlap. 65 Lune/Studio tests pass. No more final-art UI polish; assets/free retention are next. Studio playtest left running while the creator is back.
 
 ## Content currently installed
 

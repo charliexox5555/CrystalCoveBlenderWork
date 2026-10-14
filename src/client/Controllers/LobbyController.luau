@@ -10,6 +10,7 @@ local Panel = require(script.Parent.Parent.UI.Components.Panel)
 local Button = require(script.Parent.Parent.UI.Components.Button)
 local Collection = require(script.Parent.Parent.UI.Screens.CollectionScreen)
 local Kiln = require(script.Parent.Parent.UI.Screens.KilnScreen)
+local LobbyHud = require(script.Parent.Parent.UI.Screens.LobbyHud)
 local Controller = {}
 
 function Controller:Init(controllers)
@@ -27,6 +28,7 @@ function Controller:Close()
 	end
 	if self.Gui then
 		self.Gui.Enabled = not self.Player.PlayerGui:GetAttribute("InMatch")
+			and not self.Player.PlayerGui:GetAttribute("ResultsOpen")
 	end
 end
 
@@ -37,7 +39,7 @@ function Controller:PanelOpened()
 end
 
 function Controller:Open(kind)
-	if self.Player.PlayerGui:GetAttribute("InMatch") then
+	if self.Player.PlayerGui:GetAttribute("InMatch") or self.Player.PlayerGui:GetAttribute("ResultsOpen") then
 		return
 	end
 	self:Close()
@@ -53,42 +55,18 @@ end
 
 function Controller:Start()
 	local pg = self.Player.PlayerGui
-	self.Gui = U.make(
-		"ScreenGui",
-		pg,
-		{ Name = "LobbyHUD", ResetOnSpawn = false, ScreenInsets = Enum.ScreenInsets.CoreUISafeInsets, DisplayOrder = 5 }
-	)
-	local money = Panel.new(self.Gui, "Currency", UDim2.fromOffset(260, 44), UDim2.new(1, -270, 0, 6), true)
-	self.Currency =
-		U.text(money, "Balances", "Loading...", UDim2.fromScale(0.94, 1), UDim2.fromScale(0.03, 0), Theme.Fonts.Body)
-	for i, kind in { "Kiln", "Glassies", "Index" } do
-		local button = Button.new(
-			self.Gui,
-			kind,
-			kind:upper(),
-			"Blue",
-			UDim2.fromOffset(112, 44),
-			UDim2.fromOffset(8 + (i - 1) * 120, 58)
-		)
-		button.Activated:Connect(function()
-			self:Open(kind)
-		end)
-	end
-	self.Hint = U.text(
-		self.Gui,
-		"Hint",
-		"Step on a glowing pad to clash!",
-		UDim2.new(0.8, 0, 0, 28),
-		UDim2.new(0.1, 0, 0, 108),
-		Theme.Fonts.Caption
-	)
+	local hud = LobbyHud.new(function(kind)
+		self:Open(kind)
+	end)
+	self.Gui, self.Currency, self.Hint = hud.Gui, hud.Currency, hud.Hint
 	local function inMatch()
-		self.Gui.Enabled = not pg:GetAttribute("InMatch")
+		self.Gui.Enabled = not pg:GetAttribute("InMatch") and not pg:GetAttribute("ResultsOpen")
 		if not self.Gui.Enabled then
 			self:Close()
 		end
 	end
 	pg:GetAttributeChangedSignal("InMatch"):Connect(inMatch)
+	pg:GetAttributeChangedSignal("ResultsOpen"):Connect(inMatch)
 	inMatch()
 	Remotes.ProfileSnapshot.OnClientEvent:Connect(function(profile)
 		self.Profile = profile
@@ -98,7 +76,7 @@ function Controller:Start()
 		end
 	end)
 	Remotes.KilnOdds.OnClientEvent:Connect(function(data)
-		if pg:GetAttribute("InMatch") then
+		if pg:GetAttribute("InMatch") or pg:GetAttribute("ResultsOpen") then
 			return
 		end
 		self:Close()

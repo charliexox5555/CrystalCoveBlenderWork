@@ -1,5 +1,7 @@
 # UI Spec (v0.3: arena matches)
 
+**October 14 creator direction:** Codex lays out functional placeholders using Scale, with editable ScreenGui templates in StarterGui. The creator supplies final image-based styling. Ball v Ball screenshots are layout inspiration, not a one-to-one copy. See [editing guide](EDITING_UI.md). This takes priority over spending more time on final UI artwork.
+
 - **Style:** "crisp glass" (GAME_DESIGN 13): dark frosted panels, thin 2 px cyan → violet edges, Montserrat ExtraBold/Bold, Black Italic only for pop-ups, soft glows, no thick outlines. Color meanings: green buy/claim/confirm, red close/cancel, yellow special/limited, blue neutral, purple fuse.
 - **Tokens:** `src/client/UI/Theme.luau`. **Components:** `src/client/UI/Components` (Panel, Button, Pill, ProgressBar, GlassyPortrait, Util). Build every screen from these.
 - **Old mockups:** [Figma](https://www.figma.com/design/r3guIIk5deo7vNxLzJN0RZ) (inventory `2:268` and the style kit `2:2` still apply; the meter battle screen `2:657` is obsolete).

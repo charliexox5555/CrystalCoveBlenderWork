@@ -62,11 +62,11 @@ Theme.Meter = {
 
 -- Shape ----------------------------------------------------------------------------------------
 Theme.Radius = {
-	Tag = UDim.new(0, 8),
-	Button = UDim.new(0, 12),
-	Tile = UDim.new(0, 14),
-	Panel = UDim.new(0, 20),
-	Bar = UDim.new(0, 6),
+	Tag = UDim.new(0.05, 0),
+	Button = UDim.new(0.12, 0),
+	Tile = UDim.new(0.08, 0),
+	Panel = UDim.new(0.04, 0),
+	Bar = UDim.new(0.12, 0),
 }
 
 Theme.Stroke = {

@@ -12,9 +12,12 @@ local Controller = {}
 function Controller:Init(controllers)
 	self.Controllers = controllers
 	self.Player, self.Pending = Players.LocalPlayer, {}
+	self.ResultsOwner = {}
 end
 
 function Controller:CloseScreen()
+	TouchGate.release(self.ResultsOwner)
+	self.Player.PlayerGui:SetAttribute("ResultsOpen", false)
 	if self.Screen then
 		self.Screen:Destroy()
 		self.Screen = nil
@@ -53,11 +56,7 @@ function Controller:Notice(text)
 	if self.NoticeGui then
 		self.NoticeGui:Destroy()
 	end
-	local gui = U.make(
-		"ScreenGui",
-		self.Player.PlayerGui,
-		{ Name = "MatchNotice", ScreenInsets = Enum.ScreenInsets.CoreUISafeInsets, DisplayOrder = 30 }
-	)
+	local gui = U.screen("MatchNotice", 30)
 	local label = U.text(gui, "Notice", text, UDim2.fromScale(0.8, 0.1), UDim2.fromScale(0.1, 0.75), Theme.Fonts.Body)
 	label.TextColor3 = Theme.Colors.Highlight
 	self.NoticeGui = gui
@@ -108,11 +107,7 @@ function Controller:State(data)
 		self:Movement(true)
 	elseif data.Phase == "RoundEnd" then
 		self:CloseScreen()
-		local gui = U.make(
-			"ScreenGui",
-			self.Player.PlayerGui,
-			{ Name = "RoundEnd", ScreenInsets = Enum.ScreenInsets.CoreUISafeInsets, DisplayOrder = 15 }
-		)
+		local gui = U.screen("RoundEnd", 15)
 		local label = U.text(
 			gui,
 			"Round",
@@ -135,6 +130,8 @@ end
 function Controller:Result(data)
 	self:CloseScreen()
 	self:Movement(false)
+	TouchGate.acquire(self.ResultsOwner)
+	self.Player.PlayerGui:SetAttribute("ResultsOpen", true)
 	self.Pending = {}
 	self.Screen = Screens.results(data, function()
 		self:CloseScreen()
@@ -145,6 +142,16 @@ function Controller:Result(data)
 end
 
 function Controller:Start()
+	if RunService:IsStudio() then
+		local dev = Instance.new("BindableFunction")
+		dev.Name = "MatchClientDev"
+		dev.OnInvoke = function(action)
+			if action == "DismissResults" and self.Screen and self.Screen.Gui.Name == "ResultsScreen" then
+				self:CloseScreen()
+			end
+		end
+		dev.Parent = self.Player.PlayerScripts
+	end
 	Remotes.MatchState.OnClientEvent:Connect(function(data)
 		self:State(data)
 	end)

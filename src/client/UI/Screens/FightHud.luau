@@ -17,13 +17,7 @@ function Hud.new(data, maxima, lock)
 	local self =
 		setmetatable({ Bars = {}, Rings = {}, Status = {}, CrackLabels = {}, Maxima = maxima, LastHP = {} }, Hud)
 	self.Hearts = data.Hearts or { Balance.Match.Hearts, Balance.Match.Hearts }
-	self.Gui = U.make("ScreenGui", Players.LocalPlayer.PlayerGui, {
-		Name = "FightHud",
-		ResetOnSpawn = false,
-		ScreenInsets = Enum.ScreenInsets.CoreUISafeInsets,
-		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
-		DisplayOrder = 20,
-	})
+	self.Gui = U.screen("FightHud", 20)
 	self.Gui:SetAttribute("FightId", data.Id)
 	for side, setup in { data.A, data.B } do
 		local def = Glassies.get(setup.Id)
@@ -56,7 +50,8 @@ function Hud.new(data, maxima, lock)
 			U.corner(pip, UDim.new(1, 0))
 			table.insert(self.Rings[side], pip)
 		end
-		local displayName = if data.PlayerIds and data.PlayerIds[side] == Players.LocalPlayer.UserId
+		local displayName = if data.PlayerIds
+				and data.PlayerIds[side] == (Players.LocalPlayer and Players.LocalPlayer.UserId or 0)
 			then "YOU • " .. string.upper(def.Name)
 			else string.upper(def.Name)
 		U.text(panel, "Name", displayName, UDim2.fromScale(0.7, 0.25), UDim2.fromScale(0.26, 0.08), Theme.Fonts.Heading)
@@ -112,7 +107,7 @@ function Hud.new(data, maxima, lock)
 	self.Marker = U.make("Frame", rail, {
 		Name = "Marker",
 		AnchorPoint = Vector2.new(0.5, 0.5),
-		Size = UDim2.new(0, 4, 3, 0),
+		Size = UDim2.fromScale(0.012, 3),
 		Position = UDim2.fromScale(0.5, 0.5),
 		BackgroundColor3 = Theme.Colors.Text,
 		BorderSizePixel = 0,
@@ -209,8 +204,12 @@ function Hud:Banner(side, text, tint, quiet)
 end
 
 function Hud:Edge(tint)
-	local frame =
-		U.make("Frame", self.Gui, { Name = "PowerEdge", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1 })
+	local frame = U.make(
+		"Frame",
+		self.Gui,
+		{ Name = "PowerEdge", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1 },
+		true
+	)
 	local stroke = U.make("UIStroke", frame, { Thickness = 6, Color = tint, Transparency = 0.35 })
 	TweenService:Create(stroke, TweenInfo.new(Balance.Feel.PowerEdgeSeconds), { Transparency = 1 }):Play()
 	Debris:AddItem(frame, Balance.Feel.PowerEdgeSeconds)
@@ -226,11 +225,16 @@ function Hud:Popup(text, position, tint, lane, key)
 	if not visible then
 		return
 	end
-	local label =
-		U.text(self.Gui, "Popup", text, UDim2.fromOffset(150, 42), UDim2.fromOffset(p.X, p.Y), Theme.Fonts.PopUp)
+	local label = U.prototype(self.Gui, "Popup", "Popup")
+		or U.text(self.Gui, "Popup", text, UDim2.fromScale(0.2, 0.12), UDim2.new(), Theme.Fonts.PopUp, true)
+	label.Text = text
 	-- Viewport coordinates include the safe inset; ScreenGui coordinates do not.
 	local inset = self.Gui.AbsolutePosition
-	label.Position = UDim2.fromOffset(p.X - inset.X + (lane or 0) * 45, p.Y - inset.Y)
+	local size = self.Gui.AbsoluteSize
+	label.Position = UDim2.fromScale(
+		(p.X - inset.X) / math.max(1, size.X) + (lane or 0) * 0.06,
+		(p.Y - inset.Y) / math.max(1, size.Y)
+	)
 	self.Popups[key] = label
 	label.AnchorPoint, label.TextColor3, label.ZIndex = Vector2.new(0.5, 0.5), tint, 8
 	label.UITextSizeConstraint.MaxTextSize = Theme.TextSize.Heading
@@ -238,7 +242,7 @@ function Hud:Popup(text, position, tint, lane, key)
 	TweenService:Create(
 		label,
 		TweenInfo.new(Balance.Feel.PopupSeconds),
-		{ Position = label.Position - UDim2.fromOffset(0, 45), TextTransparency = 1 }
+		{ Position = label.Position - UDim2.fromScale(0, 0.1), TextTransparency = 1 }
 	):Play()
 	Debris:AddItem(label, Balance.Feel.PopupSeconds)
 end

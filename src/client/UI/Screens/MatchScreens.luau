@@ -8,18 +8,13 @@ local U = require(script.Parent.Parent.Components.Util)
 local Panel = require(script.Parent.Parent.Components.Panel)
 local Button = require(script.Parent.Parent.Components.Button)
 local Portrait = require(script.Parent.Parent.Components.GlassyPortrait)
+local Window = require(script.Parent.Parent.Components.Window)
 local Screens = {}
 Screens.__index = Screens
 
 function Screens.new(name)
 	local self = setmetatable({ Connections = {}, Portraits = {} }, Screens)
-	self.Gui = U.make("ScreenGui", Players.LocalPlayer.PlayerGui, {
-		Name = name,
-		ResetOnSpawn = false,
-		ScreenInsets = Enum.ScreenInsets.CoreUISafeInsets,
-		DisplayOrder = 15,
-		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
-	})
+	self.Gui = U.screen(name, 15)
 	return self
 end
 
@@ -50,7 +45,7 @@ function Screens.queue(data, leave)
 	self.Fill = U.make(
 		"Frame",
 		track,
-		{ Size = UDim2.fromScale(0, 1), BackgroundColor3 = Theme.Colors.EdgeA, BorderSizePixel = 0 }
+		{ Name = "Fill", Size = UDim2.fromScale(0, 1), BackgroundColor3 = Theme.Colors.EdgeA, BorderSizePixel = 0 }
 	)
 	self:Connect(
 		Button.new(panel, "Leave", "LEAVE", "Red", UDim2.fromScale(0.37, 0.28), UDim2.fromScale(0.08, 0.65)),
@@ -75,7 +70,7 @@ function Screens.roll(data, pick, reroll)
 	local self = Screens.new("RollScreen")
 	self.Data = data
 	self.Panel = Panel.new(self.Gui, "Roll", UDim2.fromScale(0.94, 0.87), UDim2.fromScale(0.03, 0.04))
-	local side = table.find(data.PlayerIds, Players.LocalPlayer.UserId) or 1
+	local side = table.find(data.PlayerIds, Players.LocalPlayer and Players.LocalPlayer.UserId or 0) or 1
 	self.Title = U.text(
 		self.Panel,
 		"Title",
@@ -105,6 +100,8 @@ function Screens.roll(data, pick, reroll)
 		UDim2.fromScale(0.325, 0.87)
 	)
 	self:Connect(self.Reroll, reroll)
+	local cards = self.Panel:FindFirstChild("Cards")
+	self.CardsTemplate = cards and cards:Clone()
 	self.Pick = pick
 	return self
 end
@@ -112,6 +109,13 @@ end
 function Screens:Offers(data)
 	if self.Cards then
 		self.Cards:Destroy()
+	end
+	local old = self.Panel:FindFirstChild("Cards")
+	if old then
+		old:Destroy()
+	end
+	if self.CardsTemplate then
+		self.CardsTemplate:Clone().Parent = self.Panel
 	end
 	self.Portraits = {}
 	self.Cards = U.make("Frame", self.Panel, {
@@ -161,7 +165,7 @@ function Screens:Offers(data)
 			Theme.Fonts.Caption
 		)
 		local select = U.make("TextButton", card, {
-			Name = "Select_" .. id,
+			Name = "Select",
 			Text = "",
 			Size = UDim2.fromScale(1, 1),
 			BackgroundTransparency = 1,
@@ -174,41 +178,39 @@ function Screens:Offers(data)
 				self.Pick(id)
 			end
 		end)
-		local info = Button.new(card, "Info", "i", "Blue", UDim2.fromOffset(44, 44), UDim2.new(1, -46, 0, 2))
+		local info = Button.new(card, "Info", "i", "Blue", UDim2.fromScale(0.2, 0.22), UDim2.fromScale(0.79, 0.01))
 		info.ZIndex = 12
 		self:Connect(info, function()
-			if self.Info then
-				self.Info:Destroy()
-			end
-			local box = Panel.new(self.Panel, "PowerInfo", UDim2.fromScale(0.94, 0.7), UDim2.fromScale(0.03, 0.2))
-			box.ZIndex, box.BackgroundTransparency, box.Active = 30, 0, true
-			self.Info = box
-			local passive, power = Powers.passive(def.Passive), Powers.special(def.Special)
-			U.text(box, "Title", def.Name, UDim2.new(1, -90, 0, 44), UDim2.fromOffset(12, 4), Theme.Fonts.Heading)
-			local copy = U.text(
-				box,
-				"Description",
-				(def.PassiveName or passive.Name)
-					.. ": "
-					.. passive.Description
-					.. "\n\n"
-					.. (def.SpecialName or power.Name)
-					.. ": "
-					.. power.Description,
-				UDim2.new(1, -24, 1, -60),
-				UDim2.fromOffset(12, 52),
-				Theme.Fonts.Body
-			)
-			copy.TextWrapped, copy.TextXAlignment = true, Enum.TextXAlignment.Left
-			self:Connect(
-				Button.new(box, "Close", "X", "Red", UDim2.fromOffset(48, 44), UDim2.new(1, -58, 0, 6)),
-				function()
-					box:Destroy()
-					self.Info = nil
-				end
-			)
+			self:PowerInfo(id)
 		end)
 	end
+end
+
+function Screens:PowerInfo(id)
+	if self.Info then
+		self.Info:Destroy()
+	end
+	local def = Glassies.get(id)
+	self.Info = Window.new("RollInfoScreen", def.Name, function()
+		self.Info:Destroy()
+		self.Info = nil
+	end)
+	local passive, power = Powers.passive(def.Passive), Powers.special(def.Special)
+	local copy = U.text(
+		self.Info.Content,
+		"Description",
+		(def.PassiveName or passive.Name)
+			.. ": "
+			.. passive.Description
+			.. "\n\n"
+			.. (def.SpecialName or power.Name)
+			.. ": "
+			.. power.Description,
+		UDim2.fromScale(0.94, 0.9),
+		UDim2.fromScale(0.03, 0.03),
+		Theme.Fonts.Body
+	)
+	copy.TextWrapped, copy.TextXAlignment = true, Enum.TextXAlignment.Left
 end
 
 function Screens.results(data, replay, lobby)
@@ -244,6 +246,11 @@ function Screens.results(data, replay, lobby)
 		Position = UDim2.fromScale(0.04, 0.31),
 		BackgroundTransparency = 1,
 	})
+	for _, child in history:GetChildren() do
+		if child.Name:match("^Round%d+_") then
+			child:Destroy()
+		end
+	end
 	for row, side in { data.Side, 3 - data.Side } do
 		U.text(
 			history,
@@ -254,14 +261,18 @@ function Screens.results(data, replay, lobby)
 			Theme.Fonts.Caption
 		)
 		for i, round in data.History do
+			local name = "Round" .. row .. "_" .. i
+			U.prototype(history, "RoundPortrait", name)
 			local p = Portrait.new(
 				history,
 				round.Picks[side],
 				UDim2.fromScale(0.16, 0.5),
-				UDim2.fromScale(0.13 + (i - 1) * 0.175, (row - 1) * 0.5)
+				UDim2.fromScale(0.13 + (i - 1) * 0.175, (row - 1) * 0.5),
+				name
 			)
+			p.Position, p.Size = UDim2.fromScale(0.13 + (i - 1) * 0.175, (row - 1) * 0.5), UDim2.fromScale(0.16, 0.5)
 			if row == 1 then
-				U.text(
+				local resultLabel = U.text(
 					p,
 					"Round",
 					if round.Winner == side then "WIN" else "LOSS",
@@ -269,6 +280,9 @@ function Screens.results(data, replay, lobby)
 					UDim2.fromScale(0, 0.72),
 					Theme.Fonts.Caption
 				)
+				resultLabel.Visible = true
+			elseif p:FindFirstChild("Round") then
+				p.Round.Visible = false
 			end
 		end
 	end
@@ -317,6 +331,12 @@ function Screens:Render(now)
 end
 
 function Screens:Destroy()
+	if self.CardsTemplate then
+		self.CardsTemplate:Destroy()
+	end
+	if self.Info then
+		self.Info:Destroy()
+	end
 	for _, connection in self.Connections do
 		connection:Disconnect()
 	end

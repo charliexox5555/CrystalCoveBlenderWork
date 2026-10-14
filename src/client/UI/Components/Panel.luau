@@ -22,7 +22,7 @@ function Panel.new(parent, name, size, position, compact)
 		edge.Thickness, edge.Transparency = Theme.Stroke.Button, Theme.Battle.EdgeTransparency
 		local highlight = U.make("Frame", panel, {
 			Name = "GlassHighlight",
-			Size = UDim2.new(0.94, 0, 0, 1),
+			Size = UDim2.fromScale(0.94, 0.006),
 			Position = UDim2.fromScale(0.03, 0),
 			BackgroundColor3 = Theme.Colors.Text,
 			BackgroundTransparency = 0.65,

@@ -14,6 +14,18 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-14 — Codex — F2 seven-arena match flow
+Done:
+- Added ArenaService queues/bot fill/step-off/Leave/Play Again and runtime arena labels; MatchRunner/MatchService orchestrate all phases via MatchLogic, with free-only rerolls, ownership/phase validation, common remote limiting, reset/disconnect forfeits and one-time completion.
+- Generalized FightService and client FightView to concurrent arenas, side-A/B aiming, local camera/label/audio focus and nearby spectator updates. Rolls/bots use installed assets only. Added Roll/Queue/Results screens with spinning starter portraits, heart tracking and session rewards. Reduced visual tumble cap for clearer pass-bys; no fight/economy rule values changed.
+- Lune/Studio: 60 passed, 0 failed. Native queue/leave/card/lock/results/requeue checks; phone side-B Perfect + LOCK; seven matches completed concurrently with no gameplay Output errors, ~60 desktop FPS over 5 s (max frame 18.4 ms). Reset cleanup verified. Studio returned to default viewport. Evidence: docs/testing/F2_MATCH_FLOW.md.
+Next:
+- F3 ProfileStore, coin Kiln and collection/index; then full UI/device pass and Blender exports. Real phone and publishing stay with the user.
+Problems:
+- No current blocker. Two-client integration remains on the later bug-hunt pass. Only three starter assets are installed; no unimported glassy enters a normal roll.
+Simulators (unchanged rules):
+- Mirrors 20–44 s, 0% timeouts, side bias 49%; starter triangle 66/69/64%; Perfect vs worst 67%; equal-stat field 39–60%. Economy ~3.7 min/match, 4 pulls day 1 / 96 day 30, Rare 47 min / Epic 2.1 h / Legendary 9 h, 20% Mythic in 30 days. Full reports: F2_balance.txt, F2_economy.txt. F1 calibration candidate still awaits Claude.
+
 ## 2026-10-14 — Codex — F1 fight prototype and overnight continuation
 Done:
 - Built server 60 Hz / three-substep spherical pendulums with seeded wander, reciprocal guidance, bounces, spin and tumble; FightRules owns hits/powers/KO. Added validated/rate-limited aim, compact 20 Hz snapshots, reliable timed events, Hermite rendering, strings, aim/ghost/Perfect/LOCK, HUD charge rings, all passive/power cues, cracks, sound layers, big-hit hitstop/shake/haptics, side-on shatter and heart pop.

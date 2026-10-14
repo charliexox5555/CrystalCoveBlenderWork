@@ -1,0 +1,328 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local RS = game:GetService("ReplicatedStorage")
+local Balance = require(RS.Shared.Config.Balance)
+local Logic = require(RS.Shared.MatchLogic)
+local Rules = require(RS.Shared.FightRules)
+local Rng = require(RS.Shared.Rng)
+local Remotes = require(RS.Shared.Remotes)
+local Runner = require(script.Parent.Parent.Simulation.MatchRunner)
+local Guard = require(script.Parent.Parent.Util.RemoteGuard)
+local Assets = require(script.Parent.Parent.Util.AssetCatalog)
+local Service = {}
+
+function Service:Init(services)
+	self.Services, self.Matches, self.ByPlayer, self.Serial, self.Temporary = services, {}, {}, 0, {}
+	self.Guard = Guard.new()
+	self.CharacterConnections = {}
+end
+
+function Service:IsReady(player)
+	return not self.Services.DataService or self.Services.DataService:IsReady(player)
+end
+
+function Service:Collection(player)
+	local data = player and self.Services.DataService and self.Services.DataService:Get(player)
+	return Assets.collection(data and data.Glassies or {})
+end
+
+function Service:Meta(entry)
+	local match = entry.Runner.Match
+	local out = {
+		MatchId = entry.Id,
+		Round = match.Round,
+		Hearts = {},
+		Names = {},
+		PlayerIds = {},
+		LastPicks = {},
+		ArenaId = entry.Arena.Id,
+		Spectate = entry.Spectate,
+		Deadline = entry.Runner.Deadline,
+		Phase = entry.Runner.Phase,
+	}
+	for side = 1, 2 do
+		local player = entry.Players[side]
+		out.Hearts[side], out.Names[side] = match.Sides[side].Hearts, player and player.DisplayName or "Glint Bot"
+		out.PlayerIds[side], out.LastPicks[side] = player and player.UserId or 0, match.Sides[side].LastPick or ""
+	end
+	return out
+end
+
+function Service:Offer(entry, side, message)
+	local player = entry.Players[side]
+	if not player or not player.Parent then
+		return
+	end
+	local state = entry.Runner.Match.Sides[side]
+	local collection = state.Collection
+	Remotes.RollOffers:FireClient(player, {
+		MatchId = entry.Id,
+		Round = entry.Runner.Match.Round,
+		Offers = state.Offers,
+		Collection = collection,
+		CanReroll = #Logic.ownedIds(collection) > Balance.Match.RollChoices
+			and Logic.rerollCost(state.RerollsUsed) == 0
+			and not state.Pick,
+		Picked = state.Pick,
+		Message = message,
+	})
+end
+
+function Service:StartMatch(arena, players, now, spectate)
+	if self.Matches[arena.Id] then
+		return false
+	end
+	self.Serial += 1
+	local seed = Random.new():NextInteger(1, 100000000)
+	local rng = Rng.new(seed)
+	local setups = {}
+	local humanCollection = self:Collection(players[1] or players[2])
+	for side = 1, 2 do
+		setups[side] = {
+			Collection = players[side] and self:Collection(players[side])
+				or Assets.collection(Logic.botCollection(humanCollection, rng)),
+			IsBot = players[side] == nil,
+			Skill = Balance.Match.BotSkillMin + rng() * (Balance.Match.BotSkillMax - Balance.Match.BotSkillMin),
+		}
+	end
+	local entry = {
+		Id = (game.JobId ~= "" and game.JobId or "studio") .. "-match-" .. self.Serial,
+		Arena = arena,
+		Players = players,
+		Seed = seed,
+		Spectate = spectate == true,
+		Runner = Runner.new(setups, rng, now),
+		Perfects = { 0, 0 },
+		Finished = false,
+	}
+	self.Matches[arena.Id] = entry
+	arena.Busy = true
+	for side, player in players do
+		self.ByPlayer[player] = { Entry = entry, Side = side }
+	end
+	self:Dispatch(entry, now)
+	return true, entry.Id
+end
+
+function Service:Finish(entry)
+	if entry.Finished then
+		return
+	end
+	entry.Finished = true
+	local match = entry.Runner.Match
+	if entry.FightId then
+		self.Services.FightService:Stop(entry.FightId)
+	end
+	for side, player in entry.Players do
+		self.ByPlayer[player] = nil
+		if not player.Parent then
+			continue
+		end
+		local profile = self.Services.DataService and self.Services.DataService:Get(player)
+		local temp = self.Temporary[player] or { Coins = 0, Trophies = 0 }
+		self.Temporary[player] = temp
+		local rewards = Logic.rewards(match, side, profile and profile.Trophies or temp.Trophies)
+		if self.Services.DataService then
+			self.Services.DataService:RecordMatch(player, entry.Id, match, side, rewards, entry.Perfects[side])
+		else
+			temp.Coins += rewards.Coins
+			temp.Trophies += rewards.Trophies
+		end
+		Remotes.MatchResult:FireClient(player, {
+			MatchId = entry.Id,
+			Won = match.Winner == side,
+			Side = side,
+			Rewards = rewards,
+			History = match.History,
+			Hearts = { match.Sides[1].Hearts, match.Sides[2].Hearts },
+			Saved = self.Services.DataService and self.Services.DataService:IsPersistent(player) or false,
+			ArenaId = entry.Arena.Id,
+		})
+	end
+	self.Matches[entry.Arena.Id] = nil
+	self.Services.ArenaService:Release(entry.Arena, entry.Players)
+end
+
+function Service:Dispatch(entry, now)
+	for _, change in entry.Runner:Drain() do
+		local meta = self:Meta(entry)
+		local match = entry.Runner.Match
+		if change.Phase == "Rolling" then
+			if entry.FightId then
+				self.Services.FightService:Stop(entry.FightId)
+			end
+			entry.FightId = entry.Id .. "-round-" .. match.Round
+			for side, player in entry.Players do
+				Remotes.MatchState:FireClient(player, meta)
+				self:Offer(entry, side)
+			end
+		elseif change.Phase == "Aiming" or change.Phase == "Countdown" then
+			local setup = Logic.fightSetup(match)
+			meta.Id, meta.ReleaseAt = entry.FightId, if change.Phase == "Countdown" then change.Deadline else nil
+			if change.Phase == "Aiming" then
+				for _, state in match.Sides do
+					if not state.IsBot then
+						state.Aim, state.AimYaw = nil, nil
+					end
+				end
+				setup.A.Aim, setup.A.AimYaw, setup.B.Aim, setup.B.AimYaw =
+					Balance.Motion.AimDefault, 0, Balance.Motion.AimDefault, 0
+			end
+			Remotes.MatchState:FireAllClients(self.Services.FightService:Describe(entry.Arena, setup, meta))
+		elseif change.Phase == "Fighting" then
+			local setup = Logic.fightSetup(match)
+			meta.Id = entry.FightId
+			for side, state in match.Sides do
+				if Rules.isPerfect(state.Aim, match.SweetSpot) then
+					entry.Perfects[side] += 1
+				end
+			end
+			self.Services.FightService:StartFight(
+				entry.FightId,
+				entry.Arena,
+				setup,
+				entry.Seed + match.Round,
+				meta,
+				function(fight)
+					if entry.Finished then
+						return
+					end
+					entry.Runner:FightEnded(fight.Winner, workspace:GetServerTimeNow())
+					self:Dispatch(entry, workspace:GetServerTimeNow())
+				end
+			)
+		elseif change.Phase == "RoundEnd" then
+			meta.Id = entry.FightId
+			local setup = Logic.fightSetup(match)
+			meta.RoundWinner = match.History[#match.History].Winner
+			Remotes.MatchState:FireAllClients(self.Services.FightService:Describe(entry.Arena, setup, meta))
+		elseif change.Phase == "MatchEnd" then
+			self:Finish(entry)
+		end
+		if not entry.Finished then
+			self.Services.ArenaService:Label(
+				entry.Arena,
+				meta.Names[1]
+					.. " vs "
+					.. meta.Names[2]
+					.. "\n"
+					.. string.rep("♥", meta.Hearts[1])
+					.. " • ROUND "
+					.. meta.Round
+					.. " • "
+					.. string.rep("♥", meta.Hearts[2])
+			)
+		end
+	end
+end
+
+function Service:Request(player, action, interval, callback)
+	if not self.Guard:Allow(player, action, interval) then
+		return
+	end
+	local owned = self.ByPlayer[player]
+	if not owned or owned.Entry.Finished then
+		return
+	end
+	callback(owned.Entry, owned.Side)
+end
+
+function Service:Forfeit(player)
+	local owned = self.ByPlayer[player]
+	if owned then
+		owned.Entry.Runner:Forfeit(owned.Side, workspace:GetServerTimeNow())
+		self:Dispatch(owned.Entry, workspace:GetServerTimeNow())
+	end
+end
+
+function Service:Start()
+	local function track(player)
+		self.CharacterConnections[player] = player.CharacterRemoving:Connect(function()
+			self:Forfeit(player)
+		end)
+	end
+	for _, player in Players:GetPlayers() do
+		track(player)
+	end
+	Players.PlayerAdded:Connect(track)
+	Remotes.PickGlassy.OnServerEvent:Connect(function(player, id)
+		self:Request(player, "Pick", Balance.Match.PickRateSeconds, function(entry, side)
+			if type(id) ~= "string" or #id > 64 then
+				return
+			end
+			entry.Runner:Pick(side, id)
+			self:Offer(entry, side)
+			entry.Runner:Step(workspace:GetServerTimeNow())
+			self:Dispatch(entry, workspace:GetServerTimeNow())
+		end)
+	end)
+	Remotes.Reroll.OnServerEvent:Connect(function(player)
+		self:Request(player, "Reroll", Balance.Match.RerollRateSeconds, function(entry, side)
+			local ok, reason = entry.Runner:Reroll(side)
+			self:Offer(entry, side, if ok then nil else reason)
+		end)
+	end)
+	Remotes.SetAim.OnServerEvent:Connect(function(player, aim, yaw)
+		self:Request(player, "Aim", Balance.Match.AimRateSeconds, function(entry, side)
+			if not Guard.finite(aim) or not Guard.finite(yaw) then
+				return
+			end
+			entry.Runner:Aim(side, aim, yaw)
+			entry.Runner:Step(workspace:GetServerTimeNow())
+			self:Dispatch(entry, workspace:GetServerTimeNow())
+		end)
+	end)
+	Players.PlayerRemoving:Connect(function(player)
+		self:Forfeit(player)
+		if self.CharacterConnections[player] then
+			self.CharacterConnections[player]:Disconnect()
+			self.CharacterConnections[player] = nil
+		end
+		self.ByPlayer[player], self.Temporary[player] = nil, nil
+		self.Guard:Remove(player)
+	end)
+	RunService.Heartbeat:Connect(function()
+		local now = workspace:GetServerTimeNow()
+		for _, entry in self.Matches do
+			entry.Runner:Step(now)
+			self:Dispatch(entry, now)
+		end
+	end)
+	if RunService:IsStudio() then
+		local dev = Instance.new("BindableFunction")
+		dev.Name = "MatchDev"
+		dev.OnInvoke = function(command, ...)
+			if command == "Start" then
+				local id, a, b = ...
+				local arena = self.Services.ArenaService.Arenas[id]
+				if not arena or arena.Busy then
+					return false
+				end
+				return self:StartMatch(arena, { [1] = a, [2] = b }, workspace:GetServerTimeNow())
+			end
+			if command == "AllBots" then
+				local out = {}
+				for id, arena in self.Services.ArenaService.Arenas do
+					if not arena.Busy then
+						out[id] = { self:StartMatch(arena, {}, workspace:GetServerTimeNow(), id == 1) }
+					end
+				end
+				return out
+			end
+			if command == "Inspect" then
+				local out = {}
+				for id, e in self.Matches do
+					out[id] = {
+						Phase = e.Runner.Phase,
+						Round = e.Runner.Match.Round,
+						Hearts = { e.Runner.Match.Sides[1].Hearts, e.Runner.Match.Sides[2].Hearts },
+					}
+				end
+				return out
+			end
+		end
+		dev.Parent = game.ServerStorage
+	end
+end
+
+return Service

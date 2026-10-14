@@ -112,7 +112,7 @@ function Shatter:Break(fighter, root)
 	else
 		local source = RS.Assets.Glassies[fighter.Id]
 		pieces = source.Shards:GetChildren()
-		for _, detail in source.Details:GetChildren() do
+		for _, detail in (source:FindFirstChild("Details") and source.Details:GetChildren() or {}) do
 			if not detail.Name:find("Bubble") then
 				table.insert(pieces, detail)
 			end
@@ -191,10 +191,10 @@ function Shatter:Break(fighter, root)
 	emitter.Parent = sparkle
 	emitter:Emit(Feel.Sparkles)
 	Debris:AddItem(sparkle, Feel.ShardSeconds)
-	self:Sound(Audio.Break, sparkle, 0.92, 0.65)
+	self:Sound(Audio.Break, sparkle, 0.92, 0.65 * (fighter.SoundScale or 1))
 	task.delay(0.12, function()
 		if sparkle.Parent then
-			self:Sound(Audio.Tinkle, sparkle, 1.2, 0.4)
+			self:Sound(Audio.Tinkle, sparkle, 1.2, 0.4 * (fighter.SoundScale or 1))
 		end
 	end)
 end

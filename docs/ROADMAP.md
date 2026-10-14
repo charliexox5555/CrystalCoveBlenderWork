@@ -1,7 +1,7 @@
 # Roadmap
 
 Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DESIGN v0.3](GAME_DESIGN.md).
-**Current milestone: F2 — Match flow on all seven arenas.** Overnight work authorized; real-phone checks and publishing remain with the user.
+**Current milestone: F3 — Data, Kiln and collection.** Overnight work authorized; real-phone checks and publishing remain with the user.
 
 Owner key: **C** = Codex (code / Studio MCP), **B** = Codex with Blender MCP, **CL** = Claude (research, design, pure rules, docs), **U** = you.
 
@@ -44,8 +44,8 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 ## F2 — Match flow and lobby blockout (Oct 20–26)
 
-- [ ] **C:** `ArenaService` pads + queue + bot fill; `MatchService` phases with `MatchLogic`
-- [ ] **C:** Roll screen (3 cards, reroll), Aim, Countdown, Round end (glass heart pops), Results
+- [x] **C:** `ArenaService` pads + queue + bot fill; `MatchService` phases with `MatchLogic`; seven concurrent arenas, free rerolls only
+- [x] **C:** Roll screen (3 cards, reroll), Aim, Countdown, Round end (glass heart pops), Results; [F2 report](testing/F2_MATCH_FLOW.md)
 - [ ] **B:** sky kit: crystal kit (3 meshes), Kiln crystal, featured arch, clouds (MAP_PLAN / CONCEPT.md "Pieces")
 
 ## F3 — Data, Kiln and collection (Oct 27–Nov 2)

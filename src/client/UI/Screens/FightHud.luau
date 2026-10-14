@@ -16,6 +16,7 @@ Hud.__index = Hud
 function Hud.new(data, maxima, lock)
 	local self =
 		setmetatable({ Bars = {}, Rings = {}, Status = {}, CrackLabels = {}, Maxima = maxima, LastHP = {} }, Hud)
+	self.Hearts = data.Hearts or { Balance.Match.Hearts, Balance.Match.Hearts }
 	self.Gui = U.make("ScreenGui", Players.LocalPlayer.PlayerGui, {
 		Name = "FightHud",
 		ResetOnSpawn = false,
@@ -55,14 +56,10 @@ function Hud.new(data, maxima, lock)
 			U.corner(pip, UDim.new(1, 0))
 			table.insert(self.Rings[side], pip)
 		end
-		U.text(
-			panel,
-			"Name",
-			string.upper(def.Name),
-			UDim2.fromScale(0.7, 0.25),
-			UDim2.fromScale(0.26, 0.08),
-			Theme.Fonts.Heading
-		)
+		local displayName = if data.PlayerIds and data.PlayerIds[side] == Players.LocalPlayer.UserId
+			then "YOU • " .. string.upper(def.Name)
+			else string.upper(def.Name)
+		U.text(panel, "Name", displayName, UDim2.fromScale(0.7, 0.25), UDim2.fromScale(0.26, 0.08), Theme.Fonts.Heading)
 		self.Bars[side] = Bar.new(panel, UDim2.fromScale(0.69, 0.28), UDim2.fromScale(0.26, 0.35), true)
 		local hearts = U.text(panel, "Hearts", "♥ ♥ ♥", UDim2.fromScale(0.28, 0.19), UDim2.fromScale(0.26, 0.68))
 		hearts.TextColor3 = tint
@@ -175,16 +172,18 @@ function Hud:Update(r)
 				cracks += 1
 			end
 		end
-		self.CrackLabels[side].Text = "♥ ♥ ♥" .. string.rep(" ◇", cracks)
+		self.CrackLabels[side].Text = string.rep("♥ ", self.Hearts[side])
+			.. string.rep("◇ ", Balance.Match.Hearts - self.Hearts[side])
+			.. string.rep("·", cracks)
 		for i, pip in self.Rings[side] do
 			pip.BackgroundTransparency = if i <= math.ceil((r.Power[side] or 0) * 16) then 0 else 0.85
 		end
 		self.Status[side].Text = if r.Frozen[side]
-			then "❄ FROZEN"
-			elseif r.Shield[side] then "◇ SHIELD"
-			elseif r.Rage[side] then "✦ RAGE"
-			elseif r.Pump and r.Pump[side] then "↗ BIG SWING"
-			elseif r.Slam and r.Slam[side] then "✦ SLAM"
+			then "FROZEN"
+			elseif r.Shield[side] then "SHIELD"
+			elseif r.Rage[side] then "RAGE"
+			elseif r.Pump and r.Pump[side] then "BIG SWING"
+			elseif r.Slam and r.Slam[side] then "SLAM"
 			else ""
 		if r.Effect and self.Status[side].Text ~= "" then
 			local remaining = math.max(table.unpack(r.Effect[side]))

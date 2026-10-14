@@ -9,6 +9,12 @@ local M, Feel = Balance.Motion, Balance.Feel
 local Scene = {}
 Scene.__index = Scene
 
+function Scene:Sound(...)
+	if not self.Muted then
+		self.Shatter:Sound(...)
+	end
+end
+
 local function part(parent, name, color)
 	local p = Instance.new("Part")
 	p.Name, p.Anchored, p.CanCollide, p.CanTouch, p.CanQuery = name, true, false, false, false
@@ -30,7 +36,8 @@ end
 function Scene.new(data, maxima, shatter)
 	local self = setmetatable({ Frame = data.Frame, Fighters = {}, Shatter = shatter, Ghost = {} }, Scene)
 	self.Root = Instance.new("Folder")
-	self.Root.Name = "LocalFight"
+	self.Root.Name = "LocalFight_" .. tostring(data.Id)
+	self.Root:SetAttribute("FightId", data.Id)
 	self.Root.Parent = workspace
 	for side, setup in { data.A, data.B } do
 		local def = Glassies.get(setup.Id)
@@ -44,7 +51,7 @@ function Scene.new(data, maxima, shatter)
 		local body = source.Body:Clone()
 		body.Parent = model
 		local parts = { body }
-		for _, template in source.Details:GetChildren() do
+		for _, template in (source:FindFirstChild("Details") and source.Details:GetChildren() or {}) do
 			local detail = template:Clone()
 			detail.Parent = model
 			table.insert(parts, detail)
@@ -63,7 +70,7 @@ function Scene.new(data, maxima, shatter)
 		for _, template in source.Shards:GetChildren() do
 			template:Clone().Parent = templates
 		end
-		for _, template in source.Details:GetChildren() do
+		for _, template in (source:FindFirstChild("Details") and source.Details:GetChildren() or {}) do
 			if not template.Name:find("Bubble") then
 				template:Clone().Parent = templates
 			end
@@ -131,7 +138,8 @@ function Scene:Pose(side, p, twist, tilt)
 	f.Bubble.CFrame = f.Body.CFrame
 end
 
-function Scene:GhostPath(aim, yaw)
+function Scene:GhostPath(aim, yaw, side)
+	side = side or 1
 	for i = 1, 18 do
 		local dot = self.Ghost[i]
 		if not dot then
@@ -140,9 +148,12 @@ function Scene:GhostPath(aim, yaw)
 			self.Ghost[i] = dot
 		end
 		local angle = -aim + 2 * aim * (i - 1) / 17
-		local p = Vector3.new(math.sin(angle) * math.cos(yaw), -math.cos(angle), -math.sin(angle) * math.sin(yaw))
-			* M.StringLength
-		dot.Position = self.Fighters[1].Hook.WorldPosition + self.Frame:VectorToWorldSpace(p)
+		local p = Vector3.new(
+			(if side == 1 then 1 else -1) * math.sin(angle) * math.cos(yaw),
+			-math.cos(angle),
+			-math.sin(angle) * math.sin(yaw)
+		) * M.StringLength
+		dot.Position = self.Fighters[side].Hook.WorldPosition + self.Frame:VectorToWorldSpace(p)
 	end
 end
 
@@ -161,7 +172,7 @@ function Scene:Update(r, time)
 		local previous = f.CrackStage or 0
 		self.Shatter:SetCracks(f, r.Hp[side], f.Stats.MaxHP)
 		if f.CrackStage > previous and r.Hp[side] > 0 then
-			self.Shatter:Sound(Audio.Break, f.Body, 1.4, Feel.CrackVolume, 0.18)
+			self:Sound(Audio.Break, f.Body, 1.4, Feel.CrackVolume, 0.18)
 		end
 		local frozen, shield, rage = r.Frozen[side], r.Shield[side], r.Rage[side]
 		f.Bubble.Transparency = if shield then 0.42 else 1
@@ -229,13 +240,7 @@ function Scene:Event(e, hud)
 			f.Highlight.FillTransparency = 0.2
 			TweenService:Create(f.Highlight, TweenInfo.new(Feel.PowerEffectSeconds), { FillTransparency = 1 }):Play()
 		end
-		self.Shatter:Sound(
-			Audio.Whoosh,
-			f.Body,
-			if e.Id == "freeze" then 1.5 elseif e.Id == "rage" then 0.7 else 1.1,
-			0.3,
-			0.6
-		)
+		self:Sound(Audio.Whoosh, f.Body, if e.Id == "freeze" then 1.5 elseif e.Id == "rage" then 0.7 else 1.1, 0.3, 0.6)
 	elseif e.Type == "Passive" then
 		f.Glints:Emit(12)
 		if hud then
@@ -257,15 +262,17 @@ function Scene:Event(e, hud)
 				Color3.fromHex("#E1E9FF")
 			)
 		end
-		self.Shatter:Sound(Audio.Whoosh, self.Fighters[1].Body, 1.2, 0.16, 0.3)
+		self:Sound(Audio.Whoosh, self.Fighters[1].Body, 1.2, 0.16, 0.3)
 	elseif e.Type == "Hit" then
 		local a, b = self.Fighters[1], self.Fighters[2]
 		self.Shatter:HitBurst(a, b, { CritA = e.Crit[1], CritB = e.Crit[2] }, self.Root)
 		local weight = math.clamp(e.Speed / Balance.Fight.RefSpeed, 0, 1)
 		local volume = Feel.ClinkVolumeMin + (Feel.ClinkVolumeMax - Feel.ClinkVolumeMin) * weight
-		self.Shatter:Sound(Audio.Clink, a.Body, a.Def.ClinkPitch * (1.12 - weight * 0.2), volume)
-		self.Shatter:Sound(Audio.Clink, b.Body, b.Def.ClinkPitch, volume * 0.6)
-		self.Shatter:Pulse()
+		self:Sound(Audio.Clink, a.Body, a.Def.ClinkPitch * (1.12 - weight * 0.2), volume)
+		self:Sound(Audio.Clink, b.Body, b.Def.ClinkPitch, volume * 0.6)
+		if hud then
+			self.Shatter:Pulse()
+		end
 		if hud and (e.Crit[1] or e.Crit[2] or e.Speed >= Balance.Fight.RefSpeed * Feel.BigHitSpeed) then
 			hud:Popup(
 				if e.Crit[1] or e.Crit[2] then "CRIT!" else "SMASH!",

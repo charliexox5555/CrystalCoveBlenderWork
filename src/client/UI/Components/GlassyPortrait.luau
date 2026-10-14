@@ -19,11 +19,15 @@ function Portrait.new(parent, id, size, position)
 	local source = RS.Assets.Glassies:FindFirstChild(id)
 		or RS.Assets.Glassies[if def.Type == "Heavy" then "jam" elseif def.Type == "Sharp" then "prism" else "pop"]
 	local parts = { source.Body }
-	for _, detail in source.Details:GetChildren() do
+	for _, detail in (source:FindFirstChild("Details") and source.Details:GetChildren() or {}) do
 		table.insert(parts, detail)
 	end
 	for _, template in parts do
 		local part = template:Clone()
+		part.Anchored, part.CanCollide, part.CanTouch, part.CanQuery = true, false, false, false
+		if template == source.Body and source.Name ~= def.Asset then
+			part.Color = Color3.fromHex(def.Tint)
+		end
 		part:PivotTo(CFrame.Angles(0, 0, math.rad(-12)))
 		part.Parent = world
 	end

@@ -34,7 +34,7 @@ Balance.Motion = {
 	EncounterCooldown = 0.4,
 	NearMissDistance = 2,
 	TumbleStiffness = 24,
-	MaxTilt = 0.65,
+	MaxTilt = 0.35, -- keep glancing pass-bys readable; large tilts hid the collision gap
 	-- At true scale glassies (~2.5 studs) look tiny under the 17-stud stand (all 4 map concepts),
 	-- so arenas show them GlassyScale times bigger, with longer strings and wider hooks to match.
 	-- The swing uses Glassy.Radius * GlassyScale. The stand model's hooks sit at +-1.5 today;
@@ -157,6 +157,11 @@ Balance.Growth = {
 
 -- Matches (GAME_DESIGN 2). 1v1, each player has 3 hearts; losing a round costs a heart.
 Balance.Match = {
+	QueueCheckSeconds = 0.2,
+	QueueMargin = 0.5,
+	QueueHeight = 7,
+	LeaveRateSeconds = 0.25,
+	RequestRateSeconds = 0.5,
 	Hearts = 3,
 	RollChoices = 3, -- glassies offered from your collection each round
 	RollSeconds = 8, -- time to pick; auto-picks the first offer when it runs out
@@ -227,6 +232,8 @@ Balance.EconomyModel = {
 
 -- Presentation only (client). The fight itself uses Balance.Fight.
 Balance.Feel = {
+	SpectatorDistance = 120,
+	ArenaLabelHeight = 4,
 	AimDragPixels = 170,
 	AimYawPixels = 180,
 	CameraDistance = 23,

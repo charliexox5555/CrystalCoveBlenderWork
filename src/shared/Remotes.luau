@@ -17,8 +17,17 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
-local reliable =
-	{ "MatchState", "RollOffers", "FightEvents", "MatchResult", "PickGlassy", "Reroll", "SetAim", "LeaveQueue" }
+local reliable = {
+	"MatchState",
+	"RollOffers",
+	"FightEvents",
+	"MatchResult",
+	"PickGlassy",
+	"Reroll",
+	"SetAim",
+	"LeaveQueue",
+	"RequestRematch",
+}
 local unreliable = { "FightSnapshot" }
 
 local folder = ReplicatedStorage:FindFirstChild("Remotes")

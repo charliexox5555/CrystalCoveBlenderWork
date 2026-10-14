@@ -11,7 +11,8 @@ Work is continuing through the overnight backlog. This file is updated at each c
 ## Progress
 
 - F1 implementation and satisfaction pass complete: 60 Hz spherical motion, auto powers, networking/interpolation, aim/LOCK, HUD, cracks and shatter. **55 Lune/Studio tests pass.** Final ten-round watch: no Output errors, including a double KO. See [F1 report](../testing/F1_FIGHT.md) and its four screenshots. Studio reset to the default viewport after the phone test. Real-phone check remains unticked.
-- F2–F4, UI-wide pass and Blender exports: pending.
+- F2 complete: seven arenas, pad queues/bot fill, full multi-round match flow, Roll/Aim/Countdown/round end/results, free-only rerolls, spectator labels and asset gating. **60 Lune/Studio tests pass.** Seven concurrent matches ended cleanly (~60 desktop FPS sample). Native phone side-B aim/LOCK and reset/forfeit checks passed. See [F2 report](../testing/F2_MATCH_FLOW.md). Rewards are session-only until the next data step. Two-client integration remains on the later security/bug-hunt pass.
+- F3–F4, UI-wide pass and Blender exports: next.
 
 ## Calibration for Claude
 

@@ -11,7 +11,7 @@ Side bias (side 1 win rate, pop mirror): 45%
 Starters (row beats column):
   pop      -     61%   40%
   jam      28%   -     71%
-  prism    57%   27%   -  
+  prism    57%   27%   -
 
 Aim: Perfect vs worst (pop mirror): 65%
 Aim: Perfect vs average (aim 0.8):  59%

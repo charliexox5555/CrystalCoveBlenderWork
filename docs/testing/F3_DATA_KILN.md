@@ -1,10 +1,12 @@
 # F3 data, Kiln and collection — 2026-10-14
 
+**Native follow-up:** nine non-starters are now installed, and real single/ten coin pulls, duplicates and quote replay rejection pass. See [fence/import report](FENCES_AND_WAVE1_NATIVE.md). The initial empty-pool checks below describe the earlier backend stage.
+
 ProfileStore is pinned and reviewed in `docs/vendor`. Published servers use session-locked profiles; Studio defaults to an isolated mock store. With Studio API access off, mock save/reload retained 321 test coins and Pop ★1. Lune and Studio: **65 passed, 0 failed**. A legacy-stars migration bug was caught and fixed by tests. Production datastore/rejoin checks need a published test server.
 
 A complete live match awarded and mock-saved 54 coins, 5 trophies, one match win, 3 observed shatters/round wins, 3 Perfect releases, one use of each starter, and one welcome pull. A collection → match → active fight → reset regression returned TouchControlsEnabled from false to true and left no active match. Shared touch-control ownership fixes the previous restore-order race between lobby, match and fight UI.
 
-Kiln coin pulls use Formula, server-selected content, single-use expiring odds quotes, duplicate stars/overflow and welcome eligibility after the first match. The installed pool currently contains only the three starters, which cannot be pulled. A valid-quote request with an empty pool retained 321 coins and zero pulls. No eligible art means no debit. Real paid coin-pull integration remains gated on manual non-starter imports; there are no Robux or Marble purchases.
+Kiln coin pulls use Formula, server-selected content, single-use expiring odds quotes, duplicate stars/overflow and welcome eligibility after the first match. The installed pool currently contains only the three starters, which cannot be pulled. A valid-quote request with an empty pool retained 321 coins and zero pulls. No eligible art means no debit. Real coin-pull integration remains gated on manual non-starter imports; there are no Robux or Marble purchases.
 
 Lobby HUD, collection filters/sort, scrolling power details and the Index are implemented. Unknown art uses question tiles; installed unowned art can use a dark silhouette. Kiln opens with all eligible odds visible, coin prices and independent Rainbow odds; reveals inflate/cool a bubble, show duplicate stars, advance individually or Skip back to fresh odds. A Studio-only preview exercises the reveal using starter portraits without granting anything. Index completion rewards await a configured reward rule; none were invented.
 

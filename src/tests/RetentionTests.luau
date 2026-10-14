@@ -6,6 +6,17 @@ local Rules = if script
 	else require("../server/Data/RetentionRules")
 return function(t, d)
 	local day = d.Balance.Data.DaySeconds
+	t.test("abandoning an uncompleted match neither progresses quests nor resets a win streak", function()
+		local data = Schema.new(100 * day)
+		Rules.ensure(data, 100 * day)
+		data.Stats.WinStreak, data.Stats.BestStreak = 4, 4
+		for side = 1, 2 do
+			t.eq(Rules.match(data, { Winner = 1 }, side, { Eligible = false, Perfects = 1 }, 100 * day), 0)
+		end
+		t.eq(data.Coins, 0)
+		t.eq(data.Daily.Quests.perfects.Progress, 0)
+		t.eq(data.Stats.WinStreak, 4)
+	end)
 	t.test("UTC rollover resets daily claims but preserves coins, codes and continuous streaks", function()
 		local data = Schema.new(100 * day)
 		Rules.ensure(data, 100 * day)

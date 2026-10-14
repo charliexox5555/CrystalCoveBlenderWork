@@ -62,6 +62,7 @@ local function start(folder)
 		task.delay(0.2, function()
 			report:FireServer("Result" .. results, {
 				Won = data.Won,
+				NoContest = data.NoContest,
 				Side = data.Side,
 				Rewards = data.Rewards,
 				ResultsOpen = player.PlayerGui:GetAttribute("ResultsOpen"),

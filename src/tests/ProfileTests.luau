@@ -3,6 +3,20 @@ local Schema = if script
 	else require("../server/Data/ProfileSchema")
 
 return function(t, d)
+	t.test("no-contest settlement is idempotent and cannot unlock progress or welcome pulls", function()
+		for side = 1, 2 do
+			local data = Schema.new(0)
+			local match = { Over = true, Winner = 1 }
+			local observed = { Eligible = false, Perfects = 1, Used = { pop = true } }
+			t.eq(Schema.recordMatch(data, "abandon", match, side, { Coins = 90, Trophies = 20 }, observed), true)
+			t.eq(Schema.recordMatch(data, "abandon", match, side, { Coins = 90, Trophies = 20 }, {}), false)
+			t.eq(data.Coins, 0)
+			t.eq(data.Trophies, 0)
+			t.eq(data.Stats.MatchWins + data.Stats.MatchLosses + data.Stats.Perfects, 0)
+			t.eq(data.Stats.GlassyUses.pop, nil)
+			t.eq(Schema.welcomePulls(data), 0)
+		end
+	end)
 	t.test("new profiles own three starters and snapshots omit private bookkeeping", function()
 		local data = Schema.new(123)
 		for _, id in d.Glassies.Starters do

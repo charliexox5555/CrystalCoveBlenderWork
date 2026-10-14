@@ -1,49 +1,50 @@
-# Morning handoff — 2026-10-14
+# Current handoff — 2026-10-14
 
-The requested free-game backlog is implemented. Native multiplayer, security and cleanup checks pass; imports, publishing and real-device approval remain owner actions. Final UI images/styling are the creator's work under the latest direction.
+**Fitted fences, Wave1 native imports and the approved early-abandonment rule are complete.** Code is committed/pushed at each milestone; world/UI instances still need a Studio save.
 
-## Your actions, in order
+## Your next actions
 
-1. **Save a local place backup and stop Play.** Import the nine glassy FBX bundles from `assets/blender/import_wave1` into **Workspace.GlassClashImports**, preserving separate meshes/names/pivots. Follow [the exact import steps](../../assets/blender/import_wave1/README.md).
-2. Tell Codex the imports are ready, or run `tools/studio/install_wave1_glassies.luau` in the Command Bar. The installer skips existing assets, installs only complete sets and preserves raw imports in ServerStorage. Native import scale/pivots, portraits, cracks, shatter and real Kiln pulls still need verification after import.
-3. Import the eight sky-prop bundles into the same raw-import folder. Leave them there for Codex's placement pass around your fences/decor. The glassy installer ignores those props. No old lobby builder should be rerun.
-4. Edit the **14 ScreenGui templates under StarterGui** whenever ready. [UI editing guide](../ui/EDITING_UI.md). Keep names and Templates folders; replace Icon images and style the placeholders. Layout uses Scale with zero offsets. Save the place locally.
-5. Publish manually through Studio, then use a published test server to check real ProfileStore reconnect/session locking and ordered leaderboard updates. Studio stays on isolated mock progress even with API access enabled.
-6. On a real phone, check pick → drag to gold → lock → powers → shatter → results/replay. Check sound, readability, close buttons, touch controls and frame rate; use MicroProfiler on a low-end device. Manual gamepad checks remain open because MCP ButtonB input was blocked by CoreGui.
-7. Supply the group ID and permitted reward configuration if you want the join reward. Index completion rewards also need a chosen rule.
+1. **Save the place in Studio now.** All five islands and bridges have fitted fences. The nine glassies and eight sky assets are installed; no more Wave1 imports are needed.
+2. Work on final UI art/styling under **StarterGui's 14 ScreenGuis**. Keep named controls/Templates folders; layouts use Scale with zero offsets. [Editing guide](../ui/EDITING_UI.md).
+3. Publish manually, then check real ProfileStore reconnect/session locking and global leaderboard updates in a published test server. Studio remains on isolated mock profiles even with API access enabled.
+4. On a real phone, check pick → pull to gold → lock → powers/shatter → results/replay. Check tap/close controls, audio and low-end frame rate/MicroProfiler; manual gamepad checks remain open because MCP ButtonB is blocked by CoreGui.
+5. Supply the group ID/permitted reward configuration if you want the join reward. Index completion rewards also need a chosen rule. Paid features and free Marbles stay disabled.
 
-## Finished by backlog item
+## Latest work
 
-| Item | Implemented and verified | Evidence |
+[Fence/import/reward report and screenshots](../testing/FENCES_AND_WAVE1_NATIVE.md):
+
+- All five exact grass rims fitted with the creator's 3-stud brown-post/two-rail style, ~5-stud spacing, .9-stud inset and 11-stud bridge gates. Matching bridge rails; 232 posts, 464 rails, 232 invisible safety colliders. Zero post-corner overhang. Originals preserved in **ServerStorage.Unsorted.OriginalPerimeterFences**.
+- All-pad walk: 33 visits, no falls/blockages; featured pad 13.95 s. Real character blocked from walking off at X=45.20.
+- Nine new glassies installed and native-validated, **12 playable total**. Each has Body/Details, 16 shards and surface cracks. Eight sky assets normalized; native Kiln hero, arch, crystals/clouds placed. Raw sources and previous Kiln preserved.
+- Real single/ten Kiln pulls, duplicate stars and used-quote rejection passed with Studio mock coins. Actual pool has nine installed non-starters; Rare+ models remain unbuilt/unavailable. Odds reflect this pool.
+- Your accepted rule: no rewards/progress/welcome eligibility before a real round completes. Early disconnect gives zero coins/trophies and leaves match stats/streaks unchanged. Existing amounts after a completed round stay unchanged.
+- Native two-client PvP/replay/disconnect plus third staggered join passes with zero errors. Seven moving fights: server 59.98 FPS, .168 ms simulation/frame. Client Studio samples ~59/15 FPS with spikes; real-phone verification remains open.
+- **74 tests pass in Lune and Studio.** Final Output clean. Studio left in Edit.
+
+## Earlier backlog completed
+
+| Item | Result | Evidence |
 |---|---|---|
-| F1 fight | Server custom 3D pendulums, pass-bys/spin/tumble, auto powers, interpolation, aim/LOCK, layered impacts/cracks, slow-mo shards. 80 Lune + 40 Studio calibration rounds, ten live watched rounds including double KO. | [F1 report](../testing/F1_FIGHT.md) |
-| F2 matches | Seven arenas, human pads/bot fill, Roll/Aim/Countdown/Fight/round end/Results, free rerolls, replay, reset/disconnect handling, nearby spectator fights. | [F2 report](../testing/F2_MATCH_FLOW.md) |
-| F3 data/Kiln/collection | Reviewed pinned official ProfileStore, locked production profiles, starter grants, idempotent settlement, saved stats/collection, odds-first coin Kiln, welcome pull, duplicate stars/overflow, reveal, filters/details/Index. | [F3 report](../testing/F3_DATA_KILN.md), [vendor review](../vendor/ProfileStore_REVIEW.md) |
-| UI | Fourteen editable StarterGui templates, shared scale-based components and image/list placeholders; controller binding preserves authored geometry. Native Edit audit: 14 screens, zero Position/Size/CanvasSize offsets. 39 layout states checked on A06, iPhone and iPad; final art is yours. | [Editing guide](../ui/EDITING_UI.md), F3/F4 screenshots |
-| Blender | Eight sky props and nine glassies (six Commons + three Uncommons), each glassy with body/details, 16 closed shards, 144 surface crack segments and 512 icon. 17 bundles / 183 meshes, FBX round-trip bounds error below .000002 studs. | [Asset report](../testing/ASSET_WAVE1.md), [imports](../../assets/blender/import_wave1/README.md) |
-| Free F4 | Three daily quests, playtime gifts, first observed win bonus, check-in streak tracking, one-use Studio test code, Daily/Codes kiosks, Trophies/Wins/Shatters boards. Save/reload retained 290 fixture coins; duplicate/malformed claims granted nothing extra. | [F4 report](../testing/F4_FREE_RETENTION.md) |
-| Bug/security/performance pass | Native two-client PvP plus a third staggered join, snapshot loss, replay, disconnect and camera/control cleanup. Fixed late-join hook replication, stale far-arena events and double-KO flash leak. 20 repeated double-KO component cycles: 123 assertions pass, zero retained flashes. | [F5 report](../testing/F5_MULTIPLAYER_SECURITY.md) |
+| F1 fight | Custom server 3D pendulums, pass-bys/spin/tumble, auto powers, aim/LOCK, interpolation, layered hits/cracks, slow-mo shards. 80 Lune + 40 Studio calibration rounds, ten live watched rounds. | [F1](../testing/F1_FIGHT.md) |
+| F2 matches | Seven arenas, pad queues/bots, full rounds/hearts/results, free rerolls, replay, reset/disconnect and nearby spectator fights. | [F2](../testing/F2_MATCH_FLOW.md) |
+| F3 data/UI | Reviewed pinned ProfileStore, locked production profiles, starter grants, idempotent settlement, saved collection/stats, coin Kiln/reveal, collection filters/details/Index. Native pulls now verified. | [F3](../testing/F3_DATA_KILN.md), [vendor review](../vendor/ProfileStore_REVIEW.md) |
+| UI placeholders | Fourteen editable scale-based templates. 39 layout states on A06, iPhone and iPad pass safe-screen and 44 px target checks. Authored geometry preserved by controller binding. Final art is yours. | [F5](../testing/F5_MULTIPLAYER_SECURITY.md), [editing](../ui/EDITING_UI.md) |
+| Blender | Eight sky props + nine glassies exported/imported; 17 bundles / 183 meshes. Original source scenes/starters preserved. | [Asset wave](../testing/ASSET_WAVE1.md), [native follow-up](../testing/FENCES_AND_WAVE1_NATIVE.md) |
+| Free F4 | Three daily quests, playtime gifts, first observed win bonus, check-in streak, one-use Studio code, Daily/Codes kiosks and Trophies/Wins/Shatters boards. | [F4](../testing/F4_FREE_RETENTION.md) |
+| Security/cleanup | Remote floods/malformed inputs limited; private fields hidden. Late-join hook replication, double-KO flash leak and distant final-event drain fixed. Twenty cleanup cycles / 123 checks pass. | [F5](../testing/F5_MULTIPLAYER_SECURITY.md) |
 
-**Current unit tests: 71 passed, 0 failed in Lune and Studio.** Paid features, free Marbles and automatic publication remain disabled.
+## Reproducible world work
 
-## Installed content and deferred checks
-
-Only `pop`, `jam`, `prism` are installed. Starters are excluded from the Kiln, so the Kiln stays unavailable until complete non-starter art sets are imported. Actual odds normalize across installed eligible content. No missing art enters a normal roll. A native-Part Kiln placeholder remains at the existing lobby spot.
-
-Native import/placement, real persistent-store session takeover/reconnect, published global boards, real-phone performance and final UI art are pending. Group grants and Index completion rewards have no invented fallback. No new paid features or third-party dependencies were added.
-
-## Open reward rule
-
-Native PvP confirms that leaving before a round finishes still grants normal MatchLogic coins/trophies and a match win/loss. This can be farmed. The creator has been asked whether abandoned matches should give no rewards until at least one real round completes; **the rule is unchanged pending that answer**, because the overnight instructions freeze the economy. Actual round-win/shatter stats and the first-win bonus already require observed fights.
+- Fences: `tools/studio/fit_island_fences.luau` refuses existing fitted fences. Exact rim regeneration: `python tools/map/export_fence_paths.py`. Read-only checks: `tools/studio/verify_fences.luau`.
+- Imports: `stage_wave1_imports.luau` → `install_wave1_glassies.luau` → `install_wave1_sky.luau`. Already done; do not rerun builders over manual edits.
+- Native mesh IDs/transforms: `assets/blender/import_wave1/studio_assets.json`. Raw imported sources remain in ServerStorage.Wave1ImportedSources.
+- Manual decor/LegacyKit remain preserved. Original fences and previous Kiln are recoverable backups, not deleted.
 
 ## Calibration for Claude
 
-80 actual-integrator rounds, seeds 101–180: 0 timeouts, .461 hits/s, 36.7% pass-bys; encounter interval 1.372 s. Median speed 20.67 studs/s (P10 7.22, P90 29.45), ShareA .499, median round 32.56 s (P10 18.69, P90 45.58). Beam 32/43 and Freeze 34/56 landed; combined 66.7%. Max string error .0000015 studs. Raw: `docs/testing/F1_calibration_draft.json`.
+80 actual-integrator rounds, seeds 101–180: 0 timeouts, .461 hits/s, 36.7% pass-bys, encounter interval 1.372 s. Median speed 20.67 studs/s (P10 7.22, P90 29.45), ShareA .499, median round 32.56 s. Beam/Freeze combined 66.7% landed. Max string error .0000015 studs. Raw: `docs/testing/F1_calibration_draft.json`.
 
-Candidate SimModel: HitInterval=1.37, SpeedAtAmplitude=24.5, SpeedSpread=.67, ShareSpread=.245, MissChance=.367. It fails Jam mirror duration (45.882 s >45) and Prism Blade fairness (63% >62%). The passing baseline was restored. **No Fight/Powers/rarity/economy values retuned.** Claude should review the candidate and measured aimed-power rates.
+Candidate SimModel: HitInterval=1.37, SpeedAtAmplitude=24.5, SpeedSpread=.67, ShareSpread=.245, MissChance=.367. It fails Jam mirror duration (45.882 s >45) and Prism Blade fairness (63% >62%). Passing baseline restored; no Fight/Powers/rarity/economy numeric retuning.
 
-Passing baseline balance/economy: starter mirrors Pop/Jam/Prism 22.3/43.6/19.9 s, no timeouts; ~3.7 min matches, 4 day-one / 96 day-30 pulls, median first Rare 47 min / Epic 2.1 h / Legendary 9 h. Reports: `F4_balance.txt`, `F4_economy.txt`.
-
-## Constraints preserved
-
-Manual fences/decor, LegacyKit, imported assets and unrelated untracked files remain untouched. Rojo owns code; editable UI/world stay in the place. No publishing, paid products, new plugins, force-pushes or frozen balance retuning.
+Current standard full-catalog baseline: mirrors 22.3/43.6/19.9 s, no timeouts; ~3.7 min matches, 4 day-one / 96 day-30 pulls, first Rare 47 min / Epic 2.1 h / Legendary 9 h. Actual nine-item Kiln odds are filtered/normalized separately; these Rare+ projections assume the full catalog.

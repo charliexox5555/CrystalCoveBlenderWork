@@ -172,7 +172,7 @@ Rarity is mostly **flair, size and a cooler power**, with a small stat edge. A M
 
 ### 4.4 The roster (31)
 
-Starters Pop (Fizzy), Jam (Heavy), Prism (Sharp) plus 28 in the Kiln: see `Config/Glassies.luau`. Models exist for the 3 starters; the rest are built in Blender in batches (ART_BIBLE).
+Starters Pop (Fizzy), Jam (Heavy), Prism (Sharp) plus 28 configured for the Kiln: see `Config/Glassies.luau`. Twelve native models are installed (3 starters + 6 Commons + 3 Uncommons). The Kiln only rolls the nine installed non-starters and displays their normalized odds; remaining art is built in Blender batches (ART_BIBLE).
 
 ## 5. World: the lobby
 
@@ -202,6 +202,7 @@ Starters Pop (Fizzy), Jam (Heavy), Prism (Sharp) plus 28 in the Kiln: see `Confi
 ## 8. Economy (summary; full numbers in [design/ECONOMY.md](design/ECONOMY.md))
 
 - **Coins** (earned): 10 per round won + 60 for a match win or 20 for a loss (60% vs bots); daily quests 75 each; playtime gifts; first win of the day 100.
+- **Abandoned matches:** until at least one real round completes, neither player earns coins, trophies, match/quest stats or welcome-pull eligibility. Results say "No rewards — finish a round first". After a completed round, existing MatchLogic forfeit rewards apply. Creator accepted October 14 (DECISIONS 42).
 - **The Kiln:** 300 coins a pull (10 for 2,700). **Odds are always shown before pulling.** New players get 1 free pull after their first match.
 - **Marbles** (premium): Robux packs + small free amounts (login streak, group join). Spent on **rerolls** (5 / 10 / 20 after the free one each match), Shatter FX, and later cosmetics.
 - Pacing targets (simulated): ~3 pulls on day 1, first Rare in under an hour, first Epic in ~2 h, first Legendary in ~9 h of play, Mythics as a long chase.

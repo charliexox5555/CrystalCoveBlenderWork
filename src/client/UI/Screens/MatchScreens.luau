@@ -235,7 +235,7 @@ function Screens.results(data, replay, lobby)
 	local title = U.text(
 		panel,
 		"Title",
-		if data.Won then "YOU WIN!" else "GOOD CLASH!",
+		if data.NoContest then "MATCH ENDED" elseif data.Won then "YOU WIN!" else "GOOD CLASH!",
 		UDim2.fromScale(0.9, 0.15),
 		UDim2.fromScale(0.05, 0.04),
 		Theme.Fonts.Heading
@@ -312,8 +312,12 @@ function Screens.results(data, replay, lobby)
 	U.text(
 		panel,
 		"Save",
-		(if data.Saved then "Rewards added!" else "Practice rewards reset when you leave")
-			.. (if ready > 0 then " • " .. ready .. " quests ready" else ""),
+		(
+			if data.NoContest
+				then "No rewards — finish a round first"
+				elseif data.Saved then "Rewards added!"
+				else "Practice rewards reset when you leave"
+		) .. (if ready > 0 then " • " .. ready .. " quests ready" else ""),
 		UDim2.fromScale(0.9, 0.07),
 		UDim2.fromScale(0.05, 0.69),
 		Theme.Fonts.Caption

@@ -1,0 +1,47 @@
+{
+  "1": {
+    "ShardsAndDetails": 18,
+    "Id": "milk_bottle",
+    "Cracks": 96
+  },
+  "2": {
+    "ShardsAndDetails": 20,
+    "Id": "pickle_jar",
+    "Cracks": 96
+  },
+  "3": {
+    "ShardsAndDetails": 17,
+    "Id": "glass_cup",
+    "Cracks": 96
+  },
+  "4": {
+    "ShardsAndDetails": 19,
+    "Id": "ketchup_bottle",
+    "Cracks": 96
+  },
+  "5": {
+    "ShardsAndDetails": 17,
+    "Id": "water_jug",
+    "Cracks": 96
+  },
+  "6": {
+    "ShardsAndDetails": 19,
+    "Id": "lemonade_bottle",
+    "Cracks": 94
+  },
+  "7": {
+    "ShardsAndDetails": 17,
+    "Id": "mason_jar",
+    "Cracks": 96
+  },
+  "8": {
+    "ShardsAndDetails": 19,
+    "Id": "hot_sauce",
+    "Cracks": 92
+  },
+  "9": {
+    "ShardsAndDetails": 17,
+    "Id": "crystal_tumbler",
+    "Cracks": 96
+  }
+}

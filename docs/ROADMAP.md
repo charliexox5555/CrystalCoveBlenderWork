@@ -1,7 +1,7 @@
 # Roadmap
 
 Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DESIGN v0.3](GAME_DESIGN.md).
-**Current milestone: F5 — integration polish.** The requested free F4 features and native multiplayer/security pass are complete. F3 import/placement, real-phone checks and publishing remain pending with the creator; paid features stay disabled.
+**Current milestone: F5 — integration polish.** Wave1 imports, fitted fences and the native multiplayer/security pass are complete. Real-phone checks, final UI artwork and publishing remain with the creator; paid features stay disabled.
 
 Owner key: **C** = Codex (code / Studio MCP), **B** = Codex with Blender MCP, **CL** = Claude (research, design, pure rules, docs), **U** = you.
 
@@ -26,7 +26,8 @@ Prompt: [prompts/02_sky_lobby.md](prompts/02_sky_lobby.md).
 - [x] **C:** place islands, invisible collision, placeholder bridges, lighting and sky
 - [x] **C:** 7 arena stands (hooks at ±3), tagged queue pads and lobby spots, SpawnLocation, FallService
 - [x] **C:** walk test, phone check, screenshots ([L1 report](testing/L1_SKY_LOBBY.md); user approved the look and requested finish)
-- [ ] **U:** fences, trees, decor; publish
+- [x] **C:** fit creator's fence style around all five islands and bridges; preserve originals, verify edge collision and all-pad walk route
+- [ ] **U:** trees/final decor, save place and publish
 
 ## F1 — Fight prototype (Oct 14–21)
 
@@ -46,15 +47,15 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 - [x] **C:** `ArenaService` pads + queue + bot fill; `MatchService` phases with `MatchLogic`; seven concurrent arenas, free rerolls only
 - [x] **C:** Roll screen (3 cards, reroll), Aim, Countdown, Round end (glass heart pops), Results; [F2 report](testing/F2_MATCH_FLOW.md)
-- [x] **B:** sky kit exported: crystal kit (3 meshes), Kiln crystal, featured arch, 3 clouds; native import/placement pending
+- [x] **B/C:** sky kit exported/imported/placed: crystal kit, Kiln hero, featured arch and clouds
 
 ## F3 — Data, Kiln and collection (Oct 27–Nov 2)
 
 - [x] **C:** ProfileStore `DataService` (schema in GAME_DESIGN 14); Studio mock save/reload verified, production session locking integrated
-- [x] **C:** `KilnService` + odds-first screen, glassblowing reveal, duplicates → stars; actual pulls gated until non-starter art imports
+- [x] **C:** `KilnService` + odds-first screen, glassblowing reveal, duplicates → stars; native nine-item pool, single/ten pulls and quote replay rejection verified
 - [x] **C:** Collection + Index screens; configured completion rewards pending
-- [x] **B:** 9 more glassies exported (body, details, 16 closed shards, cracks, 512 icon): 6 Commons + 3 Uncommons; native import validation pending
-- [ ] **C:** lobby art pass
+- [x] **B/C:** 9 more glassies exported/imported (body, details, 16 shards, cracks, 512 icon): native pivots, portraits, cracks/shatter verified; 12 playable total
+- [x] **C:** first lobby art pass: fitted fences/bridge rails, normalized sky kit, native Kiln hero, featured arch, crystals/clouds
 
 ## F4 — Retention and monetization (Nov 3–9)
 
@@ -70,7 +71,7 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 - [x] **C:** Device Emulator layout pass: A06, iPhone and iPad, 39 states, 14 editable scale-only ScreenGuis; final UI artwork belongs to the creator
 - [x] **C:** native two-client PvP + third staggered join, seven moving arenas, dropped snapshots, replay/disconnect and cleanup; [F5 report](testing/F5_MULTIPLAYER_SECURITY.md)
 - [x] **C:** remote validation/rate-limit/security review and double-KO cleanup soak; 71 tests pass
-- [ ] **U/C:** resolve pre-round forfeit reward eligibility (creator answer pending; frozen economy unchanged)
+- [x] **U/C:** no rewards before a real completed round; native disconnect verifies zero currency and unchanged match stats, 74 tests pass
 - [ ] **U:** real low-end-phone performance/MicroProfiler, manual close/gamepad checks, published datastore/leaderboard verification
 - [ ] **B:** remaining launch glassies (target 18+ playable)
 - [ ] **U:** maturity questionnaire, icon, thumbnails, description; cross-promote from your other game

@@ -44,6 +44,9 @@ function Rules.advance(data, seconds, now)
 	)
 end
 function Rules.match(data, match, side, observed, now)
+	if observed.Eligible == false then
+		return 0
+	end
 	local daily = Rules.ensure(data, now)
 	for _, def in Content.Quests do
 		local q = daily.Quests[def.Id]
@@ -136,15 +139,12 @@ function Rules.view(data, now, studio)
 		})
 	end
 	for i, def in Balance.Economy.PlaytimeGifts do
-		table.insert(
-			gifts,
-			{
-				Id = i,
-				Seconds = def.Minutes * 60,
-				Coins = def.Coins,
-				Claimed = daily.PlaytimeClaimed["gift_" .. i] == true,
-			}
-		)
+		table.insert(gifts, {
+			Id = i,
+			Seconds = def.Minutes * 60,
+			Coins = def.Coins,
+			Claimed = daily.PlaytimeClaimed["gift_" .. i] == true,
+		})
 	end
 	return {
 		Quests = quests,

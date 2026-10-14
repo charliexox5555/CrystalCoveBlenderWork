@@ -114,6 +114,7 @@ function Service:Finish(entry)
 	end
 	entry.Finished = true
 	local match = entry.Runner.Match
+	local eligible = entry.ActualWins[1] + entry.ActualWins[2] > 0
 	if entry.FightId then
 		self.Services.FightService:Stop(entry.FightId)
 	end
@@ -125,9 +126,10 @@ function Service:Finish(entry)
 		local profile = self.Services.DataService and self.Services.DataService:Get(player)
 		local temp = self.Temporary[player] or { Coins = 0, Trophies = 0 }
 		self.Temporary[player] = temp
-		local rewards = Logic.rewards(match, side, profile and profile.Trophies or temp.Trophies)
+		local rewards = Logic.rewards(match, side, profile and profile.Trophies or temp.Trophies, eligible)
 		if self.Services.DataService then
 			self.Services.DataService:RecordMatch(player, entry.Id, match, side, rewards, {
+				Eligible = eligible,
 				Perfects = entry.Perfects[side],
 				RoundWins = entry.ActualWins[side],
 				Shatters = entry.ActualWins[side],
@@ -141,9 +143,10 @@ function Service:Finish(entry)
 		Remotes.MatchResult:FireClient(player, {
 			MatchId = entry.Id,
 			Won = match.Winner == side,
+			NoContest = not eligible,
 			Side = side,
 			Rewards = rewards,
-			History = match.History,
+			History = if eligible then match.History else {},
 			Hearts = { match.Sides[1].Hearts, match.Sides[2].Hearts },
 			Saved = self.Services.DataService and self.Services.DataService:IsPersistent(player) or false,
 			ArenaId = entry.Arena.Id,

@@ -2,6 +2,8 @@
 
 17 multi-mesh FBX files: nine glassies and eight sky props. Each glassy bundle includes Body, Details and 16 shards; import one file per glassy. Original split files and source `.blend` files remain in their asset folders.
 
+**Current place, October 14:** all 17 bundles are installed and native-validated. There are 12 playable glassies; the nine non-starters form the current coin Kiln pool. Sky props and fitted fences are placed. These instructions remain for rebuilding a fresh place. See [native report](../../../docs/testing/FENCES_AND_WAVE1_NATIVE.md) and `studio_assets.json` for recorded native mesh IDs/transforms.
+
 ## Glassies first
 
 1. Save a local copy of the place, then stop Play in Studio.

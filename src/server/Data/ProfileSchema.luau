@@ -142,6 +142,9 @@ function Schema.recordMatch(data, id, match, side, rewards, observed)
 	while #data.RecentMatches > Balance.Data.RecentMatches do
 		table.remove(data.RecentMatches, 1)
 	end
+	if observed and observed.Eligible == false then
+		return true -- remember the result without currency, stats or welcome eligibility
+	end
 	data.Coins += rewards.Coins
 	data.Trophies = math.max(0, data.Trophies + rewards.Trophies)
 	local stats = data.Stats

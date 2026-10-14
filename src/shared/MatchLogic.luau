@@ -265,7 +265,16 @@ function MatchLogic.endRound(match: Match, winnerSide: number): boolean
 end
 
 -- Rewards (GAME_DESIGN 8.1). `trophies` = the player's current trophies (never goes below 0).
-function MatchLogic.rewards(match: Match, sideIndex: number, trophies: number?): { Coins: number, Trophies: number }
+function MatchLogic.rewards(
+	match: Match,
+	sideIndex: number,
+	trophies: number?,
+	eligible: boolean?
+): { Coins: number, Trophies: number }
+	-- MatchService supplies eligibility from observed completed fights, never forfeited hearts.
+	if eligible == false then
+		return { Coins = 0, Trophies = 0 }
+	end
 	local r = B.Rewards
 	local side = match.Sides[sideIndex]
 	local won = match.Winner == sideIndex

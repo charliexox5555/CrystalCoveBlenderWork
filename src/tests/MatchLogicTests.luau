@@ -3,6 +3,20 @@
 return function(t, deps)
 	local Balance, MatchLogic, Glassies, Rng = deps.Balance, deps.MatchLogic, deps.Glassies, deps.Rng
 	local B = Balance.Match
+	t.test("uncompleted matches give neither side rewards; eligible rewards keep existing amounts", function()
+		local match = MatchLogic.new({ { Collection = {} }, { Collection = {} } }, Rng.new(1))
+		for _ = 1, 3 do
+			MatchLogic.endRound(match, 1)
+		end
+		for side = 1, 2 do
+			local denied = MatchLogic.rewards(match, side, 100, false)
+			t.eq(denied.Coins, 0)
+			t.eq(denied.Trophies, 0)
+			local ordinary, eligible = MatchLogic.rewards(match, side, 100), MatchLogic.rewards(match, side, 100, true)
+			t.eq(eligible.Coins, ordinary.Coins)
+			t.eq(eligible.Trophies, ordinary.Trophies)
+		end
+	end)
 
 	local function collection(ids: { string })
 		local c = {}
@@ -92,7 +106,10 @@ return function(t, deps)
 	end)
 
 	t.test("fight setup carries picks, stars and aim", function()
-		local m = MatchLogic.new({ { Collection = { pop = { Stars = 2 } } }, { Collection = big, IsBot = true, Skill = 1 } }, Rng.new(8))
+		local m = MatchLogic.new(
+			{ { Collection = { pop = { Stars = 2 } } }, { Collection = big, IsBot = true, Skill = 1 } },
+			Rng.new(8)
+		)
 		MatchLogic.startRound(m)
 		MatchLogic.pick(m, 1, "pop")
 		MatchLogic.setAim(m, 1, 5, -5)

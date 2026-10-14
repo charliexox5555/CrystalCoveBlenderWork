@@ -14,6 +14,15 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-14 — Codex — fitted fences, native Wave1 and reward eligibility
+Done:
+- Fitted the creator's brown-post/two-rail style to all five exact grass rims; matched bridge rails and 11-stud entrances, 0.9-stud centre inset. Original 285 manual fence Parts/two Models and eight low bridge rails preserved in ServerStorage.Unsorted. Reproducible builder refuses existing fitted fences. Geometry: 232 posts, 464 rails, 232 invisible safety colliders, no post-corner overhang.
+- Live all-pad walk: 33 visits, no falls/blockages, featured pad 13.95 s; edge walk blocked at X=45.20. Installed nine native glassies (all pivots/16 shards correct), normalized eight sky assets and placed 16 prop instances; archived raw imports and old Kiln. Real single/ten coin pulls, duplicate stars and stale quote rejection pass. Native gallery/cracks/shards verified for all nine; report/screens in docs/testing/FENCES_AND_WAVE1_NATIVE.md.
+- Applied creator's reward decision: early abandonment gives zero currency/progress/welcome eligibility and preserves streaks; regular eligible amounts unchanged. Lune/Studio 74 pass. Native PvP + replay/disconnect + third join: zero runtime errors, no-contest currencies/match stats unchanged; seven-fight server 59.98 FPS, .168 ms simulation/frame. Production data untouched (Studio mocks).
+- Simulators retain passing baseline: starter mirrors 22.3/43.6/19.9 s, no timeouts; full-catalog economy ~3.7 min matches, 4 day-one / 96 day-30 pulls, Rare 47 min, Epic 2.1 h, Legendary 9 h. Actual installed Kiln has nine Common/Uncommon items; no frozen numeric retune.
+Next:
+- Creator saves the place, supplies final UI art, publishes and checks a real phone/production storage. Group/Index rewards still need configuration. Studio left in Edit; no automatic publication.
+
 ## 2026-10-14 — Codex — multiplayer/security and placeholder layout regression
 Done:
 - Native two-client PvP, all seven simulations moving, one-third snapshot loss, complete match/results, replay/opponent disconnect, third staggered join and isolated mock profiles pass with zero runtime errors. Fixed missing late-join Hook Instances using local anchors/value coordinates and rate-limited bootstrap; retained tagged-stand fading and pad heart positions.

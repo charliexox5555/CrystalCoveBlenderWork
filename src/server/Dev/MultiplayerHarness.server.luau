@@ -189,6 +189,11 @@ local ok, err = xpcall(function()
 		return Match.ByPlayer[a] and Match.ByPlayer[b]
 	end, 10, "replay human match")
 	local second = Match.ByPlayer[a].Entry
+	local beforeAbandon = {
+		Coins = Data:Get(a).Coins,
+		Trophies = Data:Get(a).Trophies,
+		Matches = Data:Get(a).Stats.MatchWins + Data:Get(a).Stats.MatchLosses,
+	}
 	waitFor(function()
 		return second.Runner.Phase == "Fighting"
 	end, 25, "replay fight")
@@ -205,6 +210,14 @@ local ok, err = xpcall(function()
 		"Post-disconnect controls/camera did not restore"
 	)
 	table.insert(output.Stages, "Play Again; opponent disconnect; arena/player registry released")
+	local afterAbandon = Data:Get(a)
+	assert(
+		afterAbandon.Coins == beforeAbandon.Coins
+			and afterAbandon.Trophies == beforeAbandon.Trophies
+			and afterAbandon.Stats.MatchWins + afterAbandon.Stats.MatchLosses == beforeAbandon.Matches,
+		"Abandoned match awarded progress before a completed round"
+	)
+	output.NoContest = { CoinsUnchanged = true, TrophiesUnchanged = true, MatchStatsUnchanged = true }
 	local spectate = Arena.Arenas[2]
 	if not Match.Matches[2] then
 		Match:StartMatch(spectate, {}, workspace:GetServerTimeNow())

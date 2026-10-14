@@ -174,6 +174,40 @@ function Screens:Offers(data)
 				self.Pick(id)
 			end
 		end)
+		local info = Button.new(card, "Info", "i", "Blue", UDim2.fromOffset(44, 44), UDim2.new(1, -46, 0, 2))
+		info.ZIndex = 12
+		self:Connect(info, function()
+			if self.Info then
+				self.Info:Destroy()
+			end
+			local box = Panel.new(self.Panel, "PowerInfo", UDim2.fromScale(0.94, 0.7), UDim2.fromScale(0.03, 0.2))
+			box.ZIndex, box.BackgroundTransparency, box.Active = 30, 0, true
+			self.Info = box
+			local passive, power = Powers.passive(def.Passive), Powers.special(def.Special)
+			U.text(box, "Title", def.Name, UDim2.new(1, -90, 0, 44), UDim2.fromOffset(12, 4), Theme.Fonts.Heading)
+			local copy = U.text(
+				box,
+				"Description",
+				(def.PassiveName or passive.Name)
+					.. ": "
+					.. passive.Description
+					.. "\n\n"
+					.. (def.SpecialName or power.Name)
+					.. ": "
+					.. power.Description,
+				UDim2.new(1, -24, 1, -60),
+				UDim2.fromOffset(12, 52),
+				Theme.Fonts.Body
+			)
+			copy.TextWrapped, copy.TextXAlignment = true, Enum.TextXAlignment.Left
+			self:Connect(
+				Button.new(box, "Close", "X", "Red", UDim2.fromOffset(48, 44), UDim2.new(1, -58, 0, 6)),
+				function()
+					box:Destroy()
+					self.Info = nil
+				end
+			)
+		end)
 	end
 end
 
@@ -206,27 +240,41 @@ function Screens.results(data, replay, lobby)
 	)
 	local history = U.make("Frame", panel, {
 		Name = "History",
-		Size = UDim2.fromScale(0.8, 0.19),
-		Position = UDim2.fromScale(0.1, 0.34),
+		Size = UDim2.fromScale(0.92, 0.28),
+		Position = UDim2.fromScale(0.04, 0.31),
 		BackgroundTransparency = 1,
 	})
-	for i, round in data.History do
-		local p =
-			Portrait.new(history, round.Picks[data.Side], UDim2.fromScale(0.16, 1), UDim2.fromScale((i - 1) * 0.2, 0))
-		U.make("UIAspectRatioConstraint", p, { AspectRatio = 1 })
+	for row, side in { data.Side, 3 - data.Side } do
 		U.text(
-			p,
-			"Round",
-			if round.Winner == data.Side then "WIN" else "LOSS",
-			UDim2.fromScale(1, 0.2),
-			UDim2.fromScale(0, 0.8),
+			history,
+			"Side" .. row,
+			if row == 1 then "YOU" else "RIVAL",
+			UDim2.fromScale(0.12, 0.4),
+			UDim2.fromScale(0, (row - 1) * 0.5),
 			Theme.Fonts.Caption
 		)
+		for i, round in data.History do
+			local p = Portrait.new(
+				history,
+				round.Picks[side],
+				UDim2.fromScale(0.16, 0.5),
+				UDim2.fromScale(0.13 + (i - 1) * 0.175, (row - 1) * 0.5)
+			)
+			if row == 1 then
+				U.text(
+					p,
+					"Round",
+					if round.Winner == side then "WIN" else "LOSS",
+					UDim2.fromScale(1, 0.28),
+					UDim2.fromScale(0, 0.72),
+					Theme.Fonts.Caption
+				)
+			end
+		end
 	end
-	self.Coins =
-		U.text(panel, "Coins", "", UDim2.fromScale(0.42, 0.1), UDim2.fromScale(0.06, 0.56), Theme.Fonts.Heading)
+	self.Coins = U.text(panel, "Coins", "", UDim2.fromScale(0.42, 0.1), UDim2.fromScale(0.06, 0.6), Theme.Fonts.Heading)
 	self.Trophies =
-		U.text(panel, "Trophies", "", UDim2.fromScale(0.42, 0.1), UDim2.fromScale(0.52, 0.56), Theme.Fonts.Heading)
+		U.text(panel, "Trophies", "", UDim2.fromScale(0.42, 0.1), UDim2.fromScale(0.52, 0.6), Theme.Fonts.Heading)
 	U.text(
 		panel,
 		"Save",

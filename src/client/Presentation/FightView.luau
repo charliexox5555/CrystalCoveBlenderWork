@@ -2,7 +2,7 @@ local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local UIS = game:GetService("UserInputService")
-local GuiService = game:GetService("GuiService")
+local TouchGate = require(script.Parent.Parent.UI.TouchGate)
 local Lighting = game:GetService("Lighting")
 local TweenService = game:GetService("TweenService")
 local Debris = game:GetService("Debris")
@@ -104,7 +104,7 @@ function Controller:EndFight()
 		if self.Controls then
 			self.Controls:Enable()
 		end
-		GuiService.TouchControlsEnabled = self.OldTouchControls
+		TouchGate.release(self)
 	end
 	self.Data, self.Snapshots, self.Events, self.Drag, self.RenderTime = nil, {}, {}, nil, 0
 	self.FinalTime, self.SlowUntil, self.HoldUntil, self.ShakeUntil = nil, nil, nil, nil
@@ -159,8 +159,7 @@ function Controller:Begin(data)
 		if self.Controls then
 			self.Controls:Disable()
 		end
-		self.OldTouchControls = GuiService.TouchControlsEnabled
-		GuiService.TouchControlsEnabled = false
+		TouchGate.acquire(self)
 		local camera = workspace.CurrentCamera
 		self.OldCamera = { Type = camera.CameraType, Subject = camera.CameraSubject, FOV = camera.FieldOfView }
 		camera.CameraType, camera.FieldOfView = Enum.CameraType.Scriptable, Feel.CameraFieldOfView

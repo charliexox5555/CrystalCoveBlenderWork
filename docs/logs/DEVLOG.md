@@ -14,6 +14,15 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-14 — Codex — F3 screens / UI pass started
+Done:
+- Added Theme-based safe-inset lobby HUD, collection/Index grids with filters/sort and scrolling stats/power details, odds-first Kiln and bubble/reveal/duplicate/Skip flow. Missing art stays unknown; empty Kiln disables pulls. Studio-only visual fixtures grant nothing. Screenshots/report in docs/testing/F3_DATA_KILN.md.
+- Fixed reveal/Next overlap on a short phone. Shared touch ownership passed collection → match → active fight → reset (false during fight, true afterward). A full match mock-saved 54 coins, 5 trophies, observed stats and welcome eligibility. Added Roll info and both players' Results portraits for the wider UI pass. Lune/Studio: 65 passed, 0 failed.
+Next:
+- Complete the two-phone/tablet UI pass, verify the handoff regression in Studio, then Blender assets and free retention.
+Problems:
+- Device-emulated MCP button activation is inconsistent (tool success without callbacks); ButtonB VirtualInput is a CoreGui restriction. Manual gamepad/close checks remain open. No publishing or paid features.
+
 ## 2026-10-14 — Codex — F3 backend / profile storage
 Done:
 - Reviewed all 2,243 lines of official ProfileStore; pinned unmodified source/Apache license/hash in docs/vendor. Added session ownership, cancellation/release/BindToClose integration, schema reconciliation, starters, one-time match rewards, observed fight stats and private-field-free snapshots. Studio uses isolated mocks; production fails closed on profile load failure.

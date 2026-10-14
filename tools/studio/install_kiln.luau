@@ -34,8 +34,8 @@ sign.CanvasSize = Vector2.new(600, 250)
 sign.Parent = body
 local label = Instance.new("TextLabel")
 label.Size, label.BackgroundTransparency = UDim2.fromScale(1, 1), 1
-label.Text, label.TextScaled, label.TextColor3, label.Font =
-	"THE KILN\nCoin pulls • odds first", true, Color3.new(1, 1, 1), Enum.Font.GothamBold
+label.Text, label.TextScaled, label.TextColor3 = "THE KILN\nCoin pulls • odds first", true, Color3.new(1, 1, 1)
+label.FontFace = Font.fromName("Montserrat", Enum.FontWeight.ExtraBold)
 label.Parent = sign
 local prompt = Instance.new("ProximityPrompt")
 prompt.Name, prompt.ActionText, prompt.ObjectText = "OpenKiln", "Open the Kiln", "Glassies • coin pulls"

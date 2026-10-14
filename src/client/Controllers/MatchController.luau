@@ -1,6 +1,6 @@
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
-local GuiService = game:GetService("GuiService")
+local TouchGate = require(script.Parent.Parent.UI.TouchGate)
 local CAS = game:GetService("ContextActionService")
 local RS = game:GetService("ReplicatedStorage")
 local Remotes = require(RS.Shared.Remotes)
@@ -9,7 +9,8 @@ local U = require(script.Parent.Parent.UI.Components.Util)
 local Theme = require(script.Parent.Parent.UI.Theme)
 local Controller = {}
 
-function Controller:Init()
+function Controller:Init(controllers)
+	self.Controllers = controllers
 	self.Player, self.Pending = Players.LocalPlayer, {}
 end
 
@@ -21,11 +22,13 @@ function Controller:CloseScreen()
 end
 
 function Controller:Movement(locked)
+	if locked and not self.Locked and self.Controllers.LobbyController then
+		self.Controllers.LobbyController:Close()
+	end
 	self.Player.PlayerGui:SetAttribute("InMatch", locked)
 	if locked and not self.Locked then
 		self.Locked = true
-		self.OldTouch = GuiService.TouchControlsEnabled
-		GuiService.TouchControlsEnabled = false
+		TouchGate.acquire(self)
 		CAS:BindActionAtPriority(
 			"MatchMovement",
 			function()
@@ -42,7 +45,7 @@ function Controller:Movement(locked)
 	elseif not locked and self.Locked then
 		self.Locked = false
 		CAS:UnbindAction("MatchMovement")
-		GuiService.TouchControlsEnabled = self.OldTouch
+		TouchGate.release(self)
 	end
 end
 

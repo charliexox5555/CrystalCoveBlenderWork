@@ -51,8 +51,8 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 ## F3 — Data, Kiln and collection (Oct 27–Nov 2)
 
 - [x] **C:** ProfileStore `DataService` (schema in GAME_DESIGN 14); Studio mock save/reload verified, production session locking integrated
-- [ ] **C:** `KilnService` + Kiln screen with the odds list, glassblowing reveal, duplicates → stars
-- [ ] **C:** Collection + Index screens
+- [x] **C:** `KilnService` + odds-first screen, glassblowing reveal, duplicates → stars; actual pulls gated until non-starter art imports
+- [x] **C:** Collection + Index screens; configured completion rewards pending
 - [ ] **B:** 9 more glassies (body, details, shards, icon): 6 Commons + 3 Uncommons first
 - [ ] **C:** lobby art pass
 

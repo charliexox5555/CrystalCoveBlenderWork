@@ -14,6 +14,16 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-14 — Codex — original lobby v2 art and UI concepts
+Done:
+- Built original furnace Kiln, three gameplay leaderboard frames, five exact-outline Blender island fences and four sloping bridge assemblies: 13 isolated .blend sources / FBXs, 119 color-separated meshes, 12,688 triangles. Seven reviewed renders, measured manifests, reproducible builder/validator and exact import/binding/collision instructions in assets/blender/map/lobby_v2/README.md. Preserved the previously active Blender scene and restored it.
+- Saved three built-in imagegen concepts plus exact prompts: Coins/Marbles and Store/Inventory squares with bottom-center Play; category/grid/right-details Inventory; odds-first Store route. Future categories, sample data and cosmetic deviations are explicitly conceptual. No UI/controller source changes or uploads.
+- Saved-source/FBX validation passes: closed/manifold positive-volume geometry, no degenerate triangles, zero source origins/unit transforms, vertex error below 0.000016 studs. Every island fence vertex stays inside its irregular rim (minimum ~0.18 studs); all 16 bridge endpoints match exactly. Lune on the shared checkout: 76 passed, 0 failed. No balance/economy values changed by this art session.
+Next:
+- After Claude hands over Studio: save a place backup, verify live island transforms, import the package, retain safety collision and existing OpenKiln / leaderboard Entries bindings, walk every pad/bridge and test phone readability. Functional UI integration, reveal-seat binding, installed IDs and publication remain pending.
+Problems / scope:
+- No Studio calls, play-mode changes or publication in this session. Claude continued committing source/Studio work independently; only this session's owned art/tools/docs are included. Proposed decision 44 records the art direction. Final geometry is built/exported; UI images are concepts; neither is installed by this session.
+
 ## 2026-10-14 — Codex — lobby art/UI continuation handoff
 Done:
 - Saved docs/HANDOFF_LOBBY_ART_UI.md with current implementation, latest Coins/Marbles and two-button UI requirements, actual island fence-path inputs, asset bindings, pending work and shared-workspace boundaries. Preserved five creator screenshots and a read-only live Ball v Ball lobby capture for the new chat.

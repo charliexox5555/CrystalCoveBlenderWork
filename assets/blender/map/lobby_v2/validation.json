@@ -1,0 +1,1228 @@
+{
+  "Status": "PASS",
+  "Assets": {
+    "Kiln_Furnace": {
+      "MeshChecks": {
+        "Kiln_Base": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 71.05475895983454,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Hearth": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 40.80774263736635,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Side_-3_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 50.999273693336484,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_CornerBand_-3_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.619668631662428,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Side_3_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 50.99927369333649,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_CornerBand_3_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.6196686316624278,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Back": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 27.60758976217091,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Jamb_-2_75_0": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 1.1918512098207477,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Jamb_-2_75_1": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 1.1918510696226963,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Jamb_-2_75_2": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 1.1918510696226972,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Jamb_2_75_0": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 1.1918512098207477,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Jamb_2_75_1": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 1.1918510696226963,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Jamb_2_75_2": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 1.1918510696226972,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Arch_00": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 1.1723456550869997,
+          "DegenerateTriangles": 0,
+          "Triangles": 12,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Arch_01": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 1.1723455836214798,
+          "DegenerateTriangles": 0,
+          "Triangles": 12,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Arch_02": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 1.1723456232177583,
+          "DegenerateTriangles": 0,
+          "Triangles": 12,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Arch_03": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 1.1723457245608362,
+          "DegenerateTriangles": 0,
+          "Triangles": 12,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Arch_04": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 1.1723457969750695,
+          "DegenerateTriangles": 0,
+          "Triangles": 12,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Arch_05": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 1.1723457245608353,
+          "DegenerateTriangles": 0,
+          "Triangles": 12,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Arch_06": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 1.1723456232177591,
+          "DegenerateTriangles": 0,
+          "Triangles": 12,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Arch_07": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 1.1723455836214793,
+          "DegenerateTriangles": 0,
+          "Triangles": 12,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Arch_08": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 1.1723456550869995,
+          "DegenerateTriangles": 0,
+          "Triangles": 12,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_ChamberDark": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 3.5948004690647064,
+          "DegenerateTriangles": 0,
+          "Triangles": 12,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_MoltenPool": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 1.1233807196824044,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_ChamberBackGlow": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.8357703964572176,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Roof": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 105.11210878135273,
+          "DegenerateTriangles": 0,
+          "Triangles": 92,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_RoofBand": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 20.050572178487954,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_Chimney": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 10.446442713495408,
+          "DegenerateTriangles": 0,
+          "Triangles": 28,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_ChimneyRim": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 1.760952180507676,
+          "DegenerateTriangles": 0,
+          "Triangles": 28,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_ChimneyDark": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.17522653414384948,
+          "DegenerateTriangles": 0,
+          "Triangles": 28,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_CoolingTray": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 7.23299746325876,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_CoolingSurface": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 2.145058876805134,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_TrayLip_-2_28": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.27276649759601856,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_TrayLeg_-2_28": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.3423869968244386,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_TrayLip_2_28": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.27276649759601873,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_TrayLeg_2_28": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.34238699682443874,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_RevealSeat": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.68952532780437,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_RevealSeatInset": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.1457998465439836,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_DisplayPost": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.8529168740908726,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_DisplayFrame": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 4.378174737499295,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_DisplaySurface": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.56584192452272,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Kiln_HeaderPlaque": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 1.2331336306713967,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        }
+      },
+      "FenceChecks": {},
+      "FBXMaxVertexError": 0,
+      "MeshCount": 42,
+      "Triangles": 1528
+    },
+    "Board_MatchWins": {
+      "MeshChecks": {
+        "Board_MatchWins_Foot": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 22.776374373945504,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_MatchWins_Step": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 10.367339390289429,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_MatchWins_Column_-5_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 9.509071959970534,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_MatchWins_ColumnCap_-5_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.560250248621516,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_MatchWins_BaseCap_-5_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.6338608617499555,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_MatchWins_Column_5_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 9.509071959970532,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_MatchWins_ColumnCap_5_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.5602502486215163,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_MatchWins_BaseCap_5_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.6338608617499556,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_MatchWins_Display": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 30.054505217674375,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_MatchWins_Crossbar_2_08": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 5.45058247027794,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_MatchWins_Crossbar_10_22": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 5.450591980397659,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_MatchWins_Header": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 4.863131057226625,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_MatchWins_HeaderInset": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.8122477691198776,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_MatchWins_CrestFoot": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.9469243997141801,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_MatchWins_CrownPoint_-0_6": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.12533994465713771,
+          "DegenerateTriangles": 0,
+          "Triangles": 12,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_MatchWins_CrownPoint_0": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.1253399510162061,
+          "DegenerateTriangles": 0,
+          "Triangles": 12,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_MatchWins_CrownPoint_0_6": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.12533994465713771,
+          "DegenerateTriangles": 0,
+          "Triangles": 12,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        }
+      },
+      "FenceChecks": {},
+      "FBXMaxVertexError": 0,
+      "MeshCount": 17,
+      "Triangles": 652
+    },
+    "Board_Shatters": {
+      "MeshChecks": {
+        "Board_Shatters_Foot": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 22.776374373945504,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Shatters_Step": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 10.367339390289429,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Shatters_Column_-5_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 9.509071959970534,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Shatters_ColumnCap_-5_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.560250248621516,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Shatters_BaseCap_-5_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.6338608617499555,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Shatters_Column_5_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 9.509071959970532,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Shatters_ColumnCap_5_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.5602502486215163,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Shatters_BaseCap_5_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.6338608617499556,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Shatters_Display": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 30.054505217674375,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Shatters_Crossbar_2_08": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 5.45058247027794,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Shatters_Crossbar_10_22": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 5.450591980397659,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Shatters_Header": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 4.863131057226625,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Shatters_HeaderInset": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.8122477691198776,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Shatters_CrestFoot": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.9469243997141801,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Shatters_Shard_-0_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.13724998485390127,
+          "DegenerateTriangles": 0,
+          "Triangles": 12,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Shatters_Shard_0": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.13724999009259076,
+          "DegenerateTriangles": 0,
+          "Triangles": 12,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Shatters_Shard_0_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.1372499848539015,
+          "DegenerateTriangles": 0,
+          "Triangles": 12,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        }
+      },
+      "FenceChecks": {},
+      "FBXMaxVertexError": 0,
+      "MeshCount": 17,
+      "Triangles": 652
+    },
+    "Board_Trophies": {
+      "MeshChecks": {
+        "Board_Trophies_Foot": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 22.776374373945504,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Trophies_Step": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 10.367339390289429,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Trophies_Column_-5_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 9.509071959970534,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Trophies_ColumnCap_-5_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.560250248621516,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Trophies_BaseCap_-5_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.6338608617499555,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Trophies_Column_5_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 9.509071959970532,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Trophies_ColumnCap_5_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.5602502486215163,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Trophies_BaseCap_5_65": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.6338608617499556,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Trophies_Display": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 30.054505217674375,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Trophies_Crossbar_2_08": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 5.45058247027794,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Trophies_Crossbar_10_22": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 5.450591980397659,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Trophies_Header": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 4.863131057226625,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Trophies_HeaderInset": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.8122477691198776,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Trophies_CrestFoot": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.9469243997141801,
+          "DegenerateTriangles": 0,
+          "Triangles": 44,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Trophies_Cup": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 2.0516687294117357,
+          "DegenerateTriangles": 0,
+          "Triangles": 28,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Board_Trophies_Stem": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.07071060947353658,
+          "DegenerateTriangles": 0,
+          "Triangles": 28,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        }
+      },
+      "FenceChecks": {},
+      "FBXMaxVertexError": 0,
+      "MeshCount": 16,
+      "Triangles": 672
+    },
+    "Fence_Isle_Lobby": {
+      "MeshChecks": {
+        "Fence_Isle_Lobby_Rails": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 179.0252517278485,
+          "DegenerateTriangles": 0,
+          "Triangles": 648,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Fence_Isle_Lobby_Posts": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 106.74659437296957,
+          "DegenerateTriangles": 0,
+          "Triangles": 612,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Fence_Isle_Lobby_Caps": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 9.02026231074197,
+          "DegenerateTriangles": 0,
+          "Triangles": 612,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        }
+      },
+      "FenceChecks": {
+        "OutsideRimVertices": 0,
+        "MinRimClearance": 0.1789166251759806,
+        "Height": 3.0,
+        "PostCount": 51,
+        "GateCenterWidth": 11,
+        "ClearWidthBelowCaps": 10.14,
+        "ClearWidthAtCaps": 9.98
+      },
+      "FBXMaxVertexError": 1.5206545561887717e-05,
+      "MeshCount": 3,
+      "Triangles": 1872
+    },
+    "Fence_Isle_Arena1": {
+      "MeshChecks": {
+        "Fence_Isle_Arena1_Rails": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 154.8084272990045,
+          "DegenerateTriangles": 0,
+          "Triangles": 640,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Fence_Isle_Arena1_Posts": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 96.28124063449265,
+          "DegenerateTriangles": 0,
+          "Triangles": 552,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Fence_Isle_Arena1_Caps": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 8.135923905503205,
+          "DegenerateTriangles": 0,
+          "Triangles": 552,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        }
+      },
+      "FenceChecks": {
+        "OutsideRimVertices": 0,
+        "MinRimClearance": 0.18469093054927216,
+        "Height": 3.0,
+        "PostCount": 46,
+        "GateCenterWidth": 11,
+        "ClearWidthBelowCaps": 10.14,
+        "ClearWidthAtCaps": 9.98
+      },
+      "FBXMaxVertexError": 1.1444091796875e-05,
+      "MeshCount": 3,
+      "Triangles": 1744
+    },
+    "Fence_Isle_Arena2": {
+      "MeshChecks": {
+        "Fence_Isle_Arena2_Rails": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 155.80361685163834,
+          "DegenerateTriangles": 0,
+          "Triangles": 640,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Fence_Isle_Arena2_Posts": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 96.28124063449245,
+          "DegenerateTriangles": 0,
+          "Triangles": 552,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Fence_Isle_Arena2_Caps": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 8.135923905503233,
+          "DegenerateTriangles": 0,
+          "Triangles": 552,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        }
+      },
+      "FenceChecks": {
+        "OutsideRimVertices": 0,
+        "MinRimClearance": 0.1819937258014894,
+        "Height": 3.0,
+        "PostCount": 46,
+        "GateCenterWidth": 11,
+        "ClearWidthBelowCaps": 10.14,
+        "ClearWidthAtCaps": 9.98
+      },
+      "FBXMaxVertexError": 1.1444091796875e-05,
+      "MeshCount": 3,
+      "Triangles": 1744
+    },
+    "Fence_Isle_Arena3": {
+      "MeshChecks": {
+        "Fence_Isle_Arena3_Rails": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 156.28133957538424,
+          "DegenerateTriangles": 0,
+          "Triangles": 640,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Fence_Isle_Arena3_Posts": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 96.28124052569396,
+          "DegenerateTriangles": 0,
+          "Triangles": 552,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Fence_Isle_Arena3_Caps": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 8.135923745303101,
+          "DegenerateTriangles": 0,
+          "Triangles": 552,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        }
+      },
+      "FenceChecks": {
+        "OutsideRimVertices": 0,
+        "MinRimClearance": 0.179609543537693,
+        "Height": 3.0,
+        "PostCount": 46,
+        "GateCenterWidth": 11,
+        "ClearWidthBelowCaps": 10.14,
+        "ClearWidthAtCaps": 9.98
+      },
+      "FBXMaxVertexError": 1.5206545561887717e-05,
+      "MeshCount": 3,
+      "Triangles": 1744
+    },
+    "Fence_Isle_Featured": {
+      "MeshChecks": {
+        "Fence_Isle_Featured_Rails": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 134.86273898528685,
+          "DegenerateTriangles": 0,
+          "Triangles": 632,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Fence_Isle_Featured_Posts": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 81.62974477684031,
+          "DegenerateTriangles": 0,
+          "Triangles": 468,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Fence_Isle_Featured_Caps": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 6.897852522557608,
+          "DegenerateTriangles": 0,
+          "Triangles": 468,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        }
+      },
+      "FenceChecks": {
+        "OutsideRimVertices": 0,
+        "MinRimClearance": 0.1787916063940767,
+        "Height": 3.0,
+        "PostCount": 39,
+        "GateCenterWidth": 11,
+        "ClearWidthBelowCaps": 10.14,
+        "ClearWidthAtCaps": 9.98
+      },
+      "FBXMaxVertexError": 1.049041748046875e-05,
+      "MeshCount": 3,
+      "Triangles": 1568
+    },
+    "Fence_Bridge1": {
+      "MeshChecks": {
+        "Fence_Bridge1_Rails": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 10.855625863102402,
+          "DegenerateTriangles": 0,
+          "Triangles": 80,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Fence_Bridge1_Posts": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 4.186135446146013,
+          "DegenerateTriangles": 0,
+          "Triangles": 24,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Fence_Bridge1_Caps": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.35373614552306554,
+          "DegenerateTriangles": 0,
+          "Triangles": 24,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        }
+      },
+      "FenceChecks": {},
+      "FBXMaxVertexError": 1.0013580322265625e-05,
+      "MeshCount": 3,
+      "Triangles": 128
+    },
+    "Fence_Bridge2": {
+      "MeshChecks": {
+        "Fence_Bridge2_Rails": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 9.165599809234518,
+          "DegenerateTriangles": 0,
+          "Triangles": 80,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Fence_Bridge2_Posts": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 4.1861354461460145,
+          "DegenerateTriangles": 0,
+          "Triangles": 24,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Fence_Bridge2_Caps": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.35373606283946635,
+          "DegenerateTriangles": 0,
+          "Triangles": 24,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        }
+      },
+      "FenceChecks": {},
+      "FBXMaxVertexError": 0,
+      "MeshCount": 3,
+      "Triangles": 128
+    },
+    "Fence_Bridge3": {
+      "MeshChecks": {
+        "Fence_Bridge3_Rails": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 9.68846161526522,
+          "DegenerateTriangles": 0,
+          "Triangles": 80,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Fence_Bridge3_Posts": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 4.1861354461460145,
+          "DegenerateTriangles": 0,
+          "Triangles": 24,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Fence_Bridge3_Caps": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.3537360628394661,
+          "DegenerateTriangles": 0,
+          "Triangles": 24,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        }
+      },
+      "FenceChecks": {},
+      "FBXMaxVertexError": 0,
+      "MeshCount": 3,
+      "Triangles": 128
+    },
+    "Fence_Bridge4": {
+      "MeshChecks": {
+        "Fence_Bridge4_Rails": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 9.663670881469791,
+          "DegenerateTriangles": 0,
+          "Triangles": 80,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Fence_Bridge4_Posts": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 4.186135446146013,
+          "DegenerateTriangles": 0,
+          "Triangles": 24,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        },
+        "Fence_Bridge4_Caps": {
+          "NonManifoldEdges": 0,
+          "SignedVolume": 0.35373614552306554,
+          "DegenerateTriangles": 0,
+          "Triangles": 24,
+          "OriginError": 0.0,
+          "RotationError": 0.0,
+          "ScaleError": 0.0
+        }
+      },
+      "FenceChecks": {},
+      "FBXMaxVertexError": 0,
+      "MeshCount": 3,
+      "Triangles": 128
+    }
+  },
+  "Source": "Saved isolated .blend sources and exported FBX files",
+  "StudioStatus": "Not imported or playtested; no live Studio access",
+  "MaxVertexError": 1.5206545561887717e-05,
+  "FenceSourceMatches": true,
+  "TotalTriangles": 12688,
+  "TotalMeshes": 119,
+  "BridgeJoinCount": 16,
+  "MaxBridgeJoinError": 0.0
+}

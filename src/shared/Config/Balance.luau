@@ -4,6 +4,13 @@
 
 local Balance = {}
 
+-- Sky lobby recovery; no combat or economy tuning.
+Balance.Lobby = {
+	FallY = -40,
+	FallCheckSeconds = 0.1,
+	RescueHeight = 4,
+}
+
 -- Swing motion (GAME_DESIGN 3.1). STARTING VALUES for the client/server swing code that Codex
 -- builds and tunes in Studio. Units are studs and seconds. The motion code reports each hit
 -- (approach speed + who moved into it) to FightRules, and reads FightRules.swingMultiplier /

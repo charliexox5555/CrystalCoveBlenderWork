@@ -14,6 +14,19 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-14 — Codex — L1 Part B sky lobby handoff
+Done:
+- Recorded 3,202-instance keep/move/delete inventory; salvaged eight prop prototypes to LegacyKit, preserved imported art/Rojo, moved PlayerReference and LightingPreset to Unsorted, cleared the old map/terrain/lighting.
+- Corrected island importer scale, placed flat collision, four placeholder bridges, seven stands, fourteen tagged pads, lobby spots/spawn, gradient sky and golden-afternoon lighting. Added server FallService through Rojo. Normalized hooks to six studs, including a final hook-only correction after user stand resizing; preserved their new fences and all other manual edits.
+- Full original-layout walk: 33 waypoints, zero failures. Reduced nominal gaps 5→4 studs to bring the featured pad entry from 14.17→13.92 s. Shortened retest reached 14 waypoints without failures before the user stopped play and asked to finish. Final static ground checks pass. All five fall rescues preserved health. iPhone 17 Pro landscape ~60 FPS in desktop emulator; clear row view. Lune/Studio: 51 passed, 0 failed; play console clean.
+- Lobby budget: 584 descendants, 17,846 imported-mesh triangles plus native primitive geometry (~20–22k visible total). Full report, inventory, screenshots and asset IDs in docs/testing/L1_SKY_LOBBY.md and assets/blender/map/sky/studio_assets.json.
+Next:
+- User completes fences/decor and publishes from Studio. L1 implementation finished; F1 fight prototype is next when requested.
+Problems / questions for the user:
+- No blocker. Studio left in Edit; device simulation off. Windows Application Control blocked StyLua, so the small service was formatted manually. Do not rerun the initial builder over manual edits.
+Balance/economy simulators (Balance only gained Lobby settings):
+- Mirrors 20.8–39.0 s, 0% timeouts, side bias 50%; pop>jam 64%, jam>prism 76%, prism>pop 62%; Perfect vs worst 61%, special use 70%. Economy ~3.7 min/match, 4 pulls day 1 / 96 by day 30; first Rare ~47 min, Epic 2.1 h, Legendary 9 h; 20% obtain Mythic in 30 days.
+
 ## 2026-10-13 — Codex — L1 Part A island platforms
 Done:
 - Built five Crystal Isles platforms only: exact 96×56 / 92×46 / 72×48 grass footprints, flat Z=0 tops, 1.4-stud grass, inset 2.5-stud dirt bands, and 30–34-stud faceted rock undersides. Arena variants have distinct rims, ledges, depths and 2–4 connected hanging chunks; Featured has a rounder outline.

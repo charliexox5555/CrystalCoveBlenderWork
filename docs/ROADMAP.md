@@ -21,11 +21,11 @@ Owner key: **C** = Codex (code / Studio MCP), **B** = Codex with Blender MCP, **
 Prompt: [prompts/02_sky_lobby.md](prompts/02_sky_lobby.md).
 
 - [x] **B:** 5 floating island platforms (grass / dirt / rock), exported to `assets/blender/map/sky/` with manifest and preview
-- [ ] **U:** back up the place, import the 5 FBX files
-- [ ] **C:** clear the old place (keep code, glassies, ClashStand, audio, icons; old props → `ServerStorage.LegacyKit`)
-- [ ] **C:** place islands, invisible collision, placeholder bridges, lighting and sky
-- [ ] **C:** 7 arena stands (hooks at ±3), tagged queue pads and lobby spots, SpawnLocation, FallService
-- [ ] **C:** walk test, phone check, screenshots
+- [x] **U:** back up the place, import the 5 FBX files
+- [x] **C:** clear the old place (keep code, glassies, ClashStand, audio, icons; old props → `ServerStorage.LegacyKit`)
+- [x] **C:** place islands, invisible collision, placeholder bridges, lighting and sky
+- [x] **C:** 7 arena stands (hooks at ±3), tagged queue pads and lobby spots, SpawnLocation, FallService
+- [x] **C:** walk test, phone check, screenshots ([L1 report](testing/L1_SKY_LOBBY.md); user approved the look and requested finish)
 - [ ] **U:** fences, trees, decor; publish
 
 ## F1 — Fight prototype (Oct 15–21)

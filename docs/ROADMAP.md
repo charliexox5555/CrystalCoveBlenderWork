@@ -75,6 +75,7 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 - [x] **C:** native two-client PvP + third staggered join, seven moving arenas, dropped snapshots, replay/disconnect and cleanup; [F5 report](testing/F5_MULTIPLAYER_SECURITY.md)
 - [x] **C:** remote validation/rate-limit/security review and double-KO cleanup soak; 71 tests pass
 - [x] **U/C:** no rewards before a real completed round; native disconnect verifies zero currency and unchanged match stats, 74 tests pass
+- [x] **CL:** playtested polish pass: Perfect-band/round-result/ownership fixes, survivor settle, arena state and signs, lobby lane, lighting, Watch any fight, faster forfeit, binary snapshots (−83% payload), render cost −30%; native multiplayer + 39 layouts pass ([report](testing/POLISH_PASS.md))
 - [ ] **U:** real low-end-phone performance/MicroProfiler, manual close/gamepad checks, published datastore/leaderboard verification
 - [ ] **B:** remaining launch glassies (target 18+ playable)
 - [ ] **U:** maturity questionnaire, icon, thumbnails, description; cross-promote from your other game

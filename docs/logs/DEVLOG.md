@@ -14,6 +14,20 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-14 — Claude — playtested polish pass, Watch, performance, calibration
+Done:
+- Playtested in Studio and fixed: frozen Perfect band (could say PERFECT outside the gold), round banner/heart pop spoiling the shatter, mirror-match ownership (owner names, pad-colour stripes, in-world YOU marker), survivor freezing mid-air, distant fights frozen, reset forfeit 5 s late, invisible 1.4-stud ledge on the spawn route, idle arenas without signs, cluttered distant signs, stale lobby hint, unexplained greyed Kiln pulls, single bot name. Report/screens: docs/testing/POLISH_PASS.md.
+- New: Watch any nearby fight (prompt per stand, follows rounds, STOP WATCHING); pad glows show open/waiting/busy; countdown ticks, release whoosh, heart-pop sound; stepping-stone lane with pad spurs; calmer lighting + low bloom. World/UI changes are reproducible in tools/studio and backed up in ServerStorage.
+- Performance (7 fights): fight render 0.80 -> 0.55 ms mean, 14 -> 0 idle Highlights, 634 -> 382 local instances, snapshot payload ~750 -> 128 bytes (binary SnapshotCodec). Native 2-client + late-join regression passes with zero errors.
+- Calibration: F1 candidate failures were model artifacts (real swing: Jam mirror 33-35 s, Prism Blade 55%). FightModel now size/slowdown-aware, fitted to 31 real mirrors. Lune/Studio 76 passed, 0 failed; 39 layout states pass.
+Balance sim (FightModel refit only; no Fight/Powers/rarity/economy changes):
+- Mirrors pop 24.0 / jam 36.3 / prism 19.5 / milk 32.7 / dragon 23.3 s, no timeouts; side bias 48%; triangle 63/67/62%; perfect vs worst 63%; luck 50% comebacks, 1.5 lead changes, 2.2 powers, 34% aimed misses; Mythic vs Common 85%, 5 stars 80%; field 41-59% (Rocket Pop lowest).
+- Economy unchanged: ~3.7 min matches, 4 day-one / 96 day-30 pulls, Rare 47 min, Epic 2.1 h, Legendary 9 h.
+Next:
+- Creator saves the place (StarterGui templates, Lighting, Lobby.Paths, floor fix). Codex's lobby-v2 import can start now that Studio is handed back. Real-phone check of fight readability/Watch/performance.
+Problems / questions for the user:
+- Rocket Pop (Momentum) sits near the fairness floor (real 39%); a small Momentum buff is the suggested lever, not applied (Powers change needs approval). Decisions 45-47 Proposed. Decision numbering clashed with Codex's 44; calibration renumbered to 45.
+
 ## 2026-10-14 — Codex — original lobby v2 art and UI concepts
 Done:
 - Built original furnace Kiln, three gameplay leaderboard frames, five exact-outline Blender island fences and four sloping bridge assemblies: 13 isolated .blend sources / FBXs, 119 color-separated meshes, 12,688 triangles. Seven reviewed renders, measured manifests, reproducible builder/validator and exact import/binding/collision instructions in assets/blender/map/lobby_v2/README.md. Preserved the previously active Blender scene and restored it.

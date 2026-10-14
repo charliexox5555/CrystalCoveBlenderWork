@@ -142,8 +142,10 @@ function Hud.new(data, maxima, lock, stop)
 			"STOP WATCHING",
 			"Red",
 			UDim2.fromScale(0.26, 0.1),
-			UDim2.fromScale(0.37, 0.86)
+			UDim2.fromScale(0.5, 0.98),
+			Vector2.new(0.5, 1) -- bottom-anchored so the 44 px minimum grows upward on short phones
 		)
+		self.Stop.Visible = true
 		U.make("UISizeConstraint", self.Stop, { MinSize = Vector2.new(120, 44) })
 		self.StopConnection = self.Stop.Activated:Connect(stop)
 	elseif self.Gui:FindFirstChild("StopWatching") then

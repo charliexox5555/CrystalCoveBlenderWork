@@ -104,4 +104,24 @@ for side, color in { Color3.fromHex("#4FB8FF"), Color3.fromHex("#FF9F43") } do
 	end
 end
 
+-- 4. Fight HUD: STOP WATCHING button for spectators, styled by the shared Button component so the
+--    creator can restyle it in the template. Hidden by default; FightHud shows it only while watching.
+if fightHud and not fightHud:FindFirstChild("StopWatching") then
+	local Button = require(game.StarterPlayer.StarterPlayerScripts.Client.UI.Components.Button)
+	local stop = Button.new(
+		fightHud,
+		"StopWatching",
+		"STOP WATCHING",
+		"Red",
+		UDim2.fromScale(0.26, 0.1),
+		UDim2.fromScale(0.5, 0.98),
+		Vector2.new(0.5, 1)
+	)
+	local limit = Instance.new("UISizeConstraint")
+	limit.MinSize = Vector2.new(120, 44)
+	limit.Parent = stop
+	stop.Visible = false
+	note(changed, "FightHud.StopWatching added")
+end
+
 return { Changed = changed, Skipped = skipped }

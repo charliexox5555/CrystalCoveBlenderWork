@@ -6,8 +6,6 @@
 local Deps = if script then require(script.Parent.Deps) else require("./Deps")
 local Balance, FightRules = Deps.Balance, Deps.FightRules
 
-export type Policy = "ready" | "never" -- when a player fires their special
-
 local FightModel = {}
 
 local function swingOf(state, side: number): number
@@ -19,9 +17,9 @@ local function swingOf(state, side: number): number
 	return amp
 end
 
--- Runs one round to the end. setup = FightRules setup; policies = { [1] = Policy, [2] = Policy }
--- (sides with AutoSpecial ignore their policy). Returns the final FightRules state.
-function FightModel.round(setup, policies: { Policy }?)
+-- Runs one round to the end. Powers fire by themselves (FightRules.tick); aimed powers roll
+-- their LandChance. Every ~HitInterval the glassies meet; MissChance of those swings pass by.
+function FightModel.round(setup)
 	local m = Balance.SimModel
 	local rng = setup.Rng
 	local state = FightRules.new(setup)
@@ -30,18 +28,13 @@ function FightModel.round(setup, policies: { Policy }?)
 	local events = {}
 	while not state.Over do
 		FightRules.tick(state, dt)
-		if policies then
-			for side = 1, 2 do
-				if policies[side] == "ready" and state.Fighters[side].SpecialReady then
-					FightRules.useSpecial(state, side)
-				end
-			end
-		end
 		if not state.Over and state.Time >= nextHit then
-			local a, b = swingOf(state, 1), swingOf(state, 2)
-			local speed = m.SpeedAtAmplitude * (a + b) / 2 * (1 + m.SpeedSpread * (rng() * 2 - 1))
-			local share = math.clamp(a / (a + b) + m.ShareSpread * (rng() * 2 - 1), 0.05, 0.95)
-			FightRules.hit(state, speed, share)
+			if rng() >= m.MissChance then
+				local a, b = swingOf(state, 1), swingOf(state, 2)
+				local speed = m.SpeedAtAmplitude * (a + b) / 2 * (1 + m.SpeedSpread * (rng() * 2 - 1))
+				local share = math.clamp(a / (a + b) + m.ShareSpread * (rng() * 2 - 1), 0.05, 0.95)
+				FightRules.hit(state, speed, share)
+			end
 			nextHit += m.HitInterval * (1 + m.HitIntervalJitter * (rng() * 2 - 1))
 		end
 		for _, e in FightRules.drainEvents(state) do
@@ -56,8 +49,8 @@ end
 function FightModel.setup(idA: string, idB: string, rng, opts: { [string]: any }?)
 	local o = opts or {}
 	return {
-		A = { Id = idA, Stars = o.StarsA, Aim = o.AimA, AutoSpecial = o.AutoA },
-		B = { Id = idB, Stars = o.StarsB, Aim = o.AimB, AutoSpecial = o.AutoB },
+		A = { Id = idA, Stars = o.StarsA, Aim = o.AimA },
+		B = { Id = idB, Stars = o.StarsB, Aim = o.AimB },
 		Rng = rng,
 		SweetSpot = o.SweetSpot,
 	}

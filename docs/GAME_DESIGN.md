@@ -1,5 +1,6 @@
 # Glass Clash — Game Design Doc (v0.3)
 
+> **v0.3.1 (Oct 14):** powers fire by themselves at random moments (no button), and the swing is erratic and 3D with spin. Luck and suspense are a pillar.
 > **v0.3 (Oct 13) replaces the Pokémon-style structure** (routes, trainers, catching, evolution) with **lobby arena matches**, inspired by the success of *Ball VS Ball* ([research brief](research/BALL_VS_BALL.md)). Older versions are in git history.
 > Working names: **Glass Clash** (game), **glassies** (collectibles), **Marbles** (premium currency), **the Kiln** (gacha). All can change.
 > **UI mockups:** [Figma](https://www.figma.com/design/r3guIIk5deo7vNxLzJN0RZ) (v0.2 screens; the new screens are listed in [UI_SPEC](ui/UI_SPEC.md)). **Tools and practices:** [RESOURCES.md](RESOURCES.md). **Economy numbers:** [design/ECONOMY.md](design/ECONOMY.md).
@@ -8,7 +9,7 @@
 
 **Pick a glass. Pull it back. Let go. Watch it smash.**
 
-Walk up to an arena, roll three glassies from your collection, pick one, aim your pull-back and let go. The two glassies swing on their strings and crash into each other again and again, firing their powers, until one **shatters**. Each player has **3 glass hearts**; lose a round and one pops. Win matches, earn coins, fire up the Kiln for new glassies, from soda bottles all the way to glass dragons.
+Walk up to an arena, roll three glassies from your collection, pick one, aim your pull-back and let go. The two glassies swing wildly on their strings, in every direction, crash into each other, sometimes whoosh past, spin and wobble, and their powers go off at random moments, until one **shatters**. Each player has **3 glass hearts**; lose a round and one pops. Win matches, earn coins, fire up the Kiln for new glassies, from soda bottles all the way to glass dragons.
 
 - **Audience:** all ages, mostly kids. **Mobile first.**
 - **Inspiration:** real-life videos where glass bottles hang on strings over a wooden pen and swing into each other until one breaks. The game should be **recognizable as that format**. The match structure (lobby pads, draft from your collection, hearts, auto-battle) is the proven *Ball VS Ball* loop, built in our own form (section 16).
@@ -16,10 +17,11 @@ Walk up to an arena, roll three glassies from your collection, pick one, aim you
 ### Pillars
 
 1. **The shatter is the reward.** Every round ends in a slow-motion, loud, sparkly shatter. If a change makes it less satisfying, don't make it.
-2. **Simple to play, fun to watch.** Two decisions per round (which glassy, how far to pull back) plus one tap (your special). Everything else is a show. Anyone watching the arena should understand it in 3 seconds.
-3. **From kitchen to fantasy.** Common glassies are things from your kitchen; rare ones are swords, unicorns and dragons. Players see the fantasy ones from day one (the Kiln, other players' fights) so they have something to chase.
-4. **Fair and readable.** Rarity adds flair and a small edge, never an auto-win. Every glassy has one clear gimmick you can see happen.
-5. **Always something to watch.** Arenas sit along the lobby path, so waiting players watch real fights.
+2. **Simple to play, fun to watch.** Two decisions per round (which glassy, and how and where to pull it back). Everything after the release is a show. Anyone watching the arena should understand it in 3 seconds.
+3. **Luck and suspense.** Like Ball VS Ball, the best glassy doesn't always win. Swings miss, powers fire at good or bad moments and can whiff, a lucky smash turns a round around. Strong glassies win more often, never every time.
+4. **From kitchen to fantasy.** Common glassies are things from your kitchen; rare ones are swords, unicorns and dragons. Players see the fantasy ones from day one (the Kiln, other players' fights) so they have something to chase.
+5. **Fair and readable.** Rarity adds flair and a small edge, never an auto-win. Every glassy has one clear gimmick you can see happen.
+6. **Always something to watch.** Arenas sit along the lobby path, so waiting players watch real fights.
 
 ## 2. Match loop
 
@@ -27,9 +29,9 @@ Walk up to an arena, roll three glassies from your collection, pick one, aim you
 Lobby  →  step on an arena pad (1v1; a bot joins after 15 s)
   → Round (repeat until someone loses 3 hearts):
        Roll: 3 random glassies from YOUR collection → pick 1 (8 s; reroll: 1 free, then Marbles)
-       Aim: drag to set your pull-back angle; a Perfect band glows on the arc (6 s)
+       Aim: drag to pull your glassy back: how far (a Perfect band glows) and which way (6 s)
        3-2-1 → both release at once
-       Fight: they swing and smash; passives fire by themselves; tap SPECIAL once when charged
+       Fight: they swing, smash, miss, spin; passives and powers fire by themselves (no input)
        Shatter → the loser's heart pops
   → Results: coins (+ trophies vs players), quest progress
   → the Kiln (coins → new glassy, odds shown) → back to the pads
@@ -50,18 +52,19 @@ A match is **first to make the other lose 3 hearts** (3–5 rounds, ~3.7 min on 
 
 ## 3. The fight
 
-### 3.1 The swing (built by Codex in Studio)
+### 3.1 The swing: erratic, 3D, spinning (built by Codex in Studio)
 
-A **Clash Stand** is an A-frame swing set (never a gallows) over a wooden octagon pen. Two glassies hang from hooks on one crossbar, `HookGap` apart, on strings of `StringLength` 5 studs (drawn with `Beam`s).
+A **Clash Stand** is an A-frame swing set (never a gallows) over a wooden octagon pen. Two glassies hang from hooks on one crossbar, `HookGap` (6) apart, on strings of `StringLength` (7), shown `GlassyScale` (1.75×) bigger than true size (DECISIONS 30).
 
-- The swing is a **pendulum in the stand's plane**, simulated by our own code on the server (not Roblox physics), streamed to clients, which interpolate and render anchored glassies with CFrames.
-- Each glassy **keeps itself swinging** toward a target height from its Swing stat (`Motion.AmplitudeBase + AmplitudePerSwing × Swing`), so the fight never dies down.
-- When they touch (circle radius `Glassy.Radius`) they **bounce** (`Restitution`, heavier glass pushes harder: `MassByType`). Every bounce faster than `MinHitSpeed` is a **hit** and is reported to `FightRules.hit(speed, shareA)`.
-- **Starting values** are in `Balance.Motion`. Codex tunes them by eye in Studio; the goal is a hit roughly every 1–1.5 s with clear wind-ups, big smashes and the occasional glancing tap.
+- **3D pendulums** (DECISIONS 34): each glassy swings on a sphere around its hook, not just in the stand's plane. They can **swing past each other**, loop round and come back. Random sideways nudges (`WanderStrength`) keep swings from repeating, so no two rounds look alike.
+- **Bounces with spin:** when they touch they bounce (`Restitution`, heavier glass pushes harder: `MassByType`). An off-centre hit throws the glass sideways (`HitDeflect`) and **spins it on its string** (`SpinFromHit`): the string winds up and unwinds (`TwistStiffness`). Big hits also **tumble** the body (tilt and wobble back).
+- Each glassy **keeps itself swinging** toward a target height from its Swing stat, so the fight never dies down.
+- Our own simulation on the server (not Roblox physics), streamed to clients, which interpolate and render anchored glassies with CFrames. Every touch faster than `MinHitSpeed` is a **hit** → `FightRules.hit(speed, shareA)`.
+- **Feel target:** a mix of big smashes, glancing taps and near-misses, roughly one real hit every 1.5–2 s, swings you can't quite predict. Starting values in `Balance.Motion`; Codex tunes by eye.
 
 ### 3.2 Aim
 
-Before release you drag your glassy back along an arc (`AimMin`–`AimMax` radians). Each round a random **Perfect band** (`SweetSpotWidth` either side) glows on the arc, the same for both players. Release inside it for a **Perfect Release**: your first hit deals ×`PerfectFirstHitMult` (2.0) and your special starts `PerfectCharge` (25%) charged. Pulling back further also gives a faster first swing.
+Before release you drag your glassy back: **how far** (`AimMin`–`AimMax`) and **which way** (up to `AimYawMax` either side of straight at the other glass). Each round a random **Perfect band** on the pull distance glows, the same for both players. Release inside it for a **Perfect Release**: your first hit deals ×`PerfectFirstHitMult` (2.0) and your first power comes `PerfectPowerAdvance` (3 s) sooner. Angled pulls make wilder 3D swings: riskier, sometimes better.
 
 ### 3.3 Damage (both glassies take damage on every hit)
 
@@ -85,9 +88,13 @@ Crit chance = `CritBase + CritPerSwing × Swing` (max 30%), plus Lucky. All in `
 | Fizzy | 20 / 110 / 10 | 1.0 | Balanced |
 | Sharp | 21 / 105 / 14 | 0.85 | Swings high, crits more, cracks a bit sooner |
 
-### 3.5 Powers
+### 3.5 Powers (no buttons)
 
-Every glassy has **one passive** (fires by itself) and **one special** (charges up; the player taps once to fire it, once per round). Glassies can rename them ("Lid Shield", "Prism Beam"). Numbers live in `Config/Powers.luau`.
+Every glassy has **one passive** (always on, or triggered by hits) and **one burst power** that **fires by itself** at random moments (DECISIONS 33). There is no special button: the player watches and hopes it goes off at a good time. Glassies can rename them ("Lid Shield", "Prism Beam", "Hot Streak"). Numbers live in `Config/Powers.luau`.
+
+**When powers fire (placeholder formula, to be refined):** the first after a random 5–14 s, then again after 9–18 s, at most 3 times a round. Every hit (dealt or taken) brings the next one 0.5 s closer. A Perfect Release brings the first one 3 s closer. (`Balance.Fight.Power*`)
+
+**Luck is the point:** a Rage that fires while the glasses are far apart is wasted; a Shield that pops just before a smash saves the round; a Slam only counts if a hit comes within 3 s. **Aimed powers (Beam, Freeze) can miss** depending on where the glasses are when they fire: the swing code decides from the 3D positions (`PowerLands`), the simulator rolls `LandChance`. Counter-powers between glassies come later (glass brainstorms).
 
 | Passive | Effect |
 |---|---|
@@ -95,22 +102,21 @@ Every glassy has **one passive** (fires by itself) and **one special** (charges 
 | Sharp Edge | Hits leave cracks that chip 15% of the hit over 3 s (3 stacks) |
 | Sturdy | Takes 12% less damage |
 | Spiky Rim (thorns) | Bounces 12% of damage taken back |
-| Sticky | Hits slow the other glass's swing 15% for 3 s (3 stacks) |
+| Sticky | Hits slow the other glass's swing 20% for 3 s (3 stacks) |
 | Lucky Glint | +20% crit chance |
-| Second Wind | Once per round, survives a shattering hit with 10% HP |
-| Glow Core | Heals 0.45% max HP per second |
+| Second Wind | Once per round, survives a shattering hit with 8% HP |
+| Glow Core | Heals 0.55% max HP per second |
 | Momentum | +4% damage per hit landed (max 5 stacks); a crit taken resets it |
 
-| Special | Effect |
-|---|---|
-| Slam | The next hit within 3 s deals ×3.5 and knocks the other glass back hard |
-| Shield | Blocks all damage for 2.2 s |
-| Big Swing (pump) | Swings 50% higher and hits 30% harder for 5 s |
-| Freeze | The other glass stops driving its swing for 4 s |
-| Beam | Zaps the other glass for 8% of its max HP, from a distance |
-| Glaze | Heals 8% max HP and seals all cracks |
-
-**Charge:** `ChargePerSecond` + per hit dealt + per hit taken (full in ~10–15 s). A glowing **SPECIAL** button appears when ready. **Bots** fire theirs 0.2–1.5 s after it's ready. Using your special wins about 70% of otherwise even fights; good timing (shield before a smash, slam on a big swing) is the skill.
+| Burst power | Effect | Can miss? |
+|---|---|---|
+| Rage | +75% damage for 3 s | No (but wasted if no hits land) |
+| Slam | The next hit within 3 s deals ×2.3 and knocks the other glass back hard | No (wasted without a hit) |
+| Shield | Blocks all damage for 1.8 s | No |
+| Big Swing (pump) | Swings 50% higher and hits 30% harder for 4 s | No |
+| Freeze | The other glass barely swings for 3 s and turns brittle (×1.5 damage taken from you) | Yes (~30%) |
+| Beam | Zaps the other glass for 9.5% of its max HP | Yes (~35%) |
+| Glaze | Heals 6% max HP and seals all cracks | No |
 
 ### 3.6 HP, cracks and round end
 
@@ -123,11 +129,11 @@ Every glassy has **one passive** (fires by itself) and **one special** (charges 
 
 | Target | Value |
 |---|---|
-| Round length | 15–45 s, 8–40 hits; timeouts < 5% |
+| Round length | 15–45 s, 6–40 hits; timeouts < 5% |
 | Side bias | 42–58% |
 | Starter triangle | each starter beats one, loses to one (52–90%) |
 | Perfect vs worst aim | 53–75% |
-| Special used vs never | 55–80% |
+| Luck | winner was behind at some point in 35–80% of rounds; ≥ 1 lead change a round; 1.2–3 powers per glassy; 20–50% of aimed powers miss |
 | Mythic vs Common, 5 stars vs 0 | 60–95% / 60–98% |
 | Every glassy at equal stats vs the field | 38–62% |
 
@@ -135,7 +141,7 @@ These run against **FightModel**, a stand-in for the swing. When the real swing 
 
 ### 3.8 Server authority and anti-exploit
 
-- The server runs the swing and `FightRules`; clients only render. Inputs: `PickGlassy`, `Reroll`, `SetAim`, `UseSpecial`, `LeaveQueue`. Validate types and ranges, and **rate-limit every remote** (`Balance.Match.*RateSeconds`).
+- The server runs the swing and `FightRules`; clients only render. Inputs: `PickGlassy`, `Reroll`, `SetAim`, `LeaveQueue`. Validate types and ranges, and **rate-limit every remote** (`Balance.Match.*RateSeconds`).
 - Rewards are granted by the server from `MatchLogic.rewards`. Bots never take trophies.
 - Log suspicious patterns (e.g. Perfect Release rate per player) for review.
 
@@ -256,7 +262,7 @@ Starters Pop (Fizzy), Jam (Heavy), Prism (Sharp) plus 28 in the Kiln: see `Confi
 
 The **crisp glass** style from v0.2 stays: dark frosted panels, thin cyan → violet edges, Montserrat, color meanings (green buy, red close, yellow special, blue neutral, purple fuse), rarity and type colors. Build from `Theme` and the shared components in `src/client/UI`. Screens and layouts: **[ui/UI_SPEC.md](ui/UI_SPEC.md)**.
 
-Key screens: Lobby HUD, Queue panel, **Roll** (3 cards + reroll), **Aim** (drag on the arc, Perfect band, lock button), **Fight HUD** (HP bars, hearts, SPECIAL button), Results, **Kiln** (odds first), Collection + Index, Shop.
+Key screens: Lobby HUD, Queue panel, **Roll** (3 cards + reroll), **Aim** (drag to pull back: distance + direction, Perfect band, lock button), **Fight HUD** (HP bars, hearts, power banners; no buttons), Results, **Kiln** (odds first), Collection + Index, Shop.
 
 ## 14. Technical plan
 
@@ -265,7 +271,7 @@ ServerScriptService/Server/Services/
   DataService        -- ProfileStore: coins, marbles, collection, trophies, quests, receipts
   ArenaService       -- pads, queue, bot fill, one MatchRunner per arena
   MatchService       -- match phases + timers; uses MatchLogic; handles PickGlassy/Reroll/SetAim/LeaveQueue
-  FightService       -- swing simulation (Codex) + FightRules; UseSpecial; streams FightSnapshot/FightEvents
+  FightService       -- 3D swing simulation (Codex) + FightRules; streams FightSnapshot/FightEvents
   KilnService        -- odds, pulls (Formula.rollKiln), duplicates -> stars, PolicyService checks
   RewardService      -- quests, playtime gifts, login streak, codes, group reward
   MonetizationService -- gamepasses, ProcessReceipt (idempotent)
@@ -306,7 +312,7 @@ ServerStorage/Tests/  RunAll + suites, BalanceSim, EconomySim, FightModel
 
 | Week | Dates | Goal |
 |---|---|---|
-| 1 | Oct 13–19 | **Fight prototype:** swing + FightRules on one stand, aim, special button, shatter. Feels great on a phone. |
+| 1 | Oct 13–19 | **Fight prototype:** erratic 3D swing + FightRules on one stand, aim, auto powers, shatter. Feels great on a phone. |
 | 2 | Oct 20–26 | Match flow: pads, queue, bots, roll/aim/fight/hearts/results. Lobby blockout. |
 | 3 | Oct 27–Nov 2 | Data, Kiln, collection, 9 more glassies modelled, lobby art pass |
 | 4 | Nov 3–9 | Quests, gifts, codes, shop, Shatter FX, Marbles, PolicyService, analytics |
@@ -323,7 +329,7 @@ ServerStorage/Tests/  RunAll + suites, BalanceSim, EconomySim, FightModel
 
 What we take is the structure (lobby pads, draft from your collection, hearts, auto-battle, coin gacha, weekly content). What's ours:
 - **Glass on strings** swinging over a wooden pen, from real-life videos, not balls in a box.
-- **Aim = pull-back** with a Perfect band; **one special tap** per round.
+- **Aim = pull-back** (distance + direction) with a Perfect band; **erratic 3D swings with spin** on strings.
 - **Glass hearts** that pop (we never fling anything at players' avatars).
 - **The Kiln** (glassblowing reveal), **Marbles**, kitchen-to-fantasy glass.
 - Our own names, art, UI and powers. Don't copy their names ("Flyers", "Explosions", "Gems/Diamonds"), balls, abilities, screens or arena.

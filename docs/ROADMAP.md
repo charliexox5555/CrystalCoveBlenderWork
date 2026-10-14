@@ -28,17 +28,17 @@ Prompt: [prompts/02_sky_lobby.md](prompts/02_sky_lobby.md).
 - [x] **C:** walk test, phone check, screenshots ([L1 report](testing/L1_SKY_LOBBY.md); user approved the look and requested finish)
 - [ ] **U:** fences, trees, decor; publish
 
-## F1 — Fight prototype (Oct 15–21)
+## F1 — Fight prototype (Oct 14–21)
 
-Goal: one Clash Stand, two glassies swinging and smashing with powers, aim, the special button and a great shatter. **Nothing else until this feels great on a phone.** Prompt: [prompts/01_fight_prototype.md](prompts/01_fight_prototype.md).
+Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, pass-bys and powers firing by themselves → a great shatter. **Nothing else until this feels great on a phone.** Prompt: [prompts/01_fight_prototype.md](prompts/01_fight_prototype.md).
 
-- [ ] **C:** `FightService`: server pendulum swing (Balance.Motion), hit detection → `FightRules.hit`, `FightRules.tick`, powers applied to the motion (swingMultiplier / isFrozen / knockbackMultiplier)
-- [ ] **C:** stream `FightSnapshot` (20 Hz, unreliable) + `FightEvents`; `UseSpecial` remote validated and rate-limited
-- [ ] **C:** `FightController`: interpolated CFrame animation of anchored glassies, string Beams, 3/4 camera, side-on slow-mo final blow
-- [ ] **C:** aim input (drag the glassy back on its arc, Perfect band, lock), 3-2-1 release
-- [ ] **C:** Fight HUD: HP bars, crack stages, SPECIAL button with charge ring, power popups, CRIT!/SMASH!
-- [ ] **C:** reuse `ShatterController` + `CrackPaths`; effects for each special
-- [ ] **C:** debug command: bot vs bot on the stand with any two glassy ids; log hits/s and average speed and update `Balance.SimModel`
+- [x] **CL:** rules for auto powers (no button), Rage, aimed powers that can miss, aim yaw, luck/suspense metrics in the simulator (DECISIONS 33–34)
+- [ ] **C:** `FightService`: 3D pendulum swing (Balance.Motion), wander, deflecting bounces, spin and tumble; hits → `FightRules.hit`; `FightRules.tick`; `PowerLands` from positions
+- [ ] **C:** stream `FightSnapshot` (20 Hz, unreliable) + `FightEvents`; `SetAim` remote validated and rate-limited
+- [ ] **C:** `FightController`: interpolated 3D CFrames with twist/tilt, string Beams, follow camera, side-on slow-mo final blow
+- [ ] **C:** aim input (drag distance + direction, Perfect band, lock), 3-2-1 release
+- [ ] **C:** Fight HUD: HP bars, cracks, power glow rings, power banners, MISSED!, CRIT!/SMASH!/WHOOSH; effects for every power
+- [ ] **C:** bot-vs-bot calibration: update `Balance.SimModel`, `Fight.RefSpeed`, beam/freeze `LandChance`
 - [ ] **U:** publish, play on a phone, record a clip, approve the feel
 
 ## F2 — Match flow and lobby blockout (Oct 20–26)

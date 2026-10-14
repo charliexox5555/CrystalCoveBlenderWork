@@ -1,19 +1,20 @@
 --!strict
--- Fight rules (GAME_DESIGN 3): HP, damage, crits, types, passives, specials, shatter and timeout.
+-- Fight rules (GAME_DESIGN 3): HP, damage, crits, types, passives, powers, shatter and timeout.
 -- Pure and deterministic: no Roblox APIs, all randomness from `rng`, so the server, the tests
 -- and the balance simulator use the same rules.
 --
 -- This module does NOT move the glassies. The swing code (FightService on the server) moves
 -- them and tells the rules what happened:
 --
---   local fight = FightRules.new({ A = { Id = "pop", Aim = 0.9 }, B = { Id = "jam", Aim = 0.7, AutoSpecial = true },
---                                  Rng = rng, SweetSpot = sweetSpot })
+--   local fight = FightRules.new({ A = { Id = "pop", Aim = 0.9 }, B = { Id = "jam", Aim = 0.7 },
+--                                  Rng = rng, SweetSpot = sweetSpot,
+--                                  PowerLands = function(side, powerId) return <is the target in range/line?> end })
 --   -- every server step:
---   FightRules.tick(fight, dt)                        -- bleeds, heals, charge, bot specials, timeout
+--   FightRules.tick(fight, dt)                        -- bleeds, heals, powers firing by themselves, timeout
 --   -- when the two glassies hit (approach speed in studs/s, how much of it came from side 1, 0..1):
 --   FightRules.hit(fight, speed, shareA, x, y)
---   -- when a player taps the special button (after validating the remote):
---   FightRules.useSpecial(fight, side)
+--   -- Powers fire on their own at random moments (no button). Aimed powers (Beam, Freeze) ask
+--   -- PowerLands whether they reach the other glass from where it is right now; they can miss.
 --   -- the swing code reads these to apply powers to the motion:
 --   FightRules.swingMultiplier(fight, side), FightRules.isFrozen(fight, side), FightRules.knockbackMultiplier(fight, side)
 --   -- and sends FightRules.drainEvents(fight) to clients for effects and UI.
@@ -30,7 +31,7 @@ export type FighterSetup = {
 	Stars: number?,
 	Rainbow: boolean?,
 	Aim: number?, -- pull-back angle in radians; clamped to Motion.AimMin..AimMax
-	AutoSpecial: boolean?, -- bots: fire the special by themselves when it's ready
+	AimYaw: number?, -- sideways aim in radians (3D swing); clamped to +-Motion.AimYawMax
 }
 
 export type Setup = {
@@ -38,6 +39,9 @@ export type Setup = {
 	B: FighterSetup,
 	Rng: () -> number,
 	SweetSpot: number?, -- centre of the Perfect Release band; nil = no band this round
+	-- Optional: does an aimed power fired by `side` reach the other glass right now? The swing
+	-- code answers from the 3D positions. Without it, Params.LandChance is rolled.
+	PowerLands: ((side: number, powerId: string) -> boolean)?,
 }
 
 export type Event = { [string]: any }
@@ -54,16 +58,15 @@ export type Fighter = {
 	Mass: number,
 	Radius: number,
 	Aim: number,
+	AimYaw: number,
 	Amplitude: number,
 	Passive: string,
 	PassiveParams: { [string]: number },
 	Special: string,
 	SpecialParams: { [string]: number },
-	AutoSpecial: boolean,
-	AutoSpecialAt: number?,
-	Charge: number,
-	SpecialReady: boolean,
-	SpecialUsed: boolean,
+	NextPowerAt: number, -- fight time when this glassy's power fires next
+	LastPowerAt: number,
+	PowerTriggers: number,
 	Perfect: boolean,
 	FirstHitPending: boolean,
 	HitsDealt: number,
@@ -74,6 +77,7 @@ export type Fighter = {
 	ShieldUntil: number,
 	SlamUntil: number,
 	PumpUntil: number,
+	RageUntil: number,
 	FrozenUntil: number,
 	DamageDealt: number,
 	Crits: number,
@@ -90,6 +94,7 @@ export type State = {
 	Reason: string?,
 	Hits: number,
 	InOvertime: boolean,
+	PowerLands: ((side: number, powerId: string) -> boolean)?,
 }
 
 local FightRules = {}
@@ -124,6 +129,20 @@ function FightRules.clampAim(aim: any): number
 	return clamp(aim, M.AimMin, M.AimMax)
 end
 
+function FightRules.clampYaw(yaw: any): number
+	if not finite(yaw) then
+		return 0
+	end
+	return clamp(yaw, -M.AimYawMax, M.AimYawMax)
+end
+
+-- When a glassy's power fires next: a random wait (first one of the round, or a repeat).
+local function powerDelay(rng: () -> number, first: boolean): number
+	local lo = if first then F.PowerFirstMin else F.PowerRepeatMin
+	local hi = if first then F.PowerFirstMax else F.PowerRepeatMax
+	return lo + (hi - lo) * rng()
+end
+
 function FightRules.rollSweetSpot(rng: () -> number): number
 	local lo = M.AimMin + M.SweetSpotWidth
 	local hi = M.AimMax - M.SweetSpotWidth
@@ -147,7 +166,7 @@ end
 
 -- Setup --------------------------------------------------------------------------------------
 
-local function newFighter(side: number, setup: FighterSetup, sweetSpot: number?): Fighter
+local function newFighter(side: number, setup: FighterSetup, sweetSpot: number?, rng: () -> number): Fighter
 	local def = Glassies.get(setup.Id)
 	local stats = Formula.stats(def, { Stars = setup.Stars, Rainbow = setup.Rainbow })
 	local aim = FightRules.clampAim(setup.Aim)
@@ -164,16 +183,15 @@ local function newFighter(side: number, setup: FighterSetup, sweetSpot: number?)
 		Mass = def.Mass or M.MassByType[def.Type] or 1,
 		Radius = def.Radius,
 		Aim = aim,
+		AimYaw = FightRules.clampYaw(setup.AimYaw),
 		Amplitude = FightRules.targetAmplitude(stats.Swing),
 		Passive = def.Passive,
 		PassiveParams = Powers.passive(def.Passive).Params,
 		Special = def.Special,
 		SpecialParams = Powers.special(def.Special).Params,
-		AutoSpecial = setup.AutoSpecial == true,
-		AutoSpecialAt = nil,
-		Charge = if perfect then F.PerfectCharge else 0,
-		SpecialReady = false,
-		SpecialUsed = false,
+		NextPowerAt = powerDelay(rng, true) - (if perfect then F.PerfectPowerAdvance else 0),
+		LastPowerAt = 0,
+		PowerTriggers = 0,
 		Perfect = perfect,
 		FirstHitPending = perfect,
 		HitsDealt = 0,
@@ -184,6 +202,7 @@ local function newFighter(side: number, setup: FighterSetup, sweetSpot: number?)
 		ShieldUntil = -1,
 		SlamUntil = -1,
 		PumpUntil = -1,
+		RageUntil = -1,
 		FrozenUntil = -1,
 		DamageDealt = 0,
 		Crits = 0,
@@ -203,9 +222,10 @@ function FightRules.new(setup: Setup): State
 		Reason = nil,
 		Hits = 0,
 		InOvertime = false,
+		PowerLands = setup.PowerLands,
 	}
-	state.Fighters[1] = newFighter(1, setup.A, setup.SweetSpot)
-	state.Fighters[2] = newFighter(2, setup.B, setup.SweetSpot)
+	state.Fighters[1] = newFighter(1, setup.A, setup.SweetSpot, setup.Rng)
+	state.Fighters[2] = newFighter(2, setup.B, setup.SweetSpot, setup.Rng)
 	for _, f in state.Fighters do
 		if f.Perfect then
 			emit(state, { Type = "PerfectRelease", Side = f.Side })
@@ -276,21 +296,6 @@ local function takeDamage(state: State, target: Fighter, amount: number): number
 	return amount
 end
 
-local function addCharge(state: State, f: Fighter, amount: number)
-	if f.SpecialUsed or f.SpecialReady then
-		return
-	end
-	f.Charge = math.min(1, f.Charge + amount)
-	if f.Charge >= 1 then
-		f.SpecialReady = true
-		emit(state, { Type = "SpecialReady", Side = f.Side })
-		if f.AutoSpecial then
-			local r = state.Rng()
-			f.AutoSpecialAt = state.Time + F.BotSpecialDelayMin + (F.BotSpecialDelayMax - F.BotSpecialDelayMin) * r
-		end
-	end
-end
-
 -- Damage one glassy deals to the other in a hit, before the defender's Shield and Sturdy.
 -- `share` = how much of the approach speed came from the attacker (0..1).
 function FightRules.hitDamage(state: State, attacker: Fighter, defender: Fighter, speed: number, share: number): (number, boolean)
@@ -326,6 +331,12 @@ function FightRules.hitDamage(state: State, attacker: Fighter, defender: Fighter
 	end
 	if state.Time < attacker.PumpUntil then
 		amount *= attacker.SpecialParams.DamageMult
+	end
+	if state.Time < attacker.RageUntil then
+		amount *= attacker.SpecialParams.DamageMult
+	end
+	if attacker.Special == "freeze" and state.Time < defender.FrozenUntil then
+		amount *= attacker.SpecialParams.Brittle -- frozen glass is brittle
 	end
 	return amount, crit
 end
@@ -441,15 +452,28 @@ function FightRules.hit(state: State, speed: number, shareA: number, x: number?,
 		end
 	end
 	for side = 1, 2 do
-		addCharge(state, fighters[side], F.ChargePerHitDealt + F.ChargePerHitTaken)
+		fighters[side].NextPowerAt -= F.PowerHitAdvance -- every hit brings the next power closer
 	end
 	resolveKnockouts(state, before)
 end
 
--- Specials -----------------------------------------------------------------------------------
+-- Powers -------------------------------------------------------------------------------------
 
--- Fires a side's special. Returns false (with a reason) if it can't be used now.
-function FightRules.useSpecial(state: State, side: number): (boolean, string?)
+-- Does an aimed power reach the other glass? The swing code knows (PowerLands); otherwise roll.
+local function powerLands(state: State, f: Fighter): boolean
+	local chance = f.SpecialParams.LandChance
+	if chance == nil then
+		return true -- not aimed: always happens (whether it helps is up to the swing)
+	end
+	if state.PowerLands then
+		return state.PowerLands(f.Side, f.Special) == true
+	end
+	return state.Rng() < chance
+end
+
+-- Fires a side's power now. Powers fire by themselves from FightRules.tick (no button); this is
+-- public for tests and debug tools. Returns false (with a reason) if it can't fire.
+function FightRules.triggerPower(state: State, side: number): (boolean, string?)
 	if state.Over then
 		return false, "over"
 	end
@@ -457,27 +481,32 @@ function FightRules.useSpecial(state: State, side: number): (boolean, string?)
 	if not f then
 		return false, "side"
 	end
-	if f.SpecialUsed then
-		return false, "used"
+	if f.PowerTriggers >= F.PowerMaxPerRound then
+		return false, "max"
 	end
-	if not f.SpecialReady then
-		return false, "charging"
-	end
-	f.SpecialUsed = true
-	f.SpecialReady = false
-	f.Charge = 0
-	f.AutoSpecialAt = nil
+	f.PowerTriggers += 1
+	f.LastPowerAt = state.Time
+	f.NextPowerAt = if f.PowerTriggers >= F.PowerMaxPerRound
+		then math.huge
+		else state.Time + powerDelay(state.Rng, false)
 	local foe = state.Fighters[other(side)]
 	local p = f.SpecialParams
-	local event: Event = { Type = "Special", Side = side, Id = f.Special }
-	if f.Special == "slam" or f.Special == "shield" or f.Special == "pump" then
+	local event: Event = { Type = "Power", Side = side, Id = f.Special }
+	if not powerLands(state, f) then
+		event.Missed = true
+		emit(state, event)
+		return true
+	end
+	if f.Special == "slam" or f.Special == "shield" or f.Special == "pump" or f.Special == "rage" then
 		local untilTime = state.Time + p.Seconds
 		if f.Special == "slam" then
 			f.SlamUntil = untilTime
 		elseif f.Special == "shield" then
 			f.ShieldUntil = untilTime
-		else
+		elseif f.Special == "pump" then
 			f.PumpUntil = untilTime
+		else
+			f.RageUntil = untilTime
 		end
 		event.Seconds = p.Seconds
 	elseif f.Special == "freeze" then
@@ -500,6 +529,19 @@ function FightRules.useSpecial(state: State, side: number): (boolean, string?)
 	end
 	emit(state, event)
 	return true
+end
+
+-- How close a side's next power is, 0..1 (for a subtle glow in the UI, not a button).
+function FightRules.powerProgress(state: State, side: number): number
+	local f = state.Fighters[side]
+	if f.NextPowerAt == math.huge then
+		return 0
+	end
+	local span = f.NextPowerAt - f.LastPowerAt
+	if span <= 0 then
+		return 1
+	end
+	return clamp((state.Time - f.LastPowerAt) / span, 0, 1)
 end
 
 -- Time ---------------------------------------------------------------------------------------
@@ -528,9 +570,8 @@ local function tickFighter(state: State, f: Fighter, dt: number)
 	if f.Passive == "glow_core" and f.Hp > 0 then
 		f.Hp = math.min(f.MaxHp, f.Hp + f.MaxHp * f.PassiveParams.HealPerSecond * dt)
 	end
-	addCharge(state, f, F.ChargePerSecond * dt)
-	if f.AutoSpecialAt and state.Time >= f.AutoSpecialAt then
-		FightRules.useSpecial(state, f.Side)
+	if state.Time >= f.NextPowerAt then
+		FightRules.triggerPower(state, f.Side)
 	end
 end
 
@@ -574,10 +615,11 @@ end
 
 -- Compact HP / charge / effect state for clients.
 function FightRules.snapshot(state: State): { [string]: any }
-	local out = { T = state.Time, Hp = {}, Charge = {}, Shield = {}, Frozen = {} }
+	local out = { T = state.Time, Hp = {}, Power = {}, Shield = {}, Frozen = {}, Rage = {} }
 	for side, f in state.Fighters do
 		out.Hp[side] = math.max(f.Hp, 0)
-		out.Charge[side] = f.Charge
+		out.Power[side] = FightRules.powerProgress(state, side)
+		out.Rage[side] = state.Time < f.RageUntil
 		out.Shield[side] = FightRules.isShielded(state, side)
 		out.Frozen[side] = FightRules.isFrozen(state, side)
 	end

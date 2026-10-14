@@ -9,12 +9,55 @@ local Balance, Glassies, Rng = Deps.Balance, Deps.Glassies, Deps.Rng
 
 local BalanceSim = {}
 
-export type Result = { WinRate: number, Seconds: number, Hits: number, Timeouts: number, N: number }
+export type Result = {
+	WinRate: number,
+	Seconds: number,
+	Hits: number,
+	Timeouts: number,
+	N: number,
+	Comebacks: number, -- share of rounds where the winner was behind on HP after the opening hits
+	LeadChanges: number, -- average times the HP lead swapped in a round
+	Powers: number, -- average powers fired per glassy per round
+	PowerMisses: number, -- share of aimed powers that missed
+}
 
--- opts: StarsA/B, AimA/B ("perfect" | "worst" | number), PolicyA/B ("ready" | "never"), Seed
+-- Suspense stats from one round's events.
+local function suspense(state)
+	local maxA, maxB = state.Fighters[1].MaxHp, state.Fighters[2].MaxHp
+	local leader, changes, behind, hits = 0, 0, false, 0
+	local powers, misses, aimed = 0, 0, 0
+	for _, e in state.Events do
+		if e.Type == "Hit" then
+			hits += 1
+			local fa, fb = e.Hp[1] / maxA, e.Hp[2] / maxB
+			local now = if fa > fb then 1 elseif fb > fa then 2 else 0
+			if now ~= 0 and leader ~= 0 and now ~= leader then
+				changes += 1
+			end
+			if now ~= 0 then
+				leader = now
+			end
+			if hits > 3 and now ~= 0 and now ~= state.Winner then
+				behind = true
+			end
+		elseif e.Type == "Power" then
+			powers += 1
+			if e.Missed ~= nil or e.Id == "beam" or e.Id == "freeze" then
+				aimed += 1
+				if e.Missed then
+					misses += 1
+				end
+			end
+		end
+	end
+	return behind, changes, powers / 2, misses, aimed
+end
+
+-- opts: StarsA/B, AimA/B ("perfect" | "worst" | number), Seed
 function BalanceSim.matchup(idA: string, idB: string, n: number, opts: { [string]: any }?): Result
 	local o = opts or {}
 	local wins, seconds, hits, timeouts = 0, 0, 0, 0
+	local comebacks, leadChanges, powers, misses, aimed = 0, 0, 0, 0, 0
 	local M = Balance.Motion
 	local function aimFor(spec, sweet: number): number
 		if spec == "perfect" then
@@ -35,13 +78,11 @@ function BalanceSim.matchup(idA: string, idB: string, n: number, opts: { [string
 			Id = idA,
 			Stars = o.StarsA,
 			Aim = aimFor(o.AimA, sweet),
-			Policy = o.PolicyA or "ready",
 		}
 		local b = {
 			Id = idB,
 			Stars = o.StarsB,
 			Aim = aimFor(o.AimB, sweet),
-			Policy = o.PolicyB or "ready",
 		}
 		local first, second = if swap then b else a, if swap then a else b
 		local setup = {
@@ -50,7 +91,13 @@ function BalanceSim.matchup(idA: string, idB: string, n: number, opts: { [string
 			Rng = rng,
 			SweetSpot = sweet,
 		}
-		local state = FightModel.round(setup, { first.Policy, second.Policy })
+		local state = FightModel.round(setup)
+		local behind, changes, p, m, a = suspense(state)
+		comebacks += if behind then 1 else 0
+		leadChanges += changes
+		powers += p
+		misses += m
+		aimed += a
 		local aSide = if swap then 2 else 1
 		if state.Winner == aSide then
 			wins += 1
@@ -61,7 +108,19 @@ function BalanceSim.matchup(idA: string, idB: string, n: number, opts: { [string
 			timeouts += 1
 		end
 	end
-	return { WinRate = wins / n, Seconds = seconds / n, Hits = hits / n, Timeouts = timeouts / n, N = n }
+	return {
+		WinRate = wins / n,
+		Seconds = seconds / n,
+		Hits = hits / n,
+		Timeouts = timeouts / n,
+		N = n,
+		Comebacks = comebacks / n,
+		LeadChanges = leadChanges / n,
+		Powers = powers / n,
+		PowerMisses = if aimed > 0 then misses / aimed else 0,
+		Misses = misses,
+		Aimed = aimed,
+	}
 end
 
 -- Side bias: the same glassy on both sides, no side swapping.
@@ -69,7 +128,7 @@ function BalanceSim.sideBias(id: string, n: number): number
 	local wins = 0
 	for i = 1, n do
 		local rng = Rng.new(5000 + i * 104729)
-		local state = FightModel.round(FightModel.setup(id, id, rng, { AimA = 0.8, AimB = 0.8 }), { "ready", "ready" })
+		local state = FightModel.round(FightModel.setup(id, id, rng, { AimA = 0.8, AimB = 0.8 }))
 		if state.Winner == 1 then
 			wins += 1
 		end
@@ -136,24 +195,23 @@ function BalanceSim.powerTable(n: number)
 	return rows, byPassive, bySpecial, byType
 end
 
--- Special used whenever ready vs never used, averaged over every glassy as a mirror match.
-function BalanceSim.specialValue(n: number): (number, { [string]: number })
-	local total, per = 0, {}
+-- Luck and suspense over every glassy as a mirror match.
+function BalanceSim.suspense(n: number)
+	local totals = { Comebacks = 0, LeadChanges = 0, Powers = 0 }
+	local misses, aimed = 0, 0
 	for _, def in Glassies.List do
-		local r = BalanceSim.matchup(def.Id, def.Id, n, { PolicyA = "ready", PolicyB = "never" }).WinRate
-		per[def.Special] = per[def.Special] or {}
-		table.insert(per[def.Special], r)
-		total += r
-	end
-	local avg = {}
-	for special, list in per do
-		local s = 0
-		for _, r in list do
-			s += r
+		local r = BalanceSim.matchup(def.Id, def.Id, n)
+		for k in totals do
+			totals[k] += r[k]
 		end
-		avg[special] = s / #list
+		misses += r.Misses
+		aimed += r.Aimed
 	end
-	return total / #Glassies.List, avg
+	for k in totals do
+		totals[k] /= #Glassies.List
+	end
+	totals.PowerMisses = if aimed > 0 then misses / aimed else 0
+	return totals
 end
 
 local function pct(x: number): string
@@ -168,10 +226,19 @@ function BalanceSim.report(roundsPerMatchup: number?): string
 	end
 
 	add("")
-	add("Mirror rounds (avg seconds / hits / timeouts):")
+	add("Mirror rounds (avg seconds / hits / timeouts / comebacks / lead changes / powers per glassy):")
 	for _, id in { "pop", "jam", "prism", "milk_bottle", "glass_dragon" } do
 		local r = BalanceSim.matchup(id, id, n)
-		add("  %-14s %5.1f s  %4.1f hits  %s timeouts", id, r.Seconds, r.Hits, pct(r.Timeouts))
+		add(
+			"  %-14s %5.1f s  %4.1f hits  %s timeouts  %s comebacks  %.1f lead changes  %.1f powers",
+			id,
+			r.Seconds,
+			r.Hits,
+			pct(r.Timeouts),
+			pct(r.Comebacks),
+			r.LeadChanges,
+			r.Powers
+		)
 	end
 	add("Side bias (side 1 win rate, pop mirror): %s", pct(BalanceSim.sideBias("pop", n)))
 
@@ -188,17 +255,14 @@ function BalanceSim.report(roundsPerMatchup: number?): string
 	add("")
 	add("Aim: Perfect vs worst (pop mirror): %s", pct(BalanceSim.matchup("pop", "pop", n, { AimA = "perfect", AimB = "worst" }).WinRate))
 	add("Aim: Perfect vs average (aim 0.8):  %s", pct(BalanceSim.matchup("pop", "pop", n, { AimA = "perfect", AimB = 0.8 }).WinRate))
-	local special, perSpecial = BalanceSim.specialValue(math.max(20, n // 4))
-	add("Special used vs never (all mirrors): %s", pct(special))
-	local names = {}
-	for id in perSpecial do
-		table.insert(names, id)
-	end
-	table.sort(names)
-	for _, id in names do
-		add("  %-8s %s", id, pct(perSpecial[id]))
-	end
-
+	local luck = BalanceSim.suspense(math.max(20, n // 4))
+	add(
+		"Luck (all mirrors): %s comebacks, %.1f lead changes a round, %.1f powers per glassy, %s of aimed powers miss",
+		pct(luck.Comebacks),
+		luck.LeadChanges,
+		luck.Powers,
+		pct(luck.PowerMisses)
+	)
 	add("")
 	add("Rarity ladder, all Fizzy, vs Common lemonade_bottle:")
 	for _, id in { "milk_bottle", "pop", "hot_sauce", "potion_flask", "rocket_pop", "comet", "galaxy_orb" } do

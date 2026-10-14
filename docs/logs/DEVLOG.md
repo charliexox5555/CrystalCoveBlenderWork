@@ -14,6 +14,17 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-14 — Claude — Auto powers and erratic 3D swing (rules + F1 prompt)
+Done:
+- User: no power button; powers should fire at random moments (e.g. Rage +75% for a few seconds) so luck and suspense drive rounds like Ball VS Ball; swings should be erratic 3D with pass-bys, deflections and spin. DECISIONS 33–34.
+- FightRules: powers fire by themselves (random first wait 5–14 s, repeats 9–18 s, max 3, hits bring them closer; placeholder formula), aimed powers (Beam, Freeze) can miss via a `PowerLands` callback from the swing code (LandChance in the sim), new Rage power (hot_sauce, grizzly_guardian), frozen glass is brittle, aim yaw. UseSpecial remote removed.
+- Balance.Motion gained 3D starting values (wander, deflect, spin, tumble, AimYawMax). SimModel adds swing-throughs (MissChance 0.3). Simulator reports comebacks, lead changes, powers per round and miss rate; tests check them. 52 tests pass.
+- GAME_DESIGN v0.3.1 (luck pillar, 3D swing, powers), UI_SPEC (no buttons; power banners, glow rings, MISSED!), AGENTS, ROADMAP F1, rewritten F1 prompt for Codex.
+Next:
+- Codex builds F1 on Arena 1 and calibrates SimModel from bot-vs-bot rounds.
+Balance sim (200 rounds per matchup, FightModel stand-in):
+- Mirrors 20–44 s (12–26 hits), 0% timeouts, side bias 49%. Luck: winner was behind at some point in 59% of rounds, 2.0 lead changes a round, 2.4 powers per glassy per round, 37% of aimed powers miss. Starters: pop>jam 66%, jam>prism 69%, prism>pop 64%. Perfect vs worst aim 67%. Fizzy ladder vs Common: Rare 83%, Legendary 88%, Mythic 91%; 5 stars vs 0: 81%. Equal-stat power table 39–60%.
+
 ## 2026-10-14 — Codex — L1 Part B sky lobby handoff
 Done:
 - Recorded 3,202-instance keep/move/delete inventory; salvaged eight prop prototypes to LegacyKit, preserved imported art/Rojo, moved PlayerReference and LightingPreset to Unsorted, cleared the old map/terrain/lighting.

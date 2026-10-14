@@ -7,7 +7,7 @@
 --   MatchLogic.startRound(match)               -- rolls offers + the sweet spot
 --   MatchLogic.pick(match, 1, "pop")           -- from the remote (validated)
 --   MatchLogic.reroll(match, 1)                -- returns the Marble cost to charge
---   MatchLogic.setAim(match, 1, 0.9)
+--   MatchLogic.setAim(match, 1, 0.9, 0.2)      -- pull-back angle, sideways yaw
 --   local setup = MatchLogic.fightSetup(match) -- pass to FightRules.new
 --   MatchLogic.endRound(match, winnerSide)     -- returns true when the match is over
 --   MatchLogic.rewards(match, side)            -- coins and trophies for the results screen
@@ -36,6 +36,7 @@ export type Side = {
 	Offers: { string },
 	Pick: string?,
 	Aim: number?,
+	AimYaw: number?,
 	LastPick: string?,
 }
 
@@ -101,6 +102,7 @@ function MatchLogic.new(players: { PlayerSetup }, rng: () -> number): Match
 			Offers = {},
 			Pick = nil,
 			Aim = nil,
+			AimYaw = nil,
 			LastPick = nil,
 		}
 	end
@@ -115,6 +117,7 @@ function MatchLogic.startRound(match: Match)
 		side.Offers = MatchLogic.rollOffers(side.Collection, B.RollChoices, match.Rng)
 		side.Pick = nil
 		side.Aim = nil
+		side.AimYaw = nil
 	end
 	match.SweetSpot = FightRules.rollSweetSpot(match.Rng)
 end
@@ -198,10 +201,12 @@ function MatchLogic.autoPick(match: Match, sideIndex: number): string
 	return choice
 end
 
-function MatchLogic.setAim(match: Match, sideIndex: number, aim: any): number
+-- aim = pull-back angle, yaw = sideways angle (both radians, clamped). Returns the clamped pair.
+function MatchLogic.setAim(match: Match, sideIndex: number, aim: any, yaw: any): (number, number)
 	local side = match.Sides[sideIndex]
 	side.Aim = FightRules.clampAim(aim)
-	return side.Aim :: number
+	side.AimYaw = FightRules.clampYaw(yaw)
+	return side.Aim :: number, side.AimYaw :: number
 end
 
 -- Bots aim when the aim phase starts; players who never aimed get AimDefault.
@@ -212,6 +217,7 @@ function MatchLogic.autoAim(match: Match, sideIndex: number): number
 	end
 	if side.IsBot and match.SweetSpot then
 		side.Aim = FightRules.botAim(match.SweetSpot, side.Skill, match.Rng)
+		side.AimYaw = FightRules.clampYaw((match.Rng() * 2 - 1) * Balance.Motion.AimYawMax)
 	else
 		side.Aim = Balance.Motion.AimDefault
 	end
@@ -229,7 +235,7 @@ function MatchLogic.fightSetup(match: Match): FightRules.Setup
 			Stars = owned.Stars,
 			Rainbow = owned.Rainbow,
 			Aim = side.Aim or MatchLogic.autoAim(match, i),
-			AutoSpecial = side.IsBot,
+			AimYaw = side.AimYaw or 0,
 		}
 	end
 	return { A = fighter(1), B = fighter(2), Rng = match.Rng, SweetSpot = match.SweetSpot }

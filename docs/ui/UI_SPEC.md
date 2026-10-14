@@ -53,7 +53,7 @@ Small panel above the bottom center: "Waiting for a challenger… 0:12" with a p
 
 ## 4. Aim (6 s)
 
-- Camera behind your glassy, side of the stand. **Drag** anywhere to pull your glassy back along its arc (touch, mouse; gamepad left stick). A ghost arc shows the swing; the **Perfect band** glows gold on the arc.
+- Camera behind your glassy, side of the stand. **Drag** anywhere to pull your glassy back: drag distance = how far, drag direction = which way (up to `AimYawMax` either side). A ghost arc shows the first swing; the **Perfect band** glows gold on the pull distance.
 - **LOCK** button (green) bottom-right; locking early is fine. "PERFECT!" sparkle if inside the band.
 - Opponent's glassy visible but their aim hidden until release.
 
@@ -65,16 +65,17 @@ Small panel above the bottom center: "Waiting for a challenger… 0:12" with a p
 │                                                                │
 │          (3D Clash Stand, 3/4 camera, both glassies)           │
 │                                                                │
-│   Fizz Burst!                                    SMASH! 24     │
-│                                                   ( SPECIAL )  │
+│   Fizz Burst!            ⚡ HOT STREAK! ⚡          SMASH! 24   │
+│                                                                │
 └──────────────────────────────────────────────────────────────┘
 ```
 
 - 3-2-1 big centered numbers, then **LET GO!**
 - HP bars top, with a delayed damage trail and crack icons at 75 / 50 / 25 %. Hearts beside each bar.
-- **SPECIAL** button bottom-right (where the thumb rests): a ring fills with charge; when full it glows yellow and pulses with the special's name ("LID SHIELD"). Tap once; it greys out "USED". PC: Space / click; gamepad: A / R2.
-- Popups: damage numbers (size by damage), CRIT!, SMASH! (big hits), passive names in the glassy's tint, special name banners.
-- Shield/freeze/pump/slam state as a small icon under the HP bar with a draining timer.
+- **No buttons during the fight** (DECISIONS 33). Powers fire by themselves: a big **banner with the power's name** in the glassy's tint ("HOT STREAK!", "LID SHIELD!") plus its effect on the glassy. A miss shows "MISSED!" in grey: part of the fun.
+- A thin glow ring around each portrait fills as the next power gets close (`FightRules.powerProgress`), so players feel the tension ("it's about to go off!").
+- Popups: damage numbers (size by damage), CRIT!, SMASH! (big hits), WHOOSH (near-miss pass-by), passive names in the glassy's tint.
+- Shield/freeze/pump/slam/rage state as a small icon under the HP bar with a draining timer.
 - Overtime banner at 45 s ("OVERTIME: hits get stronger!").
 
 ## 6. Round end (4 s)
@@ -104,7 +105,7 @@ Marble packs (green R$ buttons), gamepasses (VIP, 2× Coins), Shatter FX (previe
 
 | Screen | Milestone | Status |
 |---|---|---|
-| Fight HUD (HP, hearts, SPECIAL, popups) | F1 | To build |
+| Fight HUD (HP, hearts, power banners, popups) | F1 | To build |
 | Aim | F1 | To build |
 | Queue panel, Roll, Countdown, Round end, Results | F2 | To build |
 | Kiln, Collection, Index | F3 | To build (inventory mockup reusable) |

@@ -1,7 +1,9 @@
 --!strict
--- Glassy powers (GAME_DESIGN 3.4). Every glassy has one Passive (triggers on its own) and one
--- Special (charges up during the round; the player taps once to fire it). Glassies reference
--- powers by Id in Config/Glassies (Passive / Special) and may give them their own display name.
+-- Glassy powers (GAME_DESIGN 3.5). Every glassy has one Passive (always on, or triggered by
+-- hits) and one Special "burst" power that FIRES BY ITSELF at random moments in the round (no
+-- button; Balance.Fight.Power*). Aimed specials (Params.LandChance) can miss depending on where
+-- the glassies are when they fire. Glassies reference powers by Id in Config/Glassies
+-- (Passive / Special) and may give them their own display name.
 -- All numbers here are tunable; run the balance simulator after changing them.
 
 export type PowerDef = {
@@ -42,7 +44,7 @@ Powers.Passives = {
 		Id = "sticky",
 		Name = "Sticky",
 		Description = "Hits make the other glass swing weaker for a moment.",
-		Params = { SwingLoss = 0.15, Seconds = 3, MaxStacks = 3 },
+		Params = { SwingLoss = 0.2, Seconds = 3, MaxStacks = 3 },
 	},
 	lucky = {
 		Id = "lucky",
@@ -54,13 +56,13 @@ Powers.Passives = {
 		Id = "second_wind",
 		Name = "Second Wind",
 		Description = "Once per round, survives a shattering hit and patches itself up a little.",
-		Params = { HealFraction = 0.1 },
+		Params = { HealFraction = 0.08 },
 	},
 	glow_core = {
 		Id = "glow_core",
 		Name = "Glow Core",
 		Description = "Slowly heals during the round.",
-		Params = { HealPerSecond = 0.0045 },
+		Params = { HealPerSecond = 0.0055 },
 	},
 	momentum = {
 		Id = "momentum",
@@ -74,38 +76,44 @@ Powers.Specials = {
 	slam = {
 		Id = "slam",
 		Name = "Slam",
-		Description = "The next hit within 3 seconds is a huge smash that knocks back hard.",
-		Params = { Seconds = 3, DamageMult = 3.5, KnockbackMult = 1.5 },
+		Description = "The next hit within 3 seconds is a big smash that knocks back hard.",
+		Params = { Seconds = 3, DamageMult = 2.3, KnockbackMult = 1.5 },
 	},
 	shield = {
 		Id = "shield",
 		Name = "Shield",
 		Description = "Blocks all damage for a short time.",
-		Params = { Seconds = 2.2 },
+		Params = { Seconds = 1.8 },
 	},
 	pump = {
 		Id = "pump",
 		Name = "Big Swing",
 		Description = "Swings much harder for a few seconds.",
-		Params = { Seconds = 5, SwingMult = 1.5, DamageMult = 1.3 },
+		Params = { Seconds = 4, SwingMult = 1.5, DamageMult = 1.3 },
 	},
 	freeze = {
 		Id = "freeze",
 		Name = "Freeze",
-		Description = "Slows the other glass almost to a stop.",
-		Params = { Seconds = 4 },
+		Description = "Freezes the other glass: it barely swings and turns brittle, taking extra damage.",
+		Params = { Seconds = 3, LandChance = 0.7, Brittle = 1.5 },
 	},
 	beam = {
 		Id = "beam",
 		Name = "Beam",
 		Description = "Zaps the other glass from a distance.",
-		Params = { MaxHpFraction = 0.08 },
+		Params = { MaxHpFraction = 0.095, LandChance = 0.65 },
+	},
+	rage = {
+		Id = "rage",
+		Name = "Rage",
+		Description = "Goes wild: +75% damage for a few seconds.",
+		Params = { Seconds = 3, DamageMult = 1.75 },
 	},
 	glaze = {
 		Id = "glaze",
 		Name = "Glaze",
 		Description = "Seals cracks and heals.",
-		Params = { HealFraction = 0.08 },
+		Params = { HealFraction = 0.06 },
 	},
 } :: { [string]: PowerDef }
 

@@ -5,20 +5,19 @@
 --   Server -> client
 --     MatchState     (RemoteEvent)            phase changes: Queue, Rolling, Aiming, Countdown, Fighting, RoundEnd, MatchEnd
 --     RollOffers     (RemoteEvent)            your 3 offers + reroll cost
---     FightEvents    (RemoteEvent)            FightRules events (Hit, Passive, Special, SpecialReady, Shatter, End, ...)
---     FightSnapshot  (UnreliableRemoteEvent)  swing angles + HP + charge at Balance.Feel.SnapshotRate
+--     FightEvents    (RemoteEvent)            FightRules events (Hit, Passive, Power, PerfectRelease, Overtime, Shatter, End)
+--     FightSnapshot  (UnreliableRemoteEvent)  glassy positions/rotations + HP + power glow at Balance.Feel.SnapshotRate
 --     MatchResult    (RemoteEvent)            winner, coins, trophies
 --   Client -> server
 --     PickGlassy     (RemoteEvent)  id: string
 --     Reroll         (RemoteEvent)  (no args)
---     SetAim         (RemoteEvent)  aim: number (radians; clamped by FightRules.clampAim)
---     UseSpecial     (RemoteEvent)  (no args)
+--     SetAim         (RemoteEvent)  aim: number, yaw: number (radians; clamped by FightRules.clampAim / clampYaw)
 --     LeaveQueue     (RemoteEvent)  (no args)
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
-local reliable = { "MatchState", "RollOffers", "FightEvents", "MatchResult", "PickGlassy", "Reroll", "SetAim", "UseSpecial", "LeaveQueue" }
+local reliable = { "MatchState", "RollOffers", "FightEvents", "MatchResult", "PickGlassy", "Reroll", "SetAim", "LeaveQueue" }
 local unreliable = { "FightSnapshot" }
 
 local folder = ReplicatedStorage:FindFirstChild("Remotes")

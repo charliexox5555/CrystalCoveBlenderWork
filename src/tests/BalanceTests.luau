@@ -6,11 +6,11 @@ return function(t, deps)
 	local BalanceSim = if script then require(script.Parent.BalanceSim) else require("./BalanceSim")
 	local N = 120
 
-	t.test("mirror rounds last 15-45 s with 8-40 hits and almost no timeouts", function()
+	t.test("mirror rounds last 15-45 s with 6-40 hits and almost no timeouts", function()
 		for _, id in { "pop", "jam", "prism", "milk_bottle", "glass_dragon", "glass_sword" } do
 			local r = BalanceSim.matchup(id, id, N)
 			t.between(r.Seconds, 15, 45, id .. " round seconds")
-			t.between(r.Hits, 8, 40, id .. " hits")
+			t.between(r.Hits, 6, 40, id .. " hits")
 			t.ok(r.Timeouts < 0.05, id .. " timeouts " .. r.Timeouts)
 		end
 	end)
@@ -29,9 +29,12 @@ return function(t, deps)
 		t.between(BalanceSim.matchup("pop", "pop", N * 2, { AimA = "perfect", AimB = "worst" }).WinRate, 0.53, 0.75, "perfect vs worst")
 	end)
 
-	t.test("using your special is worth it, but not an auto-win", function()
-		local avg = BalanceSim.specialValue(30)
-		t.between(avg, 0.55, 0.8, "special used vs never")
+	t.test("luck keeps it exciting: comebacks, lead changes, misses", function()
+		local luck = BalanceSim.suspense(20)
+		t.between(luck.Comebacks, 0.35, 0.8, "winner was behind at some point")
+		t.ok(luck.LeadChanges >= 1, "the lead changes at least once a round on average")
+		t.between(luck.Powers, 1.2, 3, "powers per glassy per round")
+		t.between(luck.PowerMisses, 0.2, 0.5, "aimed powers miss sometimes")
 	end)
 
 	t.test("rarity and stars help without deciding the fight", function()

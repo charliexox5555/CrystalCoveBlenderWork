@@ -7,16 +7,16 @@ return function(t, deps)
 	local function fight(idA: string, idB: string, opts: { [string]: any }?)
 		local o = opts or {}
 		return FightRules.new({
-			A = { Id = idA, Aim = o.AimA, AutoSpecial = o.AutoA },
-			B = { Id = idB, Aim = o.AimB, AutoSpecial = o.AutoB },
+			A = { Id = idA, Aim = o.AimA, AimYaw = o.YawA },
+			B = { Id = idB, Aim = o.AimB },
 			Rng = o.Rng or Rng.new(o.Seed or 1),
 			SweetSpot = o.SweetSpot,
+			PowerLands = o.PowerLands,
 		})
 	end
 
-	local function charge(state, side: number)
-		local f = state.Fighters[side]
-		f.Charge, f.SpecialReady = 1, true
+	local function fire(state, side: number)
+		t.ok(FightRules.triggerPower(state, side), "power fires")
 	end
 
 	local function count(events, eventType: string): number
@@ -82,7 +82,10 @@ return function(t, deps)
 		t.eq(FightRules.clampAim("x"), Balance.Motion.AimDefault, "string -> default")
 		local s = fight("pop", "jam", { AimA = 0.8, AimB = 1.25, SweetSpot = 0.8 })
 		t.ok(s.Fighters[1].Perfect and not s.Fighters[2].Perfect, "only side 1 perfect")
-		t.near(s.Fighters[1].Charge, F.PerfectCharge, 1e-9, "perfect charge")
+		t.ok(s.Fighters[1].NextPowerAt <= F.PowerFirstMax - F.PerfectPowerAdvance + 1e-9, "perfect brings the first power sooner")
+		t.eq(FightRules.clampYaw(5), Balance.Motion.AimYawMax, "yaw clamped")
+		t.eq(FightRules.clampYaw(0 / 0), 0, "NaN yaw -> 0")
+		t.eq(s.Fighters[1].AimYaw, 0, "default yaw")
 		t.eq(count(FightRules.drainEvents(s), "PerfectRelease"), 1, "event")
 		local rng = Rng.new(5)
 		for _ = 1, 200 do
@@ -93,30 +96,74 @@ return function(t, deps)
 		end
 	end)
 
-	t.test("specials need charge, fire once, and charge over time", function()
+	t.test("powers fire by themselves, repeat, and come sooner with hits", function()
 		local s = fight("pop", "jam")
-		local ok, why = FightRules.useSpecial(s, 1)
-		t.ok(not ok and why == "charging", "not ready at start")
-		for _ = 1, 400 do
-			FightRules.tick(s, 0.1)
-			if s.Fighters[1].SpecialReady then
-				break
+		local fired, firstAt = { 0, 0 }, nil
+		while not s.Over and s.Time < 60 do
+			FightRules.tick(s, 0.05)
+			for _, e in FightRules.drainEvents(s) do
+				if e.Type == "Power" then
+					fired[e.Side] += 1
+					firstAt = firstAt or e.Time
+				end
 			end
 		end
-		t.ok(s.Fighters[1].SpecialReady, "charges with time")
-		t.ok(FightRules.useSpecial(s, 1), "fires")
-		local again, reason = FightRules.useSpecial(s, 1)
-		t.ok(not again and reason == "used", "once per round")
-		t.ok(not FightRules.useSpecial(s, 3), "bad side")
+		t.ok(firstAt ~= nil and firstAt >= F.PowerFirstMin - 0.05 and firstAt <= F.PowerFirstMax + 0.05, "first power in its window")
+		t.eq(fired[1], F.PowerMaxPerRound, "side 1 hits the per-round cap")
+		t.eq(fired[2], F.PowerMaxPerRound, "side 2 hits the per-round cap")
+		local again, why = FightRules.triggerPower(s, 1)
+		t.ok(not again and (why == "max" or why == "over"), "capped")
+		t.ok(not FightRules.triggerPower(fight("pop", "jam"), 3), "bad side")
+
+		local h = fight("pop", "jam", { Seed = 4 })
+		local before = h.Fighters[1].NextPowerAt
+		FightRules.hit(h, 20, 0.5)
+		t.near(h.Fighters[1].NextPowerAt, before - F.PowerHitAdvance, 1e-9, "a hit brings the power closer")
+		t.between(FightRules.powerProgress(h, 1), 0, 1, "progress for the UI glow")
+	end)
+
+	t.test("aimed powers can miss", function()
+		local miss = fight("prism", "pop", { PowerLands = function()
+			return false
+		end })
+		fire(miss, 1)
+		local events = FightRules.drainEvents(miss)
+		t.ok(events[#events].Missed == true, "beam missed")
+		t.eq(miss.Fighters[2].Hp, miss.Fighters[2].MaxHp, "no damage on a miss")
+		local land = fight("prism", "pop", { PowerLands = function()
+			return true
+		end })
+		fire(land, 1)
+		t.ok(land.Fighters[2].Hp < land.Fighters[2].MaxHp, "beam landed")
+		local self = fight("jam", "pop", { PowerLands = function()
+			return false
+		end })
+		fire(self, 1)
+		t.ok(FightRules.isShielded(self, 1), "self powers (shield) never miss")
+	end)
+
+	t.test("rage hits much harder for a few seconds", function()
+		local fixed = function()
+			return 0.5
+		end
+		local base = fight("hot_sauce", "pop", { Rng = fixed })
+		FightRules.hit(base, 20, 0.5)
+		local normal = base.Fighters[2].MaxHp - base.Fighters[2].Hp
+		local r = fight("hot_sauce", "pop", { Rng = fixed })
+		fire(r, 1)
+		FightRules.hit(r, 20, 0.5)
+		t.near(r.Fighters[2].MaxHp - r.Fighters[2].Hp, normal * 1.75, 0.5, "rage damage")
+		FightRules.tick(r, 3.1)
+		t.ok(not FightRules.snapshot(r).Rage[1], "rage ends")
 	end)
 
 	t.test("shield blocks hit damage and beam", function()
-		local s = fight("jam", "prism")
-		charge(s, 1)
-		charge(s, 2)
-		t.ok(FightRules.useSpecial(s, 1), "shield up")
+		local s = fight("jam", "prism", { PowerLands = function()
+			return true
+		end })
+		fire(s, 1)
 		t.ok(FightRules.isShielded(s, 1), "shielded")
-		FightRules.useSpecial(s, 2) -- beam
+		fire(s, 2) -- beam
 		FightRules.hit(s, 25, 0.5)
 		t.eq(s.Fighters[1].Hp, s.Fighters[1].MaxHp, "no damage through shield")
 		FightRules.tick(s, 3)
@@ -124,15 +171,20 @@ return function(t, deps)
 	end)
 
 	t.test("beam deals a fraction of max HP; glaze heals and clears cracks", function()
-		local s = fight("prism", "milk_bottle")
-		charge(s, 1)
-		FightRules.useSpecial(s, 1)
+		local s = fight("prism", "milk_bottle", { PowerLands = function()
+			return true
+		end })
+		fire(s, 1)
 		local foe = s.Fighters[2]
-		t.near(foe.MaxHp - foe.Hp, foe.MaxHp * 0.08, 1e-6, "beam damage")
+		t.near(foe.MaxHp - foe.Hp, foe.MaxHp * deps.Powers.Specials.beam.Params.MaxHpFraction, 1e-6, "beam damage")
 		foe.Bleeds = { { PerSecond = 5, Remaining = 3 } }
-		charge(s, 2)
-		FightRules.useSpecial(s, 2)
-		t.near(foe.Hp, foe.MaxHp, 1e-6, "healed back to full (capped)")
+		local hpBefore = foe.Hp
+		fire(s, 2)
+		local heal = foe.MaxHp * deps.Powers.Specials.glaze.Params.HealFraction
+		t.near(foe.Hp, math.min(foe.MaxHp, hpBefore + heal), 1e-6, "healed (capped at max)")
+		fire(s, 2)
+		fire(s, 2)
+		t.ok(foe.Hp <= foe.MaxHp, "never above max")
 		t.eq(#foe.Bleeds, 0, "cracks sealed")
 	end)
 
@@ -144,20 +196,19 @@ return function(t, deps)
 		FightRules.hit(base, 20, 0.5)
 		local normal = base.Fighters[2].MaxHp - base.Fighters[2].Hp
 		local s = fight("pop", "pop", { Rng = fixed })
-		charge(s, 1)
-		FightRules.useSpecial(s, 1)
+		fire(s, 1)
 		t.ok(FightRules.knockbackMultiplier(s, 2) > 1, "slam knocks back")
 		FightRules.hit(s, 20, 0.5)
-		t.near(s.Fighters[2].MaxHp - s.Fighters[2].Hp, normal * 3.5, 0.5, "slam damage")
+		t.near(s.Fighters[2].MaxHp - s.Fighters[2].Hp, normal * deps.Powers.Specials.slam.Params.DamageMult, 0.5, "slam damage")
 		t.eq(FightRules.knockbackMultiplier(s, 2), 1, "slam used up")
 
-		local f = fight("crystal_ball", "pop")
-		charge(f, 1)
-		FightRules.useSpecial(f, 1)
+		local f = fight("crystal_ball", "pop", { PowerLands = function()
+			return true
+		end })
+		fire(f, 1)
 		t.ok(FightRules.isFrozen(f, 2) and not FightRules.isFrozen(f, 1), "freeze hits the other side")
 		local p = fight("water_jug", "pop")
-		charge(p, 1)
-		FightRules.useSpecial(p, 1)
+		fire(p, 1)
 		t.ok(FightRules.swingMultiplier(p, 1) > 1, "pump swings higher")
 	end)
 
@@ -226,27 +277,11 @@ return function(t, deps)
 		t.near(o.Time, F.RoundTimeout, 1, "at RoundTimeout")
 	end)
 
-	t.test("bots fire their special on their own", function()
-		local s = fight("pop", "prism", { AutoB = true })
-		local fired = false
-		for _ = 1, 2000 do
-			FightRules.tick(s, 0.05)
-			for _, e in FightRules.drainEvents(s) do
-				fired = fired or (e.Type == "Special" and e.Side == 2)
-			end
-			if fired or s.Over then
-				break
-			end
-		end
-		t.ok(fired, "bot used its special")
-		t.ok(not s.Fighters[1].SpecialUsed, "player's special untouched")
-	end)
-
-	t.test("snapshot carries HP, charge and effects", function()
+	t.test("snapshot carries HP, power glow and effects", function()
 		local s = fight("jam", "pop")
 		local snap = FightRules.snapshot(s)
 		t.eq(snap.Hp[1], s.Fighters[1].MaxHp, "hp")
 		t.eq(snap.Shield[1], false, "no shield")
-		t.eq(#snap.Charge, 2, "charge per side")
+		t.eq(#snap.Power, 2, "power progress per side")
 	end)
 end

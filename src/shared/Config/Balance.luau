@@ -32,9 +32,26 @@ Balance.Motion = {
 	FrozenDamping = 2.2, -- extra drag while frozen (and no self-driving)
 	MinHitSpeed = 3, -- approach speed (studs/s) below which a bump does no damage
 	HitCooldown = 0.15, -- seconds before the pair can hit again
-	-- Aim (GAME_DESIGN 3.2): pull-back angle in radians, and the Perfect Release band.
+	-- 3D, erratic swing (GAME_DESIGN 3.1, DECISIONS 34). Each glassy is a spherical pendulum:
+	-- it can swing out of the stand's plane, pass the other glass and come back. All starting
+	-- values; tune by eye so fights are unpredictable but readable.
+	OutOfPlaneDamping = 0.15, -- how fast sideways swing settles back toward the stand's plane (lower = wilder)
+	WanderStrength = 1.2, -- random sideways nudges (rad/s^2) that keep swings from repeating
+	WanderIntervalMin = 0.6, -- seconds between nudges
+	WanderIntervalMax = 1.8,
+	HitFriction = 0.35, -- how much of a glancing hit turns into spin
+	HitDeflect = 0.5, -- how much a hit off the line between them throws the glass sideways
+	SpinFromHit = 2.5, -- spin (rad/s) per stud/s of glancing hit speed
+	TwistStiffness = 4, -- the string winds up and unwinds (spring back toward no twist)
+	TwistDamping = 0.6,
+	MaxSpin = 18, -- rad/s cap on spin around the string
+	TumbleFromHit = 0.04, -- body tilt (rad) per stud/s of hit speed; wobbles back to hanging straight
+	TumbleDamping = 3,
+	-- Aim (GAME_DESIGN 3.2): pull-back angle in radians (with the Perfect Release band) plus a
+	-- sideways yaw, so players choose how far back and which way to pull.
 	AimMin = 0.35,
 	AimMax = 1.25,
+	AimYawMax = 0.6, -- radians either side of straight at the other glass
 	AimDefault = 0.8, -- used if a player doesn't aim in time
 	SweetSpotWidth = 0.14, -- half-width of the band
 	BotAimErrorMax = 0.45, -- bot aim error = BotAimErrorMax * (1 - skill) * random(-1, 1)
@@ -45,7 +62,7 @@ Balance.Fight = {
 	RefSpeed = 20, -- approach speed that counts as a "normal" hit
 	SpeedExponent = 1.4, -- damage ~ (speed / RefSpeed) ^ SpeedExponent; >1 makes big swings smash
 	SpeedFactorMax = 2.5,
-	DamageScale = 0.2, -- damage per Power at RefSpeed
+	DamageScale = 0.27, -- damage per Power at RefSpeed
 	ShareBase = 0.6, -- the glassy that moved more into the hit deals more: ShareBase + ShareWeight * share
 	ShareWeight = 0.8,
 	MassExponent = 0.1, -- heavier glass hits harder: (2 m / (m + m_other)) ^ MassExponent
@@ -56,13 +73,16 @@ Balance.Fight = {
 	CritMax = 0.3,
 	CritMultiplier = 2.0,
 	PerfectFirstHitMult = 2.0, -- the first hit after a Perfect Release
-	PerfectCharge = 0.25, -- special charge granted by a Perfect Release
-	-- Specials (once per round). Charge 0..1; tap when full.
-	ChargePerSecond = 0.035,
-	ChargePerHitDealt = 0.07,
-	ChargePerHitTaken = 0.09,
-	BotSpecialDelayMin = 0.2, -- bots wait a moment after the special is ready
-	BotSpecialDelayMax = 1.5,
+	-- Special powers FIRE BY THEMSELVES (no button, DECISIONS 33). Placeholder formula: the first
+	-- fires after a random wait, then repeats after another random wait, up to PowerMaxPerRound;
+	-- every hit (dealt or taken) brings the next one closer. Luck decides whether it lands well.
+	PowerFirstMin = 5,
+	PowerFirstMax = 14,
+	PowerRepeatMin = 9,
+	PowerRepeatMax = 18,
+	PowerHitAdvance = 0.5, -- seconds closer per hit
+	PowerMaxPerRound = 3,
+	PerfectPowerAdvance = 3, -- a Perfect Release makes the first power come 3 s sooner
 	-- Round end
 	OvertimeAt = 45, -- seconds; after this, damage grows to stop endless rounds
 	OvertimePerSecond = 0.06, -- +6% damage per second of overtime
@@ -76,8 +96,9 @@ Balance.SimModel = {
 	HitInterval = 1.2, -- seconds between hits in an even matchup
 	HitIntervalJitter = 0.25,
 	SpeedAtAmplitude = 22, -- approach speed when both swing at amplitude 1 rad
-	SpeedSpread = 0.45, -- hits range from (1 - spread) to (1 + spread) of the typical speed
-	ShareSpread = 0.25, -- who moved more into the hit varies this much either way
+	SpeedSpread = 0.55, -- hits range from (1 - spread) to (1 + spread) of the typical speed
+	ShareSpread = 0.35, -- who moved more into the hit varies this much either way
+	MissChance = 0.3, -- 3D swings: a swing that passes by without touching
 	FrozenSwing = 0.25, -- a frozen glassy swings at this fraction
 }
 
@@ -129,7 +150,6 @@ Balance.Match = {
 	BotSkillMin = 0.2,
 	BotSkillMax = 0.7,
 	-- Remote rate limits (seconds between accepted calls per player)
-	UseSpecialRateSeconds = 0.25,
 	PickRateSeconds = 0.25,
 	RerollRateSeconds = 0.5,
 	AimRateSeconds = 0.05,

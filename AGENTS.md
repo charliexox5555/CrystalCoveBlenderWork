@@ -4,7 +4,7 @@ Instructions for AI coding agents (Codex, Claude) working on this repo. Read thi
 
 ## What we're building
 
-**Glass Clash** (working title) is a Roblox game for all ages, mostly kids. Players collect glass collectibles called **glassies** and battle them in a simple lobby of arenas: step on a pad (1v1, a bot joins if nobody comes), roll 3 glassies from your collection and pick one, aim the pull-back, let go, and watch the two glassies swing on their strings and smash into each other until one **shatters**. Each glassy has a passive power and one special the player taps once. Each player has 3 glass hearts; lose a round, lose a heart. Coins buy pulls from **the Kiln** (gacha, odds always shown). Glassies range from everyday bottles to fantasy glass (swords, unicorns, dragons).
+**Glass Clash** (working title) is a Roblox game for all ages, mostly kids. Players collect glass collectibles called **glassies** and battle them in a simple lobby of arenas: step on a pad (1v1, a bot joins if nobody comes), roll 3 glassies from your collection and pick one, aim the pull-back, let go, and watch the two glassies swing on their strings and smash into each other until one **shatters**. Each glassy has a passive and a burst power that fires by itself at random moments; swings are erratic and 3D, so luck keeps every round tense. Each player has 3 glass hearts; lose a round, lose a heart. Coins buy pulls from **the Kiln** (gacha, odds always shown). Glassies range from everyday bottles to fantasy glass (swords, unicorns, dragons).
 
 **Who does what:** Claude does research, design, docs, concepts and the pure rules/formulas/economy (`src/shared` pure modules, `Config`, simulators). **Codex** builds everything in Studio: swing motion, services, UI, map, effects, and tunes `Balance.Motion` by eye (DECISIONS 24).
 
@@ -68,7 +68,7 @@ Rojo file naming: `Name.server.luau` = Script, `Name.client.luau` = LocalScript,
 ## Code rules
 
 - **Luau**, `--!strict` where practical. Format with StyLua (`stylua src`); config in `stylua.toml`.
-- **Server-authoritative.** The server runs the swing and `FightRules` and decides HP, damage, crits, rolls, Kiln pulls, rewards and purchases. Clients only send inputs (`PickGlassy`, `Reroll`, `SetAim`, `UseSpecial`, `LeaveQueue`; see `src/shared/Remotes.luau`). Validate every remote's arguments and **rate-limit** every remote (`Balance.Match.*RateSeconds`).
+- **Server-authoritative.** The server runs the swing and `FightRules` and decides HP, damage, crits, rolls, Kiln pulls, rewards and purchases. Clients only send inputs (`PickGlassy`, `Reroll`, `SetAim`, `LeaveQueue`; see `src/shared/Remotes.luau`). Validate every remote's arguments and **rate-limit** every remote (`Balance.Match.*RateSeconds`).
 - **No Roblox physics for the swing.** The server steps its own pendulum simulation and streams snapshots; clients animate anchored glassies with CFrame and interpolate (GAME_DESIGN 3.1, 14). Shards are client-only.
 - **Rules go through `FightRules` and `MatchLogic`.** Don't re-implement damage, powers, rolls or rewards in services; call the pure modules so tests and simulators cover them.
 - **Data:** ProfileStore with session locking. Purchases through an idempotent `MarketplaceService.ProcessReceipt`.

@@ -1,0 +1,31 @@
+{
+  "id": "featured_arch",
+  "units": "1 unit = 1 stud",
+  "origin": "base",
+  "dimensions": [
+    26.872,
+    3.637,
+    26.552
+  ],
+  "triangles": 148,
+  "parts": [
+    {
+      "name": "Arch",
+      "color": "#B58CFF",
+      "material": "SmoothPlastic"
+    },
+    {
+      "name": "CrownGem",
+      "color": "#FFD166",
+      "material": "SmoothPlastic"
+    },
+    {
+      "name": "FootCrystals",
+      "color": "#6FE7FF",
+      "material": "SmoothPlastic"
+    }
+  ],
+  "fbx": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\map\\sky_kit\\featured_arch\\featured_arch.fbx",
+  "preview": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\map\\sky_kit\\featured_arch\\preview.png",
+  "blend": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\map\\sky_kit\\featured_arch\\featured_arch.blend"
+}

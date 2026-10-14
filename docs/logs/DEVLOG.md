@@ -14,6 +14,13 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-14 — Codex — sky kit / first collection wave
+Done:
+- Exported eight sky props and nine glassies (six Commons, three Uncommons), preserving open Blender work and starter files. All new bodies ≤768 triangles, 16 closed shards each, separate details, 144 projected crack segments and shared 512×512 transparent icons. Fixed the hollow-cup cap fill; fragment volume conservation is within 0.0002%.
+- Bundled 17 FBX files / 187 meshes; Blender round-trip max bounds error 0.00000191 studs. Added measured import manifest, non-overwriting Studio finalizer and exact manual import steps. Wired extra crack paths. Lune/Studio: 65 passed, 0 failed.
+Next:
+- Free retention features and multiplayer/security pass while native imports are pending. No publishing, paid features or economy retune.
+
 ## 2026-10-14 — Codex — editable UI placeholders
 Done:
 - Applied creator's updated direction: scale-only layout, editable StarterGui ScreenGuis, final artwork left to creator. Installed 13 templates through a one-time builder that refuses to overwrite existing UI. Controllers bind named parts and preserve authored geometry; list prototypes and Icon slots support later art replacement. Editing guide in docs/ui/EDITING_UI.md.

@@ -1,0 +1,21 @@
+{
+  "id": "cloud_bank",
+  "units": "1 unit = 1 stud",
+  "origin": "centre",
+  "dimensions": [
+    20.94,
+    7.9,
+    5.6
+  ],
+  "triangles": 400,
+  "parts": [
+    {
+      "name": "Cloud",
+      "color": "#F4F7FF",
+      "material": "SmoothPlastic"
+    }
+  ],
+  "fbx": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\map\\sky_kit\\cloud_bank\\cloud_bank.fbx",
+  "preview": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\map\\sky_kit\\cloud_bank\\preview.png",
+  "blend": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\map\\sky_kit\\cloud_bank\\cloud_bank.blend"
+}

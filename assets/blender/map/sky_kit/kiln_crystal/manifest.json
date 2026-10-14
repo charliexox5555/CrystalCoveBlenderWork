@@ -1,0 +1,26 @@
+{
+  "id": "kiln_crystal",
+  "units": "1 unit = 1 stud",
+  "origin": "base",
+  "dimensions": [
+    13.43,
+    10.4,
+    18.0
+  ],
+  "triangles": 108,
+  "parts": [
+    {
+      "name": "KilnCrystal",
+      "color": "#6FE7FF",
+      "material": "SmoothPlastic"
+    },
+    {
+      "name": "Satellites",
+      "color": "#B58CFF",
+      "material": "SmoothPlastic"
+    }
+  ],
+  "fbx": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\map\\sky_kit\\kiln_crystal\\kiln_crystal.fbx",
+  "preview": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\map\\sky_kit\\kiln_crystal\\preview.png",
+  "blend": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\map\\sky_kit\\kiln_crystal\\kiln_crystal.blend"
+}

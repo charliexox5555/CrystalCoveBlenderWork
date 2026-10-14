@@ -1,0 +1,21 @@
+{
+  "id": "crystal_single",
+  "units": "1 unit = 1 stud",
+  "origin": "base",
+  "dimensions": [
+    1.3,
+    1.126,
+    2.7
+  ],
+  "triangles": 32,
+  "parts": [
+    {
+      "name": "Crystal",
+      "color": "#6FE7FF",
+      "material": "SmoothPlastic"
+    }
+  ],
+  "fbx": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\map\\sky_kit\\crystal_single\\crystal_single.fbx",
+  "preview": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\map\\sky_kit\\crystal_single\\preview.png",
+  "blend": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\map\\sky_kit\\crystal_single\\crystal_single.blend"
+}

@@ -1,0 +1,70 @@
+{
+  "milk_bottle": {
+    "meshes": 19,
+    "max_bounds_error": 2.384185791015625e-07
+  },
+  "pickle_jar": {
+    "meshes": 21,
+    "max_bounds_error": 1.4901161193847656e-07
+  },
+  "glass_cup": {
+    "meshes": 18,
+    "max_bounds_error": 1.1920928955078125e-07
+  },
+  "ketchup_bottle": {
+    "meshes": 20,
+    "max_bounds_error": 2.384185791015625e-07
+  },
+  "water_jug": {
+    "meshes": 18,
+    "max_bounds_error": 2.384185791015625e-07
+  },
+  "lemonade_bottle": {
+    "meshes": 20,
+    "max_bounds_error": 2.384185791015625e-07
+  },
+  "mason_jar": {
+    "meshes": 18,
+    "max_bounds_error": 2.384185791015625e-07
+  },
+  "hot_sauce": {
+    "meshes": 20,
+    "max_bounds_error": 2.384185791015625e-07
+  },
+  "crystal_tumbler": {
+    "meshes": 18,
+    "max_bounds_error": 1.4901161193847656e-07
+  },
+  "crystal_single": {
+    "meshes": 1,
+    "max_bounds_error": 2.384185791015625e-07
+  },
+  "crystal_small": {
+    "meshes": 1,
+    "max_bounds_error": 4.76837158203125e-07
+  },
+  "crystal_big": {
+    "meshes": 1,
+    "max_bounds_error": 4.76837158203125e-07
+  },
+  "kiln_crystal": {
+    "meshes": 2,
+    "max_bounds_error": 1.9073486328125e-06
+  },
+  "featured_arch": {
+    "meshes": 3,
+    "max_bounds_error": 1.9073486328125e-06
+  },
+  "cloud_puff": {
+    "meshes": 1,
+    "max_bounds_error": 4.76837158203125e-07
+  },
+  "cloud_long": {
+    "meshes": 1,
+    "max_bounds_error": 4.76837158203125e-07
+  },
+  "cloud_bank": {
+    "meshes": 1,
+    "max_bounds_error": 9.5367431640625e-07
+  }
+}

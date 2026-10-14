@@ -292,10 +292,11 @@ def _volume(bm):
         return 0.0
 
 
-def make_shards(body, pieces=16, seed=1, min_volume_ratio=0.01):
+def make_shards(body, pieces=16, seed=1, min_volume_ratio=0.01, cut=None):
     """Cuts the body into `pieces` closed shards with random planes. Each shard keeps the body's
     origin (the hang point), so in Roblox the shards line up exactly where the body was."""
     rng = random.Random(seed)
+    cutter = cut or _cut
     source = _bm_from_object(body)
     total = _volume(source) or 1.0
     parts = [source]
@@ -314,7 +315,7 @@ def make_shards(body, pieces=16, seed=1, min_volume_ratio=0.01):
         if no.length < 1e-3:
             continue
         no.normalize()
-        a, b = _cut(target, co, no, True), _cut(target, co, no, False)
+        a, b = cutter(target, co, no, True), cutter(target, co, no, False)
         if len(a.faces) < 4 or len(b.faces) < 4 or min(_volume(a), _volume(b)) < total * min_volume_ratio:
             a.free()
             b.free()

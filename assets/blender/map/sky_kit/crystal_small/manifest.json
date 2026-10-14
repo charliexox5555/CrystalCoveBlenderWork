@@ -1,0 +1,21 @@
+{
+  "id": "crystal_small",
+  "units": "1 unit = 1 stud",
+  "origin": "base",
+  "dimensions": [
+    3.057,
+    1.299,
+    3.3
+  ],
+  "triangles": 96,
+  "parts": [
+    {
+      "name": "Crystal",
+      "color": "#6FE7FF",
+      "material": "SmoothPlastic"
+    }
+  ],
+  "fbx": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\map\\sky_kit\\crystal_small\\crystal_small.fbx",
+  "preview": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\map\\sky_kit\\crystal_small\\preview.png",
+  "blend": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\map\\sky_kit\\crystal_small\\crystal_small.blend"
+}

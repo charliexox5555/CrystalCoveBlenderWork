@@ -1,0 +1,21 @@
+{
+  "id": "cloud_long",
+  "units": "1 unit = 1 stud",
+  "origin": "centre",
+  "dimensions": [
+    17.323,
+    6.0,
+    4.7
+  ],
+  "triangles": 320,
+  "parts": [
+    {
+      "name": "Cloud",
+      "color": "#F4F7FF",
+      "material": "SmoothPlastic"
+    }
+  ],
+  "fbx": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\map\\sky_kit\\cloud_long\\cloud_long.fbx",
+  "preview": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\map\\sky_kit\\cloud_long\\preview.png",
+  "blend": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\map\\sky_kit\\cloud_long\\cloud_long.blend"
+}

@@ -8,6 +8,7 @@ local Audio = require(RS.Shared.Config.Audio)
 local Balance = require(RS.Shared.Config.Balance)
 local Glassies = require(RS.Shared.Config.Glassies)
 local CrackPaths = require(RS.Shared.Config.CrackPaths)
+local ExtraCrackPaths = require(RS.Shared.Config.CrackPathsExtra)
 local Feel = Balance.Feel
 local Shatter = {}
 
@@ -84,7 +85,8 @@ function Shatter:SetCracks(fighter, hp, maxHP)
 	if stage == 0 or hp == 0 then
 		return stage > 0
 	end
-	for _, path in CrackPaths[fighter.RenderId or fighter.Id] or {} do
+	local id = fighter.RenderId or fighter.Id
+	for _, path in CrackPaths[id] or ExtraCrackPaths[id] or {} do
 		if path[7] <= stage then
 			local scale = fighter.Scale or 1
 			local a, b = Vector3.new(path[1], path[2], path[3]) * scale, Vector3.new(path[4], path[5], path[6]) * scale

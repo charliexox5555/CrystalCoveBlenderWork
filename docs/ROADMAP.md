@@ -1,7 +1,7 @@
 # Roadmap
 
 Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DESIGN v0.3](GAME_DESIGN.md).
-**Current milestone: F3 — Data, Kiln and collection.** Overnight work authorized; real-phone checks and publishing remain with the user.
+**Current milestone: F4 — free retention features.** F3 import/placement checks remain pending with the creator. Real-phone checks and publishing remain with the user; paid features stay disabled.
 
 Owner key: **C** = Codex (code / Studio MCP), **B** = Codex with Blender MCP, **CL** = Claude (research, design, pure rules, docs), **U** = you.
 
@@ -46,14 +46,14 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 - [x] **C:** `ArenaService` pads + queue + bot fill; `MatchService` phases with `MatchLogic`; seven concurrent arenas, free rerolls only
 - [x] **C:** Roll screen (3 cards, reroll), Aim, Countdown, Round end (glass heart pops), Results; [F2 report](testing/F2_MATCH_FLOW.md)
-- [ ] **B:** sky kit: crystal kit (3 meshes), Kiln crystal, featured arch, clouds (MAP_PLAN / CONCEPT.md "Pieces")
+- [x] **B:** sky kit exported: crystal kit (3 meshes), Kiln crystal, featured arch, 3 clouds; native import/placement pending
 
 ## F3 — Data, Kiln and collection (Oct 27–Nov 2)
 
 - [x] **C:** ProfileStore `DataService` (schema in GAME_DESIGN 14); Studio mock save/reload verified, production session locking integrated
 - [x] **C:** `KilnService` + odds-first screen, glassblowing reveal, duplicates → stars; actual pulls gated until non-starter art imports
 - [x] **C:** Collection + Index screens; configured completion rewards pending
-- [ ] **B:** 9 more glassies (body, details, shards, icon): 6 Commons + 3 Uncommons first
+- [x] **B:** 9 more glassies exported (body, details, 16 closed shards, cracks, 512 icon): 6 Commons + 3 Uncommons; native import validation pending
 - [ ] **C:** lobby art pass
 
 ## F4 — Retention and monetization (Nov 3–9)

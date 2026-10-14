@@ -1,5 +1,6 @@
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
+local CollectionService = game:GetService("CollectionService")
 local UIS = game:GetService("UserInputService")
 local RS = game:GetService("ReplicatedStorage")
 local Remotes = require(RS.Shared.Remotes)
@@ -10,6 +11,92 @@ local View = require(script.Parent.Parent.Presentation.FightView)
 local Controller = {}
 function Controller:Init(controllers)
 	self.Controllers, self.Views, self.SnapshotCount, self.Keys = controllers, {}, 0, {}
+	self.Prompts, self.PromptClock = {}, 0
+end
+
+-- Watching (GAME_DESIGN 7): a local prompt at each busy stand points your camera at that fight.
+local WATCHABLE = { Aiming = true, Countdown = true, Fighting = true, RoundEnd = true }
+
+function Controller:CanWatch()
+	local pg = Players.LocalPlayer:FindFirstChild("PlayerGui")
+	if pg and (pg:GetAttribute("InMatch") or pg:GetAttribute("Queued") or pg:GetAttribute("ResultsOpen")) then
+		return false
+	end
+	for _, view in self.Views do
+		if view.Viewing then
+			return false
+		end
+	end
+	return true
+end
+
+function Controller:WatchableView(arenaId)
+	for _, view in self.Views do
+		if view.Data and view.Data.ArenaId == arenaId and view.Scene and not view.Participant then
+			return view
+		end
+	end
+	return nil
+end
+
+function Controller:StartWatching(arenaId)
+	local view = self:WatchableView(arenaId)
+	if view and WATCHABLE[view.Phase] and self:CanWatch() then
+		self.WatchArena, self.WatchUntil = arenaId, nil
+		view:Watch(true)
+	end
+end
+
+function Controller:StopWatching()
+	self.WatchArena, self.WatchUntil = nil, nil
+	for _, view in self.Views do
+		if view.Watching then
+			view:Watch(false)
+		end
+	end
+end
+
+function Controller:AddPrompt(stand)
+	local id = stand:GetAttribute("ArenaId")
+	if type(id) ~= "number" or self.Prompts[id] then
+		return
+	end
+	-- With StreamingEnabled the stand model can arrive before its parts.
+	local floor = stand:WaitForChild("PenFloor", 30)
+	if not floor or self.Prompts[id] then
+		return
+	end
+	local attachment = Instance.new("Attachment")
+	attachment.Name, attachment.Position = "WatchPrompt", Vector3.yAxis * 3
+	local prompt = Instance.new("ProximityPrompt")
+	prompt.ActionText = "Watch"
+	prompt.ObjectText = if stand:GetAttribute("Featured") then "Featured Arena" else "Arena " .. id
+	prompt.HoldDuration, prompt.RequiresLineOfSight, prompt.Enabled = 0, false, false
+	prompt.MaxActivationDistance = Balance.Feel.WatchPromptDistance
+	prompt.Parent = attachment
+	attachment.Parent = floor
+	prompt.Triggered:Connect(function()
+		self:StartWatching(id)
+	end)
+	attachment.Destroying:Connect(function()
+		if self.Prompts[id] == prompt then
+			self.Prompts[id] = nil
+		end
+	end)
+	self.Prompts[id] = prompt
+end
+
+function Controller:UpdatePrompts(dt)
+	self.PromptClock += dt
+	if self.PromptClock < 0.25 then
+		return
+	end
+	self.PromptClock = 0
+	local allowed = self:CanWatch()
+	for id, prompt in self.Prompts do
+		local view = if allowed then self:WatchableView(id) else nil
+		prompt.Enabled = view ~= nil and WATCHABLE[view.Phase] == true
+	end
 end
 function Controller:Active()
 	for _, view in self.Views do
@@ -28,6 +115,10 @@ function Controller:Start()
 		if data.Phase == "Idle" then
 			local view = self.Views[data.Id]
 			if view then
+				if view.Watching then
+					-- Keep watching this arena if its next round starts soon.
+					self.WatchUntil = os.clock() + Balance.Feel.WatchRejoinSeconds
+				end
 				view:EndFight()
 				self.Views[data.Id] = nil
 			end
@@ -43,9 +134,23 @@ function Controller:Start()
 			local view = self.Views[data.Id]
 			if not view then
 				view = View.new(self.Controllers)
+				view.OnStopWatching = function()
+					self.WatchArena, self.WatchUntil = nil, nil
+				end
 				self.Views[data.Id] = view
 			end
 			view:State(data)
+			if
+				self.WatchArena == data.ArenaId
+				and self.WatchUntil
+				and os.clock() < self.WatchUntil
+				and WATCHABLE[view.Phase]
+				and not view.Participant
+				and self:CanWatch()
+			then
+				self.WatchUntil = nil
+				view:Watch(true)
+			end
 		end
 	end)
 	Remotes.FightSnapshot.OnClientEvent:Connect(function(packet)
@@ -132,6 +237,20 @@ function Controller:Start()
 			Remotes.RequestFightState:FireServer()
 		end)
 	end)
+	for _, stand in CollectionService:GetTagged("ArenaStand") do
+		task.spawn(self.AddPrompt, self, stand)
+	end
+	CollectionService:GetInstanceAddedSignal("ArenaStand"):Connect(function(stand)
+		task.spawn(self.AddPrompt, self, stand)
+	end)
+	local pg = Players.LocalPlayer:WaitForChild("PlayerGui")
+	for _, attribute in { "InMatch", "Queued" } do
+		pg:GetAttributeChangedSignal(attribute):Connect(function()
+			if pg:GetAttribute(attribute) then
+				self:StopWatching()
+			end
+		end)
+	end
 	RunService:BindToRenderStep("GlassClashFight", Enum.RenderPriority.Camera.Value + 1, function(dt)
 		local profile = self.Profile
 		local started = profile and os.clock()
@@ -156,6 +275,8 @@ function Controller:Start()
 				view:Render(dt)
 			end
 		end
+		-- After rendering, so prompt bookkeeping can never stall the fights.
+		self:UpdatePrompts(dt)
 		if profile then
 			local spent = os.clock() - started
 			profile.Frames += 1

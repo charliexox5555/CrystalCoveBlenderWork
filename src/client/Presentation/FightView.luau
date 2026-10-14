@@ -74,9 +74,11 @@ function Controller:Init(controllers)
 	self.Controls = playerModule and require(playerModule):GetControls()
 end
 
-function Controller:EndFight()
+-- Restores everything EnterView took over: movement, character visibility, arena signs, HUD, camera.
+function Controller:ExitView()
 	if self.Viewing then
 		CAS:UnbindAction("FightMovement")
+		CAS:UnbindAction("StopWatching")
 	end
 	for part, value in self.Hidden or {} do
 		if part.Parent then
@@ -91,24 +93,37 @@ function Controller:EndFight()
 		end
 	end
 	self.HiddenGuis = {}
-	if self.Scene then
-		self.Scene:Destroy()
-		self.Scene = nil
-	end
 	if self.Hud then
 		self.Hud:Destroy()
 		self.Hud = nil
 	end
 	if self.OldCamera then
 		local camera = workspace.CurrentCamera
-		camera.CameraType, camera.CameraSubject, camera.FieldOfView =
-			self.OldCamera.Type, self.OldCamera.Subject, self.OldCamera.FOV
+		local old = self.OldCamera
+		if old.Type == Enum.CameraType.Scriptable then
+			-- Captured from another fight view mid-handover; hand back the normal follow camera instead.
+			local humanoid = self.Player.Character and self.Player.Character:FindFirstChildOfClass("Humanoid")
+			old = { Type = Enum.CameraType.Custom, Subject = humanoid or old.Subject, FOV = 70 }
+		end
+		camera.CameraType, camera.CameraSubject, camera.FieldOfView = old.Type, old.Subject, old.FOV
 		self.OldCamera = nil
 		if self.Controls then
 			self.Controls:Enable()
 		end
 		TouchGate.release(self)
 	end
+end
+
+function Controller:EndFight()
+	if self.Watching then
+		self.Player.PlayerGui:SetAttribute("Watching", false)
+	end
+	self:ExitView()
+	if self.Scene then
+		self.Scene:Destroy()
+		self.Scene = nil
+	end
+	self.Viewing, self.Watching = false, false
 	self.Data, self.Snapshots, self.Events, self.Drag, self.RenderTime = nil, {}, {}, nil, 0
 	self.FinalTime, self.FinalSide, self.SlowUntil, self.HoldUntil, self.ShakeUntil, self.LastSnapshotWall =
 		nil, nil, nil, nil, nil, nil
@@ -135,55 +150,115 @@ function Controller:Begin(data)
 		or (if data.UserId == self.Player.UserId then 1 else 0)
 	self.Participant = self.Side > 0
 	self.Viewing = self.Participant or data.Spectate
+	self.Maxima = maxima
 	for _, fighter in self.Scene.Fighters do
 		fighter.LowDetail = not self.Viewing
 	end
 	if self.Viewing then
-		self.HiddenGuis = {}
-		for _, gui in workspace.Lobby.Arenas:GetDescendants() do
-			if gui:IsA("BillboardGui") and gui.Name == "ArenaStatus" then
-				self.HiddenGuis[gui] = gui.Enabled
-				gui.Enabled = false
-			end
-		end
-		self.Hidden = {}
-		for _, part in self.Player.Character and self.Player.Character:GetDescendants() or {} do
-			if part:IsA("BasePart") then
-				self.Hidden[part] = part.LocalTransparencyModifier
-				part.LocalTransparencyModifier = 1
-			end
-		end
-		CAS:BindActionAtPriority(
-			"FightMovement",
-			function()
-				return Enum.ContextActionResult.Sink
-			end,
-			false,
-			Enum.ContextActionPriority.High.Value,
-			Enum.PlayerActions.CharacterForward,
-			Enum.PlayerActions.CharacterBackward,
-			Enum.PlayerActions.CharacterLeft,
-			Enum.PlayerActions.CharacterRight,
-			Enum.PlayerActions.CharacterJump
-		)
-		self.Hud = Hud.new(data, maxima, function()
-			self:Lock()
-		end)
-		if self.Participant then
-			self.Scene:Tag(self.Side, "YOU", Theme.Sides[self.Side])
-		end
-		if self.Controls then
-			self.Controls:Disable()
-		end
-		TouchGate.acquire(self)
-		local camera = workspace.CurrentCamera
-		self.OldCamera = { Type = camera.CameraType, Subject = camera.CameraSubject, FOV = camera.FieldOfView }
-		camera.CameraType, camera.FieldOfView = Enum.CameraType.Scriptable, Feel.CameraFieldOfView
-		self.CameraPose = nil
+		self:EnterView()
 	end
 	if data.Snapshot then
 		self:Snapshot(data.Snapshot)
 		self.RenderTime = math.max(0, data.Snapshot.T - Feel.InterpolationDelay)
+	end
+end
+
+-- Takes over camera, movement and HUD for a participant, a dev spectate fight or a player who chose Watch.
+function Controller:EnterView()
+	local data = self.Data
+	self.HiddenGuis = {}
+	for _, gui in workspace.Lobby.Arenas:GetDescendants() do
+		if gui:IsA("BillboardGui") and gui.Name == "ArenaStatus" then
+			self.HiddenGuis[gui] = gui.Enabled
+			gui.Enabled = false
+		end
+	end
+	self.Hidden = {}
+	for _, part in self.Player.Character and self.Player.Character:GetDescendants() or {} do
+		if part:IsA("BasePart") then
+			self.Hidden[part] = part.LocalTransparencyModifier
+			part.LocalTransparencyModifier = 1
+		end
+	end
+	CAS:BindActionAtPriority(
+		"FightMovement",
+		function()
+			return Enum.ContextActionResult.Sink
+		end,
+		false,
+		Enum.ContextActionPriority.High.Value,
+		Enum.PlayerActions.CharacterForward,
+		Enum.PlayerActions.CharacterBackward,
+		Enum.PlayerActions.CharacterLeft,
+		Enum.PlayerActions.CharacterRight,
+		Enum.PlayerActions.CharacterJump
+	)
+	self.Hud = Hud.new(
+		data,
+		self.Maxima,
+		function()
+			self:Lock()
+		end,
+		if self.Participant
+			then nil
+			else function()
+				self:Watch(false)
+			end
+	)
+	if not self.Participant then
+		CAS:BindActionAtPriority("StopWatching", function(_, state)
+			if state == Enum.UserInputState.Begin then
+				self:Watch(false)
+			end
+			return Enum.ContextActionResult.Sink
+		end, false, Enum.ContextActionPriority.High.Value, Enum.KeyCode.Escape, Enum.KeyCode.ButtonB)
+	end
+	if self.Participant then
+		self.Scene:Tag(self.Side, "YOU", Theme.Sides[self.Side])
+	end
+	if self.Controls then
+		self.Controls:Disable()
+	end
+	TouchGate.acquire(self)
+	local camera = workspace.CurrentCamera
+	self.OldCamera = { Type = camera.CameraType, Subject = camera.CameraSubject, FOV = camera.FieldOfView }
+	camera.CameraType, camera.FieldOfView = Enum.CameraType.Scriptable, Feel.CameraFieldOfView
+	self.CameraPose = nil
+	if self.Hud and self.Data.Hearts then
+		self.Hud.Hearts = self.Data.Hearts
+	end
+	if self.Hud and self.Phase then
+		self.Hud:Phase(self.Phase, "")
+	end
+end
+
+-- Spectate a nearby fight on request, without rebuilding its scene or losing its snapshot buffer.
+function Controller:Watch(on)
+	if not self.Scene or self.Participant or on == self.Watching then
+		return
+	end
+	self.Player.PlayerGui:SetAttribute("Watching", on)
+	if on then
+		self.Watching, self.Viewing = true, true
+		local latest = self.Snapshots[#self.Snapshots]
+		for side, fighter in self.Scene.Fighters do
+			fighter.LowDetail = false
+			-- Build the cracks the low-detail view skipped, without replaying the crack sound.
+			if latest and (fighter.CrackStage or 0) > 0 and not fighter.Broken then
+				fighter.CrackStage = 0
+				self.Shatter:SetCracks(fighter, latest.R.Hp[side], fighter.Stats.MaxHP)
+			end
+		end
+		self:EnterView()
+	else
+		self:ExitView()
+		self.Watching, self.Viewing = false, false
+		for _, fighter in self.Scene.Fighters do
+			fighter.LowDetail = true
+		end
+		if self.OnStopWatching then
+			self.OnStopWatching(self)
+		end
 	end
 end
 
@@ -215,7 +290,7 @@ function Controller:State(data)
 		self:Snapshot(data.Snapshot)
 	end
 	if self.Hud then
-		self.Hud:Phase(data.Phase, if data.Phase == "Aiming" then "PULL BACK" else "")
+		self.Hud:Phase(data.Phase, if data.Phase == "Aiming" and self.Participant then "PULL BACK" else "")
 	end
 end
 
@@ -418,8 +493,10 @@ function Controller:Render(dt)
 		end
 		if self.Hud then
 			if self.Phase == "Aiming" then
-				self.Hud:Aim(self.Aim, self.Yaw, Rules.isPerfect(self.Aim, data.SweetSpot))
-				self.Scene:GhostPath(self.Aim, self.Yaw, self.Side > 0 and self.Side or 1)
+				if self.Participant then
+					self.Hud:Aim(self.Aim, self.Yaw, Rules.isPerfect(self.Aim, data.SweetSpot))
+					self.Scene:GhostPath(self.Aim, self.Yaw, self.Side)
+				end
 			else
 				local n = math.max(1, math.ceil((data.ReleaseAt or time) - time))
 				self.Hud.Headline.Text = tostring(n)
@@ -534,6 +611,9 @@ end
 
 function Controller:Camera(dt, now)
 	local camera = workspace.CurrentCamera
+	if camera.CameraType ~= Enum.CameraType.Scriptable then
+		camera.CameraType = Enum.CameraType.Scriptable
+	end
 	local center = self.Data.Frame.Position - Vector3.yAxis * (M.StringLength + M.BodyCenter * M.GlassyScale)
 	local action = (self.Scene.Fighters[1].Body.Position + self.Scene.Fighters[2].Body.Position) / 2
 	local focus = center:Lerp(action, Feel.CameraFollow) + Vector3.yAxis * Feel.CameraFocusHeight

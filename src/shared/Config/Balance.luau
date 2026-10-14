@@ -323,6 +323,8 @@ Balance.Feel = {
 	FarSwingSpeed = 3.2, -- distant fights (no snapshots) show a cheap stand-in swing
 	FarSwingAngle = 0.42, -- radians either side of FarSwingCenter
 	FarSwingCenter = -0.16, -- negative = pulled back; the peak stops just short of contact
+	WatchPromptDistance = 18, -- studs from a pen's centre to offer "Watch"
+	WatchRejoinSeconds = 14, -- keep watching an arena across the roll between its rounds
 }
 
 return Balance

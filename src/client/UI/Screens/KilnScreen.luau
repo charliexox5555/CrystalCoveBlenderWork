@@ -73,7 +73,7 @@ function Screen:Odds(data)
 		U.text(
 			row,
 			"Chance",
-			string.format("%.4f%%", odds.Chance * 100),
+			string.format(if odds.Chance < 0.01 then "%.2f%%" else "%.1f%%", odds.Chance * 100),
 			UDim2.fromScale(0.3, 1),
 			UDim2.fromScale(0.68, 0)
 		)

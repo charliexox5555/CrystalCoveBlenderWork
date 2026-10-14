@@ -13,9 +13,11 @@ local Portrait = require(script.Parent.Parent.Components.GlassyPortrait)
 local Hud = {}
 Hud.__index = Hud
 
-function Hud.new(data, maxima, lock)
+-- `stop` is given only when spectating: the HUD then hides aim controls and offers STOP WATCHING.
+function Hud.new(data, maxima, lock, stop)
 	local self =
 		setmetatable({ Bars = {}, Rings = {}, Status = {}, CrackLabels = {}, Maxima = maxima, LastHP = {} }, Hud)
+	self.Spectator = stop ~= nil
 	self.Hearts = data.Hearts or { Balance.Match.Hearts, Balance.Match.Hearts }
 	self.Gui = U.screen("FightHud", 20)
 	self.Gui:SetAttribute("FightId", data.Id)
@@ -133,6 +135,20 @@ function Hud.new(data, maxima, lock)
 	self.Lock = Button.new(self.Gui, "Lock", "LOCK", "Green", UDim2.fromScale(0.23, 0.13), UDim2.fromScale(0.69, 0.69))
 	U.make("UISizeConstraint", self.Lock, { MinSize = Vector2.new(80, 44) })
 	self.LockConnection = self.Lock.Activated:Connect(lock)
+	if stop then
+		self.Stop = Button.new(
+			self.Gui,
+			"StopWatching",
+			"STOP WATCHING",
+			"Red",
+			UDim2.fromScale(0.26, 0.1),
+			UDim2.fromScale(0.37, 0.86)
+		)
+		U.make("UISizeConstraint", self.Stop, { MinSize = Vector2.new(120, 44) })
+		self.StopConnection = self.Stop.Activated:Connect(stop)
+	elseif self.Gui:FindFirstChild("StopWatching") then
+		self.Gui.StopWatching.Visible = false
+	end
 	self.Banners = {}
 	for side = 1, 2 do
 		local label = U.text(
@@ -165,9 +181,13 @@ end
 
 function Hud:Phase(phase, text)
 	self.Gui:SetAttribute("Phase", phase)
-	self.AimPanel.Visible, self.Lock.Visible = phase == "Aiming", phase == "Aiming"
+	local aiming = phase == "Aiming" and not self.Spectator
+	self.AimPanel.Visible, self.Lock.Visible = aiming, aiming
 	self.Headline.Text = text or ""
-	self.Instruction.Text = if phase == "Aiming" then "Drag to pull • aim for gold" else ""
+	self.Instruction.Text = if aiming
+		then "Drag to pull • aim for gold"
+		elseif self.Spectator and phase == "Aiming" then "WATCHING • players are aiming"
+		else ""
 end
 
 function Hud:Update(r)
@@ -258,6 +278,9 @@ end
 
 function Hud:Destroy()
 	self.LockConnection:Disconnect()
+	if self.StopConnection then
+		self.StopConnection:Disconnect()
+	end
 	self.Gui:Destroy()
 end
 

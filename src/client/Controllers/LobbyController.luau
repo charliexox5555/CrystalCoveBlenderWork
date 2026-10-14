@@ -30,6 +30,7 @@ function Controller:Close()
 	if self.Gui then
 		self.Gui.Enabled = not self.Player.PlayerGui:GetAttribute("InMatch")
 			and not self.Player.PlayerGui:GetAttribute("ResultsOpen")
+			and not self.Player.PlayerGui:GetAttribute("Watching")
 	end
 end
 
@@ -40,7 +41,8 @@ function Controller:PanelOpened()
 end
 
 function Controller:Open(kind)
-	if self.Player.PlayerGui:GetAttribute("InMatch") or self.Player.PlayerGui:GetAttribute("ResultsOpen") then
+	local pg = self.Player.PlayerGui
+	if pg:GetAttribute("InMatch") or pg:GetAttribute("ResultsOpen") or pg:GetAttribute("Watching") then
 		return
 	end
 	self:Close()
@@ -70,7 +72,9 @@ function Controller:Start()
 	end)
 	self.Gui, self.Currency, self.Hint = hud.Gui, hud.Currency, hud.Hint
 	local function inMatch()
-		self.Gui.Enabled = not pg:GetAttribute("InMatch") and not pg:GetAttribute("ResultsOpen")
+		self.Gui.Enabled = not pg:GetAttribute("InMatch")
+			and not pg:GetAttribute("ResultsOpen")
+			and not pg:GetAttribute("Watching")
 		if not self.Gui.Enabled then
 			self:Close()
 		end
@@ -81,6 +85,7 @@ function Controller:Start()
 	end)
 	pg:GetAttributeChangedSignal("InMatch"):Connect(inMatch)
 	pg:GetAttributeChangedSignal("ResultsOpen"):Connect(inMatch)
+	pg:GetAttributeChangedSignal("Watching"):Connect(inMatch)
 	inMatch()
 	Remotes.ProfileSnapshot.OnClientEvent:Connect(function(profile)
 		local changed = false

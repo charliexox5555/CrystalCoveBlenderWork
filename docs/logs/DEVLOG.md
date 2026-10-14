@@ -14,6 +14,14 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-14 — Codex — lobby art/UI continuation handoff
+Done:
+- Saved docs/HANDOFF_LOBBY_ART_UI.md with current implementation, latest Coins/Marbles and two-button UI requirements, actual island fence-path inputs, asset bindings, pending work and shared-workspace boundaries. Preserved five creator screenshots and a read-only live Ball v Ball lobby capture for the new chat.
+- Creator confirms Claude currently owns the Studio session and permits separate Roblox-player menu/match research. No Studio mutation or gameplay input succeeded during preparation; another window blocked the Inventory click. Existing Theme edits and unrelated untracked files were preserved.
+- Lune: 74 passed, 0 failed. Documentation/reference-only preparation; no new Studio test or publish.
+Next:
+- New chat builds original Kiln/leaderboard assets, Blender perimeter assemblies and generated UI concepts. These new deliverables are not yet created. Keep Studio integration separate from Claude's active work.
+
 ## 2026-10-14 — Codex — fitted fences, native Wave1 and reward eligibility
 Done:
 - Fitted the creator's brown-post/two-rail style to all five exact grass rims; matched bridge rails and 11-stud entrances, 0.9-stud centre inset. Original 285 manual fence Parts/two Models and eight low bridge rails preserved in ServerStorage.Unsorted. Reproducible builder refuses existing fitted fences. Geometry: 232 posts, 464 rails, 232 invisible safety colliders, no post-corner overhang.

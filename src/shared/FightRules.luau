@@ -227,6 +227,9 @@ function FightRules.new(setup: Setup): State
 	state.Fighters[1] = newFighter(1, setup.A, setup.SweetSpot, setup.Rng)
 	state.Fighters[2] = newFighter(2, setup.B, setup.SweetSpot, setup.Rng)
 	for _, f in state.Fighters do
+		if f.Passive == "sturdy" or f.Passive == "lucky" or f.Passive == "glow_core" then
+			emit(state, { Type = "Passive", Side = f.Side, Id = f.Passive, AlwaysOn = true })
+		end
 		if f.Perfect then
 			emit(state, { Type = "PerfectRelease", Side = f.Side })
 		end
@@ -298,7 +301,13 @@ end
 
 -- Damage one glassy deals to the other in a hit, before the defender's Shield and Sturdy.
 -- `share` = how much of the approach speed came from the attacker (0..1).
-function FightRules.hitDamage(state: State, attacker: Fighter, defender: Fighter, speed: number, share: number): (number, boolean)
+function FightRules.hitDamage(
+	state: State,
+	attacker: Fighter,
+	defender: Fighter,
+	speed: number,
+	share: number
+): (number, boolean)
 	local rng = state.Rng
 	local critBonus = if attacker.Passive == "lucky" then attacker.PassiveParams.CritBonus else 0
 	local crit = rng() < Formula.critChance(attacker.Swing, critBonus)
@@ -427,18 +436,24 @@ function FightRules.hit(state: State, speed: number, shareA: number, x: number?,
 		end
 		if attacker.Passive == "momentum" then
 			attacker.MomentumStacks = math.min(attacker.MomentumStacks + 1, attacker.PassiveParams.MaxStacks)
+			emit(state, { Type = "Passive", Side = side, Id = "momentum", Stacks = attacker.MomentumStacks })
 		end
 		if defender.Passive == "momentum" and crit[side] then
 			defender.MomentumStacks = 0
 		end
 		if dealt > 0 and attacker.Passive == "sharp_edge" then
+			emit(state, { Type = "Passive", Side = side, Id = "sharp_edge" })
 			local p = attacker.PassiveParams
-			table.insert(defender.Bleeds, { PerSecond = dealt * p.BleedFraction / p.BleedSeconds, Remaining = p.BleedSeconds })
+			table.insert(
+				defender.Bleeds,
+				{ PerSecond = dealt * p.BleedFraction / p.BleedSeconds, Remaining = p.BleedSeconds }
+			)
 			while #defender.Bleeds > p.MaxStacks do
 				table.remove(defender.Bleeds, 1)
 			end
 		end
 		if dealt > 0 and attacker.Passive == "sticky" then
+			emit(state, { Type = "Passive", Side = side, Id = "sticky" })
 			table.insert(defender.Sticky, attacker.PassiveParams.Seconds)
 			while #defender.Sticky > attacker.PassiveParams.MaxStacks do
 				table.remove(defender.Sticky, 1)
@@ -513,7 +528,8 @@ function FightRules.triggerPower(state: State, side: number): (boolean, string?)
 		foe.FrozenUntil = state.Time + p.Seconds
 		event.Seconds = p.Seconds
 	elseif f.Special == "beam" then
-		local before = { state.Fighters[1].Hp / state.Fighters[1].MaxHp, state.Fighters[2].Hp / state.Fighters[2].MaxHp }
+		local before =
+			{ state.Fighters[1].Hp / state.Fighters[1].MaxHp, state.Fighters[2].Hp / state.Fighters[2].MaxHp }
 		local dealt = takeDamage(state, foe, foe.MaxHp * p.MaxHpFraction * overtimeMultiplier(state))
 		f.DamageDealt += dealt
 		event.Amount = dealt
@@ -615,13 +631,23 @@ end
 
 -- Compact HP / charge / effect state for clients.
 function FightRules.snapshot(state: State): { [string]: any }
-	local out = { T = state.Time, Hp = {}, Power = {}, Shield = {}, Frozen = {}, Rage = {} }
+	local out =
+		{ T = state.Time, Hp = {}, Power = {}, Shield = {}, Frozen = {}, Rage = {}, Pump = {}, Slam = {}, Effect = {} }
 	for side, f in state.Fighters do
 		out.Hp[side] = math.max(f.Hp, 0)
 		out.Power[side] = FightRules.powerProgress(state, side)
 		out.Rage[side] = state.Time < f.RageUntil
 		out.Shield[side] = FightRules.isShielded(state, side)
 		out.Frozen[side] = FightRules.isFrozen(state, side)
+		out.Pump[side] = state.Time < f.PumpUntil
+		out.Slam[side] = state.Time < f.SlamUntil
+		out.Effect[side] = {
+			math.max(0, f.ShieldUntil - state.Time),
+			math.max(0, f.FrozenUntil - state.Time),
+			math.max(0, f.RageUntil - state.Time),
+			math.max(0, f.PumpUntil - state.Time),
+			math.max(0, f.SlamUntil - state.Time),
+		}
 	end
 	return out
 end

@@ -1,0 +1,680 @@
+{
+  "EncounterInterval": 1.372409751523713,
+  "Hits": 1200,
+  "HitsPerSecond": 0.4611679505354547,
+  "Landed": {
+    "beam": 32,
+    "freeze": 34,
+    "glaze": 59,
+    "pump": 42,
+    "rage": 42,
+    "shield": 120,
+    "slam": 43
+  },
+  "MaxRadiusError": 1.430511474609375e-6,
+  "MissChance": 0.3670886075949367,
+  "Misses": 696,
+  "Powers": {
+    "beam": 43,
+    "freeze": 56,
+    "glaze": 59,
+    "pump": 42,
+    "rage": 42,
+    "shield": 120,
+    "slam": 43
+  },
+  "RoundMedian": 32.56111111111456,
+  "RoundP10": 18.68888888889053,
+  "RoundP90": 45.57777777777494,
+  "Rounds": 80,
+  "RoundsLog": [
+    {
+      "A": "pop",
+      "B": "prism",
+      "Hits": 12,
+      "Seed": 101,
+      "Time": 31.638888888892556,
+      "Winner": 2
+    },
+    {
+      "A": "jam",
+      "B": "lemonade_bottle",
+      "Hits": 18,
+      "Seed": 102,
+      "Time": 33.96111111111389,
+      "Winner": 1
+    },
+    {
+      "A": "prism",
+      "B": "hot_sauce",
+      "Hits": 8,
+      "Seed": 103,
+      "Time": 22.37222222222444,
+      "Winner": 1
+    },
+    {
+      "A": "lemonade_bottle",
+      "B": "milk_bottle",
+      "Hits": 12,
+      "Seed": 104,
+      "Time": 27.133333333336296,
+      "Winner": 2
+    },
+    {
+      "A": "hot_sauce",
+      "B": "glass_cup",
+      "Hits": 8,
+      "Seed": 105,
+      "Time": 18.42777777777938,
+      "Winner": 2
+    },
+    {
+      "A": "milk_bottle",
+      "B": "pickle_jar",
+      "Hits": 24,
+      "Seed": 106,
+      "Time": 47.74444444444056,
+      "Winner": 2
+    },
+    {
+      "A": "glass_cup",
+      "B": "pop",
+      "Hits": 9,
+      "Seed": 107,
+      "Time": 21.400000000002066,
+      "Winner": 1
+    },
+    {
+      "A": "pickle_jar",
+      "B": "jam",
+      "Hits": 24,
+      "Seed": 108,
+      "Time": 49.44999999999529,
+      "Winner": 1
+    },
+    {
+      "A": "pop",
+      "B": "prism",
+      "Hits": 7,
+      "Seed": 109,
+      "Time": 14.411111111112087,
+      "Winner": 2
+    },
+    {
+      "A": "jam",
+      "B": "lemonade_bottle",
+      "Hits": 17,
+      "Seed": 110,
+      "Time": 38.97777777777813,
+      "Winner": 1
+    },
+    {
+      "A": "prism",
+      "B": "hot_sauce",
+      "Hits": 9,
+      "Seed": 111,
+      "Time": 31.766666666670353,
+      "Winner": 1
+    },
+    {
+      "A": "lemonade_bottle",
+      "B": "milk_bottle",
+      "Hits": 8,
+      "Seed": 112,
+      "Time": 25.444444444447143,
+      "Winner": 2
+    },
+    {
+      "A": "hot_sauce",
+      "B": "glass_cup",
+      "Hits": 8,
+      "Seed": 113,
+      "Time": 21.588888888890985,
+      "Winner": 2
+    },
+    {
+      "A": "milk_bottle",
+      "B": "pickle_jar",
+      "Hits": 23,
+      "Seed": 114,
+      "Time": 41.00555555555493,
+      "Winner": 2
+    },
+    {
+      "A": "glass_cup",
+      "B": "pop",
+      "Hits": 10,
+      "Seed": 115,
+      "Time": 31.550000000003653,
+      "Winner": 2
+    },
+    {
+      "A": "pickle_jar",
+      "B": "jam",
+      "Hits": 25,
+      "Seed": 116,
+      "Time": 54.84444444443713,
+      "Winner": 1
+    },
+    {
+      "A": "pop",
+      "B": "prism",
+      "Hits": 11,
+      "Seed": 117,
+      "Time": 19.166666666668384,
+      "Winner": 1
+    },
+    {
+      "A": "jam",
+      "B": "lemonade_bottle",
+      "Hits": 23,
+      "Seed": 118,
+      "Time": 42.09444444444329,
+      "Winner": 1
+    },
+    {
+      "A": "prism",
+      "B": "hot_sauce",
+      "Hits": 10,
+      "Seed": 119,
+      "Time": 24.822222222224823,
+      "Winner": 1
+    },
+    {
+      "A": "lemonade_bottle",
+      "B": "milk_bottle",
+      "Hits": 18,
+      "Seed": 120,
+      "Time": 35.333333333335446,
+      "Winner": 2
+    },
+    {
+      "A": "hot_sauce",
+      "B": "glass_cup",
+      "Hits": 8,
+      "Seed": 121,
+      "Time": 20.344444444446346,
+      "Winner": 2
+    },
+    {
+      "A": "milk_bottle",
+      "B": "pickle_jar",
+      "Hits": 20,
+      "Seed": 122,
+      "Time": 43.866666666664656,
+      "Winner": 1
+    },
+    {
+      "A": "glass_cup",
+      "B": "pop",
+      "Hits": 9,
+      "Seed": 123,
+      "Time": 25.33888888889157,
+      "Winner": 2
+    },
+    {
+      "A": "pickle_jar",
+      "B": "jam",
+      "Hits": 25,
+      "Seed": 124,
+      "Time": 43.78333333333136,
+      "Winner": 1
+    },
+    {
+      "A": "pop",
+      "B": "prism",
+      "Hits": 9,
+      "Seed": 125,
+      "Time": 25.872222222224988,
+      "Winner": 2
+    },
+    {
+      "A": "jam",
+      "B": "lemonade_bottle",
+      "Hits": 18,
+      "Seed": 126,
+      "Time": 32.87777777778108,
+      "Winner": 1
+    },
+    {
+      "A": "prism",
+      "B": "hot_sauce",
+      "Hits": 8,
+      "Seed": 127,
+      "Time": 18.383333333334928,
+      "Winner": 2
+    },
+    {
+      "A": "lemonade_bottle",
+      "B": "milk_bottle",
+      "Hits": 17,
+      "Seed": 128,
+      "Time": 39.42777777777791,
+      "Winner": 2
+    },
+    {
+      "A": "hot_sauce",
+      "B": "glass_cup",
+      "Hits": 13,
+      "Seed": 129,
+      "Time": 32.56111111111456,
+      "Winner": 2
+    },
+    {
+      "A": "milk_bottle",
+      "B": "pickle_jar",
+      "Hits": 28,
+      "Seed": 130,
+      "Time": 52.52777777777158,
+      "Winner": 1
+    },
+    {
+      "A": "glass_cup",
+      "B": "pop",
+      "Hits": 8,
+      "Seed": 131,
+      "Time": 13.455555555556382,
+      "Winner": 1
+    },
+    {
+      "A": "pickle_jar",
+      "B": "jam",
+      "Hits": 25,
+      "Seed": 132,
+      "Time": 39.07222222222253,
+      "Winner": 2
+    },
+    {
+      "A": "pop",
+      "B": "prism",
+      "Hits": 12,
+      "Seed": 133,
+      "Time": 29.82777777778116,
+      "Winner": 2
+    },
+    {
+      "A": "jam",
+      "B": "lemonade_bottle",
+      "Hits": 21,
+      "Seed": 134,
+      "Time": 46.51111111110782,
+      "Winner": 1
+    },
+    {
+      "A": "prism",
+      "B": "hot_sauce",
+      "Hits": 9,
+      "Seed": 135,
+      "Time": 19.12777777777949,
+      "Winner": 1
+    },
+    {
+      "A": "lemonade_bottle",
+      "B": "milk_bottle",
+      "Hits": 11,
+      "Seed": 136,
+      "Time": 28.466666666669838,
+      "Winner": 2
+    },
+    {
+      "A": "hot_sauce",
+      "B": "glass_cup",
+      "Hits": 8,
+      "Seed": 137,
+      "Time": 18.000000000001535,
+      "Winner": 2
+    },
+    {
+      "A": "milk_bottle",
+      "B": "pickle_jar",
+      "Hits": 20,
+      "Seed": 138,
+      "Time": 35.23888888889105,
+      "Winner": 1
+    },
+    {
+      "A": "glass_cup",
+      "B": "pop",
+      "Hits": 13,
+      "Seed": 139,
+      "Time": 21.28333333333538,
+      "Winner": 2
+    },
+    {
+      "A": "pickle_jar",
+      "B": "jam",
+      "Hits": 25,
+      "Seed": 140,
+      "Time": 45.433333333330566,
+      "Winner": 2
+    },
+    {
+      "A": "pop",
+      "B": "prism",
+      "Hits": 12,
+      "Seed": 141,
+      "Time": 23.622222222224636,
+      "Winner": 2
+    },
+    {
+      "A": "jam",
+      "B": "lemonade_bottle",
+      "Hits": 22,
+      "Seed": 142,
+      "Time": 43.15555555555389,
+      "Winner": 1
+    },
+    {
+      "A": "prism",
+      "B": "hot_sauce",
+      "Hits": 8,
+      "Seed": 143,
+      "Time": 17.611111111112585,
+      "Winner": 1
+    },
+    {
+      "A": "lemonade_bottle",
+      "B": "milk_bottle",
+      "Hits": 17,
+      "Seed": 144,
+      "Time": 42.48333333333199,
+      "Winner": 1
+    },
+    {
+      "A": "hot_sauce",
+      "B": "glass_cup",
+      "Hits": 7,
+      "Seed": 145,
+      "Time": 17.21666666666808,
+      "Winner": 2
+    },
+    {
+      "A": "milk_bottle",
+      "B": "pickle_jar",
+      "Hits": 27,
+      "Seed": 146,
+      "Time": 49.027777777773274,
+      "Winner": 2
+    },
+    {
+      "A": "glass_cup",
+      "B": "pop",
+      "Hits": 9,
+      "Seed": 147,
+      "Time": 25.40000000000269,
+      "Winner": 2
+    },
+    {
+      "A": "pickle_jar",
+      "B": "jam",
+      "Hits": 26,
+      "Seed": 148,
+      "Time": 45.57777777777494,
+      "Winner": 2
+    },
+    {
+      "A": "pop",
+      "B": "prism",
+      "Hits": 8,
+      "Seed": 149,
+      "Time": 18.68888888889053,
+      "Winner": 2
+    },
+    {
+      "A": "jam",
+      "B": "lemonade_bottle",
+      "Hits": 14,
+      "Seed": 150,
+      "Time": 33.25000000000312,
+      "Winner": 1
+    },
+    {
+      "A": "prism",
+      "B": "hot_sauce",
+      "Hits": 13,
+      "Seed": 151,
+      "Time": 36.60555555555705,
+      "Winner": 1
+    },
+    {
+      "A": "lemonade_bottle",
+      "B": "milk_bottle",
+      "Hits": 14,
+      "Seed": 152,
+      "Time": 34.183333333336,
+      "Winner": 2
+    },
+    {
+      "A": "hot_sauce",
+      "B": "glass_cup",
+      "Hits": 10,
+      "Seed": 153,
+      "Time": 24.93888888889151,
+      "Winner": 2
+    },
+    {
+      "A": "milk_bottle",
+      "B": "pickle_jar",
+      "Hits": 20,
+      "Seed": 154,
+      "Time": 40.73333333333284,
+      "Winner": 1
+    },
+    {
+      "A": "glass_cup",
+      "B": "pop",
+      "Hits": 9,
+      "Seed": 155,
+      "Time": 25.233333333336,
+      "Winner": 1
+    },
+    {
+      "A": "pickle_jar",
+      "B": "jam",
+      "Hits": 19,
+      "Seed": 156,
+      "Time": 37.361111111112244,
+      "Winner": 2
+    },
+    {
+      "A": "pop",
+      "B": "prism",
+      "Hits": 10,
+      "Seed": 157,
+      "Time": 27.194444444447416,
+      "Winner": 1
+    },
+    {
+      "A": "jam",
+      "B": "lemonade_bottle",
+      "Hits": 16,
+      "Seed": 158,
+      "Time": 35.661111111113065,
+      "Winner": 2
+    },
+    {
+      "A": "prism",
+      "B": "hot_sauce",
+      "Hits": 11,
+      "Seed": 159,
+      "Time": 38.28888888888957,
+      "Winner": 1
+    },
+    {
+      "A": "lemonade_bottle",
+      "B": "milk_bottle",
+      "Hits": 16,
+      "Seed": 160,
+      "Time": 40.64444444444399,
+      "Winner": 2
+    },
+    {
+      "A": "hot_sauce",
+      "B": "glass_cup",
+      "Hits": 10,
+      "Seed": 161,
+      "Time": 32.88888888889218,
+      "Winner": 1
+    },
+    {
+      "A": "milk_bottle",
+      "B": "pickle_jar",
+      "Hits": 27,
+      "Seed": 162,
+      "Time": 49.69444444443962,
+      "Winner": 1
+    },
+    {
+      "A": "glass_cup",
+      "B": "pop",
+      "Hits": 10,
+      "Seed": 163,
+      "Time": 32.88333333333663,
+      "Winner": 2
+    },
+    {
+      "A": "pickle_jar",
+      "B": "jam",
+      "Hits": 18,
+      "Seed": 164,
+      "Time": 36.26666666666833,
+      "Winner": 2
+    },
+    {
+      "A": "pop",
+      "B": "prism",
+      "Hits": 11,
+      "Seed": 165,
+      "Time": 22.911111111113414,
+      "Winner": 1
+    },
+    {
+      "A": "jam",
+      "B": "lemonade_bottle",
+      "Hits": 24,
+      "Seed": 166,
+      "Time": 41.69999999999904,
+      "Winner": 1
+    },
+    {
+      "A": "prism",
+      "B": "hot_sauce",
+      "Hits": 11,
+      "Seed": 167,
+      "Time": 28.72777777778099,
+      "Winner": 1
+    },
+    {
+      "A": "lemonade_bottle",
+      "B": "milk_bottle",
+      "Hits": 16,
+      "Seed": 168,
+      "Time": 40.37777777777745,
+      "Winner": 2
+    },
+    {
+      "A": "hot_sauce",
+      "B": "glass_cup",
+      "Hits": 10,
+      "Seed": 169,
+      "Time": 27.788888888891954,
+      "Winner": 2
+    },
+    {
+      "A": "milk_bottle",
+      "B": "pickle_jar",
+      "Hits": 28,
+      "Seed": 170,
+      "Time": 45.027777777775206,
+      "Winner": 1
+    },
+    {
+      "A": "glass_cup",
+      "B": "pop",
+      "Hits": 11,
+      "Seed": 171,
+      "Time": 29.638888888892243,
+      "Winner": 1
+    },
+    {
+      "A": "pickle_jar",
+      "B": "jam",
+      "Hits": 22,
+      "Seed": 172,
+      "Time": 39.88333333333325,
+      "Winner": 1
+    },
+    {
+      "A": "pop",
+      "B": "prism",
+      "Hits": 11,
+      "Seed": 173,
+      "Time": 21.92222222222437,
+      "Winner": 1
+    },
+    {
+      "A": "jam",
+      "B": "lemonade_bottle",
+      "Hits": 22,
+      "Seed": 174,
+      "Time": 37.616666666667676,
+      "Winner": 2
+    },
+    {
+      "A": "prism",
+      "B": "hot_sauce",
+      "Hits": 11,
+      "Seed": 175,
+      "Time": 29.655555555558912,
+      "Winner": 2
+    },
+    {
+      "A": "lemonade_bottle",
+      "B": "milk_bottle",
+      "Hits": 13,
+      "Seed": 176,
+      "Time": 28.13888888889201,
+      "Winner": 2
+    },
+    {
+      "A": "hot_sauce",
+      "B": "glass_cup",
+      "Hits": 8,
+      "Seed": 177,
+      "Time": 22.866666666668962,
+      "Winner": 2
+    },
+    {
+      "A": "milk_bottle",
+      "B": "pickle_jar",
+      "Hits": 23,
+      "Seed": 178,
+      "Time": 40.60555555555512,
+      "Winner": 1
+    },
+    {
+      "A": "glass_cup",
+      "B": "pop",
+      "Hits": 9,
+      "Seed": 179,
+      "Time": 25.188888888891547,
+      "Winner": 2
+    },
+    {
+      "A": "pickle_jar",
+      "B": "jam",
+      "Hits": 26,
+      "Seed": 180,
+      "Time": 46.89444444444097,
+      "Winner": 2
+    }
+  ],
+  "Seconds": 2602.08888888896,
+  "ShareMedian": 0.4990022784146073,
+  "ShareP10": 0.2903156130201547,
+  "ShareP90": 0.679818951097117,
+  "SpeedMedian": 20.671350479125977,
+  "SpeedP10": 7.224274635314941,
+  "SpeedP90": 29.44593620300293,
+  "Timeouts": 0
+}

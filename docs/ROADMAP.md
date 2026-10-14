@@ -1,7 +1,7 @@
 # Roadmap
 
 Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DESIGN v0.3](GAME_DESIGN.md).
-**Current milestone: L1 — Sky lobby (islands + arenas).** Then F1.
+**Current milestone: F2 — Match flow on all seven arenas.** Overnight work authorized; real-phone checks and publishing remain with the user.
 
 Owner key: **C** = Codex (code / Studio MCP), **B** = Codex with Blender MCP, **CL** = Claude (research, design, pure rules, docs), **U** = you.
 
@@ -33,12 +33,13 @@ Prompt: [prompts/02_sky_lobby.md](prompts/02_sky_lobby.md).
 Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, pass-bys and powers firing by themselves → a great shatter. **Nothing else until this feels great on a phone.** Prompt: [prompts/01_fight_prototype.md](prompts/01_fight_prototype.md).
 
 - [x] **CL:** rules for auto powers (no button), Rage, aimed powers that can miss, aim yaw, luck/suspense metrics in the simulator (DECISIONS 33–34)
-- [ ] **C:** `FightService`: 3D pendulum swing (Balance.Motion), wander, deflecting bounces, spin and tumble; hits → `FightRules.hit`; `FightRules.tick`; `PowerLands` from positions
-- [ ] **C:** stream `FightSnapshot` (20 Hz, unreliable) + `FightEvents`; `SetAim` remote validated and rate-limited
-- [ ] **C:** `FightController`: interpolated 3D CFrames with twist/tilt, string Beams, follow camera, side-on slow-mo final blow
-- [ ] **C:** aim input (drag distance + direction, Perfect band, lock), 3-2-1 release
-- [ ] **C:** Fight HUD: HP bars, cracks, power glow rings, power banners, MISSED!, CRIT!/SMASH!/WHOOSH; effects for every power
-- [ ] **C:** bot-vs-bot calibration: update `Balance.SimModel`, `Fight.RefSpeed`, beam/freeze `LandChance`
+- [x] **C:** `FightService`: 3D pendulum swing (Balance.Motion), wander, deflecting bounces, spin and tumble; hits → `FightRules.hit`; `FightRules.tick`; `PowerLands` from positions
+- [x] **C:** stream `FightSnapshot` (20 Hz, unreliable) + `FightEvents`; `SetAim` remote validated and rate-limited
+- [x] **C:** `FightController`: interpolated 3D CFrames with twist/tilt, string Beams, follow camera, side-on slow-mo final blow
+- [x] **C:** aim input (drag distance + direction, Perfect band, lock), 3-2-1 release
+- [x] **C:** Fight HUD: HP bars, cracks, power glow rings, power banners, MISSED!, CRIT!/SMASH!/WHOOSH; effects for every power
+- [x] **C:** bot-vs-bot calibration: 80 Lune + 40 Studio rounds; ten live rounds watched; measurements/candidate in [F1 report](testing/F1_FIGHT.md)
+- [ ] **CL:** review calibrated SimModel candidate (Jam duration / Prism Blade fairness failures); Fight/Powers values frozen under overnight instructions; passing baseline retained
 - [ ] **U:** publish, play on a phone, record a clip, approve the feel
 
 ## F2 — Match flow and lobby blockout (Oct 20–26)

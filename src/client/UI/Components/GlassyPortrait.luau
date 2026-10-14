@@ -15,7 +15,9 @@ function Portrait.new(parent, id, size, position)
 	})
 	local world = Instance.new("WorldModel")
 	world.Parent = viewport
-	local source = RS.Assets.Glassies[id]
+	local def = require(RS.Shared.Config.Glassies).get(id)
+	local source = RS.Assets.Glassies:FindFirstChild(id)
+		or RS.Assets.Glassies[if def.Type == "Heavy" then "jam" elseif def.Type == "Sharp" then "prism" else "pop"]
 	local parts = { source.Body }
 	for _, detail in source.Details:GetChildren() do
 		table.insert(parts, detail)

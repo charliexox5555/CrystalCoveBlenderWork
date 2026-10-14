@@ -1,0 +1,332 @@
+local RS = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService")
+local Debris = game:GetService("Debris")
+local Balance = require(RS.Shared.Config.Balance)
+local Glassies = require(RS.Shared.Config.Glassies)
+local Powers = require(RS.Shared.Config.Powers)
+local Audio = require(RS.Shared.Config.Audio)
+local M, Feel = Balance.Motion, Balance.Feel
+local Scene = {}
+Scene.__index = Scene
+
+local function part(parent, name, color)
+	local p = Instance.new("Part")
+	p.Name, p.Anchored, p.CanCollide, p.CanTouch, p.CanQuery = name, true, false, false, false
+	p.CastShadow, p.Material, p.Color = false, Enum.Material.Neon, color
+	p.Parent = parent
+	return p
+end
+
+local function emitter(parent, color)
+	local e = Instance.new("ParticleEmitter")
+	e.Texture = "rbxasset://textures/particles/sparkles_main.dds"
+	e.Color, e.LightEmission, e.Rate = ColorSequence.new(color), 0.8, 0
+	e.Lifetime, e.Speed, e.SpreadAngle = NumberRange.new(0.2, 0.6), NumberRange.new(2, 5), Vector2.new(180, 180)
+	e.Size = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.18), NumberSequenceKeypoint.new(1, 0) })
+	e.Parent = parent
+	return e
+end
+
+function Scene.new(data, maxima, shatter)
+	local self = setmetatable({ Frame = data.Frame, Fighters = {}, Shatter = shatter, Ghost = {} }, Scene)
+	self.Root = Instance.new("Folder")
+	self.Root.Name = "LocalFight"
+	self.Root.Parent = workspace
+	for side, setup in { data.A, data.B } do
+		local def = Glassies.get(setup.Id)
+		local renderId = if RS.Assets.Glassies:FindFirstChild(def.Asset)
+			then def.Asset
+			else if def.Type == "Heavy" then "jam" elseif def.Type == "Sharp" then "prism" else "pop"
+		local source = RS.Assets.Glassies[renderId]
+		local model = Instance.new("Model")
+		model.Name = setup.Id
+		model.WorldPivot = CFrame.identity
+		local body = source.Body:Clone()
+		body.Parent = model
+		local parts = { body }
+		for _, template in source.Details:GetChildren() do
+			local detail = template:Clone()
+			detail.Parent = model
+			table.insert(parts, detail)
+		end
+		for _, p in parts do
+			p.Anchored, p.CanCollide, p.CanTouch, p.CanQuery = true, false, false, false
+		end
+		if renderId ~= def.Asset then
+			body.Color = Color3.fromHex(def.Tint)
+		end
+		model:ScaleTo(M.GlassyScale)
+		model.Parent = self.Root
+		local templates = Instance.new("Model")
+		templates.Name = "ShardTemplates"
+		templates.WorldPivot = CFrame.identity
+		for _, template in source.Shards:GetChildren() do
+			template:Clone().Parent = templates
+		end
+		for _, template in source.Details:GetChildren() do
+			if not template.Name:find("Bubble") then
+				template:Clone().Parent = templates
+			end
+		end
+		templates:ScaleTo(M.GlassyScale)
+		local endpoint = Instance.new("Attachment")
+		endpoint.Name, endpoint.CFrame = "StringEnd", body.PivotOffset
+		endpoint.Parent = body
+		local beam = Instance.new("Beam")
+		beam.Name, beam.Attachment0, beam.Attachment1 = "String", data.Hooks[side], endpoint
+		beam.Width0, beam.Width1, beam.FaceCamera = 0.04, 0.04, true
+		beam.Color = ColorSequence.new(Color3.fromHex("#F2EAD8"))
+		beam.Parent = model
+		local highlight = Instance.new("Highlight")
+		highlight.Adornee, highlight.DepthMode, highlight.FillTransparency, highlight.OutlineTransparency =
+			model, Enum.HighlightDepthMode.Occluded, 1, 1
+		highlight.Parent = model
+		local bubble = part(self.Root, "ShieldBubble", Color3.fromHex("#A7E8FF"))
+		bubble.Shape, bubble.Size, bubble.Transparency, bubble.Material =
+			Enum.PartType.Ball, Vector3.one * (def.Radius * M.GlassyScale * 2.7), 1, Enum.Material.ForceField
+		local glints = emitter(body, Color3.fromHex(def.Tint))
+		local at0, at1 = Instance.new("Attachment"), Instance.new("Attachment")
+		at0.Position, at1.Position = Vector3.new(-0.5, 0, 0), Vector3.new(0.5, 0, 0)
+		at0.Parent, at1.Parent = body, body
+		local trail = Instance.new("Trail")
+		trail.Attachment0, trail.Attachment1, trail.Lifetime, trail.Enabled = at0, at1, 0.28, false
+		trail.Color, trail.LightEmission = ColorSequence.new(Color3.fromHex(def.Tint)), 0.8
+		trail.Transparency = NumberSequence.new(0.5, 1)
+		trail.Parent = body
+		self.Fighters[side] = {
+			CrackStage = 0,
+			Id = setup.Id,
+			RenderId = renderId,
+			Def = def,
+			Model = model,
+			Body = body,
+			Parts = parts,
+			Hook = data.Hooks[side],
+			Beam = beam,
+			Highlight = highlight,
+			Bubble = bubble,
+			Glints = glints,
+			Trail = trail,
+			Stats = { MaxHP = maxima[side] },
+			Scale = M.GlassyScale,
+			ShardTemplates = templates,
+			Effects = {},
+		}
+	end
+	return self
+end
+
+function Scene:Pose(side, p, twist, tilt)
+	local f = self.Fighters[side]
+	if f.Broken then
+		return
+	end
+	local up = -self.Frame:VectorToWorldSpace(p.Unit)
+	local right = self.Frame.RightVector - up * self.Frame.RightVector:Dot(up)
+	right = right.Unit
+	f.Twist = twist
+	f.Pivot = CFrame.fromMatrix(f.Hook.WorldPosition + self.Frame:VectorToWorldSpace(p), right, up, right:Cross(up))
+		* CFrame.Angles(tilt.X, twist, tilt.Z)
+	f.Model:PivotTo(f.Pivot)
+	f.Bubble.CFrame = f.Body.CFrame
+end
+
+function Scene:GhostPath(aim, yaw)
+	for i = 1, 18 do
+		local dot = self.Ghost[i]
+		if not dot then
+			dot = part(self.Root, "FirstSwingGhost", Color3.fromHex("#FFE45C"))
+			dot.Shape, dot.Size, dot.Transparency = Enum.PartType.Ball, Vector3.one * 0.13, 0.35
+			self.Ghost[i] = dot
+		end
+		local angle = -aim + 2 * aim * (i - 1) / 17
+		local p = Vector3.new(math.sin(angle) * math.cos(yaw), -math.cos(angle), -math.sin(angle) * math.sin(yaw))
+			* M.StringLength
+		dot.Position = self.Fighters[1].Hook.WorldPosition + self.Frame:VectorToWorldSpace(p)
+	end
+end
+
+function Scene:HideGhost()
+	for _, p in self.Ghost do
+		p:Destroy()
+	end
+	self.Ghost = {}
+end
+
+function Scene:Update(r, time)
+	for side, f in self.Fighters do
+		if f.Broken then
+			continue
+		end
+		local previous = f.CrackStage or 0
+		self.Shatter:SetCracks(f, r.Hp[side], f.Stats.MaxHP)
+		if f.CrackStage > previous and r.Hp[side] > 0 then
+			self.Shatter:Sound(Audio.Break, f.Body, 1.4, Feel.CrackVolume, 0.18)
+		end
+		local frozen, shield, rage = r.Frozen[side], r.Shield[side], r.Rage[side]
+		f.Bubble.Transparency = if shield then 0.42 else 1
+		local glaze = (f.Effects.glaze or -1) > time
+		local active = frozen or rage or r.Slam[side] or r.Pump[side] or glaze
+		f.Highlight.FillColor = if glaze
+			then Color3.new(1, 1, 1)
+			elseif frozen then Color3.fromHex("#B3F4FF")
+			elseif rage then Color3.fromHex("#FF5533")
+			else Color3.fromHex(f.Def.Tint)
+		f.Highlight.OutlineColor = f.Highlight.FillColor
+		f.Highlight.FillTransparency, f.Highlight.OutlineTransparency =
+			if active then 0.55 else 1, if active then 0.15 else 1
+		f.Glints.Rate = if frozen then 14 elseif rage then 24 elseif f.Def.Passive == "glow_core" then 4 else 0
+		f.Glints.Color = ColorSequence.new(f.Highlight.FillColor)
+		f.Trail.Enabled = r.Pump[side]
+	end
+end
+
+function Scene:Ray(side, id, missed, event)
+	local f, foe = self.Fighters[side], self.Fighters[3 - side]
+	local start = f.Body.Position
+	local target = foe.Body.Position
+	if missed then
+		local facing = Vector3.new(event.Direction[1], event.Direction[2], event.Direction[3])
+		target = start + self.Frame:VectorToWorldSpace(facing) * M.PowerLandDistance
+	end
+	local ray = part(
+		self.Root,
+		if missed then "MissedRay" else "PowerRay",
+		if id == "freeze" then Color3.fromHex("#B3F4FF") else Color3.fromHex(f.Def.Tint)
+	)
+	ray.Size = Vector3.new(0.2, 0.2, (target - start).Magnitude)
+	ray.CFrame = CFrame.lookAt((start + target) / 2, target)
+	TweenService:Create(
+		ray,
+		TweenInfo.new(Feel.PowerEffectSeconds),
+		{ Transparency = 1, Size = Vector3.new(0.01, 0.01, ray.Size.Z) }
+	):Play()
+	Debris:AddItem(ray, Feel.PowerEffectSeconds)
+	if not missed then
+		foe.Glints:Emit(18)
+	end
+end
+
+function Scene:Event(e, hud)
+	local f = e.Side and self.Fighters[e.Side]
+	if e.Type == "Power" then
+		local def = f.Def
+		if hud then
+			hud:Edge(if e.Missed then Color3.fromHex("#C3CAD6") else Color3.fromHex(def.Tint))
+			hud:Banner(
+				e.Side,
+				string.upper(def.SpecialName or Powers.special(e.Id).Name) .. (if e.Missed then " • MISSED!" else "!"),
+				if e.Missed then Color3.fromHex("#C3CAD6") else Color3.fromHex(def.Tint)
+			)
+		end
+		f.Effects[e.Id] = e.Time + (e.Seconds or Feel.PowerEffectSeconds)
+		f.Glints:Emit(20)
+		if e.Id == "beam" or e.Id == "freeze" then
+			self:Ray(e.Side, e.Id, e.Missed, e)
+		end
+		if e.Id == "glaze" then
+			f.Highlight.FillColor = Color3.new(1, 1, 1)
+			f.Highlight.FillTransparency = 0.2
+			TweenService:Create(f.Highlight, TweenInfo.new(Feel.PowerEffectSeconds), { FillTransparency = 1 }):Play()
+		end
+		self.Shatter:Sound(
+			Audio.Whoosh,
+			f.Body,
+			if e.Id == "freeze" then 1.5 elseif e.Id == "rage" then 0.7 else 1.1,
+			0.3,
+			0.6
+		)
+	elseif e.Type == "Passive" then
+		f.Glints:Emit(12)
+		if hud then
+			hud:Banner(
+				e.Side,
+				string.upper(f.Def.PassiveName or Powers.passive(e.Id).Name),
+				Color3.fromHex(f.Def.Tint),
+				true
+			)
+		end
+	elseif e.Type == "PerfectRelease" and hud then
+		hud:Banner(e.Side, "PERFECT RELEASE!", Color3.fromHex("#FFE45C"))
+		f.Glints:Emit(18)
+	elseif e.Type == "Whoosh" then
+		if hud then
+			hud:Popup(
+				"WHOOSH",
+				(self.Fighters[1].Body.Position + self.Fighters[2].Body.Position) / 2,
+				Color3.fromHex("#E1E9FF")
+			)
+		end
+		self.Shatter:Sound(Audio.Whoosh, self.Fighters[1].Body, 1.2, 0.16, 0.3)
+	elseif e.Type == "Hit" then
+		local a, b = self.Fighters[1], self.Fighters[2]
+		self.Shatter:HitBurst(a, b, { CritA = e.Crit[1], CritB = e.Crit[2] }, self.Root)
+		local weight = math.clamp(e.Speed / Balance.Fight.RefSpeed, 0, 1)
+		local volume = Feel.ClinkVolumeMin + (Feel.ClinkVolumeMax - Feel.ClinkVolumeMin) * weight
+		self.Shatter:Sound(Audio.Clink, a.Body, a.Def.ClinkPitch * (1.12 - weight * 0.2), volume)
+		self.Shatter:Sound(Audio.Clink, b.Body, b.Def.ClinkPitch, volume * 0.6)
+		self.Shatter:Pulse()
+		if hud and (e.Crit[1] or e.Crit[2] or e.Speed >= Balance.Fight.RefSpeed * Feel.BigHitSpeed) then
+			hud:Popup(
+				if e.Crit[1] or e.Crit[2] then "CRIT!" else "SMASH!",
+				(a.Body.Position + b.Body.Position) / 2 + Vector3.yAxis * 2,
+				Color3.fromHex("#FFE45C"),
+				0,
+				"Impact"
+			)
+		end
+		for side, fighter in self.Fighters do
+			if hud then
+				hud:Popup(
+					if e.Blocked[side] then "BLOCKED" else "−" .. math.floor(e.Damage[side] + 0.5),
+					fighter.Body.Position,
+					Color3.new(1, 1, 1),
+					if side == 1 then -1 else 1,
+					"Damage" .. side
+				)
+			end
+		end
+	elseif e.Type == "Shatter" and not f.Broken then
+		self:Heart(e.Side)
+		self.Shatter:Break(f, self.Root)
+		f.Broken = true
+		f.Bubble.Transparency, f.Glints.Enabled, f.Trail.Enabled = 1, false, false
+		f.Highlight.Enabled = false
+		if hud then
+			hud:Phase("RoundEnd", "SHATTERED!")
+			hud.CrackLabels[e.Side].Text = "♥ ♥ ◇"
+		end
+	elseif e.Type == "Overtime" and hud then
+		hud:Phase("Fighting", "OVERTIME • HITS GET STRONGER!")
+	end
+end
+
+function Scene:Heart(side)
+	local stand = self.Fighters[side].Hook.Parent.Parent
+	local pad = stand:FindFirstChild(if side == 1 then "QueueA" else "QueueB")
+	local anchor = part(self.Root, "GlassHeartPop", Color3.fromHex(self.Fighters[side].Def.Tint))
+	anchor.Size, anchor.Transparency = Vector3.one * 0.2, 1
+	anchor.Position = (pad and pad.Position or self.Fighters[side].Body.Position) + Vector3.yAxis * 5
+	local gui = Instance.new("BillboardGui")
+	gui.Size = UDim2.fromOffset(70, 70)
+	gui.AlwaysOnTop = true
+	gui.Parent = anchor
+	local text = Instance.new("TextLabel")
+	text.Size = UDim2.fromScale(1, 1)
+	text.BackgroundTransparency = 1
+	text.Text, text.TextColor3, text.TextScaled = "♥", anchor.Color, true
+	text.Parent = gui
+	emitter(anchor, anchor.Color):Emit(14)
+	TweenService:Create(text, TweenInfo.new(0.6), { Rotation = 25, TextTransparency = 1 }):Play()
+	TweenService:Create(anchor, TweenInfo.new(0.6), { Position = anchor.Position + Vector3.yAxis * 1.5 }):Play()
+	Debris:AddItem(anchor, 1)
+end
+
+function Scene:Destroy()
+	for _, f in self.Fighters do
+		f.ShardTemplates:Destroy()
+	end
+	self.Root:Destroy()
+end
+
+return Scene

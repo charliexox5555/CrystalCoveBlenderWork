@@ -16,6 +16,25 @@ Balance.Lobby = {
 -- (approach speed + who moved into it) to FightRules, and reads FightRules.swingMultiplier /
 -- isFrozen / knockbackMultiplier to apply powers to the swing.
 Balance.Motion = {
+	StepRate = 60,
+	Substeps = 3,
+	MaxCatchupSeconds = 0.25,
+	DriveGain = 1.4,
+	PhaseCoupling = 2.5, -- weak reciprocal pull keeps both swings meeting after a deflection
+	PhaseDamping = 0.8,
+	DriveAcceleration = 24,
+	AirDrag = 0.04,
+	MaxAngle = 1.4,
+	BodyCenter = 1.1, -- unscaled distance from hang point to collision centre
+	PowerLandDistance = 13.5,
+	PowerTwistInfluence = 0.12,
+	PowerTrackingSeconds = 0.2, -- aim at the last sighting; fast pass-bys can escape the cone
+	PowerLandCos = 0.5, -- 120 degree cone
+	EncounterDistance = 7,
+	EncounterCooldown = 0.4,
+	NearMissDistance = 2,
+	TumbleStiffness = 24,
+	MaxTilt = 0.65,
 	-- At true scale glassies (~2.5 studs) look tiny under the 17-stud stand (all 4 map concepts),
 	-- so arenas show them GlassyScale times bigger, with longer strings and wider hooks to match.
 	-- The swing uses Glassy.Radius * GlassyScale. The stand model's hooks sit at +-1.5 today;
@@ -35,12 +54,12 @@ Balance.Motion = {
 	-- 3D, erratic swing (GAME_DESIGN 3.1, DECISIONS 34). Each glassy is a spherical pendulum:
 	-- it can swing out of the stand's plane, pass the other glass and come back. All starting
 	-- values; tune by eye so fights are unpredictable but readable.
-	OutOfPlaneDamping = 0.15, -- how fast sideways swing settles back toward the stand's plane (lower = wilder)
-	WanderStrength = 1.2, -- random sideways nudges (rad/s^2) that keep swings from repeating
+	OutOfPlaneDamping = 0.9, -- how fast sideways swing settles back toward the stand's plane (lower = wilder)
+	WanderStrength = 0.3, -- random sideways nudges (rad/s^2) that keep swings from repeating
 	WanderIntervalMin = 0.6, -- seconds between nudges
 	WanderIntervalMax = 1.8,
 	HitFriction = 0.35, -- how much of a glancing hit turns into spin
-	HitDeflect = 0.5, -- how much a hit off the line between them throws the glass sideways
+	HitDeflect = 0.18, -- how much a hit off the line between them throws the glass sideways
 	SpinFromHit = 2.5, -- spin (rad/s) per stud/s of glancing hit speed
 	TwistStiffness = 4, -- the string winds up and unwinds (spring back toward no twist)
 	TwistDamping = 0.6,
@@ -174,7 +193,12 @@ Balance.Economy = {
 	-- Free coin sources
 	DailyQuestCoins = 75, -- per quest, 3 quests a day
 	DailyQuests = 3,
-	PlaytimeGifts = { { Minutes = 5, Coins = 40 }, { Minutes = 15, Coins = 60 }, { Minutes = 30, Coins = 100 }, { Minutes = 60, Coins = 150 } },
+	PlaytimeGifts = {
+		{ Minutes = 5, Coins = 40 },
+		{ Minutes = 15, Coins = 60 },
+		{ Minutes = 30, Coins = 100 },
+		{ Minutes = 60, Coins = 150 },
+	},
 	FirstWinOfDayCoins = 100,
 	WelcomeKilnPulls = 1, -- free pull right after a new player's first match
 	GroupJoinMarbles = 20, -- one time, for joining the group
@@ -203,10 +227,30 @@ Balance.EconomyModel = {
 
 -- Presentation only (client). The fight itself uses Balance.Fight.
 Balance.Feel = {
+	AimDragPixels = 170,
+	AimYawPixels = 180,
+	CameraDistance = 23,
+	CameraHeight = 5,
+	CameraSide = 4,
+	OccludedLegTransparency = 0.72,
+	CameraFollow = 0.18,
+	CameraSmooth = 8,
+	BigHitSpeed = 1.15, -- multiple of RefSpeed
+	PowerEffectSeconds = 0.65,
+	PopupSeconds = 0.9,
+	ClinkVolumeMin = 0.2,
+	ClinkVolumeMax = 0.55,
+	CrackVolume = 0.13,
+	PowerEdgeSeconds = 0.4,
+	PromptDistance = 20,
+	PrototypePlayerId = "pop",
+	PrototypeBotId = "prism",
+	SnapshotBuffer = 100,
 	DepthAngle = 0.16,
 	BodyTwist = 0.12,
 	CrackWidth = 0.014,
 	CameraFocusOffset = -0.25,
+	CameraFocusHeight = 2,
 	CameraMinimumAspect = 1.35,
 	CameraFieldOfView = 52,
 	IdleAngle = 0.05,

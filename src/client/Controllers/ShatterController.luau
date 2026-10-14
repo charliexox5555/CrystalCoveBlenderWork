@@ -84,12 +84,13 @@ function Shatter:SetCracks(fighter, hp, maxHP)
 	if stage == 0 or hp == 0 then
 		return stage > 0
 	end
-	for _, path in CrackPaths[fighter.Id] do
+	for _, path in CrackPaths[fighter.RenderId or fighter.Id] or {} do
 		if path[7] <= stage then
-			local a, b = Vector3.new(path[1], path[2], path[3]), Vector3.new(path[4], path[5], path[6])
+			local scale = fighter.Scale or 1
+			local a, b = Vector3.new(path[1], path[2], path[3]) * scale, Vector3.new(path[4], path[5], path[6]) * scale
 			local part = Instance.new("Part")
 			part.Name = "SurfaceCrack"
-			part.Size = Vector3.new(Feel.CrackWidth, Feel.CrackWidth, (b - a).Magnitude)
+			part.Size = Vector3.new(Feel.CrackWidth * scale, Feel.CrackWidth * scale, (b - a).Magnitude)
 			part.CFrame = CFrame.lookAt((a + b) / 2, b)
 			part.PivotOffset = part.CFrame:Inverse()
 			part.Color, part.Material = Color3.fromHex("#17304A"), Enum.Material.SmoothPlastic
@@ -105,11 +106,16 @@ end
 
 function Shatter:Break(fighter, root)
 	local origin = fighter.Body.Position
-	local source = RS.Assets.Glassies[fighter.Id]
-	local pieces = source.Shards:GetChildren()
-	for _, detail in source.Details:GetChildren() do
-		if not detail.Name:find("Bubble") then
-			table.insert(pieces, detail)
+	local pieces
+	if fighter.ShardTemplates then
+		pieces = fighter.ShardTemplates:GetChildren()
+	else
+		local source = RS.Assets.Glassies[fighter.Id]
+		pieces = source.Shards:GetChildren()
+		for _, detail in source.Details:GetChildren() do
+			if not detail.Name:find("Bubble") then
+				table.insert(pieces, detail)
+			end
 		end
 	end
 	for _, part in fighter.Parts do
@@ -160,7 +166,6 @@ function Shatter:Break(fighter, root)
 			if shard.Parent then
 				force:Destroy()
 				shard.AssemblyLinearVelocity /= Feel.SlowMotionRate
-				shard.AssemblyAngularVelocity /= Feel.SlowMotionRate
 				shard.AssemblyAngularVelocity /= Feel.SlowMotionRate
 			end
 		end)

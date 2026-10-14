@@ -14,6 +14,20 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-14 — Codex — F1 fight prototype and overnight continuation
+Done:
+- Built server 60 Hz / three-substep spherical pendulums with seeded wander, reciprocal guidance, bounces, spin and tumble; FightRules owns hits/powers/KO. Added validated/rate-limited aim, compact 20 Hz snapshots, reliable timed events, Hermite rendering, strings, aim/ghost/Perfect/LOCK, HUD charge rings, all passive/power cues, cracks, sound layers, big-hit hitstop/shake/haptics, side-on shatter and heart pop.
+- Corrected scaled details/shards/cracks and duplicate angular-velocity restoration in ShatterController. Added Studio-only replay/calibration/live-watch helpers. No manual lobby edits changed. Motion/presentation choice recorded as Proposed 35.
+- Lune/Studio: 55 passed, 0 failed. iPhone 17 Pro landscape input/visual checks pass. Final ten live rounds: no Output errors, 13.93–43.57 s, one double KO. Invalid aim rejected; cancel restored camera and removed local scene/HUD. Report/evidence: docs/testing/F1_FIGHT.md.
+Next:
+- Standing overnight permission: continue F2 on seven arenas, then data/Kiln/UI/art/free retention. User publishing and real-phone check remain pending; exact handoff in MORNING.md.
+Problems:
+- Measured SimModel candidate fails Jam mirror duration (45.882 s) and Prism Blade fairness (63%); recorded for Claude and restored passing baseline. No Fight/Powers/rarity/economy retuning. Debug IDs without art use tinted starter proxies; normal rolls will require imported assets.
+Calibration / simulators:
+- Actual integrator: 80 Lune + 40 Studio rounds, 0 timeouts; .461–.467 hits/s, ~36% pass-bys; median speed 20.45–20.67, shareA ~.499; median round 31.55–32.56 s. Lune aimed powers 66/99 landed. Candidate/baseline reports preserved in docs/testing/.
+- Passing baseline balance: mirrors 20–44 s, 0% timeouts, side bias 49%; starters pop>jam 66%, jam>prism 69%, prism>pop 64%; Perfect vs worst 67%; 59% comebacks, 2.0 lead changes, 2.4 powers/glassy; 37% aimed misses; equal-stat powers 39–60%.
+- Economy unchanged: ~3.7 min/match; 4 pulls day 1, 96 by day 30; first Rare ~47 min, Epic 2.1 h, Legendary 9 h; 20% Mythic in 30 days.
+
 ## 2026-10-14 — Claude — Auto powers and erratic 3D swing (rules + F1 prompt)
 Done:
 - User: no power button; powers should fire at random moments (e.g. Rage +75% for a few seconds) so luck and suspense drive rounds like Ball VS Ball; swings should be erratic 3D with pass-bys, deflections and spin. DECISIONS 33–34.

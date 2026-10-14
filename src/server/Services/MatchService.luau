@@ -93,6 +93,8 @@ function Service:StartMatch(arena, players, now, spectate)
 		Spectate = spectate == true,
 		Runner = Runner.new(setups, rng, now),
 		Perfects = { 0, 0 },
+		ActualWins = { 0, 0 },
+		Used = { {}, {} },
 		Finished = false,
 	}
 	self.Matches[arena.Id] = entry
@@ -123,7 +125,12 @@ function Service:Finish(entry)
 		self.Temporary[player] = temp
 		local rewards = Logic.rewards(match, side, profile and profile.Trophies or temp.Trophies)
 		if self.Services.DataService then
-			self.Services.DataService:RecordMatch(player, entry.Id, match, side, rewards, entry.Perfects[side])
+			self.Services.DataService:RecordMatch(player, entry.Id, match, side, rewards, {
+				Perfects = entry.Perfects[side],
+				RoundWins = entry.ActualWins[side],
+				Shatters = entry.ActualWins[side],
+				Used = entry.Used[side],
+			})
 		else
 			temp.Coins += rewards.Coins
 			temp.Trophies += rewards.Trophies
@@ -171,6 +178,9 @@ function Service:Dispatch(entry, now)
 			Remotes.MatchState:FireAllClients(self.Services.FightService:Describe(entry.Arena, setup, meta))
 		elseif change.Phase == "Fighting" then
 			local setup = Logic.fightSetup(match)
+			for side, state in match.Sides do
+				entry.Used[side][state.Pick] = true
+			end
 			meta.Id = entry.FightId
 			for side, state in match.Sides do
 				if Rules.isPerfect(state.Aim, match.SweetSpot) then
@@ -187,8 +197,10 @@ function Service:Dispatch(entry, now)
 					if entry.Finished then
 						return
 					end
-					entry.Runner:FightEnded(fight.Winner, workspace:GetServerTimeNow())
-					self:Dispatch(entry, workspace:GetServerTimeNow())
+					if entry.Runner:FightEnded(fight.Winner, workspace:GetServerTimeNow()) then
+						entry.ActualWins[fight.Winner] += 1
+						self:Dispatch(entry, workspace:GetServerTimeNow())
+					end
 				end
 			)
 		elseif change.Phase == "RoundEnd" then

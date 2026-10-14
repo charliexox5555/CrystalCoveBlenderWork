@@ -12,7 +12,17 @@ Work is continuing through the overnight backlog. This file is updated at each c
 
 - F1 implementation and satisfaction pass complete: 60 Hz spherical motion, auto powers, networking/interpolation, aim/LOCK, HUD, cracks and shatter. **55 Lune/Studio tests pass.** Final ten-round watch: no Output errors, including a double KO. See [F1 report](../testing/F1_FIGHT.md) and its four screenshots. Studio reset to the default viewport after the phone test. Real-phone check remains unticked.
 - F2 complete: seven arenas, pad queues/bot fill, full multi-round match flow, Roll/Aim/Countdown/round end/results, free-only rerolls, spectator labels and asset gating. **60 Lune/Studio tests pass.** Seven concurrent matches ended cleanly (~60 desktop FPS sample). Native phone side-B aim/LOCK and reset/forfeit checks passed. See [F2 report](../testing/F2_MATCH_FLOW.md). Rewards are session-only until the next data step. Two-client integration remains on the later security/bug-hunt pass.
-- F3–F4, UI-wide pass and Blender exports: next.
+- F3 backend: official ProfileStore pinned/reviewed (see docs/vendor), locked profiles, starter grants, match rewards/stats, duplicate stars/overflow, welcome-pull eligibility, filtered Kiln odds and single-use pull quotes implemented. **65 Lune/Studio tests pass.** Studio API access is off; isolated ProfileStore mock save/reload retained 321 test coins and a duplicate Pop ★1. Empty Kiln pool rejected a pull without a debit (321 coins, 0 pulls). Published servers use persistent `GlassClash_v2`; Studio defaults to isolated mock data. Kiln/collection UI is next.
+- F4, UI-wide pass and Blender exports: pending.
+
+## Content currently installed
+
+- `pop`, `jam`, `prism` only. They are starters and excluded from the Kiln. The Kiln stays unavailable until eligible non-starter Body/Shards assets are imported; its UI will show the actual filtered odds, never advertise missing art. No fake production assets were inserted for testing.
+- A small original native-Part Kiln placeholder is at the existing Kiln lobby spot. It is reproducible with `tools/studio/install_kiln.luau` and can be replaced by the planned Blender hero later. Manual decor is untouched.
+
+## Rule follow-up for Claude
+
+- F2 uses MatchLogic's normal rewards after reset/disconnect forfeits. A reset before any real fight can therefore award the normal loss reward (12 coins vs a bot), and an opponent gets the normal win reward. Review abandonment eligibility before launch; no economy values were changed under the overnight restriction. Actual shatter/round-win stats now count only observed fights, not synthetic forfeited hearts.
 
 ## Calibration for Claude
 

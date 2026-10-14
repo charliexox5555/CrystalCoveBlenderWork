@@ -93,21 +93,26 @@ local function sortedCrateRarities(): { string }
 end
 
 -- Odds shown to players before buying a crate (Roblox requires this for paid random items).
-function Formula.crateOdds(): { { Rarity: string, Chance: number } }
+function Formula.crateOdds(available: { [string]: boolean }?): { { Rarity: string, Chance: number } }
 	local list = sortedCrateRarities()
+	local eligible = {}
 	local total = 0
 	for _, name in list do
-		total += Balance.Rarities[name].CrateWeight
+		if not available or #Formula.kilnPool(name, available) > 0 then
+			table.insert(eligible, name)
+			total += Balance.Rarities[name].CrateWeight
+		end
 	end
 	local odds = {}
-	for _, name in list do
+	for _, name in eligible do
 		table.insert(odds, { Rarity = name, Chance = Balance.Rarities[name].CrateWeight / total })
 	end
 	return odds
 end
 
-function Formula.rollRarity(rng: () -> number): string
-	local odds = Formula.crateOdds()
+function Formula.rollRarity(rng: () -> number, available: { [string]: boolean }?): string
+	local odds = Formula.crateOdds(available)
+	assert(#odds > 0, "No eligible Kiln glassies")
 	local roll = rng()
 	local acc = 0
 	for _, entry in odds do
@@ -120,10 +125,10 @@ function Formula.rollRarity(rng: () -> number): string
 end
 
 -- Glassies of a rarity that can come out of the Kiln, sorted by id.
-function Formula.kilnPool(rarity: string): { string }
+function Formula.kilnPool(rarity: string, available: { [string]: boolean }?): { string }
 	local ids = {}
 	for _, def in Glassies.List do
-		if def.Rarity == rarity then
+		if def.Rarity == rarity and (not available or available[def.Id] == true) then
 			table.insert(ids, def.Id)
 		end
 	end
@@ -132,10 +137,10 @@ function Formula.kilnPool(rarity: string): { string }
 end
 
 -- Per-glassy Kiln odds for the odds screen (rarity chance split evenly within the rarity).
-function Formula.kilnOdds(): { { Id: string, Rarity: string, Chance: number } }
+function Formula.kilnOdds(available: { [string]: boolean }?): { { Id: string, Rarity: string, Chance: number } }
 	local out = {}
-	for _, entry in Formula.crateOdds() do
-		local pool = Formula.kilnPool(entry.Rarity)
+	for _, entry in Formula.crateOdds(available) do
+		local pool = Formula.kilnPool(entry.Rarity, available)
 		for _, id in pool do
 			table.insert(out, { Id = id, Rarity = entry.Rarity, Chance = entry.Chance / #pool })
 		end
@@ -144,9 +149,9 @@ function Formula.kilnOdds(): { { Id: string, Rarity: string, Chance: number } }
 end
 
 -- One Kiln pull: a rarity by CrateWeight, then a glassy of that rarity, uniformly.
-function Formula.rollKiln(rng: () -> number): string
-	local rarity = Formula.rollRarity(rng)
-	local pool = Formula.kilnPool(rarity)
+function Formula.rollKiln(rng: () -> number, available: { [string]: boolean }?): string
+	local rarity = Formula.rollRarity(rng, available)
+	local pool = Formula.kilnPool(rarity, available)
 	assert(#pool > 0, "No glassies of rarity " .. rarity)
 	return pool[math.floor(rng() * #pool) + 1]
 end

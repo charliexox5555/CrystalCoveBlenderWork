@@ -4,6 +4,20 @@
 
 local Balance = {}
 
+Balance.Data = {
+	Version = 2,
+	StoreName = "GlassClash_v2",
+	StudioStoreName = "GlassClash_Studio_v2",
+	StudioMock = true, -- protects live progress during automated Studio tests
+	LoadTimeout = 60,
+	ReleaseGrace = 0.25,
+	RecentMatches = 32,
+	RequestRateSeconds = 0.5,
+	KilnRateSeconds = 0.75,
+	KilnQuoteSeconds = 60,
+	DaySeconds = 86400,
+}
+
 -- Sky lobby recovery; no combat or economy tuning.
 Balance.Lobby = {
 	FallY = -40,

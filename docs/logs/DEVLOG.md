@@ -14,6 +14,16 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-14 — Codex — F3 backend / profile storage
+Done:
+- Reviewed all 2,243 lines of official ProfileStore; pinned unmodified source/Apache license/hash in docs/vendor. Added session ownership, cancellation/release/BindToClose integration, schema reconciliation, starters, one-time match rewards, observed fight stats and private-field-free snapshots. Studio uses isolated mocks; production fails closed on profile load failure.
+- Added duplicate stars/overflow coins and welcome eligibility; coin Kiln backend uses pure Formula with an optional available-art set, filtered/normalized odds, single-use quotes, validation and limiting. Default formulas/numbers remain unchanged. Added an original native-Part Kiln placeholder through a reproducible installer without touching manual decor.
+- Lune/Studio: 65 passed, 0 failed. Mock save/reload retained 321 coins and Pop ★1. Studio API access is off (expected ProfileStore probe message); fallback verified. Starter-only pool rejected a pull, retained 321 coins and 0 pulls. Fixed a legacy-star reconciliation bug caught by the new tests. Vendor hash verified unchanged.
+Next:
+- Kiln reveal/collection/index/Lobby UI, then the broader device pass, Blender exports and free retention.
+Problems:
+- No non-starter art is installed, so production coin pulls remain unavailable until manual imports. Recorded normal-reward forfeits for Claude's eligibility review; no economy retune. Source/decision detail: Proposed 37 and MORNING.md.
+
 ## 2026-10-14 — Codex — F2 seven-arena match flow
 Done:
 - Added ArenaService queues/bot fill/step-off/Leave/Play Again and runtime arena labels; MatchRunner/MatchService orchestrate all phases via MatchLogic, with free-only rerolls, ownership/phase validation, common remote limiting, reset/disconnect forfeits and one-time completion.

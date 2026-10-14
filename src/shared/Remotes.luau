@@ -27,6 +27,12 @@ local reliable = {
 	"SetAim",
 	"LeaveQueue",
 	"RequestRematch",
+	"ProfileSnapshot",
+	"RequestProfile",
+	"KilnOdds",
+	"KilnResult",
+	"RequestKiln",
+	"PullKiln",
 }
 local unreliable = { "FightSnapshot" }
 

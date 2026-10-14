@@ -1,0 +1,64 @@
+Glass Clash balance report (200 rounds per matchup, FightModel stand-in)
+
+Mirror rounds (avg seconds / hits / timeouts / comebacks / lead changes / powers per glassy):
+  pop             24.0 s   9.3 hits  0% timeouts  42% comebacks  1.3 lead changes  2.1 powers
+  jam             36.3 s  19.1 hits  0% timeouts  61% comebacks  1.9 lead changes  2.9 powers
+  prism           19.5 s   8.8 hits  0% timeouts  38% comebacks  1.0 lead changes  1.8 powers
+  milk_bottle     32.7 s  13.0 hits  0% timeouts  47% comebacks  1.7 lead changes  2.6 powers
+  glass_dragon    23.3 s  13.6 hits  0% timeouts  59% comebacks  1.9 lead changes  2.2 powers
+Side bias (side 1 win rate, pop mirror): 48%
+
+Starters (row beats column):
+  pop      -     63%   41%
+  jam      30%   -     67%
+  prism    62%   27%   -  
+
+Aim: Perfect vs worst (pop mirror): 63%
+Aim: Perfect vs average (aim 0.8):  56%
+Luck (all mirrors): 50% comebacks, 1.5 lead changes a round, 2.2 powers per glassy, 34% of aimed powers miss
+
+Rarity ladder, all Fizzy, vs Common lemonade_bottle:
+  milk_bottle    Common    54%
+  pop            Starter   58%
+  hot_sauce      Uncommon  53%
+  potion_flask   Rare      73%
+  rocket_pop     Epic      66%
+  comet          Legendary 80%
+  galaxy_orb     Mythic    85%
+Stars: pop 5 stars vs pop 0 stars: 80%
+
+Power balance (equal stats, each glassy vs all others):
+  glass_sword      Sharp  sharp_edge  slam    59%
+  starblade        Sharp  lucky       beam    58%
+  prism_blade      Sharp  sharp_edge  slam    56%
+  glass_cup        Sharp  sharp_edge  pump    55%
+  crystal_tumbler  Sharp  lucky       beam    55%
+  perfume          Sharp  lucky       freeze  53%
+  mason_jar        Heavy  sturdy      slam    53%
+  grizzly_guardian Heavy  second_wind rage    52%
+  potion_flask     Fizzy  glow_core   glaze   52%
+  jack_o_glass     Heavy  thorns      slam    51%
+  crystal_crown    Sharp  thorns      shield  51%
+  pop              Fizzy  fizz_burst  slam    51%
+  comet            Fizzy  fizz_burst  beam    51%
+  prism            Sharp  sharp_edge  beam    51%
+  glass_unicorn    Sharp  glow_core   beam    51%
+  crystal_ball     Fizzy  lucky       freeze  51%
+  water_jug        Heavy  sturdy      pump    50%
+  jam              Heavy  sturdy      shield  50%
+  glass_dragon     Heavy  second_wind beam    50%
+  galaxy_orb       Fizzy  glow_core   freeze  50%
+  milk_bottle      Fizzy  fizz_burst  glaze   48%
+  light_bulb       Sharp  sharp_edge  beam    47%
+  glass_duck       Heavy  sturdy      shield  47%
+  glass_lollipop   Fizzy  momentum    pump    47%
+  message_bottle   Fizzy  second_wind shield  47%
+  lemonade_bottle  Fizzy  fizz_burst  freeze  47%
+  pickle_jar       Heavy  sticky      shield  46%
+  hot_sauce        Fizzy  momentum    rage    44%
+  honey_bear       Heavy  sticky      glaze   44%
+  ketchup_bottle   Fizzy  sticky      slam    43%
+  rocket_pop       Fizzy  momentum    pump    41%
+  Types: Fizzy 47%, Heavy 49%, Sharp 54%
+  Passives: fizz_burst 49%, glow_core 51%, lucky 54%, momentum 44%, second_wind 50%, sharp_edge 54%, sticky 44%, sturdy 50%, thorns 51%
+  Specials: beam 52%, freeze 50%, glaze 48%, pump 48%, rage 48%, shield 48%, slam 52%

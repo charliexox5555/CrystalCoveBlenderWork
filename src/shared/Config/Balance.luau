@@ -141,12 +141,15 @@ Balance.Fight = {
 -- ~HitInterval seconds. Once the swing is built in Studio, measure the real hit rate and
 -- approach speeds (FightService can log them) and update these so the simulator stays honest.
 Balance.SimModel = {
-	HitInterval = 1.2, -- seconds between hits in an even matchup
+	HitInterval = 1.3, -- seconds between encounters (measured 1.24-1.40 s on the real swing)
 	HitIntervalJitter = 0.25,
-	SpeedAtAmplitude = 22, -- approach speed when both swing at amplitude 1 rad
-	SpeedSpread = 0.55, -- hits range from (1 - spread) to (1 + spread) of the typical speed
-	ShareSpread = 0.35, -- who moved more into the hit varies this much either way
-	MissChance = 0.3, -- 3D swings: a swing that passes by without touching
+	SpeedAtAmplitude = 27, -- approach speed when both swing at amplitude 1 rad
+	SpeedSpread = 0.67, -- hits range from (1 - spread) to (1 + spread) of the typical speed
+	ShareSpread = 0.245, -- who moved more into the hit varies this much either way
+	MissChance = 0.367, -- flat pass-by share (used only if MissAtRadius is nil)
+	MissAtRadius = 0.6, -- pass-by share when the two collision radii sum to 1 stud
+	MissPerRadius = 0.38, -- bigger glassies collide more often: minus this per extra stud of radius
+	MissSlowExponent = 2, -- slowed swings (Sticky, Freeze) hang close and rarely pass by
 	FrozenSwing = 0.25, -- a frozen glassy swings at this fraction
 }
 

@@ -1,0 +1,320 @@
+{
+  "Rounds": 80,
+  "Rows": [
+    {
+      "Matchup": "pop v pop",
+      "ModelBaseline": {
+        "Hits": 13.3125,
+        "Median": 23.050000000000193,
+        "P90": 28.850000000000275,
+        "Seconds": 22.904375000000183,
+        "Timeouts": 0,
+        "WinRateA": 0.5125
+      },
+      "ModelCandidate": {
+        "Hits": 10.95,
+        "Median": 22.20000000000018,
+        "P90": 30.7000000000003,
+        "Seconds": 23.203750000000177,
+        "Timeouts": 0,
+        "WinRateA": 0.5
+      },
+      "RealYaw0": {
+        "Hits": 8.95,
+        "Median": 22.183333333335522,
+        "P90": 29.39444444444776,
+        "Seconds": 21.655763888890952,
+        "Timeouts": 0,
+        "WinRateA": 0.5625
+      },
+      "RealYawRandom": {
+        "Hits": 8.9875,
+        "Median": 20.994444444446447,
+        "P90": 30.338888888892352,
+        "Seconds": 21.575416666668662,
+        "Timeouts": 0,
+        "WinRateA": 0.5375
+      }
+    },
+    {
+      "Matchup": "jam v jam",
+      "ModelBaseline": {
+        "Hits": 25.675,
+        "Median": 43.79999999999965,
+        "P90": 51.449999999999214,
+        "Seconds": 44.05437499999964,
+        "Timeouts": 0,
+        "WinRateA": 0.5125
+      },
+      "ModelCandidate": {
+        "Hits": 21.5375,
+        "Median": 45.89999999999953,
+        "P90": 54.74999999999903,
+        "Seconds": 45.998749999999525,
+        "Timeouts": 0,
+        "WinRateA": 0.55
+      },
+      "RealYaw0": {
+        "Hits": 18.2,
+        "Median": 33.43888888889192,
+        "P90": 37.961111111111954,
+        "Seconds": 32.92069444444666,
+        "Timeouts": 0,
+        "WinRateA": 0.55
+      },
+      "RealYawRandom": {
+        "Hits": 19.2,
+        "Median": 34.97222222222451,
+        "P90": 41.26666666666591,
+        "Seconds": 34.922638888890376,
+        "Timeouts": 0,
+        "WinRateA": 0.5625
+      }
+    },
+    {
+      "Matchup": "prism v prism",
+      "ModelBaseline": {
+        "Hits": 11.8625,
+        "Median": 20.15000000000015,
+        "P90": 27.400000000000254,
+        "Seconds": 20.626250000000155,
+        "Timeouts": 0,
+        "WinRateA": 0.5125
+      },
+      "ModelCandidate": {
+        "Hits": 9.5625,
+        "Median": 21.250000000000167,
+        "P90": 28.200000000000266,
+        "Seconds": 21.081875000000167,
+        "Timeouts": 0,
+        "WinRateA": 0.5
+      },
+      "RealYaw0": {
+        "Hits": 7.3125,
+        "Median": 16.00555555555678,
+        "P90": 22.333333333335545,
+        "Seconds": 15.90986111111236,
+        "Timeouts": 0,
+        "WinRateA": 0.5625
+      },
+      "RealYawRandom": {
+        "Hits": 8.125,
+        "Median": 17.861111111112624,
+        "P90": 25.116666666669314,
+        "Seconds": 17.94590277777933,
+        "Timeouts": 0,
+        "WinRateA": 0.5
+      }
+    },
+    {
+      "Matchup": "milk_bottle v milk_bottle",
+      "ModelBaseline": {
+        "Hits": 18.2,
+        "Median": 31.100000000000307,
+        "P90": 39.3999999999999,
+        "Seconds": 31.285000000000174,
+        "Timeouts": 0,
+        "WinRateA": 0.4625
+      },
+      "ModelCandidate": {
+        "Hits": 15.15,
+        "Median": 32.50000000000029,
+        "P90": 40.24999999999985,
+        "Seconds": 32.3943750000001,
+        "Timeouts": 0,
+        "WinRateA": 0.475
+      },
+      "RealYaw0": {
+        "Hits": 12.575,
+        "Median": 30.755555555559084,
+        "P90": 41.57777777777687,
+        "Seconds": 30.702708333335085,
+        "Timeouts": 0,
+        "WinRateA": 0.6125
+      },
+      "RealYawRandom": {
+        "Hits": 13.2375,
+        "Median": 32.00000000000372,
+        "P90": 42.122222222221055,
+        "Seconds": 32.416111111112635,
+        "Timeouts": 0,
+        "WinRateA": 0.4875
+      }
+    },
+    {
+      "Matchup": "glass_sword v glass_sword",
+      "ModelBaseline": {
+        "Hits": 9.45,
+        "Median": 15.600000000000087,
+        "P90": 20.500000000000156,
+        "Seconds": 15.917500000000086,
+        "Timeouts": 0,
+        "WinRateA": 0.5
+      },
+      "ModelCandidate": {
+        "Hits": 7.7375,
+        "Median": 16.200000000000095,
+        "P90": 23.100000000000193,
+        "Seconds": 16.18937500000009,
+        "Timeouts": 0,
+        "WinRateA": 0.425
+      },
+      "RealYaw0": {
+        "Hits": 5.3,
+        "Median": 14.56111111111211,
+        "P90": 23.083333333335663,
+        "Seconds": 14.092500000001024,
+        "Timeouts": 0,
+        "WinRateA": 0.475
+      },
+      "RealYawRandom": {
+        "Hits": 6.325,
+        "Median": 19.122222222223932,
+        "P90": 27.53333333333636,
+        "Seconds": 18.723333333334946,
+        "Timeouts": 0,
+        "WinRateA": 0.5125
+      }
+    },
+    {
+      "Matchup": "glass_dragon v glass_dragon",
+      "ModelBaseline": {
+        "Hits": 17.6375,
+        "Median": 29.400000000000283,
+        "P90": 37.50000000000001,
+        "Seconds": 30.45312500000019,
+        "Timeouts": 0,
+        "WinRateA": 0.525
+      },
+      "ModelCandidate": {
+        "Hits": 14.6375,
+        "Median": 30.7000000000003,
+        "P90": 42.24999999999974,
+        "Seconds": 32.09125000000013,
+        "Timeouts": 0,
+        "WinRateA": 0.5
+      },
+      "RealYaw0": {
+        "Hits": 12.625,
+        "Median": 21.555555555557646,
+        "P90": 30.166666666670103,
+        "Seconds": 22.951111111112958,
+        "Timeouts": 0,
+        "WinRateA": 0.5125
+      },
+      "RealYawRandom": {
+        "Hits": 13.1875,
+        "Median": 22.944444444446752,
+        "P90": 35.08888888889112,
+        "Seconds": 24.636736111112686,
+        "Timeouts": 0,
+        "WinRateA": 0.575
+      }
+    },
+    {
+      "Matchup": "pop v jam",
+      "ModelBaseline": {
+        "Hits": 18.475,
+        "Median": 31.500000000000313,
+        "P90": 39.999999999999865,
+        "Seconds": 31.819375000000157,
+        "Timeouts": 0,
+        "WinRateA": 0.6625
+      },
+      "ModelCandidate": {
+        "Hits": 15.7875,
+        "Median": 32.90000000000027,
+        "P90": 43.79999999999965,
+        "Seconds": 33.559375000000045,
+        "Timeouts": 0,
+        "WinRateA": 0.65
+      },
+      "RealYaw0": {
+        "Hits": 14.125,
+        "Median": 28.18333333333646,
+        "P90": 36.19444444444614,
+        "Seconds": 27.793541666669068,
+        "Timeouts": 0,
+        "WinRateA": 0.575
+      },
+      "RealYawRandom": {
+        "Hits": 13.425,
+        "Median": 27.50000000000302,
+        "P90": 36.81666666666806,
+        "Seconds": 27.757986111113404,
+        "Timeouts": 0,
+        "WinRateA": 0.6375
+      }
+    },
+    {
+      "Matchup": "jam v prism",
+      "ModelBaseline": {
+        "Hits": 17.55,
+        "Median": 28.900000000000276,
+        "P90": 37.94999999999998,
+        "Seconds": 30.006875000000168,
+        "Timeouts": 0,
+        "WinRateA": 0.7
+      },
+      "ModelCandidate": {
+        "Hits": 14.975,
+        "Median": 31.550000000000313,
+        "P90": 44.5999999999996,
+        "Seconds": 32.57312500000007,
+        "Timeouts": 0,
+        "WinRateA": 0.725
+      },
+      "RealYaw0": {
+        "Hits": 13.0625,
+        "Median": 25.050000000002637,
+        "P90": 31.066666666670244,
+        "Seconds": 24.730625000002423,
+        "Timeouts": 0,
+        "WinRateA": 0.7875
+      },
+      "RealYawRandom": {
+        "Hits": 12.825,
+        "Median": 25.300000000002676,
+        "P90": 33.822222222225065,
+        "Seconds": 24.72326388889122,
+        "Timeouts": 0,
+        "WinRateA": 0.75
+      }
+    },
+    {
+      "Matchup": "prism v pop",
+      "ModelBaseline": {
+        "Hits": 12.6125,
+        "Median": 21.40000000000017,
+        "P90": 28.45000000000027,
+        "Seconds": 21.56187500000017,
+        "Timeouts": 0,
+        "WinRateA": 0.675
+      },
+      "ModelCandidate": {
+        "Hits": 10.45,
+        "Median": 21.55000000000017,
+        "P90": 29.15000000000028,
+        "Seconds": 21.925625000000174,
+        "Timeouts": 0,
+        "WinRateA": 0.6
+      },
+      "RealYaw0": {
+        "Hits": 7.8,
+        "Median": 19.611111111112898,
+        "P90": 25.394444444447135,
+        "Seconds": 18.599166666668317,
+        "Timeouts": 0,
+        "WinRateA": 0.7375
+      },
+      "RealYawRandom": {
+        "Hits": 8.5625,
+        "Median": 21.994444444446604,
+        "P90": 28.18333333333646,
+        "Seconds": 21.115555555557563,
+        "Timeouts": 0,
+        "WinRateA": 0.5375
+      }
+    }
+  ]
+}

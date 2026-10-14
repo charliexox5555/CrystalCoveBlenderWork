@@ -1,0 +1,153 @@
+{
+  "Baseline": {
+    "HitsErr": 0.3169454281466102,
+    "Params": {
+      "Label": "baseline"
+    },
+    "SecondsErr": 0.1654742929914001,
+    "Total": 0.38228034039803854,
+    "WinErr": 0.05833333333333335,
+    "Worst": "rocket_pop 38%"
+  },
+  "Best": [
+    {
+      "HitsErr": 0.06378817217868094,
+      "Params": {
+        "HitInterval": 1.28,
+        "MissAtRadius": 0.6,
+        "MissPerRadius": 0.42,
+        "MissSlowExponent": 1.5,
+        "ShareSpread": 0.245,
+        "SpeedAtAmplitude": 27,
+        "SpeedSpread": 0.67
+      },
+      "SecondsErr": 0.14781197501335547,
+      "Total": 0.2130393944360293,
+      "WinErr": 0.03333333333333336,
+      "Worst": "glass_lollipop 43%"
+    },
+    {
+      "HitsErr": 0.06060977376122663,
+      "Params": {
+        "HitInterval": 1.28,
+        "MissAtRadius": 0.6,
+        "MissPerRadius": 0.35,
+        "MissSlowExponent": 1.5,
+        "ShareSpread": 0.245,
+        "SpeedAtAmplitude": 27,
+        "SpeedSpread": 0.67
+      },
+      "SecondsErr": 0.12125069074977025,
+      "Total": 0.21822224429705028,
+      "WinErr": 0.0666666666666667,
+      "Worst": "glass_lollipop 34%"
+    },
+    {
+      "HitsErr": 0.0697733166206095,
+      "Params": {
+        "HitInterval": 1.28,
+        "MissAtRadius": 0.6,
+        "MissPerRadius": 0.42,
+        "MissSlowExponent": 3,
+        "ShareSpread": 0.245,
+        "SpeedAtAmplitude": 27,
+        "SpeedSpread": 0.67
+      },
+      "SecondsErr": 0.1501872278614369,
+      "Total": 0.218407219505075,
+      "WinErr": 0.03333333333333336,
+      "Worst": "glass_lollipop 43%"
+    },
+    {
+      "HitsErr": 0.06686700561054126,
+      "Params": {
+        "HitInterval": 1.28,
+        "MissAtRadius": 0.6,
+        "MissPerRadius": 0.35,
+        "MissSlowExponent": 3,
+        "ShareSpread": 0.245,
+        "SpeedAtAmplitude": 27,
+        "SpeedSpread": 0.67
+      },
+      "SecondsErr": 0.11969040204691492,
+      "Total": 0.21979057151885223,
+      "WinErr": 0.0666666666666667,
+      "Worst": "galaxy_orb 35%"
+    },
+    {
+      "HitsErr": 0.07372393271332513,
+      "Params": {
+        "HitInterval": 1.36,
+        "MissAtRadius": 0.6,
+        "MissPerRadius": 0.35,
+        "MissSlowExponent": 3,
+        "ShareSpread": 0.245,
+        "SpeedAtAmplitude": 27,
+        "SpeedSpread": 0.67
+      },
+      "SecondsErr": 0.10521740266637579,
+      "Total": 0.22541270235637173,
+      "WinErr": 0.08333333333333337,
+      "Worst": "glass_lollipop 34%"
+    },
+    {
+      "HitsErr": 0.07054231260522234,
+      "Params": {
+        "HitInterval": 1.36,
+        "MissAtRadius": 0.6,
+        "MissPerRadius": 0.35,
+        "MissSlowExponent": 1.5,
+        "ShareSpread": 0.245,
+        "SpeedAtAmplitude": 27,
+        "SpeedSpread": 0.67
+      },
+      "SecondsErr": 0.10962081144555273,
+      "Total": 0.22822530108149727,
+      "WinErr": 0.08333333333333337,
+      "Worst": "glass_lollipop 34%"
+    },
+    {
+      "HitsErr": 0.07832704588842215,
+      "Params": {
+        "HitInterval": 1.36,
+        "MissAtRadius": 0.55,
+        "MissPerRadius": 0.35,
+        "MissSlowExponent": 1.5,
+        "ShareSpread": 0.245,
+        "SpeedAtAmplitude": 27,
+        "SpeedSpread": 0.67
+      },
+      "SecondsErr": 0.14942999465382076,
+      "Total": 0.23026018426469855,
+      "WinErr": 0.041666666666666706,
+      "Worst": "glass_lollipop 43%"
+    },
+    {
+      "HitsErr": 0.08139692741109142,
+      "Params": {
+        "HitInterval": 1.36,
+        "MissAtRadius": 0.55,
+        "MissPerRadius": 0.35,
+        "MissSlowExponent": 3,
+        "ShareSpread": 0.245,
+        "SpeedAtAmplitude": 27,
+        "SpeedSpread": 0.67
+      },
+      "SecondsErr": 0.14883068909252836,
+      "Total": 0.2311958194647408,
+      "WinErr": 0.041666666666666706,
+      "Worst": "glass_lollipop 43%"
+    }
+  ],
+  "Candidate": {
+    "HitsErr": 0.09488105056359952,
+    "Params": {
+      "Label": "F1 candidate"
+    },
+    "SecondsErr": 0.16285420318233695,
+    "Total": 0.26862806179747,
+    "WinErr": 0.05833333333333331,
+    "Worst": "rocket_pop 39%"
+  },
+  "Rounds": 20
+}

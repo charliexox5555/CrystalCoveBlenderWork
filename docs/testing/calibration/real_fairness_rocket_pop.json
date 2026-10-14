@@ -1,0 +1,128 @@
+{
+  "Id": "rocket_pop",
+  "Rounds": 480,
+  "RoundsPerOpponent": 16,
+  "Rows": [
+    {
+      "Opponent": "pop",
+      "WinRate": 0.375
+    },
+    {
+      "Opponent": "jam",
+      "WinRate": 0.5625
+    },
+    {
+      "Opponent": "prism",
+      "WinRate": 0.4375
+    },
+    {
+      "Opponent": "milk_bottle",
+      "WinRate": 0.25
+    },
+    {
+      "Opponent": "pickle_jar",
+      "WinRate": 0.625
+    },
+    {
+      "Opponent": "ketchup_bottle",
+      "WinRate": 0.375
+    },
+    {
+      "Opponent": "glass_cup",
+      "WinRate": 0.375
+    },
+    {
+      "Opponent": "water_jug",
+      "WinRate": 0.625
+    },
+    {
+      "Opponent": "lemonade_bottle",
+      "WinRate": 0.625
+    },
+    {
+      "Opponent": "mason_jar",
+      "WinRate": 0.5
+    },
+    {
+      "Opponent": "hot_sauce",
+      "WinRate": 0.5625
+    },
+    {
+      "Opponent": "crystal_tumbler",
+      "WinRate": 0.3125
+    },
+    {
+      "Opponent": "perfume",
+      "WinRate": 0.1875
+    },
+    {
+      "Opponent": "potion_flask",
+      "WinRate": 0.25
+    },
+    {
+      "Opponent": "message_bottle",
+      "WinRate": 0.4375
+    },
+    {
+      "Opponent": "light_bulb",
+      "WinRate": 0.375
+    },
+    {
+      "Opponent": "honey_bear",
+      "WinRate": 0.625
+    },
+    {
+      "Opponent": "prism_blade",
+      "WinRate": 0.0625
+    },
+    {
+      "Opponent": "jack_o_glass",
+      "WinRate": 0.3125
+    },
+    {
+      "Opponent": "crystal_ball",
+      "WinRate": 0.1875
+    },
+    {
+      "Opponent": "glass_lollipop",
+      "WinRate": 0.375
+    },
+    {
+      "Opponent": "glass_duck",
+      "WinRate": 0.5
+    },
+    {
+      "Opponent": "comet",
+      "WinRate": 0.6875
+    },
+    {
+      "Opponent": "grizzly_guardian",
+      "WinRate": 0.6875
+    },
+    {
+      "Opponent": "starblade",
+      "WinRate": 0.1875
+    },
+    {
+      "Opponent": "glass_sword",
+      "WinRate": 0.1875
+    },
+    {
+      "Opponent": "glass_unicorn",
+      "WinRate": 0.1875
+    },
+    {
+      "Opponent": "crystal_crown",
+      "WinRate": 0.1875
+    },
+    {
+      "Opponent": "glass_dragon",
+      "WinRate": 0.25
+    },
+    {
+      "Opponent": "galaxy_orb",
+      "WinRate": 0.5
+    }
+  ],
+  "WinRate": 0.39375
+}

@@ -17,8 +17,23 @@ local function swingOf(state, side: number): number
 	return amp
 end
 
+-- Chance that an encounter is a pass-by. With MissAtRadius set (measured on the real swing, see
+-- docs/testing/CALIBRATION_REVIEW.md) bigger glassies collide more often and slowed swings (Sticky,
+-- Freeze) hang close together and rarely pass; otherwise the flat MissChance is used.
+local function missChance(state): number
+	local m = Balance.SimModel
+	if not m.MissAtRadius then
+		return m.MissChance
+	end
+	local a, b = state.Fighters[1], state.Fighters[2]
+	local base = m.MissAtRadius - m.MissPerRadius * (a.Radius + b.Radius - 1)
+	local full = FightRules.targetAmplitude(a.Swing) + FightRules.targetAmplitude(b.Swing)
+	local slowed = math.clamp((swingOf(state, 1) + swingOf(state, 2)) / full, 0, 1)
+	return math.clamp(base * slowed ^ m.MissSlowExponent, 0.02, 0.8)
+end
+
 -- Runs one round to the end. Powers fire by themselves (FightRules.tick); aimed powers roll
--- their LandChance. Every ~HitInterval the glassies meet; MissChance of those swings pass by.
+-- their LandChance. Every ~HitInterval the glassies meet; missChance() of those swings pass by.
 function FightModel.round(setup)
 	local m = Balance.SimModel
 	local rng = setup.Rng
@@ -29,7 +44,7 @@ function FightModel.round(setup)
 	while not state.Over do
 		FightRules.tick(state, dt)
 		if not state.Over and state.Time >= nextHit then
-			if rng() >= m.MissChance then
+			if rng() >= missChance(state) then
 				local a, b = swingOf(state, 1), swingOf(state, 2)
 				local speed = m.SpeedAtAmplitude * (a + b) / 2 * (1 + m.SpeedSpread * (rng() * 2 - 1))
 				local share = math.clamp(a / (a + b) + m.ShareSpread * (rng() * 2 - 1), 0.05, 0.95)

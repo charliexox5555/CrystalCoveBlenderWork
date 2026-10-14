@@ -40,7 +40,7 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 - [x] **C:** aim input (drag distance + direction, Perfect band, lock), 3-2-1 release
 - [x] **C:** Fight HUD: HP bars, cracks, power glow rings, power banners, MISSED!, CRIT!/SMASH!/WHOOSH; effects for every power
 - [x] **C:** bot-vs-bot calibration: 80 Lune + 40 Studio rounds; ten live rounds watched; measurements/candidate in [F1 report](testing/F1_FIGHT.md)
-- [ ] **CL:** review calibrated SimModel candidate (Jam duration / Prism Blade fairness failures); Fight/Powers values frozen under overnight instructions; passing baseline retained
+- [x] **CL:** review calibrated SimModel candidate: failures were model artifacts (real Jam mirrors 33–35 s, Prism Blade 55%); size/slow-aware FightModel fitted to the real swing, 76 tests pass, no Fight/Powers changes ([review](testing/CALIBRATION_REVIEW.md))
 - [ ] **U:** publish, play on a phone, record a clip, approve the feel
 
 ## F2 — Match flow and lobby blockout (Oct 20–26)

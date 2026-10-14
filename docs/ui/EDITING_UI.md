@@ -5,7 +5,7 @@ The creator owns final UI artwork and styling. Ball v Ball screenshots supplied 
 ## In Studio
 
 1. Stop Play before editing. Expand **StarterGui**. There are 13 ScreenGui templates: LobbyHUD, QueuePanel, RollScreen, RollInfoScreen, ResultsScreen, CollectionScreen, IndexScreen, GlassyDetailScreen, KilnScreen, KilnRevealScreen, FightHud, RoundEnd and MatchNotice.
-2. Enable the screen you want to edit; disable it again when finished. The controllers enable the right screen during play. The templates default to disabled so unrelated screens do not cover each other.
+2. **RewardsScreen** is the 14th template (Quests/Gifts/Streak/Codes). Enable the screen you want to edit; disable it again when finished. The controllers enable the right screen during play. The templates default to disabled so unrelated screens do not cover each other.
 3. Edit frames, colors and artwork in the template. **Keep the existing names and Templates folders** so the code can bind controls. All layout Position/Size/CanvasSize values use Scale with zero Offset. Minimum tap-target constraints remain for usability; fonts and strokes have ordinary pixel sizes.
 4. A ViewportFrame's **Icon** ImageLabel is an artwork slot. Set its Image to your uploaded icon. When Image is empty, the code shows the glassy's 3D portrait. The IMAGE label is an editor placeholder and hides during play.
 5. CollectionScreen/IndexScreen `Panel.Content.Grid.Templates.GlassyTile` styles every generated tile. ResultsScreen `Results.History.Templates.RoundPortrait` styles round icons. KilnScreen `Panel.Content.Odds.Templates.OddsRow` styles every odds row. FightHud `Templates.Popup` styles damage popups. Grid placement, progress fills and projected damage positions are driven by game state.

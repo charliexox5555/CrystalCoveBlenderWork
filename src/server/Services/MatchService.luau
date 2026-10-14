@@ -9,6 +9,7 @@ local Remotes = require(RS.Shared.Remotes)
 local Runner = require(script.Parent.Parent.Simulation.MatchRunner)
 local Guard = require(script.Parent.Parent.Util.RemoteGuard)
 local Assets = require(script.Parent.Parent.Util.AssetCatalog)
+local Glassies = require(RS.Shared.Config.Glassies)
 local Service = {}
 
 function Service:Init(services)
@@ -94,6 +95,7 @@ function Service:StartMatch(arena, players, now, spectate)
 		Runner = Runner.new(setups, rng, now),
 		Perfects = { 0, 0 },
 		ActualWins = { 0, 0 },
+		HeavyShatters = { 0, 0 },
 		Used = { {}, {} },
 		Finished = false,
 	}
@@ -130,6 +132,7 @@ function Service:Finish(entry)
 				RoundWins = entry.ActualWins[side],
 				Shatters = entry.ActualWins[side],
 				Used = entry.Used[side],
+				HeavyShatters = entry.HeavyShatters[side],
 			})
 		else
 			temp.Coins += rewards.Coins
@@ -144,6 +147,7 @@ function Service:Finish(entry)
 			Hearts = { match.Sides[1].Hearts, match.Sides[2].Hearts },
 			Saved = self.Services.DataService and self.Services.DataService:IsPersistent(player) or false,
 			ArenaId = entry.Arena.Id,
+			Quests = self.Services.RetentionService and self.Services.RetentionService:View(player).Quests or {},
 		})
 	end
 	self.Matches[entry.Arena.Id] = nil
@@ -199,6 +203,9 @@ function Service:Dispatch(entry, now)
 					end
 					if entry.Runner:FightEnded(fight.Winner, workspace:GetServerTimeNow()) then
 						entry.ActualWins[fight.Winner] += 1
+						if Glassies.get(match.Sides[3 - fight.Winner].Pick).Type == "Heavy" then
+							entry.HeavyShatters[fight.Winner] += 1
+						end
 						self:Dispatch(entry, workspace:GetServerTimeNow())
 					end
 				end

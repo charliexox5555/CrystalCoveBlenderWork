@@ -58,9 +58,11 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 ## F4 — Retention and monetization (Nov 3–9)
 
-- [ ] **C:** daily quests, playtime gifts, login streak, first win bonus, codes, group reward
+- [x] **C:** daily quests, playtime gifts, login streak tracking (no free Marbles), first win bonus, Studio test code; [F4 report](testing/F4_FREE_RETENTION.md)
+- [ ] **U/C:** group reward: owner group ID and permitted reward configuration pending; free Marbles disabled
 - [ ] **C:** Marbles, Marble packs, gamepasses, idempotent `ProcessReceipt`, PolicyService checks
-- [ ] **C:** Shatter FX shop + 3 effects; leaderboards
+- [x] **C:** Trophies, Match Wins and Shatters boards; published ordered-store verification pending
+- [ ] **C:** Shatter FX shop + 3 effects (paid features deferred under current instructions)
 - [ ] **C:** analytics events (GAME_DESIGN 15b)
 
 ## F5 — Polish and soft launch (Nov 10–16)

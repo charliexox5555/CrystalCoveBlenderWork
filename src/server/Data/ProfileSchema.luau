@@ -32,6 +32,8 @@ function Schema.new(now)
 			Perfects = 0,
 			KilnPulls = 0,
 			GlassyUses = {},
+			WinStreak = 0,
+			BestStreak = 0,
 		},
 		Daily = {
 			Streak = 0,

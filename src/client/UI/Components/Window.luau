@@ -34,6 +34,19 @@ function Window.new(name, title, close)
 		Size = UDim2.fromScale(0.95, 0.82),
 		Position = UDim2.fromScale(0.025, 0.16),
 	})
+	local position, size = self.Content.Position, self.Content.Size
+	local function resize()
+		local height = math.max(1, self.Panel.AbsoluteSize.Y)
+		local top = math.max(
+			position.Y.Scale,
+			(self.Panel.Close.AbsolutePosition.Y - self.Panel.AbsolutePosition.Y + self.Panel.Close.AbsoluteSize.Y + 8)
+				/ height
+		)
+		self.Content.Position = UDim2.fromScale(position.X.Scale, top)
+		self.Content.Size = UDim2.fromScale(size.X.Scale, math.min(size.Y.Scale, math.max(0.1, 1 - top - 0.02)))
+	end
+	table.insert(self.Connections, self.Panel:GetPropertyChangedSignal("AbsoluteSize"):Connect(resize))
+	resize()
 	return self
 end
 

@@ -11,6 +11,7 @@ local Button = require(script.Parent.Parent.UI.Components.Button)
 local Collection = require(script.Parent.Parent.UI.Screens.CollectionScreen)
 local Kiln = require(script.Parent.Parent.UI.Screens.KilnScreen)
 local LobbyHud = require(script.Parent.Parent.UI.Screens.LobbyHud)
+local Rewards = require(script.Parent.Parent.UI.Screens.RewardsScreen)
 local Controller = {}
 
 function Controller:Init(controllers)
@@ -45,6 +46,15 @@ function Controller:Open(kind)
 	self:Close()
 	if kind == "Kiln" then
 		Remotes.RequestKiln:FireServer()
+	elseif kind == "Rewards" and self.Profile and self.Profile.Retention then
+		self.Screen = Rewards.new(self.Profile, function()
+			self:Close()
+		end, function(action, id)
+			Remotes.ClaimRetention:FireServer(action, id)
+		end, function(code)
+			Remotes.RedeemCode:FireServer(code)
+		end)
+		self:PanelOpened()
 	elseif self.Profile then
 		self.Screen = Collection.new(kind == "Index", self.Profile, function()
 			self:Close()
@@ -69,10 +79,36 @@ function Controller:Start()
 	pg:GetAttributeChangedSignal("ResultsOpen"):Connect(inMatch)
 	inMatch()
 	Remotes.ProfileSnapshot.OnClientEvent:Connect(function(profile)
+		local changed = false
+		for id, owned in profile.Glassies do
+			local previous = self.Profile and self.Profile.Glassies[id]
+			if not previous or previous.Count ~= owned.Count or previous.Rainbow ~= owned.Rainbow then
+				changed = true
+				break
+			end
+		end
 		self.Profile = profile
 		self.Currency.Text = "COINS " .. profile.Coins .. "   •   TROPHIES " .. profile.Trophies
-		if self.Screen and self.Screen.Refresh and self.Screen.Index ~= nil then
+		if
+			self.Screen
+			and self.Screen.Refresh
+			and (self.Screen.Selected ~= nil or (self.Screen.Index ~= nil and changed))
+		then
 			self.Screen:Refresh(profile)
+		end
+	end)
+	Remotes.RetentionResult.OnClientEvent:Connect(function(data)
+		if data.Open then
+			self:Open("Rewards")
+			if self.Screen and self.Screen.Select then
+				self.Screen:Select(data.Open)
+			end
+			return
+		end
+		if self.Screen and self.Screen.Selected then
+			self.Screen:Result(data)
+		elseif data.Ok then
+			self.Controllers.MatchController:Notice(data.Message)
 		end
 	end)
 	Remotes.KilnOdds.OnClientEvent:Connect(function(data)
@@ -90,7 +126,7 @@ function Controller:Start()
 		self:PanelOpened()
 	end)
 	Remotes.KilnResult.OnClientEvent:Connect(function(data)
-		if self.Screen and self.Screen.Result then
+		if self.Screen and self.Screen.Pull and self.Screen.Result then
 			self.Screen:Result(data)
 		end
 	end)

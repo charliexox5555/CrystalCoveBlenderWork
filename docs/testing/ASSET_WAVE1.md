@@ -20,7 +20,7 @@ Each glassy includes separate details, source .blend, body/shard/detail FBX, cra
 
 Sky triangles: single crystal 32, small cluster 96, big cluster 192, Kiln crystal 108, featured arch 148, clouds 320 / 320 / 400. Materials remain separately recolorable, matte world props. Kiln hero is 18 studs tall; arch about 26.9 × 3.6 × 26.6.
 
-17 FBX import bundles round-tripped through Blender: **187 meshes**, maximum bounds error **0.00000191 studs**. Details in `assets/blender/import_wave1/validation.json`. Native Studio import/assembly validation remains pending. Lune/Studio: **65 passed, 0 failed**.
+17 FBX import bundles round-tripped through Blender: **183 meshes**, maximum bounds error **0.00000191 studs**. Details in `assets/blender/import_wave1/validation.json`. Native Studio import/assembly validation remains pending. Lune/Studio: **65 passed, 0 failed**.
 
 Import instructions and the safe finalizer: [Wave 1 README](../../assets/blender/import_wave1/README.md), `tools/studio/install_wave1_glassies.luau`. The finalizer has not run against native imports yet; it skips existing glassies, requires every named mesh and retains raw sources. No new asset enters rolls/Kiln before complete installation.
 

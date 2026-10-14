@@ -14,10 +14,18 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-14 — Codex — free retention
+Done:
+- Added server-owned UTC quests/time gifts/first win/check-in streak, Studio-only one-use code, claim limiting and saved flags; 14th editable ScreenGui plus Daily/Codes kiosk prompts. Added three leaderboard placeholders/local mock ranks and coalesced production ordered stores. Group grants and free Marbles remain disabled.
+- Lune/Studio: 71 passed, 0 failed. Live reward fixture saved/reloaded 290 coins; replayed/malformed claim/code inputs did not increase it. Phone rewards layouts have zero offsets and 44 px minimum targets; default viewport restored. Report/screens in docs/testing/F4_FREE_RETENTION.md.
+- Balance/economy sims unchanged: starter mirrors Pop/Jam/Prism 22.3/43.6/19.9 s, no timeouts; ~3.7 min matches, 4 day-one/96 day-30 pulls, Rare 47 min, Epic 2.1 h, Legendary 9 h. Added plumbing intervals only, no frozen rules/economy retune.
+Next:
+- Native multi-client integration, packet-loss/performance/security checks. Manual art imports and owner group ID still pending.
+
 ## 2026-10-14 — Codex — sky kit / first collection wave
 Done:
 - Exported eight sky props and nine glassies (six Commons, three Uncommons), preserving open Blender work and starter files. All new bodies ≤768 triangles, 16 closed shards each, separate details, 144 projected crack segments and shared 512×512 transparent icons. Fixed the hollow-cup cap fill; fragment volume conservation is within 0.0002%.
-- Bundled 17 FBX files / 187 meshes; Blender round-trip max bounds error 0.00000191 studs. Added measured import manifest, non-overwriting Studio finalizer and exact manual import steps. Wired extra crack paths. Lune/Studio: 65 passed, 0 failed.
+- Bundled 17 FBX files / 183 meshes; Blender round-trip max bounds error 0.00000191 studs. Added measured import manifest, non-overwriting Studio finalizer and exact manual import steps. Wired extra crack paths. Lune/Studio: 65 passed, 0 failed.
 Next:
 - Free retention features and multiplayer/security pass while native imports are pending. No publishing, paid features or economy retune.
 

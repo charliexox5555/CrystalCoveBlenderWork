@@ -136,6 +136,8 @@ function Screens:Offers(data)
 		local card =
 			Panel.new(self.Cards, "Card" .. i, UDim2.fromScale(0.305, 1), UDim2.fromScale((i - 1) * 0.347, 0), true)
 		card.UIStroke.Color = Theme.Rarity[def.Rarity].Bottom
+		card.UIStroke.UIGradient.Color =
+			ColorSequence.new(Theme.Rarity[def.Rarity].Top, Theme.Rarity[def.Rarity].Bottom)
 		local portrait = Portrait.new(card, id, UDim2.fromScale(0.9, 0.54), UDim2.fromScale(0.05, 0))
 		table.insert(self.Portraits, portrait)
 		U.text(card, "Name", def.Name, UDim2.fromScale(0.94, 0.12), UDim2.fromScale(0.03, 0.53), Theme.Fonts.Heading)
@@ -289,10 +291,17 @@ function Screens.results(data, replay, lobby)
 	self.Coins = U.text(panel, "Coins", "", UDim2.fromScale(0.42, 0.1), UDim2.fromScale(0.06, 0.6), Theme.Fonts.Heading)
 	self.Trophies =
 		U.text(panel, "Trophies", "", UDim2.fromScale(0.42, 0.1), UDim2.fromScale(0.52, 0.6), Theme.Fonts.Heading)
+	local ready = 0
+	for _, q in data.Quests or {} do
+		if not q.Claimed and q.Progress >= q.Goal then
+			ready += 1
+		end
+	end
 	U.text(
 		panel,
 		"Save",
-		if data.Saved then "Rewards added!" else "Practice rewards reset when you leave",
+		(if data.Saved then "Rewards added!" else "Practice rewards reset when you leave")
+			.. (if ready > 0 then " • " .. ready .. " quests ready" else ""),
 		UDim2.fromScale(0.9, 0.07),
 		UDim2.fromScale(0.05, 0.69),
 		Theme.Fonts.Caption

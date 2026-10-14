@@ -4,6 +4,18 @@
 
 local Balance = {}
 
+-- Free retention plumbing only; existing economy/fight/content values are unchanged.
+Balance.Retention = {
+	TickSeconds = 1,
+	SnapshotSeconds = 5,
+	ClaimRateSeconds = 0.5,
+	CodeRateSeconds = 1,
+	MaxTickSeconds = 5,
+	LeaderboardPublishSeconds = 60,
+	LeaderboardReadSeconds = 120,
+	LeaderboardRows = 10,
+}
+
 Balance.Data = {
 	Version = 2,
 	StoreName = "GlassClash_v2",

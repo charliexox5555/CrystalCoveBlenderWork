@@ -36,9 +36,15 @@ function Service:Sync(player)
 	if not data or player.Parent ~= Players then
 		return
 	end
+	local retention = self.Services.RetentionService and self.Services.RetentionService:View(player)
 	local snapshot = Schema.snapshot(data)
 	snapshot.Persistent = self:IsPersistent(player)
+	snapshot.ServerNow = workspace:GetServerTimeNow()
+	snapshot.Retention = retention
 	Remotes.ProfileSnapshot:FireClient(player, snapshot)
+	if self.Services.LeaderboardService then
+		self.Services.LeaderboardService:Changed(player)
+	end
 end
 
 function Service:Release(player)
@@ -115,6 +121,9 @@ function Service:Load(player)
 			player:Kick("Your glassies opened in another server. Please rejoin.")
 		end
 	end)
+	if self.Services.RetentionService then
+		self.Services.RetentionService:Loaded(player)
+	end
 	self:Sync(player)
 end
 

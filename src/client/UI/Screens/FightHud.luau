@@ -35,6 +35,7 @@ function Hud.new(data, maxima, lock)
 			U.make("Frame", portrait, { Name = "PowerRing", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1 })
 		U.corner(ring, UDim.new(1, 0))
 		local stroke = U.make("UIStroke", ring, { Thickness = 2, Color = tint, Transparency = 0.8 })
+		stroke.Color = tint
 		self.Rings[side] = {}
 		for i = 1, 16 do
 			local angle = (i / 16 - 0.25) * math.pi * 2
@@ -48,6 +49,7 @@ function Hud.new(data, maxima, lock)
 				BorderSizePixel = 0,
 			})
 			U.corner(pip, UDim.new(1, 0))
+			pip.BackgroundColor3 = tint
 			table.insert(self.Rings[side], pip)
 		end
 		local displayName = if data.PlayerIds

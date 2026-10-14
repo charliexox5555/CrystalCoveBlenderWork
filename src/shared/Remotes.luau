@@ -33,6 +33,9 @@ local reliable = {
 	"KilnResult",
 	"RequestKiln",
 	"PullKiln",
+	"ClaimRetention",
+	"RedeemCode",
+	"RetentionResult",
 }
 local unreliable = { "FightSnapshot" }
 

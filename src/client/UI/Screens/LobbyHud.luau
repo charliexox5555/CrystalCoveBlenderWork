@@ -14,17 +14,22 @@ function Hud.new(open)
 		UDim2.fromScale(0.03, 0),
 		Theme.Fonts.Body
 	)
-	local nav = U.make(
-		"Frame",
-		gui,
-		{
-			Name = "Navigation",
-			BackgroundTransparency = 1,
-			Size = UDim2.fromScale(0.17, 0.48),
-			Position = UDim2.fromScale(0.02, 0.16),
-		}
-	)
+	local nav = U.make("Frame", gui, {
+		Name = "Navigation",
+		BackgroundTransparency = 1,
+		Size = UDim2.fromScale(0.17, 0.48),
+		Position = UDim2.fromScale(0.02, 0.16),
+	})
 	local connections = {}
+	local rewards =
+		Button.new(gui, "Rewards", "REWARDS", "Yellow", UDim2.fromScale(0.2, 0.1), UDim2.fromScale(0.78, 0.13))
+	U.make("UISizeConstraint", rewards, { MinSize = Vector2.new(44, 44) })
+	table.insert(
+		connections,
+		rewards.Activated:Connect(function()
+			open("Rewards")
+		end)
+	)
 	for i, kind in { "Kiln", "Glassies", "Index" } do
 		local button =
 			Button.new(nav, kind, kind:upper(), "Blue", UDim2.fromScale(1, 0.29), UDim2.fromScale(0, (i - 1) * 0.35))

@@ -9,7 +9,18 @@ local function suite(name: string)
 	return if script then require(script.Parent:FindFirstChild(name)) else require("./" .. name)
 end
 
-local order = { "ConfigTests", "FormulaTests", "FightRulesTests", "MatchLogicTests", "BalanceTests", "EconomyTests", "PendulumTests", "MatchRunnerTests", "ProfileTests" }
+local order = {
+	"ConfigTests",
+	"FormulaTests",
+	"FightRulesTests",
+	"MatchLogicTests",
+	"BalanceTests",
+	"EconomyTests",
+	"PendulumTests",
+	"MatchRunnerTests",
+	"ProfileTests",
+	"RetentionTests",
+}
 local suites = {}
 for _, name in order do
 	suites[name] = suite(name)

@@ -109,6 +109,11 @@ function Controller:Start()
 		end
 		self.Views = {}
 	end)
+	Players.LocalPlayer.CharacterAdded:Connect(function()
+		task.delay(0.2, function()
+			Remotes.RequestFightState:FireServer()
+		end)
+	end)
 	RunService:BindToRenderStep("GlassClashFight", Enum.RenderPriority.Camera.Value + 1, function(dt)
 		local active = self:Active()
 		for _, view in self.Views do
@@ -138,5 +143,6 @@ function Controller:Start()
 		end
 		dev.Parent = Players.LocalPlayer.PlayerScripts
 	end
+	Remotes.RequestFightState:FireServer()
 end
 return Controller

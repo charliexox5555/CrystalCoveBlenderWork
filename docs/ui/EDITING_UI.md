@@ -17,7 +17,7 @@ The controllers clone or reuse the templates, update text/models/game state and 
 
 ## Verification
 
-- Studio audit: all 13 templates and their runtime descendants have zero Position/Size offsets.
+- Studio audit: all 14 templates have zero Position/Size/CanvasSize offsets. The F5 pass checks 39 layout states across A06, iPhone and iPad, including the new RewardsScreen.
 - Only the lobby HUD enables at startup. Collection → match closes the panel; fight controls remain locked; Results suppresses the lobby until dismissed.
 - A binding check preserved a custom authored Size while updating its Text.
-- Lune and Studio: 65 tests pass. Final artwork, real-phone usability and gamepad checks remain with the creator.
+- Lune and Studio: 71 tests pass. Final artwork, real-phone usability and gamepad checks remain with the creator.

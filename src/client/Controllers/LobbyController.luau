@@ -152,6 +152,8 @@ function Controller:Start()
 				self.Screen:Detail(value)
 			elseif action == "Close" then
 				self:Close()
+			elseif action == "RewardsTab" and self.Screen and self.Screen.Select then
+				self.Screen:Select(value)
 			elseif action == "PreviewKiln" then
 				self:Open("Kiln")
 				task.delay(0.3, function()

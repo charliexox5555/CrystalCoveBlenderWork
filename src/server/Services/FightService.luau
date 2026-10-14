@@ -7,11 +7,32 @@ local Rng = require(RS.Shared.Rng)
 local Remotes = require(RS.Shared.Remotes)
 local Pendulum = require(script.Parent.Parent.Simulation.Pendulum)
 local Calibration = require(script.Parent.Parent.Simulation.Calibration)
+local Guard = require(script.Parent.Parent.Util.RemoteGuard)
 local Service = {}
 local M, Feel = Balance.Motion, Balance.Feel
 
 function Service:Init(services)
 	self.Services, self.Sessions, self.Serial = services, {}, 0
+	self.Guard = Guard.new()
+end
+
+function Service:Sync(player)
+	for _, session in self.Sessions do
+		local data = table.clone(session.Data)
+		local entry = self.Services.MatchService and self.Services.MatchService.Matches[data.ArenaId]
+		if entry then
+			local meta = self.Services.MatchService:Meta(entry)
+			data.Phase, data.Hearts, data.Round = meta.Phase, meta.Hearts, meta.Round
+		end
+		data.JoinedLate = true
+		local fight = session.Sim.Fight
+		data.DeadSides = {
+			fight.Fighters[1].Hp <= 0 or (fight.Over and fight.Winner == 2),
+			fight.Fighters[2].Hp <= 0 or (fight.Over and fight.Winner == 1),
+		}
+		data.Snapshot = Pendulum.snapshot(session.Sim)
+		Remotes.MatchState:FireClient(player, data)
+	end
 end
 
 function Service:Geometry(arena)
@@ -25,7 +46,9 @@ end
 function Service:Describe(arena, setup, metadata)
 	local frame, _, hooks = self:Geometry(arena)
 	local out = table.clone(metadata)
-	out.A, out.B, out.Frame, out.Hooks = setup.A, setup.B, frame, hooks
+	out.A, out.B, out.Frame = setup.A, setup.B, frame
+	out.HookPositions = { hooks[1].WorldPosition, hooks[2].WorldPosition }
+	out.HeartPositions = { arena.Pads[1].Position, arena.Pads[2].Position }
 	out.SweetSpot, out.ArenaId = setup.SweetSpot, arena.Id
 	return out
 end
@@ -134,28 +157,29 @@ function Service:BotVsBot(a, b, seed, spectate)
 	}
 	self.Serial += 1
 	local id = "dev-" .. self.Serial
-	self:StartFight(
-		id,
-		arena,
-		setup,
-		seed,
-		{
-			PlayerIds = { 0, 0 },
-			Spectate = spectate,
-			Hearts = { 3, 3 },
-			ReleaseAt = workspace:GetServerTimeNow() + Balance.Match.CountdownSeconds,
-		},
-		function(fight, metrics)
-			self.LastResult = { Seed = seed, Fight = fight, Metrics = metrics }
-			task.delay(Balance.Match.RoundEndSeconds, function()
-				self:Stop(id)
-			end)
-		end
-	)
+	self:StartFight(id, arena, setup, seed, {
+		PlayerIds = { 0, 0 },
+		Spectate = spectate,
+		Hearts = { 3, 3 },
+		ReleaseAt = workspace:GetServerTimeNow() + Balance.Match.CountdownSeconds,
+	}, function(fight, metrics)
+		self.LastResult = { Seed = seed, Fight = fight, Metrics = metrics }
+		task.delay(Balance.Match.RoundEndSeconds, function()
+			self:Stop(id)
+		end)
+	end)
 	return true, id
 end
 
 function Service:Start()
+	Remotes.RequestFightState.OnServerEvent:Connect(function(player)
+		if self.Guard:Allow(player, "Sync", Balance.Data.RequestRateSeconds) then
+			self:Sync(player)
+		end
+	end)
+	Players.PlayerRemoving:Connect(function(player)
+		self.Guard:Remove(player)
+	end)
 	RunService.Heartbeat:Connect(function(dt)
 		local now = workspace:GetServerTimeNow()
 		for _, session in self.Sessions do
@@ -167,11 +191,7 @@ function Service:Start()
 			if not player.Parent then
 				return
 			end
-			for _, session in self.Sessions do
-				local data = table.clone(session.Data)
-				data.Snapshot = Pendulum.snapshot(session.Sim)
-				Remotes.MatchState:FireClient(player, data)
-			end
+			self:Sync(player)
 		end)
 	end)
 	if not RunService:IsStudio() then

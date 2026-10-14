@@ -1,7 +1,7 @@
 # Roadmap
 
 Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DESIGN v0.3](GAME_DESIGN.md).
-**Current milestone: F4 — free retention features.** F3 import/placement checks remain pending with the creator. Real-phone checks and publishing remain with the user; paid features stay disabled.
+**Current milestone: F5 — integration polish.** The requested free F4 features and native multiplayer/security pass are complete. F3 import/placement, real-phone checks and publishing remain pending with the creator; paid features stay disabled.
 
 Owner key: **C** = Codex (code / Studio MCP), **B** = Codex with Blender MCP, **CL** = Claude (research, design, pure rules, docs), **U** = you.
 
@@ -67,7 +67,11 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 ## F5 — Polish and soft launch (Nov 10–16)
 
-- [ ] **C:** phone UI pass (Device Emulator presets), performance (MicroProfiler), exploit and rate-limit pass
+- [x] **C:** Device Emulator layout pass: A06, iPhone and iPad, 39 states, 14 editable scale-only ScreenGuis; final UI artwork belongs to the creator
+- [x] **C:** native two-client PvP + third staggered join, seven moving arenas, dropped snapshots, replay/disconnect and cleanup; [F5 report](testing/F5_MULTIPLAYER_SECURITY.md)
+- [x] **C:** remote validation/rate-limit/security review and double-KO cleanup soak; 71 tests pass
+- [ ] **U/C:** resolve pre-round forfeit reward eligibility (creator answer pending; frozen economy unchanged)
+- [ ] **U:** real low-end-phone performance/MicroProfiler, manual close/gamepad checks, published datastore/leaderboard verification
 - [ ] **B:** remaining launch glassies (target 18+ playable)
 - [ ] **U:** maturity questionnaire, icon, thumbnails, description; cross-promote from your other game
 

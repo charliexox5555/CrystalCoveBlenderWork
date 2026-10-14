@@ -18,8 +18,11 @@ function Screens.new(name)
 	return self
 end
 
-function Screens:Connect(button, callback)
-	U.make("UISizeConstraint", button, { MinSize = Vector2.new(70, 44) })
+function Screens:Connect(button, callback, compact)
+	U.make("UISizeConstraint", button, {
+		MinSize = Vector2.new(if compact then 44 else 70, 44),
+		MaxSize = if compact then Vector2.new(56, 56) else Vector2.new(math.huge, math.huge),
+	})
 	table.insert(self.Connections, button.Activated:Connect(callback))
 end
 
@@ -90,14 +93,15 @@ function Screens.roll(data, pick, reroll)
 	)
 	self.Timer = U.text(self.Panel, "Timer", "", UDim2.fromScale(0.2, 0.08), UDim2.fromScale(0.73, 0.87))
 	self.Message =
-		U.text(self.Panel, "Message", "", UDim2.fromScale(0.5, 0.08), UDim2.fromScale(0.25, 0.78), Theme.Fonts.Caption)
+		U.text(self.Panel, "Message", "", UDim2.fromScale(0.5, 0.07), UDim2.fromScale(0.25, 0.73), Theme.Fonts.Caption)
 	self.Reroll = Button.new(
 		self.Panel,
 		"Reroll",
 		"REROLL • FREE",
 		"Blue",
 		UDim2.fromScale(0.35, 0.13),
-		UDim2.fromScale(0.325, 0.87)
+		UDim2.fromScale(0.325, 0.98),
+		Vector2.new(0, 1)
 	)
 	self:Connect(self.Reroll, reroll)
 	local cards = self.Panel:FindFirstChild("Cards")
@@ -120,7 +124,7 @@ function Screens:Offers(data)
 	self.Portraits = {}
 	self.Cards = U.make("Frame", self.Panel, {
 		Name = "Cards",
-		Size = UDim2.fromScale(0.94, 0.53),
+		Size = UDim2.fromScale(0.94, 0.47),
 		Position = UDim2.fromScale(0.03, 0.24),
 		BackgroundTransparency = 1,
 	})
@@ -180,11 +184,19 @@ function Screens:Offers(data)
 				self.Pick(id)
 			end
 		end)
-		local info = Button.new(card, "Info", "i", "Blue", UDim2.fromScale(0.2, 0.22), UDim2.fromScale(0.79, 0.01))
+		local info = Button.new(
+			card,
+			"Info",
+			"i",
+			"Blue",
+			UDim2.fromScale(0.2, 0.22),
+			UDim2.fromScale(0.98, 0.02),
+			Vector2.new(1, 0)
+		)
 		info.ZIndex = 12
 		self:Connect(info, function()
 			self:PowerInfo(id)
-		end)
+		end, true)
 	end
 end
 

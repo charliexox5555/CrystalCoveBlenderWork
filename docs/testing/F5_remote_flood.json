@@ -1,0 +1,11 @@
+{
+  "Coins": 0,
+  "PrivateFieldsHidden": true,
+  "RequestsPerRemote": 20,
+  "Replies": {
+    "Profile": 1,
+    "Claim": 1,
+    "Odds": 2,
+    "Code": 1
+  }
+}

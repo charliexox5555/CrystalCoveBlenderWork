@@ -1,6 +1,7 @@
 --!strict
 -- Every remote in the game (GAME_DESIGN 13.3). The server creates them; clients wait for them.
--- Client -> server remotes are validated and rate-limited in MatchService (Balance.Match.*RateSeconds).
+-- Client -> server remotes are validated and rate-limited by their owning service.
+-- Intervals live in Balance.Match, Balance.Data and Balance.Retention.
 --
 --   Server -> client
 --     MatchState     (RemoteEvent)            phase changes: Queue, Rolling, Aiming, Countdown, Fighting, RoundEnd, MatchEnd
@@ -13,6 +14,7 @@
 --     Reroll         (RemoteEvent)  (no args)
 --     SetAim         (RemoteEvent)  aim: number, yaw: number (radians; clamped by FightRules.clampAim / clampYaw)
 --     LeaveQueue     (RemoteEvent)  (no args)
+--     RequestFightState (RemoteEvent) late-join/respawn bootstrap (no args)
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
@@ -36,6 +38,7 @@ local reliable = {
 	"ClaimRetention",
 	"RedeemCode",
 	"RetentionResult",
+	"RequestFightState",
 }
 local unreliable = { "FightSnapshot" }
 

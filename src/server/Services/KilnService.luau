@@ -40,17 +40,14 @@ function Service:Open(player)
 		Expires = os.clock() + Balance.Data.KilnQuoteSeconds,
 	}
 	self.Quotes[player] = quote
-	Remotes.KilnOdds:FireClient(
-		player,
-		{
-			Quote = quote.Id,
-			Odds = odds,
-			Coins = data.Coins,
-			Welcome = Schema.welcomePulls(data),
-			Cost = Balance.Economy.KilnCoinCost,
-			TenCost = Balance.Economy.KilnTenPullCost,
-		}
-	)
+	Remotes.KilnOdds:FireClient(player, {
+		Quote = quote.Id,
+		Odds = odds,
+		Coins = data.Coins,
+		Welcome = Schema.welcomePulls(data),
+		Cost = Balance.Economy.KilnCoinCost,
+		TenCost = Balance.Economy.KilnTenPullCost,
+	})
 end
 
 function Service:Fail(player, message)
@@ -136,6 +133,9 @@ function Service:Start()
 	local prompt = kiln and kiln:FindFirstChild("OpenKiln", true)
 	if prompt then
 		prompt.Triggered:Connect(function(player)
+			if not self.Guard:Allow(player, "Open", Balance.Data.RequestRateSeconds) then
+				return
+			end
 			local root = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 			if root and (root.Position - prompt.Parent.Position).Magnitude <= prompt.MaxActivationDistance then
 				self:Open(player)

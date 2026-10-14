@@ -1,0 +1,138 @@
+{
+  "Launched": true,
+  "Result": {
+    "Ok": true,
+    "Seconds": 138.09565460000158,
+    "Clients": {
+      "-3": {
+        "Ready": {
+          "ProfileLoaded": true,
+          "Name": "Player3",
+          "UserId": -3
+        }
+      },
+      "-2": {
+        "Cleanup2": {
+          "InMatch": false,
+          "Camera": "Enum.CameraType.Custom",
+          "Touch": true,
+          "ResultsOpen": false
+        },
+        "Sample": {
+          "FPS": 59.99712465565013,
+          "Frames": 301,
+          "MaxFrameMs": 26.204600930213928
+        },
+        "View": {
+          "Round": 4,
+          "Side": 1,
+          "Buffer": 15
+        },
+        "Result1": {
+          "Won": false,
+          "ResultsOpen": true,
+          "Side": 1,
+          "Rewards": {
+            "Trophies": 0,
+            "Coins": 30
+          }
+        },
+        "Result2": {
+          "Won": true,
+          "ResultsOpen": false,
+          "Side": 1,
+          "Rewards": {
+            "Trophies": 20,
+            "Coins": 90
+          }
+        },
+        "Ready": {
+          "ProfileLoaded": true,
+          "Name": "Player2",
+          "UserId": -2
+        },
+        "Cleanup1": {
+          "InMatch": false,
+          "Camera": "Enum.CameraType.Custom",
+          "Touch": true,
+          "ResultsOpen": false
+        }
+      },
+      "-1": {
+        "View": {
+          "Round": 4,
+          "Side": 2,
+          "Buffer": 11
+        },
+        "Sample": {
+          "FPS": 15.001643591888389,
+          "Frames": 75,
+          "MaxFrameMs": 68.07780265808105
+        },
+        "Result1": {
+          "Won": true,
+          "ResultsOpen": true,
+          "Side": 2,
+          "Rewards": {
+            "Trophies": 20,
+            "Coins": 90
+          }
+        },
+        "Ready": {
+          "ProfileLoaded": true,
+          "Name": "Player1",
+          "UserId": -1
+        },
+        "Cleanup1": {
+          "InMatch": false,
+          "Camera": "Enum.CameraType.Custom",
+          "Touch": true,
+          "ResultsOpen": false
+        }
+      }
+    },
+    "Errors": [],
+    "Tests": "71 passed, 0 failed",
+    "Message": "Native multiplayer checks passed",
+    "Stages": [
+      "two isolated profiles; invalid remote inputs rejected",
+      "two human pad queue; offered picks and aim remotes accepted",
+      "seven arenas; both client views; one-third unreliable snapshots dropped on side B",
+      "full PvP result/reward settlement; both cameras and controls restored",
+      "Play Again; opponent disconnect; arena/player registry released",
+      "staggered native join with isolated starter profile"
+    ],
+    "Profile_-2": {
+      "Trophies": 20,
+      "Stats": {
+        "MatchWins": 1,
+        "Perfects": 5,
+        "WinStreak": 0,
+        "GlassyUses": {
+          "pop": 2
+        },
+        "BestStreak": 0,
+        "Shatters": 1,
+        "KilnPulls": 0,
+        "MatchLosses": 1,
+        "RoundWins": 1
+      },
+      "Coins": 120
+    },
+    "Profile_-3": {
+      "Trophies": 0,
+      "Stats": {
+        "MatchWins": 0,
+        "Perfects": 0,
+        "WinStreak": 0,
+        "GlassyUses": [],
+        "BestStreak": 0,
+        "Shatters": 0,
+        "KilnPulls": 0,
+        "MatchLosses": 0,
+        "RoundWins": 0
+      },
+      "Coins": 0
+    }
+  }
+}

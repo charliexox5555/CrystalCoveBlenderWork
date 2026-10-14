@@ -47,6 +47,7 @@ end
 
 function Pendulum.new(setup, seed, gap)
 	local sim = {
+		Seed = seed,
 		Bodies = {},
 		Hooks = { V.new(-(gap or M.HookGap) / 2, 0, 0), V.new((gap or M.HookGap) / 2, 0, 0) },
 		Rng = Rng.new(seed + 104729),

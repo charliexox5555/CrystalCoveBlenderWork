@@ -1,0 +1,163 @@
+{
+  "Launched": true,
+  "Result": {
+    "Ok": false,
+    "Seconds": 189.06639580000046,
+    "Clients": {
+      "-3": {
+        "Spectator": {
+          "Hud": false,
+          "Count": 1,
+          "Camera": "Enum.CameraType.Custom"
+        },
+        "Error": {
+          "Message": "RunService:fireRenderStepEarlyFunctions unexpected error while invoking callback: Players.Player3.PlayerScripts.Client.Presentation.FightScene:135: attempt to index nil with 'WorldPosition'"
+        },
+        "Ready": {
+          "ProfileLoaded": true,
+          "Name": "Player3",
+          "UserId": -3
+        }
+      },
+      "-2": {
+        "Cleanup2": {
+          "InMatch": false,
+          "Camera": "Enum.CameraType.Custom",
+          "Touch": true,
+          "ResultsOpen": false
+        },
+        "Sample": {
+          "FPS": 60.0149522515771,
+          "Frames": 301,
+          "MaxFrameMs": 24.219699203968048
+        },
+        "View": {
+          "Round": 5,
+          "Side": 1,
+          "Buffer": 15
+        },
+        "Result1": {
+          "Won": false,
+          "ResultsOpen": true,
+          "Side": 1,
+          "Rewards": {
+            "Trophies": 0,
+            "Coins": 40
+          }
+        },
+        "Result2": {
+          "Won": true,
+          "ResultsOpen": false,
+          "Side": 1,
+          "Rewards": {
+            "Trophies": 20,
+            "Coins": 90
+          }
+        },
+        "Ready": {
+          "ProfileLoaded": true,
+          "Name": "Player2",
+          "UserId": -2
+        },
+        "Cleanup1": {
+          "InMatch": false,
+          "Camera": "Enum.CameraType.Custom",
+          "Touch": true,
+          "ResultsOpen": false
+        }
+      },
+      "-1": {
+        "View": {
+          "Round": 5,
+          "Side": 2,
+          "Buffer": 8
+        },
+        "Sample": {
+          "FPS": 14.999091666986962,
+          "Frames": 76,
+          "MaxFrameMs": 75.6416991353035
+        },
+        "Result1": {
+          "Won": true,
+          "ResultsOpen": true,
+          "Side": 2,
+          "Rewards": {
+            "Trophies": 20,
+            "Coins": 90
+          }
+        },
+        "Ready": {
+          "ProfileLoaded": true,
+          "Name": "Player1",
+          "UserId": -1
+        },
+        "Cleanup1": {
+          "InMatch": false,
+          "Camera": "Enum.CameraType.Custom",
+          "Touch": true,
+          "ResultsOpen": false
+        }
+      }
+    },
+    "Errors": [
+      {
+        "Message": "Players.Player3.PlayerScripts.Client.Presentation.FightScene:135: attempt to index nil with 'WorldPosition'",
+        "Client": "-3"
+      },
+      {
+        "Message": "RunService:fireRenderStepEarlyFunctions unexpected error while invoking callback: Players.Player3.PlayerScripts.Client.Presentation.FightScene:135: attempt to index nil with 'WorldPosition'",
+        "Client": "-3"
+      },
+      {
+        "Message": "Players.Player3.PlayerScripts.Client.Presentation.FightScene:135: attempt to index nil with 'WorldPosition'",
+        "Client": "-3"
+      },
+      {
+        "Message": "RunService:fireRenderStepEarlyFunctions unexpected error while invoking callback: Players.Player3.PlayerScripts.Client.Presentation.FightScene:135: attempt to index nil with 'WorldPosition'",
+        "Client": "-3"
+      }
+    ],
+    "Tests": "71 passed, 0 failed",
+    "Message": "ServerScriptService.Server.Dev.MultiplayerHarness:198: Runtime errors captured\nServerScriptService.Server.Dev.MultiplayerHarness:198\nServerScriptService.Server.Dev.MultiplayerHarness:60\n",
+    "Stages": [
+      "two isolated profiles; invalid remote inputs rejected",
+      "two human pad queue; offered picks and aim remotes accepted",
+      "seven arenas; both client views; one-third unreliable snapshots dropped on side B",
+      "full PvP result/reward settlement; both cameras and controls restored",
+      "Play Again; opponent disconnect; arena/player registry released",
+      "staggered native join: isolated profile and immediate live spectator state"
+    ],
+    "Profile_-2": {
+      "Trophies": 20,
+      "Stats": {
+        "MatchWins": 1,
+        "Perfects": 6,
+        "WinStreak": 0,
+        "GlassyUses": {
+          "pop": 2
+        },
+        "BestStreak": 0,
+        "Shatters": 2,
+        "KilnPulls": 0,
+        "MatchLosses": 1,
+        "RoundWins": 2
+      },
+      "Coins": 130
+    },
+    "Profile_-3": {
+      "Trophies": 0,
+      "Stats": {
+        "MatchWins": 0,
+        "Perfects": 0,
+        "WinStreak": 0,
+        "GlassyUses": [],
+        "BestStreak": 0,
+        "Shatters": 0,
+        "KilnPulls": 0,
+        "MatchLosses": 0,
+        "RoundWins": 0
+      },
+      "Coins": 0
+    }
+  }
+}

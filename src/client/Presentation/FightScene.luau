@@ -1,6 +1,7 @@
 local RS = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
 local Debris = game:GetService("Debris")
+local CollectionService = game:GetService("CollectionService")
 local Balance = require(RS.Shared.Config.Balance)
 local Glassies = require(RS.Shared.Config.Glassies)
 local Powers = require(RS.Shared.Config.Powers)
@@ -34,12 +35,27 @@ local function emitter(parent, color)
 end
 
 function Scene.new(data, maxima, shatter)
-	local self = setmetatable({ Frame = data.Frame, Fighters = {}, Shatter = shatter, Ghost = {} }, Scene)
+	local self = setmetatable({
+		Frame = data.Frame,
+		ArenaId = data.ArenaId,
+		HeartPositions = data.HeartPositions,
+		Fighters = {},
+		Shatter = shatter,
+		Ghost = {},
+	}, Scene)
 	self.Root = Instance.new("Folder")
 	self.Root.Name = "LocalFight_" .. tostring(data.Id)
 	self.Root:SetAttribute("FightId", data.Id)
 	self.Root.Parent = workspace
 	for side, setup in { data.A, data.B } do
+		-- Value coordinates survive streaming/replication ordering; Instance references may arrive nil.
+		local anchor = part(self.Root, "HookAnchor" .. side, Color3.new(1, 1, 1))
+		anchor.Size, anchor.Transparency = Vector3.one * 0.1, 1
+		anchor.Position = if data.HookPositions
+			then data.HookPositions[side]
+			else data.Frame:PointToWorldSpace(Vector3.new((if side == 1 then -1 else 1) * M.HookGap / 2, 0, 0))
+		local hook = Instance.new("Attachment")
+		hook.Name, hook.Parent = "StringHook", anchor
 		local def = Glassies.get(setup.Id)
 		local renderId = if RS.Assets.Glassies:FindFirstChild(def.Asset)
 			then def.Asset
@@ -80,7 +96,7 @@ function Scene.new(data, maxima, shatter)
 		endpoint.Name, endpoint.CFrame = "StringEnd", body.PivotOffset
 		endpoint.Parent = body
 		local beam = Instance.new("Beam")
-		beam.Name, beam.Attachment0, beam.Attachment1 = "String", data.Hooks[side], endpoint
+		beam.Name, beam.Attachment0, beam.Attachment1 = "String", hook, endpoint
 		beam.Width0, beam.Width1, beam.FaceCamera = 0.04, 0.04, true
 		beam.Color = ColorSequence.new(Color3.fromHex("#F2EAD8"))
 		beam.Parent = model
@@ -108,7 +124,7 @@ function Scene.new(data, maxima, shatter)
 			Model = model,
 			Body = body,
 			Parts = parts,
-			Hook = data.Hooks[side],
+			Hook = hook,
 			Beam = beam,
 			Highlight = highlight,
 			Bubble = bubble,
@@ -162,6 +178,16 @@ function Scene:HideGhost()
 		p:Destroy()
 	end
 	self.Ghost = {}
+end
+
+function Scene:HideBroken(side)
+	local f = self.Fighters[side]
+	f.Broken = true
+	for _, p in f.Parts do
+		p.Transparency = 1
+	end
+	f.Beam.Enabled, f.Trail.Enabled, f.Highlight.Enabled = false, false, false
+	f.Glints.Rate, f.Bubble.Transparency = 0, 1
 end
 
 function Scene:Update(r, time)
@@ -309,11 +335,10 @@ function Scene:Event(e, hud)
 end
 
 function Scene:Heart(side)
-	local stand = self.Fighters[side].Hook.Parent.Parent
-	local pad = stand:FindFirstChild(if side == 1 then "QueueA" else "QueueB")
 	local anchor = part(self.Root, "GlassHeartPop", Color3.fromHex(self.Fighters[side].Def.Tint))
 	anchor.Size, anchor.Transparency = Vector3.one * 0.2, 1
-	anchor.Position = (pad and pad.Position or self.Fighters[side].Body.Position) + Vector3.yAxis * 5
+	anchor.Position = (self.HeartPositions and self.HeartPositions[side] or self.Fighters[side].Body.Position)
+		+ Vector3.yAxis * 5
 	local gui = Instance.new("BillboardGui")
 	gui.Size = UDim2.fromOffset(70, 70)
 	gui.AlwaysOnTop = true
@@ -327,6 +352,18 @@ function Scene:Heart(side)
 	TweenService:Create(text, TweenInfo.new(0.6), { Rotation = 25, TextTransparency = 1 }):Play()
 	TweenService:Create(anchor, TweenInfo.new(0.6), { Position = anchor.Position + Vector3.yAxis * 1.5 }):Play()
 	Debris:AddItem(anchor, 1)
+end
+
+function Scene:GetStand()
+	if self.Stand and self.Stand.Parent then
+		return self.Stand
+	end
+	for _, stand in CollectionService:GetTagged("ArenaStand") do
+		if stand:GetAttribute("ArenaId") == self.ArenaId then
+			self.Stand = stand
+			return stand
+		end
+	end
 end
 
 function Scene:Destroy()

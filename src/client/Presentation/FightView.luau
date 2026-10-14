@@ -107,7 +107,8 @@ function Controller:EndFight()
 		TouchGate.release(self)
 	end
 	self.Data, self.Snapshots, self.Events, self.Drag, self.RenderTime = nil, {}, {}, nil, 0
-	self.FinalTime, self.SlowUntil, self.HoldUntil, self.ShakeUntil = nil, nil, nil, nil
+	self.FinalTime, self.FinalSide, self.SlowUntil, self.HoldUntil, self.ShakeUntil, self.LastSnapshotWall =
+		nil, nil, nil, nil, nil, nil
 	self.Locked, self.Focus, self.LastCountdown = false, nil, nil
 	if self.Post then
 		self.Post:Destroy()
@@ -121,6 +122,11 @@ function Controller:Begin(data)
 	local maxima =
 		{ Formula.stats(Glassies.get(data.A.Id), data.A).HP, Formula.stats(Glassies.get(data.B.Id), data.B).HP }
 	self.Scene = Scene.new(data, maxima, self.Shatter)
+	for side, dead in data.DeadSides or {} do
+		if dead then
+			self.Scene:HideBroken(side)
+		end
+	end
 	self.Side = table.find(data.PlayerIds or {}, self.Player.UserId)
 		or (if data.UserId == self.Player.UserId then 1 else 0)
 	self.Participant = self.Side > 0
@@ -285,7 +291,8 @@ function Controller:Event(e)
 		self.Phase = "RoundEnd"
 		self.ShakeUntil, self.ShakePower = now + Feel.ShakeSeconds, Feel.ShakeMax
 		if self.Viewing then
-			self.Post = Instance.new("ColorCorrectionEffect")
+			-- A double KO can emit two Shatters; keep one owned flash for cleanup.
+			self.Post = self.Post or Instance.new("ColorCorrectionEffect")
 			self.Post.Name = "FightShatterFlash"
 			self.Post.Brightness = 0.5
 			self.Post.Parent = Lighting
@@ -335,6 +342,10 @@ function Controller:Render(dt)
 		local latest = buffer[#buffer]
 		local target =
 			math.max(0, latest.T + math.min(time - latest.SentAt, 1 / Feel.SnapshotRate) - Feel.InterpolationDelay)
+		if not self.Viewing and time - latest.SentAt > 1 then
+			-- Finish the final reliable event before a distant arena goes static.
+			target = latest.T
+		end
 		if self.FinalTime then
 			target = math.min(self.FinalTime, target + Feel.InterpolationDelay)
 		end
@@ -444,8 +455,8 @@ function Controller:Camera(dt, now)
 	end
 	-- Fade only supports that actually occlude a glassy, and restore them when the shot clears.
 	self.FadedLegs = self.FadedLegs or {}
-	local stand = self.Scene.Fighters[1].Hook.Parent.Parent
-	for _, leg in stand:GetChildren() do
+	local stand = self.Scene:GetStand()
+	for _, leg in stand and stand:GetChildren() or {} do
 		if leg:IsA("BasePart") and leg.Name:find("Leg") then
 			local blocked = false
 			for _, fighter in self.Scene.Fighters do

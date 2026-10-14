@@ -2,12 +2,13 @@ local Theme = require(script.Parent.Parent.Theme)
 local U = require(script.Parent.Util)
 local Button = {}
 local TweenService = game:GetService("TweenService")
-function Button.new(parent, name, text, variant, size, position)
+function Button.new(parent, name, text, variant, size, position, anchor)
 	local button = U.make("TextButton", parent, {
 		Name = name,
 		Text = text,
 		Size = size,
 		Position = position,
+		AnchorPoint = anchor or Vector2.zero,
 		BorderSizePixel = 0,
 		BackgroundColor3 = Color3.new(1, 1, 1),
 		TextColor3 = Theme.Colors.TextDark,

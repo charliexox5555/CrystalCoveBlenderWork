@@ -1,0 +1,215 @@
+{
+  "1": {
+    "Viewport": "705, 338",
+    "Screens": {
+      "1": {
+        "Problems": [],
+        "Screen": "Lobby",
+        "Buttons": 4
+      },
+      "2": {
+        "Problems": [],
+        "Screen": "Glassies",
+        "Buttons": 7
+      },
+      "3": {
+        "Problems": [],
+        "Screen": "Detail",
+        "Buttons": 1
+      },
+      "4": {
+        "Problems": [],
+        "Screen": "Index",
+        "Buttons": 35
+      },
+      "5": {
+        "Problems": [],
+        "Screen": "Kiln",
+        "Buttons": 3
+      },
+      "6": {
+        "Problems": [],
+        "Screen": "Rewards",
+        "Buttons": 8
+      },
+      "7": {
+        "Problems": [],
+        "Screen": "Gifts",
+        "Buttons": 9
+      },
+      "8": {
+        "Problems": [],
+        "Screen": "Streak",
+        "Buttons": 5
+      },
+      "9": {
+        "Problems": [],
+        "Screen": "Codes",
+        "Buttons": 6
+      },
+      "10": {
+        "Problems": [],
+        "Screen": "Queue",
+        "Buttons": 2
+      },
+      "11": {
+        "Problems": [],
+        "Screen": "Roll",
+        "Buttons": 7
+      },
+      "12": {
+        "Problems": [],
+        "Screen": "Results",
+        "Buttons": 2
+      },
+      "13": {
+        "Problems": [],
+        "Screen": "Reveal",
+        "Buttons": 2
+      }
+    },
+    "Device": "samsung_galaxy_a06"
+  },
+  "2": {
+    "Viewport": "749, 381",
+    "Screens": {
+      "1": {
+        "Problems": [],
+        "Screen": "Lobby",
+        "Buttons": 4
+      },
+      "2": {
+        "Problems": [],
+        "Screen": "Glassies",
+        "Buttons": 7
+      },
+      "3": {
+        "Problems": [],
+        "Screen": "Detail",
+        "Buttons": 1
+      },
+      "4": {
+        "Problems": [],
+        "Screen": "Index",
+        "Buttons": 35
+      },
+      "5": {
+        "Problems": [],
+        "Screen": "Kiln",
+        "Buttons": 3
+      },
+      "6": {
+        "Problems": [],
+        "Screen": "Rewards",
+        "Buttons": 8
+      },
+      "7": {
+        "Problems": [],
+        "Screen": "Gifts",
+        "Buttons": 9
+      },
+      "8": {
+        "Problems": [],
+        "Screen": "Streak",
+        "Buttons": 5
+      },
+      "9": {
+        "Problems": [],
+        "Screen": "Codes",
+        "Buttons": 6
+      },
+      "10": {
+        "Problems": [],
+        "Screen": "Queue",
+        "Buttons": 2
+      },
+      "11": {
+        "Problems": [],
+        "Screen": "Roll",
+        "Buttons": 7
+      },
+      "12": {
+        "Problems": [],
+        "Screen": "Results",
+        "Buttons": 2
+      },
+      "13": {
+        "Problems": [],
+        "Screen": "Reveal",
+        "Buttons": 2
+      }
+    },
+    "Device": "iphone_17_pro"
+  },
+  "3": {
+    "Viewport": "1375, 1031",
+    "Screens": {
+      "1": {
+        "Problems": [],
+        "Screen": "Lobby",
+        "Buttons": 4
+      },
+      "2": {
+        "Problems": [],
+        "Screen": "Glassies",
+        "Buttons": 7
+      },
+      "3": {
+        "Problems": [],
+        "Screen": "Detail",
+        "Buttons": 1
+      },
+      "4": {
+        "Problems": [],
+        "Screen": "Index",
+        "Buttons": 35
+      },
+      "5": {
+        "Problems": [],
+        "Screen": "Kiln",
+        "Buttons": 3
+      },
+      "6": {
+        "Problems": [],
+        "Screen": "Rewards",
+        "Buttons": 8
+      },
+      "7": {
+        "Problems": [],
+        "Screen": "Gifts",
+        "Buttons": 9
+      },
+      "8": {
+        "Problems": [],
+        "Screen": "Streak",
+        "Buttons": 5
+      },
+      "9": {
+        "Problems": [],
+        "Screen": "Codes",
+        "Buttons": 6
+      },
+      "10": {
+        "Problems": [],
+        "Screen": "Queue",
+        "Buttons": 2
+      },
+      "11": {
+        "Problems": [],
+        "Screen": "Roll",
+        "Buttons": 7
+      },
+      "12": {
+        "Problems": [],
+        "Screen": "Results",
+        "Buttons": 2
+      },
+      "13": {
+        "Problems": [],
+        "Screen": "Reveal",
+        "Buttons": 2
+      }
+    },
+    "Device": "ipad_pro_M5_13in"
+  }
+}

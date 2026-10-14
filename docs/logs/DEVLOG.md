@@ -14,6 +14,15 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-14 — Codex — multiplayer/security and placeholder layout regression
+Done:
+- Native two-client PvP, all seven simulations moving, one-third snapshot loss, complete match/results, replay/opponent disconnect, third staggered join and isolated mock profiles pass with zero runtime errors. Fixed missing late-join Hook Instances using local anchors/value coordinates and rate-limited bootstrap; retained tagged-stand fading and pad heart positions.
+- Fixed double-KO flash ownership and final distant-event draining. Twenty repeated cleanup cycles: 123 assertions, zero retained flashes/scenes. Real-remote 20-request floods were limited; malformed inputs granted zero coins and private fields stayed hidden. Added limiting to the Kiln prompt.
+- Three emulator presets / 39 layout states pass safe-screen and 44 px target checks. Visual review fixed roll-card info/footer overflow with a non-overwriting original-template migration. Fourteen StarterGui templates have zero layout offsets. Report, screenshot and raw results: docs/testing/F5_MULTIPLAYER_SECURITY.md.
+- Lune/Studio: 71 passed, 0 failed. Seven-fight sample: server 59.97 FPS, .146 ms combined simulation/frame; clients 59.01/14.81 FPS with spikes, so real-phone/MicroProfiler checks remain open. No frozen balance/economy changes.
+Next / problems:
+- Owner imports, publishing, real-phone/manual gamepad and production store/board verification; exact order in MORNING.md. Early forfeits still earn normal MatchLogic rewards; asked creator about eligibility and left the rule unchanged pending the answer. Paid features/free Marbles remain disabled.
+
 ## 2026-10-14 — Codex — free retention
 Done:
 - Added server-owned UTC quests/time gifts/first win/check-in streak, Studio-only one-use code, claim limiting and saved flags; 14th editable ScreenGui plus Daily/Codes kiosk prompts. Added three leaderboard placeholders/local mock ranks and coalesced production ordered stores. Group grants and free Marbles remain disabled.

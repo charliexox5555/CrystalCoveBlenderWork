@@ -75,6 +75,10 @@ function Controller:Start()
 			self:Close()
 		end
 	end
+	-- The "step on a pad" hint is noise once you're already standing on one.
+	pg:GetAttributeChangedSignal("Queued"):Connect(function()
+		self.Hint.Visible = not pg:GetAttribute("Queued")
+	end)
 	pg:GetAttributeChangedSignal("InMatch"):Connect(inMatch)
 	pg:GetAttributeChangedSignal("ResultsOpen"):Connect(inMatch)
 	inMatch()

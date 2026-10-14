@@ -41,13 +41,46 @@ function Service:OnPad(player, pad)
 end
 
 function Service:Label(arena, text)
-	if arena.LabelGui then
-		local active = not text:find("Step on a pad", 1, true)
-		arena.LabelGui.Enabled = active
-		arena.LabelGui:SetAttribute("ArenaActive", active)
+	if arena.LabelGui and not arena.LabelGui.Enabled then
+		-- Idle arenas keep a sign too, so players can find an open stand from the path.
+		arena.LabelGui.Enabled = true
+		arena.LabelGui:SetAttribute("ArenaActive", true)
 	end
 	if arena.Label and arena.Label.Text ~= text then
 		arena.Label.Text = text
+	end
+end
+
+function Service:Title(arena)
+	return if arena.Stand:GetAttribute("Featured") then "FEATURED ARENA" else "ARENA " .. arena.Id
+end
+
+function Service:IdleLabel(arena)
+	self:Label(arena, self:Title(arena) .. "\nOPEN • STEP ON A PAD")
+end
+
+-- Pad glows show the arena state: bright = free to join, dim = someone is waiting there, grey = match on.
+function Service:PadState(arena)
+	for side, pad in arena.Pads do
+		local glow = pad:FindFirstChild("Glow")
+		if not glow or not glow:IsA("BasePart") then
+			continue
+		end
+		if glow:GetAttribute("OpenColor") == nil then
+			glow:SetAttribute("OpenColor", glow.Color)
+			glow:SetAttribute("OpenTransparency", glow.Transparency)
+		end
+		local state = if arena.Busy then "Busy" elseif arena.Queue[side] then "Waiting" else "Open"
+		if glow:GetAttribute("PadState") == state then
+			continue
+		end
+		glow:SetAttribute("PadState", state)
+		local open, base = glow:GetAttribute("OpenColor"), glow:GetAttribute("OpenTransparency")
+		glow.Color = if state == "Busy" then Color3.fromHex(Balance.Lobby.BusyPadColor) else open
+		glow.Transparency = if state == "Busy"
+			then Balance.Lobby.BusyPadTransparency
+			elseif state == "Waiting" then Balance.Lobby.WaitingPadTransparency
+			else base
 	end
 end
 
@@ -57,8 +90,13 @@ function Service:MakeLabel(arena)
 	attachment.Name, attachment.Parent = "ArenaLabelAnchor", bar
 	attachment.Position = Vector3.yAxis * Balance.Feel.ArenaLabelHeight
 	local gui = attachment:FindFirstChild("ArenaStatus") or Instance.new("BillboardGui")
-	gui.Name, gui.Size, gui.MaxDistance, gui.AlwaysOnTop =
-		"ArenaStatus", UDim2.fromOffset(260, 68), Balance.Feel.SpectatorDistance, false
+	-- Sized in studs so distant signs shrink with perspective instead of stacking into one row.
+	gui.Name, gui.Size, gui.MaxDistance, gui.AlwaysOnTop, gui.LightInfluence =
+		"ArenaStatus",
+		UDim2.fromScale(Balance.Feel.ArenaLabelWidth, Balance.Feel.ArenaLabelWidth * 0.26),
+		Balance.Feel.SpectatorDistance,
+		false,
+		0
 	gui.Parent = attachment
 	arena.LabelGui = gui
 	local label = gui:FindFirstChild("Text") or Instance.new("TextLabel")
@@ -73,7 +111,8 @@ function Service:MakeLabel(arena)
 		c.Parent = label
 	end
 	arena.Label = label
-	self:Label(arena, "ARENA " .. arena.Id .. "\nStep on a pad")
+	self:IdleLabel(arena)
+	self:PadState(arena)
 end
 
 function Service:Leave(player, requireExit)
@@ -114,6 +153,7 @@ function Service:StartArena(arena, now)
 		self.ByPlayer[player] = nil
 	end
 	arena.Queue, arena.QueuedAt, arena.Busy = {}, nil, true
+	self:PadState(arena)
 	self.Services.MatchService:StartMatch(arena, players, now)
 end
 
@@ -125,7 +165,8 @@ function Service:Release(arena, players)
 			self.Recent[player] = { Arena = arena, Side = side }
 		end
 	end
-	self:Label(arena, "ARENA " .. arena.Id .. "\nStep on a pad")
+	self:IdleLabel(arena)
+	self:PadState(arena)
 end
 
 function Service:Replay(player)
@@ -142,6 +183,10 @@ function Service:Replay(player)
 		side = 3 - side
 	end
 	if arena.Queue[side] then
+		Remotes.MatchState:FireClient(
+			player,
+			{ Phase = "Notice", Text = "That arena just filled up. Step on a free pad." }
+		)
 		return
 	end
 	self:Leave(player, false)
@@ -165,6 +210,7 @@ function Service:Step(now)
 		end
 	end
 	for _, arena in self.Arenas do
+		self:PadState(arena)
 		if arena.Busy then
 			continue
 		end
@@ -181,15 +227,16 @@ function Service:Step(now)
 		local a, b = arena.Queue[1], arena.Queue[2]
 		if not a and not b then
 			arena.QueuedAt = nil
-			self:Label(arena, "ARENA " .. arena.Id .. "\nStep on a pad")
+			self:IdleLabel(arena)
 		elseif a and b or now - arena.QueuedAt >= Balance.Match.QueueBotAfterSeconds then
 			self:StartArena(arena, now)
 		else
 			self:Label(
 				arena,
-				"ARENA "
-					.. arena.Id
-					.. "\nBot joins in "
+				self:Title(arena)
+					.. "\n"
+					.. (a or b).DisplayName
+					.. " wants a clash! Bot in "
 					.. math.max(0, math.ceil(arena.QueuedAt + Balance.Match.QueueBotAfterSeconds - now))
 					.. "s"
 			)

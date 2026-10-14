@@ -73,6 +73,7 @@ function Controller:State(data)
 		return
 	end
 	if data.Phase == "Queue" then
+		self.Player.PlayerGui:SetAttribute("Queued", true)
 		self:CloseScreen()
 		self:Movement(false)
 		self.Screen = Screens.queue(data, function()
@@ -80,6 +81,7 @@ function Controller:State(data)
 		end)
 		return
 	elseif data.Phase == "QueueLeft" then
+		self.Player.PlayerGui:SetAttribute("Queued", false)
 		if self.Screen and self.Screen.Gui.Name == "QueuePanel" then
 			self:CloseScreen()
 		end
@@ -90,6 +92,7 @@ function Controller:State(data)
 		return
 	end
 	self.MatchId, self.Side = data.MatchId, side
+	self.Player.PlayerGui:SetAttribute("Queued", false)
 	if data.Phase == "Rolling" then
 		self:CloseScreen()
 		self:Movement(true)

@@ -112,7 +112,7 @@ function Controller:EndFight()
 	self.FinalTime, self.FinalSide, self.SlowUntil, self.HoldUntil, self.ShakeUntil, self.LastSnapshotWall =
 		nil, nil, nil, nil, nil, nil
 	self.Locked, self.Focus, self.LastCountdown = false, nil, nil
-	self.ShatterShown, self.PendingHearts, self.PendingAt = false, nil, nil
+	self.ShatterShown, self.PendingHearts, self.PendingAt, self.Settling = false, nil, nil, nil
 	if self.Post then
 		self.Post:Destroy()
 		self.Post = nil
@@ -322,8 +322,62 @@ function Controller:ShowRoundResult()
 		self.Hud.Hearts = self.PendingHearts
 	end
 	self.PendingHearts = nil
+	local winner = self.FinalSide and self.Scene and self.Scene.Fighters[3 - self.FinalSide]
+	if winner and not winner.Broken then
+		winner.Glints:Emit(Feel.VictoryGlints)
+	end
 	if self.Participant and self.MatchController and self.Data then
 		self.MatchController:ShatterShown(self.Data.Id)
+	end
+end
+
+-- The server stops simulating at the shatter. Let the survivor swing down to rest locally instead of
+-- freezing mid-air for the whole round-end beat.
+function Controller:Settle(latest, dt)
+	if not self.Settling then
+		self.Settling = {}
+		for side = 1, 2 do
+			local b = latest.B[side]
+			self.Settling[side] =
+				{ P = vec(b, 1), V = vec(b, 4), Twist = b[7], Spin = b[8], Tilt = Vector3.new(b[9], 0, b[10]) }
+		end
+	end
+	dt = math.min(dt, 1 / 20)
+	local gravity = Vector3.new(0, -M.Gravity, 0)
+	local decay = math.exp(-Feel.SettleDamping * dt)
+	for side, s in self.Settling do
+		local dir = s.P.Unit
+		local v = s.V + (gravity - dir * gravity:Dot(dir)) * dt
+		v = (v - dir * v:Dot(dir)) * decay
+		s.P, s.V = (s.P + v * dt).Unit * M.StringLength, v
+		s.Spin *= decay
+		s.Twist = s.Twist * math.exp(-M.TwistStiffness * 0.5 * dt) + s.Spin * dt
+		s.Tilt *= math.exp(-M.TumbleDamping * dt)
+		self.Scene:Pose(side, s.P, s.Twist, s.Tilt)
+	end
+end
+
+-- Fights out of snapshot range get no motion. Rather than freeze mid-swing, show a cheap distant clash
+-- that reads as "a fight is on" from the path, and hide the loser once the server says who won.
+function Controller:FarIdle()
+	if not self.Scene then
+		return
+	end
+	local t = os.clock() * Feel.FarSwingSpeed + (self.Data.ArenaId or 0)
+	if self.Phase == "Fighting" then
+		local theta = Feel.FarSwingCenter + Feel.FarSwingAngle * math.sin(t)
+		for side = 1, 2 do
+			local toward = if side == 1 then 1 else -1
+			local p = Vector3.new(toward * math.sin(theta), -math.cos(theta), 0.12 * math.sin(t * 0.7 + side))
+			self.Scene:Pose(side, p * M.StringLength, 0, Vector3.zero)
+		end
+	elseif self.Phase == "RoundEnd" and self.Data.RoundWinner then
+		local loser = 3 - self.Data.RoundWinner
+		if not self.Scene.Fighters[loser].Broken then
+			self.Scene:HideBroken(loser)
+		end
+		local p = Vector3.new(0.05 * math.sin(t), -1, 0) * M.StringLength
+		self.Scene:Pose(self.Data.RoundWinner, p, 0, Vector3.zero)
 	end
 end
 
@@ -336,6 +390,7 @@ function Controller:Render(dt)
 	end
 	local newest = self.Snapshots[#self.Snapshots]
 	if not self.Viewing and newest and workspace:GetServerTimeNow() - newest.SentAt > 1 and #self.Events == 0 then
+		self:FarIdle()
 		return
 	end
 	local time, now = workspace:GetServerTimeNow(), os.clock()
@@ -426,6 +481,9 @@ function Controller:Render(dt)
 		for side = 1, 2 do
 			r.Hp[side] = left.R.Hp[side] + (right.R.Hp[side] - left.R.Hp[side]) * alpha
 			r.Power[side] = left.R.Power[side] + (right.R.Power[side] - left.R.Power[side]) * alpha
+		end
+		if self.FinalTime and self.ShatterShown and self.RenderTime >= self.FinalTime - 0.0001 then
+			self:Settle(latest, dt * rate)
 		end
 		self.Scene:Update(r, self.RenderTime)
 		if self.Hud then

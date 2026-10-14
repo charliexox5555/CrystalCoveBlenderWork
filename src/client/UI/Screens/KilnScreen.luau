@@ -122,6 +122,11 @@ function Screen:Odds(data)
 	end
 	self.Message =
 		U.text(parent, "Message", "", UDim2.fromScale(1, 0.06), UDim2.fromScale(0, 0.94), Theme.Fonts.Caption)
+	-- Greyed buttons need a reason, or players think the Kiln is broken.
+	local cheapest = if data.Welcome > 0 then 0 else data.Cost
+	if #data.Odds > 0 and data.Coins < cheapest then
+		self.Message.Text = "Need " .. (cheapest - data.Coins) .. " more coins • win clashes and quests to earn them"
+	end
 end
 function Screen:Result(data)
 	if data.Error then

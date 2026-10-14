@@ -35,6 +35,9 @@ Balance.Lobby = {
 	FallY = -40,
 	FallCheckSeconds = 0.1,
 	RescueHeight = 4,
+	BusyPadColor = "#78809A", -- pad glow while a match is on
+	BusyPadTransparency = 0.7,
+	WaitingPadTransparency = 0.55, -- someone is waiting here; the other, bright pad is the free one
 }
 
 -- Swing motion (GAME_DESIGN 3.1). STARTING VALUES for the client/server swing code that Codex
@@ -260,6 +263,7 @@ Balance.EconomyModel = {
 Balance.Feel = {
 	SpectatorDistance = 120,
 	ArenaLabelHeight = 4,
+	ArenaLabelWidth = 11, -- studs
 	AimDragPixels = 170,
 	AimYawPixels = 180,
 	CameraDistance = 23,
@@ -311,6 +315,11 @@ Balance.Feel = {
 	OwnerTagSize = 3.2, -- studs; "YOU" marker over the local player's glassy
 	OwnerTagHeight = 0.9,
 	RoundBannerFallbackSeconds = 1.6, -- show the round result even if the shatter was never rendered
+	SettleDamping = 0.7, -- the survivor swings down to rest after the shatter (client-only)
+	VictoryGlints = 26,
+	FarSwingSpeed = 3.2, -- distant fights (no snapshots) show a cheap stand-in swing
+	FarSwingAngle = 0.42, -- radians either side of FarSwingCenter
+	FarSwingCenter = -0.16, -- negative = pulled back; the peak stops just short of contact
 }
 
 return Balance

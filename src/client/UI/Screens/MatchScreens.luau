@@ -318,7 +318,7 @@ function Screens.results(data, replay, lobby)
 		U.text(
 			history,
 			"Side" .. row,
-			if row == 1 then "YOU" else "RIVAL",
+			if row == 1 then "YOU" else string.upper(data.Names and data.Names[side] or "RIVAL"),
 			UDim2.fromScale(0.12, 0.4),
 			UDim2.fromScale(0, (row - 1) * 0.5),
 			Theme.Fonts.Caption
@@ -366,7 +366,12 @@ function Screens.results(data, replay, lobby)
 				then "No rewards — finish a round first"
 				elseif data.Saved then "Rewards added!"
 				else "Practice rewards reset when you leave"
-		) .. (if ready > 0 then " • " .. ready .. " quests ready" else ""),
+		)
+			.. (
+				if ready > 0
+					then " • " .. ready .. (if ready == 1 then " quest" else " quests") .. " ready to claim"
+					else ""
+			),
 		UDim2.fromScale(0.9, 0.07),
 		UDim2.fromScale(0.05, 0.69),
 		Theme.Fonts.Caption

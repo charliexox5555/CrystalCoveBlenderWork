@@ -10,6 +10,7 @@ local Runner = require(script.Parent.Parent.Simulation.MatchRunner)
 local Guard = require(script.Parent.Parent.Util.RemoteGuard)
 local Assets = require(script.Parent.Parent.Util.AssetCatalog)
 local Glassies = require(RS.Shared.Config.Glassies)
+local Bots = require(RS.Shared.Config.Bots)
 local Service = {}
 
 function Service:Init(services)
@@ -43,7 +44,8 @@ function Service:Meta(entry)
 	}
 	for side = 1, 2 do
 		local player = entry.Players[side]
-		out.Hearts[side], out.Names[side] = match.Sides[side].Hearts, player and player.DisplayName or "Glint Bot"
+		out.Hearts[side], out.Names[side] =
+			match.Sides[side].Hearts, player and player.DisplayName or entry.BotNames[side]
 		out.PlayerIds[side], out.LastPicks[side] = player and player.UserId or 0, match.Sides[side].LastPick or ""
 	end
 	return out
@@ -97,8 +99,14 @@ function Service:StartMatch(arena, players, now, spectate)
 		ActualWins = { 0, 0 },
 		HeavyShatters = { 0, 0 },
 		Used = { {}, {} },
+		BotNames = {},
 		Finished = false,
 	}
+	for side = 1, 2 do
+		if not players[side] then
+			entry.BotNames[side] = Bots.Names[math.floor(rng() * #Bots.Names) + 1]
+		end
+	end
 	self.Matches[arena.Id] = entry
 	arena.Busy = true
 	for side, player in players do
@@ -115,6 +123,7 @@ function Service:Finish(entry)
 	entry.Finished = true
 	local match = entry.Runner.Match
 	local eligible = entry.ActualWins[1] + entry.ActualWins[2] > 0
+	local names = self:Meta(entry).Names
 	if entry.FightId then
 		self.Services.FightService:Stop(entry.FightId)
 	end
@@ -150,6 +159,7 @@ function Service:Finish(entry)
 			Hearts = { match.Sides[1].Hearts, match.Sides[2].Hearts },
 			Saved = self.Services.DataService and self.Services.DataService:IsPersistent(player) or false,
 			ArenaId = entry.Arena.Id,
+			Names = names,
 			Quests = self.Services.RetentionService and self.Services.RetentionService:View(player).Quests or {},
 		})
 	end
@@ -259,9 +269,24 @@ end
 
 function Service:Start()
 	local function track(player)
-		self.CharacterConnections[player] = player.CharacterRemoving:Connect(function()
-			self:Forfeit(player)
-		end)
+		-- Forfeit as soon as the character dies (reset), not ~5 s later when it is removed at respawn.
+		local function watch(character)
+			local humanoid = character:WaitForChild("Humanoid", 5)
+			if humanoid then
+				humanoid.Died:Once(function()
+					self:Forfeit(player)
+				end)
+			end
+		end
+		self.CharacterConnections[player] = {
+			player.CharacterRemoving:Connect(function()
+				self:Forfeit(player)
+			end),
+			player.CharacterAdded:Connect(watch),
+		}
+		if player.Character then
+			task.spawn(watch, player.Character)
+		end
 	end
 	for _, player in Players:GetPlayers() do
 		track(player)
@@ -296,10 +321,10 @@ function Service:Start()
 	end)
 	Players.PlayerRemoving:Connect(function(player)
 		self:Forfeit(player)
-		if self.CharacterConnections[player] then
-			self.CharacterConnections[player]:Disconnect()
-			self.CharacterConnections[player] = nil
+		for _, connection in self.CharacterConnections[player] or {} do
+			connection:Disconnect()
 		end
+		self.CharacterConnections[player] = nil
 		self.ByPlayer[player], self.Temporary[player] = nil, nil
 		self.Guard:Remove(player)
 	end)

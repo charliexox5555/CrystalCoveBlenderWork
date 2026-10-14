@@ -1,0 +1,28 @@
+{
+  "scenario": "Studio desktop client, focused, 60 FPS. Local player is a participant on Arena 1; bot matches on Arenas 2-7 (7 simultaneous fights). Measured by FightClientDev Profile (os.clock around each FightView:Render) over 5 s windows, mid-round.",
+  "before": {
+    "meanRenderMs": [0.870, 0.749],
+    "maxRenderMs": [4.97, 3.04],
+    "meanMsByKind": { "Participant": [0.547, 0.558], "Nearby": [0.026, 0.043], "FarOrIdlePhase": [0.284, 0.138] },
+    "enabledHighlights": 14,
+    "localFightInstances": 634,
+    "snapshotPayload": "table snapshot, ~746 bytes each when JSON-encoded (Roblox's own encoding is somewhat smaller), 20 Hz per fight in range"
+  },
+  "after": {
+    "meanRenderMs": [0.512, 0.598],
+    "maxRenderMs": [3.42, 2.19],
+    "meanMsByKind": { "Participant": [0.351, 0.442], "Nearby": [0.050, 0.060], "FarOrIdlePhase": [0.102, 0.087] },
+    "enabledHighlights": 0,
+    "localFightInstances": 382,
+    "snapshotPayload": "128-byte buffer (SnapshotCodec), measured 5,120 B/s for 2 fights in range at 20 Hz"
+  },
+  "changes": [
+    "Highlights enabled only while a power tint is visible",
+    "No surface-crack Parts for scenes the player is not viewing (sub-pixel at spectator distance)",
+    "Binary FightSnapshot payload with a numeric fight key instead of the id string"
+  ],
+  "caveats": [
+    "Desktop Studio numbers; not a phone measurement. Real low-end phone MicroProfiler check remains an owner action.",
+    "Earlier ~15 FPS client samples coincided with an unfocused/minimized Studio window (throttled), not game cost."
+  ]
+}

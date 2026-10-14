@@ -5,6 +5,7 @@ local Balance = require(RS.Shared.Config.Balance)
 local Rules = require(RS.Shared.FightRules)
 local Rng = require(RS.Shared.Rng)
 local Remotes = require(RS.Shared.Remotes)
+local Codec = require(RS.Shared.SnapshotCodec)
 local Pendulum = require(script.Parent.Parent.Simulation.Pendulum)
 local Calibration = require(script.Parent.Parent.Simulation.Calibration)
 local Guard = require(script.Parent.Parent.Util.RemoteGuard)
@@ -12,7 +13,7 @@ local Service = {}
 local M, Feel = Balance.Motion, Balance.Feel
 
 function Service:Init(services)
-	self.Services, self.Sessions, self.Serial = services, {}, 0
+	self.Services, self.Sessions, self.Serial, self.KeySerial = services, {}, 0, 0
 	self.Guard = Guard.new()
 end
 
@@ -72,7 +73,9 @@ end
 function Service:StartFight(id, arena, setup, seed, metadata, onEnd)
 	assert(not self.Sessions[id], "Duplicate fight id")
 	local data = self:Describe(arena, setup, metadata)
-	data.Id = id
+	-- Small numeric key so 20 Hz binary snapshots don't repeat the long fight id string.
+	self.KeySerial = self.KeySerial % 65535 + 1
+	data.Id, data.Key = id, self.KeySerial
 	local _, gap = self:Geometry(arena)
 	local session = {
 		Id = id,
@@ -123,9 +126,7 @@ function Service:Step(session, dt, now)
 	session.SnapshotAccumulator += dt
 	if session.SnapshotAccumulator >= 1 / Feel.SnapshotRate or session.Sim.Fight.Over then
 		session.SnapshotAccumulator %= 1 / Feel.SnapshotRate
-		local snapshot = Pendulum.snapshot(session.Sim)
-		snapshot.Id, snapshot.SentAt = session.Id, now
-		self:Send(session, Remotes.FightSnapshot, snapshot)
+		self:Send(session, Remotes.FightSnapshot, Codec.encode(session.Data.Key, Pendulum.snapshot(session.Sim), now))
 	end
 	if session.Sim.Fight.Over then
 		self.LastResult = { Seed = session.Sim.Seed, Fight = session.Sim.Fight, Metrics = session.Sim.Metrics }

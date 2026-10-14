@@ -82,7 +82,8 @@ function Shatter:SetCracks(fighter, hp, maxHP)
 		part:Destroy()
 	end
 	fighter.Cracks = {}
-	if stage == 0 or hp == 0 then
+	if stage == 0 or hp == 0 or fighter.LowDetail then
+		-- LowDetail: cracks are ~0.03 studs wide, sub-pixel for spectators, and cost a Part each per frame.
 		return stage > 0
 	end
 	local id = fighter.RenderId or fighter.Id

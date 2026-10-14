@@ -134,6 +134,9 @@ function Controller:Begin(data)
 		or (if data.UserId == self.Player.UserId then 1 else 0)
 	self.Participant = self.Side > 0
 	self.Viewing = self.Participant or data.Spectate
+	for _, fighter in self.Scene.Fighters do
+		fighter.LowDetail = not self.Viewing
+	end
 	if self.Viewing then
 		self.HiddenGuis = {}
 		for _, gui in workspace.Lobby.Arenas:GetDescendants() do

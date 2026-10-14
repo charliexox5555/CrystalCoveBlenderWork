@@ -103,6 +103,7 @@ function Scene.new(data, maxima, shatter)
 		local highlight = Instance.new("Highlight")
 		highlight.Adornee, highlight.DepthMode, highlight.FillTransparency, highlight.OutlineTransparency =
 			model, Enum.HighlightDepthMode.Occluded, 1, 1
+		highlight.Enabled = false
 		highlight.Parent = model
 		local bubble = part(self.Root, "ShieldBubble", Color3.fromHex("#A7E8FF"))
 		bubble.Shape, bubble.Size, bubble.Transparency, bubble.Material =
@@ -207,16 +208,21 @@ function Scene:Update(r, time)
 		f.Bubble.Transparency = if shield then 0.42 else 1
 		local glaze = (f.Effects.glaze or -1) > time
 		local active = frozen or rage or r.Slam[side] or r.Pump[side] or glaze
-		f.Highlight.FillColor = if glaze
+		local tint = if glaze
 			then Color3.new(1, 1, 1)
 			elseif frozen then Color3.fromHex("#B3F4FF")
 			elseif rage then Color3.fromHex("#FF5533")
 			else Color3.fromHex(f.Def.Tint)
-		f.Highlight.OutlineColor = f.Highlight.FillColor
-		f.Highlight.FillTransparency, f.Highlight.OutlineTransparency =
-			if active then 0.55 else 1, if active then 0.15 else 1
+		-- Highlights are a render pass each (and capped per client); only keep them on while visible.
+		f.Highlight.Enabled = active == true
+		if active then
+			f.Highlight.FillColor, f.Highlight.OutlineColor = tint, tint
+			f.Highlight.FillTransparency, f.Highlight.OutlineTransparency = 0.55, 0.15
+		end
 		f.Glints.Rate = if frozen then 14 elseif rage then 24 elseif f.Def.Passive == "glow_core" then 4 else 0
-		f.Glints.Color = ColorSequence.new(f.Highlight.FillColor)
+		if f.GlintTint ~= tint then
+			f.GlintTint, f.Glints.Color = tint, ColorSequence.new(tint)
+		end
 		f.Trail.Enabled = r.Pump[side]
 	end
 end
@@ -265,6 +271,7 @@ function Scene:Event(e, hud)
 			self:Ray(e.Side, e.Id, e.Missed, e)
 		end
 		if e.Id == "glaze" then
+			f.Highlight.Enabled = true
 			f.Highlight.FillColor = Color3.new(1, 1, 1)
 			f.Highlight.FillTransparency = 0.2
 			TweenService:Create(f.Highlight, TweenInfo.new(Feel.PowerEffectSeconds), { FillTransparency = 1 }):Play()

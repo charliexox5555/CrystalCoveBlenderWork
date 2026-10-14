@@ -15,6 +15,7 @@ local Remotes = require(RS.Shared.Remotes)
 local Scene = require(script.Parent.Parent.Presentation.FightScene)
 local Hud = require(script.Parent.Parent.UI.Screens.FightHud)
 local Theme = require(script.Parent.Parent.UI.Theme)
+local Audio = require(RS.Shared.Config.Audio)
 local M, Feel = Balance.Motion, Balance.Feel
 local Controller = {}
 
@@ -422,6 +423,16 @@ function Controller:Render(dt)
 			else
 				local n = math.max(1, math.ceil((data.ReleaseAt or time) - time))
 				self.Hud.Headline.Text = tostring(n)
+				if self.LastCountdown ~= n then
+					-- A rising tick per count builds the tension before release.
+					self.LastCountdown = n
+					self.Scene:Sound(
+						Audio.Clink,
+						(self.Scene.Fighters[self.Side] or self.Scene.Fighters[1]).Body,
+						1.9 + (3 - n) * 0.18,
+						0.22
+					)
+				end
 			end
 		end
 	elseif #self.Snapshots > 0 then
@@ -502,6 +513,15 @@ function Controller:Render(dt)
 		end
 		self.Events = pending
 		if self.Hud and self.Phase == "Fighting" and self.RenderTime < 0.8 then
+			if self.Hud.Headline.Text ~= "LET GO!" then
+				self.Scene:Sound(
+					Audio.Whoosh,
+					(self.Scene.Fighters[self.Side] or self.Scene.Fighters[1]).Body,
+					0.85,
+					0.32,
+					0.5
+				)
+			end
 			self.Hud.Headline.Text = "LET GO!"
 		elseif self.Hud and self.Phase == "Fighting" and self.Hud.Headline.Text == "LET GO!" then
 			self.Hud.Headline.Text = ""

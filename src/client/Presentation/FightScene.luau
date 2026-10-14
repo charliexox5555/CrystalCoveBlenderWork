@@ -361,6 +361,7 @@ function Scene:Heart(side)
 	text.Text, text.TextColor3, text.TextScaled = "♥", anchor.Color, true
 	text.Parent = gui
 	emitter(anchor, anchor.Color):Emit(14)
+	self:Sound(Audio.Tinkle, anchor, 1.6, 0.35)
 	TweenService:Create(text, TweenInfo.new(0.6), { Rotation = 25, TextTransparency = 1 }):Play()
 	TweenService:Create(anchor, TweenInfo.new(0.6), { Position = anchor.Position + Vector3.yAxis * 1.5 }):Play()
 	Debris:AddItem(anchor, 1)

@@ -118,4 +118,3 @@ local color=Instance.new("ColorCorrectionEffect"); color.Name="SkyLobbyColor"; c
 local rays=Instance.new("SunRaysEffect"); rays.Name="SkyLobbySunRays"; rays.Intensity=.04; rays.Parent=lighting
 workspace.FallenPartsDestroyHeight=-150
 return {instances=#lobby:GetDescendants(),sun=tostring(lighting:GetSunDirection()),hookGap=(bar.HookA.WorldPosition-bar.HookB.WorldPosition).Magnitude}
-

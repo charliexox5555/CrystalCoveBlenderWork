@@ -1,0 +1,19 @@
+{
+  "animated_source_meshes": 35,
+  "keyframes_present": true,
+  "frames": [
+    1,
+    16
+  ],
+  "production_completed": 24,
+  "original_scene": "Scene",
+  "original_objects": [
+    "Cube",
+    "Light",
+    "Camera"
+  ],
+  "selected": [
+    "Cube"
+  ],
+  "filepath": ""
+}

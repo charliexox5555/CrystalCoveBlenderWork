@@ -1,7 +1,7 @@
 {
   "version": 1,
   "date": "2026-10-15",
-  "status": "creator-approved roster; production not started",
+  "status": "24/24 exported/source-validated; Studio import and live integration pending",
   "releaseCount": 24,
   "roster": [
     {
@@ -9,172 +9,172 @@
       "name": "Pop",
       "batch": "A",
       "source": "playable_revision",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "jam",
       "name": "Jam",
       "batch": "A",
       "source": "playable_revision",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "prism",
       "name": "Prism",
       "batch": "A",
       "source": "playable_revision",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "crescent_axe",
       "name": "Crescent Axe",
       "batch": "A",
       "source": "new_concept",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "briar_flask",
       "name": "Briar Flask",
       "batch": "A",
       "source": "new_concept",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "arc_coil",
       "name": "Arc Coil",
       "batch": "A",
       "source": "new_concept",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "milk_bottle",
       "name": "Milk Bottle",
       "batch": "B",
       "source": "playable_revision",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "pickle_jar",
       "name": "Pickle Jar",
       "batch": "B",
       "source": "playable_revision",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "ketchup_bottle",
       "name": "Ketchup Bottle",
       "batch": "B",
       "source": "playable_revision",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "glass_cup",
       "name": "Glass Cup",
       "batch": "B",
       "source": "playable_revision",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "water_jug",
       "name": "Water Jug",
       "batch": "B",
       "source": "playable_revision",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "lemonade_bottle",
       "name": "Lemonade Bottle",
       "batch": "B",
       "source": "playable_revision",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "mason_jar",
       "name": "Mason Jar",
       "batch": "C",
       "source": "playable_revision",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "hot_sauce",
       "name": "Hot Sauce",
       "batch": "C",
       "source": "playable_revision",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "crystal_tumbler",
       "name": "Crystal Tumbler",
       "batch": "C",
       "source": "playable_revision",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "chime",
       "name": "Chime",
       "batch": "C",
       "source": "new_concept",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "hourglass",
       "name": "Hourglass",
       "batch": "C",
       "source": "new_concept",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "frostglobe",
       "name": "Frostglobe",
       "batch": "C",
       "source": "new_concept",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "prism_blade",
       "name": "Prism Blade",
       "batch": "D",
       "source": "catalog_first_model",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "rocket_pop",
       "name": "Rocket Pop",
       "batch": "D",
       "source": "catalog_first_model",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "glass_duck",
       "name": "Glass Duck",
       "batch": "D",
       "source": "catalog_first_model",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "comet",
       "name": "Comet",
       "batch": "D",
       "source": "catalog_first_model",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "glass_dragon",
       "name": "Glass Dragon",
       "batch": "D",
       "source": "catalog_first_model",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     },
     {
       "id": "galaxy_orb",
       "name": "Galaxy Orb",
       "batch": "D",
       "source": "catalog_first_model",
-      "status": "planned"
+      "status": "exported_blender_validated_pending_studio_import"
     }
   ],
   "notes": [
-    "Planning manifest, not loaded by current game runtime.",
+    "Production status manifest, not loaded by current game runtime.",
     "Existing IDs/ownership must be preserved. Dormant catalog definitions are retained.",
     "New concept rarities and acquisition mapping remain integration decisions."
   ]

@@ -1,0 +1,876 @@
+{
+  "id": "galaxy_orb",
+  "batch": "D",
+  "version": "release_v2",
+  "status": {
+    "exported": true,
+    "blender_validated": true,
+    "studio_imported": false,
+    "uploaded": false,
+    "playtested": false
+  },
+  "units": "1 Blender unit = 1 stud",
+  "axis_conversion": "Blender (x,y,z) -> Roblox (x,z,-y)",
+  "hang_origin": [
+    0,
+    0,
+    0
+  ],
+  "intact_triangles": 832,
+  "triangle_budget": 3000,
+  "shard_count": 16,
+  "fracture_volume_ratio": 1.0000000014448975,
+  "checks": {
+    "Body.038": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume": 4.247271620546789
+    },
+    "Shard_01.038": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume": 0.39242434871063303
+    },
+    "Shard_02.038": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume": 0.423396184942663
+    },
+    "Shard_03.038": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume": 0.4094137006657656
+    },
+    "Shard_04.038": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume": 0.39933773609491635
+    },
+    "Shard_05.038": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume": 0.36038489927340345
+    },
+    "Shard_06.038": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume": 0.34103576388637713
+    },
+    "Shard_07.038": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume": 0.33047724652673977
+    },
+    "Shard_08.038": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume": 0.29528050271578665
+    },
+    "Shard_09.038": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume": 0.293476596723221
+    },
+    "Shard_10.038": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume": 0.24676966603156603
+    },
+    "Shard_11.038": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume": 0.23021515481810761
+    },
+    "Shard_12.038": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume": 0.20188411691498193
+    },
+    "Shard_13.038": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume": 0.10987432137892444
+    },
+    "Shard_14.038": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume": 0.09547980045357041
+    },
+    "Shard_15.038": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume": 0.056637979084598264
+    },
+    "Shard_16.038": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "volume": 0.061183608462406155
+    }
+  },
+  "crack_segments": 144,
+  "meshes": [
+    {
+      "name": "Body.065",
+      "source_name": "Body",
+      "role": "Body",
+      "triangles": 280,
+      "bounds_blender": [
+        [
+          -0.9599999785423279,
+          -0.9599999785423279,
+          -2.4000000953674316
+        ],
+        [
+          0.9599999785423279,
+          0.9599999785423279,
+          -0.13000011444091797
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#7A5CFF",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "OffsetStarCore.001",
+      "source_name": "OffsetStarCore",
+      "role": "Detail",
+      "triangles": 168,
+      "bounds_blender": [
+        [
+          -0.04000002145767212,
+          -0.5699999928474426,
+          -1.5
+        ],
+        [
+          0.5600000023841858,
+          -0.12999999523162842,
+          -0.9000000357627869
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#FFE8A9",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "OrbitBand_1.001",
+      "source_name": "OrbitBand_1",
+      "role": "Detail",
+      "triangles": 192,
+      "bounds_blender": [
+        [
+          -1.2050000429153442,
+          -1.0574870109558105,
+          -1.89155113697052
+        ],
+        [
+          1.2050000429153442,
+          1.0574870109558105,
+          -0.668448805809021
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#BBA7F6",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "OrbitBand_2.001",
+      "source_name": "OrbitBand_2",
+      "role": "Detail",
+      "triangles": 192,
+      "bounds_blender": [
+        [
+          -1.2050000429153442,
+          -0.9945293664932251,
+          -1.982553243637085
+        ],
+        [
+          1.2050000429153442,
+          0.9945293664932251,
+          -0.577446699142456
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#BBA7F6",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "Shard_01.065",
+      "source_name": "Shard_01",
+      "role": "Shard",
+      "triangles": 160,
+      "bounds_blender": [
+        [
+          -0.5436598658561707,
+          -0.49087220430374146,
+          -2.375396966934204
+        ],
+        [
+          0.9268346428871155,
+          0.6217813491821289,
+          -0.8699115514755249
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#7A5CFF",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "Shard_02.065",
+      "source_name": "Shard_02",
+      "role": "Shard",
+      "triangles": 130,
+      "bounds_blender": [
+        [
+          -0.9554470181465149,
+          -0.139485701918602,
+          -2.1973838806152344
+        ],
+        [
+          0.17331281304359436,
+          0.9451114535331726,
+          -0.4730292856693268
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#7A5CFF",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "Shard_03.065",
+      "source_name": "Shard_03",
+      "role": "Shard",
+      "triangles": 160,
+      "bounds_blender": [
+        [
+          -0.8901412487030029,
+          -0.4286983013153076,
+          -2.375789165496826
+        ],
+        [
+          0.33494144678115845,
+          0.6494928598403931,
+          -1.0053149461746216
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#7A5CFF",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "Shard_04.065",
+      "source_name": "Shard_04",
+      "role": "Shard",
+      "triangles": 90,
+      "bounds_blender": [
+        [
+          -0.577347457408905,
+          -0.9088363647460938,
+          -1.6262093782424927
+        ],
+        [
+          0.8879752159118652,
+          0.16902318596839905,
+          -0.4536535441875458
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#7A5CFF",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "Shard_05.065",
+      "source_name": "Shard_05",
+      "role": "Shard",
+      "triangles": 146,
+      "bounds_blender": [
+        [
+          -0.303545206785202,
+          -0.711257815361023,
+          -1.4219248294830322
+        ],
+        [
+          0.9309472441673279,
+          0.49438247084617615,
+          -0.38397541642189026
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#7A5CFF",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "Shard_06.065",
+      "source_name": "Shard_06",
+      "role": "Shard",
+      "triangles": 98,
+      "bounds_blender": [
+        [
+          -0.9599999785423279,
+          -0.659798800945282,
+          -2.096764087677002
+        ],
+        [
+          -0.15652692317962646,
+          0.19344684481620789,
+          -0.1715654581785202
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#7A5CFF",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "Shard_07.065",
+      "source_name": "Shard_07",
+      "role": "Shard",
+      "triangles": 118,
+      "bounds_blender": [
+        [
+          -0.8994983434677124,
+          -0.16738280653953552,
+          -1.7196673154830933
+        ],
+        [
+          0.4004235863685608,
+          0.6710039377212524,
+          -0.1473623812198639
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#7A5CFF",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "Shard_08.065",
+      "source_name": "Shard_08",
+      "role": "Shard",
+      "triangles": 126,
+      "bounds_blender": [
+        [
+          -0.034423768520355225,
+          0.1914273202419281,
+          -2.308124303817749
+        ],
+        [
+          0.7506145238876343,
+          0.9103308320045471,
+          -0.48403552174568176
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#7A5CFF",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "Shard_09.065",
+      "source_name": "Shard_09",
+      "role": "Shard",
+      "triangles": 96,
+      "bounds_blender": [
+        [
+          -0.6514562368392944,
+          -0.9599999785423279,
+          -2.2109334468841553
+        ],
+        [
+          0.6475657224655151,
+          -0.18083222210407257,
+          -0.9861183166503906
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#7A5CFF",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "Shard_10.065",
+      "source_name": "Shard_10",
+      "role": "Shard",
+      "triangles": 72,
+      "bounds_blender": [
+        [
+          -0.6811313629150391,
+          -0.9174822568893433,
+          -1.90285325050354
+        ],
+        [
+          0.4061422049999237,
+          0.053971707820892334,
+          -0.7179534435272217
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#7A5CFF",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "Shard_11.065",
+      "source_name": "Shard_11",
+      "role": "Shard",
+      "triangles": 154,
+      "bounds_blender": [
+        [
+          -0.3578897714614868,
+          -0.5966477990150452,
+          -0.895340621471405
+        ],
+        [
+          0.7689344882965088,
+          0.6273824572563171,
+          -0.13000011444091797
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#7A5CFF",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "Shard_12.065",
+      "source_name": "Shard_12",
+      "role": "Shard",
+      "triangles": 84,
+      "bounds_blender": [
+        [
+          -0.2582321763038635,
+          -0.7567072510719299,
+          -2.2572293281555176
+        ],
+        [
+          0.9599999785423279,
+          0.37959617376327515,
+          -1.0404870510101318
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#7A5CFF",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "Shard_13.065",
+      "source_name": "Shard_13",
+      "role": "Shard",
+      "triangles": 74,
+      "bounds_blender": [
+        [
+          -0.5277369022369385,
+          0.21246477961540222,
+          -2.2393412590026855
+        ],
+        [
+          0.3019227087497711,
+          0.9599999785423279,
+          -0.6755314469337463
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#7A5CFF",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "Shard_14.065",
+      "source_name": "Shard_14",
+      "role": "Shard",
+      "triangles": 90,
+      "bounds_blender": [
+        [
+          -0.4773014187812805,
+          -0.5369956493377686,
+          -1.3958182334899902
+        ],
+        [
+          0.40672188997268677,
+          0.6143292784690857,
+          -0.20628342032432556
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#7A5CFF",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "Shard_15.065",
+      "source_name": "Shard_15",
+      "role": "Shard",
+      "triangles": 90,
+      "bounds_blender": [
+        [
+          -0.7656649947166443,
+          -0.03527790680527687,
+          -1.5034489631652832
+        ],
+        [
+          0.2193901091814041,
+          0.637068510055542,
+          -0.5552705526351929
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#7A5CFF",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    },
+    {
+      "name": "Shard_16.065",
+      "source_name": "Shard_16",
+      "role": "Shard",
+      "triangles": 100,
+      "bounds_blender": [
+        [
+          -0.33101150393486023,
+          -0.15299475193023682,
+          -2.4000000953674316
+        ],
+        [
+          0.6910123825073242,
+          0.6241071224212646,
+          -1.7012901306152344
+        ]
+      ],
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "color": "#7A5CFF",
+      "material": "Glass",
+      "animation_pivot": [
+        0,
+        0,
+        0
+      ],
+      "effect_only": false
+    }
+  ],
+  "files": {
+    "body": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\glassies\\galaxy_orb\\release_v2\\galaxy_orb_body.fbx",
+    "details": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\glassies\\galaxy_orb\\release_v2\\galaxy_orb_details.fbx",
+    "shards": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\glassies\\galaxy_orb\\release_v2\\galaxy_orb_shards.fbx",
+    "bundle": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\glassies\\galaxy_orb\\release_v2\\galaxy_orb_bundle.fbx",
+    "icon": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\icons\\release_v2\\galaxy_orb.png",
+    "blend": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\glassies\\galaxy_orb\\release_v2\\galaxy_orb.blend",
+    "cracks": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\glassies\\galaxy_orb\\release_v2\\cracks.json"
+  },
+  "hashes": {
+    "body": "341173f7ac4c88e3249d041419b8c415e9b9cc0cf5406ff6a9f6434b2526539e",
+    "details": "545fa400b7d3f99bf82d4529c4d644ec19f13df92f2402c9fd1fd2de7545d5fa",
+    "shards": "2f055b5047a9fa8d191e1c03dd0d69794f605e0ad9497fd9e27252bc649c8b06",
+    "bundle": "8bef15fd05c0c6d49c6c4462f8cedb8b3f713b892f211ed0afd0027052327dd5",
+    "icon": "6c7d3cdf05cdb5c461bf404044d9a2532f3e516223676210144a602969270e2e",
+    "blend": "c0bc1f6c0eb41caf2315883a3ef4396e6a4f311cfd42e705d4ea4f03c4a759ff",
+    "cracks": "7388f587087f33aa5a49fab1c8b3e48fba52ea42b57846b4a71f40d1159c38e6"
+  },
+  "before": null,
+  "roblox_ids": {},
+  "remaining_checks": [
+    "Roblox FBX import scale/orientation/pivot",
+    "Glass material and alpha against live sky",
+    "new collision dimensions/live cracks",
+    "six-kit live gameplay proof"
+  ],
+  "preview_material": {
+    "transmission": 0.85,
+    "roughness": 0.07,
+    "alpha": 0.72,
+    "samples": 64,
+    "roblox_material_parity_verified": false
+  },
+  "fbx_roundtrip": {
+    "passed": true,
+    "application": "Blender 5.2.2 LTS",
+    "format": "FBX bundle round-trip",
+    "mesh_count": 20,
+    "shard_count": 16,
+    "checks": [
+      {
+        "name": "Body",
+        "bounds_error": 1.7881393432617188e-07,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "OffsetStarCore",
+        "bounds_error": 1.4057727354849284e-07,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "OrbitBand_1",
+        "bounds_error": 1.6858739404357614e-07,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "OrbitBand_2",
+        "bounds_error": 1.6858739404357614e-07,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Shard_01",
+        "bounds_error": 1.4901161193847656e-07,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Shard_02",
+        "bounds_error": 1.744136200952474e-07,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Shard_03",
+        "bounds_error": 1.884864366154897e-07,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Shard_04",
+        "bounds_error": 1.1920928955078125e-07,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Shard_05",
+        "bounds_error": 6.664001874625056e-08,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Shard_06",
+        "bounds_error": 1.7881393432617188e-07,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Shard_07",
+        "bounds_error": 1.341104507446289e-07,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Shard_08",
+        "bounds_error": 1.7881393432617188e-07,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Shard_09",
+        "bounds_error": 1.7881393432617188e-07,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Shard_10",
+        "bounds_error": 1.3498716750736115e-07,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Shard_11",
+        "bounds_error": 8.429369702178807e-08,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Shard_12",
+        "bounds_error": 1.1920928955078125e-07,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Shard_13",
+        "bounds_error": 1.7881393432617188e-07,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Shard_14",
+        "bounds_error": 1.7120130796843852e-07,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Shard_15",
+        "bounds_error": 1.2665987014770508e-07,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Shard_16",
+        "bounds_error": 1.6391277313232422e-07,
+        "nonmanifold_edges": 0
+      }
+    ],
+    "roblox_import": false
+  }
+}

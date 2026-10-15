@@ -1,0 +1,285 @@
+{
+  "provenance": "Original procedural geometry, analytic masks and Blender-rendered flipbooks; no external artwork",
+  "mesh_bundle": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\vfx\\combat_release\\combat_vfx_bundle.fbx",
+  "blend": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\vfx\\combat_release\\combat_vfx.blend",
+  "meshes": [
+    {
+      "name": "Ring.001",
+      "triangles": 192,
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "file": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\vfx\\combat_release\\Ring.001.fbx"
+    },
+    {
+      "name": "HalfRing.001",
+      "triangles": 100,
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "file": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\vfx\\combat_release\\HalfRing.001.fbx"
+    },
+    {
+      "name": "CurvedSlash.001",
+      "triangles": 80,
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "file": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\vfx\\combat_release\\CurvedSlash.001.fbx"
+    },
+    {
+      "name": "GuardPlate.001",
+      "triangles": 80,
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "file": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\vfx\\combat_release\\GuardPlate.001.fbx"
+    },
+    {
+      "name": "Thorn.001",
+      "triangles": 44,
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "file": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\vfx\\combat_release\\Thorn.001.fbx"
+    },
+    {
+      "name": "CrystalChip.001",
+      "triangles": 56,
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "file": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\vfx\\combat_release\\CrystalChip.001.fbx"
+    },
+    {
+      "name": "Droplet.001",
+      "triangles": 100,
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "file": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\vfx\\combat_release\\Droplet.001.fbx"
+    },
+    {
+      "name": "BubbleDome.001",
+      "triangles": 168,
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "file": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\vfx\\combat_release\\BubbleDome.001.fbx"
+    },
+    {
+      "name": "SplashSheet.001",
+      "triangles": 104,
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "file": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\vfx\\combat_release\\SplashSheet.001.fbx"
+    },
+    {
+      "name": "PuffSheet.001",
+      "triangles": 92,
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "file": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\vfx\\combat_release\\PuffSheet.001.fbx"
+    }
+  ],
+  "textures": {
+    "glass_glint": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\vfx\\combat_release\\glass_glint.png",
+    "directional_streak": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\vfx\\combat_release\\directional_streak.png",
+    "soft_puff": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\vfx\\combat_release\\soft_puff.png",
+    "shard_fleck": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\vfx\\combat_release\\shard_fleck.png",
+    "electricity_strip": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\vfx\\combat_release\\electricity_strip.png",
+    "droplet_mask": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\vfx\\combat_release\\droplet_mask.png"
+  },
+  "flipbooks": {
+    "glass_dust_4x4": {
+      "file": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\vfx\\combat_release\\glass_dust_4x4.png",
+      "frames": 16,
+      "layout": "4x4 top-left row-major",
+      "frame_size": 128,
+      "gutter_pixels": 3,
+      "duration_seconds": 0.48,
+      "static_fallback": "shard_fleck",
+      "native_order_verified": false
+    },
+    "pressure_pop_4x4": {
+      "file": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\vfx\\combat_release\\pressure_pop_4x4.png",
+      "frames": 16,
+      "layout": "4x4 top-left row-major",
+      "frame_size": 128,
+      "gutter_pixels": 3,
+      "duration_seconds": 0.32,
+      "static_fallback": "glass_glint",
+      "native_order_verified": false
+    }
+  },
+  "status": {
+    "exported": true,
+    "studio_imported": false,
+    "uploaded": false,
+    "playtested": false,
+    "textures_uploaded": true,
+    "meshes_uploaded": false
+  },
+  "roblox_ids": {
+    "glass_glint": "rbxassetid://118014953401567",
+    "directional_streak": "rbxassetid://125001828353860",
+    "soft_puff": "rbxassetid://95994848531562",
+    "shard_fleck": "rbxassetid://119749428254490",
+    "electricity_strip": "rbxassetid://110100143277445",
+    "droplet_mask": "rbxassetid://118823344389220",
+    "glass_dust_4x4": "rbxassetid://101019590487297",
+    "pressure_pop_4x4": "rbxassetid://130955555778708"
+  },
+  "sha256": {
+    "assets\\blender\\vfx\\combat_release\\combat_vfx_bundle.fbx": "dc3e028860d1958dae57b7b507229156dd9ae6d2e07a5143b057feadd23087e3",
+    "assets\\blender\\vfx\\combat_release\\combat_vfx.blend": "4c8c164d5dfb7ac3d96fcc976dcacd01509d0bf3ce49957070a53527ef336a19",
+    "assets\\blender\\vfx\\combat_release\\Ring.001.fbx": "461c0c2a5dd3d6fb32744b1a2c9f2642ff03dfbdda26e6fa5ec07656f02cce89",
+    "assets\\blender\\vfx\\combat_release\\HalfRing.001.fbx": "7d68dba74f2af1d98d2750b77d739bfe0a3501127c8776cf4713d064b462b861",
+    "assets\\blender\\vfx\\combat_release\\CurvedSlash.001.fbx": "3cc43db980678baddabb9fa325e6302e235178f3027175c935a7cd6a1b211f9f",
+    "assets\\blender\\vfx\\combat_release\\GuardPlate.001.fbx": "f3f3a216c8bc9c09856f2b88b6eb9fa15f5143231db43d21f5cdf4ab9997f3a5",
+    "assets\\blender\\vfx\\combat_release\\Thorn.001.fbx": "4b0120da3ff62f9da1c1ee301d6a5355ff27d24b929190b9ffd34a5674e09df8",
+    "assets\\blender\\vfx\\combat_release\\CrystalChip.001.fbx": "3edd1c6a3c19fff20b3ecc59fee5fb769e05b65de995780ae2e11ac39606a680",
+    "assets\\blender\\vfx\\combat_release\\Droplet.001.fbx": "7e504b82fa4b5e305685c5931d3a0c38680a386279307ae81f3d5d1f79c52281",
+    "assets\\blender\\vfx\\combat_release\\BubbleDome.001.fbx": "cc9949c589f34a97791cb05659e0a308ec8078d62b17e961ad738a7d8639e119",
+    "assets\\blender\\vfx\\combat_release\\SplashSheet.001.fbx": "03512a1a2367985aa827de3530e0b62f5963da0282626b2ec4d2d0a14aa4fde8",
+    "assets\\blender\\vfx\\combat_release\\PuffSheet.001.fbx": "dc21314e87f503ff3ec37978d97fcce290ac8f11d3e649a2ecc900706c9a589a",
+    "assets\\vfx\\combat_release\\glass_glint.png": "7c9e5a50c0eac7634806e78dfc5cc85c9390b0aca077970634c1d64bb05a3990",
+    "assets\\vfx\\combat_release\\directional_streak.png": "12ae3f122f6a57b35e5a05341d4dce4ba25f501a9100b5013af58350b6f6ddb8",
+    "assets\\vfx\\combat_release\\soft_puff.png": "16e68eef17e004afbecd95a00073621ed5118197ffafc341a951b60fbbaf5526",
+    "assets\\vfx\\combat_release\\shard_fleck.png": "b5b86d12dad23de5695196f7df9c1259ef44dbb5269346958e73ef3b018c0444",
+    "assets\\vfx\\combat_release\\electricity_strip.png": "08cf1e60e9b9565cde2131b3aa0ffad6d0c9db3bf7cf68048c8d33eb7839a653",
+    "assets\\vfx\\combat_release\\droplet_mask.png": "0fed06a7b0b3987452118e92bf6ce80cff6556136ca47d1709e8a8831561c33c",
+    "assets\\vfx\\combat_release\\glass_dust_4x4.png": "ca5d636bc16e2d664cd496276aaa4c7178d68dbc52c132b9f520fe45e49eceb6",
+    "assets\\vfx\\combat_release\\pressure_pop_4x4.png": "f9f8d72a71c14dd2c1b9ea78ed444f4684c61e6ff160afbb1f172b8ac1c5ef53",
+    "assets\\blender\\vfx\\combat_release\\flipbook_animated.blend": "45e8f1c4f64f2b29371873beb78811f066121bf1cc70b4e8f5bba549123fd459"
+  },
+  "fbx_roundtrip": {
+    "passed": true,
+    "meshes": 10,
+    "roblox_import": false,
+    "geometry_checks": [
+      {
+        "name": "BubbleDome.001",
+        "volume_world": 0.19238792976725605,
+        "bounds_error": 2.9802322387695312e-08,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "CrystalChip.001",
+        "volume_world": 0.024708312138847277,
+        "bounds_error": 4.470348358154297e-08,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "CurvedSlash.001",
+        "volume_world": 0.01993223352657495,
+        "bounds_error": 6.83872392426648e-08,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Droplet.001",
+        "volume_world": 0.036955594196354254,
+        "bounds_error": 4.712160915387242e-08,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "GuardPlate.001",
+        "volume_world": 0.12328509130468131,
+        "bounds_error": 4.470348358154297e-08,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "HalfRing.001",
+        "volume_world": 0.015032208382985426,
+        "bounds_error": 1.0323827311807139e-07,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "PuffSheet.001",
+        "volume_world": 0.02340024132700049,
+        "bounds_error": 6.332993507385254e-08,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Ring.001",
+        "volume_world": 0.030064416587169872,
+        "bounds_error": 1.0323827311807139e-07,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "SplashSheet.001",
+        "volume_world": 0.021110385788199442,
+        "bounds_error": 6.705522537231445e-08,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0
+      },
+      {
+        "name": "Thorn.001",
+        "volume_world": 0.02432165778324227,
+        "bounds_error": 7.920075813483186e-08,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0
+      }
+    ]
+  },
+  "native_texture_fetch": {
+    "method": "ContentProvider.PreloadAsync on ImageLabel instances",
+    "fetch": {
+      "glass_glint": "Success",
+      "directional_streak": "Success",
+      "soft_puff": "Success",
+      "shard_fleck": "Success",
+      "electricity_strip": "Success",
+      "droplet_mask": "Success",
+      "glass_dust_4x4": "Success",
+      "pressure_pop_4x4": "Success"
+    },
+    "rendered_in_client": false,
+    "alpha_order_readability_verified": false,
+    "notes": [
+      "An earlier raw-content-string preload returned mixed statuses; the follow-up ImageLabel preload returned Success for all eight.",
+      "Unparented probe ImageLabels were not a rendered-client readiness check."
+    ]
+  },
+  "animated_source": {
+    "file": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\blender\\vfx\\combat_release\\flipbook_animated.blend",
+    "frames": [
+      1,
+      16
+    ],
+    "default_family": "pressure_pop_4x4",
+    "families_are_toggleable_collections": true,
+    "matches_rendered_motion_equations": true,
+    "atlas_pixels_changed": false
+  }
+}

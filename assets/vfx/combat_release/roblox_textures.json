@@ -1,0 +1,15 @@
+{
+  "provenance": "Original local procedural masks and Blender frame renders",
+  "uploaded_2026_10_15": true,
+  "ids": {
+    "glass_glint": "rbxassetid://118014953401567",
+    "directional_streak": "rbxassetid://125001828353860",
+    "soft_puff": "rbxassetid://95994848531562",
+    "shard_fleck": "rbxassetid://119749428254490",
+    "electricity_strip": "rbxassetid://110100143277445",
+    "droplet_mask": "rbxassetid://118823344389220",
+    "glass_dust_4x4": "rbxassetid://101019590487297",
+    "pressure_pop_4x4": "rbxassetid://130955555778708"
+  },
+  "native_alpha_order_verified": false
+}

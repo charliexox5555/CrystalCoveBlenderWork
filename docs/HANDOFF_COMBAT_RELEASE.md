@@ -2,6 +2,8 @@
 
 October 15, 2026. Start here in the next chat. Workspace: `C:/Users/charl/Documents/CrystalCoveBlenderWork`.
 
+Production checkpoint: all 24 source packages and the shared VFX kit are now produced in `release_v2`, with Blender/file validation and uploaded texture IDs. Native FBX import and live kits are pending. Continue from the [current production table](art/combat_release/PROGRESS.md), [batch import list](art/combat_release/BATCH_IMPORT.md) and [checks report](testing/COMBAT_RELEASE_ASSETS.md); the phases and gates below remain authoritative.
+
 ## Creator's latest direction
 
 The creator approved the combat direction and wants most existing models improved in Blender, new Blender models, a good release roster of **exactly 24**, and a researched approach to excellent VFX. Keep release scope simple and stop adding glassies after those 24. This session prepares the plan/prompt; production begins in the new chat.

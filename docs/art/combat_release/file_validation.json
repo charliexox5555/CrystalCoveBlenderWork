@@ -1,0 +1,438 @@
+{
+  "expected": 24,
+  "validated": 24,
+  "results": [
+    {
+      "id": "pop",
+      "batch": "A",
+      "intact_triangles": 1184,
+      "shards": 16,
+      "alpha_bounds": [
+        150,
+        44,
+        362,
+        471
+      ],
+      "alpha_center": [
+        256.0,
+        257.5
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "jam",
+      "batch": "A",
+      "intact_triangles": 1000,
+      "shards": 16,
+      "alpha_bounds": [
+        67,
+        49,
+        444,
+        459
+      ],
+      "alpha_center": [
+        255.5,
+        254.0
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "prism",
+      "batch": "A",
+      "intact_triangles": 288,
+      "shards": 16,
+      "alpha_bounds": [
+        126,
+        50,
+        386,
+        471
+      ],
+      "alpha_center": [
+        256.0,
+        260.5
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "crescent_axe",
+      "batch": "A",
+      "intact_triangles": 480,
+      "shards": 16,
+      "alpha_bounds": [
+        67,
+        80,
+        445,
+        442
+      ],
+      "alpha_center": [
+        256.0,
+        261.0
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "briar_flask",
+      "batch": "A",
+      "intact_triangles": 764,
+      "shards": 16,
+      "alpha_bounds": [
+        109,
+        49,
+        403,
+        464
+      ],
+      "alpha_center": [
+        256.0,
+        256.5
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "arc_coil",
+      "batch": "A",
+      "intact_triangles": 996,
+      "shards": 16,
+      "alpha_bounds": [
+        80,
+        50,
+        432,
+        473
+      ],
+      "alpha_center": [
+        256.0,
+        261.5
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "milk_bottle",
+      "batch": "B",
+      "intact_triangles": 1096,
+      "shards": 16,
+      "alpha_bounds": [
+        141,
+        43,
+        371,
+        472
+      ],
+      "alpha_center": [
+        256.0,
+        257.5
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "pickle_jar",
+      "batch": "B",
+      "intact_triangles": 680,
+      "shards": 16,
+      "alpha_bounds": [
+        74,
+        30,
+        438,
+        477
+      ],
+      "alpha_center": [
+        256.0,
+        253.5
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "ketchup_bottle",
+      "batch": "B",
+      "intact_triangles": 720,
+      "shards": 16,
+      "alpha_bounds": [
+        152,
+        49,
+        360,
+        471
+      ],
+      "alpha_center": [
+        256.0,
+        260.0
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "glass_cup",
+      "batch": "B",
+      "intact_triangles": 672,
+      "shards": 16,
+      "alpha_bounds": [
+        96,
+        31,
+        415,
+        476
+      ],
+      "alpha_center": [
+        255.5,
+        253.5
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "water_jug",
+      "batch": "B",
+      "intact_triangles": 904,
+      "shards": 16,
+      "alpha_bounds": [
+        67,
+        46,
+        445,
+        469
+      ],
+      "alpha_center": [
+        256.0,
+        257.5
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "lemonade_bottle",
+      "batch": "B",
+      "intact_triangles": 788,
+      "shards": 16,
+      "alpha_bounds": [
+        150,
+        44,
+        362,
+        471
+      ],
+      "alpha_center": [
+        256.0,
+        257.5
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "mason_jar",
+      "batch": "C",
+      "intact_triangles": 1072,
+      "shards": 16,
+      "alpha_bounds": [
+        81,
+        32,
+        431,
+        477
+      ],
+      "alpha_center": [
+        256.0,
+        254.5
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "hot_sauce",
+      "batch": "C",
+      "intact_triangles": 720,
+      "shards": 16,
+      "alpha_bounds": [
+        172,
+        45,
+        339,
+        469
+      ],
+      "alpha_center": [
+        255.5,
+        257.0
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "crystal_tumbler",
+      "batch": "C",
+      "intact_triangles": 500,
+      "shards": 16,
+      "alpha_bounds": [
+        96,
+        31,
+        416,
+        477
+      ],
+      "alpha_center": [
+        256.0,
+        254.0
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "chime",
+      "batch": "C",
+      "intact_triangles": 752,
+      "shards": 16,
+      "alpha_bounds": [
+        88,
+        46,
+        424,
+        481
+      ],
+      "alpha_center": [
+        256.0,
+        263.5
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "hourglass",
+      "batch": "C",
+      "intact_triangles": 824,
+      "shards": 16,
+      "alpha_bounds": [
+        126,
+        35,
+        386,
+        477
+      ],
+      "alpha_center": [
+        256.0,
+        256.0
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "frostglobe",
+      "batch": "C",
+      "intact_triangles": 688,
+      "shards": 16,
+      "alpha_bounds": [
+        92,
+        50,
+        420,
+        478
+      ],
+      "alpha_center": [
+        256.0,
+        264.0
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "prism_blade",
+      "batch": "D",
+      "intact_triangles": 220,
+      "shards": 16,
+      "alpha_bounds": [
+        168,
+        50,
+        344,
+        463
+      ],
+      "alpha_center": [
+        256.0,
+        256.5
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "rocket_pop",
+      "batch": "D",
+      "intact_triangles": 724,
+      "shards": 16,
+      "alpha_bounds": [
+        136,
+        44,
+        376,
+        470
+      ],
+      "alpha_center": [
+        256.0,
+        257.0
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "glass_duck",
+      "batch": "D",
+      "intact_triangles": 1232,
+      "shards": 16,
+      "alpha_bounds": [
+        98,
+        50,
+        414,
+        472
+      ],
+      "alpha_center": [
+        256.0,
+        261.0
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "comet",
+      "batch": "D",
+      "intact_triangles": 556,
+      "shards": 16,
+      "alpha_bounds": [
+        67,
+        49,
+        445,
+        471
+      ],
+      "alpha_center": [
+        256.0,
+        260.0
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "glass_dragon",
+      "batch": "D",
+      "intact_triangles": 1212,
+      "shards": 16,
+      "alpha_bounds": [
+        67,
+        52,
+        445,
+        446
+      ],
+      "alpha_center": [
+        256.0,
+        249.0
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    },
+    {
+      "id": "galaxy_orb",
+      "batch": "D",
+      "intact_triangles": 880,
+      "shards": 16,
+      "alpha_bounds": [
+        67,
+        67,
+        445,
+        442
+      ],
+      "alpha_center": [
+        256.0,
+        254.5
+      ],
+      "fbx_roundtrip": true,
+      "studio_imported": false
+    }
+  ]
+}

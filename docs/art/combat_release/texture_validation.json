@@ -1,0 +1,58 @@
+{
+  "glass_dust_4x4": {
+    "size": [
+      512,
+      512
+    ],
+    "frames": 16,
+    "frame_alpha_max": [
+      255,
+      246,
+      236,
+      226,
+      215,
+      204,
+      193,
+      180,
+      168,
+      154,
+      139,
+      123,
+      105,
+      63,
+      43,
+      0
+    ],
+    "gutter_verified": true,
+    "terminal_frame_empty": true,
+    "studio_order_verified": false
+  },
+  "pressure_pop_4x4": {
+    "size": [
+      512,
+      512
+    ],
+    "frames": 16,
+    "frame_alpha_max": [
+      255,
+      246,
+      236,
+      226,
+      215,
+      204,
+      193,
+      180,
+      168,
+      154,
+      139,
+      123,
+      105,
+      84,
+      58,
+      0
+    ],
+    "gutter_verified": true,
+    "terminal_frame_empty": true,
+    "studio_order_verified": false
+  }
+}

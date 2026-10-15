@@ -14,6 +14,17 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-15 — Codex — All 24 release source packages and shared VFX
+Done:
+- Produced batches A–D: all 12 existing art revisions + 12 first models, preserving IDs and all original sources. Each release_v2 package has editable .blend, body/details/shards/bundle FBXs, 16 closed aligned shards (384 total), regenerated surface cracks, upright centered transparent 512 icon, hashes, measured dimensions/markers and explicit import/playtest status. Intact models range 220–1,232 triangles. Original default Blender scene backed up and restored with Cube selected; no desktop/device changes.
+- All 24 actual Blender FBX round-trips pass mesh counts, origins, world bounds, body/shard manifold checks and source hashes; original source hashes unchanged. Genuine original/revised sheets, 64px samples, all-24 montage and recombined/exploded Pop/hollow-cup renders in docs/art/combat_release. Shared glass preview refined to show internal details; native Glass appearance remains unverified.
+- Built original shared kit: 10 closed reusable meshes, six static grayscale masks, two Blender-rendered 16-frame 4x4 sheets with padded alpha/fade checks, source frames and editable keyframed source. Eight images uploaded; actual IDs saved. ImageLabel-based native preload returned Success for all eight after an earlier mixed raw-string probe. Isolated stored Studio fixture uses original bodies and staged inputs; Edit captures did not establish readable native effects.
+- Final Lune: 79 passed, 0 failed; native RunAll returned true. Python builders compile; 24 file/hash/icon checks and FBX round-trips pass; VFX mesh source/world bounds agree within 0.0001 units; 35 source VFX meshes have actual keyframes over frames 1–16. No Balance/Glassies/Powers/runtime changes, so simulators were not required or rerun.
+- Updated roster production statuses, roadmap, handoff, progress table, checks report and one exact batch-import list. Preserved unrelated working files. Studio left in Edit; fixture stored in ServerStorage, emitters cleared/disabled and original viewport FOV restored; no publication.
+Next / blocking gate:
+- Connected MCP has no local FBX importer. Creator imports bundles from docs/art/combat_release/BATCH_IMPORT.md, then prove Pop/shared kit and all six A kits live before rule/kit expansion. Independent modeling/export work continued through all 24 while that import gate was pending.
+- Live shared trigger/attack rules, first-six validation, remaining kits, ownership audit, deliberate new rarities/acquisition mapping, release allowlist and native/simulator/multiplayer/performance checks remain pending. No inventories or live pools changed; publishing/real-device review stays separate.
+
 ## 2026-10-15 — Codex — Fixed 24-glassy release handoff
 Done:
 - Creator approved combat direction, requested better existing Blender models/new models, a simple release scope fixed at 24, further VFX research and a complete new-chat prompt. Added authoritative HANDOFF_COMBAT_RELEASE, four-batch RELEASE_ROSTER_24.json, executable prompt 05 and researched COMBAT_VFX_WORKFLOW; updated the earlier draft to match current scope.

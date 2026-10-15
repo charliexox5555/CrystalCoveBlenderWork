@@ -1,0 +1,19 @@
+{
+  "method": "ContentProvider.PreloadAsync on ImageLabel instances",
+  "fetch": {
+    "glass_glint": "Success",
+    "directional_streak": "Success",
+    "soft_puff": "Success",
+    "shard_fleck": "Success",
+    "electricity_strip": "Success",
+    "droplet_mask": "Success",
+    "glass_dust_4x4": "Success",
+    "pressure_pop_4x4": "Success"
+  },
+  "rendered_in_client": false,
+  "alpha_order_readability_verified": false,
+  "notes": [
+    "An earlier raw-content-string preload returned mixed statuses; the follow-up ImageLabel preload returned Success for all eight.",
+    "Unparented probe ImageLabels were not a rendered-client readiness check."
+  ]
+}

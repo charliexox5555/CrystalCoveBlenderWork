@@ -14,6 +14,16 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-15 — Codex — Combat research and roster plan
+Done:
+- Researched primary Riot/GDC and Roblox sources for watchable autobattler abilities, anticipation/impact, effect clarity, beams/trails/flipbooks, import and performance. Audited current FightRules/Pendulum/FightScene/Shatter/Finisher and all 31 catalog IDs; older Ball VS Ball brief remains explicitly unverified.
+- Creator confirmed keeping the current hanging arena and using swing turnarounds. Planned 24 kits with names, short ability copy, looks, trigger behavior, VFX production and tradeoffs: 12 installed reworks, six existing catalog fantasies, six new original concepts. Recommended six-kit prototype and concrete first Blender work order/shared assets.
+- Saved docs/research/COMBAT_VFX_RESEARCH.md and docs/design/COMBAT_ROSTER_V1.md. Decision 56 records the arena answer; 57 is Proposed. No code, models, live rules, rarity/economy, world or device changes. Lune tests: 79 passed, 0 failed; simulators unnecessary because configs unchanged.
+Next:
+- Creator reviews proposed kits and signature-system revision, then starts Blender shared assets plus Crescent Axe/Briar Flask/Arc Coil. Implement and validate six kits in Studio before expanding; exact damage, cooldowns, new rarities and finisher variants remain future work.
+Problems / research limits:
+- Official Blade Ball page does not verify individual ability behavior. Blender manual pages failed to load; export plan uses working repo helper and Roblox importer docs, with an early import proof required. No third-party source code/plugins or assets imported.
+
 ## 2026-10-15 — Codex — Persistent match hand and Pick Any
 Done:
 - Implemented creator-confirmed once-per-match uniform/no-duplicate hand, sequential vertical reels and retained cards between rounds. Owned-only Pick Any selects this round without changing the hand; one free then 6/9/12 capped. Separate paid rerolls cost 3/3/6/6/9 capped and replace the match hand. Counters reset per match.

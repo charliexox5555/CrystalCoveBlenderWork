@@ -174,14 +174,33 @@ function Controller:Start()
 				self:Open("Kiln")
 				task.delay(0.3, function()
 					if self.Screen and self.Screen.Result then
+						local results = {}
+						local ids = {}
+						for _, entry in self.Screen.Data.Odds do
+							table.insert(ids, entry.Id)
+						end
+						for i = 1, if value == 10 then 10 else 1 do
+							table.insert(results, {
+								Id = ids[(i - 1) % #ids + 1],
+								Duplicate = i % 2 == 0,
+								Stars = 1,
+								Rainbow = i == 3,
+								BonusCoins = if i == 6 then 20 else 0,
+							})
+						end
 						self.Screen:Result({
-							Results = {
-								{ Id = "pop", Duplicate = true, Stars = 1, Rainbow = false, BonusCoins = 0 },
-								{ Id = "jam", Duplicate = false, Stars = 0, Rainbow = false, BonusCoins = 0 },
-							},
+							Results = results,
 						})
 					end
 				end)
+			elseif action == "KilnSkip" and self.Screen and self.Screen.Opening then
+				self.Screen.Opening:Skip()
+			elseif action == "KilnPull" and self.Screen and self.Screen.Pull and not self.Screen.Busy then
+				self.Screen.Busy = true
+				self.Screen:Pending()
+				self.Screen.Pull(if value == 10 then 10 else 1, self.Screen.Data.Quote)
+			elseif action == "KilnCollect" and self.Screen and self.Screen.Opening then
+				self.Screen.Opening:Collect()
 			elseif action == "PreviewMatch" then
 				self:Close()
 				self.Screen = require(script.Parent.Parent.Dev.UIPreview).new(value)

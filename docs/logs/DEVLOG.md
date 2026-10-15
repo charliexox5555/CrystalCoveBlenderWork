@@ -14,6 +14,15 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-15 — Codex — Kiln opening and Collect overlay
+Done:
+- Built UI-only case reels with server-pinned winners for 1/10; one shared kiln heating/firing/release, upright centered 5:6 reward cards, original uploaded flame asset. Reviewed public reel implementations without importing dependencies.
+- Incorporated creator feedback: Shop closes immediately on Open, removed the Shop shell and inherited dimmer, restrained fire inside a front-facing UI kiln, replaced Back with Collect. Glassies fly into the visible Inventory button; HUD Play/hint return after collection. No world/device or new paid-feature changes.
+- 76 Lune and Studio tests pass; 733 native UI checks pass, covering exact awards/landings, text fit, centers, skip/collect-once, rejected pulls and interruption cleanup. Isolated Studio mock live Coin tests: 1 + 10 pulls, 100000 → 99700 → 97000 coins, Stats.KilnPulls +11. Final ten live overlay closed before inspection; deterministic ten-card assertions passed separately.
+- Final editable templates exported to places/UI_v05.rbxm; original reveal saved to places/Kiln_BeforeOpening_20261015.rbxm and UIBackups. Intermediate V1/V2 presentations retained. Report/screenshots/research links: docs/testing/KILN_OPENING.md. Left Studio in Edit; publishing remains with creator.
+Next:
+- Creator reviews timing/feel; daily/Marble rules and device formatting remain future work.
+
 ## 2026-10-15 — Codex — Featured shop and two-Kiln UI
 Done:
 - Planned before implementing and confirmed Featured → Glassies → Finishers → Flyers with creator. Kept the authored Shop shell/size, header currencies and centered anchors. Featured opens first: four editable daily sample offers, placeholder refresh label and a collection showcase. Glassies has side-by-side Coin/Marble Kilns, separate editable furnace models, currency icons, enlarged six-rarity odds lists, prize strips, View All/Back and Open 1/Open 10 controls. Finishers/Flyers have coming-soon pages.

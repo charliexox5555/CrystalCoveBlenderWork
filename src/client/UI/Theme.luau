@@ -139,6 +139,22 @@ Theme.Motion = {
 	ButtonHoverScale = 1.035,
 }
 
+-- Presentation timing only; the server has already awarded the opening before playback starts.
+Theme.Kiln = {
+	SpinSeconds = 5.2,
+	ReelStagger = 0.045,
+	ReelSteps = 36,
+	LandHold = 0.55,
+	FireSeconds = 1.8,
+	CardFlight = 0.7,
+	CardStagger = 0.045,
+	CollectFlight = 0.65,
+	CollectStagger = 0.035,
+	CollectPulse = 0.24,
+	TickInterval = 0.075,
+	SparkCount = 22,
+}
+
 -- Compatibility colours for the auxiliary Aim/Results screens.
 Theme.Battle = {
 	PanelTop = Theme.Colors.PanelTop:Lerp(Theme.Colors.Shadow, 0.65),

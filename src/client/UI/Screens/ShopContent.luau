@@ -95,7 +95,7 @@ function Shop.bind(self, data)
 				return
 			end
 			self.Busy = true
-			S.buttonText(b, "BLOWING...")
+			self:Pending()
 			self.Pull(count, data.Quote)
 		end)
 	end

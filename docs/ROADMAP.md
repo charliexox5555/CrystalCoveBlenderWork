@@ -68,7 +68,9 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 ## F5 — Polish and soft launch (Nov 10–16)
 
-- [x] **C:** Shop v0.6 UI: Featured daily-offer/showcase preview, Glassies with separate Coin/Marble Kiln models, enlarged rarity lists, preview strips/View All, Finishers/Flyers pages; upright centered portraits throughout UI. Existing Coin flow retained; daily/Marble purchases and new opening sequence deferred. Desktop checks and 76 tests pass; [report](testing/SHOP_V06.md).
+- [x] **C:** UI-only Kiln reels and one shared firing for Open 1/10; transparent overlay, upright centered reward cards, Collect flight to Inventory, original effect assets, editable templates/backups. Existing Coin server flow retained. 733 native presentation checks and 76 logic tests pass; [report](testing/KILN_OPENING.md). Marble/daily purchasing and device work remain deferred.
+
+- [x] **C:** Shop v0.6 UI: Featured daily-offer/showcase preview, Glassies with separate Coin/Marble Kiln models, enlarged rarity lists, preview strips/View All, Finishers/Flyers pages; upright centered portraits throughout UI. Existing Coin flow retained; daily/Marble purchases deferred. Opening completed in the follow-up above. Desktop checks and 76 tests pass; [report](testing/SHOP_V06.md).
 
 - [x] **C:** preserve creator template edits; smaller Inventory/Shop, matching Marble/Inventory icons, repaired removed-Star binding, shop feedback, centered button anchors and interaction animation; grounded pad avatars, outward fixed camera, numeric glass HP, baseline avatar finisher/heart animation, removed result/power overlays. Native bot match/rewards/cleanup verified; 76 logic tests and 303 presentation checks pass. Device work deferred at creator request.
 - [ ] **CL/U:** brainstorm original wall/hit-triggered powers and special killer effects; current power rules remain for now (decision 51).

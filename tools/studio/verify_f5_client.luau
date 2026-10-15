@@ -24,6 +24,7 @@ local function flashes()
 	return n
 end
 local before = flashes()
+local Feel = require(RS.Shared.Config.Balance).Feel
 local ok, result = xpcall(function()
 	local View = require(modules.Presentation.FightView)
 	local shatter = require(modules.Controllers.ShatterController)
@@ -61,7 +62,30 @@ local ok, result = xpcall(function()
 		end
 		check(view.Scene:GetStand() == stand, "Local hooks broke stand lookup")
 		view:Camera(1 / 60, os.clock())
+		local shot = workspace.CurrentCamera.CFrame
+		view.PendingHearts = { 2, 3 }
 		view:Event({ Type = "Shatter", Side = 1, Time = 1 })
+		check(view.Hud.Hearts[1] == 3, "Heart was lost before the avatar impact")
+		check(not view.Scene.Root:FindFirstChild("GlassHeartPop"), "Heart pop preceded the finisher")
+		local finisher = view.Scene.Finisher
+		check(finisher ~= nil, "Shatter did not start the finisher")
+		check(
+			finisher:Step(finisher.At + Feel.FinisherPause + Feel.FinisherRiseSeconds + Feel.FinisherFlySeconds + 0.01),
+			"Finisher never impacted"
+		)
+		view:ShowRoundResult()
+		check(view.Hud.Hearts[1] == 2, "Authoritative hearts did not apply at impact")
+		view.Hud:Update({ Hp = { 0, 80 } })
+		check(view.Hud.Billboards[1].Gui.Body.HpAmount.Text:find("0 /", 1, true) == 1, "Numeric HP missing")
+		check(
+			view.Scene.Fighters[1].Body.Transparency == 1 and view.Scene.Fighters[2].Body.Transparency == 1,
+			"Ghost glass remained after impact"
+		)
+		view.Hud:Banner(1, "SHOULD STAY HIDDEN", Color3.new(1, 1, 1))
+		check(not view.Hud.PowerBanner.Visible, "Removed power banner appeared")
+		view.ShakeUntil = nil
+		view:Camera(1 / 60, os.clock())
+		check((workspace.CurrentCamera.CFrame.Position - shot.Position).Magnitude < 0.001, "Camera moved at round end")
 		view:Event({ Type = "Shatter", Side = 2, Time = 1 })
 		check(flashes() == before + 1, "Double KO leaked a second flash")
 		local heart = view.Scene.Root:FindFirstChild("GlassHeartPop")

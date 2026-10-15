@@ -55,7 +55,7 @@ Powers.Passives = {
 	second_wind = {
 		Id = "second_wind",
 		Name = "Second Wind",
-		Description = "Once per round, survives a shattering hit and patches itself up a little.",
+		Description = "Survives one shattering hit with a little HP.",
 		Params = { HealFraction = 0.08 },
 	},
 	glow_core = {
@@ -67,7 +67,7 @@ Powers.Passives = {
 	momentum = {
 		Id = "momentum",
 		Name = "Momentum",
-		Description = "Each hit in a row without a crit taken builds extra power.",
+		Description = "Each hit builds damage until you take a crit.",
 		Params = { PerStack = 0.04, MaxStacks = 5 },
 	},
 } :: { [string]: PowerDef }
@@ -76,7 +76,7 @@ Powers.Specials = {
 	slam = {
 		Id = "slam",
 		Name = "Slam",
-		Description = "The next hit within 3 seconds is a big smash that knocks back hard.",
+		Description = "Your next hit smashes harder and knocks back.",
 		Params = { Seconds = 3, DamageMult = 2.3, KnockbackMult = 1.5 },
 	},
 	shield = {
@@ -94,7 +94,7 @@ Powers.Specials = {
 	freeze = {
 		Id = "freeze",
 		Name = "Freeze",
-		Description = "Freezes the other glass: it barely swings and turns brittle, taking extra damage.",
+		Description = "Freezes the other glass and makes it brittle.",
 		Params = { Seconds = 3, LandChance = 0.7, Brittle = 1.5 },
 	},
 	beam = {

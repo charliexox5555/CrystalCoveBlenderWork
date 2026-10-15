@@ -2,6 +2,9 @@ local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
 local Glassies = require(RS.Shared.Config.Glassies)
 local S = require(script.Parent.Parent.Components.StainedGlass)
+local TweenService = game:GetService("TweenService")
+local Debris = game:GetService("Debris")
+local Feel = require(RS.Shared.Config.Balance).Feel
 local Billboards = {}
 function Billboards.new(data)
 	local list = {}
@@ -15,16 +18,15 @@ function Billboards.new(data)
 		S.tag(gui.Body.GlassyTag, d.Name, S.Types[d.Type])
 		local player = data.PlayerIds and Players:GetPlayerByUserId(data.PlayerIds[side])
 		local head = player and player.Character and player.Character:FindFirstChild("Head")
-		local position = if head
-			then head.Position
+		local position = if data.AvatarPositions
+			then data.AvatarPositions[side] + Vector3.yAxis * 2
+			elseif head then head.Position
 			else (
 				data.HeartPositions and data.HeartPositions[side]
 				or data.HookPositions and data.HookPositions[side]
 				or Vector3.zero
 			) + Vector3.yAxis * 3
-		local center = if data.HookPositions then (data.HookPositions[1] + data.HookPositions[2]) / 2 else position
-		local toward = Vector3.new(center.X - position.X, 0, center.Z - position.Z)
-		local offset = if toward.Magnitude > 0.01 then toward.Unit * 1.75 else Vector3.zero
+		local offset = Vector3.zero
 		local anchor = Instance.new("Part")
 		anchor.Name = "FightBillboardAnchor" .. side
 		anchor.Anchored, anchor.CanCollide, anchor.CanTouch, anchor.CanQuery, anchor.Transparency =
@@ -36,9 +38,41 @@ function Billboards.new(data)
 	end
 	return list
 end
-function Billboards.update(list, hearts)
+function Billboards.update(list, hearts, hp, maxima)
 	for side, item in list do
+		local count = hearts[side]
+		if item.Hearts and count < item.Hearts then
+			for i = count + 1, item.Hearts do
+				local original = item.Gui.Body.Hearts["Heart" .. i]
+				local pop = original:Clone()
+				local body = item.Gui.Body
+				pop.Name, pop.AnchorPoint = "LostHeart", Vector2.new(0.5, 0.5)
+				pop.Position = UDim2.fromScale(
+					(original.AbsolutePosition.X - body.AbsolutePosition.X + original.AbsoluteSize.X / 2)
+						/ math.max(1, body.AbsoluteSize.X),
+					(original.AbsolutePosition.Y - body.AbsolutePosition.Y + original.AbsoluteSize.Y / 2)
+						/ math.max(1, body.AbsoluteSize.Y)
+				)
+				pop.Size = UDim2.fromScale(
+					original.AbsoluteSize.X / math.max(1, body.AbsoluteSize.X),
+					original.AbsoluteSize.Y / math.max(1, body.AbsoluteSize.Y)
+				)
+				pop.ZIndex, pop.Parent = 10, body
+				TweenService:Create(pop, TweenInfo.new(Feel.HeartTweenSeconds, Enum.EasingStyle.Back), {
+					Size = UDim2.fromScale(pop.Size.X.Scale * 1.7, pop.Size.Y.Scale * 1.7),
+					Position = pop.Position - UDim2.fromScale(0, 0.25),
+					ImageTransparency = 1,
+					Rotation = 25,
+				}):Play()
+				Debris:AddItem(pop, Feel.HeartTweenSeconds)
+			end
+		end
 		S.hearts(item.Gui.Body.Hearts, hearts[side])
+		item.Hearts = count
+		local amount = item.Gui.Body:FindFirstChild("HpAmount")
+		if amount and hp then
+			amount.Text = string.format("%d / %d HP", math.ceil(math.max(0, hp[side])), math.ceil(maxima[side]))
+		end
 		if item.Head and item.Head.Parent then
 			item.Anchor.Position = item.Head.Position + item.Offset
 		end

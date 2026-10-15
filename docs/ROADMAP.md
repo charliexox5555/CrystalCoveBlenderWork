@@ -68,6 +68,9 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 ## F5 — Polish and soft launch (Nov 10–16)
 
+- [x] **C:** preserve creator template edits; smaller Inventory/Shop, matching Marble/Inventory icons, repaired removed-Star binding, shop feedback, centered button anchors and interaction animation; grounded pad avatars, outward fixed camera, numeric glass HP, baseline avatar finisher/heart animation, removed result/power overlays. Native bot match/rewards/cleanup verified; 76 logic tests and 303 presentation checks pass. Device work deferred at creator request.
+- [ ] **CL/U:** brainstorm original wall/hit-triggered powers and special killer effects; current power rules remain for now (decision 51).
+
 - [x] **C:** Stained Glass v0.5 editable Lobby / Inventory / Shop / Choose / Fight templates, 82 uploaded UI assets, v0.4 backup, complete silhouette/label clipping fixes approved, native bot flow and 76 tests pass; [report](testing/UI_V05.md)
 - [ ] **U:** restyle the v0.5 StarterGui templates, then authorize the multi-device formatting pass
 

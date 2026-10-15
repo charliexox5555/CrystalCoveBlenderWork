@@ -136,6 +136,7 @@ Theme.Motion = {
 	PanelOpenScaleFrom = 0.95,
 	ButtonPress = TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
 	ButtonPressScale = 0.96,
+	ButtonHoverScale = 1.035,
 }
 
 -- Compatibility colours for the auxiliary Aim/Results screens.

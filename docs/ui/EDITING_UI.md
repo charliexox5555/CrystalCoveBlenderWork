@@ -2,6 +2,8 @@
 
 ## Stained Glass v0.5 — current templates
 
+October 15 creator pass: every button uses **AnchorPoint (0.5, 0.5)**; keep it centered for hover/press animation. Positions were compensated to preserve placement. Inventory has no Stars label (the binding is optional); Shop is slightly larger than Inventory and uses the creator's coin plus matching new Marble icon. `FightBillboard.Body.HpAmount` shows numeric glass HP below the glassy tag. PowerBanner, RoundEnd and ResultsScreen are retained as unused templates and do not appear in gameplay. The first finisher is cosmetic; rewards still arrive through profile updates. Current portable snapshot: `places/UI_v05.rbxm`; creator's pre-pass snapshot: `places/UI_UserEdits_20261015.rbxm` and `ServerStorage.UIBackup_UserEdits_20261015`. Device work is deferred at the creator's request.
+
 See [the v0.5 report and element map](../testing/UI_V05.md) for the five new layouts and screenshots. Inventory is `CollectionScreen`; Shop is `KilnScreen`; Choose is `RollScreen`. Fight billboard styling lives in `ReplicatedStorage.Assets.UI.FightBillboard`. Enable one template in Edit, change it, then disable it again. Source templates default disabled; the runtime enables the right one.
 
 Labels/icons are separate from the glass artwork. Keep `Artwork`, `Label`, named bindings and `Templates` folders. Pointed pieces use **Fit + their PNG aspect** after the creator-approved clipping correction; stretch panes/stat bars keep Slice. Do not change pointed pieces back to Slice. Milk-label boxes are inset to the light interior. `FitSingleLine` labels fit the FontFace at runtime using their text box and `UITextSizeConstraint.MaxTextSize`; body copy remains wrapped. Native model portraits include caps/handles and padding.

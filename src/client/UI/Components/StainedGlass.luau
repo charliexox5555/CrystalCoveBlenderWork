@@ -69,6 +69,7 @@ function S.bindSlices(root)
 	for _, o in root:GetDescendants() do
 		S.bindSlice(o)
 		S.bindText(o)
+		require(script.Parent.Motion).button(o)
 	end
 end
 S.Rarity = {

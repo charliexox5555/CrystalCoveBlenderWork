@@ -269,11 +269,11 @@ Balance.Feel = {
 	ArenaLabelWidth = 11, -- studs
 	AimDragPixels = 170,
 	AimYawPixels = 180,
-	CameraDistance = 23,
-	CameraHeight = 5,
-	CameraSide = 4,
+	CameraDistance = 33,
+	CameraHeight = 0,
+	CameraSide = 0,
 	OccludedLegTransparency = 0.72,
-	CameraFollow = 0.18,
+	CameraFollow = 0,
 	CameraSmooth = 8,
 	BigHitSpeed = 1.15, -- multiple of RefSpeed
 	PowerEffectSeconds = 0.65,
@@ -290,8 +290,8 @@ Balance.Feel = {
 	BodyTwist = 0.12,
 	CrackWidth = 0.014,
 	CameraFocusOffset = -0.25,
-	CameraFocusHeight = 2,
-	CameraMinimumAspect = 1.35,
+	CameraFocusHeight = 3,
+	CameraMinimumAspect = 1.6,
 	CameraFieldOfView = 52,
 	IdleAngle = 0.05,
 	IdleSpeed = 1.6,
@@ -325,6 +325,14 @@ Balance.Feel = {
 	FarSwingCenter = -0.16, -- negative = pulled back; the peak stops just short of contact
 	WatchPromptDistance = 18, -- studs from a pen's centre to offer "Watch"
 	WatchRejoinSeconds = 14, -- keep watching an arena across the roll between its rounds
+	PadRootHeight = 3,
+	FinisherPause = 0.55,
+	FinisherRiseSeconds = 0.55,
+	FinisherFlySeconds = 0.38,
+	FinisherRiseHeight = 3,
+	FinisherImpactSeconds = 0.5,
+	FinisherFallbackSeconds = 3.1,
+	HeartTweenSeconds = 0.4,
 }
 
 return Balance

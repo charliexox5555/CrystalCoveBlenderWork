@@ -13,6 +13,7 @@ function Window.new(name, title, close)
 	self.Panel = Panel.new(self.Gui, "Panel", UDim2.fromScale(0.94, 0.94), UDim2.fromScale(0.03, 0.03))
 	self.Panel.Active = true
 	local scale = U.make("UIScale", self.Panel, { Scale = Theme.Motion.PanelOpenScaleFrom })
+	scale.Scale = Theme.Motion.PanelOpenScaleFrom
 	TweenService:Create(scale, Theme.Motion.PanelOpen, { Scale = 1 }):Play()
 	self.Title = U.text(
 		self.Panel,

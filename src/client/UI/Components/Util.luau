@@ -96,6 +96,9 @@ function Util.make(class, parent, properties, transient)
 		end
 	end
 	object.Parent = parent
+	if object:IsA("GuiButton") then
+		require(script.Parent.Motion).center(object)
+	end
 	return object
 end
 function Util.corner(parent, radius)

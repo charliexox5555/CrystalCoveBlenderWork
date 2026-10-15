@@ -89,7 +89,10 @@ function Screen:Detail(id)
 	S.tag(p.TypeTag, d.Type, S.Types[d.Type])
 	S.tag(p.RarityTag, d.Rarity, S.Rarity[d.Rarity])
 	local stars = math.clamp(owned.Stars or 0, 0, 5)
-	p.Stars.Text = string.rep("★", stars) .. string.rep("☆", 5 - stars)
+	local starLabel = p:FindFirstChild("Stars")
+	if starLabel then
+		starLabel.Text = string.rep("★", stars) .. string.rep("☆", 5 - stars)
+	end
 	self.DetailPortrait = Portrait.new(p, id, p.InfoPortrait.Size, p.InfoPortrait.Position, "InfoPortrait")
 	p.PassiveName.Text = d.PassiveName or passive.Name
 	p.PassiveDescription.Text = passive.Description

@@ -120,22 +120,11 @@ function Hud:Phase(phase, text)
 end
 
 function Hud:Update(r)
-	require(script.Parent.FightBillboards).update(self.Billboards, self.Hearts)
+	require(script.Parent.FightBillboards).update(self.Billboards, self.Hearts, r.Hp, self.Maxima)
 end
 
 function Hud:Banner(side, text, tint, quiet)
-	local S = require(script.Parent.Parent.Components.StainedGlass)
-	local banner = self.PowerBanner
-	self.BannerSerial += 1
-	local serial = self.BannerSerial
-	S.setAsset(banner, "banner/power_" .. S.tint(tint))
-	banner.Label.Text = text
-	banner.Visible = true
-	task.delay(2, function()
-		if self.Gui.Parent and self.BannerSerial == serial then
-			banner.Visible = false
-		end
-	end)
+	-- Powers communicate through their effects; the creator removed announcement banners.
 end
 
 function Hud:Edge(tint)

@@ -44,6 +44,7 @@ function Service:Open(player)
 		Quote = quote.Id,
 		Odds = odds,
 		Coins = data.Coins,
+		Marbles = data.Marbles or 0,
 		Welcome = Schema.welcomePulls(data),
 		Cost = Balance.Economy.KilnCoinCost,
 		TenCost = Balance.Economy.KilnTenPullCost,

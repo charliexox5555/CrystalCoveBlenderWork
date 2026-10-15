@@ -36,6 +36,7 @@ end
 
 function Scene.new(data, maxima, shatter)
 	local self = setmetatable({
+		Data = data,
 		Frame = data.Frame,
 		ArenaId = data.ArenaId,
 		HeartPositions = data.HeartPositions,
@@ -142,7 +143,7 @@ end
 
 function Scene:Pose(side, p, twist, tilt)
 	local f = self.Fighters[side]
-	if f.Broken then
+	if f.Broken or f.Finishing then
 		return
 	end
 	local up = -self.Frame:VectorToWorldSpace(p.Unit)
@@ -196,7 +197,7 @@ end
 
 function Scene:Update(r, time)
 	for side, f in self.Fighters do
-		if f.Broken then
+		if f.Broken or f.Finishing then
 			continue
 		end
 		local previous = f.CrackStage or 0
@@ -330,7 +331,6 @@ function Scene:Event(e, hud)
 			end
 		end
 	elseif e.Type == "Shatter" and not f.Broken then
-		self:Heart(e.Side)
 		self.Shatter:Break(f, self.Root)
 		f.Broken = true
 		f.Bubble.Transparency, f.Glints.Enabled, f.Trail.Enabled = 1, false, false
@@ -339,7 +339,7 @@ function Scene:Event(e, hud)
 			f.Tag.Enabled = false
 		end
 		if hud then
-			hud:Phase("RoundEnd", "SHATTERED!")
+			hud:Phase("RoundEnd", "")
 		end
 	elseif e.Type == "Overtime" and hud then
 		hud:Phase("Fighting", "OVERTIME • HITS GET STRONGER!")
@@ -400,10 +400,26 @@ function Scene:GetStand()
 end
 
 function Scene:Destroy()
+	if self.Finisher then
+		self.Finisher:Destroy()
+	end
 	for _, f in self.Fighters do
 		f.ShardTemplates:Destroy()
 	end
 	self.Root:Destroy()
+end
+
+function Scene:SetViewing(on)
+	self.Viewing = on
+	if not on and self.Finisher then
+		self.Finisher:Destroy()
+	end
+end
+
+function Scene:StartFinisher(side, now)
+	if not self.Finisher then
+		self.Finisher = require(script.Parent.FightFinisher).new(self, side, now)
+	end
 end
 
 return Scene

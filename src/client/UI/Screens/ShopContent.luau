@@ -54,15 +54,33 @@ function Shop.bind(self, data)
 	end
 	self.Message = c.Message
 	self.Message.Text = if #data.Odds == 0 then "The Kiln is warming up. Your coins are safe." else ""
+	for _, name in { "FlyersTab", "FinishersTab", "MarblesTab" } do
+		local tab = p.Tabs[name]
+		tab.Active, tab.Selectable = true, true
+		self.Window:Connect(tab, function()
+			self.Message.Text = (
+				if name == "FlyersTab" then "Flyers" elseif name == "FinishersTab" then "Finishers" else "Marble packs"
+			) .. " are coming later · The Kiln is open"
+		end)
+	end
+	self.Window:Connect(p.Tabs.KilnTab, function()
+		self.Message.Text = "Choose a glassy to see its odds, or pull from The Kiln"
+	end)
 	for _, count in { 1, 10 } do
 		local free = count == 1 and data.Welcome > 0
 		local cost = if free then 0 elseif count == 1 then data.Cost else data.TenCost
 		local button = c.Hero["Pull" .. count]
 		S.buttonText(button, if free then "WELCOME · FREE" else "PULL ×" .. count .. " · " .. cost)
 		local enabled = #data.Odds > 0 and data.Coins >= cost
-		button.Active, button.Selectable = enabled, enabled
+		button.Active, button.Selectable = true, true
 		button.Label.TextTransparency = if enabled then 0 else 0.5
 		self.Window:Connect(button, function()
+			if not enabled then
+				self.Message.Text = if #data.Odds == 0
+					then "The Kiln is warming up"
+					else "Need " .. math.max(0, cost - data.Coins) .. " more coins · play clashes and quests"
+				return
+			end
 			if enabled and not self.Busy then
 				self.Busy = true
 				S.buttonText(button, "BLOWING...")

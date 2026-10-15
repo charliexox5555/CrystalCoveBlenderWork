@@ -14,6 +14,17 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-15 — Codex — Creator UI edits and fight presentation
+Done:
+- Preserved the smaller PLAY, authored currency placement, coin/shop icons and removed Inventory Stars label. Fixed the missing-label constructor error that broke Inventory close. Made Inventory/Shop smaller, separated shop tabs/currencies, added button feedback and useful unavailable/insufficient-coin messages. Uploaded original matching Marble (126376968177419) and Inventory (125282322841576) icons. Every one of 102 template buttons now anchors at (0.5, 0.5), preserving placement; runtime buttons and tile animation targets center too.
+- Characters stay on their existing queue pads facing into the arena, with server-owned movement locks restored after settlement/forfeit. Camera looks straight outward toward sky on both mirrored stands, stays fixed through the finish, and retains player visibility. Added numeric glass HP. Baseline cosmetic finish: loser shatters, winner rises/flings into the losing avatar, toy glass fragments and heart pop/tween; no Humanoid damage. Hidden avatars, glass bodies, strings, effects and controls clean up. Removed between-round/final result overlays and power announcements; shortened power descriptions without changing rules.
+- Lune / Studio: 76 tests pass. Client fixture: 303 checks, 20 finish/double-shatter cycles, no leaked flashes/scenes; delayed heart loss, HP, hidden glass and fixed camera checked. Native human/bot match completed with rewards (54 coins), root unanchored, avatar visible, normal camera/controls, no result overlay. A real mock-profile Kiln pull debited 300 coins and granted Hot Sauce. Fresh spawn had normal movement/camera; reported lobby lock was not reproduced.
+- Original creator templates backed up in ServerStorage.UIBackup_UserEdits_20261015 and places/UI_UserEdits_20261015.rbxm; current templates exported to places/UI_v05.rbxm. No device/emulator setting changed; stopped in Edit with Rojo running. Place publishing remains with the creator.
+Next:
+- Creator edits/reviews UI and the baseline finisher; develop original special killer effects and new power triggers later. Device layout work explicitly deferred; exploratory fixed-bounds checks showed small-label fit issues on narrow phones, so no phone-ready claim.
+Balance/economy sims (Feel settings and power copy changed):
+- Mirrors Pop/Jam/Prism 24.0/36.3/19.5 s, 0% timeouts; side A 48%, Perfect vs worst 63%, 50% comebacks, 2.2 powers/glassy, 34% aimed misses. Economy: ~3.7 min/match, 16.1 matches/hour; 4 pulls day 1, 96 by day 30; unique glassies 12 day 7 / 18 day 30. These use the simulator catalogue; live Kiln remains the nine installed glassies.
+
 ## 2026-10-14 — Codex — Stained Glass editable UI v0.5
 Done:
 - Uploaded all 82 approved PNGs; recorded IDs and exact asset metadata. Backed up 15 original templates to ServerStorage.UIBackup_v04 and a portable RBXM. Built editable LobbyHUD, inline Inventory, odds-first Shop, three-card Choose and fight billboards/banner, retaining auxiliary screens and native model portraits.

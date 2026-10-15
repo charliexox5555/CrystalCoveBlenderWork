@@ -9,6 +9,7 @@ local Codec = require(RS.Shared.SnapshotCodec)
 local Pendulum = require(script.Parent.Parent.Simulation.Pendulum)
 local Calibration = require(script.Parent.Parent.Simulation.Calibration)
 local Guard = require(script.Parent.Parent.Util.RemoteGuard)
+local Stage = require(script.Parent.Parent.Util.MatchStage)
 local Service = {}
 local M, Feel = Balance.Motion, Balance.Feel
 
@@ -39,6 +40,13 @@ end
 function Service:Geometry(arena)
 	local bar = arena.Stand:WaitForChild("Crossbar")
 	local hooks = { bar:WaitForChild("HookA"), bar:WaitForChild("HookB") }
+	-- Queue A/B were authored opposite the hook names on the rotated stands.
+	if
+		(hooks[2].WorldPosition - arena.Pads[1].Position).Magnitude
+		< (hooks[1].WorldPosition - arena.Pads[1].Position).Magnitude
+	then
+		hooks[1], hooks[2] = hooks[2], hooks[1]
+	end
 	local a, b = hooks[1].WorldPosition, hooks[2].WorldPosition
 	local x = Vector3.new(b.X - a.X, 0, b.Z - a.Z).Unit
 	return CFrame.fromMatrix((a + b) / 2, x, Vector3.yAxis, x:Cross(Vector3.yAxis)), (b - a).Magnitude, hooks
@@ -50,6 +58,9 @@ function Service:Describe(arena, setup, metadata)
 	out.A, out.B, out.Frame = setup.A, setup.B, frame
 	out.HookPositions = { hooks[1].WorldPosition, hooks[2].WorldPosition }
 	out.HeartPositions = { arena.Pads[1].Position, arena.Pads[2].Position }
+	out.AvatarPositions = Stage.positions(arena)
+	local inward = workspace.Lobby.SpawnLocation.Position - frame.Position
+	out.CameraFacing = if inward:Dot(frame.ZVector) >= 0 then 1 else -1
 	out.SweetSpot, out.ArenaId = setup.SweetSpot, arena.Id
 	return out
 end

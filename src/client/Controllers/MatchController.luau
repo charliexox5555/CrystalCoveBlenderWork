@@ -110,11 +110,7 @@ function Controller:State(data)
 		self:Movement(true)
 	elseif data.Phase == "RoundEnd" then
 		self:CloseScreen()
-		self.Screen = Screens.roundEnd(data, side)
-		self.RoundShownAt = os.clock()
-		if self.LastShatter == data.Id then
-			self.Screen:Reveal()
-		end
+		-- The fight view owns the finisher and heart beat; there is no result overlay.
 	end
 end
 
@@ -129,15 +125,8 @@ end
 function Controller:Result(data)
 	self:CloseScreen()
 	self:Movement(false)
-	TouchGate.acquire(self.ResultsOwner)
-	self.Player.PlayerGui:SetAttribute("ResultsOpen", true)
 	self.Pending = {}
-	self.Screen = Screens.results(data, function()
-		self:CloseScreen()
-		Remotes.RequestRematch:FireServer()
-	end, function()
-		self:CloseScreen()
-	end)
+	-- Rewards still arrive through ProfileSnapshot. Return directly to the lobby.
 end
 
 function Controller:Start()

@@ -11,6 +11,7 @@ local Guard = require(script.Parent.Parent.Util.RemoteGuard)
 local Assets = require(script.Parent.Parent.Util.AssetCatalog)
 local Glassies = require(RS.Shared.Config.Glassies)
 local Bots = require(RS.Shared.Config.Bots)
+local Stage = require(script.Parent.Parent.Util.MatchStage)
 local Service = {}
 
 function Service:Init(services)
@@ -41,6 +42,7 @@ function Service:Meta(entry)
 		Spectate = entry.Spectate,
 		Deadline = entry.Runner.Deadline,
 		Phase = entry.Runner.Phase,
+		StageName = entry.Stage and entry.Stage.Folder.Name,
 	}
 	for side = 1, 2 do
 		local player = entry.Players[side]
@@ -112,6 +114,7 @@ function Service:StartMatch(arena, players, now, spectate)
 	for side, player in players do
 		self.ByPlayer[player] = { Entry = entry, Side = side }
 	end
+	Stage.start(entry)
 	self:Dispatch(entry, now)
 	return true, entry.Id
 end
@@ -127,6 +130,7 @@ function Service:Finish(entry)
 	if entry.FightId then
 		self.Services.FightService:Stop(entry.FightId)
 	end
+	Stage.finish(entry)
 	for side, player in entry.Players do
 		self.ByPlayer[player] = nil
 		if not player.Parent then

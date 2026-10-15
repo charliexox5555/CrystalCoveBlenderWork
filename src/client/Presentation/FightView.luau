@@ -76,6 +76,15 @@ end
 
 -- Restores everything EnterView took over: movement, character visibility, arena signs, HUD, camera.
 function Controller:ExitView()
+	for effect, enabled in self.SunRays or {} do
+		if effect.Parent then
+			effect.Enabled = enabled
+		end
+	end
+	self.SunRays = nil
+	if self.Scene then
+		self.Scene:SetViewing(false)
+	end
 	if self.Viewing then
 		CAS:UnbindAction("FightMovement")
 		CAS:UnbindAction("StopWatching")
@@ -166,6 +175,14 @@ end
 -- Takes over camera, movement and HUD for a participant, a dev spectate fight or a player who chose Watch.
 function Controller:EnterView()
 	local data = self.Data
+	self.Scene:SetViewing(true)
+	-- Outward shots can face the sunset; keep rays from washing out glass and billboards.
+	self.SunRays = {}
+	for _, effect in Lighting:GetChildren() do
+		if effect:IsA("SunRaysEffect") then
+			self.SunRays[effect], effect.Enabled = effect.Enabled, false
+		end
+	end
 	self.HiddenGuis = {}
 	for _, gui in workspace.Lobby.Arenas:GetDescendants() do
 		if gui:IsA("BillboardGui") and gui.Name == "ArenaStatus" then
@@ -174,12 +191,6 @@ function Controller:EnterView()
 		end
 	end
 	self.Hidden = {}
-	for _, part in self.Player.Character and self.Player.Character:GetDescendants() or {} do
-		if part:IsA("BasePart") then
-			self.Hidden[part] = part.LocalTransparencyModifier
-			part.LocalTransparencyModifier = 1
-		end
-	end
 	CAS:BindActionAtPriority(
 		"FightMovement",
 		function()
@@ -377,7 +388,7 @@ function Controller:Event(e)
 		end
 	elseif e.Type == "Shatter" then
 		self.Phase = "RoundEnd"
-		self:ShowRoundResult()
+		self.Scene:StartFinisher(e.Side, now)
 		self.ShakeUntil, self.ShakePower = now + Feel.ShakeSeconds, Feel.ShakeMax
 		if self.Viewing then
 			-- A double KO can emit two Shatters; keep one owned flash for cleanup.
@@ -462,7 +473,15 @@ function Controller:Render(dt)
 	if not self.Data then
 		return
 	end
-	if self.PendingHearts and os.clock() - self.PendingAt > Feel.RoundBannerFallbackSeconds then
+	if
+		self.PendingHearts
+		and not self.Scene.Finisher
+		and os.clock() - self.PendingAt > Feel.FinisherFallbackSeconds
+	then
+		-- Late/missing final event: hide the dead glass and still release the authoritative hearts.
+		if self.Data.RoundWinner then
+			self.Scene:HideBroken(3 - self.Data.RoundWinner)
+		end
 		self:ShowRoundResult()
 	end
 	local newest = self.Snapshots[#self.Snapshots]
@@ -602,6 +621,9 @@ function Controller:Render(dt)
 			self.Hud.Headline.Text = ""
 		end
 	end
+	if self.Scene.Finisher and self.Scene.Finisher:Step(now) then
+		self:ShowRoundResult()
+	end
 	if self.Viewing then
 		self:Camera(dt, now)
 	end
@@ -612,22 +634,17 @@ function Controller:Camera(dt, now)
 	if camera.CameraType ~= Enum.CameraType.Scriptable then
 		camera.CameraType = Enum.CameraType.Scriptable
 	end
-	local center = self.Data.Frame.Position - Vector3.yAxis * (M.StringLength + M.BodyCenter * M.GlassyScale)
+	local center = self.Scene.Frame.Position - Vector3.yAxis * (M.StringLength + M.BodyCenter * M.GlassyScale)
 	local action = (self.Scene.Fighters[1].Body.Position + self.Scene.Fighters[2].Body.Position) / 2
 	local focus = center:Lerp(action, Feel.CameraFollow) + Vector3.yAxis * Feel.CameraFocusHeight
 	self.Focus = self.Focus and self.Focus:Lerp(focus, 1 - math.exp(-dt * Feel.CameraSmooth)) or focus
 	local aspect = camera.ViewportSize.X / math.max(1, camera.ViewportSize.Y)
 	local scale = math.max(1, Feel.CameraMinimumAspect / aspect)
-	local offset = self.Data.Frame:VectorToWorldSpace(
-		Vector3.new(Feel.CameraSide, Feel.CameraHeight, Feel.CameraDistance)
+	local offset = self.Scene.Frame:VectorToWorldSpace(
+		Vector3.new(Feel.CameraSide, Feel.CameraHeight, Feel.CameraDistance * (self.Data.CameraFacing or 1))
 	) * scale
-	local final = self.FinalTime and self.RenderTime >= self.FinalTime - Feel.InterpolationDelay
-	if final then
-		offset = self.Data.Frame:VectorToWorldSpace(Vector3.new(0, Feel.CameraHeight * 0.35, Feel.CameraDistance * 0.8))
-			* scale
-	end
 	local target = CFrame.lookAt(self.Focus + offset, self.Focus)
-	self.CameraPose = if final or not self.CameraPose
+	self.CameraPose = if not self.CameraPose
 		then target
 		else self.CameraPose:Lerp(target, 1 - math.exp(-dt * Feel.CameraSmooth))
 	local shake = Vector3.zero

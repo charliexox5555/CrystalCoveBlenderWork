@@ -1,5 +1,7 @@
 # UI Spec (v0.3: arena matches)
 
+> **v0.5 theme (Oct 15, approved): Stained Glass** — Figma page "UI v0.5 — Stained Glass", references in [v05/](v05/), assets + palette + fonts + SliceCenter table in [assets/ui/stained_glass](../../assets/ui/stained_glass/README.md). Build prompt: [prompts/04_ui_stained_glass.md](../prompts/04_ui_stained_glass.md). No rounded corners anywhere.
+>
 > **v0.4 layout (Oct 15, creator-directed): build from the Figma page "UI v0.4 — arena game"** ([file](https://www.figma.com/design/r3guIIk5deo7vNxLzJN0RZ)). Five screens plus a component kit: 01 Lobby HUD, 02 Inventory, 03 Shop, 04 Choose your glassy, 05 Fight HUD. Ball VS Ball layouts as inspiration, our own glass style. Where this conflicts with older sections below, the Figma page wins.
 > - **One structure for every menu:** header (title, currencies on Shop, red close) → coloured category tabs (Glassies cyan, Flyers pink, Finishers violet, Kiln orange, Marbles blue; future tabs dashed) → content left + info panel right. Shop is the same shell, larger.
 > - **Lobby HUD:** two square buttons on the left (Shop, Inventory); Coins and Marbles pills directly under them (display-only, `Active = false`, so touches reach the thumbstick); big green PLAY bottom-centre (joins the nearest free arena). **Top-right stays empty** (Roblox player list covers it).

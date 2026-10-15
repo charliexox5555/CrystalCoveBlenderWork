@@ -1,5 +1,13 @@
 # UI Spec (v0.3: arena matches)
 
+> **v0.4 layout (Oct 15, creator-directed): build from the Figma page "UI v0.4 — arena game"** ([file](https://www.figma.com/design/r3guIIk5deo7vNxLzJN0RZ)). Five screens plus a component kit: 01 Lobby HUD, 02 Inventory, 03 Shop, 04 Choose your glassy, 05 Fight HUD. Ball VS Ball layouts as inspiration, our own glass style. Where this conflicts with older sections below, the Figma page wins.
+> - **One structure for every menu:** header (title, currencies on Shop, red close) → coloured category tabs (Glassies cyan, Flyers pink, Finishers violet, Kiln orange, Marbles blue; future tabs dashed) → content left + info panel right. Shop is the same shell, larger.
+> - **Lobby HUD:** two square buttons on the left (Shop, Inventory); Coins and Marbles pills directly under them (display-only, `Active = false`, so touches reach the thumbstick); big green PLAY bottom-centre (joins the nearest free arena). **Top-right stays empty** (Roblox player list covers it).
+> - **Inventory:** your glassies only, no levels, no sort/search, no Equip (everything you own is in your roll pool). Tile edge = rarity colour. Right panel: name, type/rarity/stars chips, 3D model, passive, power ("fires on its own"), Power/HP/Swing bars.
+> - **Glassy portraits are ViewportFrames** of the real models everywhere (tiles, cards, info panel).
+> - **Fight HUD:** only a billboard above each player (name, 3 hearts, glassy + type chip) plus short popups (power banner in the glassy's tint, damage numbers). No HP bars, buttons or panels; damage reads from cracks on the glass.
+> - **Choose your glassy:** 3 big cards (name, model, type + rarity, one-line power), Reroll button, timer in the title, both players' hearts in the top corners.
+
 **October 14 creator direction:** Codex lays out functional placeholders using Scale, with editable ScreenGui templates in StarterGui. The creator supplies final image-based styling. Ball v Ball screenshots are layout inspiration, not a one-to-one copy. See [editing guide](EDITING_UI.md). This takes priority over spending more time on final UI artwork.
 
 - **Style:** "crisp glass" (GAME_DESIGN 13): dark frosted panels, thin 2 px cyan → violet edges, Montserrat ExtraBold/Bold, Black Italic only for pop-ups, soft glows, no thick outlines. Color meanings: green buy/claim/confirm, red close/cancel, yellow special/limited, blue neutral, purple fuse.

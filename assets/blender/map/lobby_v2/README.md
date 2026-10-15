@@ -1,5 +1,7 @@
 # Lobby v2 — installed art, approved fence alignment
 
+**Current end-island repair:** Lobby and Featured fences now use persistent native parts matching the approved outline and colors, replacing six generated gate-cut meshes with empty MeshIds after a reported loss. See `tools/studio/repair_end_fence_persistence.luau` and the integration report. The earlier `studio_assets.json` snapshot predates this replacement; other assets remain as recorded.
+
 Created 2026-10-14 through Blender MCP, then imported by the creator and placed through Studio MCP. **The creator approved the corrected fence alignment.** Studio remains in Edit mode; gameplay testing and publication are left to the creator. Native IDs/transforms are in `studio_assets.json`; the measured live grass rims are in `live_island_rims.json`. See [integration report](../../../../docs/testing/LOBBY_V2_INTEGRATION.md).
 
 The original Blender-only build preserved the open scene and used the handoff's geometry snapshot. Subsequent native inspection found the old island imports had a baked 180° yaw relative to that source. The initial fence placement was therefore wrong despite matching bounding boxes. The corrected Studio fence set follows the live mesh geometry without moving islands, stands or paths.

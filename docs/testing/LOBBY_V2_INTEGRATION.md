@@ -1,5 +1,7 @@
 # Lobby v2 — native placement and fence alignment
 
+**Persistence repair:** after the creator reported lost Lobby/Featured fence meshes, their six generated gate-cut MeshParts were found to have empty MeshIds. Those two perimeters now use 336 ordinary anchored SmoothPlastic parts, retaining the approved live-rim alignment, colors, capped posts and bridge openings. Static corner checks pass with zero overhang. Fresh imports and the replaced meshes are archived under `LobbyV2Backup.EndFencePersistenceRepair_*`. Reproduce this final step with `tools/studio/repair_end_fence_persistence.luau` after the two initial installers. Other island meshes, bridges and safety collision are unchanged. No save/reopen or gameplay test was performed by the agent.
+
 2026-10-14. Creator imported all 13 FBX bundles and authorized placement after Claude handed Studio back. **Creator approved the corrected fence alignment: “looks good on my end.”** Studio stays in Edit mode; gameplay testing and publishing are explicitly left to the creator.
 
 ## Installed

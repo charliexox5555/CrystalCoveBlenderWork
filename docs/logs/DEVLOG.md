@@ -14,6 +14,13 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-14 — Codex — persistent Lobby/Featured fence repair
+Done:
+- Creator reported losing the two end-island fence meshes and supplied fresh imports. Their six generated gate-cut MeshParts had empty MeshIds. Replaced only Lobby/Featured visuals with persistent native parts matching the approved live-rim fit, two-rail/capped-post style and colors; no generated mesh content remains in these two models. Preserved the failed versions and fresh imports under LobbyV2Backup.EndFencePersistenceRepair_*.
+- Static QA: 336 anchored SmoothPlastic parts, zero corners outside actual grass rims; bridge joins and existing safety collision retained. Lune: 76 passed, 0 failed. No play mode, gameplay testing or publication. Repair tool: tools/studio/repair_end_fence_persistence.luau.
+Next:
+- Creator saves the place and handles gameplay testing. Other island meshes, bridges, Kiln, leaderboards, paths and UI were left in place.
+
 ## 2026-10-14 — Codex — lobby v2 placement and approved fence correction
 Done:
 - Placed all 13 imported bundles / 119 meshes: normalized importer scale/orientation, applied colors, integrated furnace and three board frames while preserving OpenKiln, KilnTitle and live Entries/Title labels. Full lobby/raw imports/old visuals preserved in ServerStorage.Unsorted.LobbyV2Backup; native IDs/transforms and reproducible installers recorded.

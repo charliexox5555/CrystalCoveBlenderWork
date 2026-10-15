@@ -1,50 +1,79 @@
 --!strict
--- UI design tokens. These match the "crisp glass" Figma mockups:
+-- Stained Glass tokens (DECISIONS 49). Editable templates own their styling.
 -- https://www.figma.com/design/r3guIIk5deo7vNxLzJN0RZ
 -- Every screen and component reads styling from here. To reskin, change this file.
 
 local Theme = {}
 
 local hex = Color3.fromHex
+Theme.Style = "StainedGlass"
+Theme.Palette = {
+	lead = hex("#1F1830"),
+	smoke = hex("#261D3B"),
+	smoke2 = hex("#332854"),
+	viewport = hex("#3B2F5E"),
+	ruby = hex("#E23A55"),
+	rubyLight = hex("#FF8EA0"),
+	rubyDark = hex("#9E1D38"),
+	amber = hex("#F5A524"),
+	amberLight = hex("#FFD98A"),
+	amberDark = hex("#B26E0B"),
+	emerald = hex("#22B573"),
+	emeraldLight = hex("#86EDB8"),
+	emeraldDark = hex("#11703F"),
+	aqua = hex("#1FC2D3"),
+	aquaLight = hex("#9BF3F8"),
+	aquaDark = hex("#0F7C88"),
+	sapphire = hex("#2E6BE6"),
+	sapphireLight = hex("#93BCFF"),
+	sapphireDark = hex("#1A409C"),
+	amethyst = hex("#8B4FE0"),
+	amethystLight = hex("#CDAAFF"),
+	amethystDark = hex("#57299F"),
+	milk = hex("#EEE7D9"),
+	milkLight = hex("#FFFFFF"),
+	milkDark = hex("#B9AE99"),
+	slate = hex("#7C7896"),
+}
 
 -- Colours -------------------------------------------------------------------------------------
 Theme.Colors = {
 	-- Panels: dark frosted glass with a thin cyan -> violet edge
-	PanelTop = hex("#1E2A6E"),
-	PanelBottom = hex("#141344"),
+	PanelTop = hex("#332854"),
+	PanelBottom = hex("#261D3B"),
 	PanelTransparency = 0.08,
-	Inset = hex("#0E1240"), -- search boxes, details panel, slots pill
+	Inset = hex("#261D3B"), -- search boxes, details panel, slots pill
 	InsetTransparency = 0.5,
-	EdgeA = hex("#6FE3FF"),
-	EdgeB = hex("#A06BFF"),
-	Shadow = hex("#05071C"),
+	EdgeA = hex("#1FC2D3"),
+	EdgeB = hex("#8B4FE0"),
+	Shadow = hex("#1F1830"),
 
 	Text = hex("#FFFFFF"),
-	TextMuted = hex("#C9D2F5"),
-	TextDark = hex("#1A1E4A"),
-	Highlight = hex("#FFE45C"), -- selection glow, PERFECT!, evolution hints
-	Damage = hex("#C2183A"), -- outline on damage numbers
-	Heart = hex("#FF5C7A"), -- glass hearts (lives) everywhere
+	TextMuted = hex("#EEE7D9"),
+	TextDark = hex("#1F1830"),
+	Highlight = hex("#F5A524"), -- selection glow, PERFECT!, evolution hints
+	Damage = hex("#1F1830"), -- outline on damage numbers
+	Heart = hex("#E23A55"), -- glass hearts (lives) everywhere
 }
 
 -- Buttons: each colour has exactly one meaning everywhere
 Theme.Buttons = {
-	Green = { Top = hex("#A6FF7A"), Bottom = hex("#2FCB3A") }, -- buy / claim / equip
-	Red = { Top = hex("#FF9A9A"), Bottom = hex("#E5263F") }, -- close / cancel
-	Yellow = { Top = hex("#FFF27A"), Bottom = hex("#FFB800") }, -- special / limited
-	Blue = { Top = hex("#9FE0FF"), Bottom = hex("#2F8BFF") }, -- neutral
-	Purple = { Top = hex("#E0B0FF"), Bottom = hex("#8C3CFF") }, -- fuse / evolve
+	Green = { Top = hex("#86EDB8"), Bottom = hex("#22B573") }, -- buy / claim / equip
+	Red = { Top = hex("#FF8EA0"), Bottom = hex("#E23A55") }, -- close / cancel
+	Yellow = { Top = hex("#FFD98A"), Bottom = hex("#F5A524") }, -- special / limited
+	Blue = { Top = hex("#93BCFF"), Bottom = hex("#2E6BE6") }, -- neutral
+	Purple = { Top = hex("#CDAAFF"), Bottom = hex("#8B4FE0") }, -- fuse / evolve
 }
 
 -- Rarity: Top/Bottom for tile tint and edge gradients
 Theme.Rarity = {
-	Starter = { Top = hex("#CCFFF7"), Bottom = hex("#2FD6C3") },
-	Common = { Top = hex("#EEF2F7"), Bottom = hex("#A9B4C2") },
-	Uncommon = { Top = hex("#C8F9D2"), Bottom = hex("#4ED36E") },
-	Rare = { Top = hex("#CFE8FF"), Bottom = hex("#4A9EFF") },
-	Epic = { Top = hex("#EBD6FF"), Bottom = hex("#A25CFF") },
-	Legendary = { Top = hex("#FFF3BF"), Bottom = hex("#FFB92E") },
-	Mythic = { Top = hex("#FFB3E6"), Bottom = hex("#6FE3FF") }, -- animate this gradient
+	Starter = { Top = hex("#FFFFFF"), Bottom = hex("#EEE7D9") },
+	Common = { Top = hex("#FFFFFF"), Bottom = hex("#EEE7D9") },
+	Uncommon = { Top = hex("#86EDB8"), Bottom = hex("#22B573") },
+	Rare = { Top = hex("#93BCFF"), Bottom = hex("#2E6BE6") },
+	Epic = { Top = hex("#CDAAFF"), Bottom = hex("#8B4FE0") },
+	Legendary = { Top = hex("#FFD98A"), Bottom = hex("#F5A524") },
+	Mythic = { Top = hex("#FF8EA0"), Bottom = hex("#1FC2D3") }, -- animate this gradient
 }
 
 -- Arena sides match the queue pad glows (A blue, B orange) so a glassy, its HUD panel and its pad read as one.
@@ -54,17 +83,17 @@ Theme.Sides = {
 }
 
 Theme.Types = {
-	Heavy = hex("#FF8A3D"),
-	Sharp = hex("#5CD6FF"),
-	Fizzy = hex("#FF6EC7"),
+	Heavy = hex("#F5A524"),
+	Sharp = hex("#8B4FE0"),
+	Fizzy = hex("#1FC2D3"),
 }
 
 -- Power meter zones (layout comes from Formula.meterBounds)
 Theme.Meter = {
-	Weak = { Top = hex("#FF8A95"), Bottom = hex("#E5263F") },
-	Good = { Top = hex("#9FE0FF"), Bottom = hex("#2F8BFF") },
-	Great = { Top = hex("#B6FF8A"), Bottom = hex("#2FCB3A") },
-	Perfect = { Top = hex("#FFF7A8"), Bottom = hex("#FFD000") },
+	Weak = { Top = hex("#FF8EA0"), Bottom = hex("#E23A55") },
+	Good = { Top = hex("#93BCFF"), Bottom = hex("#2E6BE6") },
+	Great = { Top = hex("#86EDB8"), Bottom = hex("#22B573") },
+	Perfect = { Top = hex("#FFD98A"), Bottom = hex("#F5A524") },
 }
 
 -- Shape ----------------------------------------------------------------------------------------
@@ -84,12 +113,12 @@ Theme.Stroke = {
 }
 
 -- Type -----------------------------------------------------------------------------------------
--- Montserrat is in Roblox's font library. If a weight ever looks wrong, BuilderSans is the backup.
+-- Approved Roblox font-library families.
 Theme.Fonts = {
-	Body = Font.fromName("Montserrat", Enum.FontWeight.Bold),
-	Heading = Font.fromName("Montserrat", Enum.FontWeight.ExtraBold),
-	PopUp = Font.fromName("Montserrat", Enum.FontWeight.Heavy, Enum.FontStyle.Italic),
-	Caption = Font.fromName("Montserrat", Enum.FontWeight.Medium),
+	Body = Font.new("rbxasset://fonts/families/Nunito.json", Enum.FontWeight.Heavy),
+	Heading = Font.new("rbxasset://fonts/families/DenkOne.json"),
+	PopUp = Font.new("rbxasset://fonts/families/DenkOne.json"),
+	Caption = Font.new("rbxasset://fonts/families/Nunito.json", Enum.FontWeight.ExtraBold),
 }
 
 Theme.TextSize = {
@@ -109,14 +138,14 @@ Theme.Motion = {
 	ButtonPressScale = 0.96,
 }
 
--- Compact battle skin, derived from the same crisp-glass palette.
+-- Compatibility colours for the auxiliary Aim/Results screens.
 Theme.Battle = {
 	PanelTop = Theme.Colors.PanelTop:Lerp(Theme.Colors.Shadow, 0.65),
 	PanelBottom = Theme.Colors.PanelBottom:Lerp(Theme.Colors.Shadow, 0.55),
 	PanelTransparency = 0.2,
 	EdgeTransparency = 0.45,
-	HpTop = hex("#9CF6BC"),
-	HpBottom = hex("#38D98B"),
+	HpTop = hex("#86EDB8"),
+	HpBottom = hex("#22B573"),
 }
 
 return Theme

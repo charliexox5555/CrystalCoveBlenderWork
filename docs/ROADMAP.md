@@ -68,6 +68,9 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 ## F5 — Polish and soft launch (Nov 10–16)
 
+- [x] **C:** Stained Glass v0.5 editable Lobby / Inventory / Shop / Choose / Fight templates, 82 uploaded UI assets, v0.4 backup, complete silhouette/label clipping fixes approved, native bot flow and 76 tests pass; [report](testing/UI_V05.md)
+- [ ] **U:** restyle the v0.5 StarterGui templates, then authorize the multi-device formatting pass
+
 - [x] **B/C:** original furnace Kiln, three leaderboard frames and island/bridge fences built, imported and placed; corrected against live grass meshes, fence alignment creator-approved; [lobby v2](../assets/blender/map/lobby_v2/README.md)
 - [x] **B:** generated original HUD / Inventory / Store concepts and exact prompts; Coins/Marbles, two square main buttons, bottom-center Play and grid/right-details layout; [concepts](ui/concepts/lobby_v2/README.md)
 - [x] **C/U:** lobby-v2 import/placement, full lobby/raw-import backups, existing Kiln prompt/leaderboard labels preserved, native-rim alignment and clear center lane verified; [integration report](testing/LOBBY_V2_INTEGRATION.md)

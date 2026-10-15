@@ -1,54 +1,34 @@
-local Theme = require(script.Parent.Parent.Theme)
 local U = require(script.Parent.Parent.Components.Util)
-local Panel = require(script.Parent.Parent.Components.Panel)
-local Button = require(script.Parent.Parent.Components.Button)
+local Remotes = require(game.ReplicatedStorage.Shared.Remotes)
 local Hud = {}
 function Hud.new(open)
+	-- Wait for Roblox's initial StarterGui clone; creating one earlier duplicates the HUD.
+	game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("LobbyHUD")
 	local gui = U.screen("LobbyHUD", 5)
-	local money = Panel.new(gui, "Currency", UDim2.fromScale(0.3, 0.08), UDim2.fromScale(0.68, 0.015), true)
-	local currency = U.text(
-		money,
-		"Balances",
-		"COINS 0 • TROPHIES 0",
-		UDim2.fromScale(0.94, 1),
-		UDim2.fromScale(0.03, 0),
-		Theme.Fonts.Body
-	)
-	local nav = U.make("Frame", gui, {
-		Name = "Navigation",
-		BackgroundTransparency = 1,
-		Size = UDim2.fromScale(0.17, 0.48),
-		Position = UDim2.fromScale(0.02, 0.16),
-	})
 	local connections = {}
-	local rewards =
-		Button.new(gui, "Rewards", "REWARDS", "Yellow", UDim2.fromScale(0.2, 0.1), UDim2.fromScale(0.78, 0.13))
-	U.make("UISizeConstraint", rewards, { MinSize = Vector2.new(44, 44) })
-	table.insert(
-		connections,
-		rewards.Activated:Connect(function()
-			open("Rewards")
-		end)
-	)
-	for i, kind in { "Kiln", "Glassies", "Index" } do
-		local button =
-			Button.new(nav, kind, kind:upper(), "Blue", UDim2.fromScale(1, 0.29), UDim2.fromScale(0, (i - 1) * 0.35))
-		U.make("UISizeConstraint", button, { MinSize = Vector2.new(44, 44) })
+	for _, entry in { { "ShopButton", "Kiln" }, { "InventoryButton", "Glassies" } } do
+		local button = gui.Navigation[entry[1]]
 		table.insert(
 			connections,
 			button.Activated:Connect(function()
-				open(kind)
+				open(entry[2])
 			end)
 		)
 	end
-	local hint = U.text(
-		gui,
-		"Hint",
-		"Step on a glowing pad to clash!",
-		UDim2.fromScale(0.4, 0.06),
-		UDim2.fromScale(0.3, 0.11),
-		Theme.Fonts.Caption
+	table.insert(
+		connections,
+		gui.PlayButton.Activated:Connect(function()
+			if not gui.Parent:GetAttribute("Queued") then
+				Remotes.JoinNearestArena:FireServer()
+			end
+		end)
 	)
-	return { Gui = gui, Currency = currency, Hint = hint, Connections = connections }
+	return {
+		Gui = gui,
+		Currency = gui.Currency.Coins.CoinsAmount,
+		Marbles = gui.Currency.Marbles.MarblesAmount,
+		Hint = gui.Hint,
+		Connections = connections,
+	}
 end
 return Hud

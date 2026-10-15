@@ -3,6 +3,11 @@ local U = require(script.Parent.Util)
 local Button = {}
 local TweenService = game:GetService("TweenService")
 function Button.new(parent, name, text, variant, size, position, anchor)
+	local authored = parent:FindFirstChild(name)
+	if authored and authored:GetAttribute("StainedGlass") then
+		require(script.Parent.StainedGlass).buttonText(authored, text)
+		return authored
+	end
 	local button = U.make("TextButton", parent, {
 		Name = name,
 		Text = text,

@@ -71,132 +71,58 @@ end
 
 function Screens.roll(data, pick, reroll)
 	local self = Screens.new("RollScreen")
-	self.Data = data
-	self.Panel = Panel.new(self.Gui, "Roll", UDim2.fromScale(0.94, 0.87), UDim2.fromScale(0.03, 0.04))
-	local side = table.find(data.PlayerIds, Players.LocalPlayer and Players.LocalPlayer.UserId or 0) or 1
-	self.Title = U.text(
-		self.Panel,
-		"Title",
-		"ROUND " .. data.Round .. " • PICK A GLASSY",
-		UDim2.fromScale(0.8, 0.1),
-		UDim2.fromScale(0.1, 0.03),
-		Theme.Fonts.Heading
-	)
-	local last = data.LastPicks[3 - side]
-	self.Opponent = U.text(
-		self.Panel,
-		"Rival",
-		data.Names[3 - side] .. (if last ~= "" then " • Last: " .. Glassies.get(last).Name else ""),
-		UDim2.fromScale(0.75, 0.07),
-		UDim2.fromScale(0.125, 0.15),
-		Theme.Fonts.Caption
-	)
-	self.Timer = U.text(self.Panel, "Timer", "", UDim2.fromScale(0.2, 0.08), UDim2.fromScale(0.73, 0.87))
-	self.Message =
-		U.text(self.Panel, "Message", "", UDim2.fromScale(0.5, 0.07), UDim2.fromScale(0.25, 0.73), Theme.Fonts.Caption)
-	self.Reroll = Button.new(
-		self.Panel,
-		"Reroll",
-		"REROLL • FREE",
-		"Blue",
-		UDim2.fromScale(0.35, 0.13),
-		UDim2.fromScale(0.325, 0.98),
-		Vector2.new(0, 1)
-	)
+	self.Data, self.Pick = data, pick
+	self.Panel = self.Gui.Roll
+	self.Title, self.Message = self.Panel.Title, self.Panel.Message
+	self.Reroll = self.Panel.Reroll
 	self:Connect(self.Reroll, reroll)
-	local cards = self.Panel:FindFirstChild("Cards")
-	self.CardsTemplate = cards and cards:Clone()
-	self.Pick = pick
+	local S = require(script.Parent.Parent.Components.StainedGlass)
+	for side = 1, 2 do
+		local p = self.Panel["Player" .. side]
+		p.OwnerName.Text = data.Names[side]
+		S.hearts(p.Hearts, data.Hearts and data.Hearts[side] or 3)
+	end
 	return self
 end
 
 function Screens:Offers(data)
-	if self.Cards then
-		self.Cards:Destroy()
+	local S = require(script.Parent.Parent.Components.StainedGlass)
+	for _, c in self.CardConnections or {} do
+		c:Disconnect()
 	end
-	local old = self.Panel:FindFirstChild("Cards")
-	if old then
-		old:Destroy()
-	end
-	if self.CardsTemplate then
-		self.CardsTemplate:Clone().Parent = self.Panel
-	end
+	self.CardConnections = {}
 	self.Portraits = {}
-	self.Cards = U.make("Frame", self.Panel, {
-		Name = "Cards",
-		Size = UDim2.fromScale(0.94, 0.47),
-		Position = UDim2.fromScale(0.03, 0.24),
-		BackgroundTransparency = 1,
-	})
+	self.Cards = self.Panel.Cards
 	self.Reroll.Visible = data.CanReroll == true
 	self.Message.Text = if data.Picked
-		then "LOCKED • " .. string.upper(Glassies.get(data.Picked).Name)
+		then "LOCKED · " .. Glassies.get(data.Picked).Name
 		elseif data.Message == "free_used" then "Free reroll used"
-		elseif data.Message == "nothing_new" then "You already rolled your collection"
-		else "Tap a glassy to lock your pick"
-	for i, id in data.Offers do
-		local def = Glassies.get(id)
-		local owned = data.Collection[id] or {}
-		local card =
-			Panel.new(self.Cards, "Card" .. i, UDim2.fromScale(0.305, 1), UDim2.fromScale((i - 1) * 0.347, 0), true)
-		card.UIStroke.Color = Theme.Rarity[def.Rarity].Bottom
-		card.UIStroke.UIGradient.Color =
-			ColorSequence.new(Theme.Rarity[def.Rarity].Top, Theme.Rarity[def.Rarity].Bottom)
-		local portrait = Portrait.new(card, id, UDim2.fromScale(0.9, 0.54), UDim2.fromScale(0.05, 0))
-		table.insert(self.Portraits, portrait)
-		U.text(card, "Name", def.Name, UDim2.fromScale(0.94, 0.12), UDim2.fromScale(0.03, 0.53), Theme.Fonts.Heading)
-		local kind = U.text(
-			card,
-			"Type",
-			def.Type .. " • " .. def.Rarity .. " • ★" .. (owned.Stars or 0),
-			UDim2.fromScale(0.94, 0.08),
-			UDim2.fromScale(0.03, 0.66),
-			Theme.Fonts.Caption
+		else "Tap a card to pick. Picks stay hidden until both lock in."
+	for i = 1, 3 do
+		local card = self.Cards["Card" .. i]
+		local id = data.Offers[i]
+		card.Visible = id ~= nil
+		if not id then
+			continue
+		end
+		local d = Glassies.get(id)
+		S.setAsset(card.Artwork, "card/card_" .. S.rarity(d.Rarity))
+		card:FindFirstChild("Name").Text = d.Name
+		table.insert(self.Portraits, Portrait.new(card, id, card.Portrait.Size, card.Portrait.Position))
+		S.tag(card.TypeTag, d.Type, S.Types[d.Type])
+		S.tag(card.RarityTag, d.Rarity, S.Rarity[d.Rarity])
+		local power = Powers.special(d.Special)
+		card.Power.Text = (d.SpecialName or power.Name) .. ": " .. power.Description
+		card.SelectedOutline.Visible = data.Picked == id
+		card.Select.Active = not data.Picked
+		table.insert(
+			self.CardConnections,
+			card.Select.Activated:Connect(function()
+				if not data.Picked then
+					self.Pick(id)
+				end
+			end)
 		)
-		kind.TextColor3 = Theme.Types[def.Type]
-		U.text(
-			card,
-			"Passive",
-			def.PassiveName or Powers.passive(def.Passive).Name,
-			UDim2.fromScale(0.94, 0.09),
-			UDim2.fromScale(0.03, 0.77),
-			Theme.Fonts.Caption
-		)
-		U.text(
-			card,
-			"Power",
-			def.SpecialName or Powers.special(def.Special).Name,
-			UDim2.fromScale(0.94, 0.09),
-			UDim2.fromScale(0.03, 0.88),
-			Theme.Fonts.Caption
-		)
-		local select = U.make("TextButton", card, {
-			Name = "Select",
-			Text = "",
-			Size = UDim2.fromScale(1, 1),
-			BackgroundTransparency = 1,
-			ZIndex = 10,
-			Selectable = true,
-			Active = not data.Picked,
-		})
-		self:Connect(select, function()
-			if not data.Picked then
-				self.Pick(id)
-			end
-		end)
-		local info = Button.new(
-			card,
-			"Info",
-			"i",
-			"Blue",
-			UDim2.fromScale(0.2, 0.22),
-			UDim2.fromScale(0.98, 0.02),
-			Vector2.new(1, 0)
-		)
-		info.ZIndex = 12
-		self:Connect(info, function()
-			self:PowerInfo(id)
-		end, true)
 	end
 end
 
@@ -394,7 +320,7 @@ function Screens:Render(now)
 		self.Fill.Size =
 			UDim2.fromScale(1 - remaining / require(RS.Shared.Config.Balance).Match.QueueBotAfterSeconds, 1)
 	elseif self.Gui.Name == "RollScreen" then
-		self.Timer.Text = tostring(math.max(0, math.ceil(self.Data.Deadline - now))) .. "s"
+		self.Title.Text = "CHOOSE YOUR GLASSY · " .. tostring(math.max(0, math.ceil(self.Data.Deadline - now)))
 		for _, viewport in self.Portraits do
 			for _, part in viewport.WorldModel:GetChildren() do
 				if part:IsA("BasePart") then
@@ -415,6 +341,9 @@ function Screens:Render(now)
 end
 
 function Screens:Destroy()
+	for _, c in self.CardConnections or {} do
+		c:Disconnect()
+	end
 	if self.CardsTemplate then
 		self.CardsTemplate:Destroy()
 	end

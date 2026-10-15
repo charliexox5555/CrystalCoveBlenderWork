@@ -71,6 +71,7 @@ function Controller:Start()
 		self:Open(kind)
 	end)
 	self.Gui, self.Currency, self.Hint = hud.Gui, hud.Currency, hud.Hint
+	self.Marbles = hud.Marbles
 	local function inMatch()
 		self.Gui.Enabled = not pg:GetAttribute("InMatch")
 			and not pg:GetAttribute("ResultsOpen")
@@ -97,7 +98,8 @@ function Controller:Start()
 			end
 		end
 		self.Profile = profile
-		self.Currency.Text = "COINS " .. profile.Coins .. "   •   TROPHIES " .. profile.Trophies
+		self.Currency.Text = tostring(profile.Coins)
+		self.Marbles.Text = tostring(profile.Marbles or 0)
 		if
 			self.Screen
 			and self.Screen.Refresh

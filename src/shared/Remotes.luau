@@ -28,6 +28,7 @@ local reliable = {
 	"Reroll",
 	"SetAim",
 	"LeaveQueue",
+	"JoinNearestArena",
 	"RequestRematch",
 	"ProfileSnapshot",
 	"RequestProfile",

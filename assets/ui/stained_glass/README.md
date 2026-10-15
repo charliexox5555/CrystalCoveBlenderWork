@@ -52,3 +52,9 @@ Rarity colours: Common milk, Uncommon emerald, Rare sapphire, Epic amethyst, Leg
 | `panel/odds_row_<rarity>` | 856×124 | `Slice`, `Rect(110, 20, 830, 104)` |
 | `bar/stat_track`, `bar/stat_fill_<colour>` | 600×48 | `Slice`, `Rect(24, 0, 576, 48)`; fill width = stat / max (Scale) |
 | `kiln/hero_window`, `kiln/glow` | 2160×760 / 660×600 | `Fit` |
+
+## Installed Roblox assets / clipping correction
+
+All 82 assets were uploaded through Studio MCP; `roblox_ids.json` and `src/shared/Config/UIAssets.luau` contain their IDs. No images are missing. The source dimensions/slice rectangles above remain the design metadata.
+
+After the creator reported clipped tips and approved the correction, fixed-aspect gems, tabs, plaques, tags and power banners render their **complete PNG with Fit**. Stretchable panes and stat bars still use Slice. Roblox downsampled oversized uploads; `StainedAssetSpecs` retains original dimensions and measured decoded sizes. See `docs/testing/UI_V05.md` for verification and editing instructions.

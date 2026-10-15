@@ -19,6 +19,9 @@ local function installed(id)
 end
 
 function Screen.new(index, profile, close)
+	if not index then
+		return require(script.Parent.InventoryScreen).new(profile, close)
+	end
 	local self = setmetatable({ Index = index, Profile = profile, Type = 1, Rarity = 1, Sort = 1, Tiles = {} }, Screen)
 	self.Window = Window.new(
 		if index then "IndexScreen" else "CollectionScreen",
@@ -36,19 +39,15 @@ function Screen.new(index, profile, close)
 		end)
 	end
 	self.Count = U.text(parent, "Count", "", UDim2.fromScale(1, 0.08), UDim2.fromScale(0, 0.16), Theme.Fonts.Caption)
-	self.Grid = U.make(
-		"ScrollingFrame",
-		parent,
-		{
-			Name = "Grid",
-			BackgroundTransparency = 1,
-			BorderSizePixel = 0,
-			Size = UDim2.fromScale(1, 0.72),
-			Position = UDim2.fromScale(0, 0.27),
-			CanvasSize = UDim2.new(),
-			ScrollBarThickness = 5,
-		}
-	)
+	self.Grid = U.make("ScrollingFrame", parent, {
+		Name = "Grid",
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		Size = UDim2.fromScale(1, 0.72),
+		Position = UDim2.fromScale(0, 0.27),
+		CanvasSize = UDim2.new(),
+		ScrollBarThickness = 5,
+	})
 	self.Resize = self.Grid:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 		self:Layout()
 	end)
@@ -162,11 +161,14 @@ function Screen:Refresh(profile)
 		local rainbow = U.text(tile, "Rainbow", "RAINBOW", UDim2.fromScale(1, 0.1), UDim2.fromScale(0, 0.9))
 		rainbow.Visible = owned ~= nil and owned.Rainbow
 		rainbow.TextColor3 = Theme.Colors.Highlight
-		local tap = U.make(
-			"TextButton",
-			tile,
-			{ Name = "Open", Text = "", BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), Selectable = true, ZIndex = 5 }
-		)
+		local tap = U.make("TextButton", tile, {
+			Name = "Open",
+			Text = "",
+			BackgroundTransparency = 1,
+			Size = UDim2.fromScale(1, 1),
+			Selectable = true,
+			ZIndex = 5,
+		})
 		tap.Activated:Connect(function()
 			self:Detail(def.Id)
 		end)
@@ -188,33 +190,27 @@ function Screen:Detail(id)
 	self.DetailWindow = Window.new("GlassyDetailScreen", "GLASSY DETAILS", back)
 	local def, owned = Glassies.get(id), self.Profile.Glassies[id]
 	local parent = self.DetailWindow.Content
-	local art = U.make(
-		"Frame",
-		parent,
-		{ Name = "Art", BackgroundTransparency = 1, Size = UDim2.fromScale(0.34, 0.9), Position = UDim2.fromScale(
-			0,
-			0.04
-		) }
-	)
+	local art = U.make("Frame", parent, {
+		Name = "Art",
+		BackgroundTransparency = 1,
+		Size = UDim2.fromScale(0.34, 0.9),
+		Position = UDim2.fromScale(0, 0.04),
+	})
 	if installed(id) and owned then
 		self.DetailPortrait = Portrait.new(art, id, UDim2.fromScale(1, 1), UDim2.new())
 	else
 		U.text(art, "Unowned", "?", UDim2.fromScale(1, 1), UDim2.new(), Theme.Fonts.Heading).UITextSizeConstraint.MaxTextSize =
 			80
 	end
-	local info = U.make(
-		"ScrollingFrame",
-		parent,
-		{
-			Name = "Info",
-			BackgroundTransparency = 1,
-			BorderSizePixel = 0,
-			Size = UDim2.fromScale(0.63, 0.96),
-			Position = UDim2.fromScale(0.37, 0.02),
-			CanvasSize = UDim2.fromScale(0, 1.8),
-			ScrollBarThickness = 4,
-		}
-	)
+	local info = U.make("ScrollingFrame", parent, {
+		Name = "Info",
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		Size = UDim2.fromScale(0.63, 0.96),
+		Position = UDim2.fromScale(0.37, 0.02),
+		CanvasSize = UDim2.fromScale(0, 1.8),
+		ScrollBarThickness = 4,
+	})
 	local body = U.make("Frame", info, { Name = "Lines", BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1) })
 	local stats, passive, special = Formula.stats(def, owned), Powers.passive(def.Passive), Powers.special(def.Special)
 	local lines = {

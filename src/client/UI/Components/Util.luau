@@ -4,6 +4,27 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local StarterGui = game:GetService("StarterGui")
 local authored = {
+	Image = true,
+	ImageColor3 = true,
+	ImageTransparency = true,
+	ScaleType = true,
+	SliceCenter = true,
+	SliceScale = true,
+	AspectRatio = true,
+	DominantAxis = true,
+	AspectType = true,
+	TextXAlignment = true,
+	TextYAlignment = true,
+	TextWrapped = true,
+	MinSize = true,
+	MaxSize = true,
+	CellSize = true,
+	CellPadding = true,
+	Padding = true,
+	PaddingTop = true,
+	PaddingBottom = true,
+	PaddingLeft = true,
+	PaddingRight = true,
 	Size = true,
 	Position = true,
 	AnchorPoint = true,
@@ -43,6 +64,7 @@ function Util.screen(name, order)
 	gui.ResetOnSpawn, gui.ScreenInsets = false, Enum.ScreenInsets.CoreUISafeInsets
 	gui.DisplayOrder, gui.ZIndexBehavior, gui.Enabled = order or 15, Enum.ZIndexBehavior.Sibling, true
 	gui:SetAttribute("TemplateBacked", true)
+	require(script.Parent.StainedGlass).bindSlices(gui)
 	return gui
 end
 
@@ -77,7 +99,7 @@ function Util.make(class, parent, properties, transient)
 	return object
 end
 function Util.corner(parent, radius)
-	return Util.make("UICorner", parent, { CornerRadius = radius })
+	return nil -- Stained Glass uses cut artwork; never create rounded corners.
 end
 function Util.gradient(parent, top, bottom, rotation)
 	return Util.make("UIGradient", parent, { Color = ColorSequence.new(top, bottom), Rotation = rotation or 90 })

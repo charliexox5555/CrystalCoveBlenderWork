@@ -14,6 +14,15 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-14 — Codex — Stained Glass editable UI v0.5
+Done:
+- Uploaded all 82 approved PNGs; recorded IDs and exact asset metadata. Backed up 15 original templates to ServerStorage.UIBackup_v04 and a portable RBXM. Built editable LobbyHUD, inline Inventory, odds-first Shop, three-card Choose and fight billboards/banner, retaining auxiliary screens and native model portraits.
+- Added validated/rate-limited PLAY → nearest free arena through the existing server queue. Preserved authored geometry; removed rounded corners, fixed duplicate startup HUD, enabled whole-pool horizontal scrolling and dynamic inline details/stats.
+- Creator reported clipping twice. Fixed safe plaque text insets, measured one-line labels, complete inventory rows and padded model cameras. Pointed artwork now renders its complete fixed-aspect PNG with Fit; nine-slice had cut off tips. Creator approved the final appearance and will edit UI next.
+- Lune / Studio: 76 passed, 0 failed. Five-screen audit: 411 objects / 144 images, zero failures/missing assets/offsets/UICorners. Native bot match completed 2–3 through Results; open/close/select/reroll/heart cleanup and malformed/valid join floods checked. Report/screens: docs/testing/UI_V05.md; v0.5/v0.4 portable UI snapshots in places/.
+Next:
+- Creator saves the open place and restyles StarterGui; device-formatting pass waits for explicit go-ahead. No publication, balance changes, paid features or new dependencies.
+
 ## 2026-10-14 — Codex — persistent Lobby/Featured fence repair
 Done:
 - Creator reported losing the two end-island fence meshes and supplied fresh imports. Their six generated gate-cut MeshParts had empty MeshIds. Replaced only Lobby/Featured visuals with persistent native parts matching the approved live-rim fit, two-rail/capped-post style and colors; no generated mesh content remains in these two models. Preserved the failed versions and fresh imports under LobbyV2Backup.EndFencePersistenceRepair_*.

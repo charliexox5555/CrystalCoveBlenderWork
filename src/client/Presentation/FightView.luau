@@ -213,9 +213,7 @@ function Controller:EnterView()
 			return Enum.ContextActionResult.Sink
 		end, false, Enum.ContextActionPriority.High.Value, Enum.KeyCode.Escape, Enum.KeyCode.ButtonB)
 	end
-	if self.Participant then
-		self.Scene:Tag(self.Side, "YOU", Theme.Sides[self.Side])
-	end
+	-- Ownership is shown by the editable player billboards.
 	if self.Controls then
 		self.Controls:Disable()
 	end
@@ -333,7 +331,7 @@ function Controller:Lock()
 	end
 	self.Locked = true
 	self.Drag = nil
-	self.Hud.Lock.Text = "LOCKED"
+	require(script.Parent.Parent.UI.Components.StainedGlass).buttonText(self.Hud.Lock, "LOCKED")
 	if Rules.isPerfect(self.Aim, self.Data.SweetSpot) then
 		self.Hud:Banner(self.Side, "PERFECT!", Color3.fromHex("#FFE45C"))
 		self.Scene.Fighters[self.Side].Glints:Emit(20)

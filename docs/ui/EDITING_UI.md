@@ -1,5 +1,14 @@
 # Editing the placeholder UI
 
+## Stained Glass v0.5 — current templates
+
+See [the v0.5 report and element map](../testing/UI_V05.md) for the five new layouts and screenshots. Inventory is `CollectionScreen`; Shop is `KilnScreen`; Choose is `RollScreen`. Fight billboard styling lives in `ReplicatedStorage.Assets.UI.FightBillboard`. Enable one template in Edit, change it, then disable it again. Source templates default disabled; the runtime enables the right one.
+
+Labels/icons are separate from the glass artwork. Keep `Artwork`, `Label`, named bindings and `Templates` folders. Pointed pieces use **Fit + their PNG aspect** after the creator-approved clipping correction; stretch panes/stat bars keep Slice. Do not change pointed pieces back to Slice. Milk-label boxes are inset to the light interior. `FitSingleLine` labels fit the FontFace at runtime using their text box and `UITextSizeConstraint.MaxTextSize`; body copy remains wrapped. Native model portraits include caps/handles and padding.
+
+Original templates: `ServerStorage.UIBackup_v04`. Portable backups: `places/UIBackup_v04.rbxm` and `places/UI_v05.rbxm`. Save the place in Studio. Device formatting is deliberately deferred until after the creator's edits. The earlier notes below describe legacy/auxiliary screens.
+
+
 The creator owns final UI artwork and styling. Ball v Ball screenshots supplied on October 14 are layout references, not a request to copy its graphics, names, economy or features. Codex owns responsive layout and functionality.
 
 ## In Studio

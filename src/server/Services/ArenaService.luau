@@ -105,11 +105,7 @@ function Service:MakeLabel(arena)
 	label.TextColor3, label.FontFace, label.TextScaled, label.BorderSizePixel =
 		Theme.Colors.Text, Theme.Fonts.Body, true, 0
 	label.Parent = gui
-	if not label:FindFirstChildOfClass("UICorner") then
-		local c = Instance.new("UICorner")
-		c.CornerRadius = Theme.Radius.Tag
-		c.Parent = label
-	end
+
 	arena.Label = label
 	self:IdleLabel(arena)
 	self:PadState(arena)
@@ -244,7 +240,49 @@ function Service:Step(now)
 	end
 end
 
+-- PLAY uses the same authoritative queue path as physically stepping onto a pad.
+function Service:JoinNearest(player)
+	if self.ByPlayer[player] or self.Services.MatchService.ByPlayer[player] then
+		return
+	end
+	local character = player.Character
+	local root = character and character:FindFirstChild("HumanoidRootPart")
+	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+	if not root or not humanoid or humanoid.Health <= 0 or not self.Services.MatchService:IsReady(player) then
+		return
+	end
+	local best, nearestSide, distance = nil, nil, math.huge
+	for _, arena in self.Arenas do
+		if not arena.Busy then
+			for side, pad in arena.Pads do
+				if not arena.Queue[side] then
+					local d = (pad.Position - root.Position).Magnitude
+					if d < distance then
+						best, nearestSide, distance = arena, side, d
+					end
+				end
+			end
+		end
+	end
+	if not best then
+		Remotes.MatchState:FireClient(player, { Phase = "Notice", Text = "All arenas are busy. Try again soon!" })
+		return
+	end
+	self.RequireExit[player] = nil
+	character:PivotTo(CFrame.new(best.Pads[nearestSide].Position + Vector3.yAxis * Balance.Lobby.RescueHeight))
+	self:Queue(player, best, nearestSide, workspace:GetServerTimeNow())
+end
+
 function Service:Start()
+	Remotes.JoinNearestArena.OnServerEvent:Connect(function(player, ...)
+		if not self.Guard:Allow(player, "JoinNearest", Balance.Match.RequestRateSeconds) then
+			return
+		end
+		if select("#", ...) ~= 0 then
+			return
+		end
+		self:JoinNearest(player)
+	end)
 	for _, arena in self.Arenas do
 		self:MakeLabel(arena)
 	end

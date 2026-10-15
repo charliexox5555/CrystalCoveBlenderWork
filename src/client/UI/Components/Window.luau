@@ -22,18 +22,28 @@ function Window.new(name, title, close)
 		UDim2.fromScale(0.025, 0.015),
 		Theme.Fonts.Heading
 	)
-	self.Title.TextXAlignment = Enum.TextXAlignment.Left
-	self.Title.UITextSizeConstraint.MaxTextSize = Theme.TextSize.Heading
+	if not self.Panel:GetAttribute("StainedGlass") then
+		self.Title.TextXAlignment = Enum.TextXAlignment.Left
+	end
+	if not self.Panel:GetAttribute("StainedGlass") then
+		self.Title.UITextSizeConstraint.MaxTextSize = Theme.TextSize.Heading
+	end
 	self:Connect(
 		Button.new(self.Panel, "Close", "X", "Red", UDim2.fromScale(0.085, 0.13), UDim2.fromScale(0.895, 0.015)),
 		close
 	)
+	if self.Panel:GetAttribute("StainedGlass") then
+		self.Panel.Close.Label.Visible = false
+	end
 	self.Content = U.make("Frame", self.Panel, {
 		Name = "Content",
 		BackgroundTransparency = 1,
 		Size = UDim2.fromScale(0.95, 0.82),
 		Position = UDim2.fromScale(0.025, 0.16),
 	})
+	if self.Panel:GetAttribute("StainedGlass") then
+		return self
+	end
 	local position, size = self.Content.Position, self.Content.Size
 	local function resize()
 		local height = math.max(1, self.Panel.AbsoluteSize.Y)

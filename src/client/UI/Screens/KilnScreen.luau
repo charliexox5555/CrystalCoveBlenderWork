@@ -9,14 +9,16 @@ local Button = require(script.Parent.Parent.Components.Button)
 local Portrait = require(script.Parent.Parent.Components.GlassyPortrait)
 local Screen = {}
 Screen.__index = Screen
-function Screen.new(data, close, pull, refresh)
+function Screen.new(data, close, pull, refresh, initialTab)
 	local self =
 		setmetatable({ Data = data, Pull = pull, Refresh = refresh, Close = close, Closed = false, Serial = 0 }, Screen)
+	self.Tab = initialTab or "Featured"
 	self:Odds(data)
 	return self
 end
 function Screen:Page(name, title)
 	self.Serial += 1
+	require(script.Parent.ShopPools).destroy(self)
 	if self.Window then
 		self.Window:Destroy()
 	end
@@ -105,17 +107,11 @@ function Screen:Reveal()
 	end)
 end
 function Screen:Step(dt)
-	local p = self.Portrait
-	if p and p.Parent then
-		for _, part in p.WorldModel:GetChildren() do
-			if part:IsA("BasePart") then
-				part:PivotTo(part:GetPivot() * CFrame.Angles(0, dt * 0.4, 0))
-			end
-		end
-	end
+	-- Portraits stay upright and centered; interactive controls retain their animation.
 end
 function Screen:Destroy()
 	self.Closed = true
+	require(script.Parent.ShopPools).destroy(self)
 	self.Window:Destroy()
 end
 return Screen

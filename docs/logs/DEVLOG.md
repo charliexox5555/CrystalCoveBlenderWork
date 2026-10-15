@@ -14,6 +14,16 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-15 — Codex — Featured shop and two-Kiln UI
+Done:
+- Planned before implementing and confirmed Featured → Glassies → Finishers → Flyers with creator. Kept the authored Shop shell/size, header currencies and centered anchors. Featured opens first: four editable daily sample offers, placeholder refresh label and a collection showcase. Glassies has side-by-side Coin/Marble Kilns, separate editable furnace models, currency icons, enlarged six-rarity odds lists, prize strips, View All/Back and Open 1/Open 10 controls. Finishers/Flyers have coming-soon pages.
+- UI-only scope: no daily rotation, Marble pricing/odds/purchases, economy changes or new opening animation. Marble/daily controls are inactive and marked previews; Marble sample glassies are explicitly samples. Existing Coin quote/pull/reveal path remains, including returning to Glassies after a reveal refresh. Paid-random policy gating is required before any future Marble activation.
+- Creator requested upright centered glassy images across all UI. Removed the common -12° tilt and Choose's -8° tilt/idle spins; fit a straight-on camera to complete model bounds, centered the viewport slot, migrated 28 authored portraits, and restored non-replicating viewport cameras on the client (including both Kilns). Fixed small-font rounding that still clipped Crystal Tumbler at desktop preview size.
+- Lune/Studio: 76 tests pass. Desktop Shop audit: 99 visible labels, zero clipping; four tabs, two pool pages, separate Kiln models, inactive Marble controls, Close/HUD restoration checked. Five-screen structural audit: 463 objects / 150 images, zero failures or missing assets. Five Inventory portrait cameras centered on model bounds with upright pivots. All 105 template buttons anchor at (0.5, 0.5). No device presets changed, new purchases made, or world Kilns placed.
+- Previous Shop backed up in ServerStorage.UIBackups.ShopBeforeFeatured_20261015 and places/Shop_BeforeFeatured_20261015.rbxm; pre-upright templates in UIBackups.BeforeUprightPortraits_20261015. Updated places/UI_v05.rbxm. Screenshots/editing map: docs/testing/SHOP_V06.md. Left Studio in Edit; publishing remains with creator.
+Next:
+- Creator reviews/recolors the separate Marble Kiln model and steps through daily-shop rules, Marble pool/prices/policy, and the new animated opening in a later pass. Stop after UI as requested. Device formatting remains deferred.
+
 ## 2026-10-15 — Codex — Creator UI edits and fight presentation
 Done:
 - Preserved the smaller PLAY, authored currency placement, coin/shop icons and removed Inventory Stars label. Fixed the missing-label constructor error that broke Inventory close. Made Inventory/Shop smaller, separated shop tabs/currencies, added button feedback and useful unavailable/insufficient-coin messages. Uploaded original matching Marble (126376968177419) and Inventory (125282322841576) icons. Every one of 102 template buttons now anchors at (0.5, 0.5), preserving placement; runtime buttons and tile animation targets center too.

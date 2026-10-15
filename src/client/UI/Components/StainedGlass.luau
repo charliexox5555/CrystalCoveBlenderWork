@@ -23,15 +23,30 @@ function S.bindText(label)
 			params.Text, params.Font, params.Size, params.Width = label.Text, label.FontFace, maximum, 100000
 			local ok, bounds =
 				pcall(game:GetService("TextService").GetTextBoundsAsync, game:GetService("TextService"), params)
-			params:Destroy()
 			if not ok or serial ~= version or not label.Parent then
+				params:Destroy()
 				return
 			end
 			local stroke = label:FindFirstChildOfClass("UIStroke")
 			local inset = if stroke then stroke.Thickness * 2 + 2 else 2
 			local size = label.AbsoluteSize - Vector2.one * inset
 			local ratio = math.min(1, size.X / math.max(1, bounds.X), size.Y / math.max(1, bounds.Y))
-			label.TextSize = math.max(if constraint then constraint.MinTextSize else 1, math.floor(maximum * ratio))
+			local minimum = if constraint then constraint.MinTextSize else 1
+			local fitted = math.max(minimum, math.floor(maximum * ratio))
+			-- Small glyphs round to whole pixels: scaling a large-font measurement can still clip.
+			while fitted < maximum and fitted > minimum do
+				params.Size = fitted
+				local measured, actual =
+					pcall(game:GetService("TextService").GetTextBoundsAsync, game:GetService("TextService"), params)
+				if not measured or (actual.X <= size.X and actual.Y <= size.Y) then
+					break
+				end
+				fitted -= 1
+			end
+			params:Destroy()
+			if serial == version and label.Parent then
+				label.TextSize = fitted
+			end
 		end)
 	end
 	for _, property in { "AbsoluteSize", "Text", "FontFace" } do

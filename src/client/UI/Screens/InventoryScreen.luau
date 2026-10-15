@@ -118,14 +118,7 @@ function Screen:Detail(id)
 end
 
 function Screen:Step(dt)
-	local v = self.DetailPortrait
-	if v and v.Parent then
-		for _, part in v.WorldModel:GetChildren() do
-			if part:IsA("BasePart") then
-				part:PivotTo(part:GetPivot() * CFrame.Angles(0, dt * 0.35, 0))
-			end
-		end
-	end
+	-- Portraits stay upright and centered; interactive controls retain their animation.
 end
 function Screen:Destroy()
 	for _, c in self.TileConnections do

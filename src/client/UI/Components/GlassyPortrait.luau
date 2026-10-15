@@ -13,6 +13,12 @@ function Portrait.new(parent, id, size, position, name)
 		LightColor = Color3.new(1, 1, 1),
 		LightDirection = Vector3.new(-1, -1, -2),
 	})
+	viewport:SetAttribute("GlassyId", id)
+	require(script.Parent.Motion).center(viewport)
+	local shape = viewport:FindFirstChildOfClass("UIAspectRatioConstraint")
+	if shape then
+		shape.AspectType = Enum.AspectType.FitWithinMaxSize
+	end
 	for _, child in viewport:GetChildren() do
 		if child:IsA("WorldModel") or child:IsA("Camera") then
 			child:Destroy()
@@ -47,14 +53,22 @@ function Portrait.new(parent, id, size, position, name)
 		if template == source.Body and source.Name ~= def.Asset then
 			part.Color = Color3.fromHex(def.Tint)
 		end
-		part:PivotTo(CFrame.Angles(0, 0, math.rad(-12)))
+		part:PivotTo(CFrame.identity)
 		part.Parent = world
+	end
+	return Portrait.fit(viewport)
+end
+
+function Portrait.fit(viewport, rotation, fov)
+	local world = viewport:FindFirstChildOfClass("WorldModel")
+	if not world then
+		return viewport
 	end
 	local camera = Instance.new("Camera")
 	-- Fit the real body and details, including wide handles/caps, inside the portrait.
 	local low, high = Vector3.one * math.huge, Vector3.one * -math.huge
 	local corners = {}
-	for _, part in world:GetChildren() do
+	for _, part in world:GetDescendants() do
 		if part:IsA("BasePart") then
 			for _, x in { -1, 1 } do
 				for _, y in { -1, 1 } do
@@ -68,8 +82,12 @@ function Portrait.new(parent, id, size, position, name)
 		end
 	end
 	local center = (low + high) / 2
-	local rotation = CFrame.lookAt(Vector3.new(1.5, 0.4, 5.5), Vector3.zero)
-	local tangent = math.tan(math.rad(30) / 2)
+	if #corners == 0 then
+		camera:Destroy()
+		return viewport
+	end
+	rotation, fov = rotation or CFrame.identity, fov or 30
+	local tangent = math.tan(math.rad(fov) / 2)
 	local aspect = viewport:FindFirstChildOfClass("UIAspectRatioConstraint")
 	local ratio = if aspect then aspect.AspectRatio else 1
 	local distance = 0
@@ -78,8 +96,26 @@ function Portrait.new(parent, id, size, position, name)
 		distance = math.max(distance, math.abs(q.Y) / tangent + q.Z, math.abs(q.X) / (tangent * ratio) + q.Z)
 	end
 	camera.CFrame = CFrame.new(center) * rotation.Rotation + rotation.ZVector * distance * 1.18
-	camera.FieldOfView = 30
+	camera.FieldOfView = fov
 	camera.Parent, viewport.CurrentCamera = viewport, camera
+	viewport:SetAttribute("PortraitCamera", camera.CFrame)
+	viewport:SetAttribute("PortraitFOV", camera.FieldOfView)
 	return viewport
+end
+
+-- Camera instances don't replicate from StarterGui; preserve the authored pose as attributes.
+function Portrait.bindCameras(root)
+	for _, viewport in root:GetDescendants() do
+		if viewport:IsA("ViewportFrame") and not viewport.CurrentCamera then
+			if viewport:GetAttribute("PortraitCamera") then
+				local camera = Instance.new("Camera")
+				camera.CFrame, camera.FieldOfView =
+					viewport:GetAttribute("PortraitCamera"), viewport:GetAttribute("PortraitFOV") or 30
+				camera.Parent, viewport.CurrentCamera = viewport, camera
+			elseif viewport:FindFirstChildOfClass("WorldModel") then
+				Portrait.fit(viewport, CFrame.lookAt(Vector3.new(1.2, 0.4, 4), Vector3.zero), 35)
+			end
+		end
+	end
 end
 return Portrait

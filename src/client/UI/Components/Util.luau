@@ -65,6 +65,7 @@ function Util.screen(name, order)
 	gui.DisplayOrder, gui.ZIndexBehavior, gui.Enabled = order or 15, Enum.ZIndexBehavior.Sibling, true
 	gui:SetAttribute("TemplateBacked", true)
 	require(script.Parent.StainedGlass).bindSlices(gui)
+	require(script.Parent.GlassyPortrait).bindCameras(gui)
 	return gui
 end
 

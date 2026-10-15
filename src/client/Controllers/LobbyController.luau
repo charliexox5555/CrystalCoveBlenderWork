@@ -126,6 +126,7 @@ function Controller:Start()
 		if pg:GetAttribute("InMatch") or pg:GetAttribute("ResultsOpen") then
 			return
 		end
+		local initialTab = self.Screen and self.Screen.Pull and self.Screen.Tab or "Featured"
 		self:Close()
 		self.Screen = Kiln.new(data, function()
 			self:Close()
@@ -133,7 +134,7 @@ function Controller:Start()
 			Remotes.PullKiln:FireServer(count, quote)
 		end, function()
 			Remotes.RequestKiln:FireServer()
-		end)
+		end, initialTab)
 		self:PanelOpened()
 	end)
 	Remotes.KilnResult.OnClientEvent:Connect(function(data)
@@ -163,6 +164,10 @@ function Controller:Start()
 				self.Screen:Detail(value)
 			elseif action == "Close" then
 				self:Close()
+			elseif action == "ShopTab" and self.Screen and self.Screen.SelectTab then
+				self.Screen:SelectTab(value)
+			elseif action == "ShopPool" and self.Screen and self.Screen.ShowPool then
+				self.Screen:ShowPool(value)
 			elseif action == "RewardsTab" and self.Screen and self.Screen.Select then
 				self.Screen:Select(value)
 			elseif action == "PreviewKiln" then

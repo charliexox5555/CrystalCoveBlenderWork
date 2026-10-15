@@ -1,6 +1,8 @@
 -- Structural audit; run in Edit or Client after opening the screen under test.
 local RunService = game:GetService("RunService")
-local root = if RunService:IsRunning() and RunService:IsClient() then game.Players.LocalPlayer.PlayerGui else game.StarterGui
+local root = if RunService:IsRunning() and RunService:IsClient()
+	then game.Players.LocalPlayer.PlayerGui
+	else game.StarterGui
 local names = { "LobbyHUD", "CollectionScreen", "KilnScreen", "RollScreen", "FightHud" }
 local result = { Screens = 0, Objects = 0, Images = 0, Missing = {}, Failures = {} }
 for _, name in names do
@@ -19,7 +21,10 @@ for _, name in names do
 		end
 		if o:IsA("ImageLabel") and o:GetAttribute("AssetPath") then
 			result.Images += 1
-			if o.Image == "" or not o:FindFirstChildOfClass("UIAspectRatioConstraint") then
+			if
+				o.Image == ""
+				or (not o:FindFirstChildOfClass("UIAspectRatioConstraint") and not o:GetAttribute("StretchArtwork"))
+			then
 				table.insert(result.Failures, o:GetFullName() .. " image/ratio")
 			end
 		end

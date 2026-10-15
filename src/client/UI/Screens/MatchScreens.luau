@@ -321,13 +321,7 @@ function Screens:Render(now)
 			UDim2.fromScale(1 - remaining / require(RS.Shared.Config.Balance).Match.QueueBotAfterSeconds, 1)
 	elseif self.Gui.Name == "RollScreen" then
 		self.Title.Text = "CHOOSE YOUR GLASSY · " .. tostring(math.max(0, math.ceil(self.Data.Deadline - now)))
-		for _, viewport in self.Portraits do
-			for _, part in viewport.WorldModel:GetChildren() do
-				if part:IsA("BasePart") then
-					part:PivotTo(CFrame.Angles(0, os.clock() * 0.5, math.rad(-8)))
-				end
-			end
-		end
+		-- Upright, centered portraits match Inventory and Shop.
 	elseif self.Gui.Name == "RoundEnd" then
 		local fallback = require(RS.Shared.Config.Balance).Feel.RoundBannerFallbackSeconds
 		if not self.Gui.Enabled and os.clock() - self.Started > fallback then

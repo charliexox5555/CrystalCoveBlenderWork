@@ -1,0 +1,21 @@
+{
+  "liveAssetCount": 12,
+  "studioMode": "Edit",
+  "checks": {
+    "creatorImportParts": 527,
+    "canonicalParts": 506,
+    "checks": 4763,
+    "liveKitTest": false,
+    "unanchored": 0,
+    "maxBoundsError": 2.731428025981586e-7,
+    "shards": 384
+  },
+  "repeatNormalizationSafe": true,
+  "snapshotRestore": {
+    "textures": 8,
+    "unanchored": 0,
+    "parts": 506,
+    "passed": true,
+    "glassies": 24
+  }
+}

@@ -2,6 +2,8 @@
 
 Scope: fixed 24-glassy art production, shared original VFX assets, recoverable sources and import preparation. Live kits, acquisition filters and balance integration remain pending the native mesh-import gate.
 
+Follow-up: the creator imported everything; scale/anchoring correction and native asset checks are complete. See [import normalization](combat_release/IMPORT_NORMALIZATION.md) for the current state. The source-production evidence below records the preceding pass.
+
 ## Source safety
 
 - Pulled latest; original 12 source `.blend` files remained untouched and were hash-checked against their source-audit records.

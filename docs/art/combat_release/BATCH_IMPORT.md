@@ -1,14 +1,14 @@
 # Combat release — batch import
 
-The connected Studio MCP has no local FBX importer. These are the completed packages for the creator’s normal Studio 3D Importer. No desktop automation is needed.
+Import completed by the creator. All 24 glassies and the shared kit are now normalized and validated in Studio; no further import is requested.
 
-Import one **bundle FBX** per glassy into an isolated `ServerStorage.CombatReleaseImports` folder. Each bundle contains Body, recolorable details and 16 aligned shards. Individual body/details/shards files are also included for recovery.
+Canonical models: `ServerStorage.CombatReleaseStaged.Glassies`. Shared meshes and eight named texture references: `ServerStorage.CombatReleaseStaged.VFX`. Raw models in `CombatReleaseImports` were corrected by 0.01× and anchored. Originals, including the extra Pop, are preserved in `CombatReleaseBackups.RawBeforeNormalization_20261015`.
 
 Settings/checks: 1 unit = 1 stud; preserve imported pivots, keep meshes separate, import no cameras/lights, no collision on cosmetic parts. Do not promote over live assets yet. Match names and role attributes to manifest; use its colors/materials and bounds. Confirm source origin `(0,0,0)` at the hang point. Use DoubleSided on the thin VFX sheets if their back-face test needs it. Verify actual scale against each manifest rather than compensating by eye.
 
-First proof: import Pop plus the VFX kit, check hang pivot/scale/shard alignment and texture alpha. Then import the other five A assets. Live six-kit work precedes gameplay expansion. B–D can be imported together afterward.
+The imported geometry had a 100× unit conversion and baked 180° yaw. Both were corrected against actual source bounds and hang pivots, rather than by eye. Native first-six geometry/material review passed; client effect timing and flipbook/alpha validation remain pending.
 
-## Files
+## Export source references (already imported)
 
 - **A · Pop**: `C:/Users/charl/Documents/CrystalCoveBlenderWork/assets/blender/glassies/pop/release_v2/pop_bundle.fbx` — 1184 intact triangles; `manifest.json` alongside.
 - **A · Jam**: `C:/Users/charl/Documents/CrystalCoveBlenderWork/assets/blender/glassies/jam/release_v2/jam_bundle.fbx` — 1000 intact triangles; `manifest.json` alongside.
@@ -44,4 +44,4 @@ All eight texture images are already uploaded. Use their actual IDs in `assets/v
 
 Keep ParticleEmitters disabled at rest, use bounded `Emit`, and `Clear` on interruption. No shaders, animation rigs or physics come from the FBXs.
 
-Only exported/source-validated status is complete. Creator publishing and real-device review remain separate.
+Native imports are complete and staged; live kits/catalog changes are pending. Editable native snapshots are in places/CombatRelease_Staged_v2.rbxm and places/CombatRelease_RawBeforeNormalization_20261015.rbxm. Creator publishing and real-device review remain separate.

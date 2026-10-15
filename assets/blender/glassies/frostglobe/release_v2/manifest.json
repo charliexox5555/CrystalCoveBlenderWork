@@ -5,9 +5,11 @@
   "status": {
     "exported": true,
     "blender_validated": true,
-    "studio_imported": false,
-    "uploaded": false,
-    "playtested": false
+    "studio_imported": true,
+    "uploaded": true,
+    "playtested": false,
+    "studio_normalized": true,
+    "icon_uploaded": false
   },
   "units": "1 Blender unit = 1 stud",
   "axis_conversion": "Blender (x,y,z) -> Roblox (x,z,-y)",
@@ -749,7 +751,28 @@
     "cracks": "64c6080058b231e05d394dbfdc7fad513af2f627e1a085b75c02e93d8d1f8d8c"
   },
   "before": null,
-  "roblox_ids": {},
+  "roblox_ids": {
+    "Shard_11": "rbxassetid://77916556819738",
+    "Shard_15": "rbxassetid://120524157437487",
+    "Body": "rbxassetid://112528796264947",
+    "Shard_01": "rbxassetid://138395991466215",
+    "Shard_12": "rbxassetid://108363930149180",
+    "SnowCollar": "rbxassetid://104460975588309",
+    "CrystalSprout": "rbxassetid://102081801741439",
+    "Shard_10": "rbxassetid://106854543111543",
+    "Shard_07": "rbxassetid://116445058130550",
+    "Shard_06": "rbxassetid://84133217612287",
+    "Shard_03": "rbxassetid://132524791781580",
+    "Shard_16": "rbxassetid://106099666484202",
+    "Shard_14": "rbxassetid://71997990030507",
+    "Shard_08": "rbxassetid://82325830861530",
+    "Shard_13": "rbxassetid://133328933251325",
+    "HangPearl": "rbxassetid://87801387615232",
+    "Shard_09": "rbxassetid://76373633250296",
+    "Shard_05": "rbxassetid://87895988326637",
+    "Shard_02": "rbxassetid://120334188702269",
+    "Shard_04": "rbxassetid://85296773150827"
+  },
   "remaining_checks": [
     "Roblox FBX import scale/orientation/pivot",
     "Glass material and alpha against live sky",
@@ -912,5 +935,214 @@
     1.880000114440918,
     1.899999976158142
   ],
-  "collision_config_promoted": false
+  "collision_config_promoted": false,
+  "native_import": {
+    "meshes": {
+      "Shard_11": {
+        "rawName": "Shard_11.059",
+        "role": "Shard",
+        "meshId": "rbxassetid://77916556819738",
+        "size": {
+          "1": 1.222646713256836,
+          "2": 1.0173733234405518,
+          "3": 0.8148555755615234
+        }
+      },
+      "Shard_15": {
+        "rawName": "Shard_15.059",
+        "role": "Shard",
+        "meshId": "rbxassetid://120524157437487",
+        "size": {
+          "1": 0.6908453106880188,
+          "2": 0.6029815673828125,
+          "3": 0.5026426315307617
+        }
+      },
+      "Body": {
+        "rawName": "Body.059",
+        "role": "Body",
+        "meshId": "rbxassetid://112528796264947",
+        "size": {
+          "1": 1.899999976158142,
+          "2": 1.880000114440918,
+          "3": 1.899999976158142
+        }
+      },
+      "Shard_01": {
+        "rawName": "Shard_01.059",
+        "role": "Shard",
+        "meshId": "rbxassetid://138395991466215",
+        "size": {
+          "1": 0.8971525430679321,
+          "2": 1.2325078248977661,
+          "3": 1.0100374221801758
+        }
+      },
+      "Shard_12": {
+        "rawName": "Shard_12.059",
+        "role": "Shard",
+        "meshId": "rbxassetid://108363930149180",
+        "size": {
+          "1": 0.6057119369506836,
+          "2": 1.2307929992675781,
+          "3": 0.9364466071128845
+        }
+      },
+      "SnowCollar": {
+        "rawName": "SnowCollar.002",
+        "role": "Detail",
+        "meshId": "rbxassetid://104460975588309",
+        "size": {
+          "1": 1.5999999046325684,
+          "2": 0.3100000023841858,
+          "3": 1.5999999046325684
+        }
+      },
+      "CrystalSprout": {
+        "rawName": "CrystalSprout.002",
+        "role": "Detail",
+        "meshId": "rbxassetid://102081801741439",
+        "size": {
+          "1": 0.7413504123687744,
+          "2": 1.0221866369247437,
+          "3": 0.2199999988079071
+        }
+      },
+      "Shard_10": {
+        "rawName": "Shard_10.059",
+        "role": "Shard",
+        "meshId": "rbxassetid://106854543111543",
+        "size": {
+          "1": 1.1090790033340454,
+          "2": 1.4767522811889648,
+          "3": 0.7422081828117371
+        }
+      },
+      "Shard_07": {
+        "rawName": "Shard_07.059",
+        "role": "Shard",
+        "meshId": "rbxassetid://116445058130550",
+        "size": {
+          "1": 1.1002516746520996,
+          "2": 1.0209120512008667,
+          "3": 1.3776448965072632
+        }
+      },
+      "Shard_06": {
+        "rawName": "Shard_06.059",
+        "role": "Shard",
+        "meshId": "rbxassetid://84133217612287",
+        "size": {
+          "1": 0.9226150512695312,
+          "2": 1.4950937032699585,
+          "3": 1.1789844036102295
+        }
+      },
+      "Shard_03": {
+        "rawName": "Shard_03.059",
+        "role": "Shard",
+        "meshId": "rbxassetid://132524791781580",
+        "size": {
+          "1": 0.9802143573760986,
+          "2": 1.7314242124557495,
+          "3": 1.0585987567901611
+        }
+      },
+      "Shard_16": {
+        "rawName": "Shard_16.059",
+        "role": "Shard",
+        "meshId": "rbxassetid://106099666484202",
+        "size": {
+          "1": 0.7866746187210083,
+          "2": 0.766338050365448,
+          "3": 0.7942239046096802
+        }
+      },
+      "Shard_14": {
+        "rawName": "Shard_14.059",
+        "role": "Shard",
+        "meshId": "rbxassetid://71997990030507",
+        "size": {
+          "1": 1.246310830116272,
+          "2": 1.263318419456482,
+          "3": 0.8776922225952148
+        }
+      },
+      "Shard_08": {
+        "rawName": "Shard_08.059",
+        "role": "Shard",
+        "meshId": "rbxassetid://82325830861530",
+        "size": {
+          "1": 1.1531586647033691,
+          "2": 1.269368290901184,
+          "3": 0.8534449338912964
+        }
+      },
+      "Shard_13": {
+        "rawName": "Shard_13.059",
+        "role": "Shard",
+        "meshId": "rbxassetid://133328933251325",
+        "size": {
+          "1": 0.7708398103713989,
+          "2": 0.8808102011680603,
+          "3": 0.8498871326446533
+        }
+      },
+      "HangPearl": {
+        "rawName": "HangPearl.002",
+        "role": "Detail",
+        "meshId": "rbxassetid://87801387615232",
+        "size": {
+          "1": 0.25999999046325684,
+          "2": 0.23999999463558197,
+          "3": 0.25999999046325684
+        }
+      },
+      "Shard_09": {
+        "rawName": "Shard_09.059",
+        "role": "Shard",
+        "meshId": "rbxassetid://76373633250296",
+        "size": {
+          "1": 1.1214771270751953,
+          "2": 1.3376067876815796,
+          "3": 1.030287742614746
+        }
+      },
+      "Shard_05": {
+        "rawName": "Shard_05.059",
+        "role": "Shard",
+        "meshId": "rbxassetid://87895988326637",
+        "size": {
+          "1": 1.424180269241333,
+          "2": 0.7316723465919495,
+          "3": 1.2710117101669312
+        }
+      },
+      "Shard_02": {
+        "rawName": "Shard_02.059",
+        "role": "Shard",
+        "meshId": "rbxassetid://120334188702269",
+        "size": {
+          "1": 1.2526317834854126,
+          "2": 1.3465216159820557,
+          "3": 0.9582414031028748
+        }
+      },
+      "Shard_04": {
+        "rawName": "Shard_04.059",
+        "role": "Shard",
+        "meshId": "rbxassetid://85296773150827",
+        "size": {
+          "1": 1.0514696836471558,
+          "2": 1.4551788568496704,
+          "3": 1.28374183177948
+        }
+      }
+    },
+    "shards": 16,
+    "path": "ServerStorage.CombatReleaseStaged.Glassies.frostglobe",
+    "originalImportScale": 100,
+    "maxBoundsError": 1.4600097131278744e-07,
+    "parts": 20
+  }
 }

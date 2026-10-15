@@ -2,7 +2,7 @@
 
 October 15, 2026. Start here in the next chat. Workspace: `C:/Users/charl/Documents/CrystalCoveBlenderWork`.
 
-Production checkpoint: all 24 source packages and the shared VFX kit are now produced in `release_v2`, with Blender/file validation and uploaded texture IDs. Native FBX import and live kits are pending. Continue from the [current production table](art/combat_release/PROGRESS.md), [batch import list](art/combat_release/BATCH_IMPORT.md) and [checks report](testing/COMBAT_RELEASE_ASSETS.md); the phases and gates below remain authoritative.
+Production checkpoint: all 24 source packages and the shared VFX kit are produced in `release_v2` and now imported/normalized in `ServerStorage.CombatReleaseStaged`. Creator imports were 100× oversized with mixed anchoring; all 527 imported parts are corrected and anchored, with raw backups and verified editable RBXM snapshots. First-six fixed-camera art review passes; live kits and client effect proof are pending. Continue from the [current production table](art/combat_release/PROGRESS.md), [native import report](testing/combat_release/IMPORT_NORMALIZATION.md) and [source checks](testing/COMBAT_RELEASE_ASSETS.md); the phases and gates below remain authoritative.
 
 ## Creator's latest direction
 

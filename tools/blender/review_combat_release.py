@@ -15,7 +15,7 @@ except OSError:FONT=ImageFont.load_default()
 def contact_sheet(rows,name,compare=False):
     w=1200;cell=400;height=850 if compare else 910
     canvas=Image.new('RGB',(w,height),'#142338');d=ImageDraw.Draw(canvas)
-    d.text((24,14),name+' / Blender previews / Studio materials pending',font=FONT,fill='#D9EFFF')
+    d.text((24,14),name+' / Blender appearance reference',font=FONT,fill='#D9EFFF')
     for i,row in enumerate(rows):
         if compare:
             positions=[(i%3*cell+30,i//3*400+65,ICONS/'before'/(row['id']+'.png')),(i%3*cell+220,i//3*400+65,ICONS/(row['id']+'.png'))]
@@ -45,7 +45,7 @@ def run():
         alpha=image.getchannel('A');bounds=alpha.getbbox();assert bounds and min(bounds)>0 and max(bounds)<512,(gid,'padding',bounds)
         # Aim for centered visible artwork; record any eccentric silhouette honestly.
         center=((bounds[0]+bounds[2])/2,(bounds[1]+bounds[3])/2)
-        results.append({'id':gid,'batch':row['batch'],'intact_triangles':m['intact_triangles'],'shards':16,'alpha_bounds':bounds,'alpha_center':center,'fbx_roundtrip':m.get('fbx_roundtrip',{}).get('passed',False),'studio_imported':False})
+        results.append({'id':gid,'batch':row['batch'],'intact_triangles':m['intact_triangles'],'shards':16,'alpha_bounds':bounds,'alpha_center':center,'fbx_roundtrip':m.get('fbx_roundtrip',{}).get('passed',False),'studio_imported':m.get('status',{}).get('studio_imported',False)})
     for batch in 'ABCD':
         rows=[r for r in ROSTER if r['batch']==batch]
         if all((ICONS/(r['id']+'.png')).exists() for r in rows):contact_sheet(rows,'batch_'+batch)
@@ -53,7 +53,8 @@ def run():
         if old:contact_sheet(old,'batch_'+batch+'_before_after',True)
     if len(results)==24:
         board=Image.new('RGB',(1440,1090),'#142338');draw=ImageDraw.Draw(board)
-        draw.text((20,10),'GLASS CLASH / 24 release asset previews / Studio import pending',font=FONT,fill='white')
+        native=all(r['studio_imported'] for r in results)
+        draw.text((20,10),'GLASS CLASH / 24 Blender previews / '+('native imports normalized' if native else 'Studio import pending'),font=FONT,fill='white')
         for i,row in enumerate(ROSTER):
             x=(i%6)*240;y=(i//6)*260+45
             im=Image.open(ICONS/(row['id']+'.png')).convert('RGBA');im.thumbnail((216,216))

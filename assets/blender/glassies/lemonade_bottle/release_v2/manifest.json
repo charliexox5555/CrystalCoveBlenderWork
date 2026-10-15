@@ -5,9 +5,11 @@
   "status": {
     "exported": true,
     "blender_validated": true,
-    "studio_imported": false,
-    "uploaded": false,
-    "playtested": false
+    "studio_imported": true,
+    "uploaded": true,
+    "playtested": false,
+    "studio_normalized": true,
+    "icon_uploaded": false
   },
   "units": "1 Blender unit = 1 stud",
   "axis_conversion": "Blender (x,y,z) -> Roblox (x,z,-y)",
@@ -754,7 +756,28 @@
     "preview": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\icons\\release_v2\\before\\lemonade_bottle.png",
     "body_triangles": 384
   },
-  "roblox_ids": {},
+  "roblox_ids": {
+    "Shard_11": "rbxassetid://94067963732770",
+    "Shard_15": "rbxassetid://138331399741335",
+    "Body": "rbxassetid://103100962540102",
+    "Shard_01": "rbxassetid://94194860907280",
+    "LemonPulp.001": "rbxassetid://123631930090564",
+    "Shard_12": "rbxassetid://120291196797115",
+    "Shard_10": "rbxassetid://100741930596450",
+    "Shard_07": "rbxassetid://121112089333269",
+    "Shard_06": "rbxassetid://76334632472325",
+    "Shard_04": "rbxassetid://96115342766438",
+    "Shard_16": "rbxassetid://102897443652521",
+    "Shard_13": "rbxassetid://91522830273331",
+    "Shard_14": "rbxassetid://75891992994244",
+    "Shard_08": "rbxassetid://116198172367680",
+    "Shard_03": "rbxassetid://128507622438383",
+    "LemonRind.001": "rbxassetid://113487110146745",
+    "Shard_09": "rbxassetid://135256478946191",
+    "Shard_05": "rbxassetid://135454408173001",
+    "Shard_02": "rbxassetid://109619768917194",
+    "Cap.013": "rbxassetid://122294404080721"
+  },
   "remaining_checks": [
     "Roblox FBX import scale/orientation/pivot",
     "Glass material and alpha against live sky",
@@ -917,5 +940,214 @@
     2.369999885559082,
     1.3200000524520874
   ],
-  "collision_config_promoted": false
+  "collision_config_promoted": false,
+  "native_import": {
+    "meshes": {
+      "Shard_11": {
+        "rawName": "Shard_11.053",
+        "role": "Shard",
+        "meshId": "rbxassetid://94067963732770",
+        "size": {
+          "1": 0.8316686749458313,
+          "2": 0.5300301909446716,
+          "3": 0.9570420384407043
+        }
+      },
+      "Shard_15": {
+        "rawName": "Shard_15.053",
+        "role": "Shard",
+        "meshId": "rbxassetid://138331399741335",
+        "size": {
+          "1": 0.4034361243247986,
+          "2": 1.6044180393218994,
+          "3": 0.5574086904525757
+        }
+      },
+      "Body": {
+        "rawName": "Body.053",
+        "role": "Body",
+        "meshId": "rbxassetid://103100962540102",
+        "size": {
+          "1": 1.3199999332427979,
+          "2": 2.369999885559082,
+          "3": 1.3199999332427979
+        }
+      },
+      "Shard_01": {
+        "rawName": "Shard_01.053",
+        "role": "Shard",
+        "meshId": "rbxassetid://94194860907280",
+        "size": {
+          "1": 0.7820004224777222,
+          "2": 0.7302218675613403,
+          "3": 0.35439833998680115
+        }
+      },
+      "LemonPulp.001": {
+        "rawName": "LemonPulp.002",
+        "role": "Detail",
+        "meshId": "rbxassetid://123631930090564",
+        "size": {
+          "1": 0.4755283296108246,
+          "2": 0.5,
+          "3": 0.04999995976686478
+        }
+      },
+      "Shard_12": {
+        "rawName": "Shard_12.053",
+        "role": "Shard",
+        "meshId": "rbxassetid://120291196797115",
+        "size": {
+          "1": 0.693225085735321,
+          "2": 1.1872397661209106,
+          "3": 0.6371233463287354
+        }
+      },
+      "Shard_10": {
+        "rawName": "Shard_10.053",
+        "role": "Shard",
+        "meshId": "rbxassetid://100741930596450",
+        "size": {
+          "1": 0.662819504737854,
+          "2": 0.8638143539428711,
+          "3": 1.0141586065292358
+        }
+      },
+      "Shard_07": {
+        "rawName": "Shard_07.053",
+        "role": "Shard",
+        "meshId": "rbxassetid://121112089333269",
+        "size": {
+          "1": 0.7646270394325256,
+          "2": 0.8317687511444092,
+          "3": 0.8548197746276855
+        }
+      },
+      "Shard_06": {
+        "rawName": "Shard_06.053",
+        "role": "Shard",
+        "meshId": "rbxassetid://76334632472325",
+        "size": {
+          "1": 0.8984888792037964,
+          "2": 1.5292092561721802,
+          "3": 1.0776973962783813
+        }
+      },
+      "Shard_04": {
+        "rawName": "Shard_04.053",
+        "role": "Shard",
+        "meshId": "rbxassetid://96115342766438",
+        "size": {
+          "1": 0.613354504108429,
+          "2": 1.893137812614441,
+          "3": 0.6498841643333435
+        }
+      },
+      "Shard_16": {
+        "rawName": "Shard_16.053",
+        "role": "Shard",
+        "meshId": "rbxassetid://102897443652521",
+        "size": {
+          "1": 1.0216082334518433,
+          "2": 1.1893118619918823,
+          "3": 0.6165602803230286
+        }
+      },
+      "Shard_13": {
+        "rawName": "Shard_13.053",
+        "role": "Shard",
+        "meshId": "rbxassetid://91522830273331",
+        "size": {
+          "1": 0.9076440334320068,
+          "2": 1.274131178855896,
+          "3": 0.3360257148742676
+        }
+      },
+      "Shard_14": {
+        "rawName": "Shard_14.053",
+        "role": "Shard",
+        "meshId": "rbxassetid://75891992994244",
+        "size": {
+          "1": 0.945368766784668,
+          "2": 1.0086952447891235,
+          "3": 0.33143752813339233
+        }
+      },
+      "Shard_08": {
+        "rawName": "Shard_08.053",
+        "role": "Shard",
+        "meshId": "rbxassetid://116198172367680",
+        "size": {
+          "1": 0.5430369973182678,
+          "2": 1.5268819332122803,
+          "3": 0.7827017307281494
+        }
+      },
+      "Shard_03": {
+        "rawName": "Shard_03.053",
+        "role": "Shard",
+        "meshId": "rbxassetid://128507622438383",
+        "size": {
+          "1": 0.6317387819290161,
+          "2": 1.701648235321045,
+          "3": 0.8072816133499146
+        }
+      },
+      "LemonRind.001": {
+        "rawName": "LemonRind.002",
+        "role": "Detail",
+        "meshId": "rbxassetid://113487110146745",
+        "size": {
+          "1": 0.6399999856948853,
+          "2": 0.64000004529953,
+          "3": 0.119999960064888
+        }
+      },
+      "Shard_09": {
+        "rawName": "Shard_09.053",
+        "role": "Shard",
+        "meshId": "rbxassetid://135256478946191",
+        "size": {
+          "1": 0.8403890132904053,
+          "2": 1.7483839988708496,
+          "3": 0.5501855611801147
+        }
+      },
+      "Shard_05": {
+        "rawName": "Shard_05.053",
+        "role": "Shard",
+        "meshId": "rbxassetid://135454408173001",
+        "size": {
+          "1": 0.7644924521446228,
+          "2": 0.8042336702346802,
+          "3": 0.9618045091629028
+        }
+      },
+      "Shard_02": {
+        "rawName": "Shard_02.053",
+        "role": "Shard",
+        "meshId": "rbxassetid://109619768917194",
+        "size": {
+          "1": 0.8623692393302917,
+          "2": 1.7693121433258057,
+          "3": 0.583756148815155
+        }
+      },
+      "Cap.013": {
+        "rawName": "Cap.026",
+        "role": "Detail",
+        "meshId": "rbxassetid://122294404080721",
+        "size": {
+          "1": 0.6000000238418579,
+          "2": 0.23000025749206543,
+          "3": 0.6000000238418579
+        }
+      }
+    },
+    "shards": 16,
+    "path": "ServerStorage.CombatReleaseStaged.Glassies.lemonade_bottle",
+    "originalImportScale": 100,
+    "maxBoundsError": 1.3328003944934608e-07,
+    "parts": 20
+  }
 }

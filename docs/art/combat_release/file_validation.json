@@ -18,7 +18,7 @@
         257.5
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "jam",
@@ -36,7 +36,7 @@
         254.0
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "prism",
@@ -54,7 +54,7 @@
         260.5
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "crescent_axe",
@@ -72,7 +72,7 @@
         261.0
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "briar_flask",
@@ -90,7 +90,7 @@
         256.5
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "arc_coil",
@@ -108,7 +108,7 @@
         261.5
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "milk_bottle",
@@ -126,7 +126,7 @@
         257.5
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "pickle_jar",
@@ -144,7 +144,7 @@
         253.5
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "ketchup_bottle",
@@ -162,7 +162,7 @@
         260.0
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "glass_cup",
@@ -180,7 +180,7 @@
         253.5
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "water_jug",
@@ -198,7 +198,7 @@
         257.5
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "lemonade_bottle",
@@ -216,7 +216,7 @@
         257.5
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "mason_jar",
@@ -234,7 +234,7 @@
         254.5
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "hot_sauce",
@@ -252,7 +252,7 @@
         257.0
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "crystal_tumbler",
@@ -270,7 +270,7 @@
         254.0
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "chime",
@@ -288,7 +288,7 @@
         263.5
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "hourglass",
@@ -306,7 +306,7 @@
         256.0
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "frostglobe",
@@ -324,7 +324,7 @@
         264.0
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "prism_blade",
@@ -342,7 +342,7 @@
         256.5
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "rocket_pop",
@@ -360,7 +360,7 @@
         257.0
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "glass_duck",
@@ -378,7 +378,7 @@
         261.0
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "comet",
@@ -396,7 +396,7 @@
         260.0
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "glass_dragon",
@@ -414,7 +414,7 @@
         249.0
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     },
     {
       "id": "galaxy_orb",
@@ -432,7 +432,7 @@
         254.5
       ],
       "fbx_roundtrip": true,
-      "studio_imported": false
+      "studio_imported": true
     }
   ]
 }

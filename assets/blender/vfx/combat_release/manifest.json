@@ -136,11 +136,12 @@
   },
   "status": {
     "exported": true,
-    "studio_imported": false,
-    "uploaded": false,
+    "studio_imported": true,
+    "uploaded": true,
     "playtested": false,
     "textures_uploaded": true,
-    "meshes_uploaded": false
+    "meshes_uploaded": true,
+    "studio_normalized": true
   },
   "roblox_ids": {
     "glass_glint": "rbxassetid://118014953401567",
@@ -281,5 +282,126 @@
     "families_are_toggleable_collections": true,
     "matches_rendered_motion_equations": true,
     "atlas_pixels_changed": false
+  },
+  "native_import": {
+    "meshes": {
+      "PuffSheet": {
+        "rawName": "PuffSheet.001",
+        "role": "VFX",
+        "meshId": "rbxassetid://136348000119927",
+        "size": {
+          "1": 1.5403133630752563,
+          "2": 0.8456116914749146,
+          "3": 0.02499999850988388
+        }
+      },
+      "GuardPlate": {
+        "rawName": "GuardPlate.001",
+        "role": "VFX",
+        "meshId": "rbxassetid://111583406837703",
+        "size": {
+          "1": 1.1829466819763184,
+          "2": 1.1533337831497192,
+          "3": 0.11999999731779099
+        }
+      },
+      "SplashSheet": {
+        "rawName": "SplashSheet.001",
+        "role": "VFX",
+        "meshId": "rbxassetid://107634644447126",
+        "size": {
+          "1": 1.553893804550171,
+          "2": 0.8811119794845581,
+          "3": 0.03500000014901161
+        }
+      },
+      "Thorn": {
+        "rawName": "Thorn.001",
+        "role": "VFX",
+        "meshId": "rbxassetid://95992627948923",
+        "size": {
+          "1": 0.403675377368927,
+          "2": 0.7238802909851074,
+          "3": 0.1599999964237213
+        }
+      },
+      "Droplet": {
+        "rawName": "Droplet.001",
+        "role": "VFX",
+        "meshId": "rbxassetid://81593172083210",
+        "size": {
+          "1": 0.3614014983177185,
+          "2": 0.5600000023841858,
+          "3": 0.3799999952316284
+        }
+      },
+      "CurvedSlash": {
+        "rawName": "CurvedSlash.001",
+        "role": "VFX",
+        "meshId": "rbxassetid://133816611993406",
+        "size": {
+          "1": 1.683996558189392,
+          "2": 0.8265300393104553,
+          "3": 0.04999999701976776
+        }
+      },
+      "Ring": {
+        "rawName": "Ring.001",
+        "role": "VFX",
+        "meshId": "rbxassetid://113619058047882",
+        "size": {
+          "1": 1.709999918937683,
+          "2": 1.709999918937683,
+          "3": 0.1100001111626625
+        }
+      },
+      "BubbleDome": {
+        "rawName": "BubbleDome.001",
+        "role": "VFX",
+        "meshId": "rbxassetid://97270525736865",
+        "size": {
+          "1": 1,
+          "2": 1,
+          "3": 0.3999999761581421
+        }
+      },
+      "CrystalChip": {
+        "rawName": "CrystalChip.001",
+        "role": "VFX",
+        "meshId": "rbxassetid://96924868353648",
+        "size": {
+          "1": 0.4452439844608307,
+          "2": 0.591499388217926,
+          "3": 0.14000000059604645
+        }
+      },
+      "HalfRing": {
+        "rawName": "HalfRing.001",
+        "role": "VFX",
+        "meshId": "rbxassetid://100282317858200",
+        "size": {
+          "1": 1.709999918937683,
+          "2": 0.8549999594688416,
+          "3": 0.11000005155801773
+        }
+      }
+    },
+    "shards": 0,
+    "path": "ServerStorage.CombatReleaseStaged.VFX.combat_vfx",
+    "originalImportScale": 100,
+    "maxBoundsError": 1.1006956412984437e-07,
+    "parts": 10
+  },
+  "mesh_ids": {
+    "PuffSheet": "rbxassetid://136348000119927",
+    "GuardPlate": "rbxassetid://111583406837703",
+    "SplashSheet": "rbxassetid://107634644447126",
+    "Thorn": "rbxassetid://95992627948923",
+    "Droplet": "rbxassetid://81593172083210",
+    "CurvedSlash": "rbxassetid://133816611993406",
+    "Ring": "rbxassetid://113619058047882",
+    "BubbleDome": "rbxassetid://97270525736865",
+    "CrystalChip": "rbxassetid://96924868353648",
+    "HalfRing": "rbxassetid://100282317858200"
   }
 }

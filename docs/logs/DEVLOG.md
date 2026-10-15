@@ -14,6 +14,15 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-15 — Codex — Correct imported release sizes and anchoring
+Done:
+- Creator imported all 24 bundles/shared kit and one extra Pop. Measured exact 100× unit conversion and baked yaw; normalized all 527 imported MeshParts, anchored them and disabled collision/touch/query. Preserved untouched raw imports in ServerStorage.CombatReleaseBackups; canonical 24-model/384-shard staging library and ten VFX meshes in CombatReleaseStaged. No live art/catalog/ownership/pool/rules changes.
+- Added eight named Decal references in CombatReleaseStaged.VFX.Textures using recorded IDs; metadata confirms Image assets, so no additional creator lookup/upload is required. First-six actual imported models reviewed with current sky and fixed camera/FOV/display scale. Native UI alpha cards remain inconclusive in Edit; client effect/kit proof is pending.
+- 4,763 native checks pass: 506 canonical parts, aligned hang/shard pivots, dimensions, materials, persistent mesh IDs and zero unanchored import parts; max world-bound error 0.0000002732 studs. Repeat normalization is safe. Lune 79 passed; native RunAll true; simulators unnecessary because configs unchanged.
+- Saved staged/raw native RBXM snapshots; staged deserialize restores 24 glassies/506 parts/eight textures with zero unanchored parts. Updated all import manifests/IDs, progress, roadmap and handoff. Original FOV restored, review stored in ServerStorage, Studio in Edit; no publishing/device changes. Unrelated working files preserved.
+Next:
+- First-six client VFX/live kits and shared trigger/rules foundations, then remaining kits and audited release filtering. The manual-import gate is resolved; staged art is not yet promoted over live assets.
+
 ## 2026-10-15 — Codex — All 24 release source packages and shared VFX
 Done:
 - Produced batches A–D: all 12 existing art revisions + 12 first models, preserving IDs and all original sources. Each release_v2 package has editable .blend, body/details/shards/bundle FBXs, 16 closed aligned shards (384 total), regenerated surface cracks, upright centered transparent 512 icon, hashes, measured dimensions/markers and explicit import/playtest status. Intact models range 220–1,232 triangles. Original default Blender scene backed up and restored with Cube selected; no desktop/device changes.

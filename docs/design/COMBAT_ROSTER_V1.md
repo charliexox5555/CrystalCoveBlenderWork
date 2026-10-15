@@ -1,6 +1,6 @@
 # Glass Clash — combat roster and VFX plan
 
-October 15, 2026. **Proposed for creator review; ready to begin the first Blender batch after review.** Research: [sources and existing-system audit](../research/COMBAT_VFX_RESEARCH.md).
+October 15, 2026. **Creator approved the direction and fixed this roster at 24 for release.** Counts, damage and timings remain prototype values. The later [release handoff](../HANDOFF_COMBAT_RELEASE.md) is the current production authority: improve existing bodies in Blender, build the new ones and complete all 24 in four batches. Research: [sources and existing-system audit](../research/COMBAT_VFX_RESEARCH.md).
 
 The goal is a fight where you can see trouble building, anticipate a dramatic collision, understand what saved or shattered a glassy, and want to watch the next matchup. “1000× better” is the creative ambition, not a performance or fun measurement.
 
@@ -17,7 +17,7 @@ Keep the creator-approved foundations:
 - Fixed straight-on fight camera and grounded avatars on their queue pads. Do not reintroduce camera cuts, orbiting, round-end zooms, power banners or result screens.
 - Keep the current retained three-card match hand and round-only Pick Any.
 - Glassies remain glossy toy glass; the environment stays matte. Original names/shapes, no alcohol references or copied characters.
-- Existing models and IDs stay intact. Reworks add separate effect pieces. New concepts receive new IDs only after approval.
+- Existing IDs and recognizable identities stay intact. The creator now requests Blender improvements to existing bodies as well as separate effect pieces; preserve old sources and regenerate matching shards/crack paths. New concept IDs are fixed in the release manifest.
 
 What changes in the proposed fighting design:
 
@@ -59,7 +59,7 @@ Turnaround detection belongs in the server simulation. For the spherical pendulu
 
 Small readiness visuals can update on every qualifying event, but major attacks obey cooldowns/caps. An “every hit” trait does not mean a full-screen explosion every hit.
 
-## 4. The 24-glassy shortlist
+## 4. The 24-glassy release roster
 
 Names of existing glassies remain unchanged. “Description” is proposed player-facing ability copy. Looks describe existing silhouette preservation or a new modeling brief. Counters are tendencies to test, not guaranteed wins. Existing rarity labels remain; new rarities and acquisition sources are deliberately unassigned until mechanics are balanced.
 
@@ -276,7 +276,7 @@ These IDs already exist in the catalog but do not have installed playable art. T
 | A visible comeback window | Hot Sauce |
 | A broad signature | Chime, Glass Dragon |
 
-The remaining 13 existing catalog entries stay intact for later design: Perfume, Potion Flask, Message in a Bottle, Light Bulb, Honey Bear, Jack-o'-Glass, Crystal Ball, Glass Lollipop, Grizzly Guardian, Starblade, Glass Sword, Glass Unicorn and Crystal Crown. Avoid launching three similar sword/beam kits at once. Several are good later candidates for new mechanics once the initial set proves fun; none are deleted or renamed by this plan.
+The remaining 13 existing catalog entries stay intact as dormant backlog: Perfume, Potion Flask, Message in a Bottle, Light Bulb, Honey Bear, Jack-o'-Glass, Crystal Ball, Glass Lollipop, Grizzly Guardian, Starblade, Glass Sword, Glass Unicorn and Crystal Crown. They are not additions to the fixed release roster. None are deleted or renamed; handle release filtering and any saved ownership as specified in the handoff. Roster expansion requires a later creator instruction.
 
 ## 5. Blender and Studio responsibilities
 
@@ -304,7 +304,7 @@ Effects should mostly be smooth stylized geometry with a few sharp glass facets.
 
 ## 6. First Blender batch: concrete work order
 
-Build the shared effect kit and **three new bodies**: Crescent Axe, Briar Flask and Arc Coil. Reuse approved Pop/Jam/Prism bodies; model only removable charge/guard/lens additions for them.
+Build the shared effect kit and **three new bodies**: Crescent Axe, Briar Flask and Arc Coil. Improve Pop/Jam/Prism proportions, edges and finish while retaining their identities; preserve old sources and add removable charge/guard/lens details. The handoff defines the following three batches to complete all 24.
 
 | Order | Deliverable | Review view |
 |---|---|---|
@@ -388,6 +388,6 @@ Before scaling the roster:
 
 ## 10. Review and stopping point
 
-Recommended approval scope: six prototype kits and the shared contact/shatter kit. The other 18 are a shortlist to refine after seeing those mechanics, not 18 models to build immediately. No final damage numbers, new rarity assignments, economy changes or asset purchases are implied.
+The creator approved the roster/direction and requests exactly 24 release glassies, with improved existing art and new Blender models. Six prototype kits plus the shared contact/shatter kit are the first production checkpoint; the remaining 18 follow in three batches. Final damage numbers, new rarity assignments, economy changes and asset purchases are not implied by roster approval.
 
-The creator has already settled the arena question: keep the hanging glassies and use turnarounds. Remaining review is creative: which names/looks/powers to keep, and whether the proposed signature-based revision is the desired replacement for today's generic timed bursts. After that review, begin Blender with the concrete first-batch work order above, then validate the assets in Studio before expanding.
+The creator settled the arena question: keep hanging glassies and use turnarounds. Begin the next chat from the complete release handoff/prompt, make actual Blender assets, validate the first import and effects, then complete the fixed roster. Refine tunable rules from live checks without adding extra roster entries or silently changing settled gameplay/UI constraints.

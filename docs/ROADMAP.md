@@ -78,7 +78,8 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 - [x] **C:** preserve creator template edits; smaller Inventory/Shop, matching Marble/Inventory icons, repaired removed-Star binding, shop feedback, centered button anchors and interaction animation; grounded pad avatars, outward fixed camera, numeric glass HP, baseline avatar finisher/heart animation, removed result/power overlays. Native bot match/rewards/cleanup verified; 76 logic tests and 303 presentation checks pass. Device work deferred at creator request.
 - [x] **C/U:** research and plan original contact/turnaround-triggered powers, 24-glassy shortlist, shared impact/shatter effects and Blender/Studio production split; creator confirms current arena with swing turnarounds. [Research](research/COMBAT_VFX_RESEARCH.md), [roster/work order](design/COMBAT_ROSTER_V1.md). Planning only; proposed kits await review.
-- [ ] **B/C/U:** review the six-kit prototype, then begin shared VFX assets and Crescent Axe/Briar Flask/Arc Coil in Blender; implement/test new triggers and kits after approval. Current powers remain live; special finisher variations remain later work.
+- [x] **C/U:** lock release roster to 24, plan revisions to 12 existing Blender models plus 12 new models, research VFX production and write the complete [new-chat handoff](HANDOFF_COMBAT_RELEASE.md) / [execution prompt](prompts/05_combat_release_24.md). Planning only; Blender connection checked read-only.
+- [ ] **B/C/U:** produce the four six-glassy batches, shared VFX kit, first-six import/live proof, then all 24 kits and release filtering. Current powers remain live until implementation; special finisher variations remain later work.
 
 - [x] **C:** Stained Glass v0.5 editable Lobby / Inventory / Shop / Choose / Fight templates, 82 uploaded UI assets, v0.4 backup, complete silhouette/label clipping fixes approved, native bot flow and 76 tests pass; [report](testing/UI_V05.md)
 - [ ] **U:** restyle the v0.5 StarterGui templates, then authorize the multi-device formatting pass
@@ -93,11 +94,11 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 - [x] **U/C:** no rewards before a real completed round; native disconnect verifies zero currency and unchanged match stats, 74 tests pass
 - [x] **CL:** playtested polish pass: Perfect-band/round-result/ownership fixes, survivor settle, arena state and signs, lobby lane, lighting, Watch any fight, faster forfeit, binary snapshots (−83% payload), render cost −30%; native multiplayer + 39 layouts pass ([report](testing/POLISH_PASS.md))
 - [ ] **U:** real low-end-phone performance/MicroProfiler, manual close/gamepad checks, published datastore/leaderboard verification
-- [ ] **B:** remaining launch glassies (target 18+ playable)
+- [ ] **B:** fixed release art roster: 24 playable glassies, including 12 existing-model revisions and 12 new models; source/export/icon/shard/import checklist in the combat handoff
 - [ ] **U:** maturity questionnaire, icon, thumbnails, description; cross-promote from your other game
 
 ## After launch
 
-- [ ] Weekly: 2–3 new glassies + a code
+- [ ] Weekly polish/events/codes; roster remains at 24 unless the creator later authorizes expansion
 - [ ] Winter event (~Dec 12): snow globes, ornaments, glass reindeer
 - [ ] Bracket tournament event, 2v2, party pads, Rainbow "re-melt"

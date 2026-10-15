@@ -14,6 +14,15 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-15 — Codex — Fixed 24-glassy release handoff
+Done:
+- Creator approved combat direction, requested better existing Blender models/new models, a simple release scope fixed at 24, further VFX research and a complete new-chat prompt. Added authoritative HANDOFF_COMBAT_RELEASE, four-batch RELEASE_ROSTER_24.json, executable prompt 05 and researched COMBAT_VFX_WORKFLOW; updated the earlier draft to match current scope.
+- Blender MCP checked read-only: responding, unsaved clean default scene with Cube/Camera/Light. Bundled Blender manuals now accessible for transparent renders/FBX guidance. Researched Roblox particles/flipbook fallbacks, beams/trails, PBR/import pivots and transparent-effect performance. No models, live code, world, uploads or device settings changed.
+- Plan covers all 12 existing art revisions + six catalog first models + six new concepts, exact IDs, recoverable sources, matching shards/cracks/icons, first-six validation, all-24 integration and dormant catalog/saved-data handling. Explicitly prevents a 37-definition catalog from leaking into the 24 release roster.
+- Lune: 79 passed, 0 failed. Roster uniqueness/count/source categories and local handoff links verified. Configs unchanged; simulators not required.
+Next:
+- Creator starts a new chat using docs/prompts/05_combat_release_24.md. Begin actual Blender batch A/shared effects, prove import and six kits, then complete B–D and release integration. Real-device/publishing review remains separate.
+
 ## 2026-10-15 — Codex — Combat research and roster plan
 Done:
 - Researched primary Riot/GDC and Roblox sources for watchable autobattler abilities, anticipation/impact, effect clarity, beams/trails/flipbooks, import and performance. Audited current FightRules/Pendulum/FightScene/Shatter/Finisher and all 31 catalog IDs; older Ball VS Ball brief remains explicitly unverified.

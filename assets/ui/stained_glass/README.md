@@ -3,6 +3,7 @@
 Theme: every UI piece is **cut glass held by dark lead lines**: jewel-coloured mosaic borders, faceted gem buttons, chamfered (cut) corners, never rounded corners. Matches the Figma page **"UI v0.5 — Stained Glass"** and the screen references in [docs/ui/v05](../../../docs/ui/v05).
 
 - `png/` transparent PNGs at **2×** (upload these to Roblox). `svg/` editable sources.
+- **No text or icons are baked into any glass piece.** Buttons, plaques, tabs and panels are plain glass; put text (TextLabels) and icons (`icon/*` ImageLabels) on top in Studio.
 - Regenerate or tweak: `npm i @resvg/resvg-js && node tools/ui/stained_glass.mjs` (all shapes and colours are in that file).
 
 ## Palette
@@ -34,11 +35,12 @@ Rarity colours: Common milk, Uncommon emerald, Rare sapphire, Epic amethyst, Leg
 | `button/gem_play` | 1040×260 | `Slice`, `Rect(110, 40, 930, 220)` |
 | `banner/power_<colour>` | 1200×220 | `Slice`, `Rect(100, 40, 1100, 180)` (power banners) |
 | `tab/tab_<colour>_active` / `_idle` | 480×140 | `Slice`, `Rect(70, 24, 410, 116)` |
-| `hud/hex_shop`, `hud/hex_inventory` | 300×340 | `Fit`, `UIAspectRatioConstraint` 0.882; label on `hud/label_plaque` underneath |
+| `hud/hex_<colour>` | 300×340 | `Fit`, `UIAspectRatioConstraint` 0.882 (Shop = amber, Inventory = sapphire); icon ImageLabel on top, label on `hud/label_plaque` underneath |
+| `icon/shop`, `icon/inventory`, `icon/close_x`, `icon/coin`, `icon/marble` | 128 / 128 / 80 / 148 / 148 | separate ImageLabels, `Fit` |
 | `hud/label_plaque`, `tile/name_plaque` | 300×88 / 352×88 | `Slice`, `Rect(40, 10, 260, 78)` / `Rect(40, 10, 312, 78)` |
 | `hud/currency_plaque` | 460×116 | `Slice`, `Rect(40, 20, 420, 96)`; `icon/coin` or `icon/marble` overlaps the left end |
 | `icon/heart_full`, `icon/heart_broken` | 96×96 | `Fit` |
-| `button/close` | 160×160 | `Fit` |
+| `button/close_diamond` | 160×160 | `Fit`, with `icon/close_x` on top |
 | `tag/tag_<colour>` | 300×80 | `Slice`, `Rect(40, 10, 260, 70)` (type / rarity tags) |
 | `tile/tile_<rarity>` | 400×480 | `Fit`, aspect 0.833; ViewportFrame inside, name plaque at the bottom |
 | `tile/selected_outline`, `card/selected_outline` | 432×512 / 960×1280 | `Fit`, shown on the selected tile/card |

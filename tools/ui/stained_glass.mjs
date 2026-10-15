@@ -84,15 +84,18 @@ for (const k of ["emerald", "amber", "sapphire", "ruby", "amethyst", "aqua"]) {
 }
 add("button/gem_play", gemSvg(520, 130, "emerald"));
 for (const k of ["aqua", "ruby", "amethyst", "amber"]) { add(`tab/tab_${k}_active`, gemSvg(240, 70, k)); add(`tab/tab_${k}_idle`, gemSvg(240, 70, k, true)); }
-add("hud/hex_shop", hexSvg(150, 170, "amber", ICON.shop));
-add("hud/hex_inventory", hexSvg(150, 170, "sapphire", ICON.inventory));
+// Buttons are plain glass; icons and text are separate so they can be placed in Studio.
+for (const k of ["amber", "sapphire", "emerald", "ruby", "amethyst", "aqua"]) add(`hud/hex_${k}`, hexSvg(150, 170, k));
+add("icon/shop", SV(64, 64, ICON.shop.replace('transform="translate(43,40)"', "")));
+add("icon/inventory", SV(64, 64, ICON.inventory.replace('transform="translate(43,40)"', "")));
 add("hud/label_plaque", plaque(150, 44));
 add("hud/currency_plaque", SV(230, 58, poly([[10, 3], [218, 3], [227, 29], [218, 55], [10, 55], [3, 29]], P.milk[0], LEAD(5)) + poly([[12, 7], [214, 7], [218, 17], [16, 17]], "#FFFFFF", 'fill-opacity="0.6"')));
 add("icon/coin", SV(74, 74, '<g transform="scale(1.156)"><polygon points="20,4 44,4 60,20 60,44 44,60 20,60 4,44 4,20" fill="#F5A524" stroke="#1F1830" stroke-width="4" stroke-linejoin="round"/><polygon points="24,14 40,14 50,24 50,40 40,50 24,50 14,40 14,24" fill="#FFD98A" stroke="#B26E0B" stroke-width="2.5"/><polygon points="22,18 30,18 20,36 16,32" fill="#FFFFFF" fill-opacity="0.6"/></g>'));
 add("icon/marble", SV(74, 74, '<g transform="scale(1.156)"><circle cx="32" cy="32" r="28" fill="#1FC2D3" stroke="#1F1830" stroke-width="4"/><path d="M8 36c10-14 22 6 48-6-4 16-16 26-30 24C16 52 10 46 8 36z" fill="#8B4FE0"/><circle cx="22" cy="20" r="7" fill="#FFFFFF" fill-opacity="0.75"/></g>'));
 add("icon/heart_full", SV(48, 48, `<path d="${heartP}" fill="${P.ruby[0]}" ${LEAD(4)}/><polygon points="10,12 18,9.5 24,14 14,22" fill="${P.ruby[1]}" fill-opacity="0.8"/><path d="M24 12.6 L24 42 M24 26 L41 25 M24 26 L7 25" stroke="${P.ruby[2]}" stroke-width="2"/>`));
 add("icon/heart_broken", SV(48, 48, `<path d="${heartP}" fill="${P.slate[2]}" ${LEAD(4)}/><path d="M24 12 L20 20 L27 27 L22 34 L24 42" fill="none" stroke="#E9E3F2" stroke-width="5" stroke-linejoin="round"/>`));
-add("button/close", SV(80, 80, poly([[40, 3], [77, 40], [40, 77], [3, 40]], P.ruby[0], LEAD(5)) + poly([[40, 3], [77, 40], [40, 40]], P.ruby[1], 'fill-opacity="0.6"') + poly([[40, 40], [40, 77], [3, 40]], P.ruby[2], 'fill-opacity="0.6"') + '<path d="M28 28L52 52M52 28L28 52" stroke="#1F1830" stroke-width="10" stroke-linecap="round"/><path d="M28 28L52 52M52 28L28 52" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>'));
+add("button/close_diamond", SV(80, 80, poly([[40, 3], [77, 40], [40, 77], [3, 40]], P.ruby[0], LEAD(5)) + poly([[40, 3], [77, 40], [40, 40]], P.ruby[1], 'fill-opacity="0.6"') + poly([[40, 40], [40, 77], [3, 40]], P.ruby[2], 'fill-opacity="0.6"')));
+add("icon/close_x", SV(40, 40, '<path d="M8 8L32 32M32 8L8 32" stroke="#1F1830" stroke-width="10" stroke-linecap="round"/><path d="M8 8L32 32M32 8L8 32" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>'));
 for (const k of ["aqua", "amber", "amethyst", "ruby", "emerald", "sapphire", "milk", "slate"]) add(`tag/tag_${k}`, tag(k));
 for (const [r, cols] of Object.entries(RARITY)) { seed = 31; add(`tile/tile_${r}`, windowSvg(200, 240, { band: 14, cut: [22, 10, 24, 10], colors: cols, pieces: 10, facets: 2 })); }
 add("tile/name_plaque", plaque(176, 44));

@@ -27,56 +27,103 @@ function Screen:Refresh(profile)
 	end
 	self.TileConnections = {}
 	self.Tiles = {}
-	local root = self.Grid.Tiles
-	for _, o in root:GetChildren() do
-		if o:IsA("GuiObject") then
-			o:Destroy()
+	for _, root in { self.Grid.Tiles, self.Grid.UnownedTiles } do
+		for _, o in root:GetChildren() do
+			if o:IsA("GuiObject") then
+				o:Destroy()
+			end
 		end
 	end
-	local entries = {}
+	local ownedEntries, unownedEntries = {}, {}
 	for _, d in Glassies.List do
-		if profile.Glassies[d.Id] then
-			table.insert(entries, d)
+		local owned = profile.Glassies[d.Id]
+		table.insert(if owned and owned.Count > 0 then ownedEntries else unownedEntries, d)
+	end
+	for _, section in { { ownedEntries, self.Grid.Tiles, false }, { unownedEntries, self.Grid.UnownedTiles, true } } do
+		for i, d in section[1] do
+			self:AddTile(d, section[2], i, section[3])
 		end
 	end
-	for i, d in entries do
-		local tile = self.Grid.Templates.GlassyTile:Clone()
-		tile.Name, tile.LayoutOrder, tile.Visible, tile.Parent = d.Id, i, true, root
-		S.setAsset(tile.Artwork, "tile/tile_" .. S.rarity(d.Rarity))
-		tile.NamePlaque.Visible = true
-		tile:FindFirstChild("Name").Text = d.Name
-		Portrait.new(tile, d.Id, tile.Portrait.Size, tile.Portrait.Position)
-		S.bindSlices(tile)
-		table.insert(self.Tiles, tile)
-		table.insert(
-			self.TileConnections,
-			tile.Open.Activated:Connect(function()
-				self:Detail(d.Id)
-			end)
-		)
-	end
-	-- Only the data-dependent canvas height changes; the authored grid geometry stays editable.
-	local layout = root.UIGridLayout
-	local columns = math.max(1, math.floor(1 / (layout.CellSize.X.Scale + layout.CellPadding.X.Scale) + 0.05))
-	local rows = math.max(1, math.ceil(#entries / columns))
-	-- Keep authored row height and gaps. Only normalize them against the scroll canvas.
-	self.CellHeight = self.CellHeight or layout.CellSize.Y.Scale * self.Grid.CanvasSize.Y.Scale
-	self.CellGap = self.CellGap or layout.CellPadding.Y.Scale * self.Grid.CanvasSize.Y.Scale
-	local canvas = math.max(1, rows * (self.CellHeight + self.CellGap) + 0.01)
-	self.Grid.CanvasSize = UDim2.fromScale(0, canvas)
-	layout.CellSize = UDim2.fromScale(layout.CellSize.X.Scale, self.CellHeight / canvas)
-	layout.CellPadding = UDim2.fromScale(layout.CellPadding.X.Scale, self.CellGap / canvas)
-
-	if not self.Selected or not profile.Glassies[self.Selected] then
-		self.Selected = entries[1] and entries[1].Id
+	self:LayoutSections(#ownedEntries, #unownedEntries)
+	if not self.Selected or not Glassies.ById[self.Selected] then
+		self.Selected = (ownedEntries[1] or unownedEntries[1]).Id
 	end
 	if self.Selected then
 		self:Detail(self.Selected)
 	end
 end
 
+function Screen:AddTile(d, root, order, unowned)
+	local tile = self.Grid.Templates[if unowned then "UnownedGlassyTile" else "GlassyTile"]:Clone()
+	tile.Name, tile.LayoutOrder, tile.Visible, tile.Parent = d.Id, order, true, root
+	tile:SetAttribute("Unowned", unowned)
+	S.setAsset(tile.Artwork, "tile/tile_" .. S.rarity(d.Rarity))
+	tile.NamePlaque.Visible = true
+	tile:FindFirstChild("Name").Text = d.Name
+	local installed = RS.Assets.Glassies:FindFirstChild(d.Id) ~= nil
+	tile.Portrait.Visible, tile.Unknown.Visible = installed, not installed
+	tile:SetAttribute("ArtworkPending", not installed)
+	if installed then
+		Portrait.new(tile, d.Id, tile.Portrait.Size, tile.Portrait.Position)
+	end
+	S.bindSlices(tile)
+	table.insert(self.Tiles, tile)
+	table.insert(
+		self.TileConnections,
+		tile.Open.Activated:Connect(function()
+			self:Detail(d.Id)
+		end)
+	)
+end
+
+function Screen:LayoutSections(ownedCount, unownedCount)
+	local grid = self.Grid
+	local height, gap = grid:GetAttribute("SectionTileHeight"), grid:GetAttribute("SectionTileGap")
+	local header = grid:GetAttribute("SectionHeaderHeight")
+	local sectionGap = grid:GetAttribute("SectionGap")
+	local function area(count, root)
+		local layout = root.UIGridLayout
+		local columns = math.max(
+			1,
+			math.floor(
+				(1 + layout.CellPadding.X.Scale) / (layout.CellSize.X.Scale + layout.CellPadding.X.Scale) + 0.001
+			)
+		)
+		local rows = math.ceil(count / columns)
+		return if count == 0
+			then grid:GetAttribute("SectionEmptyHeight")
+			else rows * height + math.max(0, rows - 1) * gap
+	end
+	local ownedHeight = area(ownedCount, grid.Tiles)
+	local unownedHeight = area(unownedCount, grid.UnownedTiles)
+	local divider = header + ownedHeight + sectionGap
+	local total = math.max(1, divider + header + unownedHeight + grid:GetAttribute("SectionBottomPadding"))
+	grid.CanvasSize = UDim2.fromScale(0, total)
+	for _, entry in
+		{
+			{ "Owned", grid.Tiles, ownedCount, 0, ownedHeight },
+			{ "Unowned", grid.UnownedTiles, unownedCount, divider, unownedHeight },
+		}
+	do
+		local name, root, count, y, sectionHeight = table.unpack(entry)
+		local title = grid[name .. "Header"]
+		title.Position, title.Size = UDim2.fromScale(0, y / total), UDim2.fromScale(1, header / total)
+		title.Label.Text = name:upper() .. "  ·  " .. count
+		root.Position, root.Size = UDim2.fromScale(0, (y + header) / total), UDim2.fromScale(1, sectionHeight / total)
+		local layout = root.UIGridLayout
+		layout.CellSize = UDim2.fromScale(layout.CellSize.X.Scale, height / sectionHeight)
+		layout.CellPadding = UDim2.fromScale(layout.CellPadding.X.Scale, gap / sectionHeight)
+		root.Visible = count > 0
+		local empty = grid[name .. "Empty"]
+		empty.Visible = count == 0
+		empty.Position, empty.Size = root.Position, root.Size
+	end
+	grid:SetAttribute("OwnedCount", ownedCount)
+	grid:SetAttribute("UnownedCount", unownedCount)
+end
+
 function Screen:Detail(id)
-	if not self.Profile.Glassies[id] then
+	if not Glassies.ById[id] then
 		return
 	end
 	self.Selected = id
@@ -88,12 +135,19 @@ function Screen:Detail(id)
 	p.InfoName.Text = d.Name
 	S.tag(p.TypeTag, d.Type, S.Types[d.Type])
 	S.tag(p.RarityTag, d.Rarity, S.Rarity[d.Rarity])
-	local stars = math.clamp(owned.Stars or 0, 0, 5)
+	local stars = math.clamp((owned and owned.Stars) or 0, 0, 5)
 	local starLabel = p:FindFirstChild("Stars")
 	if starLabel then
+		starLabel.Visible = owned ~= nil
 		starLabel.Text = string.rep("★", stars) .. string.rep("☆", 5 - stars)
 	end
-	self.DetailPortrait = Portrait.new(p, id, p.InfoPortrait.Size, p.InfoPortrait.Position, "InfoPortrait")
+	p.Ownership.Text = if owned then "OWNED • x" .. owned.Count else "UNOWNED • BASE STATS"
+	local installed = RS.Assets.Glassies:FindFirstChild(id) ~= nil
+	p.InfoPortrait.Visible, p.UnknownPortrait.Visible, p.ArtworkPending.Visible =
+		installed, not installed, not installed
+	if installed then
+		self.DetailPortrait = Portrait.new(p, id, p.InfoPortrait.Size, p.InfoPortrait.Position, "InfoPortrait")
+	end
 	p.PassiveName.Text = d.PassiveName or passive.Name
 	p.PassiveDescription.Text = passive.Description
 	p.PowerName.Text = d.SpecialName or power.Name

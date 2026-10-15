@@ -14,6 +14,15 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-15 — Codex — Inventory Unowned catalog
+Done:
+- Added Owned/Unowned headings and separate grids in the existing scroller: all 31 catalog entries, dimmed missing portraits, rarity borders and inspectable right-hand powers/stats. Twelve installed models stay upright; 19 pending models use honest question marks/artwork-pending text. Preserved current size, styling, removed Stars and centered anchors.
+- Ownership refresh migrates new items into Owned without duplicates, keeps selection, restores full portrait color; empty/complete collections have messages. Unowned stats are explicitly base stats. No ownership, roll-pool, economy, world or device changes.
+- 76 Lune/Studio tests and 2505 native presentation checks pass, including all catalog text, empty/partial/complete/acquired fixtures and refresh/close cleanup. Real isolated Studio mock grant moved Milk Bottle from 3/28 to 4/27 automatically while keeping its details selected.
+- Backed up original template in UIBackups.InventoryBeforeUnowned_20261015 and places/Inventory_BeforeUnowned_20261015.rbxm; exported final places/UI_v05.rbxm. Report/screenshots: docs/testing/INVENTORY_UNOWNED.md. Studio left in Edit; publishing remains with creator.
+Next:
+- Creator reviews Inventory; missing model art and device formatting remain future work.
+
 ## 2026-10-15 — Codex — Kiln opening and Collect overlay
 Done:
 - Built UI-only case reels with server-pinned winners for 1/10; one shared kiln heating/firing/release, upright centered 5:6 reward cards, original uploaded flame asset. Reviewed public reel implementations without importing dependencies.

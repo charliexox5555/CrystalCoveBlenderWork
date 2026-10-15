@@ -68,6 +68,8 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 ## F5 — Polish and soft launch (Nov 10–16)
 
+- [x] **C:** Inventory Owned → Unowned sections for all 31 catalog glassies; dimmed missing portraits, honest artwork placeholders, inspectable powers/base stats, acquisition migration and editable templates/backup. 2,505 native UI checks and 76 logic tests pass; [report](testing/INVENTORY_UNOWNED.md). Device work deferred.
+
 - [x] **C:** UI-only Kiln reels and one shared firing for Open 1/10; transparent overlay, upright centered reward cards, Collect flight to Inventory, original effect assets, editable templates/backups. Existing Coin server flow retained. 733 native presentation checks and 76 logic tests pass; [report](testing/KILN_OPENING.md). Marble/daily purchasing and device work remain deferred.
 
 - [x] **C:** Shop v0.6 UI: Featured daily-offer/showcase preview, Glassies with separate Coin/Marble Kiln models, enlarged rarity lists, preview strips/View All, Finishers/Flyers pages; upright centered portraits throughout UI. Existing Coin flow retained; daily/Marble purchases deferred. Opening completed in the follow-up above. Desktop checks and 76 tests pass; [report](testing/SHOP_V06.md).

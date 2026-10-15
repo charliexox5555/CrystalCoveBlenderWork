@@ -306,7 +306,7 @@ def build_release_asset(gid,repair=False):
             release_rig(scene,[body,*details]);scene.render.filepath=icon;bpy.ops.render.render(write_still=True);paths['icon']=icon
             for s in shards:s.hide_set(True)
             paths['blend']=save_blend_copy(os.path.join(folder,gid+'.blend'))
-            crackpath=os.path.join(folder,'cracks.json');json.dump(cracks,open(crackpath,'w'),indent=2);paths['cracks']=crackpath
+            crackpath=os.path.join(folder,'cracks.json');json.dump(cracks,open(crackpath,'w',newline='\n'),indent=2);paths['cracks']=crackpath
             entries=[]
             for o in [body,*details,*shards]:
                 lo,hi=_world_bounds([o]);entries.append({'name':o.name,'source_name':o['source_name'],'role':o['asset_role'],'triangles':sum(len(p.vertices)-2 for p in o.data.polygons),'bounds_blender':[list(lo),list(hi)],'origin':[0,0,0],'color':o['studio_color'],'material':o['studio_material'],'animation_pivot':list(o.get('animation_pivot',[0,0,0])),'effect_only':o.get('effect_only',False)})

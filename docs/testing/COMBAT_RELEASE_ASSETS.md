@@ -13,6 +13,7 @@ Scope: fixed 24-glassy art production, shared original VFX assets, recoverable s
 
 - Exactly 24 unique IDs, in the approved four batches; original IDs/names retained. No runtime catalog, profile, ownership, rarity, Kiln odds or match-hand changes.
 - Each asset: intact triangle budget, 16 closed/manifold positive-volume shards, aligned origins and recombined bounds, fracture-volume ratio within 0.1%, regenerated surface-projected crack paths, hashes, upright 512×512 RGBA icon with padding.
+- Active crack JSON is canonical LF in both builder output and Git attributes. Recorded hashes were checked against staged Git bytes, avoiding Windows newline conversion drift; coordinates are unchanged.
 - Validation caught a loose cut edge in Arc Coil and an FBX exporter requirement for floating-point custom-property vectors. Both were corrected before the accepted packages were written; failed temporary meshes were not promoted.
 - Each bundle was actually imported back into an isolated Blender scene. Mesh/part count, source-name properties, hang origins, body/shard manifold topology and world-space bounds were checked. Source and FBX geometry agree within 0.0001 units. This is **Blender FBX round-trip evidence**, not a Roblox import claim.
 - Original-source before/after renders for all 12 revisions; contact sheets include genuine 64px samples. Final material pass uses the same upright camera/light rig, 64 Cycles samples, transparent film and a more transparent body preview so internal details read. Final game appearance still requires Studio review.

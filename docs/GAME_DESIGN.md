@@ -28,7 +28,8 @@ Walk up to an arena, roll three glassies from your collection, pick one, aim you
 ```
 Lobby  →  step on an arena pad (1v1; a bot joins after 15 s)
   → Round (repeat until someone loses 3 hearts):
-       Roll: 3 random glassies from YOUR collection → pick 1 (8 s; reroll: 1 free, then Marbles)
+       Match start: roll 3 equally likely, distinct owned glassies once; retain this hand all match.
+       Each round: pick from that hand (8 s), or use round-only Pick Any. Paid reroll replaces the hand.
        Aim: drag to pull your glassy back: how far (a Perfect band glows) and which way (6 s)
        3-2-1 → both release at once
        Fight: they swing, smash, miss, spin; passives and powers fire by themselves (no input)
@@ -40,7 +41,7 @@ Lobby  →  step on an arena pad (1v1; a bot joins after 15 s)
 | Phase | Time | Notes |
 |---|---|---|
 | Queue | until 2 players, or a bot after `QueueBotAfterSeconds` (15 s) | Standing on the pad = queued; stepping off leaves. |
-| Roll | `RollSeconds` 8 s | Offers are uniform from owned glassies, no repeats. Timer out → first offer. Picks are hidden until both lock in. |
+| Roll | `RollSeconds` 8 s | Initial hand is uniform from owned glassies with no repeats; retained across rounds. Paid rerolls replace all three. Pick Any chooses any owned glassy for this round without changing the hand. Timer out → first offer. Picks are hidden until both lock in. |
 | Aim | `AimSeconds` 6 s | No aim → `AimDefault`. |
 | Countdown | 3 s | Shows both picks with type icons ("Fizzy beats Heavy!"). |
 | Fight | ~15–45 s (avg ~27) | Section 3. Overtime after 45 s, timeout at 75 s. |
@@ -204,7 +205,7 @@ Starters Pop (Fizzy), Jam (Heavy), Prism (Sharp) plus 28 configured for the Kiln
 - **Coins** (earned): 10 per round won + 60 for a match win or 20 for a loss (60% vs bots); daily quests 75 each; playtime gifts; first win of the day 100.
 - **Abandoned matches:** until at least one real round completes, neither player earns coins, trophies, match/quest stats or welcome-pull eligibility. Results say "No rewards — finish a round first". After a completed round, existing MatchLogic forfeit rewards apply. Creator accepted October 14 (DECISIONS 42).
 - **The Kiln:** 300 coins a pull (10 for 2,700). **Odds are always shown before pulling.** New players get 1 free pull after their first match.
-- **Marbles** (premium): Robux packs + small free amounts (login streak, group join). Spent on **rerolls** (5 / 10 / 20 after the free one each match), Shatter FX, and later cosmetics.
+- **Marbles** (premium): Robux packs + small free amounts (login streak, group join). Spent on **match-hand rerolls** (3 / 3 / 6 / 6 / 9, capped at 9) and **Pick Any** (one free per match, then 6 / 9 / 12, capped at 12), Shatter FX, and later cosmetics. Both usage counters reset each match. Marble packs and free grants remain deferred in the current implementation.
 - Pacing targets (simulated): ~3 pulls on day 1, first Rare in under an hour, first Epic in ~2 h, first Legendary in ~9 h of play, Mythics as a long chase.
 
 ## 9. Game feel checklist (the shatter)
@@ -242,7 +243,7 @@ Starters Pop (Fizzy), Jam (Heavy), Prism (Sharp) plus 28 configured for the Kiln
 - Kiln odds shown before every pull. If we ever add a **Robux or Marble Kiln**, show odds before purchase and **hide it for players where `PolicyService` → `ArePaidRandomItemsRestricted`**, with direct-buy alternatives.
 - **No Robux-only glassies that are stronger.** Paid exclusives are cosmetic variants only.
 - No serial-numbered paid scarcity or countdown pressure aimed at kids; no spending leaderboards; no betting or wagering, ever.
-- Paid rerolls only reshuffle *your own* glassies (they don't grant items). Keep them cheap, keep one free reroll per match, and give Marbles for free regularly so it never feels pay-to-win. (Revisit after launch data; see DECISIONS.)
+- Paid rerolls only reshuffle *your own* glassies (they don't grant items), with equal odds and no duplicates. Every paid action asks for confirmation; rerolls show every eligible outcome and inclusion probability and are hidden when paid-random policy is restricted or unavailable. Pick Any is deterministic and selects only this round's glassy; one use per match is free. See decision 55 for accepted prices.
 
 ## 11. Retention and community
 
@@ -263,7 +264,7 @@ Starters Pop (Fizzy), Jam (Heavy), Prism (Sharp) plus 28 configured for the Kiln
 
 The **crisp glass** style from v0.2 stays: dark frosted panels, thin cyan → violet edges, Montserrat, color meanings (green buy, red close, yellow special, blue neutral, purple fuse), rarity and type colors. Build from `Theme` and the shared components in `src/client/UI`. Screens and layouts: **[ui/UI_SPEC.md](ui/UI_SPEC.md)**.
 
-Key screens: Lobby HUD, Queue panel, **Roll** (3 cards + reroll), **Aim** (drag to pull back: distance + direction, Perfect band, lock button), **Fight HUD** (HP bars, hearts, power banners; no buttons), Results, **Kiln** (odds first), Collection + Index, Shop.
+Key screens: Lobby HUD, Queue panel, **Roll** (retained 3-card hand + Pick Any + paid reroll), **Aim** (drag to pull back: distance + direction, Perfect band, lock button), **Fight HUD** (HP bars, hearts, power banners; no buttons), Results, **Kiln** (odds first), Collection + Index, Shop.
 
 ## 14. Technical plan
 
@@ -323,7 +324,7 @@ ServerStorage/Tests/  RunAll + suites, BalanceSim, EconomySim, FightModel
 ## 15b. Metrics
 
 - D1 / D7 retention, session length, matches per session, ARPDAU, payer conversion.
-- Custom events: rounds played, % rounds with a Perfect Release, special use rate and timing, rerolls (free vs paid), Kiln pulls, time to first Rare/Epic/Legendary, bot vs player match share.
+- Custom events: rounds played, % rounds with a Perfect Release, special use rate and timing, paid rerolls and Pick Any (free vs paid), Kiln pulls, time to first Rare/Epic/Legendary, bot vs player match share.
 - Funnel: join → first match → first round win → first Kiln pull → second session.
 
 ## 16. Not a copy of Ball VS Ball
@@ -338,5 +339,5 @@ What we take is the structure (lobby pads, draft from your collection, hearts, a
 ## 17. Open questions
 
 - Final names (game, glassies, Marbles, Kiln).
-- Paid rerolls: keep (user's call) or make them earn-only (research recommendation)? See DECISIONS 25.
+- Match selection and prices are confirmed in decision 55; future Marble earning/packs remain separate work.
 - Should each player get one free "pick any glassy" per match (Ball VS Ball has this)? Proposed, not in code yet.

@@ -12,12 +12,14 @@ local Assets = require(script.Parent.Parent.Util.AssetCatalog)
 local Glassies = require(RS.Shared.Config.Glassies)
 local Bots = require(RS.Shared.Config.Bots)
 local Stage = require(script.Parent.Parent.Util.MatchStage)
+local PolicyService = game:GetService("PolicyService")
 local Service = {}
 
 function Service:Init(services)
 	self.Services, self.Matches, self.ByPlayer, self.Serial, self.Temporary = services, {}, {}, 0, {}
 	self.Guard = Guard.new()
 	self.CharacterConnections = {}
+	self.PaidRandomAllowed = {}
 end
 
 function Service:IsReady(player)
@@ -53,21 +55,31 @@ function Service:Meta(entry)
 	return out
 end
 
-function Service:Offer(entry, side, message)
+function Service:Offer(entry, side, message, reelAction)
 	local player = entry.Players[side]
 	if not player or not player.Parent then
 		return
 	end
 	local state = entry.Runner.Match.Sides[side]
 	local collection = state.Collection
+	local data = self.Services.DataService and self.Services.DataService:Get(player)
 	Remotes.RollOffers:FireClient(player, {
 		MatchId = entry.Id,
 		Round = entry.Runner.Match.Round,
+		Deadline = entry.Runner.Deadline,
 		Offers = state.Offers,
 		Collection = collection,
+		HandRevision = state.HandRevision,
+		ReelAction = reelAction,
+		SelectionRevision = state.SelectionRevision,
+		RerollCost = Logic.rerollCost(state.RerollsUsed),
+		PickAnyCost = Logic.pickAnyCost(state.PickAnyUsed),
+		Marbles = data and data.Marbles or 0,
+		PaidRandomAllowed = self.PaidRandomAllowed[player] == true,
 		CanReroll = #Logic.ownedIds(collection) > Balance.Match.RollChoices
-			and Logic.rerollCost(state.RerollsUsed) == 0
+			and self.PaidRandomAllowed[player] == true
 			and not state.Pick,
+		CanPickAny = not state.Pick,
 		Picked = state.Pick,
 		Message = message,
 	})
@@ -271,8 +283,82 @@ function Service:Forfeit(player)
 	end
 end
 
+-- A quoted action is tied to one match, round and selection revision. Nothing below yields
+-- until both wallet debit and match mutation have completed, so stale/replayed requests cannot charge.
+function Service:Selection(entry, side, kind, id, matchId, round, revision, quotedCost)
+	local runner, state = entry.Runner, entry.Runner.Match.Sides[side]
+	local function reject(reason)
+		self:Offer(entry, side, reason)
+		return false, reason
+	end
+	if matchId ~= entry.Id or round ~= runner.Match.Round or revision ~= state.SelectionRevision then
+		return reject("stale")
+	end
+	if runner.Phase ~= "Rolling" or workspace:GetServerTimeNow() >= runner.Deadline then
+		return reject("phase")
+	end
+	local cost = if kind == "Reroll" then Logic.rerollCost(state.RerollsUsed) else Logic.pickAnyCost(state.PickAnyUsed)
+	if quotedCost ~= cost then
+		return reject("price_changed")
+	end
+	if kind == "Reroll" then
+		if self.PaidRandomAllowed[entry.Players[side]] ~= true then
+			return reject("restricted")
+		end
+		if runner.Deadline - workspace:GetServerTimeNow() < Balance.Match.RerollReserveSeconds then
+			return reject("too_late")
+		end
+	end
+	local allowed, reason
+	if kind == "Reroll" then
+		allowed, reason = Logic.canReroll(runner.Match, side)
+	else
+		allowed, reason = Logic.canPickAny(runner.Match, side, id)
+	end
+	if not allowed then
+		return reject(reason)
+	end
+	local player = entry.Players[side]
+	local service = self.Services.DataService
+	local data = service and service:Get(player)
+	if not data then
+		return reject("data_unavailable")
+	end
+	if not service:SpendMarbles(player, cost) then
+		return reject("insufficient_marbles")
+	end
+	local ok
+	if kind == "Reroll" then
+		ok, reason = runner:Reroll(side)
+	else
+		ok, reason = runner:PickAny(side, id)
+	end
+	if not ok then
+		data.Marbles += cost
+		return reject(reason)
+	end
+	self:Offer(entry, side, nil, if kind == "Reroll" then "Reroll" else nil)
+	service:CommitCurrency(player)
+	runner:Step(workspace:GetServerTimeNow())
+	self:Dispatch(entry, workspace:GetServerTimeNow())
+	return true
+end
+
 function Service:Start()
 	local function track(player)
+		task.spawn(function()
+			local ok, policy = pcall(PolicyService.GetPolicyInfoForPlayerAsync, PolicyService, player)
+			if player.Parent ~= Players then
+				return
+			end
+			self.PaidRandomAllowed[player] = ok
+				and type(policy) == "table"
+				and policy.ArePaidRandomItemsRestricted == false
+			local current = self.ByPlayer[player]
+			if current and current.Entry.Runner.Phase == "Rolling" then
+				self:Offer(current.Entry, current.Side)
+			end
+		end)
 		-- Forfeit as soon as the character dies (reset), not ~5 s later when it is removed at respawn.
 		local function watch(character)
 			local humanoid = character:WaitForChild("Humanoid", 5)
@@ -307,10 +393,17 @@ function Service:Start()
 			self:Dispatch(entry, workspace:GetServerTimeNow())
 		end)
 	end)
-	Remotes.Reroll.OnServerEvent:Connect(function(player)
+	Remotes.Reroll.OnServerEvent:Connect(function(player, matchId, round, revision, cost)
 		self:Request(player, "Reroll", Balance.Match.RerollRateSeconds, function(entry, side)
-			local ok, reason = entry.Runner:Reroll(side)
-			self:Offer(entry, side, if ok then nil else reason)
+			self:Selection(entry, side, "Reroll", nil, matchId, round, revision, cost)
+		end)
+	end)
+	Remotes.PickAny.OnServerEvent:Connect(function(player, id, matchId, round, revision, cost)
+		self:Request(player, "PickAny", Balance.Match.PickAnyRateSeconds, function(entry, side)
+			if type(id) ~= "string" or #id > 64 then
+				return
+			end
+			self:Selection(entry, side, "PickAny", id, matchId, round, revision, cost)
 		end)
 	end)
 	Remotes.SetAim.OnServerEvent:Connect(function(player, aim, yaw)
@@ -330,6 +423,7 @@ function Service:Start()
 		end
 		self.CharacterConnections[player] = nil
 		self.ByPlayer[player], self.Temporary[player] = nil, nil
+		self.PaidRandomAllowed[player] = nil
 		self.Guard:Remove(player)
 	end)
 	RunService.Heartbeat:Connect(function()
@@ -343,6 +437,68 @@ function Service:Start()
 		local dev = Instance.new("BindableFunction")
 		dev.Name = "MatchDev"
 		dev.OnInvoke = function(command, ...)
+			if command == "SelectionAttempt" and self.Services.DataService.Mock then
+				local player, kind, id, quote = ...
+				local current = self.ByPlayer[player]
+				if not current then
+					return false, "no_match"
+				end
+				return self:Selection(
+					current.Entry,
+					current.Side,
+					kind,
+					id,
+					quote.MatchId,
+					quote.Round,
+					quote.SelectionRevision,
+					quote.Cost
+				)
+			end
+			if command == "SelectionState" then
+				local player = ...
+				local current = self.ByPlayer[player]
+				if not current then
+					return nil
+				end
+				local entry, state = current.Entry, current.Entry.Runner.Match.Sides[current.Side]
+				return {
+					MatchId = entry.Id,
+					Round = entry.Runner.Match.Round,
+					Phase = entry.Runner.Phase,
+					Offers = table.clone(state.Offers),
+					Pick = state.Pick,
+					HandRevision = state.HandRevision,
+					SelectionRevision = state.SelectionRevision,
+					RerollsUsed = state.RerollsUsed,
+					PickAnyUsed = state.PickAnyUsed,
+					Marbles = self.Services.DataService:Get(player).Marbles,
+				}
+			end
+			if command == "SelectionTest" and self.Services.DataService.Mock then
+				local action, player, value = ...
+				if action == "Policy" then
+					self.PaidRandomAllowed[player] = value
+					return true
+				end
+				local current = self.ByPlayer[player]
+				if not current then
+					return false
+				end
+				if action == "Hold" then
+					current.Entry.Runner.Deadline = workspace:GetServerTimeNow() + value
+					self:Offer(current.Entry, current.Side)
+					return true
+				end
+				if action == "NextRound" then
+					current.Entry.Runner:StartRound(workspace:GetServerTimeNow())
+					self:Dispatch(current.Entry, workspace:GetServerTimeNow())
+					return true
+				end
+				if action == "Forfeit" then
+					self:Forfeit(player)
+					return true
+				end
+			end
 			if command == "Start" then
 				local id, a, b = ...
 				local arena = self.Services.ArenaService.Arenas[id]

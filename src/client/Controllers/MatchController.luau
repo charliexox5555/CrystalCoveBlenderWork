@@ -12,6 +12,7 @@ local Controller = {}
 function Controller:Init(controllers)
 	self.Controllers = controllers
 	self.Player, self.Pending = Players.LocalPlayer, {}
+	self.SeenHands = {}
 	self.ResultsOwner = {}
 end
 
@@ -98,12 +99,14 @@ function Controller:State(data)
 		self:Movement(true)
 		self.Screen = Screens.roll(data, function(id)
 			Remotes.PickGlassy:FireServer(id)
-		end, function()
-			Remotes.Reroll:FireServer()
+		end, function(quote)
+			Remotes.Reroll:FireServer(quote.MatchId, quote.Round, quote.SelectionRevision, quote.RerollCost)
+		end, function(id, quote)
+			Remotes.PickAny:FireServer(id, quote.MatchId, quote.Round, quote.SelectionRevision, quote.PickAnyCost)
 		end)
 		local key = data.MatchId .. ":" .. data.Round
 		if self.Pending[key] then
-			self.Screen:Offers(self.Pending[key])
+			self:ApplyOffers(self.Pending[key])
 		end
 	elseif data.Phase == "Aiming" or data.Phase == "Countdown" or data.Phase == "Fighting" then
 		self:CloseScreen()
@@ -112,6 +115,21 @@ function Controller:State(data)
 		self:CloseScreen()
 		-- The fight view owns the finisher and heart beat; there is no result overlay.
 	end
+end
+
+function Controller:ApplyOffers(data)
+	local key = data.MatchId .. ":" .. (data.HandRevision or 0)
+	local copy = table.clone(data)
+	if data.Deadline then
+		self.Screen.Data.Deadline = data.Deadline
+	end
+	copy.Animate = not self.SeenHands[key]
+		and (data.Round == 1 or data.ReelAction == "Reroll")
+		and not data.Picked
+		and self.Screen.Data.Deadline - workspace:GetServerTimeNow()
+			> require(RS.Shared.Config.Balance).Match.RerollReserveSeconds
+	self.SeenHands[key] = true
+	self.Screen:Offers(copy)
 end
 
 -- Called by the participant's fight view once the final blow has been rendered.
@@ -126,14 +144,41 @@ function Controller:Result(data)
 	self:CloseScreen()
 	self:Movement(false)
 	self.Pending = {}
+	self.SeenHands = {}
 	-- Rewards still arrive through ProfileSnapshot. Return directly to the lobby.
 end
 
 function Controller:Start()
+	Remotes.ProfileSnapshot.OnClientEvent:Connect(function(profile)
+		if self.Screen and self.Screen.Wallet then
+			self.Screen:Wallet(profile.Marbles or 0)
+		end
+	end)
 	if RunService:IsStudio() then
 		local dev = Instance.new("BindableFunction")
 		dev.Name = "MatchClientDev"
-		dev.OnInvoke = function(action)
+		dev.OnInvoke = function(action, value)
+			if self.Screen and self.Screen.Gui.Name == "RollScreen" then
+				if action == "PickAny" then
+					self.Screen:OpenPicker()
+					return
+				end
+				if action == "ChooseAny" then
+					self.Screen:ChooseAny(value)
+					return
+				end
+				if action == "Reroll" then
+					self.Screen:ConfirmReroll()
+					return
+				end
+				if action == "Confirm" then
+					self.Screen:Confirm()
+					return
+				end
+				if action == "Inspect" then
+					return self.Screen.OfferData
+				end
+			end
 			if action == "DismissResults" and self.Screen and self.Screen.Gui.Name == "ResultsScreen" then
 				self:CloseScreen()
 			end
@@ -152,7 +197,7 @@ function Controller:Start()
 			and self.Screen.Data.MatchId == data.MatchId
 			and self.Screen.Data.Round == data.Round
 		then
-			self.Screen:Offers(data)
+			self:ApplyOffers(data)
 		end
 	end)
 	Remotes.MatchResult.OnClientEvent:Connect(function(data)

@@ -69,61 +69,8 @@ function Screens.queue(data, leave)
 	return self
 end
 
-function Screens.roll(data, pick, reroll)
-	local self = Screens.new("RollScreen")
-	self.Data, self.Pick = data, pick
-	self.Panel = self.Gui.Roll
-	self.Title, self.Message = self.Panel.Title, self.Panel.Message
-	self.Reroll = self.Panel.Reroll
-	self:Connect(self.Reroll, reroll)
-	local S = require(script.Parent.Parent.Components.StainedGlass)
-	for side = 1, 2 do
-		local p = self.Panel["Player" .. side]
-		p.OwnerName.Text = data.Names[side]
-		S.hearts(p.Hearts, data.Hearts and data.Hearts[side] or 3)
-	end
-	return self
-end
-
-function Screens:Offers(data)
-	local S = require(script.Parent.Parent.Components.StainedGlass)
-	for _, c in self.CardConnections or {} do
-		c:Disconnect()
-	end
-	self.CardConnections = {}
-	self.Portraits = {}
-	self.Cards = self.Panel.Cards
-	self.Reroll.Visible = data.CanReroll == true
-	self.Message.Text = if data.Picked
-		then "LOCKED · " .. Glassies.get(data.Picked).Name
-		elseif data.Message == "free_used" then "Free reroll used"
-		else "Tap a card to pick. Picks stay hidden until both lock in."
-	for i = 1, 3 do
-		local card = self.Cards["Card" .. i]
-		local id = data.Offers[i]
-		card.Visible = id ~= nil
-		if not id then
-			continue
-		end
-		local d = Glassies.get(id)
-		S.setAsset(card.Artwork, "card/card_" .. S.rarity(d.Rarity))
-		card:FindFirstChild("Name").Text = d.Name
-		table.insert(self.Portraits, Portrait.new(card, id, card.Portrait.Size, card.Portrait.Position))
-		S.tag(card.TypeTag, d.Type, S.Types[d.Type])
-		S.tag(card.RarityTag, d.Rarity, S.Rarity[d.Rarity])
-		local power = Powers.special(d.Special)
-		card.Power.Text = (d.SpecialName or power.Name) .. ": " .. power.Description
-		card.SelectedOutline.Visible = data.Picked == id
-		card.Select.Active = not data.Picked
-		table.insert(
-			self.CardConnections,
-			card.Select.Activated:Connect(function()
-				if not data.Picked then
-					self.Pick(id)
-				end
-			end)
-		)
-	end
+function Screens.roll(data, pick, reroll, pickAny)
+	return require(script.Parent.MatchSelection).new(data, pick, reroll, pickAny)
 end
 
 function Screens:PowerInfo(id)

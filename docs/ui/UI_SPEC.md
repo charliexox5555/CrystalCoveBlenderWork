@@ -8,7 +8,7 @@
 > - **Inventory (creator revision, decision 54):** Owned glassies first, then an Unowned divider and every missing catalog entry in the same scroll area. Missing portraits are dimmed; entries awaiting artwork use a clear placeholder. Both sections are inspectable. No levels, sort/search, Stars display or Equip; only owned glassies enter your roll pool. Tile edge = rarity colour. Right panel: name, ownership/type/rarity, upright model or artwork-pending placeholder, passive, power and Power/HP/Swing bars (base stats for unowned).
 > - **Glassy portraits are ViewportFrames** of the real models everywhere (tiles, cards, info panel).
 > - **Fight HUD:** only a billboard above each player (name, 3 hearts, glassy + type chip) plus short popups (power banner in the glassy's tint, damage numbers). No HP bars, buttons or panels; damage reads from cracks on the glass.
-> - **Choose your glassy:** 3 big cards (name, model, type + rarity, one-line power), Reroll button, timer in the title, both players' hearts in the top corners.
+> - **Choose your glassy (decision 55):** 3 big cards roll vertically one at a time at match start, then remain unchanged between rounds. Main Pick Any opens owned inventory for this round only; small paid Reroll on the right replaces the match hand. Show wallet, prices, timer and both players' hearts.
 
 **October 14 creator direction:** Codex lays out functional placeholders using Scale, with editable ScreenGui templates in StarterGui. The creator supplies final image-based styling. Ball v Ball screenshots are layout inspiration, not a one-to-one copy. See [editing guide](EDITING_UI.md). This takes priority over spending more time on final UI artwork.
 
@@ -53,14 +53,15 @@ Small panel above the bottom center: "Waiting for a challenger… 0:12" with a p
 │   │ Fizz Burst      │ Fizz Burst      │ Sturdy  │              │
 │   │ Pressure Pop    │ Beam    │       │ Lid Shield             │
 │   └─────────┘       └─────────┘       └─────────┘              │
-│        [ REROLL  free ]              ⏱ 6                       │
+│        [ PICK ANY  free ]   [ REROLL  3 ]              ⏱ 6                       │
 └──────────────────────────────────────────────────────────────┘
 ```
 
-- Cards slot in with a quick spin, like a slot machine settling (the "gacha" feel); rarity glow on the card edge.
-- Card: spinning `ViewportFrame` model, name, type icon + color, rarity, stars, passive name, special name; tap to see a one-line description of each.
+- Cards roll vertically, fast and sequentially, with server-pinned final glassies. Animate once at match start or after an explicit paid reroll; never automatically between rounds. Each owned glassy is equally likely, with no duplicates within a hand.
+- Card: upright, centered static `ViewportFrame` model, name, type + rarity and concise power text. No Stars display.
 - Opponent's last pick shown small under their name ("Last: Jam (Heavy)") to make counter-picking a choice.
-- **Reroll** button: "free" or the Marble cost (`MatchLogic.rerollCost`). Hidden when the collection has ≤ 3 glassies. Paid rerolls ask for confirmation the first time.
+- **Pick Any:** one free use per match, then 6 → 9 → 12 Marbles, capped at 12. Opens owned-only choices and selects this round's glassy; never replaces a hand card. Paid choices require confirmation.
+- **Reroll:** smaller right-side button; prices 3, 3, 6, 6, then 9 Marbles forever within the match. Every spend asks for confirmation showing all eligible outcomes and equal inclusion probabilities. Hidden for collections ≤ 3 and when paid-random policy is restricted/unavailable. Both counters reset next match.
 - Timer out → first card is picked.
 
 ## 4. Aim (6 s)

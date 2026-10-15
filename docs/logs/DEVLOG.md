@@ -14,6 +14,18 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-15 — Codex — Persistent match hand and Pick Any
+Done:
+- Implemented creator-confirmed once-per-match uniform/no-duplicate hand, sequential vertical reels and retained cards between rounds. Owned-only Pick Any selects this round without changing the hand; one free then 6/9/12 capped. Separate paid rerolls cost 3/3/6/6/9 capped and replace the match hand. Counters reset per match.
+- Server validates ownership, exact match/round/revision/price, balance, deadline and paid-random policy; no-yield debit/mutation, replay protection, rate limits and saved wallet. Every paid action confirms; reroll confirmation lists every eligible outcome and uniform inclusion odds. No Marble products or new grants enabled. Studio mock-only Marble/test helpers included.
+- 79 Lune and Studio tests pass; 75 native server + 117 UI checks pass. Real remote reroll debited exactly 3; saved wallet 916 verified after the isolated 1000-Marble fixture. Later rounds show the retained hand with zero opening animations. Audio/reel/modal cleanup and HUD restoration verified; no game errors.
+- Exported editable places/UI_v05.rbxm and places/Roll_BeforeMatchHand_20261015.rbxm; in-place backup UIBackups.RollBeforeMatchHand_20261015. Report/screenshots: docs/testing/MATCH_SELECTION.md. Studio left in Edit.
+Next:
+- Creator reviews match selection; publishing and device formatting remain with creator. Marble packs/earning and Marble Kiln are separate future work.
+Balance/economy sims (Balance selection values changed):
+- Balance: Pop/Jam/Prism mirrors 24.0/36.3/19.5 s, 0% timeouts; side A 48%, Perfect vs worst 63%, mirror comebacks 50%, 1.5 lead changes, 2.2 powers/glassy, aimed misses 34%. Fight stats unchanged.
+- Economy: 3.7 min / 4.12 rounds per match, 16.1 matches/hour; day 1/30 pulls 4/96, day 7/30 uniques 12/18; Rare 47 min, Epic 2.1 h, Legendary 9 h. Simulator uses full 28-item Kiln catalog vs live 9 and does not model adoption/spend for the new match actions.
+
 ## 2026-10-15 — Codex — Inventory Unowned catalog
 Done:
 - Added Owned/Unowned headings and separate grids in the existing scroller: all 31 catalog entries, dimmed missing portraits, rarity borders and inspectable right-hand powers/stats. Twelve installed models stay upright; 19 pending models use honest question marks/artwork-pending text. Preserved current size, styling, removed Stars and centered anchors.

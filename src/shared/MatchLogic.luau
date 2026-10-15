@@ -1,12 +1,12 @@
 --!strict
 -- Match rules (GAME_DESIGN 2): 1v1, 3 hearts each, a roll of 3 glassies from your own collection
--- every round, rerolls, aim, and match rewards. Pure: no Roblox APIs, randomness from `rng`.
+-- once per match, paid hand rerolls, round-only Pick Any, aim, and rewards. Pure: no Roblox APIs.
 -- MatchService (server) owns the timers and calls these functions; FightRules runs each round.
 --
 --   local match = MatchLogic.new({ { Collection = profileA.Glassies }, { Collection = bot.Collection, IsBot = true, Skill = 0.4 } }, rng)
---   MatchLogic.startRound(match)               -- rolls offers + the sweet spot
+--   MatchLogic.startRound(match)               -- retains the match hand, rolls the sweet spot
 --   MatchLogic.pick(match, 1, "pop")           -- from the remote (validated)
---   MatchLogic.reroll(match, 1)                -- returns the Marble cost to charge
+--   MatchLogic.reroll(match, 1)                -- after caller validates and charges rerollCost
 --   MatchLogic.setAim(match, 1, 0.9, 0.2)      -- pull-back angle, sideways yaw
 --   local setup = MatchLogic.fightSetup(match) -- pass to FightRules.new
 --   MatchLogic.endRound(match, winnerSide)     -- returns true when the match is over
@@ -33,6 +33,9 @@ export type Side = {
 	Hearts: number,
 	RoundsWon: number,
 	RerollsUsed: number,
+	PickAnyUsed: number,
+	HandRevision: number,
+	SelectionRevision: number,
 	Offers: { string },
 	Pick: string?,
 	Aim: number?,
@@ -99,6 +102,9 @@ function MatchLogic.new(players: { PlayerSetup }, rng: () -> number): Match
 			Hearts = B.Hearts,
 			RoundsWon = 0,
 			RerollsUsed = 0,
+			PickAnyUsed = 0,
+			HandRevision = 0,
+			SelectionRevision = 0,
 			Offers = {},
 			Pick = nil,
 			Aim = nil,
@@ -109,12 +115,14 @@ function MatchLogic.new(players: { PlayerSetup }, rng: () -> number): Match
 	return { Sides = sides, Rng = rng, Round = 0, SweetSpot = nil, Over = false, Winner = nil, History = {} }
 end
 
--- Starts the next round: fresh offers for both sides and a new Perfect Release band.
+-- The hand survives every round; only picks/aim and the Perfect Release band reset.
 function MatchLogic.startRound(match: Match)
 	assert(not match.Over, "match is over")
 	match.Round += 1
 	for _, side in match.Sides do
-		side.Offers = MatchLogic.rollOffers(side.Collection, B.RollChoices, match.Rng)
+		if #side.Offers == 0 then
+			side.Offers = MatchLogic.rollOffers(side.Collection, B.RollChoices, match.Rng)
+		end
 		side.Pick = nil
 		side.Aim = nil
 		side.AimYaw = nil
@@ -134,9 +142,15 @@ function MatchLogic.rerollCost(rerollsUsed: number): number
 	return costs[math.min(paid, #costs)]
 end
 
--- Rerolls a side's offers. The caller checks and charges `cost` Marbles first (use
--- MatchLogic.rerollCost) and only calls this once the payment succeeded.
-function MatchLogic.reroll(match: Match, sideIndex: number): (boolean, string?)
+function MatchLogic.pickAnyCost(used: number): number
+	if used < B.FreePickAnyPerMatch then
+		return 0
+	end
+	local costs = B.PickAnyMarbleCosts
+	return costs[math.min(used - B.FreePickAnyPerMatch + 1, #costs)]
+end
+
+function MatchLogic.canReroll(match: Match, sideIndex: number): (boolean, string?)
 	local side = match.Sides[sideIndex]
 	if not side or match.Over then
 		return false, "invalid"
@@ -145,9 +159,48 @@ function MatchLogic.reroll(match: Match, sideIndex: number): (boolean, string?)
 		return false, "picked"
 	end
 	if #MatchLogic.ownedIds(side.Collection) <= B.RollChoices then
-		return false, "nothing_new" -- the roll would offer the same glassies
+		return false, "nothing_new"
 	end
+	return true
+end
+
+function MatchLogic.canPickAny(match: Match, sideIndex: number, id: any): (boolean, string?)
+	local side = match.Sides[sideIndex]
+	if not side or match.Over then
+		return false, "invalid"
+	end
+	if side.Pick then
+		return false, "picked"
+	end
+	if type(id) ~= "string" or side.Collection[id] == nil or not Glassies.ById[id] then
+		return false, "not_owned"
+	end
+	return true
+end
+
+function MatchLogic.pickAny(match: Match, sideIndex: number, id: any): (boolean, string?)
+	local ok, reason = MatchLogic.canPickAny(match, sideIndex, id)
+	if not ok then
+		return false, reason
+	end
+	local side = match.Sides[sideIndex]
+	side.Pick = id
+	side.PickAnyUsed += 1
+	side.SelectionRevision += 1
+	return true
+end
+
+-- Rerolls a side's offers. The caller checks and charges `cost` Marbles first (use
+-- MatchLogic.rerollCost) and only calls this once the payment succeeded.
+function MatchLogic.reroll(match: Match, sideIndex: number): (boolean, string?)
+	local ok, reason = MatchLogic.canReroll(match, sideIndex)
+	if not ok then
+		return false, reason
+	end
+	local side = match.Sides[sideIndex]
 	side.RerollsUsed += 1
+	side.HandRevision += 1
+	side.SelectionRevision += 1
 	side.Offers = MatchLogic.rollOffers(side.Collection, B.RollChoices, match.Rng)
 	return true
 end

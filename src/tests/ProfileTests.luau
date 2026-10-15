@@ -3,6 +3,17 @@ local Schema = if script
 	else require("../server/Data/ProfileSchema")
 
 return function(t, d)
+	t.test("Marble debits reject invalid costs and insufficient funds", function()
+		local data = Schema.new(0)
+		data.Marbles = 9
+		for _, cost in { -1, 0.5, math.huge, 0 / 0, "3", 10 } do
+			t.eq(Schema.spendMarbles(data, cost), false)
+			t.eq(data.Marbles, 9)
+		end
+		t.eq(Schema.spendMarbles(data, 3), true)
+		t.eq(data.Marbles, 6)
+		t.eq(Schema.snapshot(data).Marbles, 6)
+	end)
 	t.test("no-contest settlement is idempotent and cannot unlock progress or welcome pulls", function()
 		for side = 1, 2 do
 			local data = Schema.new(0)
@@ -27,7 +38,7 @@ return function(t, d)
 		local snapshot = Schema.snapshot(data)
 		t.eq(snapshot.ProcessedReceipts, nil)
 		t.eq(snapshot.RecentMatches, nil)
-		t.eq(snapshot.Marbles, nil)
+		t.eq(snapshot.Marbles, 0)
 		snapshot.Coins = 999
 		t.eq(data.Coins, 0, "snapshot cannot mutate server data")
 	end)

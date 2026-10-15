@@ -156,6 +156,20 @@ function Service:AddCoins(player, amount)
 	return true
 end
 
+-- Debit without yielding; the caller commits the selection before syncing/saving the profile.
+function Service:SpendMarbles(player, amount)
+	local data = self:Get(player)
+	return data ~= nil and Schema.spendMarbles(data, amount)
+end
+
+function Service:CommitCurrency(player)
+	self:Sync(player)
+	local entry = self.Profiles[player]
+	if entry then
+		entry.Profile:Save()
+	end
+end
+
 function Service:Start()
 	Players.PlayerAdded:Connect(function(player)
 		task.spawn(function()
@@ -193,6 +207,15 @@ function Service:Start()
 		local dev = Instance.new("BindableFunction")
 		dev.Name = "DataDev"
 		dev.OnInvoke = function(command, player, value)
+			if command == "Marbles" and self.Mock then
+				local data = self:Get(player)
+				if not data or not Guard.finite(value) or value % 1 ~= 0 or data.Marbles + value < 0 then
+					return false
+				end
+				data.Marbles += value
+				self:Sync(player)
+				return data.Marbles
+			end
 			if command == "Inspect" then
 				local d = self:Get(player)
 				return {

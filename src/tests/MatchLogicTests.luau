@@ -62,13 +62,56 @@ return function(t, deps)
 		end
 	end)
 
-	t.test("reroll costs: free first, then Marbles, last cost repeats", function()
-		t.eq(MatchLogic.rerollCost(0), 0, "free")
+	t.test("rerolls always cost Marbles in pairs capped at nine", function()
+		for used, cost in { 3, 3, 6, 6, 9, 9, 9 } do
+			t.eq(MatchLogic.rerollCost(used - 1), cost)
+		end
 		local costs = B.RerollMarbleCosts
 		t.eq(MatchLogic.rerollCost(B.FreeRerollsPerMatch), costs[1], "first paid")
 		t.eq(MatchLogic.rerollCost(B.FreeRerollsPerMatch + 50), costs[#costs], "repeats")
 	end)
 
+	t.test("hand and counters survive rounds and new matches reset them", function()
+		local m = MatchLogic.new({ { Collection = big }, { Collection = big } }, Rng.new(31))
+		MatchLogic.startRound(m)
+		local initial = table.concat(m.Sides[1].Offers, ",")
+		MatchLogic.startRound(m)
+		t.eq(table.concat(m.Sides[1].Offers, ","), initial)
+		MatchLogic.reroll(m, 1)
+		local changed = table.concat(m.Sides[1].Offers, ",")
+		MatchLogic.startRound(m)
+		t.eq(table.concat(m.Sides[1].Offers, ","), changed)
+		t.eq(m.Sides[1].RerollsUsed, 1)
+		t.eq(m.Sides[1].HandRevision, 1)
+		local fresh = MatchLogic.new({ { Collection = big }, { Collection = big } }, Rng.new(31))
+		t.eq(fresh.Sides[1].RerollsUsed, 0)
+		t.eq(fresh.Sides[1].PickAnyUsed, 0)
+	end)
+	t.test("Pick Any selects one round without replacing the hand", function()
+		local m = MatchLogic.new({ { Collection = big }, { Collection = big } }, Rng.new(32))
+		MatchLogic.startRound(m)
+		local before = table.concat(m.Sides[1].Offers, ",")
+		local chosen
+		for id in big do
+			if not table.find(m.Sides[1].Offers, id) then
+				chosen = id
+				break
+			end
+		end
+		t.ok(not MatchLogic.pickAny(m, 1, "glass_dragon"))
+		t.eq(m.Sides[1].PickAnyUsed, 0)
+		t.ok(MatchLogic.pickAny(m, 1, chosen))
+		t.eq(m.Sides[1].Pick, chosen)
+		t.eq(table.concat(m.Sides[1].Offers, ","), before)
+		t.eq(m.Sides[1].PickAnyUsed, 1)
+		t.ok(not MatchLogic.pickAny(m, 1, chosen))
+		MatchLogic.startRound(m)
+		t.eq(m.Sides[1].Pick, nil)
+		t.eq(m.Sides[1].PickAnyUsed, 1)
+		for used, cost in { 0, 6, 9, 12, 12, 12 } do
+			t.eq(MatchLogic.pickAnyCost(used - 1), cost)
+		end
+	end)
 	t.test("rerolls and picks are validated", function()
 		local m = MatchLogic.new({ { Collection = big }, { Collection = {} } }, Rng.new(3))
 		MatchLogic.startRound(m)

@@ -38,10 +38,14 @@ function Runner:Reroll(side)
 	if self.Phase ~= "Rolling" then
 		return false, "phase"
 	end
-	if Logic.rerollCost(self.Match.Sides[side].RerollsUsed) ~= 0 then
-		return false, "free_used"
-	end
 	return Logic.reroll(self.Match, side)
+end
+
+function Runner:PickAny(side, id)
+	if self.Phase ~= "Rolling" then
+		return false, "phase"
+	end
+	return Logic.pickAny(self.Match, side, id)
 end
 
 function Runner:Aim(side, aim, yaw)

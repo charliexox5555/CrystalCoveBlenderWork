@@ -5,13 +5,14 @@
 --
 --   Server -> client
 --     MatchState     (RemoteEvent)            phase changes: Queue, Rolling, Aiming, Countdown, Fighting, RoundEnd, MatchEnd
---     RollOffers     (RemoteEvent)            your 3 offers + reroll cost
+--     RollOffers     (RemoteEvent)            persistent match hand, revisions, prices, wallet and policy eligibility
 --     FightEvents    (RemoteEvent)            FightRules events (Hit, Passive, Power, PerfectRelease, Overtime, Shatter, End)
 --     FightSnapshot  (UnreliableRemoteEvent)  glassy positions/rotations + HP + power glow at Balance.Feel.SnapshotRate
 --     MatchResult    (RemoteEvent)            winner, coins, trophies
 --   Client -> server
 --     PickGlassy     (RemoteEvent)  id: string
---     Reroll         (RemoteEvent)  (no args)
+--     Reroll         (RemoteEvent)  matchId, round, selectionRevision, expectedCost
+--     PickAny        (RemoteEvent)  id, matchId, round, selectionRevision, expectedCost
 --     SetAim         (RemoteEvent)  aim: number, yaw: number (radians; clamped by FightRules.clampAim / clampYaw)
 --     LeaveQueue     (RemoteEvent)  (no args)
 --     RequestFightState (RemoteEvent) late-join/respawn bootstrap (no args)
@@ -26,6 +27,7 @@ local reliable = {
 	"MatchResult",
 	"PickGlassy",
 	"Reroll",
+	"PickAny",
 	"SetAim",
 	"LeaveQueue",
 	"JoinNearestArena",

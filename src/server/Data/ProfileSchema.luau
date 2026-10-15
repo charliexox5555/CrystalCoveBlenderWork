@@ -172,6 +172,7 @@ end
 function Schema.snapshot(data)
 	return Schema.copy({
 		Coins = data.Coins,
+		Marbles = data.Marbles,
 		Trophies = data.Trophies,
 		Glassies = data.Glassies,
 		Stats = data.Stats,
@@ -179,6 +180,17 @@ function Schema.snapshot(data)
 		WelcomePulls = Schema.welcomePulls(data),
 		Version = data.Version,
 	})
+end
+
+function Schema.spendMarbles(data, amount)
+	if type(amount) ~= "number" or amount ~= amount or amount == math.huge or amount < 0 or amount % 1 ~= 0 then
+		return false
+	end
+	if data.Marbles < amount then
+		return false
+	end
+	data.Marbles -= amount
+	return true
 end
 
 return Schema

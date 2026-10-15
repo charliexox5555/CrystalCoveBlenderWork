@@ -1,7 +1,7 @@
 # Roadmap
 
 Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DESIGN v0.3](GAME_DESIGN.md).
-**Current milestone: F5 — integration polish.** Wave1 imports, fitted fences and the native multiplayer/security pass are complete. Real-phone checks, final UI artwork and publishing remain with the creator; paid features stay disabled.
+**Current milestone: F5 — integration polish.** Wave1 imports, fitted fences and the native multiplayer/security pass are complete. Real-phone checks, final UI artwork and publishing remain with the creator; Marble packs, gamepasses and Marble Kiln purchases stay disabled; creator-approved match selection spends are implemented.
 
 Owner key: **C** = Codex (code / Studio MCP), **B** = Codex with Blender MCP, **CL** = Claude (research, design, pure rules, docs), **U** = you.
 
@@ -61,12 +61,14 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 - [x] **C:** daily quests, playtime gifts, login streak tracking (no free Marbles), first win bonus, Studio test code; [F4 report](testing/F4_FREE_RETENTION.md)
 - [ ] **U/C:** group reward: owner group ID and permitted reward configuration pending; free Marbles disabled
-- [ ] **C:** Marbles, Marble packs, gamepasses, idempotent `ProcessReceipt`, PolicyService checks
+- [ ] **C:** Marble packs, gamepasses and idempotent `ProcessReceipt`; match-selection wallet spends/policy checks completed in F5, paid storefront remains deferred
 - [x] **C:** Trophies, Match Wins and Shatters boards; published ordered-store verification pending
 - [ ] **C:** Shatter FX shop + 3 effects (paid features deferred under current instructions)
 - [ ] **C:** analytics events (GAME_DESIGN 15b)
 
 ## F5 — Polish and soft launch (Nov 10–16)
+
+- [x] **C:** once-per-match uniform three-card hand without duplicates, sequential vertical reels, retained hands across rounds, round-only owned Pick Any, escalating Marble prices/confirmation and policy-gated paid rerolls; saved wallet and replay/ownership/deadline guards. 79 Lune/Studio tests plus 75 native server and 117 UI checks pass; editable export/backup and [report](testing/MATCH_SELECTION.md). No device pass.
 
 - [x] **C:** Inventory Owned → Unowned sections for all 31 catalog glassies; dimmed missing portraits, honest artwork placeholders, inspectable powers/base stats, acquisition migration and editable templates/backup. 2,505 native UI checks and 76 logic tests pass; [report](testing/INVENTORY_UNOWNED.md). Device work deferred.
 

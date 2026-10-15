@@ -1,6 +1,8 @@
-# Lobby v2 — built art, awaiting Studio import
+# Lobby v2 — installed art, approved fence alignment
 
-Created 2026-10-14 through Blender MCP. **No Studio calls, play-mode changes, source gameplay edits or publishing were performed in this art session.** Claude continued working in the shared checkout. Placement uses the handoff's verified geometry snapshot, not a live place audit.
+Created 2026-10-14 through Blender MCP, then imported by the creator and placed through Studio MCP. **The creator approved the corrected fence alignment.** Studio remains in Edit mode; gameplay testing and publication are left to the creator. Native IDs/transforms are in `studio_assets.json`; the measured live grass rims are in `live_island_rims.json`. See [integration report](../../../../docs/testing/LOBBY_V2_INTEGRATION.md).
+
+The original Blender-only build preserved the open scene and used the handoff's geometry snapshot. Subsequent native inspection found the old island imports had a baked 180° yaw relative to that source. The initial fence placement was therefore wrong despite matching bounding boxes. The corrected Studio fence set follows the live mesh geometry without moving islands, stands or paths.
 
 ## Ready to review
 
@@ -24,9 +26,11 @@ The plaza/row views show the new assets with exact flat grass footprints. Existi
 
 All island fence vertices are inside the actual source rim; the smallest horizontal clearance is approximately **0.18 studs**. Rail centerlines are inset 0.9 studs. Gates have 11-stud center spacing, 10.14 studs between post faces and 9.98 studs between decorative cap edges. Rail centers are 0.9 and 2.1 studs above the ground, with 0.6-stud rail thickness. All **16 bridge rail endpoints** match the island gates with zero coordinate error. The source outline file's SHA256 is recorded and checked.
 
-These checks cover mesh topology, export geometry and saved-outline fitting. Actual Studio import orientation/scale, live island changes, native safety collision, queue approaches, readability and phone rendering are **not yet verified** for this package. Existing safety colliders must remain until the new visuals have been walked in Studio.
+These original Blender checks cover topology, export geometry and source-outline fitting. Native import size/orientation and fence fitting have since been corrected and inspected in Edit mode. Actual gameplay, queue approaches and phone rendering remain creator checks. The complete previous lobby and both earlier fence sets are preserved in ServerStorage backups.
 
-## Import after Studio handover
+## Reproduction and original import reference
+
+**Already installed; do not rerun builders over the current place.** On a fresh matching place/import set, run `tools/studio/install_lobby_v2.luau` followed by `tools/studio/correct_lobby_v2_fences.luau`. Both refuse to repeat over their existing backups. The correction is essential: it aligns imported perimeter meshes to the live baked island orientation, uses native geometry cuts/closures at Lobby and Featured gates, and fits native bridge handrails and safety walls to the actual entrances. These Studio adjustments are not represented by the original FBX gate layout. The following import measurements remain useful when reconstructing the package.
 
 1. Wait until Claude has handed over Studio. Save a local place backup. Inspect the current island meshes and existing props; the saved snapshot below must still match. Do not rerun old builders over manual work.
 2. Import these 13 `.fbx` files into a staging folder named `LobbyV2Imports`. Preserve separate meshes and imported pivots; use **Studs / scale 1**, no model simplification or mesh merging. Anchor all meshes. No texture uploads are needed. Import one Kiln first and compare dimensions before the other bundles.

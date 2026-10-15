@@ -14,6 +14,14 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-14 — Codex — lobby v2 placement and approved fence correction
+Done:
+- Placed all 13 imported bundles / 119 meshes: normalized importer scale/orientation, applied colors, integrated furnace and three board frames while preserving OpenKiln, KilnTitle and live Entries/Title labels. Full lobby/raw imports/old visuals preserved in ServerStorage.Unsorted.LobbyV2Backup; native IDs/transforms and reproducible installers recorded.
+- Creator reported poor fence alignment. Actual native grass vertices revealed a baked 180° island orientation omitted from source-polygon checks: 4,746 fence vertices overhung live grass despite matching bounds. Corrected all five perimeter meshes, Lobby/Featured gates, bridge handrails and 211 safety segments without moving islands, decks, stands, pads or paths. All corrected perimeter inputs and added gate corners fit the live rims; center lane is clear. Creator approved: “looks good on my end.”
+- Lune 76 passed, 0 failed; placement-time Studio pure RunAll true. No balance changes, Rojo source edits or StarterGui restyling. Report: docs/testing/LOBBY_V2_INTEGRATION.md. Original Blender FBXs retain source gate layout; native gate/bridge adjustments are reproduced by the correction script.
+Next / scope:
+- Creator requested to do gameplay testing themselves: no play-mode changes, matches, pulls or traversal tests. Save the place, test pads/bridges/Kiln/boards/phone, then publish manually. Generated menu concepts remain unimplemented; reveal-seat anchor exists but world animation binding is future work.
+
 ## 2026-10-14 — Claude — playtested polish pass, Watch, performance, calibration
 Done:
 - Playtested in Studio and fixed: frozen Perfect band (could say PERFECT outside the gold), round banner/heart pop spoiling the shatter, mirror-match ownership (owner names, pad-colour stripes, in-world YOU marker), survivor freezing mid-air, distant fights frozen, reset forfeit 5 s late, invisible 1.4-stud ledge on the spawn route, idle arenas without signs, cluttered distant signs, stale lobby hint, unexplained greyed Kiln pulls, single bot name. Report/screens: docs/testing/POLISH_PASS.md.

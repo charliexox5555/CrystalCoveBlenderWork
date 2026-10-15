@@ -1,0 +1,40 @@
+{
+  "CenterLaneClear": true,
+  "SafetyColliders": 211,
+  "NativeAddedOutsideCorners": 0,
+  "AfterOutsideVertices": 0,
+  "GameplayTested": false,
+  "BeforeOutsideVertices": 4746,
+  "Islands": {
+    "Isle_Featured": {
+      "BeforeOutside": 725,
+      "SourceVertices": 3605,
+      "AddedOutsideCorners": 0,
+      "AfterRotatedInputOutside": 0
+    },
+    "Isle_Lobby": {
+      "BeforeOutside": 1376,
+      "SourceVertices": 4260,
+      "AddedOutsideCorners": 0,
+      "AfterRotatedInputOutside": 0
+    },
+    "Isle_Arena1": {
+      "BeforeOutside": 1074,
+      "SourceVertices": 3921,
+      "AddedOutsideCorners": 0,
+      "AfterRotatedInputOutside": 0
+    },
+    "Isle_Arena3": {
+      "BeforeOutside": 731,
+      "SourceVertices": 3893,
+      "AddedOutsideCorners": 0,
+      "AfterRotatedInputOutside": 0
+    },
+    "Isle_Arena2": {
+      "BeforeOutside": 840,
+      "SourceVertices": 3918,
+      "AddedOutsideCorners": 0,
+      "AfterRotatedInputOutside": 0
+    }
+  }
+}

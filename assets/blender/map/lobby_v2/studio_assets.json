@@ -1,0 +1,4344 @@
+{
+  "Backup": "ServerStorage.Unsorted.LobbyV2Backup",
+  "RawImports": {
+    "Kiln_Furnace": {
+      "Kiln_Arch_07": "rbxassetid://112296916954771",
+      "Kiln_Arch_01": "rbxassetid://75463428344164",
+      "Kiln_Jamb_2_75_2": "rbxassetid://105526676287394",
+      "Kiln_Arch_05": "rbxassetid://109932517015685",
+      "Kiln_ChamberDark": "rbxassetid://135493064196656",
+      "Kiln_Arch_06": "rbxassetid://98949395981885",
+      "Kiln_Arch_00": "rbxassetid://83467656237985",
+      "Kiln_DisplayPost": "rbxassetid://101957694655549",
+      "Kiln_Arch_04": "rbxassetid://84480142764220",
+      "Kiln_Jamb_2_75_1": "rbxassetid://76226377146531",
+      "Kiln_TrayLip_-2_28": "rbxassetid://75255504364627",
+      "Kiln_CornerBand_-3_65": "rbxassetid://137863423376167",
+      "Kiln_TrayLeg_2_28": "rbxassetid://137446431577536",
+      "Kiln_DisplaySurface": "rbxassetid://99423228477284",
+      "Kiln_Jamb_2_75_0": "rbxassetid://111203715474091",
+      "Kiln_HeaderPlaque": "rbxassetid://88083115833727",
+      "Kiln_Back": "rbxassetid://107875511634621",
+      "Kiln_Arch_03": "rbxassetid://76675987108675",
+      "Kiln_Hearth": "rbxassetid://72681411807727",
+      "Kiln_TrayLip_2_28": "rbxassetid://109047889737315",
+      "Kiln_TrayLeg_-2_28": "rbxassetid://115922172817923",
+      "Kiln_Side_3_65": "rbxassetid://116978821766523",
+      "Kiln_ChimneyDark": "rbxassetid://93387835444155",
+      "Kiln_CoolingTray": "rbxassetid://112089974818103",
+      "Kiln_Jamb_-2_75_1": "rbxassetid://82468465474857",
+      "Kiln_RoofBand": "rbxassetid://124229303842631",
+      "Kiln_DisplayFrame": "rbxassetid://102611406409194",
+      "Kiln_Roof": "rbxassetid://107835744121813",
+      "Kiln_CoolingSurface": "rbxassetid://139287833976780",
+      "Kiln_RevealSeatInset": "rbxassetid://129836608700194",
+      "Kiln_MoltenPool": "rbxassetid://86689223567581",
+      "Kiln_Base": "rbxassetid://138525588681074",
+      "Kiln_Chimney": "rbxassetid://121428118646171",
+      "Kiln_ChimneyRim": "rbxassetid://117794281006081",
+      "Kiln_Side_-3_65": "rbxassetid://86492805477840",
+      "Kiln_RevealSeat": "rbxassetid://137791672729253",
+      "Kiln_ChamberBackGlow": "rbxassetid://71434216239332",
+      "Kiln_CornerBand_3_65": "rbxassetid://89032572155874",
+      "Kiln_Jamb_-2_75_2": "rbxassetid://120674520496101",
+      "Kiln_Arch_08": "rbxassetid://94129417132491",
+      "Kiln_Arch_02": "rbxassetid://126761721699468",
+      "Kiln_Jamb_-2_75_0": "rbxassetid://77404136434698"
+    },
+    "Fence_Bridge2": {
+      "Fence_Bridge2_Caps": "rbxassetid://94210635152209",
+      "Fence_Bridge2_Posts": "rbxassetid://132972230039724",
+      "Fence_Bridge2_Rails": "rbxassetid://73176812416178"
+    },
+    "Fence_Bridge4": {
+      "Fence_Bridge4_Caps": "rbxassetid://73090954253177",
+      "Fence_Bridge4_Rails": "rbxassetid://117795248024295",
+      "Fence_Bridge4_Posts": "rbxassetid://113206423458183"
+    },
+    "Fence_Isle_Arena3": {
+      "Fence_Isle_Arena3_Caps": "rbxassetid://82336823105457",
+      "Fence_Isle_Arena3_Posts": "rbxassetid://124584106369089",
+      "Fence_Isle_Arena3_Rails": "rbxassetid://109567929057155"
+    },
+    "Fence_Bridge3": {
+      "Fence_Bridge3_Posts": "rbxassetid://94106125529269",
+      "Fence_Bridge3_Rails": "rbxassetid://74303714958156",
+      "Fence_Bridge3_Caps": "rbxassetid://119288032955336"
+    },
+    "Fence_Isle_Arena2": {
+      "Fence_Isle_Arena2_Posts": "rbxassetid://106491291858884",
+      "Fence_Isle_Arena2_Rails": "rbxassetid://139381147260061",
+      "Fence_Isle_Arena2_Caps": "rbxassetid://88680418655313"
+    },
+    "Fence_Isle_Featured": {
+      "Fence_Isle_Featured_Rails": "rbxassetid://86067932398467",
+      "Fence_Isle_Featured_Posts": "rbxassetid://109443782203598",
+      "Fence_Isle_Featured_Caps": "rbxassetid://125725656346468"
+    },
+    "Board_Shatters": {
+      "Board_Shatters_Step": "rbxassetid://90018344256993",
+      "Board_Shatters_Header": "rbxassetid://81968163185742",
+      "Board_Shatters_Shard_0_65": "rbxassetid://105910152821220",
+      "Board_Shatters_Crossbar_2_08": "rbxassetid://128992595664363",
+      "Board_Shatters_Shard_-0_65": "rbxassetid://129505992745409",
+      "Board_Shatters_Foot": "rbxassetid://121687802820838",
+      "Board_Shatters_Column_5_65": "rbxassetid://104970610534346",
+      "Board_Shatters_Column_-5_65": "rbxassetid://113147052836386",
+      "Board_Shatters_Display": "rbxassetid://114940821564872",
+      "Board_Shatters_Crossbar_10_22": "rbxassetid://108439988686602",
+      "Board_Shatters_ColumnCap_5_65": "rbxassetid://71494724799130",
+      "Board_Shatters_BaseCap_-5_65": "rbxassetid://95553148553424",
+      "Board_Shatters_Shard_0": "rbxassetid://106318682778359",
+      "Board_Shatters_BaseCap_5_65": "rbxassetid://85133225903087",
+      "Board_Shatters_CrestFoot": "rbxassetid://126457054499644",
+      "Board_Shatters_HeaderInset": "rbxassetid://90021935243510",
+      "Board_Shatters_ColumnCap_-5_65": "rbxassetid://125075689449384"
+    },
+    "Fence_Isle_Lobby": {
+      "Fence_Isle_Lobby_Caps": "rbxassetid://120096387317954",
+      "Fence_Isle_Lobby_Posts": "rbxassetid://114753323464959",
+      "Fence_Isle_Lobby_Rails": "rbxassetid://109609315622973"
+    },
+    "Board_Trophies": {
+      "Board_Trophies_Display": "rbxassetid://115792756197636",
+      "Board_Trophies_Step": "rbxassetid://85628011728678",
+      "Board_Trophies_ColumnCap_5_65": "rbxassetid://80507721630691",
+      "Board_Trophies_CrestFoot": "rbxassetid://100546740013691",
+      "Board_Trophies_Cup": "rbxassetid://98329663107021",
+      "Board_Trophies_Column_-5_65": "rbxassetid://93056284985310",
+      "Board_Trophies_HeaderInset": "rbxassetid://101290796100973",
+      "Board_Trophies_ColumnCap_-5_65": "rbxassetid://136653263135780",
+      "Board_Trophies_Header": "rbxassetid://87767361378702",
+      "Board_Trophies_Crossbar_2_08": "rbxassetid://89106849809116",
+      "Board_Trophies_Foot": "rbxassetid://130631979534394",
+      "Board_Trophies_Column_5_65": "rbxassetid://125470792375908",
+      "Board_Trophies_BaseCap_-5_65": "rbxassetid://87859686674260",
+      "Board_Trophies_BaseCap_5_65": "rbxassetid://97995732861084",
+      "Board_Trophies_Stem": "rbxassetid://124029561319003",
+      "Board_Trophies_Crossbar_10_22": "rbxassetid://75754655337554"
+    },
+    "Board_MatchWins": {
+      "Board_MatchWins_CrestFoot": "rbxassetid://130789110614801",
+      "Board_MatchWins_Display": "rbxassetid://115574445604236",
+      "Board_MatchWins_Column_5_65": "rbxassetid://84652950773462",
+      "Board_MatchWins_ColumnCap_-5_65": "rbxassetid://75985471624649",
+      "Board_MatchWins_ColumnCap_5_65": "rbxassetid://81502878077250",
+      "Board_MatchWins_BaseCap_5_65": "rbxassetid://122309924836205",
+      "Board_MatchWins_CrownPoint_-0_6": "rbxassetid://98348893469002",
+      "Board_MatchWins_Foot": "rbxassetid://118707762613581",
+      "Board_MatchWins_Step": "rbxassetid://128726763644403",
+      "Board_MatchWins_Column_-5_65": "rbxassetid://101900288054627",
+      "Board_MatchWins_HeaderInset": "rbxassetid://126883521825455",
+      "Board_MatchWins_Crossbar_2_08": "rbxassetid://77274072468504",
+      "Board_MatchWins_BaseCap_-5_65": "rbxassetid://124477357810531",
+      "Board_MatchWins_CrownPoint_0_6": "rbxassetid://96730112828166",
+      "Board_MatchWins_Header": "rbxassetid://107629658880795",
+      "Board_MatchWins_Crossbar_10_22": "rbxassetid://87600050387709",
+      "Board_MatchWins_CrownPoint_0": "rbxassetid://129865727202732"
+    },
+    "Fence_Isle_Arena1": {
+      "Fence_Isle_Arena1_Posts": "rbxassetid://113781000194313",
+      "Fence_Isle_Arena1_Rails": "rbxassetid://80882680760354",
+      "Fence_Isle_Arena1_Caps": "rbxassetid://133484554829740"
+    },
+    "Fence_Bridge1": {
+      "Fence_Bridge1_Posts": "rbxassetid://128872012309430",
+      "Fence_Bridge1_Rails": "rbxassetid://85809300267838",
+      "Fence_Bridge1_Caps": "rbxassetid://72617548378852"
+    }
+  },
+  "FinalVisuals": {
+    "Workspace.Lobby.FenceVisualsV2.Fence_Bridge1.GateRail": {
+      "CFrame": [
+        4.474999904632568,
+        3.5999999046325684,
+        -31.450496673583984,
+        0.8171126842498779,
+        -0.15605764091014862,
+        -0.5549530386924744,
+        0,
+        0.9626612663269043,
+        -0.27070876955986023,
+        0.5764779448509216,
+        0.22119957208633423,
+        0.786602795124054
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.5215686559677124,
+        0.3294117748737335,
+        0.2235294133424759
+      ],
+      "Class": "Part",
+      "Size": [
+        0.6000000238418579,
+        0.6000000238418579,
+        3.694005012512207
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Arch_07": {
+      "CFrame": [
+        -24.40523338317871,
+        5.544171333312988,
+        -9.279999732971191,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.729411780834198,
+        0.43921568989753723,
+        0.32156863808631897
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://112296916954771",
+      "Size": [
+        1.4482007026672363,
+        1.3644051551818848,
+        1.1200000047683716
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Arena1.Fence_Isle_Arena1_Caps": {
+      "CFrame": [
+        -0.038112640380859375,
+        4.914999961853027,
+        -54.98652648925781,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7254902124404907,
+        0.5411764979362488,
+        0.3607843220233917
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://133484554829740",
+      "Size": [
+        90.9677963256836,
+        0.1700000762939453,
+        45.18634033203125
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Trophies.VisualsV2.Board_Trophies_Crossbar_10_22": {
+      "CFrame": [
+        28,
+        10.270000457763672,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://75754655337554",
+      "Size": [
+        12.100000381469727,
+        0.4500007629394531,
+        1.0499999523162842
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.OddsSignCarrier": {
+      "CFrame": [
+        -16.75,
+        4.300000190734863,
+        -8.25,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 1,
+      "Material": "Plastic",
+      "CanCollide": false,
+      "Color": [
+        0.6392157077789307,
+        0.6352941393852234,
+        0.6470588445663452
+      ],
+      "Class": "Part",
+      "Size": [
+        1.850000023841858,
+        2.1500000953674316,
+        0.03999999910593033
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.VisualsV2.Board_Shatters_Shard_-0_65": {
+      "CFrame": [
+        14.649999618530273,
+        12.170000076293945,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.6235294342041016,
+        0.5529412031173706,
+        0.7490196228027344
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://129505992745409",
+      "Size": [
+        0.7799999713897705,
+        1.25,
+        0.7799999713897705
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.VisualsV2.Board_MatchWins_BaseCap_5_65": {
+      "CFrame": [
+        -19.649999618530273,
+        1.1999999284744263,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://122309924836205",
+      "Size": [
+        1.1000003814697266,
+        0.4500000476837158,
+        1.350000023841858
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Base": {
+      "CFrame": [
+        -22,
+        0.375,
+        -10.699999809265137,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7843137383460999,
+        0.7372549176216125,
+        0.6117647290229797
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://138525588681074",
+      "Size": [
+        11.800000190734863,
+        0.6499999761581421,
+        9.399999618530273
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_DisplayPost": {
+      "CFrame": [
+        -16.600000381469727,
+        2.049999952316284,
+        -8.75,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.14901961386203766,
+        0.21568627655506134,
+        0.29411765933036804
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://101957694655549",
+      "Size": [
+        0.4200000762939453,
+        3.1999998092651367,
+        0.6500000953674316
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Featured.GateCap": {
+      "CFrame": [
+        -5.5,
+        11.914999961853027,
+        -182.95343017578125,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7254902124404907,
+        0.5411764979362488,
+        0.3607843220233917
+      ],
+      "Class": "Part",
+      "Size": [
+        1.0199999809265137,
+        0.17000000178813934,
+        1.0199999809265137
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.VisualsV2.Board_Shatters_BaseCap_-5_65": {
+      "CFrame": [
+        19.649999618530273,
+        1.1999999284744263,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://95553148553424",
+      "Size": [
+        1.1000003814697266,
+        0.4500000476837158,
+        1.350000023841858
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Arch_03": {
+      "CFrame": [
+        -20.97873878479004,
+        6.690553665161133,
+        -9.279999732971191,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.729411780834198,
+        0.43921568989753723,
+        0.32156863808631897
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://76675987108675",
+      "Size": [
+        1.2510907649993896,
+        1.3879179954528809,
+        1.1200000047683716
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_MoltenPool": {
+      "CFrame": [
+        -22,
+        1.4799998998641968,
+        -10.800000190734863,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "Neon",
+      "CanCollide": false,
+      "Color": [
+        1,
+        0.7254902124404907,
+        0.3450980484485626
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://86689223567581",
+      "Size": [
+        3.1600000858306885,
+        0.15000009536743164,
+        3.1600000858306885
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Trophies.VisualsV2.Board_Trophies_ColumnCap_5_65": {
+      "CFrame": [
+        22.350000381469727,
+        10.5,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://80507721630691",
+      "Size": [
+        1.1000003814697266,
+        0.39999961853027344,
+        1.350000023841858
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.VisualsV2.Board_Shatters_BaseCap_5_65": {
+      "CFrame": [
+        8.350000381469727,
+        1.1999999284744263,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://85133225903087",
+      "Size": [
+        1.1000003814697266,
+        0.4500000476837158,
+        1.350000023841858
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Arch_04": {
+      "CFrame": [
+        -22,
+        6.821816444396973,
+        -9.279999732971191,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.729411780834198,
+        0.43921568989753723,
+        0.32156863808631897
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://84480142764220",
+      "Size": [
+        1.1073051691055298,
+        1.1439518928527832,
+        1.1200000047683716
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Trophies.VisualsV2.Board_Trophies_Foot": {
+      "CFrame": [
+        28,
+        0.3500000238418579,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7843137383460999,
+        0.7372549176216125,
+        0.6117647290229797
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://130631979534394",
+      "Size": [
+        12.199999809265137,
+        0.6000000238418579,
+        3.200000047683716
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Arena3.Fence_Isle_Arena3_Caps": {
+      "CFrame": [
+        -0.003923418466001749,
+        8.914999961853027,
+        -155.02255249023438,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7254902124404907,
+        0.5411764979362488,
+        0.3607843220233917
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://82336823105457",
+      "Size": [
+        91.11773681640625,
+        0.1700000762939453,
+        45.17466735839844
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_TrayLeg_2_28": {
+      "CFrame": [
+        -19.719999313354492,
+        0.9999999403953552,
+        -6.599999904632568,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.14901961386203766,
+        0.21568627655506134,
+        0.29411765933036804
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://137446431577536",
+      "Size": [
+        0.4499998092651367,
+        1.4500000476837158,
+        0.5500001907348633
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.VisualsV2.Board_MatchWins_Display": {
+      "CFrame": [
+        -14,
+        6.200000286102295,
+        20.84000015258789,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.14901961386203766,
+        0.21568627655506134,
+        0.29411765933036804
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://115574445604236",
+      "Size": [
+        10.199999809265137,
+        7.800000190734863,
+        0.3799999952316284
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.VisualsV2.Board_MatchWins_HeaderInset": {
+      "CFrame": [
+        -14,
+        11,
+        20.520000457763672,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.14901961386203766,
+        0.21568627655506134,
+        0.29411765933036804
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://126883521825455",
+      "Size": [
+        9.600000381469727,
+        0.7199993133544922,
+        0.1199999749660492
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_DisplaySurface": {
+      "CFrame": [
+        -16.75,
+        4.300000190734863,
+        -8.34000015258789,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.14901961386203766,
+        0.21568627655506134,
+        0.29411765933036804
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://99423228477284",
+      "Size": [
+        2.0500001907348633,
+        2.3299999237060547,
+        0.11999988555908203
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_TrayLeg_-2_28": {
+      "CFrame": [
+        -24.280000686645508,
+        0.9999999403953552,
+        -6.599999904632568,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.14901961386203766,
+        0.21568627655506134,
+        0.29411765933036804
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://115922172817923",
+      "Size": [
+        0.4499998092651367,
+        1.4500000476837158,
+        0.5500001907348633
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Lobby.Fence_Isle_Lobby_Rails_GateCut1": {
+      "CFrame": [
+        0.0042724609375,
+        1.5,
+        -0.0005922320997342467,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        1,
+        1,
+        1
+      ],
+      "Class": "MeshPart",
+      "MeshId": "",
+      "Size": [
+        94.78626251220703,
+        1.8000001907348633,
+        54.79090881347656
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.VisualsV2.Board_MatchWins_Crossbar_10_22": {
+      "CFrame": [
+        -14,
+        10.270000457763672,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://87600050387709",
+      "Size": [
+        12.100000381469727,
+        0.4500007629394531,
+        1.0499999523162842
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Arch_06": {
+      "CFrame": [
+        -23.823200225830078,
+        6.246832370758057,
+        -9.279999732971191,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.729411780834198,
+        0.43921568989753723,
+        0.32156863808631897
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://98949395981885",
+      "Size": [
+        1.436263084411621,
+        1.4644804000854492,
+        1.1200000047683716
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Lobby.GateRail": {
+      "CFrame": [
+        -2.3673791885375977,
+        2.0999999046325684,
+        26.38898468017578,
+        -0.0009936700807884336,
+        0,
+        0.999999463558197,
+        0,
+        1,
+        0,
+        -0.9999995827674866,
+        0,
+        -0.0009936699643731117
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.5215686559677124,
+        0.3294117748737335,
+        0.2235294133424759
+      ],
+      "Class": "Part",
+      "Size": [
+        0.6000000238418579,
+        0.6000000238418579,
+        6.265244960784912
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.HeaderCarrier": {
+      "CFrame": [
+        14,
+        11,
+        20.399999618530273,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 1,
+      "Material": "Plastic",
+      "CanCollide": false,
+      "Color": [
+        0.6392157077789307,
+        0.6352941393852234,
+        0.6470588445663452
+      ],
+      "Class": "Part",
+      "Size": [
+        9.399999618530273,
+        0.6800000071525574,
+        0.05000000074505806
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.VisualsV2.Board_MatchWins_Header": {
+      "CFrame": [
+        -14,
+        11,
+        20.81999969482422,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7843137383460999,
+        0.7372549176216125,
+        0.6117647290229797
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://107629658880795",
+      "Size": [
+        10.100000381469727,
+        1.0499992370605469,
+        0.48000001907348633
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_CornerBand_3_65": {
+      "CFrame": [
+        -17.4739990234375,
+        3.25,
+        -12.149999618530273,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://89032572155874",
+      "Size": [
+        0.3000001907348633,
+        0.4200000762939453,
+        5.25
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.VisualsV2.Board_MatchWins_Crossbar_2_08": {
+      "CFrame": [
+        -14,
+        2.129999876022339,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://77274072468504",
+      "Size": [
+        12.100000381469727,
+        0.44999992847442627,
+        1.0499999523162842
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Lobby.Fence_Isle_Lobby_Caps_GateCut1": {
+      "CFrame": [
+        0.04436492919921875,
+        2.9149999618530273,
+        -0.010662082582712173,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        1,
+        1,
+        1
+      ],
+      "Class": "MeshPart",
+      "MeshId": "",
+      "Size": [
+        95.01305389404297,
+        0.1700000762939453,
+        55.130859375
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Arena1.Fence_Isle_Arena1_Rails": {
+      "CFrame": [
+        -0.0009651185246184468,
+        3.5,
+        -55.001426696777344,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.5215686559677124,
+        0.3294117748737335,
+        0.2235294133424759
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://80882680760354",
+      "Size": [
+        90.79610443115234,
+        1.8000000715255737,
+        44.79609298706055
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Trophies.VisualsV2.Board_Trophies_Column_-5_65": {
+      "CFrame": [
+        33.650001525878906,
+        5.75,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7843137383460999,
+        0.7372549176216125,
+        0.6117647290229797
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://93056284985310",
+      "Size": [
+        0.8999996185302734,
+        9.5,
+        1.149999976158142
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Arch_05": {
+      "CFrame": [
+        -23.02126121520996,
+        6.690553665161133,
+        -9.279999732971191,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.729411780834198,
+        0.43921568989753723,
+        0.32156863808631897
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://109932517015685",
+      "Size": [
+        1.2510907649993896,
+        1.3879179954528809,
+        1.1200000047683716
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_TrayLip_-2_28": {
+      "CFrame": [
+        -24.280000686645508,
+        2.0999999046325684,
+        -7.650000095367432,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://75255504364627",
+      "Size": [
+        0.2199997901916504,
+        0.38000011444091797,
+        3.5
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Featured.Fence_Isle_Featured_Posts_GateCut1": {
+      "CFrame": [
+        0.0439910888671875,
+        10.414999961853027,
+        -205.99078369140625,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        1,
+        1,
+        1
+      ],
+      "Class": "MeshPart",
+      "MeshId": "",
+      "Size": [
+        70.9556884765625,
+        2.8299999237060547,
+        46.86132049560547
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_HeaderPlaque": {
+      "CFrame": [
+        -22,
+        7.949999809265137,
+        -7.25,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.14901961386203766,
+        0.21568627655506134,
+        0.29411765933036804
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://88083115833727",
+      "Size": [
+        4.400000095367432,
+        0.8499999046325684,
+        0.34999990463256836
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.VisualsV2.Board_Shatters_Crossbar_10_22": {
+      "CFrame": [
+        14,
+        10.270000457763672,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://108439988686602",
+      "Size": [
+        12.100000381469727,
+        0.4500007629394531,
+        1.0499999523162842
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.VisualsV2.Board_Shatters_Column_5_65": {
+      "CFrame": [
+        8.350000381469727,
+        5.75,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7843137383460999,
+        0.7372549176216125,
+        0.6117647290229797
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://104970610534346",
+      "Size": [
+        0.8999996185302734,
+        9.5,
+        1.149999976158142
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.VisualsV2.Board_MatchWins_ColumnCap_-5_65": {
+      "CFrame": [
+        -8.350000381469727,
+        10.5,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://75985471624649",
+      "Size": [
+        1.1000003814697266,
+        0.39999961853027344,
+        1.350000023841858
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Bridge1.GatePost": {
+      "CFrame": [
+        3.450000047683716,
+        2.4149999618530273,
+        -29.99764060974121,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.4117647111415863,
+        0.2705882489681244,
+        0.21568627655506134
+      ],
+      "Class": "Part",
+      "Size": [
+        0.8600000143051147,
+        2.8299999237060547,
+        0.8600000143051147
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_ChimneyRim": {
+      "CFrame": [
+        -21.200000762939453,
+        11.970000267028809,
+        -13.050000190734863,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://117794281006081",
+      "Size": [
+        2.559999942779541,
+        0.37999916076660156,
+        2.559999942779541
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.VisualsV2.Board_Shatters_ColumnCap_5_65": {
+      "CFrame": [
+        8.350000381469727,
+        10.5,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://71494724799130",
+      "Size": [
+        1.1000003814697266,
+        0.39999961853027344,
+        1.350000023841858
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Bridge3.GateRail": {
+      "CFrame": [
+        4.474999904632568,
+        7.599999904632568,
+        -131.67796325683594,
+        0.8304967284202576,
+        -0.14605803787708282,
+        -0.5375334620475769,
+        0,
+        0.965010404586792,
+        -0.2622116506099701,
+        0.5570234656333923,
+        0.2177659124135971,
+        0.80143803358078
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.5215686559677124,
+        0.3294117748737335,
+        0.2235294133424759
+      ],
+      "Class": "Part",
+      "Size": [
+        0.6000000238418579,
+        0.6000000238418579,
+        3.813716173171997
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_RevealSeatInset": {
+      "CFrame": [
+        -22,
+        2.2899999618530273,
+        -6.980000019073486,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.14901961386203766,
+        0.21568627655506134,
+        0.29411765933036804
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://129836608700194",
+      "Size": [
+        1.7999999523162842,
+        0.059999942779541016,
+        1.8000001907348633
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Roof": {
+      "CFrame": [
+        -22,
+        7.675000190734863,
+        -12.050000190734863,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7843137383460999,
+        0.7372549176216125,
+        0.6117647290229797
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://107835744121813",
+      "Size": [
+        9.399999618530273,
+        2.049999713897705,
+        9.399999618530273
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Side_-3_65": {
+      "CFrame": [
+        -25.649999618530273,
+        3.700000047683716,
+        -12.149999618530273,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7843137383460999,
+        0.7372549176216125,
+        0.6117647290229797
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://86492805477840",
+      "Size": [
+        2.0500001907348633,
+        4.949999809265137,
+        5.099999904632568
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Arch_01": {
+      "CFrame": [
+        -19.59476661682129,
+        5.544171333312988,
+        -9.279999732971191,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.729411780834198,
+        0.43921568989753723,
+        0.32156863808631897
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://75463428344164",
+      "Size": [
+        1.4482007026672363,
+        1.3644051551818848,
+        1.1200000047683716
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Trophies.VisualsV2.Board_Trophies_Crossbar_2_08": {
+      "CFrame": [
+        28,
+        2.129999876022339,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://89106849809116",
+      "Size": [
+        12.100000381469727,
+        0.44999992847442627,
+        1.0499999523162842
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Trophies.VisualsV2.Board_Trophies_ColumnCap_-5_65": {
+      "CFrame": [
+        33.650001525878906,
+        10.5,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://136653263135780",
+      "Size": [
+        1.1000003814697266,
+        0.39999961853027344,
+        1.350000023841858
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Trophies.VisualsV2.Board_Trophies_Display": {
+      "CFrame": [
+        28,
+        6.200000286102295,
+        20.84000015258789,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.14901961386203766,
+        0.21568627655506134,
+        0.29411765933036804
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://115792756197636",
+      "Size": [
+        10.199999809265137,
+        7.800000190734863,
+        0.3799999952316284
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Jamb_-2_75_2": {
+      "CFrame": [
+        -24.75,
+        3.7200000286102295,
+        -9.279999732971191,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.729411780834198,
+        0.43921568989753723,
+        0.32156863808631897
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://120674520496101",
+      "Size": [
+        1.1500000953674316,
+        0.9499998092651367,
+        1.0999999046325684
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Lobby.GatePost": {
+      "CFrame": [
+        5.5,
+        1.4149999618530273,
+        -27.09192657470703,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.4117647111415863,
+        0.2705882489681244,
+        0.21568627655506134
+      ],
+      "Class": "Part",
+      "Size": [
+        0.8600000143051147,
+        2.8299999237060547,
+        0.8600000143051147
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.VisualsV2.Board_MatchWins_BaseCap_-5_65": {
+      "CFrame": [
+        -8.350000381469727,
+        1.1999999284744263,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://124477357810531",
+      "Size": [
+        1.1000003814697266,
+        0.4500000476837158,
+        1.350000023841858
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Trophies.VisualsV2.Board_Trophies_CrestFoot": {
+      "CFrame": [
+        28,
+        11.699999809265137,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://100546740013691",
+      "Size": [
+        2.299999952316284,
+        0.3600006103515625,
+        1.2000000476837158
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Arena1.Fence_Isle_Arena1_Posts": {
+      "CFrame": [
+        -0.038112640380859375,
+        3.4149999618530273,
+        -54.98652648925781,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.4117647111415863,
+        0.2705882489681244,
+        0.21568627655506134
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://113781000194313",
+      "Size": [
+        90.80780029296875,
+        2.8299999237060547,
+        45.026344299316406
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.HeaderCarrier": {
+      "CFrame": [
+        -22,
+        7.949999809265137,
+        -7.025000095367432,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 1,
+      "Material": "Plastic",
+      "CanCollide": false,
+      "Color": [
+        0.6392157077789307,
+        0.6352941393852234,
+        0.6470588445663452
+      ],
+      "Class": "Part",
+      "Size": [
+        4.150000095367432,
+        0.699999988079071,
+        0.05000000074505806
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Trophies.VisualsV2.Board_Trophies_Stem": {
+      "CFrame": [
+        28,
+        11.949999809265137,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://124029561319003",
+      "Size": [
+        0.5,
+        0.39999961853027344,
+        0.5
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Trophies.VisualsV2.Board_Trophies_HeaderInset": {
+      "CFrame": [
+        28,
+        11,
+        20.520000457763672,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.14901961386203766,
+        0.21568627655506134,
+        0.29411765933036804
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://101290796100973",
+      "Size": [
+        9.600000381469727,
+        0.7199993133544922,
+        0.1199999749660492
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.VisualsV2.Board_MatchWins_CrownPoint_-0_6": {
+      "CFrame": [
+        -13.399999618530273,
+        12.100000381469727,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.43921568989753723,
+        0.7058823704719543,
+        0.7372549176216125
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://98348893469002",
+      "Size": [
+        0.85999995470047,
+        0.8999996185302734,
+        0.8600000143051147
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Featured.GatePost": {
+      "CFrame": [
+        -5.5,
+        10.414999961853027,
+        -182.95343017578125,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.4117647111415863,
+        0.2705882489681244,
+        0.21568627655506134
+      ],
+      "Class": "Part",
+      "Size": [
+        0.8600000143051147,
+        2.8299999237060547,
+        0.8600000143051147
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Back": {
+      "CFrame": [
+        -22,
+        3.950000047683716,
+        -14.550000190734863,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7843137383460999,
+        0.7372549176216125,
+        0.6117647290229797
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://107875511634621",
+      "Size": [
+        7.5,
+        5.40000057220459,
+        0.6999998092651367
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Jamb_-2_75_1": {
+      "CFrame": [
+        -24.75,
+        2.759999990463257,
+        -9.279999732971191,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.729411780834198,
+        0.43921568989753723,
+        0.32156863808631897
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://82468465474857",
+      "Size": [
+        1.1500000953674316,
+        0.9499998092651367,
+        1.0999999046325684
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Jamb_2_75_0": {
+      "CFrame": [
+        -19.25,
+        1.7999999523162842,
+        -9.279999732971191,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.729411780834198,
+        0.43921568989753723,
+        0.32156863808631897
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://111203715474091",
+      "Size": [
+        1.1500000953674316,
+        0.9499999284744263,
+        1.0999999046325684
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Bridge3.GatePost": {
+      "CFrame": [
+        3.450000047683716,
+        6.414999961853027,
+        -130.1497344970703,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.4117647111415863,
+        0.2705882489681244,
+        0.21568627655506134
+      ],
+      "Class": "Part",
+      "Size": [
+        0.8600000143051147,
+        2.8299999237060547,
+        0.8600000143051147
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Jamb_2_75_2": {
+      "CFrame": [
+        -19.25,
+        3.7200000286102295,
+        -9.279999732971191,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.729411780834198,
+        0.43921568989753723,
+        0.32156863808631897
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://105526676287394",
+      "Size": [
+        1.1500000953674316,
+        0.9499998092651367,
+        1.0999999046325684
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.TrayCollider": {
+      "CFrame": [
+        -22,
+        1.125,
+        -7.650000095367432,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 1,
+      "Material": "Plastic",
+      "CanCollide": true,
+      "Color": [
+        0.6392157077789307,
+        0.6352941393852234,
+        0.6470588445663452
+      ],
+      "Class": "Part",
+      "Size": [
+        4.900000095367432,
+        2.1500000953674316,
+        3.5
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.VisualsV2.Board_MatchWins_Foot": {
+      "CFrame": [
+        -14,
+        0.3500000238418579,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7843137383460999,
+        0.7372549176216125,
+        0.6117647290229797
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://118707762613581",
+      "Size": [
+        12.199999809265137,
+        0.6000000238418579,
+        3.200000047683716
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Trophies.VisualsV2.Board_Trophies_BaseCap_5_65": {
+      "CFrame": [
+        22.350000381469727,
+        1.1999999284744263,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://97995732861084",
+      "Size": [
+        1.1000003814697266,
+        0.4500000476837158,
+        1.350000023841858
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Bridge4.GatePost": {
+      "CFrame": [
+        3.450000047683716,
+        8.914999961853027,
+        -180.0251007080078,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.4117647111415863,
+        0.2705882489681244,
+        0.21568627655506134
+      ],
+      "Class": "Part",
+      "Size": [
+        0.8600000143051147,
+        2.8299999237060547,
+        0.8600000143051147
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Arena2.Fence_Isle_Arena2_Rails": {
+      "CFrame": [
+        -0.0004673003568314016,
+        5.5,
+        -104.99935913085938,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.5215686559677124,
+        0.3294117748737335,
+        0.2235294133424759
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://139381147260061",
+      "Size": [
+        90.79705810546875,
+        1.8000000715255737,
+        44.79820251464844
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Bridge4.GateRail": {
+      "CFrame": [
+        4.474999904632568,
+        10.350000381469727,
+        -181.49102783203125,
+        0.819530725479126,
+        -0.2215806543827057,
+        -0.5284612774848938,
+        0,
+        0.9222142696380615,
+        -0.3866789638996124,
+        0.5730351805686951,
+        0.3168953061103821,
+        0.7557830214500427
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.5215686559677124,
+        0.3294117748737335,
+        0.2235294133424759
+      ],
+      "Class": "Part",
+      "Size": [
+        0.6000000238418579,
+        0.6000000238418579,
+        3.8791983127593994
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Arch_02": {
+      "CFrame": [
+        -20.176799774169922,
+        6.246832370758057,
+        -9.279999732971191,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.729411780834198,
+        0.43921568989753723,
+        0.32156863808631897
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://126761721699468",
+      "Size": [
+        1.436263084411621,
+        1.4644804000854492,
+        1.1200000047683716
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Trophies.VisualsV2.Board_Trophies_Step": {
+      "CFrame": [
+        28,
+        0.8299999833106995,
+        20.850000381469727,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://85628011728678",
+      "Size": [
+        11.300000190734863,
+        0.36000001430511475,
+        2.5999999046325684
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_CornerBand_-3_65": {
+      "CFrame": [
+        -26.5260009765625,
+        3.25,
+        -12.149999618530273,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://137863423376167",
+      "Size": [
+        0.3000001907348633,
+        0.4200000762939453,
+        5.25
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.VisualsV2.Board_Shatters_Display": {
+      "CFrame": [
+        14,
+        6.200000286102295,
+        20.84000015258789,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.14901961386203766,
+        0.21568627655506134,
+        0.29411765933036804
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://114940821564872",
+      "Size": [
+        10.199999809265137,
+        7.800000190734863,
+        0.3799999952316284
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.VisualsV2.Board_Shatters_Shard_0_65": {
+      "CFrame": [
+        13.350000381469727,
+        12.15000057220459,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.6235294342041016,
+        0.5529412031173706,
+        0.7490196228027344
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://105910152821220",
+      "Size": [
+        0.7799999713897705,
+        1.25,
+        0.7799999713897705
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Arena2.Fence_Isle_Arena2_Caps": {
+      "CFrame": [
+        -0.01663208194077015,
+        6.914999961853027,
+        -105.01678466796875,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7254902124404907,
+        0.5411764979362488,
+        0.3607843220233917
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://88680418655313",
+      "Size": [
+        91.07148742675781,
+        0.1700000762939453,
+        45.183349609375
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.VisualsV2.Board_Shatters_Crossbar_2_08": {
+      "CFrame": [
+        14,
+        2.129999876022339,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://128992595664363",
+      "Size": [
+        12.100000381469727,
+        0.44999992847442627,
+        1.0499999523162842
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.VisualsV2.Board_MatchWins_ColumnCap_5_65": {
+      "CFrame": [
+        -19.649999618530273,
+        10.5,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://81502878077250",
+      "Size": [
+        1.1000003814697266,
+        0.39999961853027344,
+        1.350000023841858
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Arena3.Fence_Isle_Arena3_Rails": {
+      "CFrame": [
+        -0.0001544952392578125,
+        7.5,
+        -155.0000762939453,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.5215686559677124,
+        0.3294117748737335,
+        0.2235294133424759
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://109567929057155",
+      "Size": [
+        90.797607421875,
+        1.8000000715255737,
+        44.79962921142578
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.VisualsV2.Board_Shatters_Shard_0": {
+      "CFrame": [
+        14,
+        12.550000190734863,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.6235294342041016,
+        0.5529412031173706,
+        0.7490196228027344
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://106318682778359",
+      "Size": [
+        0.7799999713897705,
+        1.25,
+        0.7799999713897705
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.VisualsV2.Board_Shatters_CrestFoot": {
+      "CFrame": [
+        14,
+        11.699999809265137,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://126457054499644",
+      "Size": [
+        2.299999952316284,
+        0.3600006103515625,
+        1.2000000476837158
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Trophies.Board": {
+      "CFrame": [
+        28,
+        6.199999809265137,
+        20.579999923706055,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 1,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.11764705926179886,
+        0.16470588743686676,
+        0.4313725531101227
+      ],
+      "Class": "Part",
+      "Size": [
+        10,
+        7.699999809265137,
+        0.07999999821186066
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.VisualsV2.Board_Shatters_Header": {
+      "CFrame": [
+        14,
+        11,
+        20.81999969482422,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7843137383460999,
+        0.7372549176216125,
+        0.6117647290229797
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://81968163185742",
+      "Size": [
+        10.100000381469727,
+        1.0499992370605469,
+        0.48000001907348633
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Trophies.VisualsV2.Board_Trophies_Header": {
+      "CFrame": [
+        28,
+        11,
+        20.81999969482422,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7843137383460999,
+        0.7372549176216125,
+        0.6117647290229797
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://87767361378702",
+      "Size": [
+        10.100000381469727,
+        1.0499992370605469,
+        0.48000001907348633
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.VisualsV2.Board_MatchWins_CrownPoint_0": {
+      "CFrame": [
+        -14,
+        12.550000190734863,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.43921568989753723,
+        0.7058823704719543,
+        0.7372549176216125
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://129865727202732",
+      "Size": [
+        0.8600000143051147,
+        0.8999996185302734,
+        0.8600000143051147
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_CoolingTray": {
+      "CFrame": [
+        -22,
+        1.75,
+        -7.650000095367432,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://112089974818103",
+      "Size": [
+        4.900000095367432,
+        0.4200000762939453,
+        3.5999996662139893
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Arena3.Fence_Isle_Arena3_Posts": {
+      "CFrame": [
+        -0.003923418466001749,
+        7.414999961853027,
+        -155.02255249023438,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.4117647111415863,
+        0.2705882489681244,
+        0.21568627655506134
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://124584106369089",
+      "Size": [
+        90.95773315429688,
+        2.8299999237060547,
+        45.01466369628906
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Featured.Fence_Isle_Featured_Rails_GateCut1": {
+      "CFrame": [
+        0.000339508056640625,
+        10.5,
+        -205.99993896484375,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        1,
+        1,
+        1
+      ],
+      "Class": "MeshPart",
+      "MeshId": "",
+      "Size": [
+        70.79801940917969,
+        1.8000001907348633,
+        46.746612548828125
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.HeaderCarrier": {
+      "CFrame": [
+        -14,
+        11,
+        20.399999618530273,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 1,
+      "Material": "Plastic",
+      "CanCollide": false,
+      "Color": [
+        0.6392157077789307,
+        0.6352941393852234,
+        0.6470588445663452
+      ],
+      "Class": "Part",
+      "Size": [
+        9.399999618530273,
+        0.6800000071525574,
+        0.05000000074505806
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.VisualsV2.Board_Shatters_HeaderInset": {
+      "CFrame": [
+        14,
+        11,
+        20.520000457763672,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.14901961386203766,
+        0.21568627655506134,
+        0.29411765933036804
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://90021935243510",
+      "Size": [
+        9.600000381469727,
+        0.7199993133544922,
+        0.1199999749660492
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Featured.GateRail": {
+      "CFrame": [
+        3.0856659412384033,
+        11.100000381469727,
+        -229.00296020507812,
+        -0.004904324654489756,
+        0,
+        -0.9999879598617554,
+        0,
+        1,
+        0,
+        0.9999879598617554,
+        0,
+        -0.004904324654489756
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.5215686559677124,
+        0.3294117748737335,
+        0.2235294133424759
+      ],
+      "Class": "Part",
+      "Size": [
+        0.6000000238418579,
+        0.6000000238418579,
+        4.828726291656494
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_DisplayFrame": {
+      "CFrame": [
+        -16.75,
+        4.300000190734863,
+        -8.75,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://102611406409194",
+      "Size": [
+        2.3999996185302734,
+        2.6999998092651367,
+        0.6999999284744263
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Lobby.Fence_Isle_Lobby_Posts_GateCut1": {
+      "CFrame": [
+        0.04436492919921875,
+        1.4149999618530273,
+        -0.010662082582712173,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        1,
+        1,
+        1
+      ],
+      "Class": "MeshPart",
+      "MeshId": "",
+      "Size": [
+        94.85305786132812,
+        2.8299999237060547,
+        54.97085952758789
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.Board": {
+      "CFrame": [
+        -14,
+        6.199999809265137,
+        20.579999923706055,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 1,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.11764705926179886,
+        0.16470588743686676,
+        0.4313725531101227
+      ],
+      "Class": "Part",
+      "Size": [
+        10,
+        7.699999809265137,
+        0.07999999821186066
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Trophies.HeaderCarrier": {
+      "CFrame": [
+        28,
+        11,
+        20.399999618530273,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 1,
+      "Material": "Plastic",
+      "CanCollide": false,
+      "Color": [
+        0.6392157077789307,
+        0.6352941393852234,
+        0.6470588445663452
+      ],
+      "Class": "Part",
+      "Size": [
+        9.399999618530273,
+        0.6800000071525574,
+        0.05000000074505806
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Bridge4.GateCap": {
+      "CFrame": [
+        3.450000047683716,
+        10.414999961853027,
+        -180.0251007080078,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7254902124404907,
+        0.5411764979362488,
+        0.3607843220233917
+      ],
+      "Class": "Part",
+      "Size": [
+        1.0199999809265137,
+        0.17000000178813934,
+        1.0199999809265137
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.VisualsV2.Board_Shatters_ColumnCap_-5_65": {
+      "CFrame": [
+        19.649999618530273,
+        10.5,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://125075689449384",
+      "Size": [
+        1.1000003814697266,
+        0.39999961853027344,
+        1.350000023841858
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Trophies.VisualsV2.Board_Trophies_BaseCap_-5_65": {
+      "CFrame": [
+        33.650001525878906,
+        1.1999999284744263,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://87859686674260",
+      "Size": [
+        1.1000003814697266,
+        0.4500000476837158,
+        1.350000023841858
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.VisualsV2.Board_Shatters_Column_-5_65": {
+      "CFrame": [
+        19.649999618530273,
+        5.75,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7843137383460999,
+        0.7372549176216125,
+        0.6117647290229797
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://113147052836386",
+      "Size": [
+        0.8999996185302734,
+        9.5,
+        1.149999976158142
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_RevealSeat": {
+      "CFrame": [
+        -22,
+        2.169999837875366,
+        -6.980000019073486,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.43921568989753723,
+        0.7058823704719543,
+        0.7372549176216125
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://137791672729253",
+      "Size": [
+        2.259999990463257,
+        0.17999982833862305,
+        2.260000228881836
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_TrayLip_2_28": {
+      "CFrame": [
+        -19.719999313354492,
+        2.0999999046325684,
+        -7.650000095367432,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://109047889737315",
+      "Size": [
+        0.2199997901916504,
+        0.38000011444091797,
+        3.5
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Side_3_65": {
+      "CFrame": [
+        -18.350000381469727,
+        3.700000047683716,
+        -12.149999618530273,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7843137383460999,
+        0.7372549176216125,
+        0.6117647290229797
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://116978821766523",
+      "Size": [
+        2.0500001907348633,
+        4.949999809265137,
+        5.099999904632568
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Arch_08": {
+      "CFrame": [
+        -24.697160720825195,
+        4.66732120513916,
+        -9.279999732971191,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.729411780834198,
+        0.43921568989753723,
+        0.32156863808631897
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://94129417132491",
+      "Size": [
+        1.2854640483856201,
+        1.0997624397277832,
+        1.1200000047683716
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Trophies.VisualsV2.Board_Trophies_Cup": {
+      "CFrame": [
+        28,
+        12.40999984741211,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.8901960849761963,
+        0.7490196228027344,
+        0.4117647111415863
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://98329663107021",
+      "Size": [
+        2,
+        1.0499992370605469,
+        2
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Arch_00": {
+      "CFrame": [
+        -19.302839279174805,
+        4.66732120513916,
+        -9.279999732971191,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.729411780834198,
+        0.43921568989753723,
+        0.32156863808631897
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://83467656237985",
+      "Size": [
+        1.2854640483856201,
+        1.0997624397277832,
+        1.1200000047683716
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.VisualsV2.Board_Shatters_Step": {
+      "CFrame": [
+        14,
+        0.8299999833106995,
+        20.850000381469727,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://90018344256993",
+      "Size": [
+        11.300000190734863,
+        0.36000001430511475,
+        2.5999999046325684
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.VisualsV2.Board_Shatters_Foot": {
+      "CFrame": [
+        14,
+        0.3500000238418579,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7843137383460999,
+        0.7372549176216125,
+        0.6117647290229797
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://121687802820838",
+      "Size": [
+        12.199999809265137,
+        0.6000000238418579,
+        3.200000047683716
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Shatters.Board": {
+      "CFrame": [
+        14,
+        6.199999809265137,
+        20.579999923706055,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 1,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.11764705926179886,
+        0.16470588743686676,
+        0.4313725531101227
+      ],
+      "Class": "Part",
+      "Size": [
+        10,
+        7.699999809265137,
+        0.07999999821186066
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.BodyCollider": {
+      "CFrame": [
+        -22,
+        3.549999952316284,
+        -12,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 1,
+      "Material": "Plastic",
+      "CanCollide": true,
+      "Color": [
+        0.6392157077789307,
+        0.6352941393852234,
+        0.6470588445663452
+      ],
+      "Class": "Part",
+      "Size": [
+        9.199999809265137,
+        7,
+        6.400000095367432
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Bridge3.GateCap": {
+      "CFrame": [
+        3.450000047683716,
+        7.914999961853027,
+        -130.1497344970703,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7254902124404907,
+        0.5411764979362488,
+        0.3607843220233917
+      ],
+      "Class": "Part",
+      "Size": [
+        1.0199999809265137,
+        0.17000000178813934,
+        1.0199999809265137
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Hearth": {
+      "CFrame": [
+        -22,
+        1.024999976158142,
+        -11.699999809265137,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.729411780834198,
+        0.43921568989753723,
+        0.32156863808631897
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://72681411807727",
+      "Size": [
+        9.399999618530273,
+        0.6499999165534973,
+        6.800000190734863
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Featured.Fence_Isle_Featured_Caps_GateCut1": {
+      "CFrame": [
+        0.0439910888671875,
+        11.914999961853027,
+        -205.99078369140625,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        1,
+        1,
+        1
+      ],
+      "Class": "MeshPart",
+      "MeshId": "",
+      "Size": [
+        71.11568450927734,
+        0.1700000762939453,
+        47.02132034301758
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_RoofBand": {
+      "CFrame": [
+        -22,
+        6.920000076293945,
+        -12.050000190734863,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://124229303842631",
+      "Size": [
+        9.4399995803833,
+        0.3000001907348633,
+        9.440000534057617
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_CoolingSurface": {
+      "CFrame": [
+        -22,
+        2.0199999809265137,
+        -7.550000190734863,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.14901961386203766,
+        0.21568627655506134,
+        0.29411765933036804
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://139287833976780",
+      "Size": [
+        4.300000190734863,
+        0.15999996662139893,
+        3.1500000953674316
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Bridge2.GateRail": {
+      "CFrame": [
+        4.474999904632568,
+        5.599999904632568,
+        -81.6138916015625,
+        0.8554125428199768,
+        -0.1268760710954666,
+        -0.5021670460700989,
+        0,
+        0.9695332050323486,
+        -0.2449595034122467,
+        0.5179471373558044,
+        0.2095414251089096,
+        0.829351007938385
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.5215686559677124,
+        0.3294117748737335,
+        0.2235294133424759
+      ],
+      "Class": "Part",
+      "Size": [
+        0.6000000238418579,
+        0.6000000238418579,
+        4.082313537597656
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.VisualsV2.Board_MatchWins_Step": {
+      "CFrame": [
+        -14,
+        0.8299999833106995,
+        20.850000381469727,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://128726763644403",
+      "Size": [
+        11.300000190734863,
+        0.36000001430511475,
+        2.5999999046325684
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Jamb_-2_75_0": {
+      "CFrame": [
+        -24.75,
+        1.7999999523162842,
+        -9.279999732971191,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.729411780834198,
+        0.43921568989753723,
+        0.32156863808631897
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://77404136434698",
+      "Size": [
+        1.1500000953674316,
+        0.9499999284744263,
+        1.0999999046325684
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Bridge2.GateCap": {
+      "CFrame": [
+        3.450000047683716,
+        5.914999961853027,
+        -79.92105102539062,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7254902124404907,
+        0.5411764979362488,
+        0.3607843220233917
+      ],
+      "Class": "Part",
+      "Size": [
+        1.0199999809265137,
+        0.17000000178813934,
+        1.0199999809265137
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.VisualsV2.Board_MatchWins_CrownPoint_0_6": {
+      "CFrame": [
+        -14.600000381469727,
+        12.100000381469727,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.43921568989753723,
+        0.7058823704719543,
+        0.7372549176216125
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://96730112828166",
+      "Size": [
+        0.85999995470047,
+        0.8999996185302734,
+        0.8600000143051147
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Bridge2.GatePost": {
+      "CFrame": [
+        3.450000047683716,
+        4.414999961853027,
+        -79.92105102539062,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.4117647111415863,
+        0.2705882489681244,
+        0.21568627655506134
+      ],
+      "Class": "Part",
+      "Size": [
+        0.8600000143051147,
+        2.8299999237060547,
+        0.8600000143051147
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Jamb_2_75_1": {
+      "CFrame": [
+        -19.25,
+        2.759999990463257,
+        -9.279999732971191,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.729411780834198,
+        0.43921568989753723,
+        0.32156863808631897
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://76226377146531",
+      "Size": [
+        1.1500000953674316,
+        0.9499998092651367,
+        1.0999999046325684
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.Interaction": {
+      "CFrame": [
+        -22,
+        2.5,
+        -6.800000190734863,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 1,
+      "Material": "Plastic",
+      "CanCollide": false,
+      "Color": [
+        0.6392157077789307,
+        0.6352941393852234,
+        0.6470588445663452
+      ],
+      "Class": "Part",
+      "Size": [
+        4,
+        4,
+        1
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.VisualsV2.Board_MatchWins_CrestFoot": {
+      "CFrame": [
+        -14,
+        11.699999809265137,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7215686440467834,
+        0.4941176474094391,
+        0.3137255012989044
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://130789110614801",
+      "Size": [
+        2.299999952316284,
+        0.3600006103515625,
+        1.2000000476837158
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.VisualsV2.Board_MatchWins_Column_5_65": {
+      "CFrame": [
+        -19.649999618530273,
+        5.75,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7843137383460999,
+        0.7372549176216125,
+        0.6117647290229797
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://84652950773462",
+      "Size": [
+        0.8999996185302734,
+        9.5,
+        1.149999976158142
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_Trophies.VisualsV2.Board_Trophies_Column_5_65": {
+      "CFrame": [
+        22.350000381469727,
+        5.75,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7843137383460999,
+        0.7372549176216125,
+        0.6117647290229797
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://125470792375908",
+      "Size": [
+        0.8999996185302734,
+        9.5,
+        1.149999976158142
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Leaderboard_MatchWins.VisualsV2.Board_MatchWins_Column_-5_65": {
+      "CFrame": [
+        -8.350000381469727,
+        5.75,
+        21,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7843137383460999,
+        0.7372549176216125,
+        0.6117647290229797
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://101900288054627",
+      "Size": [
+        0.8999996185302734,
+        9.5,
+        1.149999976158142
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Lobby.GateCap": {
+      "CFrame": [
+        5.5,
+        2.9149999618530273,
+        -27.09192657470703,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7254902124404907,
+        0.5411764979362488,
+        0.3607843220233917
+      ],
+      "Class": "Part",
+      "Size": [
+        1.0199999809265137,
+        0.17000000178813934,
+        1.0199999809265137
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_Chimney": {
+      "CFrame": [
+        -21.200000762939453,
+        10.15000057220459,
+        -13.050000190734863,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.729411780834198,
+        0.43921568989753723,
+        0.32156863808631897
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://121428118646171",
+      "Size": [
+        2.0999999046325684,
+        3.3500003814697266,
+        2.0999999046325684
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_ChimneyDark": {
+      "CFrame": [
+        -21.200000762939453,
+        12.180000305175781,
+        -13.050000190734863,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.3960784375667572,
+        0.3019607961177826,
+        0.27450981736183167
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://93387835444155",
+      "Size": [
+        1.7599999904632568,
+        0.07999992370605469,
+        1.7599998712539673
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Isle_Arena2.Fence_Isle_Arena2_Posts": {
+      "CFrame": [
+        -0.01663208194077015,
+        5.414999961853027,
+        -105.01678466796875,
+        1,
+        0,
+        1.7484555314695172e-7,
+        0,
+        1,
+        0,
+        -1.7484555314695172e-7,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.4117647111415863,
+        0.2705882489681244,
+        0.21568627655506134
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://106491291858884",
+      "Size": [
+        90.91149139404297,
+        2.8299999237060547,
+        45.023345947265625
+      ]
+    },
+    "Workspace.Lobby.FenceVisualsV2.Fence_Bridge1.GateCap": {
+      "CFrame": [
+        3.450000047683716,
+        3.9149999618530273,
+        -29.99764060974121,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.7254902124404907,
+        0.5411764979362488,
+        0.3607843220233917
+      ],
+      "Class": "Part",
+      "Size": [
+        1.0199999809265137,
+        0.17000000178813934,
+        1.0199999809265137
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_ChamberDark": {
+      "CFrame": [
+        -22,
+        3.25,
+        -11.699999809265137,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "SmoothPlastic",
+      "CanCollide": false,
+      "Color": [
+        0.3960784375667572,
+        0.3019607961177826,
+        0.27450981736183167
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://135493064196656",
+      "Size": [
+        4.300000190734863,
+        3.799999713897705,
+        0.2200000286102295
+      ]
+    },
+    "Workspace.Lobby.GlassClashProps.Kiln.VisualsV2.Kiln_ChamberBackGlow": {
+      "CFrame": [
+        -22,
+        2.950000047683716,
+        -11.520000457763672,
+        -1,
+        0,
+        -8.742277657347586e-8,
+        0,
+        1,
+        0,
+        8.742277657347586e-8,
+        0,
+        -1
+      ],
+      "Transparency": 0,
+      "Material": "Neon",
+      "CanCollide": false,
+      "Color": [
+        1,
+        0.7254902124404907,
+        0.3450980484485626
+      ],
+      "Class": "MeshPart",
+      "MeshId": "rbxassetid://71434216239332",
+      "Size": [
+        3.200000047683716,
+        2.1999998092651367,
+        0.12000000476837158
+      ]
+    }
+  },
+  "Published": false,
+  "GameplayTested": false,
+  "PlaceId": 129420351303019,
+  "Mode": "Edit",
+  "UserApprovedAlignment": true
+}

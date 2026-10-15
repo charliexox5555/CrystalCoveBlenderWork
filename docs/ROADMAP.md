@@ -68,9 +68,10 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 ## F5 — Polish and soft launch (Nov 10–16)
 
-- [x] **B:** original furnace Kiln, three leaderboard frames, five irregular island fence assemblies and four bridge assemblies; saved sources/FBX/previews/manifests and geometry QA in [lobby v2](../assets/blender/map/lobby_v2/README.md); built only, not installed
+- [x] **B/C:** original furnace Kiln, three leaderboard frames and island/bridge fences built, imported and placed; corrected against live grass meshes, fence alignment creator-approved; [lobby v2](../assets/blender/map/lobby_v2/README.md)
 - [x] **B:** generated original HUD / Inventory / Store concepts and exact prompts; Coins/Marbles, two square main buttons, bottom-center Play and grid/right-details layout; [concepts](ui/concepts/lobby_v2/README.md)
-- [ ] **C/U:** after Claude's Studio handover, back up/import lobby v2, preserve prompts/board text/safety collision and verify live placement, all-pad walk and phone readability; concepts still require functional UI integration
+- [x] **C/U:** lobby-v2 import/placement, full lobby/raw-import backups, existing Kiln prompt/leaderboard labels preserved, native-rim alignment and clear center lane verified; [integration report](testing/LOBBY_V2_INTEGRATION.md)
+- [ ] **U:** gameplay/bridge/pad/Kiln/board/phone checks, save place and publish; creator will test. Generated menu concepts still require functional UI integration
 - [x] **C:** Device Emulator layout pass: A06, iPhone and iPad, 39 states, 14 editable scale-only ScreenGuis; final UI artwork belongs to the creator
 - [x] **C:** native two-client PvP + third staggered join, seven moving arenas, dropped snapshots, replay/disconnect and cleanup; [F5 report](testing/F5_MULTIPLAYER_SECURITY.md)
 - [x] **C:** remote validation/rate-limit/security review and double-KO cleanup soak; 71 tests pass

@@ -12,3 +12,6 @@
 
 *.luau text eol=lf
 *.md text eol=lf
+
+# These generated files are byte-hashed in the release import manifests.
+assets/blender/glassies/**/release_v2*/cracks.json text eol=lf

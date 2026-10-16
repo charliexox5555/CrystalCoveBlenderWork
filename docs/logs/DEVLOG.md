@@ -14,6 +14,15 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Codex — Blender heroes and original riding animation
+Done:
+- Creator resumes combat/finisher polish, rejects native-part prototype art and requests Blender/VFX plus unique riding animations. Built four original Blender flyers and five VFX meshes: 32 meshes/11,974 triangles, one FBX bundle, editable source and four renders. Tapered ray wings/separate wing inlays, corrected normals/VFX orientation. FBX round-trip: matching topology, 0.00000535-stud maximum bounds error, no negative volumes. Originals/open Blender scene preserved. Full source/import handoff: assets/blender/round_cosmetics/hero_v2/README.md.
+- Four original surf/float/pilot/glide keyframe loops, modern R15 AnimationConstraint and legacy Motor6D support, PreSimulation evaluation, foot/seat contact solver and anchored bot posing. Capture transforms before stopping Animator tracks; float comparisons use tolerance. 655 pose/loop/restore and 32 streaming checks pass. Creator avatar visibly posed; exit restores Animate/two normal tracks/unanchored root/100 health/Custom camera, zero fixtures.
+- Distinct finisher timing: Nova convergence before flash/rays, staggered bubble ripples, falling confetti/heavier block toss; original texture glints/pressure layered with optional new meshes. 193 finisher/health/budget and 1330 preview framing/cleanup checks pass. Edit-only transient mesh branch validates clones/budgets and is removed; permanent meshes await import. No broad balance/phone/multiplayer rerun; Balance/rules unchanged. Existing warnings remain, no inspected gameplay script errors.
+- Import installer/metadata ready; missing-import preflight safely rejects without changing live art. Rojo connected; Studio Edit/unpublished, unrelated work preserved.
+Required creator step:
+- Import ROUND_HEROES_V2_IMPORT.fbx with 3D Importer, scale 1 and RH2_ names intact. Automatic mesh upload reports unavailable; Play EditableMesh requires a security setting that was left unchanged. New geometry is not live yet. Then Codex installs/colors/hinges models, refreshes lobby displays, validates permanent meshes and saves a native snapshot.
+
 ## 2026-10-16 — Codex — Final overnight follow-up: ride arrival and cleanup
 Done:
 - Focused lifecycle review reproduced a late-arrival gap: a stage attached before its ride models never animated those rides. RideController now watches stage descendants, registers arriving models/animated parts, drops removed parts and releases stage listeners/ride references on removal or destruction. Reattachment is idempotent; server-authored rest poses remain the motion baseline.

@@ -1,0 +1,208 @@
+{
+  "version": 2,
+  "coordinate_contract": "Blender (x,y,z) -> Roblox (x,z,-y); 1 unit=1 stud; deck z=0; VFX face XY",
+  "groups": {
+    "rocket_skiff": [
+      {
+        "file": "rocket_skiff_Hull.json",
+        "name": "Hull",
+        "triangles": 284,
+        "vertices": 144
+      },
+      {
+        "file": "rocket_skiff_Deck.json",
+        "name": "Deck",
+        "triangles": 124,
+        "vertices": 64
+      },
+      {
+        "file": "rocket_skiff_Engines.json",
+        "name": "Engines",
+        "triangles": 312,
+        "vertices": 160
+      },
+      {
+        "file": "rocket_skiff_Nozzles.json",
+        "name": "Nozzles",
+        "triangles": 768,
+        "vertices": 384
+      },
+      {
+        "file": "rocket_skiff_EngineGlow.json",
+        "name": "EngineGlow",
+        "triangles": 768,
+        "vertices": 384
+      },
+      {
+        "file": "rocket_skiff_Exhaust-1.json",
+        "name": "Exhaust-1",
+        "triangles": 92,
+        "vertices": 48
+      },
+      {
+        "file": "rocket_skiff_SweptFins.json",
+        "name": "SweptFins",
+        "triangles": 328,
+        "vertices": 168
+      },
+      {
+        "file": "rocket_skiff_HullInlay.json",
+        "name": "HullInlay",
+        "triangles": 312,
+        "vertices": 160
+      },
+      {
+        "file": "rocket_skiff_Exhaust1.json",
+        "name": "Exhaust1",
+        "triangles": 92,
+        "vertices": 48
+      }
+    ],
+    "skyboard": [
+      {
+        "file": "skyboard_Deck.json",
+        "name": "Deck",
+        "triangles": 332,
+        "vertices": 168
+      },
+      {
+        "file": "skyboard_Grip.json",
+        "name": "Grip",
+        "triangles": 124,
+        "vertices": 64
+      },
+      {
+        "file": "skyboard_SculptedRails.json",
+        "name": "SculptedRails",
+        "triangles": 360,
+        "vertices": 184
+      },
+      {
+        "file": "skyboard_LiftGlow.json",
+        "name": "LiftGlow",
+        "triangles": 312,
+        "vertices": 160
+      },
+      {
+        "file": "skyboard_DeckInlay.json",
+        "name": "DeckInlay",
+        "triangles": 312,
+        "vertices": 160
+      }
+    ],
+    "cloud_cushion": [
+      {
+        "file": "cloud_cushion_SculptedCloud.json",
+        "name": "SculptedCloud",
+        "triangles": 1738,
+        "vertices": 871
+      },
+      {
+        "file": "cloud_cushion_Cushion.json",
+        "name": "Cushion",
+        "triangles": 124,
+        "vertices": 64
+      },
+      {
+        "file": "cloud_cushion_Rainbow0.json",
+        "name": "Rainbow0",
+        "triangles": 372,
+        "vertices": 188
+      },
+      {
+        "file": "cloud_cushion_Rainbow1.json",
+        "name": "Rainbow1",
+        "triangles": 372,
+        "vertices": 188
+      },
+      {
+        "file": "cloud_cushion_Rainbow2.json",
+        "name": "Rainbow2",
+        "triangles": 372,
+        "vertices": 188
+      }
+    ],
+    "prism_ray": [
+      {
+        "file": "prism_ray_Body.json",
+        "name": "Body",
+        "triangles": 236,
+        "vertices": 120
+      },
+      {
+        "file": "prism_ray_Saddle.json",
+        "name": "Saddle",
+        "triangles": 92,
+        "vertices": 48
+      },
+      {
+        "file": "prism_ray_WingL.json",
+        "name": "WingL",
+        "triangles": 320,
+        "vertices": 162
+      },
+      {
+        "file": "prism_ray_FriendlyEyes.json",
+        "name": "FriendlyEyes",
+        "triangles": 448,
+        "vertices": 228
+      },
+      {
+        "file": "prism_ray_WingInlayL.json",
+        "name": "WingInlayL",
+        "triangles": 372,
+        "vertices": 188
+      },
+      {
+        "file": "prism_ray_WingR.json",
+        "name": "WingR",
+        "triangles": 320,
+        "vertices": 162
+      },
+      {
+        "file": "prism_ray_Tail.json",
+        "name": "Tail",
+        "triangles": 188,
+        "vertices": 96
+      },
+      {
+        "file": "prism_ray_WingInlayR.json",
+        "name": "WingInlayR",
+        "triangles": 372,
+        "vertices": 188
+      }
+    ],
+    "vfx": [
+      {
+        "file": "vfx_ShockCrown.json",
+        "name": "ShockCrown",
+        "triangles": 384,
+        "vertices": 192
+      },
+      {
+        "file": "vfx_BlastBloom.json",
+        "name": "BlastBloom",
+        "triangles": 1064,
+        "vertices": 548
+      },
+      {
+        "file": "vfx_NovaStar.json",
+        "name": "NovaStar",
+        "triangles": 276,
+        "vertices": 140
+      },
+      {
+        "file": "vfx_CrystalShard.json",
+        "name": "CrystalShard",
+        "triangles": 16,
+        "vertices": 10
+      },
+      {
+        "file": "vfx_ConfettiCurl.json",
+        "name": "ConfettiCurl",
+        "triangles": 388,
+        "vertices": 196
+      }
+    ]
+  }
+}

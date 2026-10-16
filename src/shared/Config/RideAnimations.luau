@@ -1,0 +1,67 @@
+-- Original authored poses, in degrees. Presentation only; no uploaded animation dependency.
+local A = {
+	skyboard = {
+		Seconds = 2.4,
+		Pose = {
+			Spine = { 0, -12, -5 },
+			LeftArm = { 12, -10, -45 },
+			RightArm = { 20, 10, 48 },
+			LeftHip = { 18, -12, 0 },
+			RightHip = { 24, 12, 0 },
+			LeftKnee = { -36, 0, 0 },
+			RightKnee = { -48, 0, 0 },
+			LeftAnkle = { 18, 0, 0 },
+			RightAnkle = { 24, 0, 0 },
+		},
+		Keys = { { 0, 0, 0, 0 }, { 0.25, 3, -4, -3 }, { 0.5, 0, 0, 0 }, { 0.75, -2, 4, 3 }, { 1, 0, 0, 0 } },
+	},
+	cloud_cushion = {
+		Seconds = 3.2,
+		Seated = true,
+		Pose = {
+			Spine = { -5, 0, 0 },
+			LeftArm = { 8, 0, -18 },
+			RightArm = { 8, 0, 18 },
+			LeftHip = { 85, -10, 0 },
+			RightHip = { 85, 10, 0 },
+			LeftKnee = { -80, 0, 0 },
+			RightKnee = { -80, 0, 0 },
+			LeftElbow = { 18, 0, 0 },
+			RightElbow = { 18, 0, 0 },
+		},
+		Keys = { { 0, 0, 0, 0 }, { 0.25, 1, 2, 2 }, { 0.5, 0, 0, 0 }, { 0.75, -1, -2, -2 }, { 1, 0, 0, 0 } },
+	},
+	rocket_skiff = {
+		Seconds = 1.8,
+		Pose = {
+			Spine = { -12, 0, 0 },
+			LeftArm = { 48, -8, -14 },
+			RightArm = { 48, 8, 14 },
+			LeftElbow = { 28, 0, 0 },
+			RightElbow = { 28, 0, 0 },
+			LeftHip = { 16, 0, 0 },
+			RightHip = { 22, 0, 0 },
+			LeftKnee = { -32, 0, 0 },
+			RightKnee = { -44, 0, 0 },
+			LeftAnkle = { 16, 0, 0 },
+			RightAnkle = { 22, 0, 0 },
+		},
+		Keys = { { 0, 0, 0, 0 }, { 0.25, 2, 2, -2 }, { 0.5, 0, 0, 0 }, { 0.75, -2, -2, 2 }, { 1, 0, 0, 0 } },
+	},
+	prism_ray = {
+		Seconds = 2.8,
+		Pose = {
+			Spine = { -7, 0, 0 },
+			LeftArm = { 26, -8, -60 },
+			RightArm = { 26, 8, 60 },
+			LeftHip = { 26, -8, 0 },
+			RightHip = { 26, 8, 0 },
+			LeftKnee = { -52, 0, 0 },
+			RightKnee = { -52, 0, 0 },
+			LeftAnkle = { 26, 0, 0 },
+			RightAnkle = { 26, 0, 0 },
+		},
+		Keys = { { 0, 0, 0, 0 }, { 0.25, 3, 0, -5 }, { 0.5, 0, 0, 0 }, { 0.75, -3, 0, 5 }, { 1, 0, 0, 0 } },
+	},
+}
+return A

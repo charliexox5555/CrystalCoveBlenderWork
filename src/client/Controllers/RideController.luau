@@ -2,6 +2,7 @@
 local RunService = game:GetService("RunService")
 local T = require(game.ReplicatedStorage.Shared.Config.Balance).CosmeticPresentation
 local Controller = {}
+local RidePose = require(script.Parent.Parent.Presentation.RidePose)
 function Controller:Init()
 	self.Rides, self.Connections, self.Stages = {}, {}, {}
 end
@@ -12,6 +13,9 @@ function Controller:Detach(folder)
 	self.Stages[folder] = nil
 	for ride, entry in self.Rides do
 		if entry.Stage == folder then
+			if entry.Pose then
+				entry.Pose:Destroy()
+			end
 			self.Rides[ride] = nil
 		end
 	end
@@ -69,6 +73,9 @@ function Controller:Step(time)
 	local camera = workspace.CurrentCamera
 	for model, entry in self.Rides do
 		if not model:IsDescendantOf(workspace) then
+			if entry.Pose then
+				entry.Pose:Destroy()
+			end
 			self.Rides[model] = nil
 			continue
 		end
@@ -82,7 +89,20 @@ function Controller:Step(time)
 		local character = rider and rider.Value
 		local root = character and character:FindFirstChild("HumanoidRootPart")
 		if root and root.Anchored then
-			character:PivotTo(entry.Base * motion * entry.RootLocal)
+			if entry.Character ~= character then
+				if entry.Pose then
+					entry.Pose:Destroy()
+				end
+				entry.Character, entry.Pose = character, RidePose.new(character, model:GetAttribute("RideId"))
+			end
+			local height = entry.Pose.Height
+			local localPose = entry.RootLocal
+			if height then
+				localPose = CFrame.new(0, height, 0) * entry.RootLocal.Rotation
+			end
+			local rootPose = entry.Base * motion * localPose
+			character:PivotTo(rootPose)
+			entry.Pose:PlaceAnchored(rootPose)
 		end
 		for part, rest in entry.Parts do
 			if not part:IsDescendantOf(model) then
@@ -90,10 +110,13 @@ function Controller:Step(time)
 				continue
 			end
 			if part:GetAttribute("RideMotion") == "Wing" then
+				local pivot = part:GetAttribute("WingPivot") or Vector3.zero
 				part.CFrame = entry.Base
 					* motion
 					* rest.Pose
+					* CFrame.new(pivot)
 					* CFrame.Angles(0, 0, wave * T.RideWingAngle * part:GetAttribute("WingSide"))
+					* CFrame.new(-pivot)
 			else
 				part.Size = rest.Size * Vector3.new(1, 1, 0.8 + math.sin(time * T.RideExhaustSpeed) * 0.2)
 			end

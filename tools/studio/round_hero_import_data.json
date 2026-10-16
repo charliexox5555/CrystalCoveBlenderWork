@@ -1,0 +1,576 @@
+[
+  {
+    "group": "rocket_skiff",
+    "name": "Hull",
+    "import_name": "RH2_rocket_skiff_Hull",
+    "color": "#EF8268",
+    "material": "SmoothPlastic",
+    "center": [
+      0.0,
+      -0.485,
+      -0.34999999999999987
+    ],
+    "size": [
+      3.4,
+      1.03,
+      5.9
+    ]
+  },
+  {
+    "group": "rocket_skiff",
+    "name": "Deck",
+    "import_name": "RH2_rocket_skiff_Deck",
+    "color": "#29364E",
+    "material": "SmoothPlastic",
+    "center": [
+      0.0,
+      0.042499999999999996,
+      -0.07499999999999996
+    ],
+    "size": [
+      2.1,
+      0.135,
+      4.65
+    ]
+  },
+  {
+    "group": "rocket_skiff",
+    "name": "Engines",
+    "import_name": "RH2_rocket_skiff_Engines",
+    "color": "#FFE39A",
+    "material": "SmoothPlastic",
+    "center": [
+      0.0,
+      -0.48,
+      0.30000000000000004
+    ],
+    "size": [
+      5.06,
+      1.1,
+      4.6
+    ]
+  },
+  {
+    "group": "rocket_skiff",
+    "name": "Nozzles",
+    "import_name": "RH2_rocket_skiff_Nozzles",
+    "color": "#29364E",
+    "material": "SmoothPlastic",
+    "center": [
+      0.0,
+      -0.48000000000000004,
+      2.6500000000000004
+    ],
+    "size": [
+      4.77,
+      0.87,
+      0.18999999999999995
+    ]
+  },
+  {
+    "group": "rocket_skiff",
+    "name": "EngineGlow",
+    "import_name": "RH2_rocket_skiff_EngineGlow",
+    "color": "#83F0ED",
+    "material": "Neon",
+    "center": [
+      0.0,
+      -0.48,
+      2.73
+    ],
+    "size": [
+      4.59,
+      0.69,
+      0.1299999999999999
+    ]
+  },
+  {
+    "group": "rocket_skiff",
+    "name": "Exhaust-1",
+    "import_name": "RH2_rocket_skiff_Exhaust-1",
+    "color": "#83F0ED",
+    "material": "Neon",
+    "center": [
+      -1.95,
+      -0.48,
+      3.2249999999999996
+    ],
+    "size": [
+      0.56,
+      0.56,
+      0.8500000000000001
+    ],
+    "ride_motion": "Flame"
+  },
+  {
+    "group": "rocket_skiff",
+    "name": "SweptFins",
+    "import_name": "RH2_rocket_skiff_SweptFins",
+    "color": "#EF8268",
+    "material": "SmoothPlastic",
+    "center": [
+      -4.500000000007276e-05,
+      0.3762,
+      1.8317350000000001
+    ],
+    "size": [
+      5.85009,
+      0.93086,
+      1.36133
+    ]
+  },
+  {
+    "group": "rocket_skiff",
+    "name": "HullInlay",
+    "import_name": "RH2_rocket_skiff_HullInlay",
+    "color": "#FFE39A",
+    "material": "SmoothPlastic",
+    "center": [
+      0.0,
+      0.05258,
+      -0.17761000000000005
+    ],
+    "size": [
+      2.8193,
+      0.06484000000000001,
+      4.87976
+    ]
+  },
+  {
+    "group": "rocket_skiff",
+    "name": "Exhaust1",
+    "import_name": "RH2_rocket_skiff_Exhaust1",
+    "color": "#83F0ED",
+    "material": "Neon",
+    "center": [
+      1.95,
+      -0.48,
+      3.2249999999999996
+    ],
+    "size": [
+      0.56,
+      0.56,
+      0.8500000000000001
+    ],
+    "ride_motion": "Flame"
+  },
+  {
+    "group": "skyboard",
+    "name": "Deck",
+    "import_name": "RH2_skyboard_Deck",
+    "color": "#61D4DF",
+    "material": "SmoothPlastic",
+    "center": [
+      0.0,
+      0.08999999999999997,
+      -0.050000000000000044
+    ],
+    "size": [
+      3.3,
+      0.98,
+      6.9
+    ]
+  },
+  {
+    "group": "skyboard",
+    "name": "Grip",
+    "import_name": "RH2_skyboard_Grip",
+    "color": "#29364E",
+    "material": "SmoothPlastic",
+    "center": [
+      0.0,
+      0.0475,
+      -0.09999999999999998
+    ],
+    "size": [
+      2.0,
+      0.125,
+      3.8
+    ]
+  },
+  {
+    "group": "skyboard",
+    "name": "SculptedRails",
+    "import_name": "RH2_skyboard_SculptedRails",
+    "color": "#FFE39A",
+    "material": "SmoothPlastic",
+    "center": [
+      0.0,
+      -0.10440500000000003,
+      -0.05139500000000008
+    ],
+    "size": [
+      3.62082,
+      0.89119,
+      6.1927900000000005
+    ]
+  },
+  {
+    "group": "skyboard",
+    "name": "LiftGlow",
+    "import_name": "RH2_skyboard_LiftGlow",
+    "color": "#83F0ED",
+    "material": "Neon",
+    "center": [
+      0.0,
+      -0.62452,
+      0.2540300000000001
+    ],
+    "size": [
+      3.40026,
+      0.25096,
+      3.5084
+    ]
+  },
+  {
+    "group": "skyboard",
+    "name": "DeckInlay",
+    "import_name": "RH2_skyboard_DeckInlay",
+    "color": "#FFE39A",
+    "material": "SmoothPlastic",
+    "center": [
+      0.0,
+      0.186305,
+      -0.024564999999999948
+    ],
+    "size": [
+      0.90022,
+      0.27261,
+      5.35227
+    ]
+  },
+  {
+    "group": "cloud_cushion",
+    "name": "SculptedCloud",
+    "import_name": "RH2_cloud_cushion_SculptedCloud",
+    "color": "#E2ECFF",
+    "material": "SmoothPlastic",
+    "center": [
+      0.040915000000000035,
+      -0.5569850000000001,
+      -0.00015500000000012726
+    ],
+    "size": [
+      4.73639,
+      1.40145,
+      4.772349999999999
+    ]
+  },
+  {
+    "group": "cloud_cushion",
+    "name": "Cushion",
+    "import_name": "RH2_cloud_cushion_Cushion",
+    "color": "#B8A4F4",
+    "material": "SmoothPlastic",
+    "center": [
+      0.0,
+      0.07500000000000001,
+      -0.050000000000000044
+    ],
+    "size": [
+      2.2,
+      0.13,
+      2.1
+    ]
+  },
+  {
+    "group": "cloud_cushion",
+    "name": "Rainbow0",
+    "import_name": "RH2_cloud_cushion_Rainbow0",
+    "color": "#F2B3D9",
+    "material": "SmoothPlastic",
+    "center": [
+      -0.311825,
+      -0.82901,
+      3.0
+    ],
+    "size": [
+      0.55375,
+      0.34197999999999995,
+      2.4623000000000004
+    ]
+  },
+  {
+    "group": "cloud_cushion",
+    "name": "Rainbow1",
+    "import_name": "RH2_cloud_cushion_Rainbow1",
+    "color": "#FFE29D",
+    "material": "SmoothPlastic",
+    "center": [
+      0.118175,
+      -0.82901,
+      3.0
+    ],
+    "size": [
+      0.55375,
+      0.34197999999999995,
+      2.4623000000000004
+    ]
+  },
+  {
+    "group": "cloud_cushion",
+    "name": "Rainbow2",
+    "import_name": "RH2_cloud_cushion_Rainbow2",
+    "color": "#83F0ED",
+    "material": "Neon",
+    "center": [
+      0.548175,
+      -0.82901,
+      3.0
+    ],
+    "size": [
+      0.55375,
+      0.34197999999999995,
+      2.4623000000000004
+    ]
+  },
+  {
+    "group": "prism_ray",
+    "name": "Body",
+    "import_name": "RH2_prism_ray_Body",
+    "color": "#B8A4F4",
+    "material": "SmoothPlastic",
+    "center": [
+      0.0,
+      -0.39,
+      0.02499999999999991
+    ],
+    "size": [
+      2.8,
+      0.8200000000000001,
+      4.55
+    ]
+  },
+  {
+    "group": "prism_ray",
+    "name": "Saddle",
+    "import_name": "RH2_prism_ray_Saddle",
+    "color": "#FFE39A",
+    "material": "SmoothPlastic",
+    "center": [
+      0.0,
+      0.05,
+      0.0
+    ],
+    "size": [
+      1.8,
+      0.12,
+      2.0
+    ]
+  },
+  {
+    "group": "prism_ray",
+    "name": "WingL",
+    "import_name": "RH2_prism_ray_WingL",
+    "color": "#B8A4F4",
+    "material": "SmoothPlastic",
+    "center": [
+      -2.43486,
+      -0.17892499999999997,
+      0.3999999999999999
+    ],
+    "size": [
+      3.37984,
+      1.04215,
+      3.8
+    ],
+    "ride_motion": "Wing",
+    "wing_side": -1,
+    "wing_pivot": [
+      -0.8,
+      0.0,
+      -0.35
+    ]
+  },
+  {
+    "group": "prism_ray",
+    "name": "FriendlyEyes",
+    "import_name": "RH2_prism_ray_FriendlyEyes",
+    "color": "#29364E",
+    "material": "SmoothPlastic",
+    "center": [
+      0.0,
+      -0.020000000000000004,
+      -1.85
+    ],
+    "size": [
+      1.36,
+      0.24000000000000002,
+      0.3800000000000001
+    ]
+  },
+  {
+    "group": "prism_ray",
+    "name": "WingInlayL",
+    "import_name": "RH2_prism_ray_WingInlayL",
+    "color": "#83F0ED",
+    "material": "Neon",
+    "center": [
+      -2.25,
+      0.122865,
+      -0.04999999999999999
+    ],
+    "size": [
+      2.75202,
+      0.52427,
+      1.57796
+    ],
+    "ride_motion": "Wing",
+    "wing_side": -1,
+    "wing_pivot": [
+      -0.8,
+      0.0,
+      -0.35
+    ]
+  },
+  {
+    "group": "prism_ray",
+    "name": "WingR",
+    "import_name": "RH2_prism_ray_WingR",
+    "color": "#B8A4F4",
+    "material": "SmoothPlastic",
+    "center": [
+      2.43486,
+      -0.17892499999999997,
+      0.3999999999999999
+    ],
+    "size": [
+      3.37984,
+      1.04215,
+      3.8
+    ],
+    "ride_motion": "Wing",
+    "wing_side": 1,
+    "wing_pivot": [
+      0.8,
+      0.0,
+      -0.35
+    ]
+  },
+  {
+    "group": "prism_ray",
+    "name": "Tail",
+    "import_name": "RH2_prism_ray_Tail",
+    "color": "#83F0ED",
+    "material": "Neon",
+    "center": [
+      0.04046499999999997,
+      0.09962499999999999,
+      3.150295
+    ],
+    "size": [
+      0.95831,
+      0.7876700000000001,
+      2.83193
+    ]
+  },
+  {
+    "group": "prism_ray",
+    "name": "WingInlayR",
+    "import_name": "RH2_prism_ray_WingInlayR",
+    "color": "#83F0ED",
+    "material": "Neon",
+    "center": [
+      2.25,
+      0.122865,
+      -0.04999999999999999
+    ],
+    "size": [
+      2.75202,
+      0.52427,
+      1.57796
+    ],
+    "ride_motion": "Wing",
+    "wing_side": 1,
+    "wing_pivot": [
+      0.8,
+      0.0,
+      -0.35
+    ]
+  },
+  {
+    "group": "vfx",
+    "name": "ShockCrown",
+    "import_name": "RH2_vfx_ShockCrown",
+    "color": "#83F0ED",
+    "material": "Neon",
+    "center": [
+      0.0,
+      0.0,
+      0.09
+    ],
+    "size": [
+      2.14152,
+      2.14152,
+      0.24
+    ]
+  },
+  {
+    "group": "vfx",
+    "name": "BlastBloom",
+    "import_name": "RH2_vfx_BlastBloom",
+    "color": "#EF8268",
+    "material": "SmoothPlastic",
+    "center": [
+      0.02723500000000001,
+      0.0,
+      0.0
+    ],
+    "size": [
+      2.2455299999999996,
+      2.37242,
+      1.6
+    ]
+  },
+  {
+    "group": "vfx",
+    "name": "NovaStar",
+    "import_name": "RH2_vfx_NovaStar",
+    "color": "#FFE29D",
+    "material": "SmoothPlastic",
+    "center": [
+      0.08279999999999998,
+      0.0,
+      0.0
+    ],
+    "size": [
+      1.56854,
+      1.64926,
+      0.24
+    ]
+  },
+  {
+    "group": "vfx",
+    "name": "CrystalShard",
+    "import_name": "RH2_vfx_CrystalShard",
+    "color": "#83F0ED",
+    "material": "Neon",
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "size": [
+      0.56,
+      2.0,
+      0.36
+    ]
+  },
+  {
+    "group": "vfx",
+    "name": "ConfettiCurl",
+    "import_name": "RH2_vfx_ConfettiCurl",
+    "color": "#F2B3D9",
+    "material": "SmoothPlastic",
+    "center": [
+      0.16358499999999998,
+      -0.01337499999999997,
+      0.02749499999999999
+    ],
+    "size": [
+      0.52283,
+      1.1602299999999999,
+      0.45499
+    ]
+  }
+]

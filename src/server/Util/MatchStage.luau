@@ -41,6 +41,22 @@ local function bot(parent, name, pose, side)
 	local human = Instance.new("Humanoid")
 	human.DisplayDistanceType, human.Parent = Enum.HumanoidDisplayDistanceType.None, model
 	model.PrimaryPart = model.HumanoidRootPart
+	-- Anchored presentation rig; client keyframes solve these joints without physics.
+	for _, spec in
+		{
+			{ "RootJoint", "HumanoidRootPart", "Torso", Vector3.zero, Vector3.zero },
+			{ "Neck", "Torso", "Head", Vector3.new(0, 1, 0), Vector3.new(0, -0.5, 0) },
+			{ "Left Shoulder", "Torso", "Left Arm", Vector3.new(-1, 0.5, 0), Vector3.new(0.5, 0.5, 0) },
+			{ "Right Shoulder", "Torso", "Right Arm", Vector3.new(1, 0.5, 0), Vector3.new(-0.5, 0.5, 0) },
+			{ "Left Hip", "Torso", "Left Leg", Vector3.new(-0.5, -1, 0), Vector3.new(0, 1, 0) },
+			{ "Right Hip", "Torso", "Right Leg", Vector3.new(0.5, -1, 0), Vector3.new(0, 1, 0) },
+		}
+	do
+		local joint = Instance.new("Motor6D")
+		joint.Name, joint.Part0, joint.Part1 = spec[1], model[spec[2]], model[spec[3]]
+		joint.C0, joint.C1 = CFrame.new(spec[4]), CFrame.new(spec[5])
+		joint.Parent = joint.Part0
+	end
 	model.Parent = parent
 	return model
 end

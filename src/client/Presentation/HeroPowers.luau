@@ -129,6 +129,9 @@ function Hero.start(self, cast, e, color)
 		cast.ClockSize = cast.ClockRing.Size
 		cast.ClockRelease = e.Type == "CastRelease"
 	elseif e.Type == "SignatureContact" and f.Id == "pop" then
+		if f.Skin == "hollowlight" then
+			require(script.Parent.HollowlightFX).pressure(cast.Root, cast.Origin)
+		end
 		f.PopAt, f.PopCapUntil = e.Time, e.Time + VFX.HeroRecoilSeconds
 		cast.Caps = {}
 		for p in f.DetailStates do

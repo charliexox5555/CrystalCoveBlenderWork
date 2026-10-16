@@ -49,6 +49,9 @@ local function wave(root, name, origin, basis, color, radius, seconds, delay)
 	return ring
 end
 function FX.emit(parent, id, origin, lowDetail, orientation)
+	if id == "lantern_eclipse" then
+		return require(script.Parent.HollowlightFX).emit(parent, origin, lowDetail, orientation)
+	end
 	local def = C.ByCategory.Finishers[id] or C.Finishers[1]
 	id = def.Id
 	local root = Instance.new("Folder")

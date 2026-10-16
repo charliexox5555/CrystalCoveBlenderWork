@@ -93,7 +93,8 @@ function Controller:Step(time)
 				if entry.Pose then
 					entry.Pose:Destroy()
 				end
-				entry.Character, entry.Pose = character, RidePose.new(character, model:GetAttribute("RideId"))
+				entry.Character, entry.Pose =
+					character, RidePose.new(character, model:GetAttribute("PoseId") or model:GetAttribute("RideId"))
 			end
 			local height = entry.Pose.Height
 			local localPose = entry.RootLocal

@@ -65,6 +65,11 @@ function Scene.new(data, maxima, shatter)
 			then def.Asset
 			else if def.Type == "Heavy" then "jam" elseif def.Type == "Sharp" then "prism" else "pop"
 		local source = library[renderId]
+		local seasonal = RS.Assets:FindFirstChild("Seasonal")
+		local hollowlight = seasonal and seasonal:FindFirstChild("Hollowlight")
+		if setup.Id == "pop" and setup.Skin == "hollowlight" and hollowlight then
+			source = hollowlight.pop_hollowlight
+		end
 		local model = Instance.new("Model")
 		model.Name = setup.Id
 		model.WorldPivot = CFrame.identity
@@ -125,6 +130,7 @@ function Scene.new(data, maxima, shatter)
 		trail.Transparency = NumberSequence.new(0.5, 1)
 		trail.Parent = body
 		self.Fighters[side] = {
+			Skin = setup.Skin,
 			ReleaseArt = data.ReleasePrototype or source:GetAttribute("ReleaseVersion") == 2,
 			CrackStage = 0,
 			Id = setup.Id,

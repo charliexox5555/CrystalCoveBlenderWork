@@ -14,6 +14,15 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Codex — Hollowlight installation and animated presentation
+Done:
+- Creator confirms import. Verified Rojo connected to GlassClash; installed all 68 permanent meshes from checked-in manifest, corrected 100× import scale/baked facing, fitted pumpkin to Pop width and normalized skiff deck/nose. Ten wing/vein/rim pieces share hinges; PoseId supports original glider animation. Raw import archived intact under ServerStorage.HollowlightBeforeV2; IDs recorded. Seasonal library remains outside ordinary crates/catalog, sale disabled, fixed 24 roster and base Pop combat definition preserved.
+- Added HollowlightFX: coherent ghost/face/tail convergence, rotating spirals, expanding rings, recipient-clearing lantern fade, four one-shot native particle layers and reduced-detail branch; cancellation disconnects listener. FinisherFX dispatch and optional Pop setup.Skin appearance/confirmed pressure accent support. Persisted skin/equip/store/server serialization remain pending; no user profiles/grants modified.
+- 257 focused native checks pass; all 68 permanent meshes preload, same Pop definition, pivot/deck/facing, ghost coherence/phase/fade, seasonal wing motion, foot contact/default-animation restoration, expiry/cancel cleanup and real avatar 100 health. Initial wing test was outside existing distance culling; fixture moved near camera. Reviewed installed art in a temporary sky fixture; removed fixtures and returned Edit. No map/lighting edits, publication or device/settings changes; scheduling stays paused.
+- Saved places/Hollowlight_v2.rbxm (273265 bytes; SHA256 e84e6525e2d1994da2d2af88b8a4bc636a7cd4885f9c799a26ddd0e5908c581d), script-free round-trip 157 descendants. HTTP-disabled transfer refused; left settings unchanged and transferred bounded serialization chunks instead. Recovery/export/import guide updated; 111 Lune tests and format/diff checks pass, unrelated work preserved.
+Next:
+- Seasonal ownership/equip UI and server match data, then creator normal-round/phone review and configured bundle storefront/receipts. Assets and animation support are installed; normal inventory selection is not enabled yet. Daily shop remains queued; no balance/rule changes or simulator rerun required.
+
 ## 2026-10-16 — Codex — Hollowlight refinement ready for import
 Done:
 - Replaced the pumpkin's floating tube mouth with a filled surface-fitting crescent grin, two small teeth and dark carved rim; reduced face emission, narrowed body/matching shards and thickened leaves. Skiff gains a flat deck inlay/tapered exhaust; finisher uses the complete refined pumpkin with combined ghost faces and tapered tails. Original v1 sources, intermediate mesh data and creator's active Blender scene/filepath preserved.

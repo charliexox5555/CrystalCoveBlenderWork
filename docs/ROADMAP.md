@@ -74,6 +74,8 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 ## F5 — Polish and soft launch (Nov 10–16)
 
+- [x] **C:** final bounded overnight follow-up: late-arriving ride models/animated parts now register; stage removal/rearrival clears listeners/references. 32 focused native lifecycle checks pass; live forced next-round motion and avatar restoration verified. Normal device/feel review remains creator work.
+
 - [x] **C:** overnight follow-up: fit animated finisher previews to both axes instead of clipping them with icon framing; resize/replay/selection/close cleanup verified in a focused five-effect native fixture. Authored layout/native art and combat unchanged.
 
 - [x] **C:** overnight lobby composition/gardens/wayfinding/glare pass; four functional match rides, five distinct cosmetic finishers and free earned/equipped Inventory/Shop catalogs. Profile ownership/rate guards, frozen match equipment and avatar restoration. 106 logic, 301 cosmetic / 179 finish checks, live round and mock save/reload pass; [report/recovery](testing/overnight/README.md). Creator feel/milestone/device review remains.

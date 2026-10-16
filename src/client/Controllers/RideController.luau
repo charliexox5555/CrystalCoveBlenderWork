@@ -3,34 +3,72 @@ local RunService = game:GetService("RunService")
 local T = require(game.ReplicatedStorage.Shared.Config.Balance).CosmeticPresentation
 local Controller = {}
 function Controller:Init()
-	self.Rides, self.Connections = {}, {}
+	self.Rides, self.Connections, self.Stages = {}, {}, {}
+end
+function Controller:Detach(folder)
+	for _, connection in self.Stages[folder] or {} do
+		connection:Disconnect()
+	end
+	self.Stages[folder] = nil
+	for ride, entry in self.Rides do
+		if entry.Stage == folder then
+			self.Rides[ride] = nil
+		end
+	end
 end
 function Controller:Attach(folder)
-	if not folder.Name:match("^MatchStage_") then
+	if not folder.Name:match("^MatchStage_") or not folder:IsDescendantOf(workspace) then
 		return
 	end
+	if not self.Stages[folder] then
+		-- Streaming may deliver the stage before its rides, or a ride before all its parts.
+		self.Stages[folder] = {
+			folder.DescendantAdded:Connect(function()
+				task.defer(function()
+					self:Attach(folder)
+				end)
+			end),
+			folder.AncestryChanged:Connect(function()
+				if not folder:IsDescendantOf(workspace) then
+					self:Detach(folder)
+				end
+			end),
+			folder.Destroying:Connect(function()
+				self:Detach(folder)
+			end),
+		}
+	end
 	for _, ride in folder:GetChildren() do
-		if ride:IsA("Model") and ride:GetAttribute("RideId") and not self.Rides[ride] then
-			local entry = {
+		if not ride:IsA("Model") or not ride:GetAttribute("RideId") then
+			continue
+		end
+		local entry = self.Rides[ride]
+		if not entry then
+			local base, rootPose = ride:GetAttribute("BasePose"), ride:GetAttribute("RootPose")
+			if typeof(base) ~= "CFrame" or typeof(rootPose) ~= "CFrame" then
+				continue
+			end
+			entry = {
 				Model = ride,
-				Base = ride:GetAttribute("BasePose"),
-				RootPose = ride:GetAttribute("RootPose"),
+				Stage = folder,
+				Base = base,
+				RootPose = rootPose,
 				Parts = {},
 			}
 			entry.RootLocal = entry.Base:ToObjectSpace(entry.RootPose)
-			for _, p in ride:GetDescendants() do
-				if p:IsA("BasePart") and p:GetAttribute("RideMotion") then
-					entry.Parts[p] = { Pose = entry.Base:ToObjectSpace(p.CFrame), Size = p.Size }
-				end
-			end
 			self.Rides[ride] = entry
+		end
+		for _, p in ride:GetDescendants() do
+			if p:IsA("BasePart") and p:GetAttribute("RideMotion") and not entry.Parts[p] then
+				entry.Parts[p] = { Pose = entry.Base:ToObjectSpace(p.CFrame), Size = p.Size }
+			end
 		end
 	end
 end
 function Controller:Step(time)
 	local camera = workspace.CurrentCamera
 	for model, entry in self.Rides do
-		if not model.Parent then
+		if not model:IsDescendantOf(workspace) then
 			self.Rides[model] = nil
 			continue
 		end
@@ -47,6 +85,10 @@ function Controller:Step(time)
 			character:PivotTo(entry.Base * motion * entry.RootLocal)
 		end
 		for part, rest in entry.Parts do
+			if not part:IsDescendantOf(model) then
+				entry.Parts[part] = nil
+				continue
+			end
 			if part:GetAttribute("RideMotion") == "Wing" then
 				part.CFrame = entry.Base
 					* motion

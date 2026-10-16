@@ -75,3 +75,9 @@ game.ServerStorage.CosmeticDev:Invoke("Equip", p, "Finishers", "brick_boom")
 ```
 
 The helper grants only these cosmetics in Studio mock mode, without fabricated stats/currency or production inventory grants.
+
+## Final bounded follow-up: ride lifecycle
+
+`tools/studio/verify_ride_streaming.luau` runs in Play/Client: 32 checks across all four rides cover models arriving after the stage, late animated wings, removed parts, stage removal/rearrival, idempotent registration, disconnected listeners and deferred cleanup. The original controller failed the delayed-model reproduction. Client now watches stage descendants and owns/disconnects its stage listeners; stored stage references allow cleanup even after descendants detach. No native art, gameplay rules or Balance changes.
+
+A live player/bot stage animated before and after a forced `SelectionTest/NextRound` transition, retaining the same stage. This is a synthetic Rolling transition, not a completed combat/reward test. Forfeit restored the original avatar position (0-stud error), anchor/AutoRotate and 100 health. Zero runtime stage/fight roots and Custom camera afterward. Existing CorePackages/asset-type warnings only. Studio returned to Edit; no publication. Both bounded follow-ups are complete.

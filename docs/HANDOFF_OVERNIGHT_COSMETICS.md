@@ -13,6 +13,8 @@ October 16, 2026. Creator authorized overnight independent improvements to the l
 
 ## Follow-up priorities
 
+Final bounded follow-up complete: fixed late ride/model/part arrival registration and stage listener cleanup. All four rides pass 32 native lifecycle checks; live stage motion persists through a forced next-round transition and exit restores the avatar. Studio left Edit/unpublished. Both planned overnight follow-ups are done; further work should follow creator feedback rather than repeat these fixtures.
+
 Completed follow-up: finisher previews now fit their full expansion to both viewport axes, refit on visible resize and restore close icon framing when selection changes. Focused native framing/replay/close fixture passes; runtime source only, native snapshots unchanged. See newest DEVLOG. Avoid repeating that review without a new concern.
 
 1. Check latest report/log and current Studio mode first. If this pass has been committed and verified, do one targeted native visual/cleanup review. Improve a concrete issue found; avoid inventing unrelated features or broad balance changes.

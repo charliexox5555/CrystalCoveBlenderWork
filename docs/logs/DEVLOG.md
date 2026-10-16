@@ -14,6 +14,15 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Codex — Final overnight follow-up: ride arrival and cleanup
+Done:
+- Focused lifecycle review reproduced a late-arrival gap: a stage attached before its ride models never animated those rides. RideController now watches stage descendants, registers arriving models/animated parts, drops removed parts and releases stage listeners/ride references on removal or destruction. Reattachment is idempotent; server-authored rest poses remain the motion baseline.
+- Native `tools/studio/verify_ride_streaming.luau`: 32 checks pass across all four rides, delayed models/wings, bob motion, part removal, stage stream-out/rearrival, listener cleanup and deferred callbacks. Fixture initially assumed synchronous ancestry signals; corrected it to yield for Roblox's deferred signals. Destroy cleanup uses the stored stage reference so it also works after children are detached.
+- Live player/bot stage retained the same rides and animated across a forced next-round transition (synthetic Rolling transition, no combat/reward claim). Exit restored original avatar position exactly, original anchor/AutoRotate, 100 health; zero runtime roots and Custom camera. Existing CorePackages/203785492 warnings remain; no gameplay errors observed. StyLua/diff checks pass. No broad suite rerun: client ride lifecycle only, rules/balance/assets unchanged.
+- Bounded overnight follow-ups complete. Rojo connected; Studio returned to Edit/unpublished. Native snapshots unchanged; unrelated files preserved. No new design decision.
+Next:
+- Creator review of normal-camera feel, phone performance and milestone pacing; no additional autonomous feature work needed for this pass.
+
 ## 2026-10-16 — Codex — Overnight follow-up: finisher preview framing
 Done:
 - Focused preview/cleanup review found that the close icon camera clipped animated finisher shockwaves/pieces. Fit the full effect envelope against both viewport axes, refit on visible preview resize, and restore close icon framing on selection. Preview button now calls one testable action; replay clears the old world and catalog close disconnects its resize listener.

@@ -130,15 +130,12 @@ return function(t, deps)
 	t.test("first six seeded native-style swings use unique bounded casts and fixed strings", function()
 		local releases, contacts = 0, 0
 		for i, pair in { { "pop", "crescent_axe" }, { "jam", "arc_coil" }, { "prism", "briar_flask" } } do
-			local sim = Pendulum.new(
-				{
-					A = { Id = pair[1], Aim = 0.9, AimYaw = 0.3 },
-					B = { Id = pair[2], Aim = 0.85, AimYaw = -0.2 },
-					Rng = deps.Rng.new(900 + i),
-					ReleaseKits = true,
-				},
-				900 + i
-			)
+			local sim = Pendulum.new({
+				A = { Id = pair[1], Aim = 0.9, AimYaw = 0.3 },
+				B = { Id = pair[2], Aim = 0.85, AimYaw = -0.2 },
+				Rng = deps.Rng.new(900 + i),
+				ReleaseKits = true,
+			}, 900 + i)
 			local seen = {}
 			for _ = 1, 3600 do
 				Pendulum.step(sim, 1 / 60)

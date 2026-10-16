@@ -115,6 +115,9 @@ function Portrait.fitOnResize(viewport, rotation, fov, padding)
 		resizeBindings[viewport]:Disconnect()
 	end
 	resizeBindings[viewport] = viewport:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+		if viewport:GetAttribute("FreezePortraitCamera") then
+			return
+		end
 		Portrait.fit(viewport, rotation, fov, padding)
 	end)
 	return Portrait.fit(viewport, rotation, fov, padding)

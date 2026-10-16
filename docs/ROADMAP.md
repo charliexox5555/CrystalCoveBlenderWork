@@ -74,6 +74,11 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 ## F5 — Polish and soft launch (Nov 10–16)
 
+- [x] **C:** inventory feedback: enable actual Flyer/Finisher tab clicks; match square preview/backing geometry. Rework heat/pressure burst and item launch from the actual chamber; freeze moving-lid camera framing and restore decoration on skip. 788 opening / 63 category regressions and real clicks pass; [report](testing/INVENTORY_OPENING_V2.md). Map untouched.
+- [ ] **C/U:** personalized daily Featured store: three visible Robux offers + one modest Coin offer, stable per-player/day rotation, fixed 6 PM CST/00:00 UTC reset, Robux rarity/value-band product matrix, persistence/receipt/reset tests and larger cards. [Formula/task brief](design/DAILY_STORE_AND_HOLLOWLIGHT.md); prices/IDs and sales activation deferred.
+- [x] **C:** first Hollowlight Blender art prototypes and VFX research: Pumpkin Pop seasonal look (24 roster preserved), Lantern Skiff, Lantern Eclipse; 16 closed shards, three renders, FBX validation and editable disabled native burst/ribbon kit. [Sources](../assets/blender/seasonal/hollowlight_v1/README.md).
+- [ ] **C/U:** refine/import Hollowlight art, implement seasonal skin/equip presentation, original spooky world VFX and riding polish; review phone/real-round feel, configure real dates/product IDs and verify idempotent receipts before sales. [Brief](design/DAILY_STORE_AND_HOLLOWLIGHT.md).
+
 - [x] **C:** creator shop feedback: repair looping prize-card anchors/backgrounds/nameplates; reuse stained-glass gem controls; fit/rescale both viewport axes and face the capsules forward. Editable templates and recovery export saved. 111 logic / 68 focused UI checks plus real mock purchases, duplicate save/reload, replay/policy/error handling pass; [report](testing/CRATE_SHOPS.md). No device or publication pass.
 
 - [x] **C:** original riding keyframes, modern R15/R6 support, foot/seat contact and animation restoration; distinct finisher timing/texture layers. 655 pose, 32 lifecycle, 193 finisher and 1330 preview checks pass. Four Blender flyers/five mesh-VFX sources exported and FBX round-trip verified.

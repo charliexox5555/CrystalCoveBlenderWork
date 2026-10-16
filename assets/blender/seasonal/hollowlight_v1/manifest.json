@@ -1,0 +1,480 @@
+{
+  "status": "art prototype; not installed or sold",
+  "baseGlassy": "pop",
+  "releaseCount": 24,
+  "studsPerUnit": 1,
+  "glassyHangPoint": [
+    0,
+    0,
+    0
+  ],
+  "shards": 16,
+  "groups": {
+    "pumpkin": [
+      {
+        "name": "HHL_Pumpkin_Body",
+        "triangles": 1056,
+        "dimensions": [
+          2.0899999141693115,
+          2.0899999141693115,
+          1.7400000095367432
+        ]
+      },
+      {
+        "name": "HHL_Pumpkin_Stem",
+        "triangles": 60,
+        "dimensions": [
+          0.3461107015609741,
+          0.26999998092651367,
+          0.3794686198234558
+        ]
+      },
+      {
+        "name": "HHL_Pumpkin_Curl",
+        "triangles": 60,
+        "dimensions": [
+          0.36215800046920776,
+          0.09969010949134827,
+          0.25423213839530945
+        ]
+      },
+      {
+        "name": "HHL_Pumpkin_Eye-1",
+        "triangles": 1,
+        "dimensions": [
+          0.39000001549720764,
+          0.11000001430511475,
+          0.27000004053115845
+        ]
+      },
+      {
+        "name": "HHL_Pumpkin_EyeRim-1",
+        "triangles": 60,
+        "dimensions": [
+          0.4316025376319885,
+          0.15999996662139893,
+          0.31993919610977173
+        ]
+      },
+      {
+        "name": "HHL_Pumpkin_Eye1",
+        "triangles": 1,
+        "dimensions": [
+          0.39000001549720764,
+          0.11000001430511475,
+          0.27000004053115845
+        ]
+      },
+      {
+        "name": "HHL_Pumpkin_EyeRim1",
+        "triangles": 60,
+        "dimensions": [
+          0.4316025376319885,
+          0.15999996662139893,
+          0.31993919610977173
+        ]
+      },
+      {
+        "name": "HHL_Pumpkin_Smile",
+        "triangles": 76,
+        "dimensions": [
+          1.0082956552505493,
+          0.2617225646972656,
+          0.35588109493255615
+        ]
+      },
+      {
+        "name": "HHL_Pumpkin_Leaf-1",
+        "triangles": 2,
+        "dimensions": [
+          0.6100000143051147,
+          0.2199999988079071,
+          0.19999998807907104
+        ]
+      },
+      {
+        "name": "HHL_Pumpkin_LeafVein-1",
+        "triangles": 28,
+        "dimensions": [
+          0.6172980070114136,
+          0.05000000074505806,
+          0.13946452736854553
+        ]
+      },
+      {
+        "name": "HHL_Pumpkin_Leaf1",
+        "triangles": 2,
+        "dimensions": [
+          0.6100000143051147,
+          0.2199999988079071,
+          0.19999998807907104
+        ]
+      },
+      {
+        "name": "HHL_Pumpkin_LeafVein1",
+        "triangles": 28,
+        "dimensions": [
+          0.6172980070114136,
+          0.05000000074505806,
+          0.13946452736854553
+        ]
+      }
+    ],
+    "flyer": [
+      {
+        "name": "HHL_Skiff_Hull",
+        "triangles": 1056,
+        "dimensions": [
+          2.3407998085021973,
+          3.7619998455047607,
+          0.5220000147819519
+        ]
+      },
+      {
+        "name": "HHL_Skiff_SeatRim",
+        "triangles": 780,
+        "dimensions": [
+          1.5498822927474976,
+          1.5500000715255737,
+          0.11000001430511475
+        ]
+      },
+      {
+        "name": "HHL_Skiff_Wing-1",
+        "triangles": 28,
+        "dimensions": [
+          2.5611255168914795,
+          2.259106397628784,
+          0.6685076355934143
+        ]
+      },
+      {
+        "name": "HHL_Skiff_WingRim-1",
+        "triangles": 140,
+        "dimensions": [
+          2.6194887161254883,
+          2.3369059562683105,
+          0.6893842220306396
+        ]
+      },
+      {
+        "name": "HHL_Skiff_GlowVein-11",
+        "triangles": 28,
+        "dimensions": [
+          2.5645501613616943,
+          0.6486708521842957,
+          0.549113392829895
+        ]
+      },
+      {
+        "name": "HHL_Skiff_GlowVein-13",
+        "triangles": 28,
+        "dimensions": [
+          2.084460496902466,
+          1.9862279891967773,
+          0.09999220073223114
+        ]
+      },
+      {
+        "name": "HHL_Skiff_GlowVein-15",
+        "triangles": 28,
+        "dimensions": [
+          1.0953090190887451,
+          2.271144390106201,
+          0.1499595046043396
+        ]
+      },
+      {
+        "name": "HHL_Skiff_Lantern-1",
+        "triangles": 1056,
+        "dimensions": [
+          0.6687999963760376,
+          0.6687999963760376,
+          0.5568000078201294
+        ]
+      },
+      {
+        "name": "HHL_Skiff_LanternHalo-1",
+        "triangles": 780,
+        "dimensions": [
+          0.7699463963508606,
+          0.7699999809265137,
+          0.050000011920928955
+        ]
+      },
+      {
+        "name": "HHL_Skiff_Exhaust-1",
+        "triangles": 60,
+        "dimensions": [
+          0.3287545442581177,
+          1.3187810182571411,
+          0.4159952402114868
+        ]
+      },
+      {
+        "name": "HHL_Skiff_Wing1",
+        "triangles": 28,
+        "dimensions": [
+          2.5611255168914795,
+          2.259106159210205,
+          0.6685076355934143
+        ]
+      },
+      {
+        "name": "HHL_Skiff_WingRim1",
+        "triangles": 140,
+        "dimensions": [
+          2.6194887161254883,
+          2.3369059562683105,
+          0.6893842220306396
+        ]
+      },
+      {
+        "name": "HHL_Skiff_GlowVein11",
+        "triangles": 28,
+        "dimensions": [
+          2.5645501613616943,
+          0.6486708521842957,
+          0.549113392829895
+        ]
+      },
+      {
+        "name": "HHL_Skiff_GlowVein13",
+        "triangles": 28,
+        "dimensions": [
+          2.084460496902466,
+          1.9862279891967773,
+          0.09999220073223114
+        ]
+      },
+      {
+        "name": "HHL_Skiff_GlowVein15",
+        "triangles": 28,
+        "dimensions": [
+          1.0953090190887451,
+          2.271144390106201,
+          0.1499595046043396
+        ]
+      },
+      {
+        "name": "HHL_Skiff_Lantern1",
+        "triangles": 1056,
+        "dimensions": [
+          0.6687999963760376,
+          0.6687999963760376,
+          0.5568000078201294
+        ]
+      },
+      {
+        "name": "HHL_Skiff_LanternHalo1",
+        "triangles": 780,
+        "dimensions": [
+          0.7699463963508606,
+          0.7699999809265137,
+          0.050000011920928955
+        ]
+      },
+      {
+        "name": "HHL_Skiff_Exhaust1",
+        "triangles": 60,
+        "dimensions": [
+          0.3287545442581177,
+          1.3187810182571411,
+          0.4159952402114868
+        ]
+      },
+      {
+        "name": "HHL_Skiff_NoseCrescent",
+        "triangles": 76,
+        "dimensions": [
+          1.2736486196517944,
+          0.6201063394546509,
+          0.6321312785148621
+        ]
+      }
+    ],
+    "finisher": [
+      {
+        "name": "HHL_Eclipse_Lantern",
+        "triangles": 1056,
+        "dimensions": [
+          1.6720000505447388,
+          1.6720000505447388,
+          1.3920000791549683
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_Halo",
+        "triangles": 780,
+        "dimensions": [
+          4.319870948791504,
+          4.319999694824219,
+          0.11999998986721039
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_InnerHalo",
+        "triangles": 780,
+        "dimensions": [
+          3.6499462127685547,
+          3.6499998569488525,
+          0.050000011920928955
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_Wisp0",
+        "triangles": 380,
+        "dimensions": [
+          0.7461299896240234,
+          0.7461299896240234,
+          1.205819845199585
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_WispTail0",
+        "triangles": 44,
+        "dimensions": [
+          0.6696332693099976,
+          0.25999999046325684,
+          0.8016315698623657
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_WispEye0-1",
+        "triangles": 8,
+        "dimensions": [
+          0.11495006084442139,
+          0.11495000123977661,
+          0.09570002555847168
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_WispEye01",
+        "triangles": 8,
+        "dimensions": [
+          0.11495006084442139,
+          0.11495000123977661,
+          0.09570002555847168
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_Spiral0",
+        "triangles": 476,
+        "dimensions": [
+          3.648033618927002,
+          3.038074493408203,
+          2.765275716781616
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_Wisp1",
+        "triangles": 380,
+        "dimensions": [
+          0.746130108833313,
+          0.7461300492286682,
+          1.205819845199585
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_WispTail1",
+        "triangles": 44,
+        "dimensions": [
+          0.4663682281970978,
+          0.6199374794960022,
+          0.8016315698623657
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_WispEye1-1",
+        "triangles": 8,
+        "dimensions": [
+          0.11495000123977661,
+          0.11494994163513184,
+          0.09570002555847168
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_WispEye11",
+        "triangles": 8,
+        "dimensions": [
+          0.11495000123977661,
+          0.11494994163513184,
+          0.09570002555847168
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_Spiral1",
+        "triangles": 476,
+        "dimensions": [
+          3.2445807456970215,
+          3.4653677940368652,
+          2.765275716781616
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_Wisp2",
+        "triangles": 380,
+        "dimensions": [
+          0.746130108833313,
+          0.7461300492286682,
+          1.205819845199585
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_WispTail2",
+        "triangles": 44,
+        "dimensions": [
+          0.4663682281970978,
+          0.6199374794960022,
+          0.8016315698623657
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_WispEye2-1",
+        "triangles": 8,
+        "dimensions": [
+          0.11495000123977661,
+          0.11495006084442139,
+          0.09570002555847168
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_WispEye21",
+        "triangles": 8,
+        "dimensions": [
+          0.11495000123977661,
+          0.11495006084442139,
+          0.09570002555847168
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_Spiral2",
+        "triangles": 476,
+        "dimensions": [
+          2.7907137870788574,
+          3.4482901096343994,
+          2.765275716781616
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_Face-1",
+        "triangles": 1,
+        "dimensions": [
+          0.3100000023841858,
+          0.0899999737739563,
+          0.2200000286102295
+        ]
+      },
+      {
+        "name": "HHL_Eclipse_Face1",
+        "triangles": 1,
+        "dimensions": [
+          0.3100000023841858,
+          0.0899999737739563,
+          0.2200000286102295
+        ]
+      }
+    ]
+  },
+  "revision": "Refined ghost silhouettes and reduced eye geometry; first source retained"
+}

@@ -81,46 +81,11 @@ function Opening:BeginFire()
 	self.FireCount += 1
 	self.Window.Gui:SetAttribute("FireCount", self.FireCount)
 	self:SetPhase("Fire")
-	local c, stage = self.Content, self.Content.KilnStage
-	c.Reels.Visible, stage.Visible = false, true
-	c.Status.Text = if self.Category == "Glassies" then "FIRING THE KILN…" else "CRACKING THE CAPSULE…"
-	-- Project the chamber into UI coordinates, keeping fire inside the kiln mouth.
-	local viewport = stage.KilnPortrait
-	local chamber = viewport:FindFirstChild("RevealCore", true) or viewport:FindFirstChild("Kiln_ChamberBackGlow", true)
-	local camera = viewport.CurrentCamera
-	local p = camera.CFrame:PointToObjectSpace(chamber.Position)
-	local tangent = math.tan(math.rad(camera.FieldOfView) / 2)
-	local pixel = viewport.AbsolutePosition
-		+ Vector2.new(
-			viewport.AbsoluteSize.X / 2 + p.X / (-p.Z * tangent * 2) * viewport.AbsoluteSize.Y,
-			viewport.AbsoluteSize.Y / 2 - p.Y / (-p.Z * tangent * 2) * viewport.AbsoluteSize.Y
-		)
-	self.Mouth = (pixel - stage.AbsolutePosition) / stage.AbsoluteSize
-	stage.Flame.Position = UDim2.fromScale(self.Mouth.X, self.Mouth.Y)
-	stage.Burst.Position = UDim2.fromScale(self.Mouth.X, self.Mouth.Y)
-	stage.FlameEcho.Visible = false
-	self.GlowParts = {}
-	for _, part in stage.KilnPortrait:GetDescendants() do
-		if
-			part:IsA("BasePart")
-			and (part.Name == "Kiln_ChamberBackGlow" or part.Name == "Kiln_MoltenPool" or part.Name == "RevealCore")
-		then
-			table.insert(self.GlowParts, part)
-			part.Material = Enum.Material.Neon
-		end
-	end
-	local lid = viewport:FindFirstChild("RevealLid", true)
-	if lid then
-		self.Lid, self.LidPose = lid, lid.CFrame
-	end
-	for i = 1, K.SparkCount do
-		local spark = Instance.new("Frame")
-		spark.Name = "Ember" .. i
-		spark.AnchorPoint, spark.BorderSizePixel = Vector2.new(0.5, 0.5), 0
-		spark.BackgroundColor3 = if i % 3 == 0 then Theme.Palette.aquaLight else Theme.Palette.amberLight
-		spark.Size, spark.Rotation = UDim2.fromOffset(4 + i % 4, 4 + i % 4), 45
-		spark.Parent = stage.Sparks
-	end
+	local c = self.Content
+	c.Reels.Visible, c.KilnStage.Visible = false, true
+	c.Status.Text = if self.Category == "Glassies" then "HEAT IT UP…" else "BUILDING PRESSURE…"
+	self.FireFX = require(script.Parent.KilnFire).new(c.KilnStage, self.TintLight, self.Category)
+	self.Mouth = self.FireFX:InFrame(c.KilnStage)
 end
 
 function Opening:ShowRewards(instant)
@@ -182,29 +147,32 @@ function Opening:ShowRewards(instant)
 end
 
 function Opening:LaunchStep(time)
-	for _, item in self.Cards do
+	local origin = if self.FireFX then self.FireFX:InFrame(self.Content.Rewards) else Vector2.new(0.5, 0.65)
+	for i, item in self.Cards do
 		local card = item.Object
 		local t = math.clamp((time - item.Delay) / K.CardFlight, 0, 1)
 		card.Visible = time >= item.Delay
-		local ease = TweenService:GetValue(t, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
-		local destination = item.Destination
-		local mouth = self.Mouth and self.Mouth.Y or 0.61
-		card.Position = UDim2.fromScale(
-			0.5 + (destination.X - 0.5) * ease,
-			mouth + (destination.Y - mouth) * ease - math.sin(t * math.pi) * 0.12
-		)
-		card.RevealScale.Scale = 0.08 + 0.92 * TweenService:GetValue(t, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
-		card.Glow.ImageTransparency = 0.45 + 0.35 * t
-	end
-	self.Content.KilnStage.KilnPortrait.ImageTransparency = math.clamp(time / K.CardFlight, 0, 1)
-	-- Fade the viewport and its model during the card release.
-	for _, part in self.Content.KilnStage.KilnPortrait:GetDescendants() do
-		if part:IsA("BasePart") then
-			part.LocalTransparencyModifier = math.clamp(time / K.CardFlight, 0, 1)
+		local u = TweenService:GetValue(t, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out)
+		local side = if #self.Cards == 1 then 0.05 else (i - 5.5) * 0.015
+		local control = (origin + item.Destination) / 2 + Vector2.new(side, -0.32)
+		local p = origin * (1 - u) ^ 2 + control * 2 * (1 - u) * u + item.Destination * u ^ 2
+		card.Position = UDim2.fromScale(p.X, p.Y)
+		card.RevealScale.Scale = 0.04 + 0.96 * TweenService:GetValue(t, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+		card.Rotation = math.sin(t * math.pi) * (if i % 2 == 0 then 7 else -7)
+		local decoration = 1 - math.clamp((t - 0.25) / 0.45, 0, 1)
+		card.Artwork.ImageTransparency = decoration
+		card.Glow.ImageTransparency = 0.2 + 0.65 * t
+		for _, label in { card.Rarity, card.NameLabel, card.RewardLabel, card.BonusLabel } do
+			label.TextTransparency = decoration
+			for _, stroke in label:GetChildren() do
+				if stroke:IsA("UIStroke") then
+					stroke.Transparency = decoration
+				end
+			end
 		end
 	end
-	for _, image in { self.Content.KilnStage.Flame, self.Content.KilnStage.FlameEcho, self.Content.KilnStage.Burst } do
-		image.ImageTransparency = math.clamp(time / K.CardFlight, 0, 1)
+	if self.FireFX then
+		self.FireFX:Launch(time)
 	end
 end
 
@@ -216,6 +184,15 @@ function Opening:Finish()
 		item.Object.Visible, item.Object.RevealScale.Scale = true, 1
 		item.Object.Position = UDim2.fromScale(item.Destination.X, item.Destination.Y)
 		item.Object.Glow.ImageTransparency = 0.85
+		item.Object.Rotation, item.Object.Artwork.ImageTransparency = 0, 0
+		for _, label in { item.Object.Rarity, item.Object.NameLabel, item.Object.RewardLabel, item.Object.BonusLabel } do
+			label.TextTransparency = 0
+			for _, stroke in label:GetChildren() do
+				if stroke:IsA("UIStroke") then
+					stroke.Transparency = 0
+				end
+			end
+		end
 	end
 	self.Window.Gui:SetAttribute("RevealedCount", #self.Cards)
 	for _, sound in self.Sounds:GetChildren() do
@@ -323,36 +300,10 @@ function Opening:Step(dt)
 			self:BeginFire()
 		end
 	elseif self.Phase == "Fire" then
-		local stage = self.Content.KilnStage
-		local charge = math.clamp(t / K.FireSeconds, 0, 1)
-		local heat = math.clamp(charge / 0.72, 0, 1)
-		local release = math.clamp((charge - 0.72) / 0.28, 0, 1)
-		local pulse = math.sin(release * math.pi)
-		if self.Lid then
-			self.Lid.CFrame = (self.LidPose + Vector3.yAxis * release * 2.4)
-				* CFrame.Angles(0, release * 0.7, release * 0.18)
-		end
-		-- Anticipation, a short hot pulse, then release. The furnace remains readable.
-		stage.Flame.Size = UDim2.fromScale(0.075 + heat * 0.022, 0.16 + heat * 0.065 + math.sin(t * 23) * 0.008)
-		stage.Flame.ImageTransparency = 0.60 - heat * 0.25 + release * 0.2
-		stage.Flame.Rotation = math.sin(t * 17) * 1.5
-		stage.Burst.Size = UDim2.fromScale(0.24 + heat * 0.06 + pulse * 0.07, 0.46 + heat * 0.10 + pulse * 0.13)
-		stage.Burst.ImageTransparency = 0.88 - heat * 0.25 - pulse * 0.08
-		stage.Burst.Rotation = 0
-		stage.KilnPortrait.FireScale.Scale = 0.92
-			+ 0.08 * math.min(charge / 0.22, 1)
-			- math.sin(heat * math.pi) * 0.015
-			+ pulse * 0.035
-		for _, part in self.GlowParts do
-			part.Color = self.TintDark:Lerp(self.TintLight, heat * 0.8):Lerp(Theme.Palette.milkLight, pulse * 0.65)
-		end
-		for i, spark in stage.Sparks:GetChildren() do
-			local age = (charge * 1.2 + i / K.SparkCount) % 1
-			spark.Position = UDim2.fromScale(self.Mouth.X + math.sin(i * 2.4) * age * 0.12, self.Mouth.Y - age * 0.35)
-			spark.BackgroundTransparency = 0.25 + age * 0.75
-		end
-		if release > 0 and not self.PlayedFire then
+		self.FireFX:Step(t)
+		if t >= K.ChargeSeconds and not self.PlayedFire then
 			self.PlayedFire = true
+			self.Content.Status.Text = "HERE IT COMES!"
 			self.Sounds.Fire:Play()
 		end
 		if t >= K.FireSeconds then
@@ -377,6 +328,9 @@ function Opening:Destroy()
 		self.TargetScale.Scale = self.PreviousScale or 1
 	end
 	self.Reels:Destroy()
+	if self.FireFX then
+		self.FireFX:Destroy()
+	end
 	self.Sounds:Destroy()
 	table.clear(self.Cards)
 end

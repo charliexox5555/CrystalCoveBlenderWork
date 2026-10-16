@@ -39,6 +39,7 @@ function Catalog.new(parent, profile, category)
 		self.Info.Parent = self.Root
 	end
 	self.Info.Visible = true
+	require(script.Parent.Parent.Components.SquareItemPreview).apply(self.Info)
 	local keep = {
 		PaneArtwork = true,
 		InfoName = true,

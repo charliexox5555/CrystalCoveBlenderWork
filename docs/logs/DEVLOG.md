@@ -14,6 +14,16 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Codex — Inventory clicks, opening feedback and Halloween prototypes
+Done:
+- Reproduced disabled Flyer/Finisher inventory buttons with actual MCP clicks; enabled editable/runtime tabs and checked both real clicks. Earlier direct SelectTab checks bypassed Active=false. Shared centered square portrait/backing fixes the rectangular mismatch.
+- Replaced oversized static fire with bounded heat/pressure flipbook/sparks and a shorter release, corrected chamber-to-reward coordinate conversion, added curved art-first launch/card landing and skip opacity/stroke/rotation restoration. Freeze portrait auto-fit during moving-lid animation. 788 opening checks and 63 all-category regressions pass; launch error 0 pixels. Existing upright fixture now checks hang pivots rather than raw imported MeshPart frames. Report: docs/testing/INVENTORY_OPENING_V2.md.
+- Added accepted daily-store requirements/implementation queue: four personalized visible offers, three Robux/one Coin, fixed CST reset (00:00 UTC), deterministic formulas, proposed tiers/value-band IDs and durable receipt-intent design. No daily purchase activation.
+- Creator chooses seasonal pumpkin variant, retaining 24 glassies. Built/refined original Hollowlight Pop, Lantern Skiff and Lantern Eclipse Blender sources/three icons/FBX; 1,056-triangle body, 16 closed shards, 39 cosmetic meshes/11,574 triangles round-trip verified. Preserved prior source/user scenes. Official Roblox explosion/beam/particle/performance research and specific VFX timing/layer plan recorded. Art remains prototype/uninstalled; no new stats or paid-exclusive power.
+- Native UI originals backed up; places/InventoryOpening_v2.rbxm saved (239430 bytes, 1019-descendant script-free round trip). Editable Hollowlight VFX art kit saved in ReplicatedStorage and .rbxm: four disabled burst emitters/36 particles, two disabled ribbons, phase attributes, no scripts; round-trip verified. 111 Lune tests and format/diff checks pass. Map, terrain, arenas and global lighting untouched. No products, publication, device changes or scheduled work. Unrelated changes preserved.
+Next:
+- Creator feel/art review, then final seasonal material/animation/VFX refinement and normal Studio import. Daily store implementation and real sale configuration remain queued; phone/persistence/receipt verification pending. No Balance changes or simulator rerun.
+
 ## 2026-10-16 — Codex — Cosmetic crates, matching inventories and shop feedback
 Done:
 - Finishers/Flyers now roll through authoritative quoted Coin/Marble crates; approved provisional prices, retained copy counts, preserved ownership/free starters, same installed pool and improved Marble rarity odds. Paid-random policy hides unavailable offers and rechecks on spend; no Robux products activated. Existing Glassy Coin economy preserved; provisional Glassy Marble 30/300.

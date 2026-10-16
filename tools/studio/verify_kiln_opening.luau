@@ -68,7 +68,11 @@ local function verifyCards(screen, count)
 		end
 		for _, part in card.Portrait.WorldModel:GetChildren() do
 			if part:IsA("BasePart") then
-				check(part.CFrame.Rotation == CFrame.identity, "Upright glass portrait")
+				check(
+					part:GetPivot().UpVector:Dot(Vector3.yAxis) > 0.99999
+						and part:GetPivot().RightVector:Dot(Vector3.xAxis) > 0.99999,
+					"Upright glass portrait pivot"
+				)
 			end
 		end
 	end

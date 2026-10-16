@@ -14,13 +14,16 @@ function Screen.new(profile, close)
 	self.Window = Window.new("CollectionScreen", "INVENTORY", close)
 	self.Grid = self.Window.Content.Grid
 	self.Info = self.Window.Content.InfoPane
+	require(script.Parent.Parent.Components.SquareItemPreview).apply(self.Info)
 	local cosmeticPage = self.Window.Content:FindFirstChild("CosmeticPage")
 	if cosmeticPage then
 		cosmeticPage.Visible = false
 	end
 	self.Tab = "Glassies"
 	for _, name in { "Glassies", "Finishers", "Flyers" } do
-		self.Window:Connect(self.Window.Panel.Tabs[name .. "Tab"], function()
+		local tab = self.Window.Panel.Tabs[name .. "Tab"]
+		tab.Active, tab.Interactable, tab.Selectable = true, true, true
+		self.Window:Connect(tab, function()
 			self:SelectTab(name)
 		end)
 	end

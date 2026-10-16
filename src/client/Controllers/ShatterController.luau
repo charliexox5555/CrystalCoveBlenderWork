@@ -5,10 +5,12 @@ local HapticService = game:GetService("HapticService")
 local ContentProvider = game:GetService("ContentProvider")
 local SoundService = game:GetService("SoundService")
 local Audio = require(RS.Shared.Config.Audio)
+local AudioCues = require(RS.Shared.Config.AudioCues)
 local Balance = require(RS.Shared.Config.Balance)
 local Glassies = require(RS.Shared.Config.Glassies)
 local CrackPaths = require(RS.Shared.Config.CrackPaths)
 local ExtraCrackPaths = require(RS.Shared.Config.CrackPathsExtra)
+local ReleaseCrackPaths = require(RS.Shared.Config.ReleaseCrackPaths)
 local Feel = Balance.Feel
 local Shatter = {}
 
@@ -23,6 +25,9 @@ function Shatter:Start()
 		local cache = Instance.new("Folder")
 		cache.Name, cache.Parent = "GlassClashAudio", SoundService
 		for _, id in Audio do
+			if self.Sounds[id] then
+				continue
+			end
 			local sound = Instance.new("Sound")
 			sound.SoundId = id
 			sound.Parent = cache
@@ -34,21 +39,28 @@ function Shatter:Start()
 	end)
 end
 function Shatter:Sound(id, parent, pitch, volume, short)
+	local cue = AudioCues[id]
 	local template = self.Sounds[id]
 	local sound = template and template:Clone() or Instance.new("Sound")
-	sound.SoundId, sound.PlaybackSpeed, sound.Volume = id, pitch or 1, volume or 0.35
+	sound.SoundId = id
+	sound.PlaybackSpeed = (pitch or 1) * (cue and cue.Pitch or 1)
+	sound.Volume = volume or (cue and cue.Volume) or 0.35
 	sound.RollOffMaxDistance = 70
 	sound.RollOffMinDistance = 20
 	sound.Parent = parent
+	sound.TimePosition = if cue then cue.Start else 0
 	sound:Play()
-	if short then
-		task.delay(short, function()
+	local duration = math.min(short or math.huge, if cue then cue.Seconds else 5)
+	local fade = math.min(duration, if cue then cue.Fade else 0.035)
+	if duration < 5 then
+		task.delay(math.max(0, duration - fade), function()
 			if sound.Parent then
-				sound:Stop()
+				TweenService:Create(sound, TweenInfo.new(fade), { Volume = 0 }):Play()
 			end
 		end)
 	end
-	Debris:AddItem(sound, 5)
+	Debris:AddItem(sound, math.min(5, duration + 0.04))
+	return sound
 end
 function Shatter:Pulse()
 	for _, input in { Enum.UserInputType.Gamepad1, Enum.UserInputType.Touch } do
@@ -87,7 +99,7 @@ function Shatter:SetCracks(fighter, hp, maxHP)
 		return stage > 0
 	end
 	local id = fighter.RenderId or fighter.Id
-	for _, path in CrackPaths[id] or ExtraCrackPaths[id] or {} do
+	for _, path in (if fighter.ReleaseArt then ReleaseCrackPaths[id] else CrackPaths[id] or ExtraCrackPaths[id]) or {} do
 		if path[7] <= stage then
 			local scale = fighter.Scale or 1
 			local a, b = Vector3.new(path[1], path[2], path[3]) * scale, Vector3.new(path[4], path[5], path[6]) * scale
@@ -128,7 +140,10 @@ function Shatter:Break(fighter, root)
 	for _, crack in fighter.Cracks or {} do
 		crack.Transparency = 1
 	end
-	for _, template in pieces do
+	for pieceIndex, template in pieces do
+		if pieceIndex > Balance.CombatVFX.MaxShardsPerGlassy then
+			break
+		end
 		-- Discard expired references before enforcing the mobile cap.
 		for i = #self.Shards, 1, -1 do
 			if not self.Shards[i].Parent then
@@ -185,7 +200,7 @@ function Shatter:Break(fighter, root)
 	sparkle.Transparency, sparkle.Anchored, sparkle.CanCollide = 1, true, false
 	sparkle.Parent = root
 	local emitter = Instance.new("ParticleEmitter")
-	emitter.Texture = "rbxasset://textures/particles/sparkles_main.dds"
+	emitter.Texture = "rbxassetid://119749428254490"
 	emitter.Color = ColorSequence.new(Color3.fromHex(Glassies.get(fighter.Id).Tint), Color3.new(1, 1, 1))
 	emitter.LightEmission, emitter.Rate = 1, 0
 	emitter.Lifetime, emitter.Speed = NumberRange.new(0.5, 1.2), NumberRange.new(2, 8)
@@ -217,7 +232,7 @@ function Shatter:HitBurst(a, b, result, root)
 		Transparency = 1,
 	}):Play()
 	local emitter = Instance.new("ParticleEmitter")
-	emitter.Texture = "rbxasset://textures/particles/sparkles_main.dds"
+	emitter.Texture = "rbxassetid://118014953401567"
 	emitter.Color, emitter.LightEmission, emitter.Rate = ColorSequence.new(flash.Color), 1, 0
 	emitter.Lifetime, emitter.Speed = NumberRange.new(0.12, 0.3), NumberRange.new(7, 13)
 	emitter.SpreadAngle, emitter.Drag = Vector2.new(180, 180), 6

@@ -17,7 +17,7 @@ end
 function Service:Pool()
 	local available, ids = {}, {}
 	for _, def in Glassies.List do
-		if def.Rarity ~= "Starter" and Assets.has(def.Asset) then
+		if Glassies.isRelease(def.Id) and def.Rarity ~= "Starter" and Assets.has(def.Asset) then
 			available[def.Id] = true
 			table.insert(ids, def.Id)
 		end

@@ -359,7 +359,7 @@ function MatchLogic.botCollection(playerCollection: Collection, rng: () -> numbe
 		end
 	end
 	local pool = {}
-	for _, def in Glassies.List do
+	for _, def in Glassies.ReleaseList do
 		local order = Balance.Rarities[def.Rarity].Order
 		if order >= 1 and order <= best then
 			table.insert(pool, def.Id)

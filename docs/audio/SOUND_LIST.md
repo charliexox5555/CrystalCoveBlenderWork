@@ -1,5 +1,7 @@
 # Sound list
 
+Current follow-up: the creator requested replacement combat sounds on 2026-10-15. A 14-cue bank is saved in `ServerStorage.CombatReleaseStaged.VFX.Combat.Audio`; exact IDs/provenance and measured starts/fades are in `assets/vfx/combat_release/native_library.json`. All 14 load on the client. `Config/Audio` and `AudioCues` now wire the new contact/shatter bank into playback; the old approved IDs remain recorded below and in Git. Listening review is pending. See [current checkpoint](../testing/combat_release/FIRST_SIX_CHECKPOINT.md).
+
 | Sound | Priority | Notes |
 |---|---|---|
 | Clink (3-4 variants) | M1 | Pitch per glassy (`ClinkPitch`) |

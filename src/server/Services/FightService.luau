@@ -145,10 +145,10 @@ function Service:Step(session, dt, now)
 	end
 end
 
-function Service:BotVsBot(a, b, seed, spectate)
+function Service:BotVsBot(a, b, seed, spectate, prototype)
 	assert(RunService:IsStudio(), "Dev helper is Studio-only")
 	if not self.Sessions then
-		return game.ServerStorage.FightDev:Invoke("BotVsBot", a, b, seed, spectate)
+		return game.ServerStorage.FightDev:Invoke("BotVsBot", a, b, seed, spectate, prototype)
 	end
 	local arena = self.Services.ArenaService.Arenas[1]
 	if arena.Busy then
@@ -162,6 +162,7 @@ function Service:BotVsBot(a, b, seed, spectate)
 	local rng = Rng.new(seed)
 	local sweet = Rules.rollSweetSpot(rng)
 	local setup = {
+		ReleaseKits = if prototype then true else nil,
 		A = { Id = a, Aim = Rules.botAim(sweet, 0.45, rng), AimYaw = (rng() * 2 - 1) * M.AimYawMax },
 		B = { Id = b, Aim = Rules.botAim(sweet, 0.45, rng), AimYaw = (rng() * 2 - 1) * M.AimYawMax },
 		Rng = rng,
@@ -170,6 +171,7 @@ function Service:BotVsBot(a, b, seed, spectate)
 	self.Serial += 1
 	local id = "dev-" .. self.Serial
 	self:StartFight(id, arena, setup, seed, {
+		ReleasePrototype = prototype == true,
 		PlayerIds = { 0, 0 },
 		Spectate = spectate,
 		Hearts = { 3, 3 },

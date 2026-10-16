@@ -14,6 +14,27 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-15 — Codex — First-six signature checkpoint after Rojo connection
+Done:
+- Creator connected Rojo; verified source sync before edits. Implemented first-six contact/turnaround/timed signatures, body-only one-use guard, bounded locked rays and relative-motion axe sweep, unique results and death cancellation. Scene-owned VFX use staged native models, authored pivots, measured body centres/radii and revised crack maps; no new controls/camera/finisher flow.
+- Wired refreshed light/alternate/heavy contacts and trimmed/faded shatter audio into normal playback. Added six definitions and exact 24/21 release catalog/Kiln filters while preserving all 37 definitions and owned legacy access. Live installed-art pool remains nine. Global signatures off; Studio-only prototype route and tools/studio/test_combat_release.luau supplied.
+- 88 Lune tests pass, including nine new signature/geometry/legacy-boundary tests. Observed one real native Pop/Axe prototype through 23.77 simulated seconds, with revised bodies/cracks/effects and no inspected script errors. Final result/full first-six client coverage not claimed: Studio was already in Edit at final inspection. Creator requested lower usage and will perform hands-on tests; no broad repeat/native soak or device work.
+- Saved current checkpoint, screenshot and test instructions in docs/testing/combat_release/FIRST_SIX_CHECKPOINT.md. Rojo connected, Studio Edit; no publishing or inventory migration. Prior source assets/backups and unrelated files preserved.
+Balance/economy sims (120 rounds/matchup; signatures disabled, baseline rules only):
+- Starter mirrors 24.3/36.0/19.4 s, 0% timeouts; side A 47%; Pop>Jam 62%, Jam>Prism 64%, Prism>Pop 63%; Perfect vs worst 64%; 52% comebacks, 1.5 lead changes, 2.2 powers/glassy, 31% aimed misses; equal-stat release field 39–57%. New signature balance is not approved by this baseline.
+- Economy: 21 nonstarters; 3.7 min/match; 4/96 day-one/day-30 pulls; Rare 47 min, Epic 2.1 h, Legendary 9 h; 20% Mythic in 30 days. Fixed simulator field/pool counts to match actual release eligibility.
+Next:
+- Creator tests the three prototype pairs/audio. Complete first-six feedback/native checks, then remaining 18 kits, ability copy, asset promotion, actual signature calibration and final multiplayer/performance review. Full 24 release integration remains unfinished.
+
+## 2026-10-15 — Codex — Native VFX and sound-refresh prototypes
+Done:
+- Continued authorized independent art work while Rojo awaits Connect: editable native library with 10 meshes, 6 bounded burst emitters, 4 beams, 24 kit folders and separate two-piece axe. First-six Client previews demonstrate staged charge/release/miss/shatter, with honest preview labels; corrected body occlusion/guard glare. Native flipbooks visibly progress and expire over sky/dark cards; live readability remains pending.
+- Found 14 free attributed audio cues, all native/client loaded. Waveform analysis of 13 accessible files rejected a quiet/delayed heavy hit and selected an immediate bottle impact; trimmed measured 0.3–0.5 s shatter leading silence, selected clear hit variants and added bounded fades. No subjective listening approval claimed. Old four sounds remain live; no paid assets, extra plugins/libraries or redistributed licensed source recordings.
+- 612 native template checks pass; RBXM deserialize preserves 24 kits, 14 sounds and 48 internal references. First-six 300-step hit/miss/block branch checks; ten further cycles retain 272 instances. Actual 10-second replay destroys root/caption, disconnects update and restores all 16 GUI states. Lune 79 passed; native RunAll true. No Balance/Glassies/Powers changes, no required simulator rerun.
+- Saved places/CombatRelease_VFX_Audio_v2.rbxm, previews and docs/testing/combat_release/VFX_AUDIO_PROTOTYPES.md. Studio Edit/FOV70; temporary preview copies removed. Original Blender Scene/Cube selection retained. No publish/device/source-script/live-pool/ownership changes; unrelated work preserved.
+Next / dependency:
+- Rojo was stopped at entry; restarted serving localhost:34872 and initially awaited Connect. This dependency was subsequently resolved by the creator; see the newer source checkpoint above. No desktop-input workaround was used. Template/art proof is not live kit proof.
+
 ## 2026-10-15 — Codex — Correct imported release sizes and anchoring
 Done:
 - Creator imported all 24 bundles/shared kit and one extra Pop. Measured exact 100× unit conversion and baked yaw; normalized all 527 imported MeshParts, anchored them and disabled collision/touch/query. Preserved untouched raw imports in ServerStorage.CombatReleaseBackups; canonical 24-model/384-shard staging library and ten VFX meshes in CombatReleaseStaged. No live art/catalog/ownership/pool/rules changes.

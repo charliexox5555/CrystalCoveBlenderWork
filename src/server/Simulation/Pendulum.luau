@@ -4,6 +4,8 @@ local Shared = if script then game.ReplicatedStorage.Shared else nil
 local Balance = if Shared then require(Shared.Config.Balance) else require("../../shared/Config/Balance")
 local Rules = if Shared then require(Shared.FightRules) else require("../../shared/FightRules")
 local Rng = if Shared then require(Shared.Rng) else require("../../shared/Rng")
+local Geometry = if script then require(script.Parent.AttackGeometry) else require("./AttackGeometry")
+local Turnaround = if script then require(script.Parent.Turnaround) else require("./Turnaround")
 local V = if script then Vector3 else require("@lune/roblox").Vector3
 local M = Balance.Motion
 local Pendulum = {}
@@ -22,7 +24,15 @@ end
 
 function Pendulum.center(sim, side)
 	local b = sim.Bodies[side]
-	return sim.Hooks[side] + b.P * (1 + M.BodyCenter * M.GlassyScale / M.StringLength)
+	local center = sim.Fight.Fighters[side].BodyCenter or M.BodyCenter
+	return sim.Hooks[side] + b.P * (1 + center * M.GlassyScale / M.StringLength)
+end
+
+function Pendulum.fireDirection(sim, side)
+	local b = sim.Bodies[side]
+	local facing = b.Facing
+	local c, s = math.cos(b.Twist * M.PowerTwistInfluence), math.sin(b.Twist * M.PowerTwistInfluence)
+	return V.new(facing.X * c - facing.Z * s, facing.Y, facing.X * s + facing.Z * c).Unit
 end
 
 function Pendulum.lands(sim, side)
@@ -52,6 +62,8 @@ function Pendulum.new(setup, seed, gap)
 		Hooks = { V.new(-(gap or M.HookGap) / 2, 0, 0), V.new((gap or M.HookGap) / 2, 0, 0) },
 		Rng = Rng.new(seed + 104729),
 		LastHit = -10,
+		LastCollision = -10,
+		Attacks = {},
 		LastEncounter = -10,
 		PreviousApproach = 0,
 		Metrics = { Speeds = {}, Shares = {}, Misses = 0, Powers = {}, Landed = {}, MaxRadiusError = 0 },
@@ -61,6 +73,7 @@ function Pendulum.new(setup, seed, gap)
 	setup.PowerLands = function(side)
 		return Pendulum.lands(sim, side)
 	end
+	setup.CastsManaged = true
 	sim.Fight = Rules.new(setup)
 	for side, f in sim.Fight.Fighters do
 		sim.Bodies[side] = {
@@ -74,6 +87,7 @@ function Pendulum.new(setup, seed, gap)
 			NextWander = 0,
 			Facing = V.new(if side == 1 then 1 else -1, 0, 0),
 			NextTracking = 0,
+			Turnaround = Turnaround.new(Pendulum.pull(f.Aim, f.AimYaw, side).Y),
 		}
 	end
 	return sim
@@ -94,6 +108,7 @@ end
 
 local function integrate(sim, side, dt)
 	local b, f = sim.Bodies[side], sim.Fight.Fighters[side]
+	local previousVy = b.V.Y
 	if sim.Fight.Time >= b.NextWander then
 		b.Wander = (sim.Rng() * 2 - 1) * M.WanderStrength * M.StringLength
 		b.NextWander = sim.Fight.Time + M.WanderIntervalMin + sim.Rng() * (M.WanderIntervalMax - M.WanderIntervalMin)
@@ -131,6 +146,62 @@ local function integrate(sim, side, dt)
 		b.Tilt = b.Tilt.Unit * M.MaxTilt
 	end
 	sim.Metrics.MaxRadiusError = math.max(sim.Metrics.MaxRadiusError, math.abs(b.P.Magnitude - M.StringLength))
+	if Turnaround.step(b.Turnaround, sim.Fight.Time, previousVy, b.V.Y, b.P.Y, sim.LastCollision) then
+		Rules.turnaround(sim.Fight, side)
+	end
+end
+
+local function array(v)
+	return { v.X, v.Y, v.Z }
+end
+
+local function sweepPoint(attack, age)
+	local angle = (-0.5 + math.clamp(age / attack.Cast.Params.Duration, 0, 1)) * attack.Cast.Params.Arc
+	return attack.Origin + (attack.Direction * math.cos(angle) + attack.Up * math.sin(angle)) * attack.Cast.Params.Range
+end
+
+local function attacks(sim, dt)
+	for _, cast in Rules.drainCasts(sim.Fight) do
+		if sim.Fight.Over then
+			break
+		end
+		local origin, direction = Pendulum.center(sim, cast.Side), Pendulum.fireDirection(sim, cast.Side)
+		if not Rules.releaseCast(sim.Fight, cast, array(origin), array(direction)) then
+			continue
+		end
+		local target = Pendulum.center(sim, 3 - cast.Side)
+		local radius = sim.Fight.Fighters[3 - cast.Side].Radius * M.GlassyScale + cast.Params.Radius
+		if cast.Shape == "ray" then
+			local hit, point = Geometry.segmentSphere(origin, origin + direction * cast.Params.Range, target, radius)
+			Rules.resolveAbility(sim.Fight, cast.Id, hit, if hit then array(point) else nil)
+		elseif cast.Shape == "sweep" then
+			local up = V.yAxis - direction * direction.Y
+			up = if up.Magnitude > 0.0001 then up.Unit else V.zAxis
+			local attack =
+				{ Cast = cast, Origin = origin, Direction = direction, Up = up, Age = 0, PreviousTarget = target }
+			attack.PreviousPoint = sweepPoint(attack, 0)
+			table.insert(sim.Attacks, attack)
+		end
+	end
+	local remaining = {}
+	for _, attack in sim.Attacks do
+		if sim.Fight.Over then
+			break
+		end
+		local cast = attack.Cast
+		attack.Age = math.min(cast.Params.Duration, attack.Age + dt)
+		local target = Pendulum.center(sim, 3 - cast.Side)
+		local point = sweepPoint(attack, attack.Age)
+		local radius = sim.Fight.Fighters[3 - cast.Side].Radius * M.GlassyScale + cast.Params.Radius
+		local hit = Geometry.movingSphere(attack.PreviousPoint, point, attack.PreviousTarget, target, radius)
+		if hit or attack.Age >= cast.Params.Duration then
+			Rules.resolveAbility(sim.Fight, cast.Id, hit, if hit then array(point) else nil)
+		else
+			attack.PreviousPoint, attack.PreviousTarget = point, target
+			table.insert(remaining, attack)
+		end
+	end
+	sim.Attacks = if sim.Fight.Over then {} else remaining
 end
 
 function Pendulum.step(sim, dt)
@@ -151,6 +222,10 @@ function Pendulum.step(sim, dt)
 		end
 		integrate(sim, 1, h)
 		integrate(sim, 2, h)
+		attacks(sim, h)
+		if sim.Fight.Over then
+			break
+		end
 		local a, b = sim.Bodies[1], sim.Bodies[2]
 		local fa, fb = sim.Fight.Fighters[1], sim.Fight.Fighters[2]
 		local ca, cb = Pendulum.center(sim, 1), Pendulum.center(sim, 2)
@@ -177,12 +252,14 @@ function Pendulum.step(sim, dt)
 				constrain(b)
 			end
 			if approach > 0 then
+				sim.LastCollision = sim.Fight.Time
+				local qualifies = approach >= M.MinHitSpeed and sim.Fight.Time - sim.LastHit >= M.HitCooldown
 				local impulse = normal * ((1 + M.Restitution) * approach / inverseMass)
 				local slip = tangent(relative, normal)
 				local friction = slip * M.HitFriction / inverseMass
 				local deflect = V.new(0, 0, (sim.Rng() * 2 - 1) * approach * M.HitDeflect / inverseMass)
-				a.V += (-impulse - friction + deflect) * Rules.knockbackMultiplier(sim.Fight, 1) / fa.Mass
-				b.V += (impulse + friction - deflect) * Rules.knockbackMultiplier(sim.Fight, 2) / fb.Mass
+				a.V += (-impulse - friction + deflect) * Rules.knockbackMultiplier(sim.Fight, 1, qualifies) / fa.Mass
+				b.V += (impulse + friction - deflect) * Rules.knockbackMultiplier(sim.Fight, 2, qualifies) / fb.Mass
 				constrain(a)
 				constrain(b)
 				local glancing = normal.X * relative.Z - normal.Z * relative.X
@@ -190,13 +267,13 @@ function Pendulum.step(sim, dt)
 				b.Spin = math.clamp(b.Spin - glancing * M.SpinFromHit / fb.Mass, -M.MaxSpin, M.MaxSpin)
 				a.Tumble += V.new(normal.Z, 0, -normal.X) * approach * M.TumbleFromHit * M.TumbleStiffness
 				b.Tumble -= V.new(normal.Z, 0, -normal.X) * approach * M.TumbleFromHit * M.TumbleStiffness
-				if approach >= M.MinHitSpeed and sim.Fight.Time - sim.LastHit >= M.HitCooldown then
+				if qualifies then
 					-- Use pre-impulse velocities for the approach share.
 					local share = if intoA + intoB > 0 then intoA / (intoA + intoB) else 0.5
 					sim.LastHit, sim.LastEncounter = sim.Fight.Time, sim.Fight.Time
 					table.insert(sim.Metrics.Speeds, approach)
 					table.insert(sim.Metrics.Shares, share)
-					Rules.hit(sim.Fight, approach, share, (ca.X + cb.X) / 2, (ca.Y + cb.Y) / 2)
+					Rules.hit(sim.Fight, approach, share, (ca.X + cb.X) / 2, (ca.Y + cb.Y) / 2, (ca.Z + cb.Z) / 2)
 				end
 			end
 		elseif
@@ -226,6 +303,16 @@ end
 function Pendulum.events(sim)
 	local out = Rules.drainEvents(sim.Fight)
 	for _, e in out do
+		if e.Side and (e.Type == "CastStart" or e.Type == "SignatureContact" or e.Type == "SignatureBlock") then
+			e.Origin = array(Pendulum.center(sim, e.Side))
+			e.Direction = array(Pendulum.fireDirection(sim, e.Side))
+		end
+		if e.Type == "CastRelease" or e.Type == "SignatureContact" then
+			sim.Metrics.Powers[e.Kit] = (sim.Metrics.Powers[e.Kit] or 0) + 1
+		end
+		if e.Type == "CastContact" or e.Type == "SignatureContact" then
+			sim.Metrics.Landed[e.Kit] = (sim.Metrics.Landed[e.Kit] or 0) + (if e.Missed then 0 else 1)
+		end
 		if e.Type == "Power" then
 			e.Origin =
 				{ Pendulum.center(sim, e.Side).X, Pendulum.center(sim, e.Side).Y, Pendulum.center(sim, e.Side).Z }

@@ -128,7 +128,7 @@ end
 function Formula.kilnPool(rarity: string, available: { [string]: boolean }?): { string }
 	local ids = {}
 	for _, def in Glassies.List do
-		if def.Rarity == rarity and (not available or available[def.Id] == true) then
+		if Glassies.isRelease(def.Id) and def.Rarity == rarity and (not available or available[def.Id] == true) then
 			table.insert(ids, def.Id)
 		end
 	end

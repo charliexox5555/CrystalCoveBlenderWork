@@ -25,6 +25,7 @@ local Balance = if script then require(script.Parent.Config.Balance) else requir
 local Glassies = if script then require(script.Parent.Config.Glassies) else require("./Config/Glassies")
 local Powers = if script then require(script.Parent.Config.Powers) else require("./Config/Powers")
 local Formula = if script then require(script.Parent.Formula) else require("./Formula")
+local Signatures = if script then require(script.Parent.SignatureRules) else require("./SignatureRules")
 
 export type FighterSetup = {
 	Id: string,
@@ -35,6 +36,8 @@ export type FighterSetup = {
 }
 
 export type Setup = {
+	ReleaseKits: boolean?,
+	CastsManaged: boolean?,
 	A: FighterSetup,
 	B: FighterSetup,
 	Rng: () -> number,
@@ -47,6 +50,8 @@ export type Setup = {
 export type Event = { [string]: any }
 
 export type Fighter = {
+	BodyCenter: number?,
+	Signature: any?,
 	Side: number,
 	Id: string,
 	Name: string,
@@ -84,6 +89,12 @@ export type Fighter = {
 }
 
 export type State = {
+	ReleaseKits: boolean,
+	CastsManaged: boolean,
+	CastSerial: number,
+	PendingCasts: { any },
+	CastRequests: { any },
+	AbilityResults: { [number]: any },
 	Time: number,
 	Fighters: { Fighter },
 	Rng: () -> number,
@@ -212,6 +223,12 @@ end
 function FightRules.new(setup: Setup): State
 	assert(type(setup.Rng) == "function", "FightRules.new needs an Rng function")
 	local state: State = {
+		ReleaseKits = if setup.ReleaseKits ~= nil then setup.ReleaseKits else Balance.CombatRelease.Enabled,
+		CastsManaged = setup.CastsManaged == true,
+		CastSerial = 0,
+		PendingCasts = {},
+		CastRequests = {},
+		AbilityResults = {},
 		Time = 0,
 		Fighters = {},
 		Rng = setup.Rng,
@@ -227,6 +244,7 @@ function FightRules.new(setup: Setup): State
 	state.Fighters[1] = newFighter(1, setup.A, setup.SweetSpot, setup.Rng)
 	state.Fighters[2] = newFighter(2, setup.B, setup.SweetSpot, setup.Rng)
 	for _, f in state.Fighters do
+		Signatures.new(state, f)
 		if f.Passive == "sturdy" or f.Passive == "lucky" or f.Passive == "glow_core" then
 			emit(state, { Type = "Passive", Side = f.Side, Id = f.Passive, AlwaysOn = true })
 		end
@@ -266,8 +284,17 @@ function FightRules.isFrozen(state: State, side: number): boolean
 end
 
 -- How hard `side` gets knocked back in a hit right now (Slam from the other side). 1 = normal.
-function FightRules.knockbackMultiplier(state: State, side: number): number
+function FightRules.knockbackMultiplier(state: State, side: number, qualifies: boolean?): number
 	local foe = state.Fighters[other(side)]
+	local signature = foe.Signature
+	if
+		signature
+		and qualifies ~= false
+		and signature.Kit.Shape == "contact"
+		and signature.Charge + 1 >= signature.Kit.Every
+	then
+		return signature.Kit.Rebound
+	end
 	if state.Time < foe.SlamUntil then
 		return foe.SpecialParams.KnockbackMult
 	end
@@ -288,13 +315,14 @@ local function overtimeMultiplier(state: State): number
 end
 
 -- Applies damage to `target`, honouring shields and Sturdy. Returns the damage actually taken.
-local function takeDamage(state: State, target: Fighter, amount: number): number
+local function takeDamage(state: State, target: Fighter, amount: number, kind: string?): number
 	if amount <= 0 or state.Time < target.ShieldUntil then
 		return 0
 	end
 	if target.Passive == "sturdy" then
 		amount *= target.PassiveParams.DamageTaken
 	end
+	amount = Signatures.mitigate(state, target, amount, kind or "ranged", emit)
 	target.Hp -= amount
 	return amount
 end
@@ -327,6 +355,9 @@ function FightRules.hitDamage(
 
 	if attacker.FirstHitPending then
 		amount *= F.PerfectFirstHitMult
+	end
+	if attacker.Signature then
+		amount *= 1 + attacker.Signature.ContactBonus
 	end
 	if attacker.Passive == "fizz_burst" and (attacker.HitsDealt + 1) % attacker.PassiveParams.Every == 0 then
 		amount *= 1 + attacker.PassiveParams.DamageBonus
@@ -384,6 +415,7 @@ local function resolveKnockouts(state: State, before: { number }?)
 	end
 	state.Fighters[loser].Hp = 0
 	state.Over = true
+	Signatures.cancel(state)
 	state.Winner = other(loser)
 	state.Reason = reason
 	emit(state, { Type = "Shatter", Side = loser })
@@ -393,13 +425,14 @@ end
 -- Call when the two glassies hit. `speed` = approach speed along the hit normal (studs/s);
 -- `shareA` = fraction of it that came from side 1 moving into the hit (0..1); x, y = contact
 -- point for effects. The swing code decides MinHitSpeed and HitCooldown before calling this.
-function FightRules.hit(state: State, speed: number, shareA: number, x: number?, y: number?)
+function FightRules.hit(state: State, speed: number, shareA: number, x: number?, y: number?, z: number?)
 	if state.Over or not finite(speed) or not finite(shareA) then
 		return
 	end
 	local fighters = state.Fighters
 	local shares = { clamp(shareA, 0, 1), 1 - clamp(shareA, 0, 1) }
 	local before = { fighters[1].Hp / fighters[1].MaxHp, fighters[2].Hp / fighters[2].MaxHp }
+	Signatures.beforeContact(state, emit, if x and y then { x, y, z or 0 } else nil)
 	local raw, crit = {}, {}
 	for side = 1, 2 do
 		raw[side], crit[side] = FightRules.hitDamage(state, fighters[side], fighters[other(side)], speed, shares[side])
@@ -407,7 +440,7 @@ function FightRules.hit(state: State, speed: number, shareA: number, x: number?,
 	local taken, blocked = {}, {}
 	for side = 1, 2 do
 		local target = other(side)
-		taken[target] = takeDamage(state, fighters[target], raw[side])
+		taken[target] = takeDamage(state, fighters[target], raw[side], "body")
 		blocked[target] = raw[side] > 0 and taken[target] == 0
 	end
 	state.Hits += 1
@@ -415,6 +448,7 @@ function FightRules.hit(state: State, speed: number, shareA: number, x: number?,
 		Type = "Hit",
 		X = x,
 		Y = y,
+		Z = z,
 		Speed = speed,
 		Damage = { taken[1], taken[2] }, -- damage taken by side 1, side 2
 		Crit = { crit[1], crit[2] }, -- side 1 / side 2 landed a crit
@@ -469,7 +503,77 @@ function FightRules.hit(state: State, speed: number, shareA: number, x: number?,
 	for side = 1, 2 do
 		fighters[side].NextPowerAt -= F.PowerHitAdvance -- every hit brings the next power closer
 	end
+	Signatures.afterContact(state)
 	resolveKnockouts(state, before)
+end
+
+-- Only the server swing calls this after its validated, debounced 3D turnaround detector.
+function FightRules.turnaround(state: State, side: number)
+	Signatures.turnaround(state, side, emit)
+end
+
+function FightRules.drainCasts(state: State): { any }
+	local requests = state.CastRequests
+	state.CastRequests = {}
+	return requests
+end
+
+function FightRules.releaseCast(state: State, cast, origin, direction): boolean
+	if state.Over or state.AbilityResults[cast.Id] ~= cast or cast.Released then
+		return false
+	end
+	cast.Released, cast.Origin, cast.Direction = true, origin, direction
+	emit(state, {
+		Type = "CastRelease",
+		Side = cast.Side,
+		Kit = cast.Kit,
+		CastId = cast.Id,
+		Shape = cast.Shape,
+		Origin = origin,
+		Direction = direction,
+		Range = cast.Params.Range,
+		Radius = cast.Params.Radius,
+		Arc = cast.Params.Arc,
+		Duration = cast.Params.Duration,
+	})
+	return true
+end
+
+-- One bounded authoritative result per first-batch cast. Ability hits never call hit()/refill contacts.
+function FightRules.resolveAbility(state: State, castId: number, landed: boolean, point): boolean
+	local cast = state.AbilityResults[castId]
+	if state.Over or not cast or not cast.Released then
+		return false
+	end
+	state.AbilityResults[castId] = nil
+	local attacker, target = state.Fighters[cast.Side], state.Fighters[other(cast.Side)]
+	local before = { state.Fighters[1].Hp / state.Fighters[1].MaxHp, state.Fighters[2].Hp / state.Fighters[2].MaxHp }
+	local amount = 0
+	if landed then
+		amount = takeDamage(
+			state,
+			target,
+			attacker.Power
+				* cast.Params.Damage
+				* Formula.typeMultiplier(attacker.Type, target.Type)
+				* overtimeMultiplier(state),
+			"ranged"
+		)
+		attacker.DamageDealt += amount
+	end
+	emit(state, {
+		Type = "CastContact",
+		Side = cast.Side,
+		Target = target.Side,
+		Kit = cast.Kit,
+		CastId = cast.Id,
+		Missed = not landed,
+		Blocked = landed and amount == 0,
+		Amount = amount,
+		Point = if landed then point else nil,
+	})
+	resolveKnockouts(state, before)
+	return true
 end
 
 -- Powers -------------------------------------------------------------------------------------
@@ -495,6 +599,9 @@ function FightRules.triggerPower(state: State, side: number): (boolean, string?)
 	local f = state.Fighters[side]
 	if not f then
 		return false, "side"
+	end
+	if f.Signature then
+		return false, "signature"
 	end
 	if f.PowerTriggers >= F.PowerMaxPerRound then
 		return false, "max"
@@ -550,6 +657,10 @@ end
 -- How close a side's next power is, 0..1 (for a subtle glow in the UI, not a button).
 function FightRules.powerProgress(state: State, side: number): number
 	local f = state.Fighters[side]
+	local progress = Signatures.progress(state, f)
+	if progress ~= nil then
+		return progress
+	end
 	if f.NextPowerAt == math.huge then
 		return 0
 	end
@@ -601,6 +712,7 @@ local function timeout(state: State)
 		winner = if fa > fb then 1 else 2
 	end
 	state.Over = true
+	Signatures.cancel(state)
 	state.Winner = winner
 	state.Reason = "Timeout"
 	emit(state, { Type = "Shatter", Side = other(winner) })
@@ -619,6 +731,17 @@ function FightRules.tick(state: State, dt: number)
 	resolveKnockouts(state, nil)
 	if state.Over then
 		return
+	end
+	Signatures.tick(state, emit)
+	if not state.CastsManaged then
+		-- The stand-in simulator has no positions; native Pendulum always manages real geometry.
+		for _, cast in FightRules.drainCasts(state) do
+			FightRules.releaseCast(state, cast, nil, nil)
+			FightRules.resolveAbility(state, cast.Id, state.Rng() < (cast.Params.LandChance or 1), nil)
+			if state.Over then
+				return
+			end
+		end
 	end
 	if not state.InOvertime and state.Time > F.OvertimeAt then
 		state.InOvertime = true
@@ -642,7 +765,7 @@ function FightRules.snapshot(state: State): { [string]: any }
 		out.Pump[side] = state.Time < f.PumpUntil
 		out.Slam[side] = state.Time < f.SlamUntil
 		out.Effect[side] = {
-			math.max(0, f.ShieldUntil - state.Time),
+			math.max(0, math.max(f.ShieldUntil, if f.Signature then f.Signature.GuardUntil else -1) - state.Time),
 			math.max(0, f.FrozenUntil - state.Time),
 			math.max(0, f.RageUntil - state.Time),
 			math.max(0, f.PumpUntil - state.Time),

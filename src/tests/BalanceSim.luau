@@ -138,7 +138,7 @@ end
 
 function BalanceSim.byRarity(): { [string]: { string } }
 	local groups = {}
-	for _, def in Glassies.List do
+	for _, def in Glassies.ReleaseList do
 		groups[def.Rarity] = groups[def.Rarity] or {}
 		table.insert(groups[def.Rarity], def.Id)
 	end
@@ -158,7 +158,7 @@ function BalanceSim.powerTable(n: number)
 		info.StatMultiplier = 1
 	end
 	local ids = {}
-	for _, def in Glassies.List do
+	for _, def in Glassies.ReleaseList do
 		table.insert(ids, def.Id)
 	end
 	table.sort(ids)
@@ -184,7 +184,14 @@ function BalanceSim.powerTable(n: number)
 	for _, id in ids do
 		local def = Glassies.get(id)
 		local rate = totals[id] / (#ids - 1)
-		table.insert(rows, { Id = id, Rarity = def.Rarity, Type = def.Type, Passive = def.Passive, Special = def.Special, WinRate = rate })
+		table.insert(rows, {
+			Id = id,
+			Rarity = def.Rarity,
+			Type = def.Type,
+			Passive = def.Passive,
+			Special = def.Special,
+			WinRate = rate,
+		})
 		addTo(byPassive, def.Passive, rate)
 		addTo(bySpecial, def.Special, rate)
 		addTo(byType, def.Type, rate)
@@ -199,7 +206,7 @@ end
 function BalanceSim.suspense(n: number)
 	local totals = { Comebacks = 0, LeadChanges = 0, Powers = 0 }
 	local misses, aimed = 0, 0
-	for _, def in Glassies.List do
+	for _, def in Glassies.ReleaseList do
 		local r = BalanceSim.matchup(def.Id, def.Id, n)
 		for k in totals do
 			totals[k] += r[k]
@@ -208,7 +215,7 @@ function BalanceSim.suspense(n: number)
 		aimed += r.Aimed
 	end
 	for k in totals do
-		totals[k] /= #Glassies.List
+		totals[k] /= #Glassies.ReleaseList
 	end
 	totals.PowerMisses = if aimed > 0 then misses / aimed else 0
 	return totals
@@ -247,14 +254,23 @@ function BalanceSim.report(roundsPerMatchup: number?): string
 	for _, a in Glassies.Starters do
 		local row = {}
 		for _, b in Glassies.Starters do
-			table.insert(row, if a == b then "  -  " else string.format("%5s", pct(BalanceSim.matchup(a, b, n).WinRate)))
+			table.insert(
+				row,
+				if a == b then "  -  " else string.format("%5s", pct(BalanceSim.matchup(a, b, n).WinRate))
+			)
 		end
 		add("  %-6s %s", a, table.concat(row, " "))
 	end
 
 	add("")
-	add("Aim: Perfect vs worst (pop mirror): %s", pct(BalanceSim.matchup("pop", "pop", n, { AimA = "perfect", AimB = "worst" }).WinRate))
-	add("Aim: Perfect vs average (aim 0.8):  %s", pct(BalanceSim.matchup("pop", "pop", n, { AimA = "perfect", AimB = 0.8 }).WinRate))
+	add(
+		"Aim: Perfect vs worst (pop mirror): %s",
+		pct(BalanceSim.matchup("pop", "pop", n, { AimA = "perfect", AimB = "worst" }).WinRate)
+	)
+	add(
+		"Aim: Perfect vs average (aim 0.8):  %s",
+		pct(BalanceSim.matchup("pop", "pop", n, { AimA = "perfect", AimB = 0.8 }).WinRate)
+	)
 	local luck = BalanceSim.suspense(math.max(20, n // 4))
 	add(
 		"Luck (all mirrors): %s comebacks, %.1f lead changes a round, %.1f powers per glassy, %s of aimed powers miss",

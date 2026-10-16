@@ -63,7 +63,7 @@ function EconomySim.simulate(seed: number?)
 	local e, econ = Balance.EconomyModel, Balance.Economy
 	local matchSeconds = EconomySim.matchSeconds()
 	local kilnTotal = 0
-	for _, def in Glassies.List do
+	for _, def in Glassies.ReleaseList do
 		if Balance.Rarities[def.Rarity].CrateWeight > 0 then
 			kilnTotal += 1
 		end
@@ -155,16 +155,34 @@ function EconomySim.report(): string
 	local function add(fmt: string, ...)
 		table.insert(lines, string.format(fmt, ...))
 	end
-	add("Glass Clash economy report (%d players, %d min a day for %d days, %d%% wins, %d%% bot matches)", e.Players, e.SessionMinutes, e.Days, e.WinRate * 100, e.BotMatchShare * 100)
+	add(
+		"Glass Clash economy report (%d players, %d min a day for %d days, %d%% wins, %d%% bot matches)",
+		e.Players,
+		e.SessionMinutes,
+		e.Days,
+		e.WinRate * 100,
+		e.BotMatchShare * 100
+	)
 	add("")
-	add("Match length ~%.1f min (%.2f rounds), %.1f matches per hour", r.MatchSeconds / 60, EconomySim.expectedRounds(0.5), matchesPerHour)
+	add(
+		"Match length ~%.1f min (%.2f rounds), %.1f matches per hour",
+		r.MatchSeconds / 60,
+		EconomySim.expectedRounds(0.5),
+		matchesPerHour
+	)
 	add("Kiln: %d coins a pull, %d glassies inside", econ.KilnCoinCost, r.KilnGlassies)
 	add("Pulls on day 1: %d   by day 30: %d", r.PullsDay1, r.PullsDay30)
 	add("Unique glassies (of %d + 3 starters): day 7 %d, day 30 %d", r.KilnGlassies, r.UniqueDay7, r.UniqueDay30)
 	add("")
 	add("Median play time to a player's first:")
 	for _, rarity in { "Rare", "Epic", "Legendary", "Mythic" } do
-		add("  %-9s %s  (%d%% of players get one within %d days)", rarity, minutes(r.FirstMinutes[rarity]), math.floor(r.FirstShare[rarity] * 100 + 0.5), e.Days)
+		add(
+			"  %-9s %s  (%d%% of players get one within %d days)",
+			rarity,
+			minutes(r.FirstMinutes[rarity]),
+			math.floor(r.FirstShare[rarity] * 100 + 0.5),
+			e.Days
+		)
 	end
 	add("")
 	add("Kiln odds shown to players:")

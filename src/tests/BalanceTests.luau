@@ -26,7 +26,12 @@ return function(t, deps)
 	end)
 
 	t.test("aim matters but doesn't decide everything", function()
-		t.between(BalanceSim.matchup("pop", "pop", N * 2, { AimA = "perfect", AimB = "worst" }).WinRate, 0.53, 0.75, "perfect vs worst")
+		t.between(
+			BalanceSim.matchup("pop", "pop", N * 2, { AimA = "perfect", AimB = "worst" }).WinRate,
+			0.53,
+			0.75,
+			"perfect vs worst"
+		)
 	end)
 
 	t.test("luck keeps it exciting: comebacks, lead changes, misses", function()
@@ -45,7 +50,7 @@ return function(t, deps)
 
 	t.test("every glassy is fair at equal stats (40-60% vs the field)", function()
 		local rows = BalanceSim.powerTable(10)
-		t.eq(#rows, #Glassies.List, "all glassies rated")
+		t.eq(#rows, #Glassies.ReleaseList, "all 24 release glassies rated")
 		for _, row in rows do
 			t.between(row.WinRate, 0.38, 0.62, row.Id .. " win rate vs the field")
 		end

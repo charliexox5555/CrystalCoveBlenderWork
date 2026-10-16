@@ -6,6 +6,8 @@ Production checkpoint: all 24 source packages and the shared VFX kit are produce
 
 ## Creator's latest direction
 
+Current engineering checkpoint: creator reconnected Rojo; source sync is verified. [First-six implementation](testing/combat_release/FIRST_SIX_CHECKPOINT.md) adds server charge/guard/cast rules, validated turnarounds, bounded rays/sweeps and scene-owned VFX. 88 Lune tests pass; one native Pop/Axe fight was observed, with broader feel/branch coverage left to the creator after their lower-usage request. Global signatures remain disabled; refreshed audio is wired into normal playback. The fixed release filter contains 24 identities, with all 37 definitions/owned legacy data preserved. Remaining 18 kits and full native/balance validation remain pending. [Earlier art evidence](testing/combat_release/VFX_AUDIO_PROTOTYPES.md) and `places/CombatRelease_VFX_Audio_v2.rbxm` preserve the template library.
+
 The creator approved the combat direction and wants most existing models improved in Blender, new Blender models, a good release roster of **exactly 24**, and a researched approach to excellent VFX. Keep release scope simple and stop adding glassies after those 24. This session prepares the plan/prompt; production begins in the new chat.
 
 This handoff takes priority over earlier draft phrases that said “preserve existing bodies unchanged,” “24 candidates,” or “stop after a six-glassy shortlist.” Preserve the identities and IDs of existing glassies, while improving their geometry, proportions and finish. The first six are a production checkpoint; **all 24 are the release target**.

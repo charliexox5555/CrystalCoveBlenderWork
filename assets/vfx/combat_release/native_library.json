@@ -1,0 +1,635 @@
+{
+  "status": "Editable native art prototypes; not connected to live rules",
+  "textures": {
+    "glass_glint": "rbxassetid://118014953401567",
+    "directional_streak": "rbxassetid://125001828353860",
+    "soft_puff": "rbxassetid://95994848531562",
+    "shard_fleck": "rbxassetid://119749428254490",
+    "electricity_strip": "rbxassetid://110100143277445",
+    "droplet_mask": "rbxassetid://118823344389220",
+    "glass_dust_4x4": "rbxassetid://101019590487297",
+    "pressure_pop_4x4": "rbxassetid://130955555778708"
+  },
+  "particles": [
+    {
+      "name": "ContactGlint",
+      "texture": "glass_glint",
+      "count": 4,
+      "life": [
+        0.12,
+        0.2
+      ],
+      "speed": [
+        1,
+        3
+      ],
+      "size": [
+        0.12,
+        0.28
+      ]
+    },
+    {
+      "name": "GlassChips",
+      "texture": "shard_fleck",
+      "count": 6,
+      "life": [
+        0.18,
+        0.4
+      ],
+      "speed": [
+        2,
+        5
+      ],
+      "size": [
+        0.1,
+        0.16
+      ]
+    },
+    {
+      "name": "GlassDust",
+      "texture": "glass_dust_4x4",
+      "count": 2,
+      "life": [
+        0.65,
+        0.65
+      ],
+      "speed": [
+        0.3,
+        0.8
+      ],
+      "size": [
+        0.6,
+        1.5
+      ],
+      "flipbook": true
+    },
+    {
+      "name": "PressurePop",
+      "texture": "pressure_pop_4x4",
+      "count": 1,
+      "life": [
+        0.65,
+        0.65
+      ],
+      "speed": [
+        0,
+        0
+      ],
+      "size": [
+        0.7,
+        1.6
+      ],
+      "flipbook": true
+    },
+    {
+      "name": "Droplets",
+      "texture": "droplet_mask",
+      "count": 5,
+      "life": [
+        0.22,
+        0.4
+      ],
+      "speed": [
+        2,
+        4
+      ],
+      "size": [
+        0.12,
+        0.22
+      ]
+    },
+    {
+      "name": "Frost",
+      "texture": "soft_puff",
+      "count": 3,
+      "life": [
+        0.2,
+        0.4
+      ],
+      "speed": [
+        0.5,
+        1.5
+      ],
+      "size": [
+        0.3,
+        0.6
+      ]
+    }
+  ],
+  "beams": [
+    {
+      "name": "RayCore",
+      "texture": "directional_streak",
+      "width": 0.12
+    },
+    {
+      "name": "ArcBolt",
+      "texture": "electricity_strip",
+      "width": 0.18
+    },
+    {
+      "name": "BrineTether",
+      "texture": "droplet_mask",
+      "width": 0.1
+    },
+    {
+      "name": "SandRibbon",
+      "texture": "directional_streak",
+      "width": 0.14
+    }
+  ],
+  "audio": [
+    {
+      "name": "ClinkLightA",
+      "id": "rbxassetid://9119927252",
+      "volume": 0.42,
+      "pitch": 1.0,
+      "preview_seconds": 0.6,
+      "creator": "ProSoundEffects",
+      "url": "https://create.roblox.com/store/asset/9119927252",
+      "start_seconds": 0,
+      "fade_seconds": 0.035
+    },
+    {
+      "name": "ClinkLightB",
+      "id": "rbxassetid://9119927012",
+      "volume": 0.38,
+      "pitch": 1.08,
+      "preview_seconds": 0.3,
+      "creator": "ProSoundEffects",
+      "url": "https://create.roblox.com/store/asset/9119927012",
+      "start_seconds": 0.328,
+      "fade_seconds": 0.035
+    },
+    {
+      "name": "ClinkHeavy",
+      "id": "rbxassetid://9113557731",
+      "volume": 0.48,
+      "pitch": 0.92,
+      "preview_seconds": 0.32,
+      "creator": "ProSoundEffects",
+      "url": "https://create.roblox.com/store/asset/9113557731",
+      "start_seconds": 0,
+      "fade_seconds": 0.035
+    },
+    {
+      "name": "ShatterHeavy",
+      "id": "rbxassetid://9114173350",
+      "volume": 0.64,
+      "pitch": 1.0,
+      "preview_seconds": 1.65,
+      "creator": "ProSoundEffects",
+      "url": "https://create.roblox.com/store/asset/9114173350",
+      "start_seconds": 0.506,
+      "fade_seconds": 0.06
+    },
+    {
+      "name": "ShatterScatter",
+      "id": "rbxassetid://9114615010",
+      "volume": 0.25,
+      "pitch": 1.24,
+      "preview_seconds": 1.35,
+      "creator": "ProSoundEffects",
+      "url": "https://create.roblox.com/store/asset/9114615010",
+      "start_seconds": 0.288,
+      "fade_seconds": 0.06
+    },
+    {
+      "name": "ChargeGlass",
+      "id": "rbxassetid://9116394545",
+      "volume": 1.3,
+      "pitch": 1.1,
+      "preview_seconds": 0.7,
+      "creator": "ProSoundEffects",
+      "url": "https://create.roblox.com/store/asset/9116394545",
+      "start_seconds": 0,
+      "fade_seconds": 0.035
+    },
+    {
+      "name": "LidBlock",
+      "id": "rbxassetid://9125782642",
+      "volume": 0.45,
+      "pitch": 1.15,
+      "preview_seconds": 0.65,
+      "creator": "ProSoundEffects",
+      "url": "https://create.roblox.com/store/asset/9125782642",
+      "start_seconds": 0,
+      "fade_seconds": 0.035
+    },
+    {
+      "name": "LidClick",
+      "id": "rbxassetid://9116737766",
+      "volume": 0.24,
+      "pitch": 1.25,
+      "preview_seconds": 0.32,
+      "creator": "ProSoundEffects",
+      "url": "https://create.roblox.com/store/asset/9116737766",
+      "start_seconds": 0,
+      "fade_seconds": 0.035
+    },
+    {
+      "name": "AxeAir",
+      "id": "rbxassetid://9120704978",
+      "volume": 0.3,
+      "pitch": 0.9,
+      "preview_seconds": 0.5,
+      "creator": "ProSoundEffects",
+      "url": "https://create.roblox.com/store/asset/9120704978",
+      "start_seconds": 0,
+      "fade_seconds": 0.035
+    },
+    {
+      "name": "ElectricSnap",
+      "id": "rbxassetid://9114277757",
+      "volume": 0.38,
+      "pitch": 1.12,
+      "preview_seconds": 0.45,
+      "creator": "ProSoundEffects",
+      "url": "https://create.roblox.com/store/asset/9114277757",
+      "start_seconds": 0,
+      "fade_seconds": 0.035
+    },
+    {
+      "name": "WaterSlap",
+      "id": "rbxassetid://9125702803",
+      "volume": 0.36,
+      "pitch": 1.05,
+      "preview_seconds": 0.7,
+      "creator": "ProSoundEffects",
+      "url": "https://create.roblox.com/store/asset/9125702803",
+      "start_seconds": 0,
+      "fade_seconds": 0.035
+    },
+    {
+      "name": "BubblePop",
+      "id": "rbxassetid://106984966606682",
+      "volume": 0.33,
+      "pitch": 0.95,
+      "preview_seconds": 0.25,
+      "creator": "DailySoundsFX",
+      "url": "https://create.roblox.com/store/asset/106984966606682",
+      "start_seconds": 0,
+      "fade_seconds": 0.035
+    },
+    {
+      "name": "PressureAir",
+      "id": "rbxassetid://9125648149",
+      "volume": 0.27,
+      "pitch": 0.85,
+      "preview_seconds": 0.7,
+      "creator": "ProSoundEffects",
+      "url": "https://create.roblox.com/store/asset/9125648149",
+      "start_seconds": 0.045,
+      "fade_seconds": 0.035
+    },
+    {
+      "name": "CapRattle",
+      "id": "rbxassetid://9116786503",
+      "volume": 0.19,
+      "pitch": 1.45,
+      "preview_seconds": 0.25,
+      "creator": "ProSoundEffects",
+      "url": "https://create.roblox.com/store/asset/9116786503",
+      "start_seconds": 0.168,
+      "fade_seconds": 0.035
+    }
+  ],
+  "kits": [
+    {
+      "id": "pop",
+      "shape": "pressure_ring",
+      "trigger": "contact_3",
+      "windup": 0.12,
+      "action": 0.14,
+      "tail": 0.25,
+      "release_sound": "BubblePop",
+      "contact_sound": "ClinkHeavy",
+      "meshes": [
+        "Ring",
+        "BubbleDome"
+      ]
+    },
+    {
+      "id": "jam",
+      "shape": "lid_guard",
+      "trigger": "turnaround_2",
+      "windup": 0.2,
+      "action": 0.14,
+      "tail": 0.25,
+      "release_sound": "LidClick",
+      "contact_sound": "LidBlock",
+      "meshes": [
+        "GuardPlate",
+        "Ring"
+      ]
+    },
+    {
+      "id": "prism",
+      "shape": "narrow_ray",
+      "trigger": "ready_timer",
+      "windup": 0.45,
+      "action": 0.14,
+      "tail": 0.2,
+      "release_sound": "ChargeGlass",
+      "contact_sound": "ClinkLightA",
+      "meshes": [
+        "Ring",
+        "CrystalChip"
+      ]
+    },
+    {
+      "id": "crescent_axe",
+      "shape": "axe_sweep",
+      "trigger": "turnaround_2",
+      "windup": 0.3,
+      "action": 0.14,
+      "tail": 0.25,
+      "release_sound": "AxeAir",
+      "contact_sound": "ClinkHeavy",
+      "meshes": [
+        "CurvedSlash",
+        "CrystalChip"
+      ]
+    },
+    {
+      "id": "briar_flask",
+      "shape": "thorn_bloom",
+      "trigger": "turnaround_3_then_contact",
+      "windup": 0.18,
+      "action": 0.12,
+      "tail": 0.25,
+      "release_sound": "ClinkLightB",
+      "contact_sound": "ClinkLightA",
+      "meshes": [
+        "Thorn",
+        "CrystalChip"
+      ]
+    },
+    {
+      "id": "arc_coil",
+      "shape": "coil_bolt",
+      "trigger": "contact_3",
+      "windup": 0.35,
+      "action": 0.14,
+      "tail": 0.2,
+      "release_sound": "ElectricSnap",
+      "contact_sound": "ClinkLightA",
+      "meshes": [
+        "Ring",
+        "CrystalChip"
+      ]
+    },
+    {
+      "id": "milk_bottle",
+      "shape": "foam_seal",
+      "trigger": "half_hp_once",
+      "windup": 0.5,
+      "action": 0.3,
+      "tail": 0.25,
+      "release_sound": "BubblePop",
+      "contact_sound": "ClinkLightB",
+      "meshes": [
+        "Ring",
+        "BubbleDome"
+      ]
+    },
+    {
+      "id": "pickle_jar",
+      "shape": "brine_tether",
+      "trigger": "contact_3",
+      "windup": 0.15,
+      "action": 0.2,
+      "tail": 0.25,
+      "release_sound": "WaterSlap",
+      "contact_sound": "BubblePop",
+      "meshes": [
+        "Droplet",
+        "Ring"
+      ]
+    },
+    {
+      "id": "ketchup_bottle",
+      "shape": "splat_blob",
+      "trigger": "contact_3_then_next_contact",
+      "windup": 0.2,
+      "action": 0.15,
+      "tail": 0.25,
+      "release_sound": "WaterSlap",
+      "contact_sound": "BubblePop",
+      "meshes": [
+        "Droplet",
+        "SplashSheet"
+      ]
+    },
+    {
+      "id": "glass_cup",
+      "shape": "rim_rush",
+      "trigger": "turnaround_2",
+      "windup": 0.2,
+      "action": 0.3,
+      "tail": 0.25,
+      "release_sound": "ChargeGlass",
+      "contact_sound": "ClinkHeavy",
+      "meshes": [
+        "HalfRing",
+        "Ring"
+      ]
+    },
+    {
+      "id": "water_jug",
+      "shape": "splash_cone",
+      "trigger": "contact_2_then_turnaround",
+      "windup": 0.25,
+      "action": 0.25,
+      "tail": 0.25,
+      "release_sound": "WaterSlap",
+      "contact_sound": "WaterSlap",
+      "meshes": [
+        "SplashSheet",
+        "Droplet"
+      ]
+    },
+    {
+      "id": "lemonade_bottle",
+      "shape": "pip_fan",
+      "trigger": "ready_timer",
+      "windup": 0.4,
+      "action": 0.4,
+      "tail": 0.2,
+      "release_sound": "BubblePop",
+      "contact_sound": "ClinkLightB",
+      "meshes": [
+        "Droplet",
+        "Ring"
+      ]
+    },
+    {
+      "id": "mason_jar",
+      "shape": "counter_bands",
+      "trigger": "heavy_received_contact",
+      "windup": 0.2,
+      "action": 0.15,
+      "tail": 0.25,
+      "release_sound": "LidClick",
+      "contact_sound": "ClinkHeavy",
+      "meshes": [
+        "HalfRing",
+        "Ring"
+      ]
+    },
+    {
+      "id": "hot_sauce",
+      "shape": "heat_rush",
+      "trigger": "half_hp_once",
+      "windup": 0.25,
+      "action": 0.3,
+      "tail": 0.25,
+      "release_sound": "PressureAir",
+      "contact_sound": "ClinkHeavy",
+      "meshes": [
+        "Thorn",
+        "HalfRing"
+      ]
+    },
+    {
+      "id": "crystal_tumbler",
+      "shape": "mirror_return",
+      "trigger": "ready_timer_catch_or_contact",
+      "windup": 0.35,
+      "action": 0.14,
+      "tail": 0.2,
+      "release_sound": "ClinkLightA",
+      "contact_sound": "ClinkLightB",
+      "meshes": [
+        "GuardPlate",
+        "CrystalChip"
+      ]
+    },
+    {
+      "id": "chime",
+      "shape": "traveling_shell",
+      "trigger": "turnaround_2",
+      "windup": 0.2,
+      "action": 0.6,
+      "tail": 0.25,
+      "release_sound": "ChargeGlass",
+      "contact_sound": "ClinkLightB",
+      "meshes": [
+        "Ring",
+        "HalfRing"
+      ]
+    },
+    {
+      "id": "hourglass",
+      "shape": "sand_shot",
+      "trigger": "stored_damage_then_turnaround",
+      "windup": 0.3,
+      "action": 0.4,
+      "tail": 0.25,
+      "release_sound": "AxeAir",
+      "contact_sound": "ClinkLightB",
+      "meshes": [
+        "Droplet",
+        "Ring"
+      ]
+    },
+    {
+      "id": "frostglobe",
+      "shape": "frost_cone",
+      "trigger": "ready_timer",
+      "windup": 0.5,
+      "action": 0.3,
+      "tail": 0.25,
+      "release_sound": "PressureAir",
+      "contact_sound": "ClinkLightA",
+      "meshes": [
+        "PuffSheet",
+        "CrystalChip"
+      ]
+    },
+    {
+      "id": "prism_blade",
+      "shape": "projectile_slash",
+      "trigger": "turnaround_2",
+      "windup": 0.3,
+      "action": 0.4,
+      "tail": 0.25,
+      "release_sound": "AxeAir",
+      "contact_sound": "ClinkLightA",
+      "meshes": [
+        "CurvedSlash",
+        "HalfRing"
+      ]
+    },
+    {
+      "id": "rocket_pop",
+      "shape": "booster",
+      "trigger": "turnaround_3",
+      "windup": 0.3,
+      "action": 0.4,
+      "tail": 0.25,
+      "release_sound": "PressureAir",
+      "contact_sound": "BubblePop",
+      "meshes": [
+        "Thorn",
+        "Ring"
+      ]
+    },
+    {
+      "id": "glass_duck",
+      "shape": "bubble_guard",
+      "trigger": "low_hp_once",
+      "windup": 0.2,
+      "action": 0.25,
+      "tail": 0.25,
+      "release_sound": "BubblePop",
+      "contact_sound": "BubblePop",
+      "meshes": [
+        "BubbleDome",
+        "Ring"
+      ]
+    },
+    {
+      "id": "comet",
+      "shape": "star_echo",
+      "trigger": "charged_contact_then_turnaround",
+      "windup": 0.3,
+      "action": 0.5,
+      "tail": 0.25,
+      "release_sound": "ChargeGlass",
+      "contact_sound": "ClinkLightB",
+      "meshes": [
+        "CrystalChip",
+        "HalfRing"
+      ]
+    },
+    {
+      "id": "glass_dragon",
+      "shape": "three_pulse_cone",
+      "trigger": "long_ready_timer",
+      "windup": 0.7,
+      "action": 0.6,
+      "tail": 0.25,
+      "release_sound": "PressureAir",
+      "contact_sound": "ClinkLightB",
+      "meshes": [
+        "PuffSheet",
+        "SplashSheet"
+      ]
+    },
+    {
+      "id": "galaxy_orb",
+      "shape": "gravity_well",
+      "trigger": "long_ready_timer",
+      "windup": 0.7,
+      "action": 0.7,
+      "tail": 0.3,
+      "release_sound": "ChargeGlass",
+      "contact_sound": "BubblePop",
+      "meshes": [
+        "Ring",
+        "HalfRing"
+      ]
+    }
+  ]
+}

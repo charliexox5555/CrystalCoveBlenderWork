@@ -31,9 +31,11 @@ Generated from actual package manifests. Blender exports and round-trips do not 
 
 Exported: **24/24**. Native imported/normalized: **24/24**. Live kits remain pending.
 
+Native VFX follow-up: 24 editable kit template folders, ten shared meshes, six burst templates, four beams and 14 replacement sound cues are saved in `ServerStorage.CombatReleaseStaged.VFX.Combat`; 612 template checks pass. After the creator connected Rojo, first-six rules/client effects were implemented and a native Pop/Axe fight observed. 88 Lune tests pass. [Current checkpoint and creator test](../../testing/combat_release/FIRST_SIX_CHECKPOINT.md). Global signatures remain off; remaining kits/native feel review are pending. New audio is wired into normal playback but has no subjective listening approval.
+
 ## Required next gate
 
-Imports are normalized and staged under ServerStorage.CombatReleaseStaged. All 24 native bounds/pivots/part flags and 384 shard origins pass checks; the first six were reviewed at the fixed camera and current sky. Next: authoritative trigger/attack vocabulary and live six-kit/VFX animation proof, then all-24 kit expansion, profile ownership audit, deliberate rarity/acquisition mapping, release allowlist, simulator/native/multiplayer/performance checks. No live pools or inventories changed in this asset pass.
+Imports are normalized and staged under ServerStorage.CombatReleaseStaged. All 24 native bounds/pivots/part flags and 384 shard origins pass checks; the first six were reviewed at the fixed camera and current sky. The first-six vocabulary is now implemented behind a prototype flag; complete creator/native review, then the remaining 18 kits, asset promotion, real signature calibration and multiplayer/performance checks. Release filtering is staged; installed-art acquisition still uses the original nine-item pool. No inventory migration occurred.
 
 ## Previews
 

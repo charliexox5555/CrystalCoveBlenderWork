@@ -4,6 +4,85 @@
 
 local Balance = {}
 
+-- Staged release signatures. Enable globally only after native kit validation.
+Balance.CombatRelease = {
+	Enabled = false,
+	TurnMinSeconds = 0.45,
+	TurnCollisionQuiet = 0.2,
+	TurnRiseSpeed = 0.6,
+	TurnRiseStuds = 0.35,
+	TurnMinAngle = 0.35,
+	SlowFloor = 0.65,
+	Kits = {
+		pop = {
+			Trigger = "contact",
+			Every = 3,
+			ContactBonus = 0.6,
+			Rebound = 1.2,
+			Windup = 0,
+			Shape = "contact",
+			Duration = 0.14,
+		},
+		jam = { Trigger = "turnaround", Every = 2, Windup = 0.15, Shape = "guard", Duration = 2, Mitigation = 0.4 },
+		prism = {
+			Trigger = "timer",
+			First = 5.5,
+			Interval = 8,
+			Jitter = 1,
+			Windup = 0.45,
+			Shape = "ray",
+			Range = 8,
+			Radius = 0.14,
+			Damage = 0.55,
+			Duration = 0.14,
+			LandChance = 0.65,
+		},
+		crescent_axe = {
+			Trigger = "turnaround",
+			Every = 2,
+			Windup = 0.3,
+			Shape = "sweep",
+			Range = 2.4,
+			Radius = 0.4,
+			Arc = 1.4,
+			Damage = 0.5,
+			Duration = 0.14,
+			LandChance = 0.6,
+		},
+		briar_flask = {
+			Trigger = "turnaround",
+			Every = 3,
+			ContactBonus = 0.8,
+			Windup = 0,
+			Shape = "armed_contact",
+			Duration = 0.14,
+		},
+		arc_coil = {
+			Trigger = "contact",
+			Every = 3,
+			Windup = 0.35,
+			Shape = "ray",
+			Range = 7,
+			Radius = 0.18,
+			Damage = 0.6,
+			Duration = 0.14,
+			LandChance = 0.65,
+		},
+	},
+}
+
+Balance.CombatVFX = {
+	Tail = 0.25,
+	ChargeDim = 0.78,
+	ChargeLit = 0.1,
+	GuardCameraBias = 0.65,
+	GuardTransparency = 0.3,
+	ChargeRingScale = 0.5,
+	PressureRingScale = 1.8,
+	ContactScale = 0.75,
+	MaxShardsPerGlassy = 20,
+}
+
 -- Free retention plumbing only; existing economy/fight/content values are unchanged.
 Balance.Retention = {
 	TickSeconds = 1,

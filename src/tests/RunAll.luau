@@ -17,6 +17,7 @@ local order = {
 	"BalanceTests",
 	"EconomyTests",
 	"PendulumTests",
+	"SignatureTests",
 	"SnapshotCodecTests",
 	"MatchRunnerTests",
 	"ProfileTests",

@@ -45,7 +45,9 @@ function Portrait.new(parent, id, size, position, name)
 		or RS.Assets.Glassies[if def.Type == "Heavy" then "jam" elseif def.Type == "Sharp" then "prism" else "pop"]
 	local parts = { source.Body }
 	for _, detail in (source:FindFirstChild("Details") and source.Details:GetChildren() or {}) do
-		table.insert(parts, detail)
+		if not detail:GetAttribute("EffectOnly") then
+			table.insert(parts, detail)
+		end
 	end
 	for _, template in parts do
 		local part = template:Clone()

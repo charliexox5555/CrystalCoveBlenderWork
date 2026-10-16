@@ -538,6 +538,98 @@ local list: { GlassyDef } = {
 	},
 }
 
+-- Release additions; existing 31 definitions/IDs remain recoverable.
+for _, definition in
+	{
+		{
+			Id = "crescent_axe",
+			Name = "Crescent Axe",
+			Type = "Sharp",
+			Rarity = "Rare",
+			Base = { Power = 21, HP = 105, Swing = 14 },
+			Passive = "sharp_edge",
+			Special = "slam",
+			Radius = 0.75,
+			Tint = "#BBA4F4",
+			ClinkPitch = 1.1,
+			Asset = "crescent_axe",
+			Description = "Winds up a toy-glass axe after two turnarounds.",
+		},
+		{
+			Id = "briar_flask",
+			Name = "Briar Flask",
+			Type = "Heavy",
+			Rarity = "Rare",
+			Base = { Power = 20, HP = 112, Swing = 6 },
+			Passive = "thorns",
+			Special = "slam",
+			Radius = 0.75,
+			Tint = "#47D5A0",
+			ClinkPitch = 1.1,
+			Asset = "briar_flask",
+			Description = "Grows three glass thorns, then spends them on a clash.",
+		},
+		{
+			Id = "arc_coil",
+			Name = "Arc Coil",
+			Type = "Fizzy",
+			Rarity = "Rare",
+			Base = { Power = 20, HP = 110, Swing = 10 },
+			Passive = "fizz_burst",
+			Special = "beam",
+			Radius = 0.75,
+			Tint = "#79E8FF",
+			ClinkPitch = 1.1,
+			Asset = "arc_coil",
+			Description = "Stores three clashes and fires a crackling aimed arc.",
+		},
+		{
+			Id = "chime",
+			Name = "Chime",
+			Type = "Sharp",
+			Rarity = "Uncommon",
+			Base = { Power = 21, HP = 105, Swing = 14 },
+			Passive = "lucky",
+			Special = "beam",
+			Radius = 0.75,
+			Tint = "#8DE7E5",
+			ClinkPitch = 1.1,
+			Asset = "chime",
+			Description = "Rings a traveling glass pulse after two turnarounds.",
+		},
+		{
+			Id = "hourglass",
+			Name = "Hourglass",
+			Type = "Heavy",
+			Rarity = "Rare",
+			Base = { Power = 20, HP = 112, Swing = 6 },
+			Passive = "sturdy",
+			Special = "beam",
+			Radius = 0.75,
+			Tint = "#F3BC70",
+			ClinkPitch = 1.1,
+			Asset = "hourglass",
+			Description = "Stores a little damage and returns it as a sand shot.",
+		},
+		{
+			Id = "frostglobe",
+			Name = "Frostglobe",
+			Type = "Fizzy",
+			Rarity = "Rare",
+			Base = { Power = 20, HP = 110, Swing = 10 },
+			Passive = "glow_core",
+			Special = "freeze",
+			Radius = 0.75,
+			Tint = "#A6DFFF",
+			ClinkPitch = 1.1,
+			Asset = "frostglobe",
+			Description = "Sends a small frosty puff to soften the next swing.",
+		},
+	}
+do
+	table.insert(list, definition)
+end
+
 local Glassies = {
 	List = list,
 	ById = {} :: { [string]: GlassyDef },
@@ -555,4 +647,23 @@ function Glassies.get(id: string): GlassyDef
 	return def
 end
 
+local ReleaseRoster = if script then require(script.Parent.ReleaseRoster) else require("./ReleaseRoster")
+Glassies.ReleaseList = {}
+for _, id in ReleaseRoster.Ids do
+	table.insert(Glassies.ReleaseList, Glassies.get(id))
+end
+function Glassies.isRelease(id: string): boolean
+	return ReleaseRoster.ById[id] == true
+end
+-- Owned legacy entries remain inspectable; they do not inflate the release's 24-item total.
+function Glassies.visible(collection)
+	local entries = table.clone(Glassies.ReleaseList)
+	for _, definition in list do
+		local owned = collection and collection[definition.Id]
+		if not Glassies.isRelease(definition.Id) and owned and (owned.Count == nil or owned.Count > 0) then
+			table.insert(entries, definition)
+		end
+	end
+	return entries
+end
 return Glassies

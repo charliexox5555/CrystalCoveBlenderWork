@@ -1,0 +1,114 @@
+{
+  "1": {
+    "name": "ClinkLightA",
+    "loaded": true,
+    "start": 0,
+    "preview": 0.6,
+    "id": "rbxassetid://9119927252",
+    "length": 0.5032916666666667
+  },
+  "2": {
+    "name": "ClinkLightB",
+    "loaded": true,
+    "start": 0.328,
+    "preview": 0.3,
+    "id": "rbxassetid://9119927012",
+    "length": 0.7065625
+  },
+  "3": {
+    "name": "ClinkHeavy",
+    "loaded": true,
+    "start": 0,
+    "preview": 0.32,
+    "id": "rbxassetid://9113557731",
+    "length": 0.9570625
+  },
+  "4": {
+    "name": "ShatterHeavy",
+    "loaded": true,
+    "start": 0.506,
+    "preview": 1.65,
+    "id": "rbxassetid://9114173350",
+    "length": 2.272
+  },
+  "5": {
+    "name": "ShatterScatter",
+    "loaded": true,
+    "start": 0.288,
+    "preview": 1.35,
+    "id": "rbxassetid://9114615010",
+    "length": 2.058666666666667
+  },
+  "6": {
+    "name": "ChargeGlass",
+    "loaded": true,
+    "start": 0,
+    "preview": 0.7,
+    "id": "rbxassetid://9116394545",
+    "length": 1.4305625
+  },
+  "7": {
+    "name": "LidBlock",
+    "loaded": true,
+    "start": 0,
+    "preview": 0.65,
+    "id": "rbxassetid://9125782642",
+    "length": 0.902875
+  },
+  "8": {
+    "name": "LidClick",
+    "loaded": true,
+    "start": 0,
+    "preview": 0.32,
+    "id": "rbxassetid://9116737766",
+    "length": 1.0045
+  },
+  "9": {
+    "name": "AxeAir",
+    "loaded": true,
+    "start": 0,
+    "preview": 0.5,
+    "id": "rbxassetid://9120704978",
+    "length": 0.4144375
+  },
+  "10": {
+    "name": "ElectricSnap",
+    "loaded": true,
+    "start": 0,
+    "preview": 0.45,
+    "id": "rbxassetid://9114277757",
+    "length": 0.9707708333333334
+  },
+  "11": {
+    "name": "WaterSlap",
+    "loaded": true,
+    "start": 0,
+    "preview": 0.7,
+    "id": "rbxassetid://9125702803",
+    "length": 0.779
+  },
+  "12": {
+    "name": "BubblePop",
+    "loaded": true,
+    "start": 0,
+    "preview": 0.25,
+    "id": "rbxassetid://106984966606682",
+    "length": 0.1579375
+  },
+  "13": {
+    "name": "PressureAir",
+    "loaded": true,
+    "start": 0.045,
+    "preview": 0.7,
+    "id": "rbxassetid://9125648149",
+    "length": 0.7233125
+  },
+  "14": {
+    "name": "CapRattle",
+    "loaded": true,
+    "start": 0.168,
+    "preview": 0.25,
+    "id": "rbxassetid://9116786503",
+    "length": 0.5099166666666667
+  }
+}

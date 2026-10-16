@@ -35,7 +35,7 @@ function Screen:Refresh(profile)
 		end
 	end
 	local ownedEntries, unownedEntries = {}, {}
-	for _, d in Glassies.List do
+	for _, d in Glassies.visible(profile.Glassies) do
 		local owned = profile.Glassies[d.Id]
 		table.insert(if owned and owned.Count > 0 then ownedEntries else unownedEntries, d)
 	end
@@ -142,6 +142,9 @@ function Screen:Detail(id)
 		starLabel.Text = string.rep("★", stars) .. string.rep("☆", 5 - stars)
 	end
 	p.Ownership.Text = if owned then "OWNED • x" .. owned.Count else "UNOWNED • BASE STATS"
+	if owned and not Glassies.isRelease(id) then
+		p.Ownership.Text = "LEGACY • OWNED x" .. owned.Count
+	end
 	local installed = RS.Assets.Glassies:FindFirstChild(id) ~= nil
 	p.InfoPortrait.Visible, p.UnknownPortrait.Visible, p.ArtworkPending.Visible =
 		installed, not installed, not installed

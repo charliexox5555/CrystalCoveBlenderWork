@@ -1,0 +1,92 @@
+{
+  "kits": 24,
+  "audio": {
+    "1": {
+      "loaded": true,
+      "length": 0.5032916666666667,
+      "name": "ClinkLightA",
+      "id": "rbxassetid://9119927252"
+    },
+    "2": {
+      "loaded": true,
+      "length": 0.7065625,
+      "name": "ClinkLightB",
+      "id": "rbxassetid://9119927012"
+    },
+    "3": {
+      "loaded": true,
+      "length": 0.9570625,
+      "name": "ClinkHeavy",
+      "id": "rbxassetid://9113557731"
+    },
+    "4": {
+      "loaded": true,
+      "length": 2.272,
+      "name": "ShatterHeavy",
+      "id": "rbxassetid://9114173350"
+    },
+    "5": {
+      "loaded": true,
+      "length": 2.058666666666667,
+      "name": "ShatterScatter",
+      "id": "rbxassetid://9114615010"
+    },
+    "6": {
+      "loaded": true,
+      "length": 1.4305625,
+      "name": "ChargeGlass",
+      "id": "rbxassetid://9116394545"
+    },
+    "7": {
+      "loaded": true,
+      "length": 0.902875,
+      "name": "LidBlock",
+      "id": "rbxassetid://9125782642"
+    },
+    "8": {
+      "loaded": true,
+      "length": 1.0045,
+      "name": "LidClick",
+      "id": "rbxassetid://9116737766"
+    },
+    "9": {
+      "loaded": true,
+      "length": 0.4144375,
+      "name": "AxeAir",
+      "id": "rbxassetid://9120704978"
+    },
+    "10": {
+      "loaded": true,
+      "length": 0.9707708333333334,
+      "name": "ElectricSnap",
+      "id": "rbxassetid://9114277757"
+    },
+    "11": {
+      "loaded": true,
+      "length": 0.779,
+      "name": "WaterSlap",
+      "id": "rbxassetid://9125702803"
+    },
+    "12": {
+      "loaded": true,
+      "length": 0.1579375,
+      "name": "BubblePop",
+      "id": "rbxassetid://106984966606682"
+    },
+    "13": {
+      "loaded": true,
+      "length": 0.7233125,
+      "name": "PressureAir",
+      "id": "rbxassetid://9125648149"
+    },
+    "14": {
+      "loaded": true,
+      "length": 0.5099166666666667,
+      "name": "CapRattle",
+      "id": "rbxassetid://9116786503"
+    }
+  },
+  "checks": 612,
+  "liveRulesConnected": false,
+  "passed": true
+}

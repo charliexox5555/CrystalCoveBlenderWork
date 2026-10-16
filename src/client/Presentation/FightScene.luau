@@ -12,7 +12,7 @@ Scene.__index = Scene
 
 function Scene:Sound(...)
 	if not self.Muted then
-		self.Shatter:Sound(...)
+		return self.Shatter:Sound(...)
 	end
 end
 
@@ -58,10 +58,11 @@ function Scene.new(data, maxima, shatter)
 		local hook = Instance.new("Attachment")
 		hook.Name, hook.Parent = "StringHook", anchor
 		local def = Glassies.get(setup.Id)
-		local renderId = if RS.Assets.Glassies:FindFirstChild(def.Asset)
+		local library = if data.ReleasePrototype then RS.Assets.CombatReleasePreview.Glassies else RS.Assets.Glassies
+		local renderId = if library:FindFirstChild(def.Asset)
 			then def.Asset
 			else if def.Type == "Heavy" then "jam" elseif def.Type == "Sharp" then "prism" else "pop"
-		local source = RS.Assets.Glassies[renderId]
+		local source = library[renderId]
 		local model = Instance.new("Model")
 		model.Name = setup.Id
 		model.WorldPivot = CFrame.identity
@@ -69,6 +70,9 @@ function Scene.new(data, maxima, shatter)
 		body.Parent = model
 		local parts = { body }
 		for _, template in (source:FindFirstChild("Details") and source.Details:GetChildren() or {}) do
+			if template:GetAttribute("EffectOnly") then
+				continue
+			end
 			local detail = template:Clone()
 			detail.Parent = model
 			table.insert(parts, detail)
@@ -88,7 +92,7 @@ function Scene.new(data, maxima, shatter)
 			template:Clone().Parent = templates
 		end
 		for _, template in (source:FindFirstChild("Details") and source.Details:GetChildren() or {}) do
-			if not template.Name:find("Bubble") then
+			if not template.Name:find("Bubble") and not template:GetAttribute("EffectOnly") then
 				template:Clone().Parent = templates
 			end
 		end
@@ -119,6 +123,7 @@ function Scene.new(data, maxima, shatter)
 		trail.Transparency = NumberSequence.new(0.5, 1)
 		trail.Parent = body
 		self.Fighters[side] = {
+			ReleaseArt = data.ReleasePrototype or source:GetAttribute("ReleaseVersion") == 2,
 			CrackStage = 0,
 			Id = setup.Id,
 			RenderId = renderId,
@@ -137,6 +142,9 @@ function Scene.new(data, maxima, shatter)
 			ShardTemplates = templates,
 			Effects = {},
 		}
+	end
+	if data.ReleasePrototype or Balance.CombatRelease.Enabled then
+		self.Combat = require(script.Parent.CombatEffects).new(self)
 	end
 	return self
 end
@@ -185,6 +193,9 @@ end
 function Scene:HideBroken(side)
 	local f = self.Fighters[side]
 	f.Broken = true
+	if self.Combat then
+		self.Combat:CancelSide(side)
+	end
 	for _, p in f.Parts do
 		p.Transparency = 1
 	end
@@ -203,7 +214,7 @@ function Scene:Update(r, time)
 		local previous = f.CrackStage or 0
 		self.Shatter:SetCracks(f, r.Hp[side], f.Stats.MaxHP)
 		if f.CrackStage > previous and r.Hp[side] > 0 then
-			self:Sound(Audio.Break, f.Body, 1.4, Feel.CrackVolume, 0.18)
+			self:Sound(Audio.Heavy, f.Body, 1.4, Feel.CrackVolume, 0.18)
 		end
 		local frozen, shield, rage = r.Frozen[side], r.Shield[side], r.Rage[side]
 		f.Bubble.Transparency = if shield then 0.42 else 1
@@ -225,6 +236,9 @@ function Scene:Update(r, time)
 			f.GlintTint, f.Glints.Color = tint, ColorSequence.new(tint)
 		end
 		f.Trail.Enabled = r.Pump[side]
+	end
+	if self.Combat then
+		self.Combat:Update(r, time)
 	end
 end
 
@@ -255,6 +269,9 @@ function Scene:Ray(side, id, missed, event)
 end
 
 function Scene:Event(e, hud)
+	if self.Combat and self.Combat:Event(e) then
+		return
+	end
 	local f = e.Side and self.Fighters[e.Side]
 	if e.Type == "Power" then
 		local def = f.Def
@@ -305,8 +322,13 @@ function Scene:Event(e, hud)
 		self.Shatter:HitBurst(a, b, { CritA = e.Crit[1], CritB = e.Crit[2] }, self.Root)
 		local weight = math.clamp(e.Speed / Balance.Fight.RefSpeed, 0, 1)
 		local volume = Feel.ClinkVolumeMin + (Feel.ClinkVolumeMax - Feel.ClinkVolumeMin) * weight
-		self:Sound(Audio.Clink, a.Body, a.Def.ClinkPitch * (1.12 - weight * 0.2), volume)
-		self:Sound(Audio.Clink, b.Body, b.Def.ClinkPitch, volume * 0.6)
+		self:Sound(
+			if weight > 0.75 then Audio.Heavy else Audio.Clink,
+			a.Body,
+			a.Def.ClinkPitch * (1.12 - weight * 0.2),
+			volume
+		)
+		self:Sound(Audio.ClinkAlt, b.Body, b.Def.ClinkPitch, volume * 0.45)
 		if hud then
 			self.Shatter:Pulse()
 		end
@@ -400,6 +422,9 @@ function Scene:GetStand()
 end
 
 function Scene:Destroy()
+	if self.Combat then
+		self.Combat:Destroy()
+	end
 	if self.Finisher then
 		self.Finisher:Destroy()
 	end
@@ -411,6 +436,9 @@ end
 
 function Scene:SetViewing(on)
 	self.Viewing = on
+	if not on and self.Combat then
+		self.Combat:ClearTransient()
+	end
 	if not on and self.Finisher then
 		self.Finisher:Destroy()
 	end

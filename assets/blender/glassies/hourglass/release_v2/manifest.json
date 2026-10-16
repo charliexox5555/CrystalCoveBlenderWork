@@ -1291,6 +1291,8 @@
     "assetPath": "ReplicatedStorage.Assets.Glassies.hourglass",
     "effectPath": "ReplicatedStorage.Assets.VFX.Combat",
     "nativePresentationChecks": "all-24 fixture passed",
-    "report": "docs/testing/combat_release/FULL_RELEASE.md"
+    "report": "docs/testing/combat_release/POWER_READABILITY_V3.md",
+    "signature": "Second Turn",
+    "behavior": "At or below 65% HP: three turnarounds start a spin healing 7% maximum HP; at most twice per round, eight-second start cooldown, disabled in overtime. Tuning provisional."
   }
 }

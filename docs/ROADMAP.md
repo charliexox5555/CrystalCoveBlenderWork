@@ -74,6 +74,8 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 ## F5 — Polish and soft launch (Nov 10–16)
 
+- [x] **C:** clearer Pop cap/pressure/recoil, Jam real lid/block, Prism aimed lens/white ray/afterglow, corrected actual Axe sweep/trail and shared impact spokes/rings. Creator-requested Hourglass spinning self-heal: 7% maximum HP twice, below 65%, eight-second cooldown and no overtime. 102 logic tests, 31 hero / 264 presentation / 179 finish checks, 48 real-swing regression rounds pass; [readability report](testing/combat_release/POWER_READABILITY_V3.md). Feel, full fairness and phone review remain open.
+
 - [x] **C:** once-per-match uniform three-card hand without duplicates, sequential vertical reels, retained hands across rounds, round-only owned Pick Any, escalating Marble prices/confirmation and policy-gated paid rerolls; saved wallet and replay/ownership/deadline guards. 79 Lune/Studio tests plus 75 native server and 117 UI checks pass; editable export/backup and [report](testing/MATCH_SELECTION.md). No device pass.
 
 - [x] **C:** Inventory Owned → Unowned sections for all 31 catalog glassies; dimmed missing portraits, honest artwork placeholders, inspectable powers/base stats, acquisition migration and editable templates/backup. 2,505 native UI checks and 76 logic tests pass; [report](testing/INVENTORY_UNOWNED.md). Device work deferred.

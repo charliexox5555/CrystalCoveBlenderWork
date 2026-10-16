@@ -129,9 +129,9 @@ return {
 		MeshB = "HalfRing",
 	},
 	hourglass = {
-		Name = "Borrowed Moment",
-		Description = "Stores a little damage and returns it as a sand shot.",
-		ReleaseSound = "AxeAir",
+		Name = "Second Turn",
+		Description = "Below 65% HP, spins to heal 7%. Twice a round; 8s cooldown.",
+		ReleaseSound = "ChargeGlass",
 		ContactSound = "ClinkLightB",
 		MeshA = "Droplet",
 		MeshB = "Ring",

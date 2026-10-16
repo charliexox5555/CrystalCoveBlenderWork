@@ -7,6 +7,7 @@ local Glassies = require(RS.Shared.Config.Glassies)
 local Powers = require(RS.Shared.Config.Powers)
 local Audio = require(RS.Shared.Config.Audio)
 local Health = require(script.Parent.FightHealth)
+local Hero = require(script.Parent.HeroPowers)
 local M, Feel = Balance.Motion, Balance.Feel
 local Scene = {}
 Scene.__index = Scene
@@ -167,6 +168,7 @@ function Scene:Pose(side, p, twist, tilt)
 	f.Twist = twist
 	f.Pivot = CFrame.fromMatrix(f.Hook.WorldPosition + self.Frame:VectorToWorldSpace(p), right, up, right:Cross(up))
 		* CFrame.Angles(tilt.X, twist, tilt.Z)
+		* Hero.motion(f, self.Combat and self.Combat.Time or 0)
 	f.Model:PivotTo(f.Pivot)
 	f.Bubble.CFrame = f.Body.CFrame
 end

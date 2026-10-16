@@ -83,7 +83,7 @@ return function(t, d)
 		t.between(R.swingMultiplier(slow, 2), d.Balance.CombatRelease.SlowFloor, 1)
 	end)
 	t.test("stored damage and contact storage release only at a later turnaround", function()
-		for _, id in { "water_jug", "hourglass", "comet" } do
+		for _, id in { "water_jug", "comet" } do
 			local s = fight(id, "jam")
 			for _ = 1, 3 do
 				R.hit(s, 4, 0.5, 1, 2, 3)
@@ -93,9 +93,6 @@ return function(t, d)
 			R.tick(s, 0.35)
 			local c = R.drainCasts(s)[1]
 			t.ok(c, "stored release " .. id)
-			if id == "hourglass" then
-				t.ok(c.Params.Damage <= s.Fighters[1].Signature.Kit.Damage)
-			end
 			if id == "comet" then
 				t.eq(c.Params.StoredOrigin[3], 3)
 			end
@@ -175,28 +172,80 @@ return function(t, d)
 		end)
 		t.eq(#sim.ReleaseAttacks, 0)
 	end)
-	t.test("stored sand and echo survive a turnaround refused by cooldown", function()
-		for _, id in { "hourglass", "comet" } do
-			local s = fight(id, "jam")
-			local signature = s.Fighters[1].Signature
-			signature.HasCast, signature.LastReady, signature.BusyUntil = true, 0, -1
-			signature.Stored, signature.EchoPoint, signature.EchoUntil = 5, { 1, 2, 3 }, 10
+	t.test("stored echo survives a turnaround refused by cooldown", function()
+		local s = fight("comet", "jam")
+		local sig = s.Fighters[1].Signature
+		sig.HasCast, sig.LastReady, sig.BusyUntil = true, 0, -1
+		sig.EchoPoint, sig.EchoUntil = { 1, 2, 3 }, 10
+		R.turnaround(s, 1)
+		t.eq(#s.PendingCasts, 0)
+		t.ok(sig.EchoPoint)
+		R.tick(s, d.Balance.CombatRelease.MinCastSeconds + 0.01)
+		R.turnaround(s, 1)
+		t.eq(#s.PendingCasts, 1)
+		t.eq(sig.EchoPoint, nil)
+	end)
+	t.test("Hourglass heals on spin completion with two charges and an eight-second cooldown", function()
+		local s = fight("hourglass", "jam")
+		local f = s.Fighters[1]
+		for _ = 1, 3 do
 			R.turnaround(s, 1)
-			t.eq(#s.PendingCasts, 0)
-			if id == "hourglass" then
-				t.eq(signature.Stored, 5)
-			else
-				t.ok(signature.EchoPoint)
-			end
-			R.tick(s, d.Balance.CombatRelease.MinCastSeconds + 0.01)
-			R.turnaround(s, 1)
-			t.eq(#s.PendingCasts, 1)
-			if id == "hourglass" then
-				t.eq(signature.Stored, 0)
-			else
-				t.eq(signature.EchoPoint, nil)
-			end
 		end
+		t.eq(#s.PendingCasts, 0, "healthy glass cannot charge a heal")
+		f.Hp = f.MaxHp * 0.5
+		local before = f.Hp
+		for _ = 1, 3 do
+			R.turnaround(s, 1)
+		end
+		t.eq(#s.PendingCasts, 1)
+		R.tick(s, 0.84)
+		t.near(f.Hp, before, 1e-6, "no premature heal")
+		R.tick(s, 0.02)
+		t.near(f.Hp - before, f.MaxHp * 0.07, 1e-6)
+		t.eq(#R.drainCasts(s), 0, "heal replaces ranged sand attack")
+		R.tick(s, 1)
+		for _ = 1, 6 do
+			R.turnaround(s, 1)
+		end
+		t.eq(#s.PendingCasts, 0, "cooldown cannot be bypassed by repeated turns")
+		R.tick(s, 6.15)
+		R.turnaround(s, 1)
+		R.tick(s, 0.86)
+		t.near(f.Hp - before, f.MaxHp * 0.14, 1e-6, "round healing budget")
+		R.tick(s, 10)
+		for _ = 1, 12 do
+			R.turnaround(s, 1)
+		end
+		t.eq(#s.PendingCasts, 0, "at most two heals")
+		t.eq(f.Signature.CastsStarted, 2)
+	end)
+	t.test("Hourglass cannot overheal, revive or finish a heal after overtime starts", function()
+		local function armed()
+			local s = fight("hourglass", "jam")
+			s.Fighters[1].Hp = s.Fighters[1].MaxHp * 0.6
+			for _ = 1, 3 do
+				R.turnaround(s, 1)
+			end
+			return s
+		end
+		local full = armed()
+		full.Fighters[1].Hp = full.Fighters[1].MaxHp * 0.99
+		R.tick(full, 0.86)
+		t.eq(full.Fighters[1].Hp, full.Fighters[1].MaxHp)
+		local dead = armed()
+		dead.Fighters[1].Hp = 0
+		R.tick(dead, 0.86)
+		t.eq(dead.Fighters[1].Hp, 0)
+		t.ok(dead.Over)
+		local overtime = armed()
+		overtime.Time = d.Balance.Fight.OvertimeAt - 0.1
+		local hp = overtime.Fighters[1].Hp
+		R.tick(overtime, 0.2)
+		t.eq(overtime.Fighters[1].Hp, hp)
+		for _ = 1, 9 do
+			R.turnaround(overtime, 1)
+		end
+		t.eq(#overtime.PendingCasts, 0)
 	end)
 	t.test("cone and fan are bounded in 3D", function()
 		t.ok(Geometry.coneSphere(V.zero, V.xAxis, 5, 1, V.new(3, 0, 0), 0.2))

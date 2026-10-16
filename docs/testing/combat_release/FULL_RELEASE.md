@@ -38,7 +38,7 @@ Run one developer matchup at a time. Stop Play when finished. Pick Any/reroll co
 | Hot Sauce | One low-health heat/drive window |
 | Crystal Tumbler | Partial directional catch and bounded return shot; contact fallback |
 | Chime | Traveling expanding pulse shell |
-| Hourglass | Capped stored damage; frame flip and sand shot |
+| Hourglass | Second Turn: low-HP spinning repair, 7% maximum HP, at most twice; see POWER_READABILITY_V3.md |
 | Frostglobe | Short frost cone with nonstacking slow |
 | Prism Blade | Out-and-back crescent; one shared damage budget |
 | Rocket Pop | Capped tangent booster impulse and next-clash payoff |

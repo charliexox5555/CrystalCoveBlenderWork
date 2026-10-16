@@ -12,6 +12,7 @@ local CrackPaths = require(RS.Shared.Config.CrackPaths)
 local ExtraCrackPaths = require(RS.Shared.Config.CrackPathsExtra)
 local ReleaseCrackPaths = require(RS.Shared.Config.ReleaseCrackPaths)
 local Feel, VFX = Balance.Feel, Balance.CombatVFX
+local ImpactBeat = require(script.Parent.Parent.Presentation.ImpactBeat)
 local Shatter = {}
 
 function Shatter:Init()
@@ -237,50 +238,21 @@ function Shatter:Break(fighter, root)
 end
 
 function Shatter:HitBurst(a, b, result, root)
-	local strong = result.ActionA == "Perfect" or result.CritA or result.CritB
-	local origin = result.Point or (a.Body.Position + b.Body.Position) / 2
-	local flash = Instance.new("Part")
-	flash.Name, flash.Shape = "ImpactFlash", Enum.PartType.Ball
-	flash.Anchored, flash.CanCollide, flash.CanTouch, flash.CanQuery = true, false, false, false
-	flash.CastShadow, flash.Material = false, Enum.Material.Neon
-	flash.Color = strong and Color3.fromHex("#FFE991") or Color3.fromHex("#D9F8FF")
-	flash.Size, flash.Position = Vector3.one * Feel.HitFlashSize, origin
-	flash.Parent = root
-	TweenService:Create(flash, TweenInfo.new(Feel.HitFlashSeconds), {
-		Size = Vector3.one * (strong and 1.5 or 0.9),
-		Transparency = 1,
-	}):Play()
-	local emitter = Instance.new("ParticleEmitter")
-	emitter.Texture = "rbxassetid://118014953401567"
-	emitter.Color, emitter.LightEmission, emitter.Rate = ColorSequence.new(flash.Color), 1, 0
-	emitter.Lifetime, emitter.Speed = NumberRange.new(0.12, 0.3), NumberRange.new(7, 13)
-	emitter.SpreadAngle, emitter.Drag = Vector2.new(180, 180), 6
-	emitter.Size = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.12), NumberSequenceKeypoint.new(1, 0) })
-	emitter.Parent = flash
-	emitter:Emit(Feel.HitSparkles * (strong and 2 or 1))
-	if not a.LowDetail then
-		local assets = RS.Assets
-		local library = assets:FindFirstChild("VFX") and assets.VFX:FindFirstChild("Combat")
-		local preview = assets:FindFirstChild("CombatReleasePreview")
-		library = library or (preview and preview:FindFirstChild("Combat"))
-		if library then
-			local ring = library.Meshes.Ring:Clone()
-			ring.Name, ring.Color = "ContactRing", flash.Color
-			ring.Size = library.Meshes.Ring.Size * VFX.ImpactRingStart
-			local camera = workspace.CurrentCamera
-			ring.CFrame = CFrame.new(origin) * camera.CFrame.Rotation
-			ring.Parent = root
-			TweenService:Create(ring, TweenInfo.new(VFX.ImpactRingSeconds), {
-				Size = library.Meshes.Ring.Size * (if strong then VFX.ImpactRingEnd else VFX.ImpactRingNormalEnd),
-				Transparency = 1,
-			}):Play()
-			Debris:AddItem(ring, VFX.ImpactRingSeconds)
-			local chips = library.Particles.GlassChips:Clone()
-			chips.Color, chips.Parent = ColorSequence.new(flash.Color), flash
-			chips:Emit(VFX.ImpactChipCount)
-		end
+	local assets = RS.Assets
+	local library = assets:FindFirstChild("VFX") and assets.VFX:FindFirstChild("Combat")
+	local preview = assets:FindFirstChild("CombatReleasePreview")
+	library = library or (preview and preview:FindFirstChild("Combat"))
+	if not library then
+		return
 	end
-	Debris:AddItem(flash, 0.4)
+	ImpactBeat.emit(
+		root,
+		library,
+		result.Point or (a.Body.Position + b.Body.Position) / 2,
+		if result.CritA or result.CritB then Color3.fromHex("#FFE991") else Color3.fromHex("#91E7FF"),
+		result.ActionA == "Perfect" or result.CritA or result.CritB,
+		a.LowDetail
+	)
 end
 
 function Shatter:Impact(a, b, result, hud, root)

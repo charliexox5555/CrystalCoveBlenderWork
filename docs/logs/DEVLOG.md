@@ -14,6 +14,18 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Codex — Hero power readability and Hourglass repair
+Done:
+- Creator requests clearer/satisfying Pop pressure, Jam shield, Prism ray, Axe swing and shared impacts. Added real cap launch/recoil/pressure wave, real raised lid/block/restoration, aimed glowing lens/white-core ray/colored afterglow and corrected axe transform with visible anticipation/head trail. Shared white cores, rings/chips and eight impact spokes; low-detail reductions and confirmed-only short signature hit pause. Pop rebound 1.35, Axe 0.5-second sweep/radius 0.7 matching its visible head; damage unchanged.
+- Hourglass Second Turn replaces the stored-sand shot: three turnarounds at or below 65% HP, 0.85-second vulnerable cosmetic spin, 7% maximum-HP repair, at most two starts/eight-second cooldown, no overtime/overheal/revive. Maximum 14% repair per round. Server path/hang point unchanged. Exact balance remains provisional (decision 65).
+- 102 Lune/native logic tests, 31 focused prop/path/visibility checks, 264 all-24 presentation checks and 179 finish/ghost/avatar checks pass. Actual 48-round swing report: 619 hits, 29.91-second mean, zero timeouts, radius error <=0.00000143 studs. Watched Hourglass/Prism seed 29018 completes at 47.11 seconds with two heal releases, Hourglass at 1 HP; not fairness approval. 30-frame desktop spectator render sample 0.44 ms mean/1.93 ms maximum, about 60 FPS; not phone coverage.
+- Saved normal-camera scripted native art fixtures and reproducible helper; updated current powers, Hourglass brief and handoff. Report: docs/testing/combat_release/POWER_READABILITY_V3.md. Originals/Blender/native libraries preserved; no native export needed for clone-only source effects. Rojo connected, Studio Edit/unpublished, unrelated lobby/art changes untouched. Existing Roblox CorePackages/asset-type warnings noted in report; temporary MCP observer mistakes corrected/disconnected.
+Required simulators:
+- Balance stand-in, 200 rounds per matchup: starter mirror means 28.9/28.5/19.6 seconds, zero mirror timeouts; side A 49%, Perfect versus worst 58%, 39% comebacks, 1.2 lead changes, 3.1 powers/glassy, 34% aimed misses. Hourglass field rate 40%; skewed field rates are diagnostic rather than fairness approval. Full output in readability_balance.txt.
+- Economy unchanged: 5.7 minutes/match, 10.5 matches/hour; 3/81 day-one/day-30 pulls; 11/18 uniques day seven/day 30; Rare 57 minutes, Epic 2.8 hours, Legendary 11.3 hours, 19% Mythic by day 30. Full output in readability_economy.txt.
+Next:
+- Creator reviews these five at normal speed and varying orbit angles. Tune equal-stat actual matchups/heal strength after feel feedback; Dragon/Galaxy/Jam counter remain separate brainstorm ideas. Longer/real-phone performance review and publishing remain open.
+
 ## 2026-10-15 — Codex — Selection and finish feedback
 Done:
 - Creator requested longer preparation, no paid-action confirmation, cleaner UI/rolling, ghost cleanup, visible avatar impact and a reset/zoom/return camera. Set selection/aim/countdown/round-end to 25/15/4/6 seconds; ready players still advance early. One-tap quoted spending retains server validation/rate/revision/deadline checks. Inline uniform reroll odds plus all-owned outcomes; policy restriction preserved. Low-balance buttons stay visible and fire a future MarblesRequested hook; packs/purchases remain disabled.

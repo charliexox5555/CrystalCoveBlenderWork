@@ -4,7 +4,7 @@ October 15, 2026. **Creator approved the direction and fixed this roster at 24 f
 
 The goal is a fight where you can see trouble building, anticipate a dramatic collision, understand what saved or shattered a glassy, and want to watch the next matchup. “1000× better” is the creative ambition, not a performance or fun measurement.
 
-Only research/documents change in this pass. No models, scripts, balance values, ownership, rarity, Kiln pools or paid features change. All attack counts, durations and limits below are prototype proposals. Existing rules stay live until a later implementation pass is authorized.
+This began as a research-only brief on October 15. All 24 kits were subsequently implemented; the handoff and source config describe current production. The October 16 Hourglass repair replaces its original stored-sand proposal below. Other draft counts/timings are not a substitute for current config.
 
 ## 1. Direction
 
@@ -52,7 +52,7 @@ Respect the fixed camera: sell impact with body reaction, trails, sound and cont
 | Contact | One validated body collision encounter, not every simulation substep | Pop, Ketchup, Arc Coil |
 | Swing turnaround | A meaningful rise reaches an apex and starts falling again | Jam, Crescent Axe, Briar Flask |
 | Ready timer | A visible charge completes, then an attack winds up | Prism, Frostglobe, Dragon |
-| Damage stored | Accepted damage fills a bounded visible meter/piece | Water Jug, Hourglass |
+| Damage stored | Accepted damage fills a bounded visible meter/piece | Water Jug |
 | Low-HP threshold | One latched crossing per round, not repeated threshold flicker | Hot Sauce, Glass Duck |
 
 Turnaround detection belongs in the server simulation. For the spherical pendulum, detect a positive-to-negative vertical-velocity crossing after a sufficient rise, with a minimum angular excursion and debounce. Do not use X-velocity alone: 3D sideways swings make that unreliable. Suppress tiny jitters, the initial stationary release, frozen motion and collision-induced reversals. A turnaround detector must be tested against loops and off-plane swings before any kit depends on it. Prototype detector values: at least 20° excursion, 0.65-second debounce, and no contact in the preceding 0.15 seconds; tune from recorded motion rather than treating those values as final.
@@ -195,13 +195,13 @@ Names of existing glassies remain unchanged. “Description” is proposed playe
 - **VFX:** Blender bell/clapper plus shared annular ring mesh; Studio expands two thin rings and adds a few vibrating glints. One musical glass note with a short echo.
 - **Tradeoff:** Wide but weaker than focused attacks; travel time allows a swing path to outrun the limited pulse.
 
-#### 17. Hourglass — stored-damage return
+#### 17. Hourglass — bounded spinning repair
 
-- **Description:** “Stores a little damage and returns it as a sand shot.”
+- **Description:** “Spins to heal a little when its glass runs low.”
 - **Look:** Amber glass hourglass with violet caps and a broad glowing sand stream. Outer frame is chunky, not filigree.
-- **Ability — Borrowed Moment:** A limited fraction of accepted damage fills a visible lower chamber without preventing that damage. At a later turnaround, flip and launch one compact sand shot proportional to stored damage, capped. No healing, rewind or extra life.
-- **VFX:** Blender body/frame, sand inserts and projectile bead; Studio flips separate presentation details while the collision body stays correct, then animates one sand ribbon. Glass tick → sandy swish.
-- **Tradeoff:** Must survive to cash out; the shot can miss. Stored value cannot exceed the defined cap.
+- **Ability — Second Turn:** At or below 65% HP, three turnarounds charge a 0.85-second spin, restoring 7% maximum HP. At most two starts per round and eight seconds between starts. No healing in overtime, overhealing or revival. Replaces the stored-sand shot at the creator's request on October 16 (decision 65).
+- **VFX:** The whole glassy spins once around its hang point within a mint clock ring and twelve moving ticks; a healing number reports actual restored HP. The server swing path and vulnerability stay active during the cosmetic spin.
+- **Tradeoff:** No offensive signature. Maximum repair is 14% maximum HP per round and it must survive the windup. Exact tuning remains provisional.
 
 #### 18. Frostglobe — brief area control
 

@@ -393,6 +393,11 @@ function Controller:Event(e)
 		if e.Speed >= Balance.Fight.RefSpeed * Feel.BigHitSpeed and not self.FinalTime then
 			self.HoldUntil = now + Feel.HitstopSeconds
 		end
+	elseif (e.Type == "CastContact" and not e.Missed) or e.Type == "SignatureContact" or e.Type == "SignatureBlock" then
+		self.ShakeUntil, self.ShakePower = now + Feel.ShakeSeconds, Feel.ShakeMax * Feel.PowerImpactShake
+		if not self.FinalTime then
+			self.HoldUntil = now + Feel.PowerImpactHoldSeconds
+		end
 	elseif e.Type == "Shatter" then
 		self.Phase = "RoundEnd"
 		self.FinisherCameraFrom = self.CameraPose

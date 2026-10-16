@@ -6,6 +6,8 @@ local Audio = require(RS.Shared.Config.Audio)
 local Visuals = require(RS.Shared.Config.CombatKitVisuals)
 local Presentation = require(script.Parent.SignaturePresentation)
 local Accent = require(script.Parent.SignatureAccent)
+local Hero = require(script.Parent.HeroPowers)
+local Impact = require(script.Parent.ImpactBeat)
 local K, VFX, M = Balance.CombatRelease.Kits, Balance.CombatVFX, Balance.Motion
 local Effects = {}
 Effects.__index = Effects
@@ -30,17 +32,24 @@ function Effects.new(scene)
 		{ Scene = scene, Assets = assets, Root = root, Casts = {}, Seen = {}, Sounds = {}, Time = 0 },
 		Effects
 	)
-	for _, f in scene.Fighters do
+	for side, f in scene.Fighters do
+		f.Side = side
 		f.DetailStates = {}
 		for _, p in f.Parts do
 			if p ~= f.Body then
-				f.DetailStates[p] = { Size = p.Size, Center = p.CFrame.Position, Rotation = p.CFrame.Rotation }
+				f.DetailStates[p] = {
+					Size = p.Size,
+					Center = p.CFrame.Position,
+					Rotation = p.CFrame.Rotation,
+					Transparency = p.Transparency,
+				}
 			end
 		end
 		local guard = assets.Meshes[if f.Id == "glass_duck" then "BubbleDome" else "GuardPlate"]:Clone()
 		guard.Name, guard.Size = "LidGuard", guard.Size * M.GlassyScale
 		guard.Material, guard.Color, guard.Transparency = Enum.Material.Glass, Color3.fromRGB(214, 171, 83), 1
 		guard.Parent, f.SignatureGuard = root, guard
+		Hero.init(self, f)
 	end
 	return self
 end
@@ -177,14 +186,17 @@ function Effects:Event(e)
 		cast.Ring = self:Mesh("Ring", cast.Root, color)
 		cast.Ring.Size *= VFX.ChargeRingScale
 		Accent.create(self, cast, "windup", color)
+		Hero.start(self, cast, e, color)
 		self:Burst("ContactGlint", f.Body.Position, color, f.LowDetail)
 		self:Sound(if e.Shape == "sweep" then "CapRattle" else "ChargeGlass", e.Side)
 	elseif e.Type == "CastRelease" then
-		if self.Time > e.Time + e.Duration + VFX.Tail then
+		local readable = if e.Shape == "ray" then VFX.RayReadSeconds else e.Duration
+		if self.Time > e.Time + readable + VFX.Tail then
 			return true
 		end
 		if e.Shape == "guard" then
 			f.GuardConsumed, f.GuardUntil = false, e.Time + e.Duration
+			f.GuardAt = e.Time
 			self:ClearCast(e.CastId)
 			self:Sound("LidClick", e.Side)
 			self:Burst("ContactGlint", f.Body.Position, Color3.fromRGB(214, 171, 83), f.LowDetail)
@@ -195,11 +207,13 @@ function Effects:Event(e)
 		cast.Direction = if e.Direction
 			then self.Scene.Frame:VectorToWorldSpace(vector(e.Direction)).Unit
 			else self.Scene.Frame.RightVector
+		Hero.start(self, cast, e, color)
 		Accent.create(self, cast, "release", color)
 		self:Burst("ContactGlint", origin, color, f.LowDetail)
 		if Presentation.release(self, cast, e, color) then
 			self:Sound(Visuals[f.Id].ReleaseSound, e.Side)
 		elseif e.Shape == "ray" then
+			cast.EndAt = e.Time + VFX.RayReadSeconds + VFX.Tail
 			local a = anchor(cast.Root, "RayOrigin", origin)
 			local b = anchor(cast.Root, "LockedRayEnd", origin + cast.Direction * e.Range)
 			local at0, at1 = Instance.new("Attachment"), Instance.new("Attachment")
@@ -207,23 +221,25 @@ function Effects:Event(e)
 			local beam = self.Assets.Beams[if f.Id == "arc_coil" then "ArcBolt" else "RayCore"]:Clone()
 			beam.Attachment0, beam.Attachment1, beam.Enabled = at0, at1, true
 			beam.Color, beam.Width0, beam.Width1 = ColorSequence.new(color), e.Radius * 2, e.Radius
+			beam.Transparency = NumberSequence.new(0)
+			if f.Id == "prism" then
+				beam.Texture = ""
+				beam.Color = ColorSequence.new(Color3.new(1, 1, 1))
+			end
 			beam.Parent, cast.Beam, cast.Endpoint = cast.Root, beam, b
 			if not f.LowDetail then
 				local halo = beam:Clone()
 				halo.Name, halo.Width0, halo.Width1 =
 					"RayHalo", beam.Width0 * VFX.RayHaloScale, beam.Width1 * VFX.RayHaloScale
 				halo.Transparency = NumberSequence.new(VFX.RayHaloTransparency)
+				halo.Color = ColorSequence.new(color)
 				halo.Parent, cast.Halo = cast.Root, halo
 			end
+			Hero.ray(self, cast, color)
 			self:Sound(if f.Id == "arc_coil" then "ElectricSnap" else "ClinkLightA", e.Side)
 		elseif e.Shape == "sweep" then
-			local weapon = self.Assets.Kits.crescent_axe.CrescentWeapon:Clone()
-			weapon:ScaleTo(M.GlassyScale)
-			cast.Weapon, cast.HeadCenter = weapon, weapon.AxeHead.Position
-			weapon.Parent = cast.Root
-			local up = Vector3.yAxis - cast.Direction * cast.Direction.Y
-			cast.Up = if up.Magnitude > 0.0001 then up.Unit else self.Scene.Frame.ZVector
-			cast.Slash = self:Mesh("CurvedSlash", cast.Root, color)
+			cast.EndAt = e.Time + e.Duration + VFX.WeaponReadTail + VFX.Tail
+			Hero.weapon(self, cast, color)
 			self:Sound("AxeAir", e.Side)
 		end
 	elseif e.Type == "CastContact" then
@@ -246,11 +262,7 @@ function Effects:Event(e)
 		accentEvent.Duration = VFX.AccentSeconds
 		local impact = self:Cast(accentEvent)
 		impact.Origin = point
-		Accent.create(self, impact, "impact", color)
-		self:Burst("ContactGlint", point, color, f.LowDetail)
-		if not e.Blocked then
-			self:Burst("GlassChips", point, color, f.LowDetail)
-		end
+		Impact.emit(impact.Root, self.Assets, point, color, true, f.LowDetail)
 		self:Sound(if e.Blocked then "LidBlock" else Visuals[f.Id].ContactSound, e.Side)
 	elseif e.Type == "SignatureContact" or e.Type == "SignatureBlock" then
 		local cast = self:Cast(e)
@@ -261,12 +273,15 @@ function Effects:Event(e)
 		cast.Pressure = true
 		cast.EndAt = e.Time + VFX.AccentSeconds + VFX.Tail
 		Accent.create(self, cast, "impact", cast.Ring.Color)
+		Hero.start(self, cast, e, color)
 		self:Sound(
 			if e.Type == "SignatureBlock" then "LidBlock" elseif f.Id == "pop" then "BubblePop" else "ClinkLightA",
 			e.Side
 		)
 		if e.Type == "SignatureBlock" then
 			f.GuardConsumed, f.GuardUntil = true, -1
+			f.GuardHitAt = e.Time
+			Impact.emit(cast.Root, self.Assets, cast.Origin, cast.Ring.Color, true, f.LowDetail)
 		end
 		self:Burst("ContactGlint", cast.Origin, cast.Ring.Color, f.LowDetail)
 		if e.Type == "SignatureContact" and f.Id == "briar_flask" then
@@ -285,6 +300,7 @@ function Effects:Update(r, time)
 		local kit = K[f.Id]
 		if not kit or f.Broken or f.Finishing then
 			f.SignatureGuard.Transparency = 1
+			Hero.guard(self, f, false)
 			continue
 		end
 		if
@@ -329,6 +345,8 @@ function Effects:Update(r, time)
 			local point = f.Body.Position + dir * math.max(f.Body.Size.X, f.Body.Size.Z) * 0.5
 			f.SignatureGuard.CFrame = CFrame.lookAt(point, point + dir + towardCamera * VFX.GuardCameraBias)
 		end
+		Hero.guard(self, f, guard)
+		Hero.details(self, f)
 	end
 	for id, cast in self.Casts do
 		if time > cast.EndAt then
@@ -352,6 +370,7 @@ function Effects:Update(r, time)
 		local alpha = math.clamp((time - (cast.EndAt - VFX.Tail)) / VFX.Tail, 0, 1)
 		Presentation.step(self, cast, age, alpha)
 		Accent.step(self, cast, age)
+		Hero.step(self, cast, age, alpha)
 		if cast.Ring then
 			local position = cast.Origin or f.Body.Position
 			cast.Ring.CFrame = CFrame.new(position) * workspace.CurrentCamera.CFrame.Rotation
@@ -374,19 +393,6 @@ function Effects:Update(r, time)
 			if cast.Halo then
 				cast.Halo.Transparency =
 					NumberSequence.new(VFX.RayHaloTransparency + alpha * (1 - VFX.RayHaloTransparency))
-			end
-		end
-		if cast.Weapon then
-			local angle = (-0.5 + math.clamp(age / e.Duration, 0, 1)) * e.Arc
-			local outward = cast.Direction * math.cos(angle) + cast.Up * math.sin(angle)
-			local head = cast.Origin + outward * e.Range
-			local up = cast.Up * math.cos(angle) - cast.Direction * math.sin(angle)
-			local rotation = CFrame.fromMatrix(outward, up, outward:Cross(up).Unit)
-			cast.Weapon:PivotTo(CFrame.new(head) * rotation * CFrame.new(-cast.HeadCenter))
-			cast.Slash.CFrame = CFrame.new(head) * rotation
-			cast.Slash.Transparency = VFX.ChargeLit + alpha * (1 - VFX.ChargeLit)
-			for _, part in cast.Weapon:GetChildren() do
-				part.Transparency = 0.1 + alpha * 0.9
 			end
 		end
 	end

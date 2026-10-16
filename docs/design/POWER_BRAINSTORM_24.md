@@ -1,15 +1,15 @@
 # Current powers and next brainstorm
 
-October 15, 2026. Exactly 24 release glassies. The middle columns describe implemented behavior; the last column is a proposal, not installed gameplay. Current numbers are in `src/shared/Config/Balance.luau` and remain provisional for balance.
+Updated October 16, 2026. Exactly 24 release glassies. The middle columns describe implemented behavior; the last column is a proposal, not installed gameplay. Current numbers are in `src/shared/Config/Balance.luau` and remain provisional for balance. The latest readability pass is documented in `docs/testing/combat_release/POWER_READABILITY_V3.md`.
 
 Most current signatures are a single shot, a short buff, or a one-use shield. More particles alone won't give them distinct stories. The next pass should make a few powers visibly change the next swing or create a brief event players can anticipate, then react to. Keep each action readable, bounded and server-authoritative.
 
 | Glassy | Current signature / trigger | What it currently does | Idea to discuss |
 |---|---|---|---|
-| Pop | Pressure Pop / every 3 clashes | Extra contact damage and stronger rebound | The cap visibly launches; a pressure ring pushes the next swing into a dramatic comeback |
-| Jam | Lid Guard / every 2 turnarounds | Lid softens the next body clash by 40% | Lid catches the hit, spins like a frisbee, then counter-slaps the opponent |
-| Prism | Refraction Ray / timed charge | Fires one locked, narrow ray that can miss | Split into three rainbow rays with a single shared damage budget |
-| Crescent Axe | Crescent Sweep / every 2 turnarounds | Winds up and swings a separate axe through a bounded arc | A clear raised-axe pose, close-range slam and visible knockback rather than a tiny distant miss |
+| Pop | Pressure Pop / every 3 clashes | Extra contact damage, stronger rebound, launched cap and large pressure wave | Let the pressure visibly build in its bubbles before the payoff |
+| Jam | Lid Guard / every 2 turnarounds | Real lid raises as a shield; softens the next body clash by 40% with a gold block burst | Lid spins like a frisbee after a successful block, then counter-slaps the opponent |
+| Prism | Refraction Ray / timed charge | Aimed glowing lens fires a white-core ray with colored rings and brief afterglow; can miss | Split into three rainbow rays with a single shared damage budget |
+| Crescent Axe | Crescent Sweep / every 2 turnarounds | Shows a raised blue axe, then sweeps its actual head along the bounded damage arc with a trail | Add a more pronounced slam recoil on a confirmed hit |
 | Briar Flask | Thorn Bloom / every 3 turnarounds | Grows thorns; next body clash deals extra damage | Thorn petals burst, orbit briefly, then converge on the next contact |
 | Arc Coil | Coil Discharge / every 3 clashes | Fires a crackling locked electrical shot | A short-lived electric tether crackles along the string and ends in a snapping discharge |
 | Milk Bottle | Fresh Seal / below half HP, once | Repairs 12% maximum HP after a windup | Foamy bubbles patch actual cracks, then one leftover bubble pops as a small contact counter |
@@ -22,7 +22,7 @@ Most current signatures are a single shot, a short buff, or a one-use shield. Mo
 | Hot Sauce | Hot Streak / below half HP, once | One brief stronger-drive window with empowered clashes | A short hot streak accelerates each swing visibly; clear cooldown smoke when it ends |
 | Crystal Tumbler | Mirror Catch / timed | Partially catches one ranged hit and sends a return ray; unused catch becomes a contact bonus | A large faceted mirror catches and visibly banks the projectile around its rim before returning it |
 | Chime | Resonant Ring / every 2 turnarounds | One expanding 3D pulse shell | Two staggered ringing waves; the second nudges swing phase, making timing visibly different |
-| Hourglass | Borrowed Moment / stores part of damage | Sends a capped sand shot at a later turnaround | Rewind its own last swing briefly, then replay it as a double-back; requires bounded motion history |
+| Hourglass | Second Turn / 3 turnarounds at or below 65% HP | Whole-glassy spin heals 7% maximum HP; twice per round, 8-second cooldown, disabled in overtime | Sand visibly flows upward during the repair; keep current heal limits |
 | Frostglobe | Snowdrift / timed | One short frost cone with a brief nonstacking slow | A visible snowball impact builds a temporary ice shell that cracks apart when the slow ends |
 | Prism Blade | Edgewake / every 2 turnarounds | A crescent travels out and back; each leg can hit once, sharing one damage budget | A curved return route makes the second pass easier to follow without automatic homing |
 | Rocket Pop | Afterburn Swing / every 3 turnarounds | Brief boost, capped tangent impulse and next-clash payoff | A two-stage boost: sputter, then a clear rocket dive along the string arc |
@@ -33,6 +33,6 @@ Most current signatures are a single shot, a short buff, or a one-use shield. Mo
 
 ## Best first experiments
 
-Start with Dragon, Galaxy, Hourglass and Jam: projectile spectacle, a short arena event, a movement surprise and a satisfying defensive counter. They would feel different even with the particles turned down. Test these against Pop, Axe and Blade before changing all 24. Avoid giving every kit a stun, homing attack or extra independent damage source.
+Hourglass's spinning repair and the Pop/Jam/Prism/Axe readability pass are now installed. Review those at normal speed first. Dragon fireballs, Galaxy mini-moons and Jam's counter remain ideas for a later mechanics pass. Test against Pop, Axe and Blade before changing all 24. Avoid giving every kit a stun, homing attack or extra independent damage source.
 
 Questions for our next brainstorm: which should be the funniest, which should feel most powerful, and should movement disruption or projectile patterns be the main source of surprise? No answer is required to use the completed selection/finisher polish.

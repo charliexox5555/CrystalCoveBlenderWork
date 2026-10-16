@@ -42,7 +42,17 @@ local function begin(state, side, emit, overrides)
 	if state.Over or f.Hp <= 0 or state.Time < s.BusyUntil then
 		return false
 	end
-	if s.HasCast and not kit.Reflection and state.Time < s.LastReady + K.MinCastSeconds then
+	if kit.MaxCasts and (s.CastsStarted or 0) >= kit.MaxCasts then
+		return false
+	end
+	if kit.HealBelow and (f.Hp / f.MaxHp > kit.HealBelow or state.Time >= Balance.Fight.OvertimeAt) then
+		return false
+	end
+	if
+		s.HasCast
+		and not kit.Reflection
+		and state.Time < s.LastReady + math.max(K.MinCastSeconds, kit.Cooldown or 0)
+	then
 		return false
 	end
 	state.CastSerial += 1
@@ -57,6 +67,7 @@ local function begin(state, side, emit, overrides)
 	}
 	s.Charge, s.LastReady = 0, state.Time
 	s.HasCast = true
+	s.CastsStarted = (s.CastsStarted or 0) + 1
 	s.BusyUntil = cast.Release + (kit.Hold or 0) + kit.Duration
 	s.NextReady = state.Time + (kit.Interval or math.huge) + (kit.Jitter or 0) * state.Rng()
 	table.insert(state.PendingCasts, cast)
@@ -89,6 +100,16 @@ function Signatures.turnaround(state, side, emit)
 	end
 	Traits.turnaround(state, side, emit, begin)
 	if s.Kit.Trigger ~= "turnaround" or state.Time < s.BusyUntil then
+		return
+	end
+	if
+		s.Kit.HealBelow
+		and (
+			f.Hp / f.MaxHp > s.Kit.HealBelow
+			or state.Time >= Balance.Fight.OvertimeAt
+			or (s.CastsStarted or 0) >= (s.Kit.MaxCasts or math.huge)
+		)
+	then
 		return
 	end
 	if s.Kit.Shape == "armed_contact" and s.Charge >= s.Kit.Every then
@@ -196,6 +217,9 @@ function Signatures.tick(state, emit)
 		if state.Over or f.Hp <= 0 then
 			continue
 		end
+		if cast.Params.HealBelow and state.Time >= Balance.Fight.OvertimeAt then
+			continue
+		end
 		f.PowerTriggers += 1
 		if cast.Shape == "guard" then
 			f.Signature.GuardUntil = state.Time + cast.Params.Duration
@@ -226,6 +250,9 @@ function Signatures.progress(state, f)
 	local s = f.Signature
 	if not s then
 		return nil
+	end
+	if s.Kit.MaxCasts and (s.CastsStarted or 0) >= s.Kit.MaxCasts then
+		return 0
 	end
 	if s.Kit.Trigger == "timer" then
 		return math.clamp((state.Time - s.LastReady) / math.max(0.01, s.NextReady - s.LastReady), 0, 1)

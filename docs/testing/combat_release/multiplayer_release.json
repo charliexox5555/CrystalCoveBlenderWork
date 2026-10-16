@@ -1,0 +1,60 @@
+{
+  "Launched": true,
+  "Result": {
+    "Ok": true,
+    "Winner": 2,
+    "Clients": {
+      "-1": {
+        "Profile": {
+          "Views": 7,
+          "MeanRenderMs": 1.343599999624227,
+          "MaxRenderMs": 1.9517000000632834,
+          "MeanMsByKind": {
+            "Participant": 0.4228666660613574,
+            "Nearby": 0.7603083328528252,
+            "Far": 0.13820833343440123
+          },
+          "MaxFrameMs": 18.72120052576065,
+          "Frames": 12,
+          "Fps": 60.154145028905766
+        },
+        "Finished": {
+          "Views": [],
+          "Releases": 9,
+          "BootstrapEvents": 1,
+          "JoinedLate": true,
+          "Contacts": 24,
+          "Roots": 0,
+          "Errors": []
+        },
+        "Ready": []
+      },
+      "-2": {
+        "Profile": {
+          "Views": 7,
+          "MeanRenderMs": 2.1503083341182596,
+          "MaxRenderMs": 6.817899997258792,
+          "MeanMsByKind": {
+            "Participant": 0.8455750000090726,
+            "Nearby": 1.224374999765132,
+            "Far": 0.0542833331564907
+          },
+          "MaxFrameMs": 478.9544939994812,
+          "Frames": 12,
+          "Fps": 7.280708206507912
+        },
+        "Finished": {
+          "Views": [],
+          "Releases": 9,
+          "BootstrapEvents": 1,
+          "JoinedLate": true,
+          "Contacts": 24,
+          "Roots": 0,
+          "Errors": []
+        },
+        "Ready": []
+      }
+    },
+    "RoundSeconds": 36.238888888890564
+  }
+}

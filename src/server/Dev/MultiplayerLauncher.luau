@@ -21,4 +21,19 @@ function Launcher.run()
 	end)
 	return "Starting two native simulated clients; result appears in ServerStorage.GlassClashQAResult"
 end
+function Launcher.combat()
+	assert(game:GetService("RunService"):IsStudio() and not game:GetService("RunService"):IsRunning())
+	local output = game.ServerStorage:FindFirstChild("CombatReleaseQAResult") or Instance.new("StringValue")
+	assert(output:GetAttribute("Running") ~= true, "Combat QA already running")
+	output.Name, output.Value, output.Parent = "CombatReleaseQAResult", "", game.ServerStorage
+	output:SetAttribute("Running", true)
+	task.spawn(function()
+		local ok, result = pcall(function()
+			return game:GetService("StudioTestService"):ExecuteMultiplayerTestAsync(2, { Name = "GlassClashCombatQA" })
+		end)
+		output.Value = game:GetService("HttpService"):JSONEncode({ Launched = ok, Result = result })
+		output:SetAttribute("Running", false)
+	end)
+	return "Focused two-client combat QA started"
+end
 return Launcher

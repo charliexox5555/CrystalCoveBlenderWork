@@ -21,4 +21,23 @@ function Geometry.movingSphere(a, b, oldTarget, target, radius)
 	return Geometry.segmentSphere(a - oldTarget, b - target, target - target, radius)
 end
 
+function Geometry.coneSphere(origin, direction, range, arc, center, radius)
+	local delta = center - origin
+	local along = delta:Dot(direction)
+	if along < -radius or along > range + radius then
+		return false
+	end
+	local radial = (delta - direction * along).Magnitude
+	return radial <= math.max(0, along) * math.tan(arc / 2) + radius
+end
+
+function Geometry.fanDirection(direction, index, count, arc, up)
+	local right = direction:Cross(up)
+	if right.Magnitude < 0.0001 then
+		return direction
+	end
+	local angle = if count == 1 then 0 else ((index - 1) / (count - 1) - 0.5) * arc
+	return (direction * math.cos(angle) + right.Unit * math.sin(angle)).Unit
+end
+
 return Geometry

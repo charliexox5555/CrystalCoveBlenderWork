@@ -148,6 +148,10 @@ function Scene.new(data, maxima, shatter)
 	end
 	if data.ReleasePrototype or Balance.CombatRelease.Enabled then
 		self.Combat = require(script.Parent.CombatEffects).new(self)
+		self.Combat.Time = data.Snapshot and data.Snapshot.T or 0
+		for _, e in data.SignatureState or {} do
+			self.Combat:Event(e)
+		end
 	end
 	return self
 end

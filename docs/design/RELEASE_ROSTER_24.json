@@ -1,7 +1,7 @@
 {
   "version": 1,
   "date": "2026-10-15",
-  "status": "24/24 exported/source-validated; 24/24 native imported/normalized; live integration pending",
+  "status": "24/24 native live models and signature kits enabled; creator feel/balance/device review pending",
   "releaseCount": 24,
   "roster": [
     {
@@ -9,168 +9,168 @@
       "name": "Pop",
       "batch": "A",
       "source": "playable_revision",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "jam",
       "name": "Jam",
       "batch": "A",
       "source": "playable_revision",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "prism",
       "name": "Prism",
       "batch": "A",
       "source": "playable_revision",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "crescent_axe",
       "name": "Crescent Axe",
       "batch": "A",
       "source": "new_concept",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "briar_flask",
       "name": "Briar Flask",
       "batch": "A",
       "source": "new_concept",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "arc_coil",
       "name": "Arc Coil",
       "batch": "A",
       "source": "new_concept",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "milk_bottle",
       "name": "Milk Bottle",
       "batch": "B",
       "source": "playable_revision",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "pickle_jar",
       "name": "Pickle Jar",
       "batch": "B",
       "source": "playable_revision",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "ketchup_bottle",
       "name": "Ketchup Bottle",
       "batch": "B",
       "source": "playable_revision",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "glass_cup",
       "name": "Glass Cup",
       "batch": "B",
       "source": "playable_revision",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "water_jug",
       "name": "Water Jug",
       "batch": "B",
       "source": "playable_revision",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "lemonade_bottle",
       "name": "Lemonade Bottle",
       "batch": "B",
       "source": "playable_revision",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "mason_jar",
       "name": "Mason Jar",
       "batch": "C",
       "source": "playable_revision",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "hot_sauce",
       "name": "Hot Sauce",
       "batch": "C",
       "source": "playable_revision",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "crystal_tumbler",
       "name": "Crystal Tumbler",
       "batch": "C",
       "source": "playable_revision",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "chime",
       "name": "Chime",
       "batch": "C",
       "source": "new_concept",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "hourglass",
       "name": "Hourglass",
       "batch": "C",
       "source": "new_concept",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "frostglobe",
       "name": "Frostglobe",
       "batch": "C",
       "source": "new_concept",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "prism_blade",
       "name": "Prism Blade",
       "batch": "D",
       "source": "catalog_first_model",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "rocket_pop",
       "name": "Rocket Pop",
       "batch": "D",
       "source": "catalog_first_model",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "glass_duck",
       "name": "Glass Duck",
       "batch": "D",
       "source": "catalog_first_model",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "comet",
       "name": "Comet",
       "batch": "D",
       "source": "catalog_first_model",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "glass_dragon",
       "name": "Glass Dragon",
       "batch": "D",
       "source": "catalog_first_model",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     },
     {
       "id": "galaxy_orb",
       "name": "Galaxy Orb",
       "batch": "D",
       "source": "catalog_first_model",
-      "status": "studio_imported_normalized_pending_live_kit"
+      "status": "live_signature_enabled_pending_creator_review"
     }
   ],
   "notes": [

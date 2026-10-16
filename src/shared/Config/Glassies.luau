@@ -647,6 +647,11 @@ function Glassies.get(id: string): GlassyDef
 	return def
 end
 
+local Visuals = if script then require(script.Parent.CombatKitVisuals) else require("./CombatKitVisuals")
+for id, visual in Visuals do
+	Glassies.ById[id].Description = visual.Description
+end
+
 local ReleaseRoster = if script then require(script.Parent.ReleaseRoster) else require("./ReleaseRoster")
 Glassies.ReleaseList = {}
 for _, id in ReleaseRoster.Ids do

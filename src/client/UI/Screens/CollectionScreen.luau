@@ -1,6 +1,6 @@
 local RS = game:GetService("ReplicatedStorage")
 local Glassies = require(RS.Shared.Config.Glassies)
-local Powers = require(RS.Shared.Config.Powers)
+local Powers = require(RS.Shared.CombatText)
 local Balance = require(RS.Shared.Config.Balance)
 local Formula = require(RS.Shared.Formula)
 local Theme = require(script.Parent.Parent.Theme)
@@ -212,14 +212,14 @@ function Screen:Detail(id)
 		ScrollBarThickness = 4,
 	})
 	local body = U.make("Frame", info, { Name = "Lines", BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1) })
-	local stats, passive, special = Formula.stats(def, owned), Powers.passive(def.Passive), Powers.special(def.Special)
+	local stats, passive, special = Formula.stats(def, owned), Powers.passive(def), Powers.special(def)
 	local lines = {
 		def.Name .. (if owned then " ★" .. owned.Stars else " • UNOWNED"),
 		def.Type .. " • " .. def.Rarity,
 		def.Description,
 		"POWER " .. stats.Power .. "   HP " .. stats.HP .. "   SWING " .. stats.Swing,
-		(def.PassiveName or passive.Name) .. ": " .. passive.Description,
-		(def.SpecialName or special.Name) .. ": " .. special.Description,
+		passive.Name .. ": " .. passive.Description,
+		special.Name .. ": " .. special.Description,
 		"Powers fire automatically during fights.",
 		"Used in " .. (self.Profile.Stats.GlassyUses[id] or 0) .. " matches",
 	}

@@ -3,6 +3,8 @@ local RS = game:GetService("ReplicatedStorage")
 local Debris = game:GetService("Debris")
 local Balance = require(RS.Shared.Config.Balance)
 local Audio = require(RS.Shared.Config.Audio)
+local Visuals = require(RS.Shared.Config.CombatKitVisuals)
+local Presentation = require(script.Parent.SignaturePresentation)
 local K, VFX, M = Balance.CombatRelease.Kits, Balance.CombatVFX, Balance.Motion
 local Effects = {}
 Effects.__index = Effects
@@ -34,7 +36,7 @@ function Effects.new(scene)
 				f.DetailStates[p] = { Size = p.Size, Center = p.CFrame.Position, Rotation = p.CFrame.Rotation }
 			end
 		end
-		local guard = assets.Meshes.GuardPlate:Clone()
+		local guard = assets.Meshes[if f.Id == "glass_duck" then "BubbleDome" else "GuardPlate"]:Clone()
 		guard.Name, guard.Size = "LidGuard", guard.Size * M.GlassyScale
 		guard.Material, guard.Color, guard.Transparency = Enum.Material.Glass, Color3.fromRGB(214, 171, 83), 1
 		guard.Parent, f.SignatureGuard = root, guard
@@ -77,6 +79,12 @@ function Effects:ClearCast(id)
 end
 
 function Effects:ClearTransient()
+	for _, f in self.Scene.Fighters do
+		for _, a in f.BrineAttachments or {} do
+			a:Destroy()
+		end
+		f.Brine, f.BrineAttachments = nil, nil
+	end
 	for id in self.Casts do
 		self:ClearCast(id)
 	end
@@ -103,10 +111,11 @@ function Effects:CancelSide(side)
 end
 
 function Effects:Cast(e)
-	self:ClearCast(e.CastId)
+	local id = e.CastId or (e.Type .. ":" .. e.Side .. ":" .. e.Time)
+	self:ClearCast(id)
 	local root = Instance.new("Folder")
-	root.Name, root.Parent = "Cast_" .. e.CastId, self.Root
-	root:SetAttribute("CastId", e.CastId)
+	root.Name, root.Parent = "Cast_" .. id, self.Root
+	root:SetAttribute("CastId", id)
 	root:SetAttribute("ServerTime", e.Time)
 	local cast = {
 		Root = root,
@@ -115,7 +124,7 @@ function Effects:Cast(e)
 		EndAt = e.Time + (e.Duration or e.Windup or 0) + VFX.Tail,
 		Event = e,
 	}
-	self.Casts[e.CastId] = cast
+	self.Casts[id] = cast
 	return cast
 end
 
@@ -126,10 +135,15 @@ function Effects:Event(e)
 		return false
 	end
 	if
-		not table.find(
-			{ "Charge", "CastStart", "CastRelease", "CastContact", "SignatureContact", "SignatureBlock" },
-			e.Type
-		)
+		not table.find({
+			"Charge",
+			"CastStart",
+			"CastRelease",
+			"CastContact",
+			"SignatureContact",
+			"SignatureBlock",
+			"SignatureStatus",
+		}, e.Type)
 	then
 		return false
 	end
@@ -138,13 +152,20 @@ function Effects:Event(e)
 		return true
 	end
 	local key = if e.CastId then e.Type .. ":" .. e.CastId else e.Type .. ":" .. e.Side .. ":" .. e.Time
+	key ..= ":" .. tostring(e.Pulse or e.Kind or "")
 	if self.Seen[key] then
 		return true
 	end
 	self.Seen[key] = true
 	local color = Color3.fromHex(f.Def.Tint)
 	local origin = if e.Origin then self.Scene.Frame:PointToWorldSpace(vector(e.Origin)) else f.Body.Position
-	if e.Type == "Charge" then
+	if e.Type == "SignatureStatus" then
+		if e.Kind == "Echo" then
+			f.EchoPoint, f.EchoUntil = self.Scene.Frame:PointToWorldSpace(vector(e.Point)), e.Time + e.Seconds
+		end
+		self:Burst(if e.Kind == "Heal" then "Frost" else "ContactGlint", origin, color, f.LowDetail)
+		self:Sound(Visuals[f.Id].ReleaseSound, e.Side)
+	elseif e.Type == "Charge" then
 		self:Burst("ContactGlint", f.Body.Position, color, f.LowDetail)
 		self:Sound(if f.Id == "arc_coil" then "CapRattle" else "ClinkLightB", e.Side)
 	elseif e.Type == "CastStart" then
@@ -169,9 +190,13 @@ function Effects:Event(e)
 		end
 		local cast = self:Cast(e)
 		cast.Origin = origin
-		cast.Direction = self.Scene.Frame:VectorToWorldSpace(vector(e.Direction)).Unit
+		cast.Direction = if e.Direction
+			then self.Scene.Frame:VectorToWorldSpace(vector(e.Direction)).Unit
+			else self.Scene.Frame.RightVector
 		self:Burst("ContactGlint", origin, color, f.LowDetail)
-		if e.Shape == "ray" then
+		if Presentation.release(self, cast, e, color) then
+			self:Sound(Visuals[f.Id].ReleaseSound, e.Side)
+		elseif e.Shape == "ray" then
 			local a = anchor(cast.Root, "RayOrigin", origin)
 			local b = anchor(cast.Root, "LockedRayEnd", origin + cast.Direction * e.Range)
 			local at0, at1 = Instance.new("Attachment"), Instance.new("Attachment")
@@ -200,6 +225,7 @@ function Effects:Event(e)
 		end
 	elseif e.Type == "CastContact" then
 		local cast = self.Casts[e.CastId]
+		Presentation.contact(cast, e)
 		if e.Missed then
 			if cast then
 				cast.Root:SetAttribute("Missed", true)
@@ -216,7 +242,7 @@ function Effects:Event(e)
 		if not e.Blocked then
 			self:Burst("GlassChips", point, color, f.LowDetail)
 		end
-		self:Sound(if e.Blocked then "LidBlock" else "ClinkLightA", e.Side)
+		self:Sound(if e.Blocked then "LidBlock" else Visuals[f.Id].ContactSound, e.Side)
 	elseif e.Type == "SignatureContact" or e.Type == "SignatureBlock" then
 		local cast = self:Cast(e)
 		cast.EndAt = e.Time + VFX.Tail
@@ -250,6 +276,14 @@ function Effects:Update(r, time)
 			f.SignatureGuard.Transparency = 1
 			continue
 		end
+		if
+			self.Scene.Viewing
+			and r.Hp[side] / f.Stats.MaxHP <= VFX.LowHealthFraction
+			and time >= (f.NextStress or 0)
+		then
+			f.NextStress = time + VFX.StressInterval
+			self:Burst("GlassDust", f.Body.Position, Color3.fromHex(f.Def.Tint), true)
+		end
 		local count = math.floor((r.Power[side] or 0) * (kit.Every or 3) + 0.01)
 		for p, rest in f.DetailStates do
 			local name = p:GetAttribute("SourceName") or p.Name
@@ -272,7 +306,8 @@ function Effects:Update(r, time)
 					* rest.Rotation
 			end
 		end
-		local guard = not f.GuardConsumed
+		local guard = kit.Shape == "guard"
+			and not f.GuardConsumed
 			and math.max((r.Effect[side] and r.Effect[side][1]) or 0, (f.GuardUntil or -1) - time) > 0
 		f.SignatureGuard.Transparency = if guard then VFX.GuardTransparency else 1
 		if guard then
@@ -290,12 +325,21 @@ function Effects:Update(r, time)
 			continue
 		end
 		local e, f = cast.Event, self.Scene.Fighters[cast.Side]
+		if
+			e.Shape == "boost"
+			and time > e.Time + VFX.Tail
+			and ((r.Effect[cast.Side] and r.Effect[cast.Side][3]) or 0) <= 0
+		then
+			self:ClearCast(id)
+			continue
+		end
 		if f.Broken or f.Finishing then
 			self:ClearCast(id)
 			continue
 		end
 		local age = math.max(0, time - cast.Time)
 		local alpha = math.clamp((time - (cast.EndAt - VFX.Tail)) / VFX.Tail, 0, 1)
+		Presentation.step(self, cast, age, alpha)
 		if cast.Ring then
 			local position = cast.Origin or f.Body.Position
 			cast.Ring.CFrame = CFrame.new(position) * workspace.CurrentCamera.CFrame.Rotation
@@ -332,6 +376,7 @@ function Effects:Update(r, time)
 			end
 		end
 	end
+	Presentation.status(self, r, time)
 	for i = #self.Sounds, 1, -1 do
 		if not self.Sounds[i].Parent then
 			table.remove(self.Sounds, i)

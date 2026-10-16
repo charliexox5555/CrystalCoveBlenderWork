@@ -1,0 +1,15 @@
+{
+  "snapshot": "places/CombatRelease_Live_v2.rbxm",
+  "bytes": 910340,
+  "sha256": "bda86c905c3614094363ab6d944049780b54b1a28afc0643c4876491765ecd18",
+  "root": "GlassClash_CombatRelease_v2",
+  "restore": {
+    "Glassies": "ReplicatedStorage.Assets.Glassies",
+    "Combat": "ReplicatedStorage.Assets.VFX.Combat"
+  },
+  "oldLiveBackup": "ServerStorage.CombatReleaseBackups.LiveBeforeFullRelease_20261015",
+  "models": 24,
+  "nonstarters": 21,
+  "published": false,
+  "source": "Rojo-managed src/"
+}

@@ -2,6 +2,10 @@
 -- the RULES; re-check them in Studio once the real swing exists (see Balance.SimModel).
 
 return function(t, deps)
+	-- Preserve the legacy-model regression gates. That stand-in has no range, moving targets or
+	-- swept attacks; release geometry/rounds are validated separately by ReleaseKitTests/report.
+	local releaseEnabled = deps.Balance.CombatRelease.Enabled
+	deps.Balance.CombatRelease.Enabled = false
 	local Glassies = deps.Glassies
 	local BalanceSim = if script then require(script.Parent.BalanceSim) else require("./BalanceSim")
 	local N = 120
@@ -55,4 +59,5 @@ return function(t, deps)
 			t.between(row.WinRate, 0.38, 0.62, row.Id .. " win rate vs the field")
 		end
 	end)
+	deps.Balance.CombatRelease.Enabled = releaseEnabled
 end

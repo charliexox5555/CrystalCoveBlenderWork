@@ -14,6 +14,19 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-15 — Codex — Complete 24-kit integration
+Done:
+- Implemented remaining 18 signatures using bounded threshold/storage/contact/turnaround/timer rules: one-use heal/duck guard, nonstacking brine/frost, expiring tomato splat/counter, boosts and capped rocket impulse, partial mirror/return without recursive reflection, moving pips/slashes/sand/star, pulse shell, three-budgeted breath pulses and capped tangent well. Actual geometry supplies hits/misses; axe anticipation and signature tracking/range tuned from recorded swings. Existing rarity/stat/price multipliers unchanged.
+- Added corresponding native mesh/beam/trail/status/detail timelines and per-kit sound cues. Preserved numeric glassy HP, outline fades, fixed camera, grounded avatars and baseline finisher. Updated ability copy throughout collection/selection UI. Promoted all 24 revised models and VFX; original live library preserved in CombatReleaseBackups.LiveBeforeFullRelease_20261015. Signatures enabled in normal matches; native Coin Kiln pool verifies 21. Dormant definitions/owned data preserved; no migration or paid storefront activation.
+- 97 Lune and Studio tests pass; 264 all-24 Client checks cover models/portraits/cracks/shards/timelines/cleanup. 48 actual deterministic swing rounds: mean 29.49 s, 0 timeouts, 0.431 body hits/s, max string error 0.00000143 studs. Small sample; not equal-stat fairness approval. Legacy balance tests explicitly preserve the old model; new geometry/status/budget/bootstrap suites cover release behavior.
+- Focused native two-client/seven-fight QA passes: completed Dragon/Lemonade round 36.24 s; each client receives 9 releases/24 pulse results, reconnects with one active bootstrap event, zero errors/remaining roots/views. Twelve desktop render samples each: focused 0.42/0.85 ms; seven-view total 1.34/2.15 ms. One client frame stall; no phone-ready claim. Initial fixture collided with real pad auto-queue; reserved arenas/character readiness fixed, safe missing-owner-name fallback added.
+- Saved places/CombatRelease_Live_v2.rbxm (910340 bytes, SHA bda86c905c3614094363ab6d944049780b54b1a28afc0643c4876491765ecd18), native art sheet and docs/testing/combat_release/FULL_RELEASE.md with creator grant/test commands and reproducible QA. Original Blender/raw/staged assets and unrelated files preserved. Studio Edit; no publish, desktop takeover or device changes.
+Required simulators:
+- Signature stand-in, 120 rounds/matchup: Pop/Jam/Prism mirrors 29.0/27.9/19.9 s, zero mirror timeouts; side A 49%; Perfect vs worst 56%; 41% comebacks, 1.3 lead changes, 3.2 actions/glassy, 35% aimed misses. Field output is substantially skewed because this encounter model lacks real range/travel/apex/well geometry; it is saved as a diagnostic, not accepted signature balance. Actual swing coverage above is the implementation gate; full equal-stat tuning remains.
+- Economy (2000 players): 21 nonstarters, 3.7 min/match, 16.1 matches/hour; 4/96 day-one/day-30 pulls; 12/18 uniques day seven/day 30; Rare 47 min, Epic 2.1 h, Legendary 9 h, 20% Mythic in 30 days. Full pool now installed; odds/costs unchanged.
+Next:
+- Creator tests the full roster at normal speed; tune weak/missed/unclear kit moments and actual equal-stat fairness, extend low-end-device/performance coverage, then creator publishes. All 24 kit implementations/effects are integrated; special finisher variants remain outside this release pass.
+
 ## 2026-10-15 — Codex — First-six feedback: effects, health and popup fade
 Done:
 - Creator approved the checkpoint look but found fights too quiet visually. Added short fast-swing trails, camera-facing expanding contact rings/chips, stronger charge/release/block bursts, growing pulsing windup rings, ray halos and a clearer axe slash. Effects retain bounded lifetimes and server-confirmed attack outcomes; rules/volumes/cadence/global activation unchanged.

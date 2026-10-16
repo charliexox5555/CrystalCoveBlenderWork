@@ -1,0 +1,28 @@
+{
+  "logicLune": {
+    "passed": 97,
+    "failed": 0
+  },
+  "logicStudio": {
+    "passed": 97,
+    "failed": 0
+  },
+  "clientPresentation": {
+    "checks": 264,
+    "models": 24,
+    "scope": "staged native Client fixture"
+  },
+  "liveModels": 24,
+  "liveCoinPool": 21,
+  "enabledInNormalMatches": true,
+  "swingRounds": 48,
+  "swingMeanSeconds": 29.488078703705657,
+  "swingTimeouts": 0,
+  "multiplayer": "multiplayer_release.json",
+  "creatorReviewPending": [
+    "normal-speed feel/audio",
+    "actual equal-stat tuning",
+    "longer performance and real-phone checks",
+    "place save and publish"
+  ]
+}

@@ -40,9 +40,20 @@ function FightModel.round(setup)
 	local state = FightRules.new(setup)
 	local dt = 0.05
 	local nextHit = m.HitInterval * (0.5 + 0.5 * rng())
+	-- Stand-in apex cadence; actual 3D turnarounds are measured by Pendulum, never this timer.
+	local halfPeriod = math.pi * math.sqrt(Balance.Motion.StringLength / Balance.Motion.Gravity)
+	local nextTurns = { halfPeriod * 0.5, halfPeriod }
 	local events = {}
 	while not state.Over do
 		FightRules.tick(state, dt)
+		if state.ReleaseKits then
+			for side = 1, 2 do
+				if state.Time >= nextTurns[side] then
+					FightRules.turnaround(state, side)
+					nextTurns[side] += halfPeriod
+				end
+			end
+		end
 		if not state.Over and state.Time >= nextHit then
 			if rng() >= missChance(state) then
 				local a, b = swingOf(state, 1), swingOf(state, 2)

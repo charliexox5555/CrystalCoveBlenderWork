@@ -1,0 +1,57 @@
+Glass Clash balance report (120 rounds per matchup, FightModel stand-in)
+
+Mirror rounds (avg seconds / hits / timeouts / comebacks / lead changes / powers per glassy):
+  pop             29.0 s  11.4 hits  0% timeouts  37% comebacks  1.1 lead changes  3.6 powers
+  jam             27.9 s  16.2 hits  0% timeouts  39% comebacks  1.3 lead changes  5.1 powers
+  prism           19.9 s   9.7 hits  0% timeouts  43% comebacks  1.3 lead changes  2.2 powers
+  milk_bottle     36.1 s  15.0 hits  0% timeouts  66% comebacks  2.2 lead changes  1.0 powers
+  glass_dragon    22.8 s   9.4 hits  0% timeouts  36% comebacks  1.2 lead changes  2.1 powers
+Side bias (side 1 win rate, pop mirror): 49%
+
+Starters (row beats column):
+  pop      -     71%   23%
+  jam      26%   -     44%
+  prism    77%   39%   -  
+
+Aim: Perfect vs worst (pop mirror): 56%
+Aim: Perfect vs average (aim 0.8):  53%
+Luck (all mirrors): 41% comebacks, 1.3 lead changes a round, 3.2 powers per glassy, 35% of aimed powers miss
+
+Rarity ladder, all Fizzy, vs Common lemonade_bottle:
+  milk_bottle    Common    13%
+  pop            Starter   18%
+  hot_sauce      Uncommon  5%
+  potion_flask   Rare      57%
+  rocket_pop     Epic      38%
+  comet          Legendary 65%
+  galaxy_orb     Mythic    62%
+Stars: pop 5 stars vs pop 0 stars: 82%
+
+Power balance (equal stats, each glassy vs all others):
+  prism_blade      Sharp  turnaround  projectile 81%
+  water_jug        Heavy  received    cone    75%
+  glass_dragon     Heavy  timer       breath  75%
+  briar_flask      Heavy  turnaround  armed_contact 74%
+  chime            Sharp  turnaround  pulse   71%
+  lemonade_bottle  Fizzy  timer       volley  65%
+  crescent_axe     Sharp  turnaround  sweep   63%
+  comet            Fizzy  contact     echo_contact 61%
+  ketchup_bottle   Fizzy  contact     mark_contact 60%
+  arc_coil         Fizzy  contact     ray     56%
+  prism            Sharp  timer       ray     49%
+  frostglobe       Fizzy  timer       cone    46%
+  galaxy_orb       Fizzy  timer       orbit   45%
+  jam              Heavy  turnaround  guard   42%
+  hourglass        Heavy  stored      projectile 42%
+  pop              Fizzy  contact     contact 41%
+  rocket_pop       Fizzy  turnaround  boost   40%
+  milk_bottle      Fizzy  threshold   heal    39%
+  crystal_tumbler  Sharp  timer       mirror  37%
+  glass_cup        Sharp  turnaround  boost   34%
+  hot_sauce        Fizzy  threshold   boost   30%
+  mason_jar        Heavy  heavy       armed_contact 30%
+  pickle_jar       Heavy  contact     slow_contact 22%
+  glass_duck       Heavy  threshold   guard   21%
+  Types: Fizzy 48%, Heavy 48%, Sharp 56%
+  Passives: contact 48%, heavy 30%, received 75%, stored 42%, threshold 30%, timer 53%, turnaround 58%
+  Specials: armed_contact 52%, boost 35%, breath 75%, cone 60%, contact 41%, echo_contact 61%, guard 32%, heal 39%, mark_contact 60%, mirror 37%, orbit 45%, projectile 61%, pulse 71%, ray 53%, slow_contact 22%, sweep 63%, volley 65%

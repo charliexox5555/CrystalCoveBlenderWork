@@ -1097,5 +1097,12 @@
     "originalImportScale": 100,
     "maxBoundsError": 1.2644053981603065e-07,
     "parts": 19
+  },
+  "liveKit": {
+    "status": "enabled_pending_creator_review",
+    "assetPath": "ReplicatedStorage.Assets.Glassies.prism_blade",
+    "effectPath": "ReplicatedStorage.Assets.VFX.Combat",
+    "nativePresentationChecks": "all-24 fixture passed",
+    "report": "docs/testing/combat_release/FULL_RELEASE.md"
   }
 }

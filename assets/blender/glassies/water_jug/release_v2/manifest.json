@@ -1102,5 +1102,12 @@
     "originalImportScale": 100,
     "maxBoundsError": 2.4755667027420714e-07,
     "parts": 19
+  },
+  "liveKit": {
+    "status": "enabled_pending_creator_review",
+    "assetPath": "ReplicatedStorage.Assets.Glassies.water_jug",
+    "effectPath": "ReplicatedStorage.Assets.VFX.Combat",
+    "nativePresentationChecks": "all-24 fixture passed",
+    "report": "docs/testing/combat_release/FULL_RELEASE.md"
   }
 }

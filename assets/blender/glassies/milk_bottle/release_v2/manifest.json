@@ -1290,5 +1290,12 @@
     "originalImportScale": 100,
     "maxBoundsError": 2.528810796320613e-07,
     "parts": 23
+  },
+  "liveKit": {
+    "status": "enabled_pending_creator_review",
+    "assetPath": "ReplicatedStorage.Assets.Glassies.milk_bottle",
+    "effectPath": "ReplicatedStorage.Assets.VFX.Combat",
+    "nativePresentationChecks": "all-24 fixture passed",
+    "report": "docs/testing/combat_release/FULL_RELEASE.md"
   }
 }

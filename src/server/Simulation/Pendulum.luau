@@ -6,6 +6,7 @@ local Rules = if Shared then require(Shared.FightRules) else require("../../shar
 local Rng = if Shared then require(Shared.Rng) else require("../../shared/Rng")
 local Geometry = if script then require(script.Parent.AttackGeometry) else require("./AttackGeometry")
 local Turnaround = if script then require(script.Parent.Turnaround) else require("./Turnaround")
+local SignatureAttacks = if script then require(script.Parent.SignatureAttacks) else require("./SignatureAttacks")
 local V = if script then Vector3 else require("@lune/roblox").Vector3
 local M = Balance.Motion
 local Pendulum = {}
@@ -31,7 +32,10 @@ end
 function Pendulum.fireDirection(sim, side)
 	local b = sim.Bodies[side]
 	local facing = b.Facing
-	local c, s = math.cos(b.Twist * M.PowerTwistInfluence), math.sin(b.Twist * M.PowerTwistInfluence)
+	local influence = if sim.Fight.Fighters[side].Signature
+		then Balance.CombatRelease.TwistInfluence
+		else M.PowerTwistInfluence
+	local c, s = math.cos(b.Twist * influence), math.sin(b.Twist * influence)
 	return V.new(facing.X * c - facing.Z * s, facing.Y, facing.X * s + facing.Z * c).Unit
 end
 
@@ -74,6 +78,11 @@ function Pendulum.new(setup, seed, gap)
 		return Pendulum.lands(sim, side)
 	end
 	setup.CastsManaged = true
+	setup.CanReleaseCast = function(cast)
+		local target = sim.Fight.Fighters[3 - cast.Side]
+		return (Pendulum.center(sim, 3 - cast.Side) - Pendulum.center(sim, cast.Side)).Magnitude
+			<= cast.Params.Range + target.Radius * M.GlassyScale
+	end
 	sim.Fight = Rules.new(setup)
 	for side, f in sim.Fight.Fighters do
 		sim.Bodies[side] = {
@@ -108,6 +117,13 @@ end
 
 local function integrate(sim, side, dt)
 	local b, f = sim.Bodies[side], sim.Fight.Fighters[side]
+	local signature = f.Signature
+	if signature and sim.Fight.Time < (signature.BoostUntil or -1) and b.LastBoost ~= signature.LastReady then
+		b.LastBoost = signature.LastReady
+		if signature.Kit.Impulse and b.V.Magnitude > 0.1 then
+			b.V += b.V.Unit * signature.Kit.Impulse
+		end
+	end
 	local previousVy = b.V.Y
 	if sim.Fight.Time >= b.NextWander then
 		b.Wander = (sim.Rng() * 2 - 1) * M.WanderStrength * M.StringLength
@@ -134,6 +150,12 @@ local function integrate(sim, side, dt)
 		-M.Gravity,
 		b.Wander * (if frozen then 0 else 1) - b.P.Z * M.OutOfPlaneDamping - b.V.Z * M.OutOfPlaneDamping
 	) + drive - b.V * drag
+	if sim.Well and sim.Fight.Time < sim.Well.Until then
+		local delta = sim.Well.Origin - Pendulum.center(sim, side)
+		if delta.Magnitude > 0.01 and delta.Magnitude <= sim.Well.Range then
+			force += delta.Unit * sim.Well.Force
+		end
+	end
 	b.V += tangent(force, b.P.Unit) * dt
 	b.P += b.V * dt
 	constrain(b)
@@ -166,12 +188,27 @@ local function attacks(sim, dt)
 			break
 		end
 		local origin, direction = Pendulum.center(sim, cast.Side), Pendulum.fireDirection(sim, cast.Side)
+		if cast.Params.StoredOrigin then
+			origin = V.new(table.unpack(cast.Params.StoredOrigin))
+		end
+		if cast.Shape == "orbit" then
+			origin = (Pendulum.center(sim, 1) + Pendulum.center(sim, 2)) / 2
+		end
+		if cast.Shape == "projectile" or cast.Shape == "volley" then
+			direction = (
+				Pendulum.center(sim, 3 - cast.Side)
+				+ sim.Bodies[3 - cast.Side].V * Balance.CombatRelease.ProjectileLeadSeconds
+				- origin
+			).Unit
+		end
 		if not Rules.releaseCast(sim.Fight, cast, array(origin), array(direction)) then
 			continue
 		end
 		local target = Pendulum.center(sim, 3 - cast.Side)
 		local radius = sim.Fight.Fighters[3 - cast.Side].Radius * M.GlassyScale + cast.Params.Radius
-		if cast.Shape == "ray" then
+		if SignatureAttacks.add(sim, cast, origin, direction, target) then
+			continue
+		elseif cast.Shape == "ray" then
 			local hit, point = Geometry.segmentSphere(origin, origin + direction * cast.Params.Range, target, radius)
 			Rules.resolveAbility(sim.Fight, cast.Id, hit, if hit then array(point) else nil)
 		elseif cast.Shape == "sweep" then
@@ -202,6 +239,7 @@ local function attacks(sim, dt)
 		end
 	end
 	sim.Attacks = if sim.Fight.Over then {} else remaining
+	SignatureAttacks.step(sim, dt, Pendulum.center)
 end
 
 function Pendulum.step(sim, dt)
@@ -213,7 +251,12 @@ function Pendulum.step(sim, dt)
 		for side, body in sim.Bodies do
 			if sim.Fight.Time >= body.NextTracking then
 				body.Facing = (Pendulum.center(sim, 3 - side) - Pendulum.center(sim, side)).Unit
-				body.NextTracking = sim.Fight.Time + M.PowerTrackingSeconds
+				body.NextTracking = sim.Fight.Time
+					+ (
+						if sim.Fight.Fighters[side].Signature
+							then Balance.CombatRelease.TrackingSeconds
+							else M.PowerTrackingSeconds
+					)
 			end
 		end
 		Rules.tick(sim.Fight, h)
@@ -290,6 +333,57 @@ function Pendulum.step(sim, dt)
 		end
 		sim.PreviousApproach = approach
 	end
+end
+
+function Pendulum.presentation(sim)
+	local events = {}
+	for _, cast in sim.Fight.PendingCasts do
+		table.insert(events, {
+			Type = "CastStart",
+			Side = cast.Side,
+			CastId = cast.Id,
+			Kit = cast.Kit,
+			Time = cast.Start,
+			Windup = cast.Params.Windup + (cast.Params.Hold or 0),
+			Shape = cast.Shape,
+		})
+	end
+	for _, cast in sim.Fight.AbilityResults do
+		if cast.Released then
+			local p = cast.Params
+			table.insert(events, {
+				Type = "CastRelease",
+				Side = cast.Side,
+				CastId = cast.Id,
+				Kit = cast.Kit,
+				Time = cast.ReleasedAt,
+				Origin = cast.Origin,
+				Direction = cast.Direction,
+				Shape = cast.Shape,
+				Range = p.Range,
+				Radius = p.Radius,
+				Arc = p.Arc,
+				Pulses = p.Pulses,
+				Duration = p.Duration,
+				Resolved = table.clone(cast.Results or {}),
+			})
+		end
+	end
+	for side, f in sim.Fight.Fighters do
+		local s = f.Signature
+		if s and s.EchoPoint then
+			table.insert(events, {
+				Type = "SignatureStatus",
+				Kind = "Echo",
+				Side = side,
+				Kit = f.Id,
+				Time = sim.Fight.Time,
+				Point = s.EchoPoint,
+				Seconds = math.max(0, s.EchoUntil - sim.Fight.Time),
+			})
+		end
+	end
+	return events
 end
 
 function Pendulum.snapshot(sim)

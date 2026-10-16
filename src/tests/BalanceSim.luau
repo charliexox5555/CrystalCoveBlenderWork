@@ -40,6 +40,13 @@ local function suspense(state)
 			if hits > 3 and now ~= 0 and now ~= state.Winner then
 				behind = true
 			end
+		elseif e.Type == "CastRelease" or e.Type == "SignatureContact" then
+			powers += 1
+		elseif e.Type == "CastContact" then
+			aimed += 1
+			if e.Missed then
+				misses += 1
+			end
 		elseif e.Type == "Power" then
 			powers += 1
 			if e.Missed ~= nil or e.Id == "beam" or e.Id == "freeze" then
@@ -183,17 +190,19 @@ function BalanceSim.powerTable(n: number)
 	end
 	for _, id in ids do
 		local def = Glassies.get(id)
+		local kit = Balance.CombatRelease.Enabled and Balance.CombatRelease.Kits[id]
+		local passive, special = if kit then kit.Trigger else def.Passive, if kit then kit.Shape else def.Special
 		local rate = totals[id] / (#ids - 1)
 		table.insert(rows, {
 			Id = id,
 			Rarity = def.Rarity,
 			Type = def.Type,
-			Passive = def.Passive,
-			Special = def.Special,
+			Passive = passive,
+			Special = special,
 			WinRate = rate,
 		})
-		addTo(byPassive, def.Passive, rate)
-		addTo(bySpecial, def.Special, rate)
+		addTo(byPassive, passive, rate)
+		addTo(bySpecial, special, rate)
 		addTo(byType, def.Type, rate)
 	end
 	table.sort(rows, function(x, y)

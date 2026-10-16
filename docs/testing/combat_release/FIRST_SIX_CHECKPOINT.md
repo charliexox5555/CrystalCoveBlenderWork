@@ -1,5 +1,7 @@
 # First-six combat checkpoint
 
+**Superseded by the [full 24-glassy integration](FULL_RELEASE.md).** All signatures are now enabled in normal matches and all 24 revised models are live. Earlier checkpoint statements below describe their historical state.
+
 ## Creator feedback pass
 
 The creator tested the checkpoint and liked the look, but requested more effects, clearly visible numeric health and a complete floating-text outline fade. This pass adds `123 HP` just beneath each glassy (white, pink at low HP), short fast-swing trails, expanding contact rings/chips, stronger signature charge/release/block bursts, growing pulsing windup rings, ray halos and a clearer axe slash. HP follows snapshot values and disappears when watching stops, on shatter and during the finisher. Both legacy text strokes and authored UIStroke outlines fade with the damage text. Damage, charge cadence, attack volumes and global activation are unchanged.

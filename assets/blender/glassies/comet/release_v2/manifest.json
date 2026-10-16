@@ -1107,5 +1107,12 @@
     "originalImportScale": 100,
     "maxBoundsError": 2.4027400513659813e-07,
     "parts": 19
+  },
+  "liveKit": {
+    "status": "enabled_pending_creator_review",
+    "assetPath": "ReplicatedStorage.Assets.Glassies.comet",
+    "effectPath": "ReplicatedStorage.Assets.VFX.Combat",
+    "nativePresentationChecks": "all-24 fixture passed",
+    "report": "docs/testing/combat_release/FULL_RELEASE.md"
   }
 }

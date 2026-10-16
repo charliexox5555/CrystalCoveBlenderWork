@@ -38,6 +38,7 @@ export type FighterSetup = {
 export type Setup = {
 	ReleaseKits: boolean?,
 	CastsManaged: boolean?,
+	CanReleaseCast: ((cast: any) -> boolean)?,
 	A: FighterSetup,
 	B: FighterSetup,
 	Rng: () -> number,
@@ -91,6 +92,8 @@ export type Fighter = {
 export type State = {
 	ReleaseKits: boolean,
 	CastsManaged: boolean,
+	CanReleaseCast: ((cast: any) -> boolean)?,
+	ContactExtra: { number }?,
 	CastSerial: number,
 	PendingCasts: { any },
 	CastRequests: { any },
@@ -225,6 +228,7 @@ function FightRules.new(setup: Setup): State
 	local state: State = {
 		ReleaseKits = if setup.ReleaseKits ~= nil then setup.ReleaseKits else Balance.CombatRelease.Enabled,
 		CastsManaged = setup.CastsManaged == true,
+		CanReleaseCast = setup.CanReleaseCast,
 		CastSerial = 0,
 		PendingCasts = {},
 		CastRequests = {},
@@ -275,6 +279,16 @@ function FightRules.swingMultiplier(state: State, side: number): number
 		local foe = state.Fighters[other(side)]
 		mult *= 1 - (foe.PassiveParams.SwingLoss or 0) * #f.Sticky
 	end
+	local s = f.Signature
+	if s then
+		if state.Time < (s.BoostUntil or -1) then
+			mult *= s.Kit.Drive
+		end
+		if state.Time < (s.SlowUntil or -1) then
+			mult *= s.Slow
+		end
+		mult = math.max(Balance.CombatRelease.SlowFloor, mult)
+	end
 	return mult
 end
 
@@ -287,6 +301,9 @@ end
 function FightRules.knockbackMultiplier(state: State, side: number, qualifies: boolean?): number
 	local foe = state.Fighters[other(side)]
 	local signature = foe.Signature
+	if signature and qualifies ~= false and state.Time < (signature.BoostUntil or -1) then
+		return signature.Kit.Rebound or 1
+	end
 	if
 		signature
 		and qualifies ~= false
@@ -324,6 +341,7 @@ local function takeDamage(state: State, target: Fighter, amount: number, kind: s
 	end
 	amount = Signatures.mitigate(state, target, amount, kind or "ranged", emit)
 	target.Hp -= amount
+	Signatures.damaged(state, target, amount, kind or "ranged", emit)
 	return amount
 end
 
@@ -440,7 +458,12 @@ function FightRules.hit(state: State, speed: number, shareA: number, x: number?,
 	local taken, blocked = {}, {}
 	for side = 1, 2 do
 		local target = other(side)
-		taken[target] = takeDamage(state, fighters[target], raw[side], "body")
+		taken[target] = takeDamage(
+			state,
+			fighters[target],
+			raw[side] + ((state.ContactExtra and state.ContactExtra[target]) or 0) * overtimeMultiplier(state),
+			"body"
+		)
 		blocked[target] = raw[side] > 0 and taken[target] == 0
 	end
 	state.Hits += 1
@@ -522,7 +545,7 @@ function FightRules.releaseCast(state: State, cast, origin, direction): boolean
 	if state.Over or state.AbilityResults[cast.Id] ~= cast or cast.Released then
 		return false
 	end
-	cast.Released, cast.Origin, cast.Direction = true, origin, direction
+	cast.Released, cast.Origin, cast.Direction, cast.ReleasedAt = true, origin, direction, state.Time
 	emit(state, {
 		Type = "CastRelease",
 		Side = cast.Side,
@@ -535,17 +558,30 @@ function FightRules.releaseCast(state: State, cast, origin, direction): boolean
 		Radius = cast.Params.Radius,
 		Arc = cast.Params.Arc,
 		Duration = cast.Params.Duration,
+		Pulses = cast.Params.Pulses,
 	})
 	return true
 end
 
 -- One bounded authoritative result per first-batch cast. Ability hits never call hit()/refill contacts.
-function FightRules.resolveAbility(state: State, castId: number, landed: boolean, point): boolean
+function FightRules.resolveAbility(state: State, castId: number, landed: boolean, point, pulse: number?): boolean
 	local cast = state.AbilityResults[castId]
 	if state.Over or not cast or not cast.Released then
 		return false
 	end
-	state.AbilityResults[castId] = nil
+	local index, count = pulse or 1, cast.Params.Pulses or 1
+	if index % 1 ~= 0 or index < 1 or index > count then
+		return false
+	end
+	cast.Results = cast.Results or {}
+	if cast.Results[index] then
+		return false
+	end
+	cast.Results[index] = true
+	cast.ResultCount = (cast.ResultCount or 0) + 1
+	if cast.ResultCount >= count then
+		state.AbilityResults[castId] = nil
+	end
 	local attacker, target = state.Fighters[cast.Side], state.Fighters[other(cast.Side)]
 	local before = { state.Fighters[1].Hp / state.Fighters[1].MaxHp, state.Fighters[2].Hp / state.Fighters[2].MaxHp }
 	local amount = 0
@@ -555,11 +591,15 @@ function FightRules.resolveAbility(state: State, castId: number, landed: boolean
 			target,
 			attacker.Power
 				* cast.Params.Damage
+				/ count
 				* Formula.typeMultiplier(attacker.Type, target.Type)
 				* overtimeMultiplier(state),
-			"ranged"
+			if cast.Params.Reflection then "reflection" else "ranged"
 		)
 		attacker.DamageDealt += amount
+		if amount > 0 and cast.Params.Slow then
+			Signatures.slow(state, attacker, target, cast.Params, emit)
+		end
 	end
 	emit(state, {
 		Type = "CastContact",
@@ -567,6 +607,7 @@ function FightRules.resolveAbility(state: State, castId: number, landed: boolean
 		Target = target.Side,
 		Kit = cast.Kit,
 		CastId = cast.Id,
+		Pulse = index,
 		Missed = not landed,
 		Blocked = landed and amount == 0,
 		Amount = amount,
@@ -737,7 +778,9 @@ function FightRules.tick(state: State, dt: number)
 		-- The stand-in simulator has no positions; native Pendulum always manages real geometry.
 		for _, cast in FightRules.drainCasts(state) do
 			FightRules.releaseCast(state, cast, nil, nil)
-			FightRules.resolveAbility(state, cast.Id, state.Rng() < (cast.Params.LandChance or 1), nil)
+			for pulse = 1, cast.Params.Pulses or 1 do
+				FightRules.resolveAbility(state, cast.Id, state.Rng() < (cast.Params.LandChance or 1), nil, pulse)
+			end
 			if state.Over then
 				return
 			end
@@ -771,6 +814,18 @@ function FightRules.snapshot(state: State): { [string]: any }
 			math.max(0, f.PumpUntil - state.Time),
 			math.max(0, f.SlamUntil - state.Time),
 		}
+		local s = f.Signature
+		if s then
+			out.Rage[side] = state.Time < (s.BoostUntil or -1)
+			out.Pump[side] = out.Rage[side]
+			out.Effect[side] = {
+				math.max(0, math.max(s.GuardUntil, s.MirrorUntil or -1) - state.Time),
+				math.max(0, (s.SlowUntil or -1) - state.Time),
+				math.max(0, (s.BoostUntil or -1) - state.Time),
+				math.max(0, (s.Mark and s.Mark.Until or -1) - state.Time),
+				math.max(0, (s.EchoUntil or -1) - state.Time),
+			}
+		end
 	end
 	return out
 end

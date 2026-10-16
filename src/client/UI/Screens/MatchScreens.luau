@@ -2,7 +2,7 @@ local Players = game:GetService("Players")
 local SocialService = game:GetService("SocialService")
 local RS = game:GetService("ReplicatedStorage")
 local Glassies = require(RS.Shared.Config.Glassies)
-local Powers = require(RS.Shared.Config.Powers)
+local Powers = require(RS.Shared.CombatText)
 local Theme = require(script.Parent.Parent.Theme)
 local U = require(script.Parent.Parent.Components.Util)
 local Panel = require(script.Parent.Parent.Components.Panel)
@@ -82,17 +82,11 @@ function Screens:PowerInfo(id)
 		self.Info:Destroy()
 		self.Info = nil
 	end)
-	local passive, power = Powers.passive(def.Passive), Powers.special(def.Special)
+	local passive, power = Powers.passive(def), Powers.special(def)
 	local copy = U.text(
 		self.Info.Content,
 		"Description",
-		(def.PassiveName or passive.Name)
-			.. ": "
-			.. passive.Description
-			.. "\n\n"
-			.. (def.SpecialName or power.Name)
-			.. ": "
-			.. power.Description,
+		passive.Name .. ": " .. passive.Description .. "\n\n" .. power.Name .. ": " .. power.Description,
 		UDim2.fromScale(0.94, 0.9),
 		UDim2.fromScale(0.03, 0.03),
 		Theme.Fonts.Body

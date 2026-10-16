@@ -1,6 +1,6 @@
 local RS = game:GetService("ReplicatedStorage")
 local Glassies = require(RS.Shared.Config.Glassies)
-local Powers = require(RS.Shared.Config.Powers)
+local Powers = require(RS.Shared.CombatText)
 local Theme = require(script.Parent.Parent.Theme)
 local U = require(script.Parent.Parent.Components.Util)
 local S = require(script.Parent.Parent.Components.StainedGlass)
@@ -29,8 +29,8 @@ local function renderCard(card, id)
 	end
 	S.tag(card.TypeTag, d.Type, S.Types[d.Type])
 	S.tag(card.RarityTag, d.Rarity, S.Rarity[d.Rarity])
-	local power = Powers.special(d.Special)
-	card.Power.Text = (d.SpecialName or power.Name) .. ": " .. power.Description
+	local power = Powers.special(d)
+	card.Power.Text = power.Name .. ": " .. power.Description
 	S.bindSlices(card)
 end
 function Screen:Connect(button, callback, group)
@@ -51,7 +51,7 @@ function Screen.new(data, pick, reroll, pickAny)
 	self.Title, self.Message = self.Panel.Title, self.Panel.Message
 	for side = 1, 2 do
 		local p = self.Panel["Player" .. side]
-		p.OwnerName.Text = data.Names[side]
+		p.OwnerName.Text = data.Names and data.Names[side] or (if side == 1 then "YOU" else "OPPONENT")
 		S.hearts(p.Hearts, data.Hearts and data.Hearts[side] or 3)
 	end
 	self:Connect(self.Panel.PickAny, function()

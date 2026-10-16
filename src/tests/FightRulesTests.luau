@@ -7,6 +7,7 @@ return function(t, deps)
 	local function fight(idA: string, idB: string, opts: { [string]: any }?)
 		local o = opts or {}
 		return FightRules.new({
+			ReleaseKits = false, -- retained legacy rules regression; release kits have dedicated suites
 			A = { Id = idA, Aim = o.AimA, AimYaw = o.YawA },
 			B = { Id = idB, Aim = o.AimB },
 			Rng = o.Rng or Rng.new(o.Seed or 1),
@@ -46,23 +47,29 @@ return function(t, deps)
 	end)
 
 	t.test("a hit damages both glassies; faster hits hurt more", function()
-		local s = fight("pop", "pop", { Rng = function()
-			return 0.99 -- no crits, top of the variance range
-		end })
+		local s = fight("pop", "pop", {
+			Rng = function()
+				return 0.99 -- no crits, top of the variance range
+			end,
+		})
 		FightRules.hit(s, 10, 0.5)
 		local slow = s.Fighters[2].MaxHp - s.Fighters[2].Hp
 		t.ok(s.Fighters[1].Hp < s.Fighters[1].MaxHp and slow > 0, "both damaged")
-		local s2 = fight("pop", "pop", { Rng = function()
-			return 0.99
-		end })
+		local s2 = fight("pop", "pop", {
+			Rng = function()
+				return 0.99
+			end,
+		})
 		FightRules.hit(s2, 30, 0.5)
 		t.ok(s2.Fighters[2].MaxHp - s2.Fighters[2].Hp > slow, "faster hit, more damage")
 	end)
 
 	t.test("the glassy that moved into the hit deals more", function()
-		local s = fight("pop", "pop", { Rng = function()
-			return 0.99
-		end })
+		local s = fight("pop", "pop", {
+			Rng = function()
+				return 0.99
+			end,
+		})
 		FightRules.hit(s, 20, 0.9)
 		t.ok(s.Fighters[2].Hp < s.Fighters[1].Hp, "side 1 swung harder")
 	end)
@@ -82,7 +89,10 @@ return function(t, deps)
 		t.eq(FightRules.clampAim("x"), Balance.Motion.AimDefault, "string -> default")
 		local s = fight("pop", "jam", { AimA = 0.8, AimB = 1.25, SweetSpot = 0.8 })
 		t.ok(s.Fighters[1].Perfect and not s.Fighters[2].Perfect, "only side 1 perfect")
-		t.ok(s.Fighters[1].NextPowerAt <= F.PowerFirstMax - F.PerfectPowerAdvance + 1e-9, "perfect brings the first power sooner")
+		t.ok(
+			s.Fighters[1].NextPowerAt <= F.PowerFirstMax - F.PerfectPowerAdvance + 1e-9,
+			"perfect brings the first power sooner"
+		)
 		t.eq(FightRules.clampYaw(5), Balance.Motion.AimYawMax, "yaw clamped")
 		t.eq(FightRules.clampYaw(0 / 0), 0, "NaN yaw -> 0")
 		t.eq(s.Fighters[1].AimYaw, 0, "default yaw")
@@ -108,7 +118,10 @@ return function(t, deps)
 				end
 			end
 		end
-		t.ok(firstAt ~= nil and firstAt >= F.PowerFirstMin - 0.05 and firstAt <= F.PowerFirstMax + 0.05, "first power in its window")
+		t.ok(
+			firstAt ~= nil and firstAt >= F.PowerFirstMin - 0.05 and firstAt <= F.PowerFirstMax + 0.05,
+			"first power in its window"
+		)
 		t.eq(fired[1], F.PowerMaxPerRound, "side 1 hits the per-round cap")
 		t.eq(fired[2], F.PowerMaxPerRound, "side 2 hits the per-round cap")
 		local again, why = FightRules.triggerPower(s, 1)
@@ -123,21 +136,27 @@ return function(t, deps)
 	end)
 
 	t.test("aimed powers can miss", function()
-		local miss = fight("prism", "pop", { PowerLands = function()
-			return false
-		end })
+		local miss = fight("prism", "pop", {
+			PowerLands = function()
+				return false
+			end,
+		})
 		fire(miss, 1)
 		local events = FightRules.drainEvents(miss)
 		t.ok(events[#events].Missed == true, "beam missed")
 		t.eq(miss.Fighters[2].Hp, miss.Fighters[2].MaxHp, "no damage on a miss")
-		local land = fight("prism", "pop", { PowerLands = function()
-			return true
-		end })
+		local land = fight("prism", "pop", {
+			PowerLands = function()
+				return true
+			end,
+		})
 		fire(land, 1)
 		t.ok(land.Fighters[2].Hp < land.Fighters[2].MaxHp, "beam landed")
-		local self = fight("jam", "pop", { PowerLands = function()
-			return false
-		end })
+		local self = fight("jam", "pop", {
+			PowerLands = function()
+				return false
+			end,
+		})
 		fire(self, 1)
 		t.ok(FightRules.isShielded(self, 1), "self powers (shield) never miss")
 	end)
@@ -158,9 +177,11 @@ return function(t, deps)
 	end)
 
 	t.test("shield blocks hit damage and beam", function()
-		local s = fight("jam", "prism", { PowerLands = function()
-			return true
-		end })
+		local s = fight("jam", "prism", {
+			PowerLands = function()
+				return true
+			end,
+		})
 		fire(s, 1)
 		t.ok(FightRules.isShielded(s, 1), "shielded")
 		fire(s, 2) -- beam
@@ -171,9 +192,11 @@ return function(t, deps)
 	end)
 
 	t.test("beam deals a fraction of max HP; glaze heals and clears cracks", function()
-		local s = fight("prism", "milk_bottle", { PowerLands = function()
-			return true
-		end })
+		local s = fight("prism", "milk_bottle", {
+			PowerLands = function()
+				return true
+			end,
+		})
 		fire(s, 1)
 		local foe = s.Fighters[2]
 		t.near(foe.MaxHp - foe.Hp, foe.MaxHp * deps.Powers.Specials.beam.Params.MaxHpFraction, 1e-6, "beam damage")
@@ -199,12 +222,19 @@ return function(t, deps)
 		fire(s, 1)
 		t.ok(FightRules.knockbackMultiplier(s, 2) > 1, "slam knocks back")
 		FightRules.hit(s, 20, 0.5)
-		t.near(s.Fighters[2].MaxHp - s.Fighters[2].Hp, normal * deps.Powers.Specials.slam.Params.DamageMult, 0.5, "slam damage")
+		t.near(
+			s.Fighters[2].MaxHp - s.Fighters[2].Hp,
+			normal * deps.Powers.Specials.slam.Params.DamageMult,
+			0.5,
+			"slam damage"
+		)
 		t.eq(FightRules.knockbackMultiplier(s, 2), 1, "slam used up")
 
-		local f = fight("crystal_ball", "pop", { PowerLands = function()
-			return true
-		end })
+		local f = fight("crystal_ball", "pop", {
+			PowerLands = function()
+				return true
+			end,
+		})
 		fire(f, 1)
 		t.ok(FightRules.isFrozen(f, 2) and not FightRules.isFrozen(f, 1), "freeze hits the other side")
 		local p = fight("water_jug", "pop")
@@ -248,9 +278,11 @@ return function(t, deps)
 	end)
 
 	t.test("shatter, double KO and timeout end the round once", function()
-		local s = fight("pop", "pop", { Rng = function()
-			return 0.5
-		end })
+		local s = fight("pop", "pop", {
+			Rng = function()
+				return 0.5
+			end,
+		})
 		s.Fighters[2].Hp = 1
 		FightRules.hit(s, 20, 0.5)
 		t.ok(s.Over and s.Winner == 1 and s.Reason == "Shatter", "shatter")
@@ -260,9 +292,11 @@ return function(t, deps)
 		FightRules.hit(s, 20, 0.5)
 		t.eq(#FightRules.drainEvents(s), 0, "nothing after the end")
 
-		local d = fight("pop", "pop", { Rng = function()
-			return 0.5
-		end })
+		local d = fight("pop", "pop", {
+			Rng = function()
+				return 0.5
+			end,
+		})
 		d.Fighters[1].Hp, d.Fighters[2].Hp = 1, 2
 		FightRules.hit(d, 20, 0.5)
 		t.ok(d.Over and d.Reason == "DoubleKO" and d.Winner == 2, "more HP before the hit wins a double KO")

@@ -1248,5 +1248,12 @@
     "originalImportScale": 100,
     "maxBoundsError": 1.2731557319511921e-07,
     "parts": 22
+  },
+  "liveKit": {
+    "status": "enabled_pending_creator_review",
+    "assetPath": "ReplicatedStorage.Assets.Glassies.rocket_pop",
+    "effectPath": "ReplicatedStorage.Assets.VFX.Combat",
+    "nativePresentationChecks": "all-24 fixture passed",
+    "report": "docs/testing/combat_release/FULL_RELEASE.md"
   }
 }

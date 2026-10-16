@@ -1372,5 +1372,12 @@
     "originalImportScale": 100,
     "maxBoundsError": 2.731428025981586e-07,
     "parts": 24
+  },
+  "liveKit": {
+    "status": "enabled_pending_creator_review",
+    "assetPath": "ReplicatedStorage.Assets.Glassies.glass_dragon",
+    "effectPath": "ReplicatedStorage.Assets.VFX.Combat",
+    "nativePresentationChecks": "all-24 fixture passed",
+    "report": "docs/testing/combat_release/FULL_RELEASE.md"
   }
 }

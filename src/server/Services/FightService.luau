@@ -33,6 +33,7 @@ function Service:Sync(player)
 			fight.Fighters[2].Hp <= 0 or (fight.Over and fight.Winner == 1),
 		}
 		data.Snapshot = Pendulum.snapshot(session.Sim)
+		data.SignatureState = Pendulum.presentation(session.Sim)
 		Remotes.MatchState:FireClient(player, data)
 	end
 end

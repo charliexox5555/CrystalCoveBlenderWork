@@ -300,6 +300,15 @@ function Controller:Start()
 		local dev = Instance.new("BindableFunction")
 		dev.Name = "FightClientDev"
 		dev.OnInvoke = function(command, arg)
+			if command == "Rejoin" then
+				local view = self.Views[arg]
+				if view then
+					view:EndFight()
+					self.Views[arg] = nil
+				end
+				Remotes.RequestFightState:FireServer()
+				return true
+			end
 			if command == "DropEvery" then
 				self.DropEvery = arg
 				return true
@@ -307,7 +316,13 @@ function Controller:Start()
 			if command == "Profile" then
 				-- Studio-only: time this controller's per-frame render work over `arg` seconds.
 				self.Profile = { Frames = 0, Total = 0, Max = 0, Dt = 0, MaxDt = 0, Views = 0, ByKind = {} }
-				task.wait(arg or 5)
+				if type(arg) == "table" then
+					for _ = 1, math.clamp(arg.Frames or 30, 1, 120) do
+						RunService.RenderStepped:Wait()
+					end
+				else
+					task.wait(arg or 5)
+				end
 				local p = self.Profile
 				self.Profile = nil
 				local byKind = {}

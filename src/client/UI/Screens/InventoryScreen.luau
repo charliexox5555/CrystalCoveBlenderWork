@@ -1,6 +1,6 @@
 local RS = game:GetService("ReplicatedStorage")
 local Glassies = require(RS.Shared.Config.Glassies)
-local Powers = require(RS.Shared.Config.Powers)
+local Powers = require(RS.Shared.CombatText)
 local Formula = require(RS.Shared.Formula)
 local Window = require(script.Parent.Parent.Components.Window)
 local Portrait = require(script.Parent.Parent.Components.GlassyPortrait)
@@ -130,7 +130,7 @@ function Screen:Detail(id)
 	local d = Glassies.get(id)
 	local owned = self.Profile.Glassies[id]
 	local stats = Formula.stats(d, owned)
-	local passive, power = Powers.passive(d.Passive), Powers.special(d.Special)
+	local passive, power = Powers.passive(d), Powers.special(d)
 	local p = self.Info
 	p.InfoName.Text = d.Name
 	S.tag(p.TypeTag, d.Type, S.Types[d.Type])
@@ -151,9 +151,9 @@ function Screen:Detail(id)
 	if installed then
 		self.DetailPortrait = Portrait.new(p, id, p.InfoPortrait.Size, p.InfoPortrait.Position, "InfoPortrait")
 	end
-	p.PassiveName.Text = d.PassiveName or passive.Name
+	p.PassiveName.Text = passive.Name
 	p.PassiveDescription.Text = passive.Description
-	p.PowerName.Text = d.SpecialName or power.Name
+	p.PowerName.Text = power.Name
 	p.PowerDescription.Text = power.Description
 	local maxima = { Power = 0, HP = 0, Swing = 0 }
 	for _, def in Glassies.List do

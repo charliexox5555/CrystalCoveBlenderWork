@@ -6,6 +6,7 @@ local RS, SS = game.ReplicatedStorage, game.ServerStorage
 assert(not SS:FindFirstChild("RoundHeroesBeforeV2"), "Already installed; preserve current art")
 assert(not RS.Assets.VFX:FindFirstChild("RoundHeroV2"), "Preserve existing imported VFX")
 local sources = {}
+local importRoot = workspace:FindFirstChild("ROUND_HEROES_V2_IMPORT")
 for _, d in data do
 	local matches = {}
 	local pattern = d.import_name:gsub("(%W)", "%%%1")
@@ -17,6 +18,14 @@ for _, d in data do
 	assert(#matches == 1, "Expected one imported mesh: " .. d.import_name)
 	assert(matches[1].MeshId ~= "", "Requires an uploaded mesh: " .. d.import_name)
 	sources[d.import_name] = matches[1]
+end
+if importRoot then
+	for _, item in importRoot:GetDescendants() do
+		assert(not item:IsA("LuaSourceContainer"), "Unexpected script in original import")
+		if item:IsA("BasePart") then
+			assert(sources[item.Name] == item, "Preserve unrelated content in import container")
+		end
+	end
 end
 -- All 32 permanent mesh assets must exist before any live model changes.
 local backup = Instance.new("Folder")
@@ -63,6 +72,7 @@ for id, model in groups do
 	model:SetAttribute("OriginalGlassClash", true)
 	model:SetAttribute("Version", 2)
 	model:SetAttribute("BlenderAuthored", true)
+	model:SetAttribute("DisplayName", require(RS.Shared.Config.RoundCosmetics).ByCategory.Rideables[id].Name)
 	local old = RS.Assets.Rideables:FindFirstChild(id)
 	if old then
 		old.Parent = backup
@@ -84,6 +94,29 @@ do
 	model:SetAttribute("BlenderAuthored", true)
 	old.Parent = backup
 	model.Parent = RS.Assets.RoundFinishers
+end
+local displays = workspace.Lobby:FindFirstChild("NightPolishV1")
+if displays then
+	local originals = Instance.new("Folder")
+	originals.Name, originals.Parent = "ShowcaseOriginals", backup
+	for id, model in groups do
+		if id == "vfx" then
+			continue
+		end
+		local old = displays:FindFirstChild("Showcase_" .. id)
+		if old then
+			local pose, scale = old:GetPivot(), old:GetScale()
+			local replacement = model:Clone()
+			replacement.Name = old.Name
+			replacement:ScaleTo(scale)
+			replacement:PivotTo(pose)
+			old.Parent, replacement.Parent = originals, displays
+		end
+	end
+end
+-- Archive the enormous raw import intact, keeping it out of the playable world.
+if importRoot then
+	importRoot.Parent = backup
 end
 staged:Destroy()
 return { InstalledRides = 4, InstalledVFXMeshes = 5, Originals = backup:GetFullName(), Published = false }

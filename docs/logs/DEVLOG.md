@@ -14,6 +14,15 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Codex — Install Blender heroes; stop overnight schedule
+Done:
+- Creator confirms import and explicitly stops scheduled tasks. Paused the single Glass Clash overnight heartbeat through the app tool, verified PAUSED. No new schedules created.
+- Installed all 32 permanent Blender MeshParts, correcting importer 100× scale. Four ride sources, five shared VFX meshes/four mesh portraits and all four lobby displays replaced; raw import and prior art/displays preserved in ServerStorage.RoundHeroesBeforeV2, out of the playable world. Added archive/display refresh guards to the installer; IDs in hero_v2/roblox_meshes.json.
+- All 32 assets preload successfully. Permanent geometry passes 193 finisher timing/health/budget, 1330 preview framing/replay/close and 32 streaming/cleanup checks; fitted normalized extent 0.821. Live creator avatar visibly rides the mesh ray with moving hinged wings; exit restores Animate/unanchored root/100 health/Custom camera, zero fixtures. No broad balance/phone/multiplayer rerun; runtime/rules unchanged.
+- Saved places/RoundHeroes_v2.rbxm: 241752 bytes, SHA256 be6e220c937f52b5aff83d5d05973b24d40c5e786a475b0aeb80e2f1b5ac4e33; script-free native deserialize round-trip 641 descendants. Recovery/export helper and art handoff updated. Studio Edit/unpublished; unrelated work preserved.
+Next:
+- Creator reviews normal-game flyer/finisher feel; phone performance remains open. Scheduling stays paused unless explicitly requested otherwise.
+
 ## 2026-10-16 — Codex — Blender heroes and original riding animation
 Done:
 - Creator resumes combat/finisher polish, rejects native-part prototype art and requests Blender/VFX plus unique riding animations. Built four original Blender flyers and five VFX meshes: 32 meshes/11,974 triangles, one FBX bundle, editable source and four renders. Tapered ray wings/separate wing inlays, corrected normals/VFX orientation. FBX round-trip: matching topology, 0.00000535-stud maximum bounds error, no negative volumes. Originals/open Blender scene preserved. Full source/import handoff: assets/blender/round_cosmetics/hero_v2/README.md.

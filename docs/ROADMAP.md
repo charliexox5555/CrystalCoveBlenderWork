@@ -75,7 +75,7 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 ## F5 — Polish and soft launch (Nov 10–16)
 
 - [x] **C:** original riding keyframes, modern R15/R6 support, foot/seat contact and animation restoration; distinct finisher timing/texture layers. 655 pose, 32 lifecycle, 193 finisher and 1330 preview checks pass. Four Blender flyers/five mesh-VFX sources exported and FBX round-trip verified.
-- [ ] **C/U:** import the [Blender hero bundle](../assets/blender/round_cosmetics/hero_v2/README.md), install permanent meshes, refresh lobby displays and review normal-camera VFX. Automatic upload API unavailable; existing art stays live until import.
+- [x] **C/U:** creator imports [Blender hero bundle](../assets/blender/round_cosmetics/hero_v2/README.md); install permanent meshes at normalized scale, refresh four lobby displays, record 32 mesh IDs and save native recovery snapshot. All 32 assets load; 193 finisher/1330 preview/32 lifecycle checks pass, native ray rider motion/exit verified. Creator normal-camera feel/phone review remains. Overnight schedule paused by request.
 
 - [x] **C:** final bounded overnight follow-up: late-arriving ride models/animated parts now register; stage removal/rearrival clears listeners/references. 32 focused native lifecycle checks pass; live forced next-round motion and avatar restoration verified. Normal device/feel review remains creator work.
 

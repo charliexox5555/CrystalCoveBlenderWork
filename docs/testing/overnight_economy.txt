@@ -1,0 +1,20 @@
+Glass Clash economy report (2000 players, 40 min a day for 30 days, 50% wins, 40% bot matches)
+
+Match length ~5.7 min (4.12 rounds), 10.5 matches per hour
+Kiln: 300 coins a pull, 21 glassies inside
+Pulls on day 1: 3   by day 30: 81
+Unique glassies (of 21 + 3 starters): day 7 11, day 30 18
+
+Median play time to a player's first:
+  Rare      57 min  (100% of players get one within 30 days)
+  Epic      2.8 h of play  (99% of players get one within 30 days)
+  Legendary 11.3 h of play  (71% of players get one within 30 days)
+  Mythic    not within the sim (median player never)  (19% of players get one within 30 days)
+
+Kiln odds shown to players:
+  Common    56.25%
+  Uncommon  22.00%
+  Rare      14.00%
+  Epic      6.00%
+  Legendary 1.50%
+  Mythic    0.25%

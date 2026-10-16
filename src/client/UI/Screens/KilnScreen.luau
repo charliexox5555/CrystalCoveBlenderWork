@@ -10,6 +10,10 @@ function Screen.new(data, close, pull, refresh, initialTab)
 	return self
 end
 function Screen:Page(name, title)
+	for _, view in self.CosmeticViews or {} do
+		view:Destroy()
+	end
+	self.CosmeticViews = nil
 	self.Serial += 1
 	if self.Opening then
 		self.Opening:Destroy()
@@ -102,6 +106,10 @@ function Screen:Step(dt)
 	end
 end
 function Screen:Destroy()
+	for _, view in self.CosmeticViews or {} do
+		view:Destroy()
+	end
+	self.CosmeticViews = nil
 	self.Closed = true
 	self:OpeningHud(false)
 	if self.Opening then

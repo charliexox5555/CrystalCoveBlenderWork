@@ -4,6 +4,7 @@ local Balance = if Shared then require(Shared.Config.Balance) else require("../.
 local Glassies = if Shared then require(Shared.Config.Glassies) else require("../../shared/Config/Glassies")
 local Formula = if Shared then require(Shared.Formula) else require("../../shared/Formula")
 local Schema = {}
+local RoundCosmetics = if Shared then require(Shared.RoundCosmeticRules) else require("../../shared/RoundCosmeticRules")
 
 function Schema.copy(value)
 	if type(value) ~= "table" then
@@ -52,6 +53,7 @@ function Schema.new(now)
 	for _, id in Glassies.Starters do
 		data.Glassies[id] = { Stars = 0, Rainbow = false, Count = 1, FirstAt = now }
 	end
+	RoundCosmetics.reconcile(data)
 	return data
 end
 
@@ -109,6 +111,7 @@ function Schema.reconcile(data, now)
 		end
 	end
 	data.Flags.WelcomePullUsed = data.Flags.WelcomePullUsed == true
+	RoundCosmetics.reconcile(data)
 	return data
 end
 
@@ -160,6 +163,7 @@ function Schema.recordMatch(data, id, match, side, rewards, observed)
 	for glassyId in observed.Used or {} do
 		stats.GlassyUses[glassyId] = (stats.GlassyUses[glassyId] or 0) + 1
 	end
+	RoundCosmetics.reconcile(data)
 	return true
 end
 
@@ -175,6 +179,7 @@ function Schema.snapshot(data)
 		Marbles = data.Marbles,
 		Trophies = data.Trophies,
 		Glassies = data.Glassies,
+		Cosmetics = data.Cosmetics,
 		Stats = data.Stats,
 		Daily = data.Daily,
 		WelcomePulls = Schema.welcomePulls(data),

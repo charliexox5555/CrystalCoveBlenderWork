@@ -98,6 +98,12 @@ function Controller:Start()
 			end
 		end
 		self.Profile = profile
+		if self.Screen and self.Screen.CosmeticViews then
+			self.Screen.Profile = profile
+			for _, view in self.Screen.CosmeticViews do
+				view:Refresh(profile)
+			end
+		end
 		self.Currency.Text = tostring(profile.Coins)
 		self.Marbles.Text = tostring(profile.Marbles or 0)
 		if
@@ -135,7 +141,16 @@ function Controller:Start()
 		end, function()
 			Remotes.RequestKiln:FireServer()
 		end, initialTab)
+		self.Screen.Profile = self.Profile
+		for _, view in self.Screen.CosmeticViews or {} do
+			view:Refresh(self.Profile)
+		end
 		self:PanelOpened()
+	end)
+	Remotes.CosmeticResult.OnClientEvent:Connect(function(data)
+		if self.Screen and self.Screen.Message then
+			self.Screen.Message.Text = data.Message
+		end
 	end)
 	Remotes.KilnResult.OnClientEvent:Connect(function(data)
 		if self.Screen and self.Screen.Pull and self.Screen.Result then

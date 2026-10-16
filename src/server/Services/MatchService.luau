@@ -12,6 +12,8 @@ local Assets = require(script.Parent.Parent.Util.AssetCatalog)
 local Glassies = require(RS.Shared.Config.Glassies)
 local Bots = require(RS.Shared.Config.Bots)
 local Stage = require(script.Parent.Parent.Util.MatchStage)
+local CosmeticConfig = require(RS.Shared.Config.RoundCosmetics)
+local CosmeticRules = require(RS.Shared.RoundCosmeticRules)
 local PolicyService = game:GetService("PolicyService")
 local Service = {}
 
@@ -45,6 +47,8 @@ function Service:Meta(entry)
 		Deadline = entry.Runner.Deadline,
 		Phase = entry.Runner.Phase,
 		StageName = entry.Stage and entry.Stage.Folder.Name,
+		Rideables = entry.Cosmetics and entry.Cosmetics.Rideables,
+		Finishers = entry.Cosmetics and entry.Cosmetics.Finishers,
 	}
 	for side = 1, 2 do
 		local player = entry.Players[side]
@@ -115,9 +119,17 @@ function Service:StartMatch(arena, players, now, spectate)
 		Used = { {}, {} },
 		BotNames = {},
 		Finished = false,
+		Cosmetics = { Rideables = {}, Finishers = {} },
 	}
 	for side = 1, 2 do
+		local data = players[side] and self.Services.DataService and self.Services.DataService:Get(players[side])
+		local cosmetics = data and CosmeticRules.reconcile(data)
+		entry.Cosmetics.Rideables[side] = cosmetics and cosmetics.EquippedRideables or "skyboard"
+		entry.Cosmetics.Finishers[side] = cosmetics and cosmetics.EquippedFinishers or "glass_burst"
 		if not players[side] then
+			-- Visual variety without consuming or changing the gameplay RNG stream.
+			entry.Cosmetics.Rideables[side] = CosmeticConfig.Rideables[(seed + side) % #CosmeticConfig.Rideables + 1].Id
+			entry.Cosmetics.Finishers[side] = CosmeticConfig.Finishers[(seed + side) % #CosmeticConfig.Finishers + 1].Id
 			entry.BotNames[side] = Bots.Names[math.floor(rng() * #Bots.Names) + 1]
 		end
 	end

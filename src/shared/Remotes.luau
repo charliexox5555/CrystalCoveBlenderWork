@@ -42,6 +42,8 @@ local reliable = {
 	"RedeemCode",
 	"RetentionResult",
 	"RequestFightState",
+	"EquipRoundCosmetic",
+	"CosmeticResult",
 }
 local unreliable = { "FightSnapshot" }
 

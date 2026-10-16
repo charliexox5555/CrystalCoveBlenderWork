@@ -14,6 +14,19 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Codex — Overnight lobby, rides and finishers
+Done:
+- Creator authorizes overnight lobby art/repositioning, flyers and explosion/part finishers. Added original native courts/workbench/display, ride showroom, medallion, gate/pennants, benches, gardens/trees, kiosk canopies/lanterns; balanced boards and moved corresponding spots/kiosks. Verified 1,315 original functional parts unchanged. Rays 0.483→0.035, sun size 21→6, redundant Kiln labels hidden; warm sky retained. Full originals preserved.
+- Four rides (Skyboard, Cloud Cushion, Rocket Skiff, Prism Ray) and five finishers (Crystal Pop, Party Pop, Bubble Bloom, Block Boom, Pocket Nova). Server stages/restores real anchored riders; bounded local bob/bank/wing/exhaust with feet tracking deck. Anchored confetti/bubbles/fireballs/star trails plus existing sound accents; no damaging explosions/avatar hiding. Equipment frozen per match; varied bot looks without combat RNG consumption.
+- Functional editable Inventory/Shop catalogs with native portraits/preview/equip and truthful free eligible-completed-match milestones. Pure ownership rules, additive profiles preserving old cosmetics, rate-limited remote, no purchases/currency changes. Exact milestone counts remain proposed tuning (decision 66).
+- 106 Lune/native logic tests, 301 cosmetic and 179 all-24 finisher/avatar/camera checks pass. Live Prism Ray/Block Boom player-vs-bot round completed; mid-match equipment frozen and exit restores visible 100-health avatar/spawn/unanchored state/Custom camera, zero roots. Unowned/spam requests rejected; mock save/reload retains Rocket/Nova at zero currency; early abandon records zero matches/Coins. No gameplay script errors observed; existing Roblox CorePackages/203785492 warnings remain. No broad repeated device/multiplayer pass. Two bounded hourly follow-ups scheduled.
+- Saved places/Overnight_Cosmetics_v1.rbxm (509685 bytes, SHA 11d2bebc995bb0115481f372f99be12bf88ca421ac568040c0081a6a4bb5bf74, native round-trip 3394 descendants) and Overnight_Before_v1.rbxm (468135 bytes, SHA 3e7affca742c8534596869df86d603307a184e865681e2bc4e61cabce716e0c8). Report/images/recovery in docs/testing/overnight/README.md; continuation in HANDOFF_OVERNIGHT_COSMETICS.md. Studio Edit/unpublished, Rojo connected, no desktop/device changes; unrelated work untouched.
+Required simulators (presentation-only Balance additions):
+- Stand-in, 120 rounds/matchup: mirrors 29.0/27.9/19.9 seconds, zero mirror timeouts; side A 49%, Perfect versus worst 56%, 41% comebacks, 1.3 lead changes, 3.1 powers/glassy, 34% aimed misses. Field rates remain diagnostic; combat tuning unchanged. Output in docs/testing/overnight_balance.txt.
+- Economy unchanged: 5.7 minutes/match, 10.5 matches/hour; 3/81 day-one/day-30 pulls; 11/18 day-seven/day-30 uniques; Rare 57 minutes, Epic 2.8 hours, Legendary 11.3 hours, 19% Mythic by day 30. Output in docs/testing/overnight_economy.txt.
+Next:
+- Focused overnight visual/cleanup review, then creator tests normal-camera ride/effect feel, lobby composition, milestone pacing and real-device performance. No publishing/paid-feature activation authorized.
+
 ## 2026-10-16 — Codex — Hero power readability and Hourglass repair
 Done:
 - Creator requests clearer/satisfying Pop pressure, Jam shield, Prism ray, Axe swing and shared impacts. Added real cap launch/recoil/pressure wave, real raised lid/block/restoration, aimed glowing lens/white-core ray/colored afterglow and corrected axe transform with visible anticipation/head trail. Shared white cores, rings/chips and eight impact spokes; low-detail reductions and confirmed-only short signature hit pause. Pop rebound 1.35, Axe 0.5-second sweep/radius 0.7 matching its visible head; damage unchanged.

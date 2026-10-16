@@ -714,4 +714,20 @@ Balance.Feel = {
 	HeartTweenSeconds = 0.4,
 }
 
+Balance.CosmeticPresentation = {
+	RideLift = 2.2,
+	RideBob = 0.16,
+	RideBobHz = 1.1,
+	RideBank = 0.035,
+	RideWingAngle = 0.16,
+	RideExhaustSpeed = 22,
+	RideDistance = 120,
+	FinisherSeconds = 1.2,
+	FinisherParts = 12,
+	FinisherRadius = 7,
+	FinisherCoreSize = 5,
+	FinisherHoldSeconds = 0.8,
+	FinisherFadeSeconds = 0.28,
+}
+
 return Balance

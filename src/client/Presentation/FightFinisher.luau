@@ -5,6 +5,9 @@ local Debris = game:GetService("Debris")
 local TweenService = game:GetService("TweenService")
 local Feel = require(RS.Shared.Config.Balance).Feel
 local Finish = {}
+local FinisherFX = require(script.Parent.FinisherFX)
+local Cosmetics = require(RS.Shared.Config.RoundCosmetics)
+local Audio = require(RS.Shared.Config.Audio)
 Finish.__index = Finish
 
 function Finish.new(scene, loser, now)
@@ -46,6 +49,16 @@ end
 
 function Finish:Impact()
 	local scene = self.Scene
+	local finishers = scene.Data.Finishers
+	local def = Cosmetics.ByCategory.Finishers[finishers and finishers[3 - self.Loser] or "glass_burst"]
+		or Cosmetics.Finishers[1]
+	scene:Sound(Audio[def.Sound], self.Winner.Body)
+	FinisherFX.emit(
+		scene.Root,
+		finishers and finishers[3 - self.Loser] or "glass_burst",
+		self.Target,
+		not scene.Viewing
+	)
 	local color = self.Winner.Body.Color
 	self.Winner.Trail.Enabled = false
 	self.Winner.Pivot = self.Winner.Model:GetPivot()

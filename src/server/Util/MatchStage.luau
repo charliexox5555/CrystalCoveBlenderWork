@@ -1,12 +1,13 @@
 -- Presentation staging only. Pendulum coordinates, damage and hearts remain server rules.
 local RS = game:GetService("ReplicatedStorage")
 local Feel = require(RS.Shared.Config.Balance).Feel
+local Tuning = require(RS.Shared.Config.Balance).CosmeticPresentation
 local Stage = {}
 
 function Stage.positions(arena)
 	return {
-		arena.Pads[1].Position + Vector3.yAxis * Feel.PadRootHeight,
-		arena.Pads[2].Position + Vector3.yAxis * Feel.PadRootHeight,
+		arena.Pads[1].Position + Vector3.yAxis * (Feel.PadRootHeight + Tuning.RideLift),
+		arena.Pads[2].Position + Vector3.yAxis * (Feel.PadRootHeight + Tuning.RideLift),
 	}
 end
 
@@ -52,7 +53,7 @@ function Stage.start(entry)
 	local positions = Stage.positions(entry.Arena)
 	local center = (positions[1] + positions[2]) / 2
 	for side = 1, 2 do
-		-- Stay grounded on the existing queue pads, facing into the arena.
+		-- Cosmetic rides hover above the existing pads, facing into the arena.
 		local pose = CFrame.lookAt(positions[side], center)
 		local player = entry.Players[side]
 		local character = player and player.Character
@@ -62,7 +63,7 @@ function Stage.start(entry)
 			local height = if human.RigType == Enum.HumanoidRigType.R6
 				then Feel.PadRootHeight
 				else human.HipHeight + root.Size.Y / 2
-			local position = entry.Arena.Pads[side].Position + Vector3.yAxis * height
+			local position = entry.Arena.Pads[side].Position + Vector3.yAxis * (height + Tuning.RideLift)
 			pose = CFrame.lookAt(position, Vector3.new(center.X, position.Y, center.Z))
 			entry.Stage.Saved[side] = {
 				Character = character,
@@ -84,8 +85,21 @@ function Stage.start(entry)
 				end
 			end
 		else
-			bot(folder, "Bot" .. side, pose, side)
+			character = bot(folder, "Bot" .. side, pose, side)
 		end
+		local id = entry.Cosmetics and entry.Cosmetics.Rideables[side] or "skyboard"
+		local source = RS.Assets.Rideables:FindFirstChild(id) or RS.Assets.Rideables.skyboard
+		local ride = source:Clone()
+		ride.Name = "Ride" .. side
+		local top = entry.Arena.Pads[side].Position + Vector3.yAxis * Tuning.RideLift
+		local ridePose = CFrame.lookAt(top, Vector3.new(center.X, top.Y, center.Z))
+		ride:PivotTo(ridePose)
+		ride:SetAttribute("BasePose", ridePose)
+		ride:SetAttribute("RootPose", character:GetPivot())
+		ride:SetAttribute("RideId", id)
+		local rider = Instance.new("ObjectValue")
+		rider.Name, rider.Value, rider.Parent = "Rider", character, ride
+		ride.Parent = folder
 	end
 end
 

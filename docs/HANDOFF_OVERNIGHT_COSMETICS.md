@@ -1,0 +1,23 @@
+# Glass Clash overnight lobby / round cosmetics
+
+October 16, 2026. Creator authorized overnight independent improvements to the lobby, rideable flyers during rounds and distinct finishers including explosions/parts. Use this handoff for the bounded overnight follow-ups. Read AGENTS.md and newest DEVLOG first; preserve unrelated work. Studio MCP/file tools only, no desktop/device changes or publishing. Keep usage modest and make one focused useful improvement per wake; do not repeat broad suites without a new concern.
+
+## Current implementation
+
+- Crystal Isles retained. Native `Workspace.Lobby.NightPolishV1`: arrival medallion, warm Kiln court/workbench/display, opposite four-ride showcase, balanced three-board plaza, relocated Daily/Codes kiosks, welcome gate/pennants, branches off the main path, benches, low gardens, four faceted trees and bridge lanterns. Original islands, collision, fences, queue pads and arena hooks unchanged. Backup: `ServerStorage.LobbyBeforeNight_20261016`.
+- Four original script-free native models in `ReplicatedStorage.Assets.Rideables`: Skyboard (free), Cloud Cushion (1 eligible completed match), Rocket Skiff (5), Prism Ray (10). Stage freezes equipped ride at match start, anchors the rider above its existing pad, and restores the original character position/anchor/AutoRotate on exit. Client adds bounded bob/bank, wing flap and exhaust flicker. No swing/rule advantages.
+- Five finishers in `RoundCosmetics`: Crystal Pop (free), Party Pop (1), Bubble Bloom (3), Block Boom (5), Pocket Nova (10). Local anchored VFX, no damaging Explosion instance or avatar hiding/killing. Winner's selected effect accompanies glassy flight/avatar impact; heart/reward rules unchanged. Variants have confetti, bubbles, chunky blocks/fireballs, star gems/trails and distinct existing sound accents.
+- Both Inventory tabs and Shop Finishers/Flyers are functional catalogs with native 3D previews, truthful lock/progress text and equip buttons. Preview works on unowned items. Native templates are editable; previous UI in `UIBackups.BeforeRoundCosmetics_20261016`. No purchase or paid feature added. Equipment changes apply next match.
+- Pure `RoundCosmeticRules` owns milestone/equip validation; additive profile reconciliation/snapshot fields preserve old ShatterFx/Fills. New remote is rate-limited; no-contest/early abandonment cannot unlock milestones. Final checks: 106 logic, 301 native cosmetic and 179 finish/ghost/avatar checks pass; mock save/reload retains equipment. Bots show varied looks without combat RNG changes. Reduced excessive glare/redundant Kiln labels. [Final evidence/recovery](testing/overnight/README.md).
+- A live player versus bot round completed: equipped Prism Ray and Block Boom metadata carried correctly, player won one round, changed next-match ride without changing active ride, then exited. Real avatar stayed visible at 100 humanoid health, original spawn position/unanchored state/Custom camera restored, zero fight/stage roots.
+
+## Follow-up priorities
+
+1. Check latest report/log and current Studio mode first. If this pass has been committed and verified, do one targeted native visual/cleanup review. Improve a concrete issue found; avoid inventing unrelated features or broad balance changes.
+2. Good potential review areas: normal-camera finisher readability/tempo, ray ride wing silhouette, lobby sightlines/sign legibility, actual UI preview/equip feedback and lifecycle after round exit. Full phone/multiplayer/fairness review remains creator work; do not claim it passed.
+3. Preserve the fixed 24 glassies and all previous camera/selection/avatar fixes. Do not change any accepted decisions beyond the creator's explicit move from grounded avatars to rides.
+4. Native bundles are saved as `places/Overnight_Cosmetics_v1.rbxm` and `Overnight_Before_v1.rbxm`; restore Lobby, lighting attributes/children, Assets.Rideables/RoundFinishers and StarterGuiTemplates separately. Source still syncs through Rojo; never edit those scripts in Studio.
+
+Studio-only creator testing: `ServerStorage.CosmeticDev:Invoke("PreviewAll", player)` grants just these cosmetics in the isolated Studio mock profile without inventing match stats/currency. Then use the real Inventory to equip. `CosmeticDev:Invoke("Equip", player, "Rideables", "prism_ray")` or `"Finishers", "brick_boom"` is also supported and rate-limited. Production unlocks remain earned; no production inventory migration/grants.
+
+Unrelated initial work to leave alone: docs/HANDOFF_LOBBY_ART_UI.md, assets/Free Icon Pack v3.1 (Basic)/, assets/blender/map/kilnport/, docs/art/map_renders/, docs/testing/f1/aim-draft.png and tools/blender/build_kilnport.py/export_kilnport.py. No delegation or messages to other chats authorized.

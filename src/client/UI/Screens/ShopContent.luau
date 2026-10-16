@@ -4,6 +4,7 @@ local Glassies = require(RS.Shared.Config.Glassies)
 local Balance = require(RS.Shared.Config.Balance)
 local S = require(script.Parent.Parent.Components.StainedGlass)
 local Pools = require(script.Parent.ShopPools)
+local Catalog = require(script.Parent.CosmeticCatalog)
 local Shop = {}
 local TABS = { Featured = "amber", Glassies = "aqua", Finishers = "amethyst", Flyers = "ruby" }
 
@@ -41,6 +42,18 @@ function Shop.bind(self, data)
 	local p = self.Window.Panel
 	p.Coins.CoinsAmount.Text, p.Marbles.MarblesAmount.Text = tostring(data.Coins), tostring(data.Marbles or 0)
 	self.Message = c.Message
+	self.CosmeticViews = {}
+	for _, category in { "Finishers", "Flyers" } do
+		local page = c[category .. "Page"]
+		if page:FindFirstChild("Preview") then
+			page.Preview.Visible = false
+		end
+		self.CosmeticViews[category] = Catalog.new(
+			page,
+			self.Profile or { Cosmetics = {}, Stats = {} },
+			if category == "Flyers" then "Rideables" else "Finishers"
+		)
+	end
 	self.SelectTab = function(_, name)
 		Shop.select(self, name)
 	end

@@ -5,6 +5,7 @@ local Formula = require(RS.Shared.Formula)
 local Window = require(script.Parent.Parent.Components.Window)
 local Portrait = require(script.Parent.Parent.Components.GlassyPortrait)
 local S = require(script.Parent.Parent.Components.StainedGlass)
+local Catalog = require(script.Parent.CosmeticCatalog)
 local Screen = {}
 Screen.__index = Screen
 
@@ -13,12 +14,25 @@ function Screen.new(profile, close)
 	self.Window = Window.new("CollectionScreen", "INVENTORY", close)
 	self.Grid = self.Window.Content.Grid
 	self.Info = self.Window.Content.InfoPane
+	local cosmeticPage = self.Window.Content:FindFirstChild("CosmeticPage")
+	if cosmeticPage then
+		cosmeticPage.Visible = false
+	end
+	self.Tab = "Glassies"
+	for _, name in { "Glassies", "Finishers", "Flyers" } do
+		self.Window:Connect(self.Window.Panel.Tabs[name .. "Tab"], function()
+			self:SelectTab(name)
+		end)
+	end
 	self:Refresh(profile)
 	return self
 end
 
 function Screen:Refresh(profile)
 	self.Profile = profile
+	if self.CosmeticView then
+		self.CosmeticView:Refresh(profile)
+	end
 	if not profile then
 		return
 	end
@@ -51,6 +65,30 @@ function Screen:Refresh(profile)
 	if self.Selected then
 		self:Detail(self.Selected)
 	end
+end
+
+function Screen:SelectTab(name)
+	local tints = { Glassies = "aqua", Flyers = "ruby", Finishers = "amethyst" }
+	if not tints[name] then
+		return
+	end
+	if self.CosmeticView then
+		self.CosmeticView:Destroy()
+		self.CosmeticView = nil
+	end
+	self.Tab = name
+	for tab, tint in tints do
+		S.setAsset(
+			self.Window.Panel.Tabs[tab .. "Tab"].Artwork,
+			"tab/tab_" .. tint .. (if tab == name then "_active" else "_idle")
+		)
+	end
+	self.Grid.Visible, self.Info.Visible = name == "Glassies", name == "Glassies"
+	if name ~= "Glassies" then
+		self.CosmeticView =
+			Catalog.new(self.Window.Content, self.Profile, if name == "Flyers" then "Rideables" else "Finishers")
+	end
+	self.Window.Gui:SetAttribute("InventoryCategory", name)
 end
 
 function Screen:AddTile(d, root, order, unowned)
@@ -178,6 +216,9 @@ function Screen:Step(dt)
 	-- Portraits stay upright and centered; interactive controls retain their animation.
 end
 function Screen:Destroy()
+	if self.CosmeticView then
+		self.CosmeticView:Destroy()
+	end
 	for _, c in self.TileConnections do
 		c:Disconnect()
 	end

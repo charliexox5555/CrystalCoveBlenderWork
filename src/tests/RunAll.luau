@@ -22,6 +22,7 @@ local order = {
 	"SnapshotCodecTests",
 	"MatchRunnerTests",
 	"ProfileTests",
+	"RoundCosmeticTests",
 	"RetentionTests",
 }
 local suites = {}

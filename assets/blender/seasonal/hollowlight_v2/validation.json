@@ -1,0 +1,26 @@
+{
+  "meshCount": 68,
+  "groups": {
+    "pumpkin": 13,
+    "shards": 16,
+    "flyer": 20,
+    "finisher": 19
+  },
+  "triangles": 23772,
+  "largestMeshTriangles": 1792,
+  "closedPositiveBodyAndShards": 17,
+  "shardVolumeError": 3.9280409591668786e-08,
+  "faceMinimumClearanceStuds": {
+    "HH2_Pumpkin_GrinEdge": 0.00765681266784668,
+    "HH2_Pumpkin_Grin": 0.018033385276794434
+  },
+  "fbxRoundTripBoundsErrorStuds": 2.384185791015625e-07,
+  "commonOriginAndAppliedTransforms": true,
+  "oneMaterialPerMesh": true,
+  "originalsPreserved": true,
+  "sourceScene": "Hollowlight_v2",
+  "studsPerUnit": 1,
+  "releaseCount": 24,
+  "studioImportPending": true,
+  "runtimeVFXPending": true
+}

@@ -14,6 +14,14 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Codex — Hollowlight refinement ready for import
+Done:
+- Replaced the pumpkin's floating tube mouth with a filled surface-fitting crescent grin, two small teeth and dark carved rim; reduced face emission, narrowed body/matching shards and thickened leaves. Skiff gains a flat deck inlay/tapered exhaust; finisher uses the complete refined pumpkin with combined ghost faces and tapered tails. Original v1 sources, intermediate mesh data and creator's active Blender scene/filepath preserved.
+- One HOLLOWLIGHT_V2_IMPORT.fbx contains 68 meshes (13 pumpkin, 16 shards, 20 flyer, 19 finisher), 23,772 triangles, largest mesh 1,792. Independent FBX round trip preserves every custom ID/triangle count/material slot/origin; maximum bounds error 0.000000239 studs. Body/16 shards closed with positive volume and matching total volume; mouth-front clearance checks pass. Front/three-quarter renders reviewed, source/scripts/manifest/validation/import guide saved in assets/blender/seasonal/hollowlight_v2. Native VFX kit copied for recovery; already-installed disabled prototype need not be reimported.
+- 111 Lune tests pass; both Blender scripts compile and git diff checks pass. No src/Studio/map edits, device changes, products, publishing or schedules. Fixed 24 roster and Pop cosmetic rules retained; unrelated changes untouched.
+Next / creator step:
+- Import only HOLLOWLIGHT_V2_IMPORT.fbx at scale 1 with all 68 HH2_ names preserved; leave the assembled raw import in Workspace without manual resizing/recoloring. Then install/archive/normalize permanent meshes, integrate seasonal appearance, riding motion and original animated VFX. Static art is ready; runtime seasonal effects remain pending. Daily shop work stays queued.
+
 ## 2026-10-16 — Codex — Inventory clicks, opening feedback and Halloween prototypes
 Done:
 - Reproduced disabled Flyer/Finisher inventory buttons with actual MCP clicks; enabled editable/runtime tabs and checked both real clicks. Earlier direct SelectTab checks bypassed Active=false. Shared centered square portrait/backing fixes the rectangular mismatch.

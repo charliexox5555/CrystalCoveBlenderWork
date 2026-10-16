@@ -1,5 +1,7 @@
 # Hollowlight — first Blender prototypes
 
+**Superseded for import by the [refined v2 package](../hollowlight_v2/README.md).** Keep these original sources; import the single v2 FBX instead.
+
 Original Halloween set, 2026-10-16. **Prototype art; not installed, sold or added to the 24-glassy roster.**
 
 - `pumpkin_icon.png`: Hollowlight Pop, a seasonal Pop appearance. Body origin is the stem hang point at `(0,0,0)`; 1 unit = 1 stud. `pumpkin_body.fbx`, `pumpkin_details.fbx`, `pumpkin_shards.fbx` contain the separate body/details and 16 closed shards.

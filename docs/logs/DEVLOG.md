@@ -14,6 +14,18 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-15 — Codex — Selection and finish feedback
+Done:
+- Creator requested longer preparation, no paid-action confirmation, cleaner UI/rolling, ghost cleanup, visible avatar impact and a reset/zoom/return camera. Set selection/aim/countdown/round-end to 25/15/4/6 seconds; ready players still advance early. One-tap quoted spending retains server validation/rate/revision/deadline checks. Inline uniform reroll odds plus all-owned outcomes; policy restriction preserved. Low-balance buttons stay visible and fire a future MarblesRequested hook; packs/purchases remain disabled.
+- Preserved editable old RollScreen, installed cleaner portraits/cards/picker/actions, animated reel ticks/tumble/landing glow/bounce, panel/countdown and HP pulses. Added actual signature damage/heal popups with no miss damage. Fixed detail animation resurrecting shattered meshes or snapping flying details back; Break owns idempotent death state. Cosmetic avatar hit leaves parts/face/health unchanged. Finisher camera resets, gently moves toward recipient and returns.
+- 100 Lune/Studio logic tests; 154 native UI, 179 all-24 finish and 4 power-number checks pass. Native 75-check mock spending audit exposed five retained aiming previews: Stop skipped Idle before simulation started. Fixed that lifecycle; repeat ends with zero local roots/views/errors and Custom camera. No broad multiplayer/device pass; creator handles feel.
+- Saved native editable places/MatchSelection_Polish_v2.rbxm, 52342 bytes, SHA c7ade030f338bae9f52e4c30ccaa1f28d30e66fd848a2294402d9d395128caf1; native deserialize verified. Original UI in UIBackups.RollBeforeSelectionPolish_20261015. Report/evidence in SELECTION_FINISH_POLISH.md. Current 24 powers and distinct movement/projectile/counter ideas in docs/design/POWER_BRAINSTORM_24.md; no major mechanic redesign installed this pass. Studio Edit/unpublished; no desktop/device changes; unrelated work preserved.
+Required simulators:
+- Balance stand-in unchanged: starter mirrors 29.0/27.9/19.9 seconds, zero mirror timeouts; side A 49%, Perfect vs worst 56%, 41% comebacks, 1.3 lead changes, 3.1 actions/glassy, 34% aimed misses. Skewed field rates remain diagnostic rather than balance approval; no damage or rarity changes.
+- Economy, 2000 players, full selection/aim timeouts: 5.7 minutes/match, 10.5 matches/hour; 3/81 day-one/day-30 pulls; 11/18 uniques day seven/day 30; Rare 57 minutes, Epic 2.8 hours, Legendary 11.3 hours, 19% Mythic within 30 days. Prices/odds/rewards unchanged. Earlier economy duration test replaced with an explicit full-timeout 5–7-minute expectation for the creator's longer windows; other pacing targets still pass.
+Next:
+- Creator saves place and reviews normal-speed rolling, avatar camera framing and real-device feel. Brainstorm Dragon/Galaxy/Hourglass/Jam first for more distinct gameplay stories.
+
 ## 2026-10-15 — Codex — Combat spectacle and horizontal orbit
 Done:
 - Creator requests more fun/effects and explicitly authorizes horizontal arena orbit. Added full-circle mouse drag/touch swipe/Q-E/right-stick camera at existing height/distance/FOV. Arena remains centered; UI/aim/multitouch/focus gates and final-blow hold, owned connections and normal-camera cleanup. Decision 63 updates the earlier fixed-direction requirement.

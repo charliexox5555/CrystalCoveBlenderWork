@@ -128,6 +128,21 @@ function Hud:Update(r)
 	require(script.Parent.FightBillboards).update(self.Billboards, self.Hearts, r.Hp, self.Maxima)
 end
 
+function Hud:Beat()
+	if self.BeatTween then
+		self.BeatTween:Cancel()
+	end
+	local scale = self.Headline:FindFirstChild("BeatScale") or Instance.new("UIScale")
+	scale.Name, scale.Parent = "BeatScale", self.Headline
+	scale.Scale = Balance.Feel.CountdownPulseScale
+	self.BeatTween = TweenService:Create(
+		scale,
+		TweenInfo.new(Balance.Feel.CountdownPulseSeconds, Enum.EasingStyle.Back),
+		{ Scale = 1 }
+	)
+	self.BeatTween:Play()
+end
+
 function Hud:Banner(side, text, tint, quiet)
 	-- Powers communicate through their effects; the creator removed announcement banners.
 end

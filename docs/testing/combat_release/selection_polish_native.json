@@ -1,0 +1,57 @@
+{
+  "Logic": {
+    "Passed": 100,
+    "Failed": 0
+  },
+  "SelectionUI": {
+    "Requests": 3,
+    "SendsWereFixtures": true,
+    "Passed": true,
+    "Checks": 154
+  },
+  "Finish": {
+    "Models": 24,
+    "AvatarUntouched": true,
+    "CameraSequence": true,
+    "Checks": 179,
+    "Passed": true
+  },
+  "Server": {
+    "Marbles": 916,
+    "Checks": 75,
+    "PickAnyCosts": {
+      "1": 0,
+      "2": 6,
+      "3": 9,
+      "4": 12,
+      "5": 12
+    },
+    "Passed": true,
+    "RerollCosts": {
+      "1": 3,
+      "2": 3,
+      "3": 6,
+      "4": 6,
+      "5": 9,
+      "6": 9,
+      "7": 9
+    }
+  },
+  "PowerNumbers": {
+    "Checks": 4,
+    "Passed": true
+  },
+  "Cancellation": {
+    "Views": 0,
+    "LocalFightRoots": 0,
+    "Errors": 0,
+    "Camera": "Custom"
+  },
+  "UIExport": {
+    "File": "places/MatchSelection_Polish_v2.rbxm",
+    "Bytes": 52342,
+    "SHA256": "c7ade030f338bae9f52e4c30ccaa1f28d30e66fd848a2294402d9d395128caf1",
+    "RoundTrip": true
+  },
+  "Limit": "Focused native fixtures/mock selection audit. No broad multiplayer, phone/gamepad feel or normal-speed finisher approval this pass."
+}

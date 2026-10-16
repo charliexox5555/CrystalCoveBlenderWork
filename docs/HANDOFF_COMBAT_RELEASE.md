@@ -4,6 +4,10 @@ October 15, 2026. Start here in the next chat. Workspace: `C:/Users/charl/Docume
 
 Production checkpoint: all 24 source packages and the shared VFX kit are produced in `release_v2` and now imported/normalized in `ServerStorage.CombatReleaseStaged`. Creator imports were 100× oversized with mixed anchoring; all 527 imported parts are corrected and anchored, with raw backups and verified editable RBXM snapshots. First-six fixed-camera art review passes; live kits and client effect proof are pending. Continue from the [current production table](art/combat_release/PROGRESS.md), [native import report](testing/combat_release/IMPORT_NORMALIZATION.md) and [source checks](testing/COMBAT_RELEASE_ASSETS.md); the phases and gates below remain authoritative.
 
+## Current selection/finish checkpoint
+
+Creator requested longer selection/aim time, no paid-action confirmation, cleaner animated cards/owned picker, visible low-balance buttons, cosmetic avatar impact, ghost-glass cleanup and reset/zoom/return camera. Implemented; [current controls/evidence/restore guide](testing/combat_release/SELECTION_FINISH_POLISH.md) and [all 24 powers/brainstorm](design/POWER_BRAINSTORM_24.md). Decision 64 supersedes older confirmation/fixed-end-camera notes. Native selection UI snapshot is places/MatchSelection_Polish_v2.rbxm; creator saves the place. No product purchases enabled.
+
 ## Current spectacle/camera checkpoint
 
 Creator requested more fun/effects and horizontal arena camera rotation. Implemented full-circle mouse drag/touch swipe/Q-E/right-stick orbit during Fighting, returning Prism Blade, storage retention and stronger bounded mesh/shot/cone/pulse/orbit presentation. See [current controls, checks and review limits](testing/combat_release/SPECTACLE_ORBIT.md). Decision 63 supersedes earlier fixed-direction camera constraints. 99 logic tests, 32 camera checks, 264 presentation checks and a short real fight pass; manual feel/device/fairness review remains.

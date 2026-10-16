@@ -4,6 +4,8 @@ All 24 release models and signatures are installed and enabled in normal matches
 
 Latest update: [stronger power presentation and horizontal camera orbit](SPECTACLE_ORBIT.md). During Fighting, drag/swipe, Q/E or right stick rotates around the arena. Prism Blade now returns its crescent; earlier fixed-camera statements below describe the initial integration checkpoint.
 
+Latest selection/finish changes: [25-second choice window, one-tap spending, ghost cleanup and round-end camera](SELECTION_FINISH_POLISH.md). [All current powers and next brainstorm](../../design/POWER_BRAINSTORM_24.md).
+
 ## Try it
 
 Save the Studio place, start Play, and paste `tools/studio/grant_combat_test_inventory.luau` into the **Server Command Bar**. It unlocks missing release glassies without adding duplicates and adds 10,000 test Marbles. It requires the isolated Studio mock profile; live accounts are unaffected.

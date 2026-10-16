@@ -209,6 +209,11 @@ function Scene:HideBroken(side)
 	end
 	f.Beam.Enabled, f.Trail.Enabled, f.Highlight.Enabled = false, false, false
 	f.Glints.Rate, f.Bubble.Transparency = 0, 1
+	f.Glints.Enabled = false
+	for _, crack in f.Cracks or {} do
+		crack:Destroy()
+	end
+	f.Cracks = {}
 	if f.Tag then
 		f.Tag.Enabled = false
 	end
@@ -282,6 +287,30 @@ end
 
 function Scene:Event(e, hud)
 	if self.Combat and self.Combat:Event(e) then
+		if e.Type == "CastContact" and not e.Missed then
+			local target = self.Fighters[e.Target]
+			Health.bump(target)
+			if hud then
+				hud:Popup(
+					if e.Blocked then "BLOCKED" else "−" .. math.floor(e.Amount + 0.5),
+					target.Body.Position,
+					Color3.fromHex(self.Fighters[e.Side].Def.Tint),
+					if e.Target == 1 then -1 else 1,
+					"PowerDamage" .. e.Target
+				)
+			end
+		elseif e.Type == "SignatureStatus" and e.Kind == "Heal" and e.Amount > 0 then
+			Health.bump(self.Fighters[e.Side])
+			if hud then
+				hud:Popup(
+					"+" .. math.floor(e.Amount + 0.5),
+					self.Fighters[e.Side].Body.Position,
+					Color3.fromHex("#86EDB8"),
+					0,
+					"Heal" .. e.Side
+				)
+			end
+		end
 		return
 	end
 	local f = e.Side and self.Fighters[e.Side]
@@ -331,6 +360,8 @@ function Scene:Event(e, hud)
 		self:Sound(Audio.Whoosh, self.Fighters[1].Body, 1.2, 0.16, 0.3)
 	elseif e.Type == "Hit" then
 		local a, b = self.Fighters[1], self.Fighters[2]
+		Health.bump(a)
+		Health.bump(b)
 		self.Shatter:HitBurst(a, b, {
 			CritA = e.Crit[1],
 			CritB = e.Crit[2],

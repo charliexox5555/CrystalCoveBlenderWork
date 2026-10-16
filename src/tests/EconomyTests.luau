@@ -9,8 +9,8 @@ return function(t, deps)
 		t.near(EconomySim.expectedRounds(1), Balance.Match.Hearts, 1e-9, "a sweep")
 	end)
 
-	t.test("matches take 2.5-5 minutes", function()
-		t.between(EconomySim.matchSeconds() / 60, 2.5, 5, "match minutes")
+	t.test("full-timeout matches allow the creator's longer selection and aim windows", function()
+		t.between(EconomySim.matchSeconds() / 60, 5, 7, "full-timeout match minutes; ready players advance early")
 	end)
 
 	t.test("collection pacing: quick first rares, a long chase for Mythics", function()

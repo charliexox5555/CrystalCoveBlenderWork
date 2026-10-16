@@ -120,6 +120,25 @@ function Shatter:SetCracks(fighter, hp, maxHP)
 end
 
 function Shatter:Break(fighter, root)
+	if fighter.Broken then
+		return
+	end
+	fighter.Broken = true
+	if fighter.Health then
+		fighter.Health.Enabled = false
+	end
+	if fighter.Trail then
+		fighter.Trail.Enabled = false
+	end
+	if fighter.Highlight then
+		fighter.Highlight.Enabled = false
+	end
+	if fighter.Bubble then
+		fighter.Bubble.Transparency = 1
+	end
+	if fighter.Glints then
+		fighter.Glints.Enabled = false
+	end
 	local origin = fighter.Body.Position
 	local pieces
 	if fighter.ShardTemplates then

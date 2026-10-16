@@ -276,6 +276,10 @@ function Presentation.status(self, r, time)
 			mirror.Size = self.Assets.Meshes.GuardPlate.Size * M.GlassyScale * VFX.StatusScale
 			mirror.Transparency = VFX.StatusTransparency
 		end
+		-- Detail animations must never resurrect shattered meshes or snap a flying winner back.
+		if f.Broken or f.Finishing then
+			continue
+		end
 		for p, rest in f.DetailStates do
 			if not p.Parent or not f.Pivot then
 				continue

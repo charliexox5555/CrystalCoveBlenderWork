@@ -8,6 +8,7 @@ local modules = p.PlayerScripts.Client.UI:Clone()
 modules.Name, modules.Parent = "HandSelectionQA", p.PlayerScripts
 local Selection = require(modules.Screens.MatchSelection)
 local Glassies = require(game.ReplicatedStorage.Shared.Config.Glassies)
+local K = require(modules.Theme).Selection
 local checks = 0
 local function check(v, m)
 	assert(v, m)
@@ -53,14 +54,14 @@ task.wait(0.2)
 local started = screen.AnimationStarted
 screen:Render(started + 0.1)
 check(screen.Animation.Rows[1].Clip.Visible and not screen.Animation.Rows[2].Clip.Visible, "First card only")
-screen:Render(started + 0.7)
+screen:Render(started + K.CardSeconds + K.CardGap + 0.1)
 check(screen.Animation.Rows[2].Clip.Visible and not screen.Animation.Rows[3].Clip.Visible, "Second card next")
-screen:Render(started + 1.3)
+screen:Render(started + 2 * (K.CardSeconds + K.CardGap) + 0.1)
 check(screen.Animation.Rows[3].Clip.Visible, "Third card last")
 for i, id in quote.Offers do
 	check(screen.Animation.Rows[i].Stream[screen.Animation.Rows[i].Target] == id, "Server pinned target")
 end
-screen:Render(started + 2)
+screen:Render(started + 3 * K.CardSeconds + 2 * K.CardGap + K.LandHold + 0.01)
 check(not screen.Animation and not game.SoundService:FindFirstChild("HandRollAudio"), "Roll/audio finish cleanly")
 local function update(changes)
 	local next = table.clone(quote)
@@ -82,7 +83,7 @@ for _, o in screen.Panel.PickAnyChooser.Grid.Tiles:GetChildren() do
 		check(collection[o.Name] ~= nil, "Only owned picker items")
 	end
 end
-check(count == 12, "Complete installed owned collection")
+check(count == #Glassies.ReleaseList, "Complete installed owned collection")
 screen:ChooseAny("mason_jar")
 check(sends.Any == 1 and sends.Id == "mason_jar" and sends.Quote.PickAnyCost == 0, "One free round-only pick")
 update({ Picked = "mason_jar" })
@@ -90,29 +91,49 @@ check(table.concat(quote.Offers, ",") == "pop,jam,milk_bottle", "Pick Any doesn'
 update({ Picked = false, Round = 2, PickAnyCost = 6, SelectionRevision = 1 })
 screen:OpenPicker()
 screen:ChooseAny("mason_jar")
-check(screen.Panel.Confirm.Visible and sends.Any == 1, "Paid pick requires confirmation")
-check(screen.Panel.Confirm.Body.Text:find("6 Marbles", 1, true) ~= nil, "Exact price shown")
-screen:Confirm()
-screen:Confirm()
-check(sends.Any == 2 and sends.Quote.PickAnyCost == 6, "Paid pick sends once")
+check(not screen.Panel.Confirm.Visible and sends.Any == 2, "Paid pick sends without confirmation")
+check(sends.Quote.PickAnyCost == 6, "Exact paid-pick quote")
+screen:ChooseAny("mason_jar")
+check(sends.Any == 2, "Busy guard prevents repeat send")
+local requests = 0
+local requestConnection = screen.MarblesRequested.Event:Connect(function()
+	requests += 1
+end)
 update({ Marbles = 0 })
+check(screen.Panel.PickAny.Visible and screen.Panel.Reroll.Visible, "Low-balance buttons remain visible")
 screen:OpenPicker()
 screen:ChooseAny("pop")
-check(sends.Any == 2 and screen.Message.Text:find("6", 1, true) ~= nil, "Insufficient balance doesn't send")
+task.wait()
+check(
+	sends.Any == 2 and requests == 1 and screen.Gui:GetAttribute("RequestedMarbles") == 6,
+	"Insufficient Pick Any requests future store hook without spending"
+)
+update({ Marbles = 0 })
+screen:RerollNow()
+task.wait()
+check(sends.Reroll == 0 and requests == 2, "Insufficient reroll requests store hook without spending")
 update({ Marbles = 100 })
-screen:ConfirmReroll()
-check(screen.Panel.Confirm.Visible, "Paid reroll confirmation")
+check(
+	screen.Panel.RerollOdds.Visible and screen.Panel.RerollOdds.Text:find("12.50%%"),
+	"Uniform odds shown inline before spending"
+)
+screen:OpenPicker(true)
 local n = 0
-for _, row in screen.Panel.Confirm.Odds:GetChildren() do
-	if row:IsA("TextLabel") then
+for _, row in screen.Panel.PickAnyChooser.Grid.Tiles:GetChildren() do
+	if row:IsA("Frame") then
 		n += 1
-		check(row.Text:find("25.00%", 1, true) ~= nil, "Uniform inclusion odds")
+		check(row.InclusionOdds.Text == "12.50%", "Every outcome disclosed")
 	end
 end
-check(n == 12, "Every outcome disclosed")
-screen:Confirm()
-screen:Confirm()
-check(sends.Reroll == 1 and sends.Quote.RerollCost == 3, "One quoted reroll request")
+check(n == 24, "All owned outcomes listed")
+screen.Panel.PickAnyChooser.Visible, screen.Modal = false, false
+screen:RerollNow()
+screen:RerollNow()
+check(
+	not screen.Panel.Confirm.Visible and sends.Reroll == 1 and sends.Quote.RerollCost == 3,
+	"Single-tap quoted reroll with busy guard"
+)
+requestConnection:Disconnect()
 update({ PaidRandomAllowed = false, CanReroll = false })
 check(not screen.Panel.Reroll.Visible, "Restricted reroll hidden")
 update({ PaidRandomAllowed = true, CanReroll = true })
@@ -123,7 +144,17 @@ for _, o in screen.Gui:GetDescendants() do
 		check(o.AnchorPoint == Vector2.new(0.5, 0.5), "Centered anchors")
 	end
 	if o:IsA("TextLabel") and o.Visible and not o:FindFirstAncestor("Templates") then
-		check(o.TextFits, "Text fit " .. o:GetFullName())
+		local visible = true
+		local ancestor = o.Parent
+		while ancestor and ancestor ~= screen.Gui do
+			if ancestor:IsA("GuiObject") and not ancestor.Visible then
+				visible = false
+			end
+			ancestor = ancestor.Parent
+		end
+		if visible then
+			check(o.TextFits, "Text fit " .. o:GetFullName())
+		end
 	end
 end
 screen:Destroy()

@@ -106,9 +106,7 @@ function Service:StartFight(id, arena, setup, seed, metadata, onEnd)
 end
 
 function Service:Stop(id)
-	if not self.Sessions[id] then
-		return
-	end
+	-- Aiming/countdown views exist before a simulation session. Close those too on cancellation.
 	Remotes.MatchState:FireAllClients({ Id = id, Phase = "Idle" })
 	self.Sessions[id] = nil
 end

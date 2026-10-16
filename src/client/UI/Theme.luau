@@ -154,7 +154,18 @@ Theme.Kiln = {
 	TickInterval = 0.075,
 	SparkCount = 22,
 }
-Theme.Selection = { CardSeconds = 0.5, CardGap = 0.09, RollSteps = 9, LandHold = 0.10 }
+Theme.Selection = {
+	CardSeconds = 0.65,
+	CardGap = 0.08,
+	RollSteps = 12,
+	LandHold = 0.22,
+	LandPulseSeconds = 0.22,
+	LandPulseScale = 0.06,
+	RollTilt = -4,
+	TickVolume = 0.06,
+	OpenSeconds = 0.24,
+	OpenScale = 0.95,
+}
 
 -- Compatibility colours for the auxiliary Aim/Results screens.
 Theme.Battle = {

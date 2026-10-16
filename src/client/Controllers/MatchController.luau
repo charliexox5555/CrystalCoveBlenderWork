@@ -168,7 +168,7 @@ function Controller:Start()
 					return
 				end
 				if action == "Reroll" then
-					self.Screen:ConfirmReroll()
+					self.Screen:RerollNow()
 					return
 				end
 				if action == "Confirm" then

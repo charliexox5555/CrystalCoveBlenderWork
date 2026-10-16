@@ -1,5 +1,6 @@
 -- Scene-owned numbers follow each glassy without rotating with its mesh.
 local RS = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService")
 local VFX = require(RS.Shared.Config.Balance).CombatVFX
 local Theme = require(script.Parent.Parent.UI.Theme)
 local Health = {}
@@ -15,11 +16,27 @@ function Health.new(fighter, root)
 	label.FontFace, label.TextSize = Theme.Fonts.Heading, VFX.HealthTextSize
 	label.TextColor3, label.Text = Theme.Colors.Text, ""
 	label.Parent = gui
+	local scale = Instance.new("UIScale")
+	scale.Name, scale.Parent = "HitScale", label
 	local stroke = Instance.new("UIStroke")
 	stroke.Color, stroke.Thickness, stroke.Parent = Theme.Colors.Shadow, VFX.HealthStroke, label
 	gui.Parent = root
 	fighter.Health = gui
 	Health.update(fighter, fighter.Stats.MaxHP, false)
+end
+
+function Health.bump(fighter)
+	if not fighter.Health or not fighter.Health.Enabled then
+		return
+	end
+	if fighter.HealthTween then
+		fighter.HealthTween:Cancel()
+	end
+	local scale = fighter.Health.Amount.HitScale
+	scale.Scale = VFX.HealthPulseScale
+	fighter.HealthTween =
+		TweenService:Create(scale, TweenInfo.new(VFX.HealthPulseSeconds, Enum.EasingStyle.Back), { Scale = 1 })
+	fighter.HealthTween:Play()
 end
 
 function Health.update(fighter, hp, viewing)

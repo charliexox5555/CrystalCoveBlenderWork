@@ -30,7 +30,6 @@ function Finish.new(scene, loser, now)
 		Start = start,
 		Lift = start + Vector3.yAxis * Feel.FinisherRiseHeight,
 		Target = target,
-		Hidden = {},
 	}, Finish)
 end
 
@@ -52,11 +51,20 @@ function Finish:Impact()
 	self.Winner.Pivot = self.Winner.Model:GetPivot()
 	scene.Shatter:Break(self.Winner, scene.Root)
 	local avatar = scene.Viewing and self:Avatar()
+	if avatar then
+		local flash = Instance.new("Highlight")
+		flash.Name, flash.Adornee = "GlassyImpact", avatar
+		flash.FillColor, flash.OutlineColor = color, color
+		flash.FillTransparency, flash.OutlineTransparency = 0.7, 0.1
+		flash.Parent = scene.Root
+		TweenService
+			:Create(flash, TweenInfo.new(Feel.FinisherImpactSeconds), { FillTransparency = 1, OutlineTransparency = 1 })
+			:Play()
+		Debris:AddItem(flash, Feel.FinisherImpactSeconds)
+	end
 	local random = Random.new()
 	for _, original in avatar and avatar:GetDescendants() or {} do
 		if original:IsA("BasePart") and original.Name ~= "HumanoidRootPart" and original.Transparency < 1 then
-			self.Hidden[original] = original.LocalTransparencyModifier
-			original.LocalTransparencyModifier = 1
 			-- Toy glass fragments echo the shattered glassy without killing the actual character.
 			for _ = 1, 2 do
 				local shard = Instance.new("Part")
@@ -74,9 +82,6 @@ function Finish:Impact()
 				TweenService:Create(shard, TweenInfo.new(Feel.FinisherImpactSeconds), { Transparency = 1 }):Play()
 				Debris:AddItem(shard, Feel.FinisherImpactSeconds)
 			end
-		elseif original:IsA("Decal") then
-			self.Hidden[original] = original.Transparency
-			original.Transparency = 1
 		end
 	end
 	scene:Heart(self.Loser)
@@ -108,15 +113,6 @@ function Finish:Step(now)
 end
 
 function Finish:Destroy()
-	for object, value in self.Hidden do
-		if object.Parent then
-			if object:IsA("BasePart") then
-				object.LocalTransparencyModifier = value
-			else
-				object.Transparency = value
-			end
-		end
-	end
-	self.Hidden = {}
+	-- All impact effects belong to Scene.Root; the real avatar is never modified.
 end
 return Finish

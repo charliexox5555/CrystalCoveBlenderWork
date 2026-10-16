@@ -15,6 +15,7 @@ local Remotes = require(RS.Shared.Remotes)
 local Scene = require(script.Parent.Parent.Presentation.FightScene)
 local Hud = require(script.Parent.Parent.UI.Screens.FightHud)
 local Orbit = require(script.Parent.FightOrbit)
+local FinisherCamera = require(script.Parent.FinisherCamera)
 local Theme = require(script.Parent.Parent.UI.Theme)
 local Audio = require(RS.Shared.Config.Audio)
 local M, Feel = Balance.Motion, Balance.Feel
@@ -394,6 +395,10 @@ function Controller:Event(e)
 		end
 	elseif e.Type == "Shatter" then
 		self.Phase = "RoundEnd"
+		self.FinisherCameraFrom = self.CameraPose
+		if self.Orbit then
+			self.Orbit.Yaw, self.Orbit.Target = 0, 0
+		end
 		self.Scene:StartFinisher(e.Side, now)
 		self.ShakeUntil, self.ShakePower = now + Feel.ShakeSeconds, Feel.ShakeMax
 		if self.Viewing then
@@ -526,6 +531,7 @@ function Controller:Render(dt)
 				if self.LastCountdown ~= n then
 					-- A rising tick per count builds the tension before release.
 					self.LastCountdown = n
+					self.Hud:Beat()
 					self.Scene:Sound(
 						Audio.Clink,
 						(self.Scene.Fighters[self.Side] or self.Scene.Fighters[1]).Body,
@@ -614,6 +620,7 @@ function Controller:Render(dt)
 		self.Events = pending
 		if self.Hud and self.Phase == "Fighting" and self.RenderTime < 0.8 then
 			if self.Hud.Headline.Text ~= "LET GO!" then
+				self.Hud:Beat()
 				self.Scene:Sound(
 					Audio.Whoosh,
 					(self.Scene.Fighters[self.Side] or self.Scene.Fighters[1]).Body,
@@ -650,8 +657,13 @@ function Controller:Camera(dt, now)
 		Vector3.new(Feel.CameraSide, Feel.CameraHeight, Feel.CameraDistance * (self.Data.CameraFacing or 1))
 	) * scale
 	local yaw = if self.Orbit then self.Orbit:Step(dt) else 0
+	local normal = CFrame.lookAt(self.Focus + offset, self.Focus)
 	offset = CFrame.fromAxisAngle(Vector3.yAxis, yaw):VectorToWorldSpace(offset)
 	local target = CFrame.lookAt(self.Focus + offset, self.Focus)
+	if self.Scene.Finisher then
+		self.Scene.CameraFocus = self.Focus
+		target = FinisherCamera.pose(self.Scene.Finisher, normal, self.FinisherCameraFrom or normal, now)
+	end
 	self.CameraPose = target
 	local shake = Vector3.zero
 	if self.ShakeUntil and now < self.ShakeUntil then

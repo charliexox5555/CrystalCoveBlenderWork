@@ -1,4 +1,6 @@
 local RS = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService")
+local B = require(RS.Shared.Config.Balance).Match
 local Glassies = require(RS.Shared.Config.Glassies)
 local Powers = require(RS.Shared.CombatText)
 local Theme = require(script.Parent.Parent.Theme)
@@ -36,18 +38,22 @@ end
 function Screen:Connect(button, callback, group)
 	table.insert(group or self.Connections, button.Activated:Connect(callback))
 end
-function Screen.new(data, pick, reroll, pickAny)
+function Screen.new(data, pick, reroll, pickAny, onMarblesRequested)
 	local self = setmetatable({
 		Data = data,
 		Pick = pick,
 		Reroll = reroll,
 		PickAny = pickAny,
+		OnMarblesRequested = onMarblesRequested,
 		Connections = {},
 		CardConnections = {},
 		PickerConnections = {},
 	}, Screen)
 	self.Gui = U.screen("RollScreen", 15)
 	self.Panel = self.Gui.Roll
+	local scale = U.make("UIScale", self.Panel, { Name = "OpenScale", Scale = 1 })
+	scale.Scale = Theme.Selection.OpenScale
+	TweenService:Create(scale, TweenInfo.new(Theme.Selection.OpenSeconds, Enum.EasingStyle.Back), { Scale = 1 }):Play()
 	self.Title, self.Message = self.Panel.Title, self.Panel.Message
 	for side = 1, 2 do
 		local p = self.Panel["Player" .. side]
@@ -58,51 +64,69 @@ function Screen.new(data, pick, reroll, pickAny)
 		self:OpenPicker()
 	end)
 	self:Connect(self.Panel.Reroll, function()
-		self:ConfirmReroll()
+		self:RerollNow()
 	end)
 	self:Connect(self.Panel.PickAnyChooser.Cancel, function()
-		self.Panel.PickAnyChooser.Visible = false
-		self.Modal = false
+		self.Panel.PickAnyChooser.Visible, self.Modal = false, false
 		self:Controls()
 	end)
-	self:Connect(self.Panel.Confirm.Cancel, function()
-		self.Panel.Confirm.Visible = false
-		self.Modal = self.Panel.PickAnyChooser.Visible
-		self:Controls()
+	self:Connect(self.Panel.ViewOdds, function()
+		self:OpenPicker(true)
 	end)
-	self:Connect(self.Panel.Confirm.Accept, function()
-		self:Confirm()
-	end)
+	self.Panel.Confirm.Visible = false -- retained authored template, never used for spending
+	self.MarblesRequested = Instance.new("BindableEvent")
+	self.MarblesRequested.Name, self.MarblesRequested.Parent = "MarblesRequested", self.Gui
 	return self
 end
-function Screen:Confirm()
-	if self.ConfirmAction and not self.Busy and self.Panel.Confirm.Visible then
-		local action = self.ConfirmAction
-		self.ConfirmAction = nil
-		self.Busy = true
-		self.Panel.Confirm.Visible = false
-		self.Panel.PickAnyChooser.Visible = false
-		self.Modal = false
-		self:Controls()
-		action()
-	end
+function Screen:Ready()
+	return self.OfferData
+		and not self.Dead
+		and not self.Busy
+		and not self.Animation
+		and not self.OfferData.Picked
+		and workspace:GetServerTimeNow() < self.Data.Deadline
 end
+function Screen:NeedMarbles(action, cost)
+	local shortfall = math.max(0, cost - (self.OfferData.Marbles or 0))
+	self.Gui:SetAttribute("RequestedMarbles", shortfall)
+	self.MarblesRequested:Fire(action, shortfall)
+	if self.OnMarblesRequested then
+		self.OnMarblesRequested(action, shortfall)
+	end
+	self.Message.Text = "Need " .. shortfall .. " more Marbles. Marble packs aren't available yet."
+end
+function Screen:Confirm() end -- compatibility for old Studio helpers; no purchase confirmation
+function Screen:ConfirmReroll()
+	self:RerollNow()
+end
+
 function Screen:Controls()
 	local data = self.OfferData
 	if not data then
 		return
 	end
-	local ready = not self.Busy and not self.Animation and not data.Picked and not self.Modal
+	local ready = self:Ready() and not self.Modal
 	self.Panel.PickAny.Visible = not data.Picked
 	self.Panel.PickAny.Active, self.Panel.PickAny.Selectable = ready, ready
 	S.buttonText(
 		self.Panel.PickAny,
 		"PICK ANY • " .. (if (data.PickAnyCost or 0) == 0 then "FREE" else tostring(data.PickAnyCost))
 	)
-	self.Panel.Reroll.Visible = data.PaidRandomAllowed == true and data.CanReroll == true
+	self.Panel.Reroll.Visible = data.PaidRandomAllowed == true and not data.Picked
 	self.Panel.Reroll.Active, self.Panel.Reroll.Selectable = ready, ready
 	S.buttonText(self.Panel.Reroll, "REROLL • " .. tostring(data.RerollCost or 3))
 	self.Panel.Wallet.Text = tostring(data.Marbles or 0) .. " MARBLES"
+	local count = 0
+	for _ in data.Collection do
+		count += 1
+	end
+	self.Panel.RerollOdds.Visible = data.PaidRandomAllowed == true
+	self.Panel.ViewOdds.Visible = data.PaidRandomAllowed == true
+	self.Panel.ViewOdds.Active, self.Panel.ViewOdds.Selectable = ready, ready
+	self.Panel.RerollOdds.Text = string.format(
+		"Reroll: 3 distinct owned glassies • each %.2f%% • the same hand can return",
+		math.min(3, count) / math.max(1, count) * 100
+	)
 	for i = 1, 3 do
 		local c = self.Panel.Cards["Card" .. i]
 		c.Select.Active, c.Select.Selectable = ready, ready
@@ -135,8 +159,11 @@ function Screen:Offers(data)
 		if id then
 			renderCard(card, id)
 			card.SelectedOutline.Visible = data.Picked == id
+			if card:FindFirstChild("SelectedCheck") then
+				card.SelectedCheck.Visible = data.Picked == id
+			end
 			self:Connect(card.Select, function()
-				if not self.Animation and not self.Busy and not self.Modal and not self.OfferData.Picked then
+				if self:Ready() and not self.Modal then
 					self.Busy = true
 					self:Controls()
 					self.Pick(id)
@@ -162,8 +189,8 @@ function Screen:Wallet(amount)
 		self:Controls()
 	end
 end
-function Screen:OpenPicker()
-	if not self.OfferData or self.Busy or self.Animation or self.OfferData.Picked then
+function Screen:OpenPicker(oddsOnly)
+	if not self:Ready() then
 		return
 	end
 	for _, c in self.PickerConnections do
@@ -184,12 +211,18 @@ function Screen:OpenPicker()
 		return Glassies.get(a).Name < Glassies.get(b).Name
 	end)
 	local cost = self.OfferData.PickAnyCost or 0
-	chooser.Title.Text = "PICK ANY • " .. (if cost == 0 then "FREE THIS MATCH" else cost .. " MARBLES")
-	local rows = math.max(1, math.ceil(#ids / 5))
-	local canvas = math.max(1, rows * 0.74)
-	chooser.Grid.CanvasSize = UDim2.fromScale(0, canvas)
+	chooser.Title.Text = if oddsOnly
+		then "REROLL ODDS • OWNED GLASSIES"
+		else "PICK ANY • " .. (if cost == 0 then "FREE THIS MATCH" else cost .. " MARBLES")
 	local layout = chooser.Grid.Tiles.UIGridLayout
-	layout.CellSize, layout.CellPadding = UDim2.fromScale(0.18, 0.70 / canvas), UDim2.fromScale(0.02, 0.04 / canvas)
+	local function resize()
+		layout.CellSize = UDim2.new(0.18, 0, 0, math.max(90, chooser.Grid.AbsoluteSize.Y * 0.58))
+		layout.CellPadding = UDim2.new(0.02, 0, 0, 12)
+		chooser.Grid.CanvasSize = UDim2.fromOffset(0, layout.AbsoluteContentSize.Y + 12)
+	end
+	table.insert(self.PickerConnections, layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(resize))
+	table.insert(self.PickerConnections, chooser.Grid:GetPropertyChangedSignal("AbsoluteSize"):Connect(resize))
+
 	for i, id in ids do
 		local def = Glassies.get(id)
 		local tile = chooser.Grid.Templates.GlassyTile:Clone()
@@ -199,88 +232,69 @@ function Screen:OpenPicker()
 		Portrait.new(tile, id, tile.Portrait.Size, tile.Portrait.Position)
 		tile.SelectedOutline.Visible = false
 		S.bindSlices(tile)
-		self:Connect(tile.Open, function()
-			self:ChooseAny(id)
-		end, self.PickerConnections)
+		if oddsOnly then
+			local odds = U.text(
+				tile,
+				"InclusionOdds",
+				string.format("%.2f%%", math.min(3, #ids) / #ids * 100),
+				UDim2.fromScale(0.8, 0.12),
+				UDim2.fromScale(0.1, 0.82),
+				Theme.Fonts.Caption
+			)
+			odds.TextColor3 = Theme.Colors.Highlight
+			tile.Open.Active, tile.Open.Selectable = false, false
+		else
+			self:Connect(tile.Open, function()
+				self:ChooseAny(id)
+			end, self.PickerConnections)
+		end
 	end
 	chooser.Visible = true
+	resize()
 	self.Modal = true
 	self:Controls()
 end
 function Screen:ChooseAny(id)
 	local data = self.OfferData
-	if self.Busy or data.Picked or not data.Collection[id] then
+	if not self:Ready() or not data.Collection[id] then
 		return
 	end
 	local cost = data.PickAnyCost or 0
 	if (data.Marbles or 0) < cost then
-		self.Message.Text = "Need " .. (cost - (data.Marbles or 0)) .. " more Marbles."
+		self:NeedMarbles("PickAny", cost)
 		return
 	end
-	local function send()
-		if self.PickAny then
-			self.PickAny(id, data)
-		end
-	end
-	if cost == 0 then
-		self.Busy = true
-		self.Panel.PickAnyChooser.Visible = false
-		self.Modal = false
-		self:Controls()
-		send()
-	else
-		local p = self.Panel.Confirm
-		p.Title.Text = "PICK " .. Glassies.get(id).Name:upper()
-		p.Body.Size = UDim2.fromScale(0.88, 0.40)
-		p.Body.Text = "Choose this glassy for this round only?\nCost: " .. cost .. " Marbles."
-		p.Odds.Visible = false
-		p.Visible = true
-		self.ConfirmAction = send
+	self.Busy = true
+	self.Panel.PickAnyChooser.Visible, self.Modal = false, false
+	self:Controls()
+	if self.PickAny then
+		self.PickAny(id, data)
 	end
 end
-function Screen:ConfirmReroll()
+function Screen:RerollNow()
 	local data = self.OfferData
-	if not data or self.Busy or self.Animation or data.Picked or not data.CanReroll then
+	if not self:Ready() or self.Modal then
 		return
 	end
-	local cost = data.RerollCost
-	if (data.Marbles or 0) < cost then
-		self.Message.Text = "Need " .. (cost - (data.Marbles or 0)) .. " more Marbles."
+	if not data.PaidRandomAllowed then
+		self.Message.Text = messages.restricted
 		return
 	end
-	local p = self.Panel.Confirm
-	p.Title.Text = "REROLL • " .. cost .. " MARBLES"
-	p.Body.Size = UDim2.fromScale(0.88, 0.14)
-	p.Body.Text = "3 distinct glassies. This replaces your match hand.\nThe same hand can appear again."
-	for _, o in p.Odds:GetChildren() do
-		if o:IsA("GuiObject") then
-			o:Destroy()
-		end
+	if not data.CanReroll then
+		self.Message.Text = messages.nothing_new
+		return
 	end
-	local ids = {}
-	for id in data.Collection do
-		table.insert(ids, id)
+	if self.Data.Deadline - workspace:GetServerTimeNow() < B.RerollReserveSeconds then
+		self.Message.Text = messages.too_late
+		return
 	end
-	table.sort(ids)
-	local chance = math.min(3, #ids) / #ids * 100
-	for _, id in ids do
-		local l = U.text(
-			p.Odds,
-			id,
-			Glassies.get(id).Name .. string.format(" • %.2f%% in your hand", chance),
-			UDim2.new(1, -8, 0, 24),
-			UDim2.new(),
-			Theme.Fonts.Caption
-		)
-		l:SetAttribute("FitSingleLine", true)
-		S.bindText(l)
+	if (data.Marbles or 0) < data.RerollCost then
+		self:NeedMarbles("Reroll", data.RerollCost)
+		return
 	end
-	p.Odds.Visible, p.Visible = true, true
-	self.Modal = true
-	self.ConfirmAction = function()
-		self.Reroll(data)
-	end
+	self.Busy = true
 	self:Controls()
+	self.Reroll(data)
 end
 function Screen:Render(now)
 	self.Title.Text = "CHOOSE YOUR GLASSY • " .. math.max(0, math.ceil(self.Data.Deadline - now))

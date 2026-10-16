@@ -13,25 +13,25 @@ end
 local function near(a, b, message)
 	check(math.abs(a - b) < 0.001, message)
 end
-local view = setmetatable(
-	{
-		Viewing = true,
-		Phase = "Fighting",
-		Data = { CameraFacing = 1 },
-		Hidden = {},
-		HiddenGuis = {},
-		Scene = {
-			Frame = CFrame.new(0, 200, 3000),
-			Fighters = { { Body = { Position = Vector3.new(-3, 190, 3000) } }, {
+local view = setmetatable({
+	Viewing = true,
+	Phase = "Fighting",
+	Data = { CameraFacing = 1 },
+	Hidden = {},
+	HiddenGuis = {},
+	Scene = {
+		Frame = CFrame.new(0, 200, 3000),
+		Fighters = {
+			{ Body = { Position = Vector3.new(-3, 190, 3000) } },
+			{
 				Body = { Position = Vector3.new(3, 190, 3000) },
-			} },
-			GetStand = function()
-				return nil
-			end,
+			},
 		},
+		GetStand = function()
+			return nil
+		end,
 	},
-	{ __index = View }
-)
+}, { __index = View })
 local orbit = Orbit.new(view)
 view.Orbit = orbit
 local function input(kind, x, key)

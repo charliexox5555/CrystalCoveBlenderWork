@@ -6,6 +6,7 @@ local Balance = require(RS.Shared.Config.Balance)
 local Glassies = require(RS.Shared.Config.Glassies)
 local Powers = require(RS.Shared.Config.Powers)
 local Audio = require(RS.Shared.Config.Audio)
+local Health = require(script.Parent.FightHealth)
 local M, Feel = Balance.Motion, Balance.Feel
 local Scene = {}
 Scene.__index = Scene
@@ -142,6 +143,8 @@ function Scene.new(data, maxima, shatter)
 			ShardTemplates = templates,
 			Effects = {},
 		}
+		Health.new(self.Fighters[side], self.Root)
+		trail.Lifetime = Balance.CombatVFX.SwingTrailSeconds
 	end
 	if data.ReleasePrototype or Balance.CombatRelease.Enabled then
 		self.Combat = require(script.Parent.CombatEffects).new(self)
@@ -193,6 +196,7 @@ end
 function Scene:HideBroken(side)
 	local f = self.Fighters[side]
 	f.Broken = true
+	f.Health.Enabled = false
 	if self.Combat then
 		self.Combat:CancelSide(side)
 	end
@@ -208,6 +212,7 @@ end
 
 function Scene:Update(r, time)
 	for side, f in self.Fighters do
+		Health.update(f, r.Hp[side], self.Viewing)
 		if f.Broken or f.Finishing then
 			continue
 		end
@@ -235,7 +240,10 @@ function Scene:Update(r, time)
 		if f.GlintTint ~= tint then
 			f.GlintTint, f.Glints.Color = tint, ColorSequence.new(tint)
 		end
-		f.Trail.Enabled = r.Pump[side]
+		local dt = time - (f.LastPoseTime or time)
+		local speed = if f.LastPosePosition and dt > 0 then (f.Body.Position - f.LastPosePosition).Magnitude / dt else 0
+		f.LastPosePosition, f.LastPoseTime = f.Body.Position, time
+		f.Trail.Enabled = r.Pump[side] or (self.Viewing == true and speed >= Balance.CombatVFX.FastSwingSpeed)
 	end
 	if self.Combat then
 		self.Combat:Update(r, time)
@@ -319,7 +327,11 @@ function Scene:Event(e, hud)
 		self:Sound(Audio.Whoosh, self.Fighters[1].Body, 1.2, 0.16, 0.3)
 	elseif e.Type == "Hit" then
 		local a, b = self.Fighters[1], self.Fighters[2]
-		self.Shatter:HitBurst(a, b, { CritA = e.Crit[1], CritB = e.Crit[2] }, self.Root)
+		self.Shatter:HitBurst(a, b, {
+			CritA = e.Crit[1],
+			CritB = e.Crit[2],
+			Point = if e.Z then self.Frame:PointToWorldSpace(Vector3.new(e.X, e.Y, e.Z)) else nil,
+		}, self.Root)
 		local weight = math.clamp(e.Speed / Balance.Fight.RefSpeed, 0, 1)
 		local volume = Feel.ClinkVolumeMin + (Feel.ClinkVolumeMax - Feel.ClinkVolumeMin) * weight
 		self:Sound(
@@ -355,6 +367,7 @@ function Scene:Event(e, hud)
 	elseif e.Type == "Shatter" and not f.Broken then
 		self.Shatter:Break(f, self.Root)
 		f.Broken = true
+		f.Health.Enabled = false
 		f.Bubble.Transparency, f.Glints.Enabled, f.Trail.Enabled = 1, false, false
 		f.Highlight.Enabled = false
 		if f.Tag then
@@ -436,6 +449,9 @@ end
 
 function Scene:SetViewing(on)
 	self.Viewing = on
+	for _, f in self.Fighters do
+		f.Health.Enabled = on and not f.Broken and not f.Finishing
+	end
 	if not on and self.Combat then
 		self.Combat:ClearTransient()
 	end

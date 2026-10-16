@@ -1,5 +1,13 @@
 # First-six combat checkpoint
 
+## Creator feedback pass
+
+The creator tested the checkpoint and liked the look, but requested more effects, clearly visible numeric health and a complete floating-text outline fade. This pass adds `123 HP` just beneath each glassy (white, pink at low HP), short fast-swing trails, expanding contact rings/chips, stronger signature charge/release/block bursts, growing pulsing windup rings, ray halos and a clearer axe slash. HP follows snapshot values and disappears when watching stops, on shatter and during the finisher. Both legacy text strokes and authored UIStroke outlines fade with the damage text. Damage, charge cadence, attack volumes and global activation are unchanged.
+
+88 Lune tests and 46 short native Client presentation checks pass. The latter cover the three model pairs, HP visibility/value/low-health styling, charge/windup/ray-halo/miss/lifetime branches, contact rings, watch/shatter/finisher cleanup and actual popup text/outline tween progression. This is an isolated presentation fixture, not a full live-match or performance approval. Reproducible helper: `tools/studio/check_combat_feedback.luau` (Play / Client). Studio returned to Edit; nothing published. Creator reviews the feel using the three existing pair tests below. Remaining 18 kits are the next implementation phase.
+
+## Earlier checkpoint
+
 2026-10-15. The creator reconnected Rojo, then requested lower usage and offered to handle some testing. This checkpoint finishes the current first-six implementation; it does **not** mark the 24-kit release complete.
 
 Implemented in source:

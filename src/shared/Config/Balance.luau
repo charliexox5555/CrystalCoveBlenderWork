@@ -72,6 +72,25 @@ Balance.CombatRelease = {
 }
 
 Balance.CombatVFX = {
+	-- Presentation only; no charge cadence, damage or attack volumes change.
+	ImpactRingSeconds = 0.28,
+	ImpactRingStart = 0.7,
+	ImpactRingEnd = 2.8,
+	ImpactRingNormalEnd = 1.8,
+	ImpactChipCount = 7,
+	ChargeBurstScale = 1.6,
+	WindupPulseHz = 3,
+	WindupRingGrowth = 1.8,
+	RayHaloScale = 2.5,
+	RayHaloTransparency = 0.65,
+	FastSwingSpeed = 8,
+	SwingTrailSeconds = 0.12,
+	HealthWidth = 104,
+	HealthHeight = 28,
+	HealthGap = 0.45,
+	HealthTextSize = 23,
+	HealthStroke = 2,
+	LowHealthFraction = 0.25,
 	Tail = 0.25,
 	ChargeDim = 0.78,
 	ChargeLit = 0.1,

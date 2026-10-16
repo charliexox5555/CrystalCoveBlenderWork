@@ -14,6 +14,17 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-15 — Codex — First-six feedback: effects, health and popup fade
+Done:
+- Creator approved the checkpoint look but found fights too quiet visually. Added short fast-swing trails, camera-facing expanding contact rings/chips, stronger charge/release/block bursts, growing pulsing windup rings, ray halos and a clearer axe slash. Effects retain bounded lifetimes and server-confirmed attack outcomes; rules/volumes/cadence/global activation unchanged.
+- Numeric HP now follows each fighting glassy below its body, with low-health tint and watch/shatter/finisher cleanup. Existing avatar-plaque numbers remain. Fixed floating damage text fading both legacy TextStrokeTransparency and authored UIStroke transparency.
+- Verified Rojo connected/source sync. 88 Lune tests and 46 short native Client presentation checks pass across three model pairs, including actual popup tween progression and cleanup. Fixture saved in tools/studio/check_combat_feedback.luau. No broad live matches, device or performance soak; creator handles feel review. Studio Edit, unpublished; original assets and unrelated files preserved.
+Balance/economy sims (presentation-only Balance additions; global signatures off):
+- 200 rounds/matchup: Pop/Jam/Prism mirrors 24.0/36.3/19.5 s, zero timeouts; side A 48%; starter triangle 63/67/62%; Perfect vs worst 63%; 50% comebacks, 1.4 lead changes, 2.3 powers/glassy, 35% aimed misses; equal-stat release field 43–57%. Legacy baseline, not signature balance approval.
+- 2,000-player economy: 21 nonstarters, 3.7 min/match, 16.1 matches/hour; 4/96 day-one/day-30 pulls, 12/18 uniques day seven/day 30; Rare 47 min, Epic 2.1 h, Legendary 9 h, 20% Mythic by day 30. Actual installed-art Coin pool remains nine.
+Next:
+- Creator rechecks visual intensity/health placement; implement remaining 18 kits, then asset promotion, signature calibration and final release checks.
+
 ## 2026-10-15 — Codex — First-six signature checkpoint after Rojo connection
 Done:
 - Creator connected Rojo; verified source sync before edits. Implemented first-six contact/turnaround/timed signatures, body-only one-use guard, bounded locked rays and relative-motion axe sweep, unique results and death cancellation. Scene-owned VFX use staged native models, authored pivots, measured body centres/radii and revised crack maps; no new controls/camera/finisher flow.

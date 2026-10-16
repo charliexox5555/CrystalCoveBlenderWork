@@ -14,6 +14,7 @@ function Finish.new(scene, loser, now)
 		return nil
 	end
 	winner.Finishing = true
+	winner.Health.Enabled = false
 	winner.Beam.Enabled, winner.Highlight.Enabled = false, false
 	winner.Bubble.Transparency = 1
 	winner.Glints.Rate = 0

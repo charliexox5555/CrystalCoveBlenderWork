@@ -59,7 +59,12 @@ function Effects:Burst(name, position, color, lowDetail)
 	local p = anchor(self.Root, "Signature_" .. name, position)
 	local e = self.Assets.Particles[name]:Clone()
 	e.Color, e.Parent = ColorSequence.new(color), p
-	e:Emit(math.max(1, math.floor(e:GetAttribute("BurstCount") * (if lowDetail then 0.5 else 1))))
+	local keys = {}
+	for _, key in e.Size.Keypoints do
+		table.insert(keys, NumberSequenceKeypoint.new(key.Time, key.Value * VFX.ChargeBurstScale, key.Envelope))
+	end
+	e.Size = NumberSequence.new(keys)
+	e:Emit(math.max(1, math.floor(e:GetAttribute("BurstCount") * (if lowDetail then 0.5 else VFX.ChargeBurstScale))))
 	Debris:AddItem(p, e.Lifetime.Max + VFX.Tail)
 end
 
@@ -140,6 +145,7 @@ function Effects:Event(e)
 	local color = Color3.fromHex(f.Def.Tint)
 	local origin = if e.Origin then self.Scene.Frame:PointToWorldSpace(vector(e.Origin)) else f.Body.Position
 	if e.Type == "Charge" then
+		self:Burst("ContactGlint", f.Body.Position, color, f.LowDetail)
 		self:Sound(if f.Id == "arc_coil" then "CapRattle" else "ClinkLightB", e.Side)
 	elseif e.Type == "CastStart" then
 		if self.Time > e.Time + e.Windup + VFX.Tail then
@@ -148,6 +154,7 @@ function Effects:Event(e)
 		local cast = self:Cast(e)
 		cast.Ring = self:Mesh("Ring", cast.Root, color)
 		cast.Ring.Size *= VFX.ChargeRingScale
+		self:Burst("ContactGlint", f.Body.Position, color, f.LowDetail)
 		self:Sound(if e.Shape == "sweep" then "CapRattle" else "ChargeGlass", e.Side)
 	elseif e.Type == "CastRelease" then
 		if self.Time > e.Time + e.Duration + VFX.Tail then
@@ -157,11 +164,13 @@ function Effects:Event(e)
 			f.GuardConsumed, f.GuardUntil = false, e.Time + e.Duration
 			self:ClearCast(e.CastId)
 			self:Sound("LidClick", e.Side)
+			self:Burst("ContactGlint", f.Body.Position, Color3.fromRGB(214, 171, 83), f.LowDetail)
 			return true
 		end
 		local cast = self:Cast(e)
 		cast.Origin = origin
 		cast.Direction = self.Scene.Frame:VectorToWorldSpace(vector(e.Direction)).Unit
+		self:Burst("ContactGlint", origin, color, f.LowDetail)
 		if e.Shape == "ray" then
 			local a = anchor(cast.Root, "RayOrigin", origin)
 			local b = anchor(cast.Root, "LockedRayEnd", origin + cast.Direction * e.Range)
@@ -171,6 +180,13 @@ function Effects:Event(e)
 			beam.Attachment0, beam.Attachment1, beam.Enabled = at0, at1, true
 			beam.Color, beam.Width0, beam.Width1 = ColorSequence.new(color), e.Radius * 2, e.Radius
 			beam.Parent, cast.Beam, cast.Endpoint = cast.Root, beam, b
+			if not f.LowDetail then
+				local halo = beam:Clone()
+				halo.Name, halo.Width0, halo.Width1 =
+					"RayHalo", beam.Width0 * VFX.RayHaloScale, beam.Width1 * VFX.RayHaloScale
+				halo.Transparency = NumberSequence.new(VFX.RayHaloTransparency)
+				halo.Parent, cast.Halo = cast.Root, halo
+			end
 			self:Sound(if f.Id == "arc_coil" then "ElectricSnap" else "ClinkLightA", e.Side)
 		elseif e.Shape == "sweep" then
 			local weapon = self.Assets.Kits.crescent_axe.CrescentWeapon:Clone()
@@ -214,6 +230,10 @@ function Effects:Event(e)
 		)
 		if e.Type == "SignatureBlock" then
 			f.GuardConsumed, f.GuardUntil = true, -1
+		end
+		self:Burst("ContactGlint", cast.Origin, cast.Ring.Color, f.LowDetail)
+		if e.Type == "SignatureContact" and f.Id == "briar_flask" then
+			self:Burst("GlassChips", cast.Origin, color, f.LowDetail)
 		end
 		if f.Id == "pop" and not f.LowDetail then
 			self:Burst("PressurePop", cast.Origin, color, false)
@@ -278,15 +298,25 @@ function Effects:Update(r, time)
 		local alpha = math.clamp((time - (cast.EndAt - VFX.Tail)) / VFX.Tail, 0, 1)
 		if cast.Ring then
 			local position = cast.Origin or f.Body.Position
-			cast.Ring.CFrame =
-				CFrame.new(position + self.Scene.Frame.ZVector * (self.Scene.Data.CameraFacing or 1) * 0.2)
+			cast.Ring.CFrame = CFrame.new(position) * workspace.CurrentCamera.CFrame.Rotation
 			cast.Ring.Transparency = 0.2 + alpha * 0.8
 			if cast.Pressure then
 				cast.Ring.Size = self.Assets.Meshes.Ring.Size * (1 + age / VFX.Tail) * VFX.PressureRingScale
+			else
+				local progress = math.clamp(age / e.Windup, 0, 1)
+				local pulse = (1 + math.sin(age * math.pi * 2 * VFX.WindupPulseHz)) / 2
+				cast.Ring.Size = self.Assets.Meshes.Ring.Size
+					* VFX.ChargeRingScale
+					* (1 + progress * VFX.WindupRingGrowth)
+				cast.Ring.Transparency = VFX.ChargeDim - pulse * (VFX.ChargeDim - VFX.ChargeLit)
 			end
 		end
 		if cast.Beam then
 			cast.Beam.Transparency = NumberSequence.new(alpha)
+			if cast.Halo then
+				cast.Halo.Transparency =
+					NumberSequence.new(VFX.RayHaloTransparency + alpha * (1 - VFX.RayHaloTransparency))
+			end
 		end
 		if cast.Weapon then
 			local angle = (-0.5 + math.clamp(age / e.Duration, 0, 1)) * e.Arc
@@ -296,7 +326,7 @@ function Effects:Update(r, time)
 			local rotation = CFrame.fromMatrix(outward, up, outward:Cross(up).Unit)
 			cast.Weapon:PivotTo(CFrame.new(head) * rotation * CFrame.new(-cast.HeadCenter))
 			cast.Slash.CFrame = CFrame.new(head) * rotation
-			cast.Slash.Transparency = 0.5 + alpha * 0.5
+			cast.Slash.Transparency = VFX.ChargeLit + alpha * (1 - VFX.ChargeLit)
 			for _, part in cast.Weapon:GetChildren() do
 				part.Transparency = 0.1 + alpha * 0.9
 			end

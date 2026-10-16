@@ -11,7 +11,7 @@ local Glassies = require(RS.Shared.Config.Glassies)
 local CrackPaths = require(RS.Shared.Config.CrackPaths)
 local ExtraCrackPaths = require(RS.Shared.Config.CrackPathsExtra)
 local ReleaseCrackPaths = require(RS.Shared.Config.ReleaseCrackPaths)
-local Feel = Balance.Feel
+local Feel, VFX = Balance.Feel, Balance.CombatVFX
 local Shatter = {}
 
 function Shatter:Init()
@@ -219,7 +219,7 @@ end
 
 function Shatter:HitBurst(a, b, result, root)
 	local strong = result.ActionA == "Perfect" or result.CritA or result.CritB
-	local origin = (a.Body.Position + b.Body.Position) / 2
+	local origin = result.Point or (a.Body.Position + b.Body.Position) / 2
 	local flash = Instance.new("Part")
 	flash.Name, flash.Shape = "ImpactFlash", Enum.PartType.Ball
 	flash.Anchored, flash.CanCollide, flash.CanTouch, flash.CanQuery = true, false, false, false
@@ -239,6 +239,28 @@ function Shatter:HitBurst(a, b, result, root)
 	emitter.Size = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.12), NumberSequenceKeypoint.new(1, 0) })
 	emitter.Parent = flash
 	emitter:Emit(Feel.HitSparkles * (strong and 2 or 1))
+	if not a.LowDetail then
+		local assets = RS.Assets
+		local library = assets:FindFirstChild("VFX") and assets.VFX:FindFirstChild("Combat")
+		local preview = assets:FindFirstChild("CombatReleasePreview")
+		library = library or (preview and preview:FindFirstChild("Combat"))
+		if library then
+			local ring = library.Meshes.Ring:Clone()
+			ring.Name, ring.Color = "ContactRing", flash.Color
+			ring.Size = library.Meshes.Ring.Size * VFX.ImpactRingStart
+			local camera = workspace.CurrentCamera
+			ring.CFrame = CFrame.new(origin) * camera.CFrame.Rotation
+			ring.Parent = root
+			TweenService:Create(ring, TweenInfo.new(VFX.ImpactRingSeconds), {
+				Size = library.Meshes.Ring.Size * (if strong then VFX.ImpactRingEnd else VFX.ImpactRingNormalEnd),
+				Transparency = 1,
+			}):Play()
+			Debris:AddItem(ring, VFX.ImpactRingSeconds)
+			local chips = library.Particles.GlassChips:Clone()
+			chips.Color, chips.Parent = ColorSequence.new(flash.Color), flash
+			chips:Emit(VFX.ImpactChipCount)
+		end
+	end
 	Debris:AddItem(flash, 0.4)
 end
 

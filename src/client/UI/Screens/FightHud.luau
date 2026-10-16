@@ -158,8 +158,14 @@ function Hud:Popup(text, position, tint, lane, key)
 	TweenService:Create(
 		label,
 		TweenInfo.new(Balance.Feel.PopupSeconds),
-		{ Position = label.Position - UDim2.fromScale(0, 0.1), TextTransparency = 1 }
+		{ Position = label.Position - UDim2.fromScale(0, 0.1), TextTransparency = 1, TextStrokeTransparency = 1 }
 	):Play()
+	-- Authored popups may use UIStroke as well as the legacy text stroke.
+	for _, stroke in label:GetDescendants() do
+		if stroke:IsA("UIStroke") then
+			TweenService:Create(stroke, TweenInfo.new(Balance.Feel.PopupSeconds), { Transparency = 1 }):Play()
+		end
+	end
 	Debris:AddItem(label, Balance.Feel.PopupSeconds)
 end
 

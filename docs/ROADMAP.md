@@ -3,6 +3,8 @@
 Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DESIGN v0.3](GAME_DESIGN.md).
 **Current milestone: F5 — integration polish.** Wave1 imports, fitted fences and the native multiplayer/security pass are complete. Real-phone checks, final UI artwork and publishing remain with the creator; Marble packs, gamepasses and Marble Kiln purchases stay disabled; creator-approved match selection spends are implemented.
 
+- [x] **C:** creator's first-six feedback: glassy-following numeric HP, complete popup text/stroke fade, stronger contact/charge/release/block effects and fast-swing trails. 88 logic tests and 46 isolated native presentation checks pass; [checkpoint](testing/combat_release/FIRST_SIX_CHECKPOINT.md). Creator reviews feel; remaining 18 kits still pending.
+
 Owner key: **C** = Codex (code / Studio MCP), **B** = Codex with Blender MCP, **CL** = Claude (research, design, pure rules, docs), **U** = you.
 
 ## F0 — Restructure (Claude, Oct 13)

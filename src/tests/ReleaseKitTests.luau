@@ -139,6 +139,65 @@ return function(t, d)
 			t.eq(s.AbilityResults[c.Id], nil)
 		end
 	end)
+	t.test("returning blade sweeps both legs once, including an apex-crossing step", function()
+		local Attacks = if script
+			then require(game.ServerScriptService.Server.Simulation.SignatureAttacks)
+			else require("../server/Simulation/SignatureAttacks")
+		local Path = if script
+			then require(game.ReplicatedStorage.Shared.AttackPath)
+			else require("../shared/AttackPath")
+		t.eq(Path.distance(0, "return"), 0)
+		t.eq(Path.distance(0.5, "return"), 1)
+		t.eq(Path.distance(1, "return"), 0)
+		local s = fight("prism_blade", "jam")
+		R.turnaround(s, 1)
+		R.turnaround(s, 1)
+		R.tick(s, 0.31)
+		local c = R.drainCasts(s)[1]
+		t.ok(c and c.Params.Path == "return")
+		R.releaseCast(s, c, { 0, 0, 0 }, { 1, 0, 0 })
+		local sim = { Fight = s }
+		local target = V.new(3, 0, 0)
+		Attacks.add(sim, c, V.zero, V.xAxis, target)
+		local before = s.Fighters[2].Hp
+		Attacks.step(sim, c.Params.Duration * 0.75, function()
+			return target
+		end)
+		t.ok(c.Results[1] and c.Results[2], "both swept legs hit")
+		t.near(
+			before - s.Fighters[2].Hp,
+			s.Fighters[1].Power * c.Params.Damage * d.Formula.typeMultiplier(s.Fighters[1].Type, "Heavy"),
+			1e-6
+		)
+		t.ok(not R.resolveAbility(s, c.Id, true, { 3, 0, 0 }, 1), "no replay")
+		Attacks.step(sim, c.Params.Duration, function()
+			return target
+		end)
+		t.eq(#sim.ReleaseAttacks, 0)
+	end)
+	t.test("stored sand and echo survive a turnaround refused by cooldown", function()
+		for _, id in { "hourglass", "comet" } do
+			local s = fight(id, "jam")
+			local signature = s.Fighters[1].Signature
+			signature.HasCast, signature.LastReady, signature.BusyUntil = true, 0, -1
+			signature.Stored, signature.EchoPoint, signature.EchoUntil = 5, { 1, 2, 3 }, 10
+			R.turnaround(s, 1)
+			t.eq(#s.PendingCasts, 0)
+			if id == "hourglass" then
+				t.eq(signature.Stored, 5)
+			else
+				t.ok(signature.EchoPoint)
+			end
+			R.tick(s, d.Balance.CombatRelease.MinCastSeconds + 0.01)
+			R.turnaround(s, 1)
+			t.eq(#s.PendingCasts, 1)
+			if id == "hourglass" then
+				t.eq(signature.Stored, 0)
+			else
+				t.eq(signature.EchoPoint, nil)
+			end
+		end
+	end)
 	t.test("cone and fan are bounded in 3D", function()
 		t.ok(Geometry.coneSphere(V.zero, V.xAxis, 5, 1, V.new(3, 0, 0), 0.2))
 		t.ok(not Geometry.coneSphere(V.zero, V.xAxis, 5, 1, V.new(-1, 0, 0), 0.2))

@@ -51,12 +51,14 @@ function Traits.turnaround(state, side, emit, begin)
 		begin(state, side, emit)
 	elseif kit.Trigger == "stored" and (s.Stored or 0) > 0 then
 		local stored = s.Stored
-		s.Stored = 0
-		begin(state, side, emit, { Damage = math.min(kit.Damage, stored / f.Power) })
+		if begin(state, side, emit, { Damage = math.min(kit.Damage, stored / f.Power) }) then
+			s.Stored = 0
+		end
 	elseif kit.Shape == "echo_contact" and s.EchoPoint then
 		local origin = s.EchoPoint
-		s.EchoPoint = nil
-		begin(state, side, emit, { Shape = "projectile", StoredOrigin = origin })
+		if begin(state, side, emit, { Shape = "projectile", StoredOrigin = origin }) then
+			s.EchoPoint = nil
+		end
 	end
 end
 

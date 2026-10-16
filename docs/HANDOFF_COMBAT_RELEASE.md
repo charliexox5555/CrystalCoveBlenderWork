@@ -4,11 +4,15 @@ October 15, 2026. Start here in the next chat. Workspace: `C:/Users/charl/Docume
 
 Production checkpoint: all 24 source packages and the shared VFX kit are produced in `release_v2` and now imported/normalized in `ServerStorage.CombatReleaseStaged`. Creator imports were 100× oversized with mixed anchoring; all 527 imported parts are corrected and anchored, with raw backups and verified editable RBXM snapshots. First-six fixed-camera art review passes; live kits and client effect proof are pending. Continue from the [current production table](art/combat_release/PROGRESS.md), [native import report](testing/combat_release/IMPORT_NORMALIZATION.md) and [source checks](testing/COMBAT_RELEASE_ASSETS.md); the phases and gates below remain authoritative.
 
+## Current spectacle/camera checkpoint
+
+Creator requested more fun/effects and horizontal arena camera rotation. Implemented full-circle mouse drag/touch swipe/Q-E/right-stick orbit during Fighting, returning Prism Blade, storage retention and stronger bounded mesh/shot/cone/pulse/orbit presentation. See [current controls, checks and review limits](testing/combat_release/SPECTACLE_ORBIT.md). Decision 63 supersedes earlier fixed-direction camera constraints. 99 logic tests, 32 camera checks, 264 presentation checks and a short real fight pass; manual feel/device/fairness review remains.
+
 ## Current full-roster checkpoint
 
 All 24 revised models and signatures are now installed and enabled in normal matches; the Coin Kiln pool is all 21 nonstarters. [Full integration/creator test guide](testing/combat_release/FULL_RELEASE.md) supersedes the first-six checkpoint statements below. 97 Lune and Studio tests, 264 all-model Client presentation checks, 48 actual deterministic swing rounds and focused two-client/seven-fight/rejoin/cleanup QA pass. Original live assets are preserved in CombatReleaseBackups; places/CombatRelease_Live_v2.rbxm saves the active native library. No publishing, paid storefront activation, production inventory migration or device-setting changes. Creator feel review, full equal-stat tuning and longer/real-phone performance checks remain; simple stand-in signature balance rates are not approval.
 
-## Creator's latest direction
+## Historical first-six direction
 
 Creator tested the first-six checkpoint and approved the look, requesting stronger effects, visible numeric glassy health and corrected floating-text stroke fading before the remaining kits. Implemented: glassy-following HP numbers, short fast-swing trails, expanding hit rings/chips, stronger charge/release/block cues, pulsing windups, ray halos and clearer axe slash; both text outline types fade. 88 Lune tests and 46 isolated native Client presentation checks pass. No attack/rule/activation changes; Studio Edit/unpublished. Creator handles live feel review, keeping usage low; remaining 18 kits are next. See the feedback section of the checkpoint below.
 

@@ -1,5 +1,6 @@
 -- Real deterministic pendulum coverage; unlike BalanceSim this uses attack geometry and 3D apexes.
 local fs = require("@lune/fs")
+local process = require("@lune/process")
 local json = require("@lune/serde")
 local G = require("../src/shared/Config/Glassies")
 local B = require("../src/shared/Config/Balance")
@@ -27,5 +28,8 @@ for i, def in G.ReleaseList do
 end
 report.MeanSeconds = report.Seconds / report.Rounds
 report.HitsPerSecond = report.Hits / report.Seconds
-fs.writeFile("docs/testing/combat_release/release_swing_report.json", json.encode("json", report, true))
+fs.writeFile(
+	process.args[1] or "docs/testing/combat_release/release_swing_report.json",
+	json.encode("json", report, true)
+)
 print(json.encode("json", report))

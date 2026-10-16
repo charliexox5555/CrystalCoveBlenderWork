@@ -364,6 +364,7 @@ function Pendulum.presentation(sim)
 				Radius = p.Radius,
 				Arc = p.Arc,
 				Pulses = p.Pulses,
+				Path = p.Path,
 				Duration = p.Duration,
 				Resolved = table.clone(cast.Results or {}),
 			})

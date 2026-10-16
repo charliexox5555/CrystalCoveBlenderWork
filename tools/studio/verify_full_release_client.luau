@@ -71,6 +71,7 @@ local ok, problem = pcall(function()
 				Radius = kit.Radius,
 				Arc = kit.Arc,
 				Pulses = kit.Pulses,
+				Path = kit.Path,
 			})
 		end
 		for i = 1, 30 do

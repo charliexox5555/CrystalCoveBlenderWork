@@ -1,0 +1,135 @@
+{
+  "Logic": {
+    "Passed": 99,
+    "Failed": 0
+  },
+  "Camera": {
+    "DesktopInput": false,
+    "CameraRestored": true,
+    "Checks": 32
+  },
+  "Presentation": {
+    "Models": 24,
+    "Checks": 264,
+    "Scope": "Fixture; not live feel approval",
+    "MaxFixtureDescendants": 92,
+    "Result": "PASS"
+  },
+  "LiveObservation": {
+    "Profile": {
+      "Views": 1,
+      "MeanMsByKind": {
+        "Spectate": 0.3801066670954848
+      },
+      "MaxRenderMs": 1.3247999959276058,
+      "MeanRenderMs": 0.3821700008605452,
+      "Frames": 30,
+      "MaxFrameMs": 17.670199275016785,
+      "Fps": 59.89849572436122
+    },
+    "Releases": 9,
+    "After": [],
+    "Errors": [],
+    "Done": true,
+    "Orbit": {
+      "1": {
+        "Views": {
+          "dev-1": {
+            "Viewing": true,
+            "Buffer": 100,
+            "Time": 10.642088618874551,
+            "Phase": "Fighting",
+            "OrbitYaw": 0,
+            "Side": 0
+          }
+        },
+        "Position": {
+          "1": 9,
+          "2": 10.050276756286621,
+          "3": -55
+        },
+        "Accepted": true
+      },
+      "2": {
+        "Views": {
+          "dev-1": {
+            "Viewing": true,
+            "Buffer": 100,
+            "Time": 11.370837744604797,
+            "Phase": "Fighting",
+            "OrbitYaw": 1.570505154601117,
+            "Side": 0
+          }
+        },
+        "Position": {
+          "1": -23.99039077758789,
+          "2": 10.050276756286621,
+          "3": -88
+        },
+        "Accepted": true
+      },
+      "3": {
+        "Views": {
+          "dev-1": {
+            "Viewing": true,
+            "Buffer": 100,
+            "Time": 12.062602567300202,
+            "Phase": "Fighting",
+            "OrbitYaw": 3.1412392876593804,
+            "Side": 0
+          }
+        },
+        "Position": {
+          "1": -56.999996185302734,
+          "2": 10.050276756286621,
+          "3": -55.01165771484375
+        },
+        "Accepted": true
+      },
+      "4": {
+        "Views": {
+          "dev-1": {
+            "Viewing": true,
+            "Buffer": 100,
+            "Time": 12.770488691329957,
+            "Phase": "Fighting",
+            "OrbitYaw": 4.712036944682865,
+            "Side": 0
+          }
+        },
+        "Position": {
+          "1": -24.011611938476562,
+          "2": 10.050276756286621,
+          "3": -22.000003814697266
+        },
+        "Accepted": true
+      },
+      "5": {
+        "Views": {
+          "dev-1": {
+            "Viewing": true,
+            "Buffer": 100,
+            "Time": 13.483279431750999,
+            "Phase": "Fighting",
+            "OrbitYaw": 6.282893651438212,
+            "Side": 0
+          }
+        },
+        "Position": {
+          "1": 8.999996185302734,
+          "2": 10.050276756286621,
+          "3": -54.99037551879883
+        },
+        "Accepted": true
+      }
+    },
+    "Contacts": 21
+  },
+  "Scope": "One desktop live fight plus isolated fixtures; manual feel/device/balance approval pending. Live observer starts after setup; event counts cover its observation window.",
+  "AccentCleanup": {
+    "Before": 8,
+    "After": 0,
+    "AccentGone": true,
+    "Context": "Fresh Play VM"
+  }
+}

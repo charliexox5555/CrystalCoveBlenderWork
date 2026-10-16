@@ -3,6 +3,7 @@ local Shared = if script then game.ReplicatedStorage.Shared else nil
 local Rules = if Shared then require(Shared.FightRules) else require("../../shared/FightRules")
 local Balance = if Shared then require(Shared.Config.Balance) else require("../../shared/Config/Balance")
 local Geometry = if script then require(script.Parent.AttackGeometry) else require("./AttackGeometry")
+local Path = if Shared then require(Shared.AttackPath) else require("../../shared/AttackPath")
 local V = if script then Vector3 else require("@lune/roblox").Vector3
 local Attacks = {}
 local function array(v)
@@ -51,7 +52,28 @@ function Attacks.step(sim, dt, center)
 		local target = center(sim, 3 - c.Side)
 		local radius = sim.Fight.Fighters[3 - c.Side].Radius * Balance.Motion.GlassyScale + p.Radius
 		local hit, point, done = false, target, false
-		if c.Shape == "projectile" or c.Shape == "volley" then
+		if p.Path == "return" then
+			-- Split at the apex, including large steps, so the swept volume never shortcuts the return.
+			local from = oldAge / p.Duration
+			local finish = a.Age / p.Duration
+			local previousTarget = a.PreviousTarget
+			while from < finish do
+				local leg = if from < 0.5 then 1 else 2
+				local edge = math.min(finish, leg / 2)
+				local nextTarget =
+					previousTarget:Lerp(target, (edge - oldAge / p.Duration) / (finish - oldAge / p.Duration))
+				local first = a.Origin + a.Direction * p.Range * Path.distance(from, p.Path)
+				point = a.Origin + a.Direction * p.Range * Path.distance(edge, p.Path)
+				if not (c.Results and c.Results[leg]) then
+					hit = Geometry.movingSphere(first, point, a.PreviousTarget, nextTarget, radius)
+					if hit or edge >= leg / 2 then
+						Rules.resolveAbility(sim.Fight, c.Id, hit, if hit then array(point) else nil, leg)
+					end
+				end
+				a.PreviousTarget, from = nextTarget, edge
+			end
+			done = a.Age >= p.Duration
+		elseif c.Shape == "projectile" or c.Shape == "volley" then
 			point = a.Origin + a.Direction * p.Range * (a.Age / p.Duration)
 			hit = Geometry.movingSphere(a.PreviousPoint, point, a.PreviousTarget, target, radius)
 			done = hit or a.Age >= p.Duration
@@ -76,7 +98,7 @@ function Attacks.step(sim, dt, center)
 			done = hit or a.Age >= p.Duration
 		end
 		if done then
-			if c.Shape ~= "breath" then
+			if c.Shape ~= "breath" and p.Path ~= "return" then
 				Rules.resolveAbility(sim.Fight, c.Id, hit, if hit then array(point) else nil, a.Index)
 			end
 		else

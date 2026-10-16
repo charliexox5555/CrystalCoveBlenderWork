@@ -14,6 +14,18 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-15 — Codex — Combat spectacle and horizontal orbit
+Done:
+- Creator requests more fun/effects and explicitly authorizes horizontal arena orbit. Added full-circle mouse drag/touch swipe/Q-E/right-stick camera at existing height/distance/FOV. Arena remains centered; UI/aim/multitouch/focus gates and final-blow hold, owned connections and normal-camera cleanup. Decision 63 updates the earlier fixed-direction requirement.
+- Stronger bounded mesh anticipation/release/confirmed impacts, saturated shot halos/trails, volumetric cone motes, orthogonal Chime rings and collapsing Galaxy stars. Flat crescents/halos follow the viewer to remain visible around the arena. Prism Blade now travels out/back with at most one result per leg sharing its existing damage budget. Fixed sand/star storage disappearing when cooldown refuses a turnaround.
+- 99 Lune/Studio logic tests; 32 native camera and 264 all-24 presentation checks pass. 48 deterministic swings: mean 29.48 s, 609 body hits (0.4304/s), zero timeouts, max string error 0.00000143 studs. One real Blade/Dragon fight shatters at 42.78 s; five orbit angles verified, zero observed runtime errors/remaining views. Thirty desktop samples: mean 0.38 ms, max 1.32 ms render work. One view only, not phone/seven-view approval. Two malformed inspection commands corrected before live observation; no application failure.
+- Saved controls/review/evidence in docs/testing/combat_release/SPECTACLE_ORBIT.md. Native templates/Blender sources remain unchanged and their existing snapshots valid. Studio Edit, unpublished; no device changes or desktop input. Unrelated work preserved.
+Required simulators:
+- Signature stand-in, 120 rounds/matchup: Pop/Jam/Prism mirrors 29.0/27.9/19.9 s, zero mirror timeouts; side A 49%; Perfect vs worst 56%; 41% comebacks, 1.3 lead changes, 3.1 actions/glassy, 34% aimed misses. Equal-stat field remains skewed (e.g. Blade 81%, Duck 21%); stand-in lacks real geometry, so it is a diagnostic, not balance approval. Actual swing regression above passes; full equal-stat fairness remains.
+- Economy, 2000 players: 21 nonstarters, 3.7 min/match, 16.1 matches/hour; 4/96 day-one/day-30 pulls; 12/18 uniques day seven/day 30; Rare 47 min, Epic 2.1 h, Legendary 9 h, 20% Mythic within 30 days. Prices/odds unchanged.
+Next:
+- Creator reviews orbit sensitivity and stronger power moments; actual touch/gamepad feel, expanded performance and equal-stat fairness remain. No broad repeated multiplayer/device pass due to creator's lower-usage request.
+
 ## 2026-10-15 — Codex — Complete 24-kit integration
 Done:
 - Implemented remaining 18 signatures using bounded threshold/storage/contact/turnaround/timer rules: one-use heal/duck guard, nonstacking brine/frost, expiring tomato splat/counter, boosts and capped rocket impulse, partial mirror/return without recursive reflection, moving pips/slashes/sand/star, pulse shell, three-budgeted breath pulses and capped tangent well. Actual geometry supplies hits/misses; axe anticipation and signature tracking/range tuned from recorded swings. Existing rarity/stat/price multipliers unchanged.

@@ -559,6 +559,7 @@ function FightRules.releaseCast(state: State, cast, origin, direction): boolean
 		Arc = cast.Params.Arc,
 		Duration = cast.Params.Duration,
 		Pulses = cast.Params.Pulses,
+		Path = cast.Params.Path,
 	})
 	return true
 end

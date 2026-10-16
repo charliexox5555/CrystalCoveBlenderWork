@@ -2,8 +2,13 @@
 local RS = game:GetService("ReplicatedStorage")
 local Balance = require(RS.Shared.Config.Balance)
 local Visuals = require(RS.Shared.Config.CombatKitVisuals)
+local Path = require(RS.Shared.AttackPath)
 local VFX, M = Balance.CombatVFX, Balance.Motion
 local Presentation = {}
+function Presentation.color(f)
+	local h, s, v = Color3.fromHex(f.Def.Tint):ToHSV()
+	return Color3.fromHSV(h, math.max(s, VFX.ColorSaturation), math.max(v, VFX.ColorValue))
+end
 local function vector(a)
 	return Vector3.new(a[1], a[2], a[3])
 end
@@ -30,9 +35,10 @@ function Presentation.release(self, cast, e, color)
 	end
 	if e.Shape == "projectile" or e.Shape == "volley" then
 		cast.Shots = {}
-		for i = 1, e.Pulses or 1 do
+		local count = if e.Shape == "volley" then e.Pulses or 1 else 1
+		for i = 1, count do
 			local p = self:Mesh(visual.MeshA, cast.Root, color)
-			p.Name = "Shot" .. i
+			p.Name, p.Material = "Shot" .. i, Enum.Material.Neon
 			p.Size *= e.Radius * 2 / math.max(p.Size.X, p.Size.Y, p.Size.Z)
 			local a, b = Instance.new("Attachment"), Instance.new("Attachment")
 			a.Position, b.Position = Vector3.xAxis * e.Radius, -Vector3.xAxis * e.Radius
@@ -42,11 +48,16 @@ function Presentation.release(self, cast, e, color)
 			trail.Color, trail.Lifetime, trail.LightEmission = ColorSequence.new(color), VFX.SwingTrailSeconds, 1
 			trail.Transparency = NumberSequence.new(0.2, 1)
 			trail.Parent = p
+			local halo = self:Mesh("HalfRing", cast.Root, color)
+			halo.Material = Enum.Material.Neon
+			halo.Name = "ShotHalo" .. i
+			halo.Size *= e.Radius * 2 * VFX.ShotHaloScale / math.max(halo.Size.X, halo.Size.Y, halo.Size.Z)
 			cast.Shots[i] = {
 				Mesh = p,
-				Direction = fan(cast.Direction, i, e.Pulses or 1, e.Arc or 0),
+				Halo = halo,
+				Direction = fan(cast.Direction, i, count, e.Arc or 0),
 				Trail = trail,
-				Done = e.Resolved and e.Resolved[i],
+				Done = e.Resolved and e.Resolved[if e.Path == "return" then 2 else i],
 			}
 		end
 		if f.Id == "comet" then
@@ -56,14 +67,32 @@ function Presentation.release(self, cast, e, color)
 			f.FlipAt = e.Time
 		end
 	elseif e.Shape == "cone" or e.Shape == "breath" then
+		cast.Motes = {}
+		for i = 1, (if f.LowDetail then 2 else VFX.ConeMotes) do
+			local p = self:Mesh(if f.Id == "water_jug" then "Droplet" else "CrystalChip", cast.Root, color)
+			p.Name = "ConeMote" .. i
+			p.Material = Enum.Material.Neon
+			p.Size *= VFX.ConeMoteSize / math.max(p.Size.X, p.Size.Y, p.Size.Z)
+			table.insert(cast.Motes, p)
+		end
 		cast.Sheets = {}
 		for i = 1, 2 do
 			local p = self:Mesh(if f.Id == "water_jug" then "SplashSheet" else "PuffSheet", cast.Root, color)
 			table.insert(cast.Sheets, p)
 		end
 	elseif e.Shape == "pulse" then
-		cast.PulseRings = { self:Mesh("Ring", cast.Root, color), self:Mesh("HalfRing", cast.Root, color) }
+		cast.PulseRings = {
+			self:Mesh("Ring", cast.Root, color),
+			self:Mesh("HalfRing", cast.Root, color),
+			self:Mesh("Ring", cast.Root, color),
+		}
 	elseif e.Shape == "orbit" then
+		cast.Satellites = {}
+		for i = 1, (if f.LowDetail then 2 else 4) do
+			local p = self:Mesh("CrystalChip", cast.Root, Color3.fromHex("#FFE8A9"))
+			p.Size *= VFX.AccentSize / math.max(p.Size.X, p.Size.Y, p.Size.Z)
+			table.insert(cast.Satellites, p)
+		end
 		cast.Orbit = {
 			self:Mesh("Ring", cast.Root, color),
 			self:Mesh("HalfRing", cast.Root, color),
@@ -76,15 +105,21 @@ function Presentation.release(self, cast, e, color)
 end
 
 function Presentation.contact(cast, e)
+	if cast and cast.Event.Path == "return" and e.Pulse == 1 then
+		return
+	end
 	if cast and cast.Shots and cast.Shots[e.Pulse or 1] then
 		local shot = cast.Shots[e.Pulse or 1]
 		shot.Done, shot.Trail.Enabled, shot.Mesh.Transparency = true, false, 1
+		shot.Halo.Transparency = 1
+	elseif cast and cast.Event.Path == "return" and e.Pulse == 2 then
+		cast.Shots[1].Done = true
 	end
 end
 
 function Presentation.step(self, cast, age, alpha)
 	local e, f = cast.Event, self.Scene.Fighters[cast.Side]
-	local color = Color3.fromHex(f.Def.Tint)
+	local color = Presentation.color(f)
 	local progress = math.clamp(age / (e.Duration or 1), 0, 1)
 	if cast.Aura then
 		local y = if e.Shape == "heal" then f.Body.Size.Y * (0.5 - progress) else 0
@@ -106,11 +141,27 @@ function Presentation.step(self, cast, age, alpha)
 	for _, shot in cast.Shots or {} do
 		if shot.Done then
 			shot.Mesh.Transparency, shot.Trail.Enabled = 1, false
+			shot.Halo.Transparency = 1
 		else
-			local position = cast.Origin + shot.Direction * e.Range * progress
-			shot.Mesh.CFrame = CFrame.lookAt(position, position + shot.Direction)
+			local position = cast.Origin + shot.Direction * e.Range * Path.distance(progress, e.Path)
+			local pose = CFrame.lookAt(position, position + shot.Direction)
+			local facing = CFrame.new(position) * workspace.CurrentCamera.CFrame.Rotation
+			shot.Mesh.CFrame = (if f.Id == "prism_blade" then facing else pose)
+				* CFrame.Angles(0, 0, age * VFX.AccentSpin)
 			shot.Mesh.Transparency = VFX.ChargeLit + alpha * (1 - VFX.ChargeLit)
+			shot.Halo.CFrame = facing * CFrame.Angles(0, 0, -age * VFX.AccentSpin)
+			shot.Halo.Transparency = VFX.StatusTransparency + alpha * (1 - VFX.StatusTransparency)
 		end
+	end
+	for i, p in cast.Motes or {} do
+		local phase = (progress * (e.Pulses or 1) + (i - 1) / #cast.Motes) % 1
+		local distance = e.Range * phase
+		local radius = distance * math.tan(e.Arc / 2) * VFX.ConeSheetScale
+		local angle = i / #cast.Motes * math.pi * 2 + age * VFX.AccentSpin
+		p.CFrame = CFrame.lookAt(cast.Origin, cast.Origin + cast.Direction)
+			* CFrame.new(math.cos(angle) * radius, math.sin(angle) * radius, -distance)
+			* CFrame.Angles(angle, age, angle)
+		p.Transparency = math.clamp(VFX.ChargeLit + phase * VFX.StatusTransparency + alpha, 0, 1)
 	end
 	for i, p in cast.Sheets or {} do
 		local distance = e.Range * i / 2
@@ -124,8 +175,22 @@ function Presentation.step(self, cast, age, alpha)
 	for i, p in cast.PulseRings or {} do
 		local diameter = math.max(0.05, e.Range * 2 * progress)
 		p.Size = Vector3.new(diameter, diameter, self.Assets.Meshes.Ring.Size.Z)
-		p.CFrame = CFrame.new(cast.Origin) * workspace.CurrentCamera.CFrame.Rotation * CFrame.Angles(0, 0, i * age)
+		p.CFrame = CFrame.new(cast.Origin)
+			* CFrame.Angles(if i == 2 then math.pi / 2 else 0, if i == 3 then math.pi / 2 else 0, 0)
 		p.Transparency = VFX.StatusTransparency + alpha * (1 - VFX.StatusTransparency)
+	end
+	for i, p in cast.Satellites or {} do
+		local angle = i / #cast.Satellites * math.pi * 2 + age * VFX.AccentSpin
+		local radius = e.Range * (1 - progress)
+		p.CFrame = CFrame.new(
+			cast.Origin
+				+ Vector3.new(
+					math.cos(angle) * radius,
+					math.sin(angle * 2) * radius * VFX.StatusScale,
+					math.sin(angle) * radius
+				)
+		) * CFrame.Angles(angle, age, angle)
+		p.Transparency = VFX.ChargeLit + alpha * (1 - VFX.ChargeLit)
 	end
 	for i, p in cast.Orbit or {} do
 		p.CFrame = CFrame.new(cast.Origin)
@@ -163,7 +228,7 @@ function Presentation.status(self, r, time)
 	for side, f in self.Scene.Fighters do
 		local ef = r.Effect[side] or {}
 		local alive = not f.Broken and not f.Finishing and self.Scene.Viewing == true
-		local color = Color3.fromHex(f.Def.Tint)
+		local color = Presentation.color(f)
 		local mark = persistent(self, f, "Tomato", "Droplet", alive and (ef[4] or 0) > 0, Color3.fromHex("#FFA35B"))
 		if mark then
 			mark.Size = self.Assets.Meshes.Droplet.Size * VFX.StatusScale

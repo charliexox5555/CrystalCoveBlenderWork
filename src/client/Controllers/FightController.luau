@@ -300,6 +300,17 @@ function Controller:Start()
 		local dev = Instance.new("BindableFunction")
 		dev.Name = "FightClientDev"
 		dev.OnInvoke = function(command, arg)
+			if command == "Orbit" then
+				local view = self:Active()
+				if not view or not view.Orbit or not view.Orbit:Enabled() then
+					return false
+				end
+				if type(arg) ~= "number" or arg ~= arg or math.abs(arg) == math.huge then
+					return false
+				end
+				view.Orbit.Target = arg
+				return true
+			end
 			if command == "Rejoin" then
 				local view = self.Views[arg]
 				if view then
@@ -341,8 +352,14 @@ function Controller:Start()
 			end
 			local out = {}
 			for id, v in self.Views do
-				out[id] =
-					{ Time = v.RenderTime, Phase = v.Phase, Viewing = v.Viewing, Side = v.Side, Buffer = #v.Snapshots }
+				out[id] = {
+					Time = v.RenderTime,
+					Phase = v.Phase,
+					Viewing = v.Viewing,
+					Side = v.Side,
+					Buffer = #v.Snapshots,
+					OrbitYaw = v.Orbit and v.Orbit.Yaw,
+				}
 			end
 			return out
 		end

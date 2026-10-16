@@ -3,7 +3,9 @@
 Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DESIGN v0.3](GAME_DESIGN.md).
 **Current milestone: F5 — integration polish.** Wave1 imports, fitted fences and the native multiplayer/security pass are complete. Real-phone checks, final UI artwork and publishing remain with the creator; Marble packs, gamepasses and Marble Kiln purchases stay disabled; creator-approved match selection spends are implemented.
 
-- [x] **C:** creator's first-six feedback: glassy-following numeric HP, complete popup text/stroke fade, stronger contact/charge/release/block effects and fast-swing trails. 88 logic tests and 46 isolated native presentation checks pass; [checkpoint](testing/combat_release/FIRST_SIX_CHECKPOINT.md). Creator reviews feel; remaining 18 kits still pending.
+- [x] **C:** stronger signature mesh/shot/cone/pulse/orbit effects, returning Prism Blade and retained stored charges; creator-requested full-circle horizontal fight camera. 99 logic, 32 camera and 264 native presentation checks pass; one live orbit/cleanup check and 48 deterministic swings. [Review/controls](testing/combat_release/SPECTACLE_ORBIT.md); creator tests feel and real touch/gamepad performance.
+
+- [x] **C:** creator's first-six feedback: glassy-following numeric HP, complete popup text/stroke fade, stronger contact/charge/release/block effects and fast-swing trails. 88 logic tests and 46 isolated native presentation checks pass; [checkpoint](testing/combat_release/FIRST_SIX_CHECKPOINT.md). Historical first-six checkpoint; all 24 kits are now integrated (see F5).
 
 Owner key: **C** = Codex (code / Studio MCP), **B** = Codex with Blender MCP, **CL** = Claude (research, design, pure rules, docs), **U** = you.
 

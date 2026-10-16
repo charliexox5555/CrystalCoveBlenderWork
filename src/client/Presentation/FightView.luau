@@ -14,6 +14,7 @@ local Rules = require(RS.Shared.FightRules)
 local Remotes = require(RS.Shared.Remotes)
 local Scene = require(script.Parent.Parent.Presentation.FightScene)
 local Hud = require(script.Parent.Parent.UI.Screens.FightHud)
+local Orbit = require(script.Parent.FightOrbit)
 local Theme = require(script.Parent.Parent.UI.Theme)
 local Audio = require(RS.Shared.Config.Audio)
 local M, Feel = Balance.Motion, Balance.Feel
@@ -76,6 +77,10 @@ end
 
 -- Restores everything EnterView took over: movement, character visibility, arena signs, HUD, camera.
 function Controller:ExitView()
+	if self.Orbit then
+		self.Orbit:Destroy()
+		self.Orbit = nil
+	end
 	for effect, enabled in self.SunRays or {} do
 		if effect.Parent then
 			effect.Enabled = enabled
@@ -233,6 +238,7 @@ function Controller:EnterView()
 	self.OldCamera = { Type = camera.CameraType, Subject = camera.CameraSubject, FOV = camera.FieldOfView }
 	camera.CameraType, camera.FieldOfView = Enum.CameraType.Scriptable, Feel.CameraFieldOfView
 	self.CameraPose = nil
+	self.Orbit = Orbit.new(self)
 	if self.Hud and self.Data.Hearts then
 		self.Hud.Hearts = self.Data.Hearts
 	end
@@ -643,10 +649,10 @@ function Controller:Camera(dt, now)
 	local offset = self.Scene.Frame:VectorToWorldSpace(
 		Vector3.new(Feel.CameraSide, Feel.CameraHeight, Feel.CameraDistance * (self.Data.CameraFacing or 1))
 	) * scale
+	local yaw = if self.Orbit then self.Orbit:Step(dt) else 0
+	offset = CFrame.fromAxisAngle(Vector3.yAxis, yaw):VectorToWorldSpace(offset)
 	local target = CFrame.lookAt(self.Focus + offset, self.Focus)
-	self.CameraPose = if not self.CameraPose
-		then target
-		else self.CameraPose:Lerp(target, 1 - math.exp(-dt * Feel.CameraSmooth))
+	self.CameraPose = target
 	local shake = Vector3.zero
 	if self.ShakeUntil and now < self.ShakeUntil then
 		local magnitude = self.ShakePower * (self.ShakeUntil - now) / Feel.ShakeSeconds

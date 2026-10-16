@@ -1,6 +1,7 @@
 local TweenService = game:GetService("TweenService")
 local Debris = game:GetService("Debris")
 local RS = game:GetService("ReplicatedStorage")
+local UIS = game:GetService("UserInputService")
 local Balance = require(RS.Shared.Config.Balance)
 local Theme = require(script.Parent.Parent.Theme)
 local U = require(script.Parent.Parent.Components.Util)
@@ -115,6 +116,10 @@ function Hud:Phase(phase, text)
 	end
 	self.Instruction.Text = if aiming
 		then "Drag to pull • aim for gold"
+		elseif phase == "Fighting" then (if UIS.PreferredInput == Enum.PreferredInput.Touch
+			then "Swipe to rotate the camera"
+			elseif UIS.PreferredInput == Enum.PreferredInput.Gamepad then "Right stick to rotate the camera"
+			else "Drag or Q / E to rotate the camera")
 		elseif self.Spectator and phase == "Aiming" then "WATCHING • players are aiming"
 		else ""
 end

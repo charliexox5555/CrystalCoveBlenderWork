@@ -2,6 +2,8 @@
 
 All 24 release models and signatures are installed and enabled in normal matches. The Coin Kiln has the 21 nonstarters. No publishing, paid storefront activation or production inventory migration occurred.
 
+Latest update: [stronger power presentation and horizontal camera orbit](SPECTACLE_ORBIT.md). During Fighting, drag/swipe, Q/E or right stick rotates around the arena. Prism Blade now returns its crescent; earlier fixed-camera statements below describe the initial integration checkpoint.
+
 ## Try it
 
 Save the Studio place, start Play, and paste `tools/studio/grant_combat_test_inventory.luau` into the **Server Command Bar**. It unlocks missing release glassies without adding duplicates and adds 10,000 test Marbles. It requires the isolated Studio mock profile; live accounts are unaffected.
@@ -36,7 +38,7 @@ Run one developer matchup at a time. Stop Play when finished. Pick Any/reroll co
 | Chime | Traveling expanding pulse shell |
 | Hourglass | Capped stored damage; frame flip and sand shot |
 | Frostglobe | Short frost cone with nonstacking slow |
-| Prism Blade | Traveling crescent slash |
+| Prism Blade | Out-and-back crescent; one shared damage budget |
 | Rocket Pop | Capped tangent booster impulse and next-clash payoff |
 | Glass Duck | One low-health bubble guard |
 | Comet | One star at the contact position; fires at the next turnaround |

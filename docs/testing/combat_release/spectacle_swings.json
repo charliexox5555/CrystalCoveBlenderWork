@@ -1,0 +1,203 @@
+{
+  "Hits": 609,
+  "HitsPerSecond": 0.4304360118112419,
+  "Kits": [
+    {
+      "Casts": 9,
+      "Hits": 13.5,
+      "Id": "pop",
+      "Landed": 9,
+      "Seconds": 26.73611111111338,
+      "Wins": 2
+    },
+    {
+      "Casts": 8,
+      "Hits": 14,
+      "Id": "jam",
+      "Landed": 0,
+      "Seconds": 31.302777777777198,
+      "Wins": 1
+    },
+    {
+      "Casts": 8,
+      "Hits": 14.5,
+      "Id": "prism",
+      "Landed": 1,
+      "Seconds": 35.53055555555757,
+      "Wins": 1
+    },
+    {
+      "Casts": 11,
+      "Hits": 13,
+      "Id": "crescent_axe",
+      "Landed": 1,
+      "Seconds": 28.79444444444682,
+      "Wins": 1
+    },
+    {
+      "Casts": 11,
+      "Hits": 10.5,
+      "Id": "briar_flask",
+      "Landed": 11,
+      "Seconds": 26.138888888891696,
+      "Wins": 2
+    },
+    {
+      "Casts": 6,
+      "Hits": 11,
+      "Id": "arc_coil",
+      "Landed": 5,
+      "Seconds": 24.411111111113648,
+      "Wins": 2
+    },
+    {
+      "Casts": 2,
+      "Hits": 14.5,
+      "Id": "milk_bottle",
+      "Landed": 0,
+      "Seconds": 36.977777777779096,
+      "Wins": 1
+    },
+    {
+      "Casts": 0,
+      "Hits": 14,
+      "Id": "pickle_jar",
+      "Landed": 0,
+      "Seconds": 28.047222222223155,
+      "Wins": 1
+    },
+    {
+      "Casts": 4,
+      "Hits": 9.5,
+      "Id": "ketchup_bottle",
+      "Landed": 4,
+      "Seconds": 28.26111111111398,
+      "Wins": 2
+    },
+    {
+      "Casts": 19,
+      "Hits": 11,
+      "Id": "glass_cup",
+      "Landed": 9,
+      "Seconds": 25.052777777780413,
+      "Wins": 0
+    },
+    {
+      "Casts": 9,
+      "Hits": 13.5,
+      "Id": "water_jug",
+      "Landed": 4,
+      "Seconds": 25.966666666669195,
+      "Wins": 2
+    },
+    {
+      "Casts": 9,
+      "Hits": 12,
+      "Id": "lemonade_bottle",
+      "Landed": 1,
+      "Seconds": 34.5972222222236,
+      "Wins": 1
+    },
+    {
+      "Casts": 1,
+      "Hits": 13.5,
+      "Id": "mason_jar",
+      "Landed": 1,
+      "Seconds": 30.938888888892446,
+      "Wins": 1
+    },
+    {
+      "Casts": 3,
+      "Hits": 11.5,
+      "Id": "hot_sauce",
+      "Landed": 1,
+      "Seconds": 32.34722222222578,
+      "Wins": 1
+    },
+    {
+      "Casts": 9,
+      "Hits": 11,
+      "Id": "crystal_tumbler",
+      "Landed": 4,
+      "Seconds": 17.4944444444459,
+      "Wins": 0
+    },
+    {
+      "Casts": 7,
+      "Hits": 10.5,
+      "Id": "chime",
+      "Landed": 3,
+      "Seconds": 19.922222222224057,
+      "Wins": 0
+    },
+    {
+      "Casts": 13,
+      "Hits": 16.5,
+      "Id": "hourglass",
+      "Landed": 4,
+      "Seconds": 34.29722222222181,
+      "Wins": 1
+    },
+    {
+      "Casts": 8,
+      "Hits": 17,
+      "Id": "frostglobe",
+      "Landed": 1,
+      "Seconds": 35.27777777777992,
+      "Wins": 0
+    },
+    {
+      "Casts": 14,
+      "Hits": 13.5,
+      "Id": "prism_blade",
+      "Landed": 7,
+      "Seconds": 39.238888888889115,
+      "Wins": 2
+    },
+    {
+      "Casts": 21,
+      "Hits": 11,
+      "Id": "rocket_pop",
+      "Landed": 8,
+      "Seconds": 35.89166666666851,
+      "Wins": 1
+    },
+    {
+      "Casts": 2,
+      "Hits": 14,
+      "Id": "glass_duck",
+      "Landed": 0,
+      "Seconds": 33.65277777778006,
+      "Wins": 1
+    },
+    {
+      "Casts": 8,
+      "Hits": 13,
+      "Id": "comet",
+      "Landed": 1,
+      "Seconds": 30.00277777778119,
+      "Wins": 1
+    },
+    {
+      "Casts": 4,
+      "Hits": 12,
+      "Id": "glass_dragon",
+      "Landed": 7,
+      "Seconds": 21.527777777779864,
+      "Wins": 2
+    },
+    {
+      "Casts": 3,
+      "Hits": 10,
+      "Id": "galaxy_orb",
+      "Landed": 2,
+      "Seconds": 25.013888888891522,
+      "Wins": 2
+    }
+  ],
+  "MaxRadiusError": 1.430511474609375e-6,
+  "MeanSeconds": 29.475925925927914,
+  "Rounds": 48,
+  "Seconds": 1414.84444444454,
+  "Timeouts": 0
+}

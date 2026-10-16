@@ -146,7 +146,7 @@ return {
 	},
 	prism_blade = {
 		Name = "Edgewake",
-		Description = "Charges a cutting arc at the top of its swing.",
+		Description = "Throws a crescent that cuts out and back, sharing one damage budget.",
 		ReleaseSound = "AxeAir",
 		ContactSound = "ClinkLightA",
 		MeshA = "CurvedSlash",

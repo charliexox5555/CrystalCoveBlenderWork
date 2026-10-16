@@ -1,14 +1,13 @@
 -- Cosmetic reels only. The server result is pinned at the target; filler cannot award anything.
-local RS = game:GetService("ReplicatedStorage")
-local Glassies = require(RS.Shared.Config.Glassies)
 local Theme = require(script.Parent.Parent.Theme)
 local S = require(script.Parent.StainedGlass)
-local Portrait = require(script.Parent.GlassyPortrait)
 local Reels = {}
+local Item = require(script.Parent.ItemPresentation)
 Reels.__index = Reels
 
-function Reels.new(content, results, odds)
-	local self = setmetatable({ Rows = {}, Content = content, Random = Random.new() }, Reels)
+function Reels.new(content, results, odds, category)
+	local self =
+		setmetatable({ Rows = {}, Content = content, Random = Random.new(), Category = category or "Glassies" }, Reels)
 	local multi = #results > 1
 	local pool, total = {}, 0
 	for _, entry in odds or {} do
@@ -81,15 +80,18 @@ function Reels:Step(time)
 			cell.Position = UDim2.fromScale(0.5 + (index - offset) * row.Stride, 0.5)
 			if id and cell:GetAttribute("GlassyId") ~= id then
 				cell:SetAttribute("GlassyId", id)
-				local def = Glassies.get(id)
-				Portrait.new(cell, id)
+				local def = Item.definition(self.Category, id)
+				Item.portrait(cell, self.Category, id)
 				cell.NameLabel.Text = def.Name
 				cell.RarityBand.BackgroundColor3 = Theme.Rarity[def.Rarity].Bottom
 			end
 		end
 		if t == 1 then
 			row.Frame:SetAttribute("SelectedId", row.Stream[row.Target])
-			row.Frame.Marker.BackgroundColor3 = Theme.Palette.emeraldLight
+			local def = Item.definition(self.Category, row.Result.Id)
+			row.Frame.Marker.BackgroundColor3 = Theme.Rarity[def.Rarity].Top
+			local pulse = math.clamp((time - duration) / 0.32, 0, 1)
+			row.Frame.Marker.Size = UDim2.fromScale(0.008 + math.sin(pulse * math.pi) * 0.006, 1)
 		else
 			finished = false
 		end

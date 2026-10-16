@@ -19,7 +19,7 @@ function Service:Equip(player, category, id)
 	local ok = Rules.equip(data, category, id)
 	Remotes.CosmeticResult:FireClient(player, {
 		Ok = ok,
-		Message = if ok then "Equipped for your next match" else "Complete more matches to unlock this cosmetic",
+		Message = if ok then "Equipped for your next match" else "Open a crate to collect this cosmetic",
 	})
 	if ok then
 		self.Services.DataService:Sync(player)
@@ -49,7 +49,7 @@ function Service:Start()
 				for _, key in { "Rideables", "Finishers" } do
 					for _, def in C[key] do
 						if not table.find(data.Cosmetics[key], def.Id) then
-							table.insert(data.Cosmetics[key], def.Id)
+							Rules.grant(data, key, def.Id)
 						end
 					end
 				end

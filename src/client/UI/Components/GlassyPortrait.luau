@@ -1,6 +1,7 @@
 local RS = game:GetService("ReplicatedStorage")
 local U = require(script.Parent.Util)
 local Portrait = {}
+local resizeBindings = setmetatable({}, { __mode = "k" })
 
 -- The approved meshes provide a sharp portrait without another texture upload.
 function Portrait.new(parent, id, size, position, name)
@@ -61,12 +62,15 @@ function Portrait.new(parent, id, size, position, name)
 	return Portrait.fit(viewport)
 end
 
-function Portrait.fit(viewport, rotation, fov)
+function Portrait.fit(viewport, rotation, fov, padding)
 	local world = viewport:FindFirstChildOfClass("WorldModel")
 	if not world then
 		return viewport
 	end
-	local camera = Instance.new("Camera")
+	local camera = viewport.CurrentCamera
+	if not camera or camera.Parent ~= viewport then
+		camera = Instance.new("Camera")
+	end
 	-- Fit the real body and details, including wide handles/caps, inside the portrait.
 	local low, high = Vector3.one * math.huge, Vector3.one * -math.huge
 	local corners = {}
@@ -91,18 +95,29 @@ function Portrait.fit(viewport, rotation, fov)
 	rotation, fov = rotation or CFrame.identity, fov or 30
 	local tangent = math.tan(math.rad(fov) / 2)
 	local aspect = viewport:FindFirstChildOfClass("UIAspectRatioConstraint")
-	local ratio = if aspect then aspect.AspectRatio else 1
+	local actual = viewport.AbsoluteSize
+	local ratio = if aspect then aspect.AspectRatio elseif actual.Y > 0 and actual.X > 0 then actual.X / actual.Y else 1
 	local distance = 0
 	for _, p in corners do
 		local q = rotation:VectorToObjectSpace(p - center)
 		distance = math.max(distance, math.abs(q.Y) / tangent + q.Z, math.abs(q.X) / (tangent * ratio) + q.Z)
 	end
-	camera.CFrame = CFrame.new(center) * rotation.Rotation + rotation.ZVector * distance * 1.18
+	camera.CFrame = CFrame.new(center) * rotation.Rotation + rotation.ZVector * distance * (padding or 1.18)
 	camera.FieldOfView = fov
 	camera.Parent, viewport.CurrentCamera = viewport, camera
 	viewport:SetAttribute("PortraitCamera", camera.CFrame)
 	viewport:SetAttribute("PortraitFOV", camera.FieldOfView)
 	return viewport
+end
+
+function Portrait.fitOnResize(viewport, rotation, fov, padding)
+	if resizeBindings[viewport] then
+		resizeBindings[viewport]:Disconnect()
+	end
+	resizeBindings[viewport] = viewport:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+		Portrait.fit(viewport, rotation, fov, padding)
+	end)
+	return Portrait.fit(viewport, rotation, fov, padding)
 end
 
 -- Camera instances don't replicate from StarterGui; preserve the authored pose as attributes.

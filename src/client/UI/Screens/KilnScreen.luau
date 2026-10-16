@@ -10,6 +10,10 @@ function Screen.new(data, close, pull, refresh, initialTab)
 	return self
 end
 function Screen:Page(name, title)
+	for _, view in self.CrateViews or {} do
+		view:Destroy()
+	end
+	self.CrateViews = nil
 	for _, view in self.CosmeticViews or {} do
 		view:Destroy()
 	end
@@ -58,14 +62,17 @@ function Screen:OpeningHud(show)
 		self.HudVisibility = nil
 	end
 end
-function Screen:Pending()
+function Screen:Pending(category)
 	local c = self:Page("KilnRevealScreen", "THE KILN")
 	self:OpeningHud(true)
 	self.Waiting = true
 	self.Message = nil
 	c.Reels.Visible, c.KilnStage.Visible, c.Rewards.Visible = false, false, false
 	c.Skip.Visible, c.Collect.Visible = false, false
-	c.Status.Text = "WARMING THE KILN…"
+	c.Status.Text = if category == "Finishers"
+		then "CHARGING THE BURST CAPSULE…"
+		elseif category == "Rideables" then "LIFTING YOUR SKY CAPSULE…"
+		else "WARMING THE KILN…"
 end
 function Screen:Result(data)
 	if self.Closed then
@@ -98,14 +105,28 @@ function Screen:Result(data)
 	end
 	self:Page("KilnRevealScreen", "THE KILN")
 	self:OpeningHud(true)
-	self.Opening = Opening.new(self.Window, data.Results, self.Data.Odds, self.Close)
+	self.Opening = Opening.new(
+		self.Window,
+		data.Results,
+		data.Odds or self.SelectedPoolOdds or self.Data.Odds,
+		self.Close,
+		data.Category or self.PendingCategory or "Glassies",
+		data.Currency or self.PendingCurrency or "Coins"
+	)
 end
 function Screen:Step(dt)
+	for _, view in self.CrateViews or {} do
+		view:Step(dt)
+	end
 	if self.Opening then
 		self.Opening:Step(dt)
 	end
 end
 function Screen:Destroy()
+	for _, view in self.CrateViews or {} do
+		view:Destroy()
+	end
+	self.CrateViews = nil
 	for _, view in self.CosmeticViews or {} do
 		view:Destroy()
 	end

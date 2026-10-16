@@ -69,10 +69,12 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 - [ ] **U/C:** group reward: owner group ID and permitted reward configuration pending; free Marbles disabled
 - [ ] **C:** Marble packs, gamepasses and idempotent `ProcessReceipt`; match-selection wallet spends/policy checks completed in F5, paid storefront remains deferred
 - [x] **C:** Trophies, Match Wins and Shatters boards; published ordered-store verification pending
-- [ ] **C:** Shatter FX shop + 3 effects (paid features deferred under current instructions)
+- [x] **C:** Finisher/Flyer Coin/Marble crate shops, matching owned/unowned inventories, duplicate counts and category opening effects; creator-approved provisional prices, policy-gated Marble spends, no Robux storefront. [Report](testing/CRATE_SHOPS.md); phone/feel review remains.
 - [ ] **C:** analytics events (GAME_DESIGN 15b)
 
 ## F5 — Polish and soft launch (Nov 10–16)
+
+- [x] **C:** creator shop feedback: repair looping prize-card anchors/backgrounds/nameplates; reuse stained-glass gem controls; fit/rescale both viewport axes and face the capsules forward. Editable templates and recovery export saved. 111 logic / 68 focused UI checks plus real mock purchases, duplicate save/reload, replay/policy/error handling pass; [report](testing/CRATE_SHOPS.md). No device or publication pass.
 
 - [x] **C:** original riding keyframes, modern R15/R6 support, foot/seat contact and animation restoration; distinct finisher timing/texture layers. 655 pose, 32 lifecycle, 193 finisher and 1330 preview checks pass. Four Blender flyers/five mesh-VFX sources exported and FBX round-trip verified.
 - [x] **C/U:** creator imports [Blender hero bundle](../assets/blender/round_cosmetics/hero_v2/README.md); install permanent meshes at normalized scale, refresh four lobby displays, record 32 mesh IDs and save native recovery snapshot. All 32 assets load; 193 finisher/1330 preview/32 lifecycle checks pass, native ray rider motion/exit verified. Creator normal-camera feel/phone review remains. Overnight schedule paused by request.

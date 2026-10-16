@@ -1,67 +1,128 @@
--- UI binding only. Coin pulls keep the existing quote flow; new offerings are visual previews.
-local RS = game:GetService("ReplicatedStorage")
-local Glassies = require(RS.Shared.Config.Glassies)
-local Balance = require(RS.Shared.Config.Balance)
+-- Same quoted crate structure for Glassies, Finishers and Flyers.
 local S = require(script.Parent.Parent.Components.StainedGlass)
 local Pools = require(script.Parent.ShopPools)
-local Catalog = require(script.Parent.CosmeticCatalog)
+local CratePanel = require(script.Parent.Parent.Components.CrateShopPanel)
 local Shop = {}
-local TABS = { Featured = "amber", Glassies = "aqua", Finishers = "amethyst", Flyers = "ruby" }
-
+local lastPullAt = -math.huge
+local pullRate = require(game.ReplicatedStorage.Shared.Config.Balance).Data.KilnRateSeconds
+local tabs = { Featured = "amber", Glassies = "aqua", Finishers = "amethyst", Flyers = "ruby" }
+local categories = { Glassies = "Glassies", Finishers = "Finishers", Flyers = "Rideables" }
 function Shop.select(self, name)
-	if not TABS[name] then
+	if not tabs[name] then
 		return
 	end
 	self.Tab, self.PoolKind = name, nil
 	local p, c = self.Window.Panel, self.Window.Content
-	for tab, tint in TABS do
+	for tab, tint in tabs do
 		c[tab .. "Page"].Visible = tab == name
-		S.setAsset(p.Tabs[tab .. "Tab"].Artwork, "tab/tab_" .. tint .. (tab == name and "_active" or "_idle"))
+		S.setAsset(p.Tabs[tab .. "Tab"].Artwork, "tab/tab_" .. tint .. (if tab == name then "_active" else "_idle"))
 	end
 	c.PoolPage.Visible = false
-	self.Message.Text = if name == "Glassies" then "Coin Kiln is open · Marble Kiln coming soon" else ""
+	self.Message.Text = if name == "Featured"
+		then ""
+		elseif
+			self.Data.PaidRandomAllowed == true
+		then "Same items in both crates · Marbles improve high-rarity odds · duplicates add copies"
+		else "Open with Coins · duplicates add copies"
 	self.Window.Gui:SetAttribute("ShopTab", name)
 end
-
-function Shop.showPool(self, kind)
-	Shop.select(self, "Glassies")
-	self.PoolKind = kind
+function Shop.showPool(self, currency, category)
+	category = category or categories[self.Tab] or "Glassies"
+	local tab = if category == "Rideables" then "Flyers" else category
+	Shop.select(self, tab)
+	self.PoolKind, self.PoolCategory = currency, category
 	local c = self.Window.Content
-	c.GlassiesPage.Visible, c.PoolPage.Visible = false, true
-	c.PoolPage.Title.Text = if kind == "Coins" then "COIN KILN · ALL GLASSIES" else "MARBLE KILN · SAMPLE PREVIEW"
-	Pools.grid(self, c.PoolPage.Grid, kind)
-	if kind == "Marbles" then
-		self.Message.Text = "Marble Kiln coming soon · sample glassies only"
-	end
+	c[tab .. "Page"].Visible = false
+	c.PoolPage.Visible = true
+	c.PoolPage.Title.Text = string.upper(currency .. " · " .. tab .. " · EXACT ITEM ODDS")
+	Pools.grid(self, c.PoolPage.Grid, currency, category)
 end
-
 function Shop.bind(self, data)
 	local tab = self.Tab or "Featured"
 	local c = self:Page("KilnScreen", "SHOP")
 	self.Data, self.Busy, self.PoolConnections = data, false, {}
-	local p = self.Window.Panel
-	p.Coins.CoinsAmount.Text, p.Marbles.MarblesAmount.Text = tostring(data.Coins), tostring(data.Marbles or 0)
 	self.Message = c.Message
-	self.CosmeticViews = {}
-	for _, category in { "Finishers", "Flyers" } do
-		local page = c[category .. "Page"]
-		if page:FindFirstChild("Preview") then
-			page.Preview.Visible = false
+	self.CrateViews = {}
+	local legacy = { Glassies = { Coins = { Odds = data.Odds or {}, Cost = data.Cost, TenCost = data.TenCost } } }
+	local crates = data.Crates or legacy
+	local callbacks = {
+		ViewAll = function(category, currency)
+			Shop.showPool(self, currency, category)
+		end,
+		Inspect = function(category, currency, entry)
+			local def = require(script.Parent.Parent.Components.ItemPresentation).definition(category, entry.Id)
+			self.Message.Text = def.Name
+				.. " · "
+				.. string.format("%.4g%%", entry.Chance * 100)
+				.. " per "
+				.. currency
+				.. " opening"
+		end,
+		Open = function(category, currency, count, offer)
+			if self.Busy then
+				return
+			end
+			if os.clock() - lastPullAt < pullRate then
+				self.Message.Text = "One moment…"
+				return
+			end
+			local free = category == "Glassies" and currency == "Coins" and count == 1 and (data.Welcome or 0) > 0
+			local cost = if free then 0 elseif count == 10 then offer.TenCost else offer.Cost
+			if #offer.Odds == 0 then
+				self.Message.Text = "This crate is warming up"
+				return
+			end
+			if (self.Data[currency] or 0) < cost then
+				self.Message.Text = "Need " .. (cost - (self.Data[currency] or 0)) .. " more " .. string.lower(currency)
+				if currency == "Marbles" then
+					self.Window.Gui:SetAttribute("MarbleStoreRequested", true)
+				end
+				return
+			end
+			lastPullAt = os.clock()
+			self.Busy = true
+			self.PendingCategory = category
+			self.PendingCurrency = currency
+			self.SelectedPoolOdds = offer.Odds
+			self:Pending(category)
+			self.Pull(count, data.Quote, category, currency)
+		end,
+	}
+	for tabName, category in categories do
+		local page = c[tabName .. "Page"]
+		for _, child in page:GetChildren() do
+			if child:IsA("GuiObject") then
+				child.Visible = false
+			end
 		end
-		self.CosmeticViews[category] = Catalog.new(
-			page,
-			self.Profile or { Cosmetics = {}, Stats = {} },
-			if category == "Flyers" then "Rideables" else "Finishers"
-		)
+		if crates[category] then
+			self.CrateViews[category] = CratePanel.new(page, category, crates[category], callbacks)
+		end
 	end
+	self.UpdateProfile = function(_, profile)
+		if not profile then
+			return
+		end
+		self.Profile = profile
+		self.Data.Coins, self.Data.Marbles = profile.Coins, profile.Marbles or 0
+		local p = self.Window.Panel
+		if p:FindFirstChild("Coins") then
+			p.Coins.CoinsAmount.Text, p.Marbles.MarblesAmount.Text =
+				tostring(profile.Coins), tostring(profile.Marbles or 0)
+		end
+		for _, view in self.CrateViews or {} do
+			view:Wallet(self.Data, self.Data.Welcome)
+		end
+	end
+	self:UpdateProfile(self.Profile or data)
 	self.SelectTab = function(_, name)
 		Shop.select(self, name)
 	end
 	self.ShowPool = function(_, kind)
 		Shop.showPool(self, kind)
 	end
-	for name in TABS do
-		self.Window:Connect(p.Tabs[name .. "Tab"], function()
+	for name in tabs do
+		self.Window:Connect(self.Window.Panel.Tabs[name .. "Tab"], function()
 			Shop.select(self, name)
 		end)
 	end
@@ -69,54 +130,11 @@ function Shop.bind(self, data)
 		Shop.select(self, "Glassies")
 	end)
 	self.Window:Connect(c.PoolPage.Back, function()
-		Shop.select(self, "Glassies")
+		Shop.select(self, if self.PoolCategory == "Rideables" then "Flyers" else self.PoolCategory or "Glassies")
 	end)
-	local coin, marble = c.GlassiesPage.CoinKiln, c.GlassiesPage.MarbleKiln
-	coin.OddsPane.RainbowOdds.Text = string.format("Rainbow: %.2f%%", Balance.Growth.RainbowChance * 100)
-	local totals = {}
-	for _, odds in data.Odds do
-		local rarity = Glassies.get(odds.Id).Rarity
-		totals[rarity] = (totals[rarity] or 0) + odds.Chance
-	end
-	for _, rarity in { "Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic" } do
-		coin.OddsPane.RarityRows[rarity].Chance.Text = string.format("%.4g%%", (totals[rarity] or 0) * 100)
-		marble.OddsPane.RarityRows[rarity].Chance.Text = "—"
-	end
-	Pools.strip(self, coin.Pool, "Coins")
-	Pools.strip(self, marble.Pool, "Marbles")
-	self.Window:Connect(coin.ViewAll, function()
-		Shop.showPool(self, "Coins")
-	end)
-	self.Window:Connect(marble.ViewAll, function()
-		Shop.showPool(self, "Marbles")
-	end)
-	for _, count in { 1, 10 } do
-		local free = count == 1 and data.Welcome > 0
-		local cost = if free then 0 elseif count == 1 then data.Cost else data.TenCost
-		local b = coin["Pull" .. count]
-		S.buttonText(b, if free then "WELCOME · FREE" else "OPEN " .. count .. " · " .. cost)
-		local enabled = #data.Odds > 0 and data.Coins >= cost
-		b.Active, b.Selectable, b.Label.TextTransparency = true, true, if enabled then 0 else 0.45
-		self.Window:Connect(b, function()
-			if self.Busy then
-				return
-			end
-			if not enabled then
-				self.Message.Text = if #data.Odds == 0
-					then "The Kiln is warming up"
-					else "Need " .. math.max(0, cost - data.Coins) .. " more coins · play clashes and quests"
-				return
-			end
-			self.Busy = true
-			self:Pending()
-			self.Pull(count, data.Quote)
-		end)
-	end
-	-- No prices, odds, purchases or new remotes are invented for the Marble/daily previews.
-	for _, count in { 1, 10 } do
-		local b = marble["Pull" .. count]
-		b.Active, b.Selectable = false, false
-	end
 	Shop.select(self, tab)
+	if data.Error then
+		self.Message.Text = data.Error
+	end
 end
 return Shop

@@ -9,6 +9,9 @@ local Assets = require(script.Parent.Parent.Util.AssetCatalog)
 local Schema = require(script.Parent.Parent.Data.ProfileSchema)
 local Guard = require(script.Parent.Parent.Util.RemoteGuard)
 local Service = {}
+local Crates = require(RS.Shared.CrateRules)
+local Cosmetics = require(RS.Shared.Config.RoundCosmetics)
+local CosmeticRules = require(RS.Shared.RoundCosmeticRules)
 
 function Service:Init(services)
 	self.Services, self.Quotes, self.Guard = services, {}, Guard.new()
@@ -22,11 +25,19 @@ function Service:Pool()
 			table.insert(ids, def.Id)
 		end
 	end
+	for _, category in { "Rideables", "Finishers" } do
+		local folder = RS.Assets:FindFirstChild(if category == "Finishers" then "RoundFinishers" else "Rideables")
+		for _, def in Cosmetics[category] do
+			if folder and folder:FindFirstChild(def.Id) then
+				table.insert(ids, category .. ":" .. def.Id)
+			end
+		end
+	end
 	table.sort(ids)
 	return available, table.concat(ids, ",")
 end
 
-function Service:Open(player)
+function Service:Open(player, message)
 	local data = self.Services.DataService:Get(player)
 	if not data or self.Services.MatchService.ByPlayer[player] then
 		return
@@ -40,7 +51,33 @@ function Service:Open(player)
 		Expires = os.clock() + Balance.Data.KilnQuoteSeconds,
 	}
 	self.Quotes[player] = quote
+	local paidAllowed = self.Services.MatchService.PaidRandomAllowed[player] == true
+	local crates = {}
+	for _, category in { "Glassies", "Finishers", "Rideables" } do
+		local installed = available
+		if category ~= "Glassies" then
+			installed = {}
+			local folder = RS.Assets:FindFirstChild(if category == "Finishers" then "RoundFinishers" else "Rideables")
+			for _, def in Cosmetics[category] do
+				installed[def.Id] = folder and folder:FindFirstChild(def.Id) ~= nil
+			end
+		end
+		crates[category] = {}
+		for _, currency in { "Coins", "Marbles" } do
+			if currency == "Coins" or paidAllowed then
+				crates[category][currency] = {
+					Odds = Crates.odds(category, currency, installed, odds),
+					Cost = Crates.cost(category, currency, 1),
+					TenCost = Crates.cost(category, currency, 10),
+				}
+			end
+		end
+	end
+	quote.Crates = crates
 	Remotes.KilnOdds:FireClient(player, {
+		Error = message,
+		Crates = crates,
+		PaidRandomAllowed = paidAllowed,
 		Quote = quote.Id,
 		Odds = odds,
 		Coins = data.Coins,
@@ -53,10 +90,10 @@ end
 
 function Service:Fail(player, message)
 	Remotes.KilnResult:FireClient(player, { Error = message })
-	self:Open(player)
+	self:Open(player, message)
 end
 
-function Service:Pull(player, count, token)
+function Service:Pull(player, count, token, category, currency)
 	if not self.Guard:Allow(player, "Pull", Balance.Data.KilnRateSeconds) then
 		return
 	end
@@ -75,18 +112,30 @@ function Service:Pull(player, count, token)
 		self:Fail(player, "The Kiln changed. Check the new odds")
 		return
 	end
-	local odds = Formula.kilnOdds(quote.Available)
+	category, currency = category or "Glassies", currency or "Coins"
+	if
+		type(category) ~= "string"
+		or type(currency) ~= "string"
+		or not Balance.Crates.Prices[category]
+		or (currency ~= "Coins" and currency ~= "Marbles")
+	then
+		self:Fail(player, "Choose a valid crate")
+		return
+	end
+	if currency == "Marbles" and self.Services.MatchService.PaidRandomAllowed[player] ~= true then
+		self:Fail(player, "This opening is unavailable for your account")
+		return
+	end
+	local offer = quote.Crates[category] and quote.Crates[category][currency]
+	local odds = offer and offer.Odds or {}
 	if #odds == 0 then
 		self:Fail(player, "The Kiln is warming up")
 		return
 	end
-	local welcome = count == 1 and Schema.welcomePulls(data) > 0
-	local cost = if welcome
-		then 0
-		elseif count == 10 then Balance.Economy.KilnTenPullCost
-		else Balance.Economy.KilnCoinCost
-	if data.Coins < cost then
-		self:Fail(player, "Play a match for more coins")
+	local welcome = category == "Glassies" and currency == "Coins" and count == 1 and Schema.welcomePulls(data) > 0
+	local cost = if welcome then 0 elseif count == 10 then offer.TenCost else offer.Cost
+	if data[currency] < cost then
+		self:Fail(player, "Not enough " .. string.lower(currency))
 		return
 	end
 	-- No yield from quote consumption through debit/grants. One quote can grant only once.
@@ -97,23 +146,42 @@ function Service:Pull(player, count, token)
 	end
 	local pulls = {}
 	for _ = 1, count do
-		table.insert(pulls, { Id = Formula.rollKiln(rng, quote.Available), Rainbow = Formula.rollRainbow(rng) })
+		table.insert(
+			pulls,
+			{ Id = Crates.roll(odds, rng), Rainbow = category == "Glassies" and Formula.rollRainbow(rng) }
+		)
 	end
-	data.Coins -= cost
+	data[currency] -= cost
 	if welcome then
 		data.Flags.WelcomePullUsed = true
 	end
 	local results = {}
 	for _, pull in pulls do
-		table.insert(results, Schema.grant(data, pull.Id, pull.Rainbow, os.time()))
+		table.insert(
+			results,
+			if category == "Glassies"
+				then Schema.grant(data, pull.Id, pull.Rainbow, os.time())
+				else CosmeticRules.grant(data, category, pull.Id)
+		)
 	end
-	data.Stats.KilnPulls += count
-	if self.Services.RetentionService then
+	if category == "Glassies" then
+		data.Stats.KilnPulls += count
+	end
+	if category == "Glassies" and self.Services.RetentionService then
 		self.Services.RetentionService:Pulled(player, count)
 	end
 	self.Services.DataService:Sync(player)
 	self.Services.DataService.Profiles[player].Profile:Save()
-	Remotes.KilnResult:FireClient(player, { Quote = token, Results = results, Coins = data.Coins, Cost = cost })
+	Remotes.KilnResult:FireClient(player, {
+		Quote = token,
+		Category = category,
+		Currency = currency,
+		Odds = odds,
+		Results = results,
+		Coins = data.Coins,
+		Marbles = data.Marbles,
+		Cost = cost,
+	})
 end
 
 function Service:Start()
@@ -122,8 +190,8 @@ function Service:Start()
 			self:Open(player)
 		end
 	end)
-	Remotes.PullKiln.OnServerEvent:Connect(function(player, count, token)
-		self:Pull(player, count, token)
+	Remotes.PullKiln.OnServerEvent:Connect(function(player, count, token, category, currency)
+		self:Pull(player, count, token, category, currency)
 	end)
 	Players.PlayerRemoving:Connect(function(player)
 		self.Quotes[player] = nil

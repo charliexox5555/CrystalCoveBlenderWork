@@ -1,49 +1,86 @@
--- Shared editable grid + right-hand detail panel for Inventory and Shop.
-local RS = game:GetService("ReplicatedStorage")
+-- Inventory uses the same authored owned/unowned grid and detail shell as Glassies.
+local RS = game.ReplicatedStorage
 local C = require(RS.Shared.Config.RoundCosmetics)
 local Rules = require(RS.Shared.RoundCosmeticRules)
 local Theme = require(script.Parent.Parent.Theme)
 local U = require(script.Parent.Parent.Components.Util)
-local Button = require(script.Parent.Parent.Components.Button)
+local Button = require(script.Parent.Parent.Components.GemButton)
+local S = require(script.Parent.Parent.Components.StainedGlass)
 local Portrait = require(script.Parent.Parent.Components.CosmeticPortrait)
+local Sections = require(script.Parent.Parent.Components.InventorySections)
 local FX = require(script.Parent.Parent.Parent.Presentation.FinisherFX)
 local Tuning = require(RS.Shared.Config.Balance).CosmeticPresentation
 local Catalog = {}
 Catalog.__index = Catalog
 function Catalog.new(parent, profile, category)
 	local self = setmetatable({ Category = category, Connections = {}, TileConnections = {}, Tiles = {} }, Catalog)
-	self.Root =
-		U.make("Frame", parent, { Name = "CosmeticPage", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1 })
+	local old = parent:FindFirstChild("CosmeticPage")
+	if old then
+		old.Visible = false
+	end
+	self.Root = U.make(
+		"Frame",
+		parent,
+		{ Name = "CosmeticInventory", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1 }
+	)
 	self.Root.Visible = true
-	self.Grid = U.make("Frame", self.Root, {
-		Name = "Cards",
-		Size = UDim2.fromScale(0.61, 0.91),
-		Position = UDim2.fromScale(0, 0.06),
-		BackgroundTransparency = 1,
-	})
-	self.Info = U.make("Frame", self.Root, {
-		Name = "Details",
-		Size = UDim2.fromScale(0.35, 0.96),
-		Position = UDim2.fromScale(0.65, 0.02),
-		BackgroundTransparency = 1,
-	})
-	self.Count = U.text(self.Root, "Count", "", UDim2.fromScale(0.61, 0.06), UDim2.new(), Theme.Fonts.Caption)
-	self.Name = U.text(self.Info, "ItemName", "", UDim2.fromScale(1, 0.1), UDim2.new(), Theme.Fonts.Heading)
-	self.Description = U.text(self.Info, "Description", "", UDim2.fromScale(1, 0.18), UDim2.fromScale(0, 0.47))
+	local source = game.StarterGui.CollectionScreen.Panel.Content
+	self.Grid = self.Root:FindFirstChild("Cards")
+	if not self.Grid then
+		self.Grid = source.Grid:Clone()
+		self.Grid.Name = "Cards"
+		self.Grid.Parent = self.Root
+	end
+	self.Grid.Visible = true
+	self.Info = self.Root:FindFirstChild("Details")
+	if not self.Info then
+		self.Info = source.InfoPane:Clone()
+		self.Info.Name = "Details"
+		self.Info.Parent = self.Root
+	end
+	self.Info.Visible = true
+	local keep = {
+		PaneArtwork = true,
+		InfoName = true,
+		RarityTag = true,
+		ViewportPane = true,
+		InfoPortrait = true,
+		Ownership = true,
+	}
+	for _, child in self.Info:GetChildren() do
+		if child:IsA("GuiObject") then
+			child.Visible = keep[child.Name] == true
+		end
+	end
+	self.Name = self.Info.InfoName
+	self.Info.RarityTag.Visible = false
+	self.Rarity = U.text(
+		self.Info,
+		"CosmeticRarity",
+		"",
+		UDim2.fromScale(0.92, 0.06),
+		UDim2.fromScale(0.04, 0.15),
+		Theme.Fonts.Heading
+	)
+	self.Status = self.Info.Ownership
+	self.Status.Position, self.Status.Size = UDim2.fromScale(0.04, 0.65), UDim2.fromScale(0.92, 0.065)
+	self.Description = U.text(self.Info, "Description", "", UDim2.fromScale(0.92, 0.13), UDim2.fromScale(0.04, 0.5))
 	self.Description.TextWrapped = true
-	self.Status =
-		U.text(self.Info, "Ownership", "", UDim2.fromScale(1, 0.1), UDim2.fromScale(0, 0.66), Theme.Fonts.Caption)
-	self.Equip = Button.new(self.Info, "Equip", "EQUIP", "Green", UDim2.fromScale(1, 0.1), UDim2.fromScale(0, 0.88))
+	self.Equip =
+		Button.new(self.Info, "Equip", "EQUIP", "Green", UDim2.fromScale(0.92, 0.1), UDim2.fromScale(0.04, 0.86))
 	self.Preview =
-		Button.new(self.Info, "Preview", "PREVIEW", "Blue", UDim2.fromScale(1, 0.1), UDim2.fromScale(0, 0.75))
+		Button.new(self.Info, "Preview", "PREVIEW", "Blue", UDim2.fromScale(0.92, 0.1), UDim2.fromScale(0.04, 0.73))
 	for _, button in { self.Equip, self.Preview } do
 		U.make("UISizeConstraint", button, { MinSize = Vector2.new(44, 44) })
 	end
 	table.insert(
 		self.Connections,
 		self.Equip.Activated:Connect(function()
-			if self.Owned and not self.Equipped then
-				require(RS.Shared.Remotes).EquipRoundCosmetic:FireServer(self.Category, self.Selected)
+			if self.Owned then
+				require(RS.Shared.Remotes).EquipRoundCosmetic:FireServer(
+					self.Category,
+					if self.Equipped then "" else self.Selected
+				)
 			end
 		end)
 	)
@@ -70,7 +107,7 @@ function Catalog:PreviewSelected()
 		end
 		local effect =
 			FX.emit(self.World, self.Selected, Vector3.zero, false, self.Portrait.CurrentCamera.CFrame.Rotation)
-		self.Preview.Text = "PREVIEW AGAIN"
+		require(script.Parent.Parent.Components.StainedGlass).buttonText(self.Preview, "PREVIEW AGAIN")
 		return effect
 	elseif self.Portrait then
 		local model = self.World:FindFirstChildOfClass("Model")
@@ -81,96 +118,112 @@ function Catalog:PreviewSelected()
 end
 function Catalog:Refresh(profile)
 	self.Profile = profile or { Cosmetics = {}, Stats = {} }
-	for _, connection in self.TileConnections do
-		connection:Disconnect()
+	for _, c in self.TileConnections do
+		c:Disconnect()
 	end
 	self.TileConnections = {}
-	for _, child in self.Grid:GetChildren() do
-		if child:IsA("GuiObject") then
-			child:Destroy()
+	self.Tiles = {}
+	for _, root in { self.Grid.Tiles, self.Grid.UnownedTiles } do
+		for _, child in root:GetChildren() do
+			if child:IsA("GuiObject") then
+				child:Destroy()
+			end
 		end
 	end
-	self.Tiles = {}
-	local owned = (self.Profile.Cosmetics or {})[self.Category] or {}
-	self.Count.Text = string.upper(if self.Category == "Rideables" then "RIDES" else "FINISHERS")
-		.. " · "
-		.. #owned
-		.. " / "
-		.. #C[self.Category]
-		.. "  ·  EARN BY PLAYING"
-	for i, def in C[self.Category] do
-		local tile = U.make("Frame", self.Grid, {
-			Name = def.Id,
-			Size = UDim2.fromScale(0.31, 0.45),
-			Position = UDim2.fromScale(((i - 1) % 3) * 0.34, math.floor((i - 1) / 3) * 0.51),
-			BackgroundColor3 = Color3.fromHex("#24374F"),
-			BorderSizePixel = 0,
-		})
-		U.make("UIStroke", tile, { Color = Color3.fromHex(def.Color), Thickness = 1.5, Transparency = 0.35 })
-		Portrait.new(tile, self.Category, def.Id, UDim2.fromScale(0.96, 0.64), UDim2.fromScale(0.02, 0.01))
-		U.text(
-			tile,
-			"ItemName",
-			def.Name,
-			UDim2.fromScale(0.96, 0.17),
-			UDim2.fromScale(0.02, 0.64),
-			Theme.Fonts.Heading
-		)
-		U.text(
-			tile,
-			"Unlock",
-			if table.find(owned, def.Id)
-				then "OWNED"
-				else def.Matches .. (if def.Matches == 1 then " MATCH" else " MATCHES"),
-			UDim2.fromScale(0.96, 0.14),
-			UDim2.fromScale(0.02, 0.83),
-			Theme.Fonts.Caption
-		)
-		local tap = U.make(
-			"TextButton",
-			tile,
-			{ Name = "Select", Text = "", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, ZIndex = 5 }
-		)
-		table.insert(
-			self.TileConnections,
-			tap.Activated:Connect(function()
-				self:Detail(def.Id)
-			end)
-		)
-		self.Tiles[def.Id] = tile
+	local owned, missing = {}, {}
+	for _, def in C[self.Category] do
+		table.insert(if Rules.count(self.Profile, self.Category, def.Id) > 0 then owned else missing, def)
 	end
-	self:Detail(self.Selected or C[self.Category][1].Id)
+	local equipped = (self.Profile.Cosmetics or {})["Equipped" .. self.Category]
+	for _, section in { { owned, self.Grid.Tiles, false }, { missing, self.Grid.UnownedTiles, true } } do
+		for i, def in section[1] do
+			local tile = self.Grid.Templates[if section[3] then "UnownedGlassyTile" else "GlassyTile"]:Clone()
+			tile.Name, tile.Visible, tile.LayoutOrder, tile.Parent = def.Id, true, i, section[2]
+			tile:SetAttribute("Unowned", section[3])
+			S.setAsset(tile.Artwork, "tile/tile_" .. S.rarity(def.Rarity))
+			tile:FindFirstChild("Name").Text = def.Name
+			tile.Unknown.Visible = false
+			local viewport =
+				Portrait.new(tile, self.Category, def.Id, tile.Portrait.Size, tile.Portrait.Position, "Portrait")
+			viewport.ImageTransparency = if section[3] then 0.5 else 0
+			local count = U.text(
+				tile,
+				"Count",
+				"×" .. Rules.count(self.Profile, self.Category, def.Id),
+				UDim2.fromScale(0.17, 0.12),
+				UDim2.fromScale(0.75, 0.82),
+				Theme.Fonts.Heading
+			)
+			count.Visible = not section[3]
+			count.TextColor3, count.ZIndex = Theme.Palette.lead, 3
+			tile:FindFirstChild("Name").Size = UDim2.fromScale(0.68, 0.18)
+			tile:FindFirstChild("Name").AnchorPoint = Vector2.zero
+			tile:FindFirstChild("Name").Position = UDim2.fromScale(0.035, 0.8)
+			local badge = U.text(
+				tile,
+				"Equipped",
+				"✓ EQUIPPED",
+				UDim2.fromScale(0.88, 0.13),
+				UDim2.fromScale(0.06, 0.04),
+				Theme.Fonts.Caption
+			)
+			badge.TextColor3, badge.Visible = Theme.Palette.emeraldLight, def.Id == equipped
+			tile.SelectedOutline.Visible = def.Id == self.Selected
+			table.insert(
+				self.TileConnections,
+				tile.Open.Activated:Connect(function()
+					self:Detail(def.Id)
+				end)
+			)
+			self.Tiles[def.Id] = tile
+		end
+	end
+	Sections.layout(self.Grid, #owned, #missing)
+	self:Detail(self.Selected or (owned[1] or missing[1]).Id)
 end
 function Catalog:Detail(id)
 	local def = C.ByCategory[self.Category][id]
 	if not def then
 		return
 	end
-	self.Selected = id
-	self.Previewing = false
+	self.Selected, self.Previewing = id, false
 	if self.PreviewResize then
 		self.PreviewResize:Disconnect()
 		self.PreviewResize = nil
 	end
-	local cosmetics = self.Profile.Cosmetics or {}
-	self.Owned = table.find(cosmetics[self.Category] or {}, id) ~= nil
-	self.Equipped = cosmetics["Equipped" .. self.Category] == id
+	local count = Rules.count(self.Profile, self.Category, id)
+	self.Owned = count > 0
+	self.Equipped = (self.Profile.Cosmetics or {})["Equipped" .. self.Category] == id
 	self.Name.Text, self.Description.Text = def.Name, def.Description
-	self.Status.Text = if self.Owned
-		then (if self.Equipped then "EQUIPPED · COSMETIC ONLY" else "OWNED · COSMETIC ONLY")
-		else math.min(Rules.matches(self.Profile), def.Matches) .. " / " .. def.Matches .. " COMPLETED MATCHES"
-	self.Equip.Text = if self.Equipped then "EQUIPPED" elseif self.Owned then "EQUIP" else "KEEP CLASHING TO UNLOCK"
-	self.Equip.Active, self.Equip.Selectable = self.Owned and not self.Equipped, self.Owned and not self.Equipped
-	self.Equip.TextTransparency = if self.Owned then 0 else 0.35
-	self.Preview.Text = if self.Category == "Finishers" then "PREVIEW EFFECT" else "TURN PREVIEW"
-	self.Portrait, self.World =
-		Portrait.new(self.Info, self.Category, id, UDim2.fromScale(1, 0.38), UDim2.fromScale(0, 0.12), "PreviewModel")
+	self.Description.Visible = true
+	S.tag(self.Info.RarityTag, def.Rarity, S.Rarity[def.Rarity])
+	self.Rarity.Text, self.Rarity.TextColor3, self.Rarity.Visible =
+		string.upper(def.Rarity), Theme.Rarity[def.Rarity].Top, true
+	self.Status.Text = if count > 0
+		then "OWNED: " .. count .. (if self.Equipped then " · EQUIPPED" else "")
+		else "UNOWNED · OPEN A CRATE"
+	self.Status.Visible = true
+	local default = self.Equipped and def.Matches == 0
+	S.buttonText(
+		self.Equip,
+		if default
+			then "DEFAULT"
+			elseif self.Equipped then "UNEQUIP"
+			elseif self.Owned then "EQUIP"
+			else "FIND IN THE SHOP"
+	)
+	self.Equip.Visible = true
+	self.Equip.Active, self.Equip.Selectable = self.Owned and not default, self.Owned and not default
+	S.buttonText(self.Preview, if self.Category == "Finishers" then "PREVIEW EFFECT" else "TURN PREVIEW")
+	self.Preview.Visible = true
+	local slot = self.Info.InfoPortrait
+	self.Portrait, self.World = Portrait.new(self.Info, self.Category, id, slot.Size, slot.Position, "InfoPortrait")
+	self.Portrait.Visible = true
 	self.PreviewResize = self.Portrait:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 		self:FitPreview()
 	end)
 	for key, tile in self.Tiles do
-		tile.UIStroke.Transparency = if key == id then 0 else 0.6
-		tile.UIStroke.Thickness = if key == id then 2.5 else 1
+		tile.SelectedOutline.Visible = key == id
 	end
 end
 function Catalog:Destroy()
@@ -179,8 +232,8 @@ function Catalog:Destroy()
 		self.PreviewResize = nil
 	end
 	for _, list in { self.Connections, self.TileConnections } do
-		for _, connection in list do
-			connection:Disconnect()
+		for _, c in list do
+			c:Disconnect()
 		end
 	end
 	self.Root:Destroy()

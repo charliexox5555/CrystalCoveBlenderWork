@@ -14,6 +14,17 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Codex — Cosmetic crates, matching inventories and shop feedback
+Done:
+- Finishers/Flyers now roll through authoritative quoted Coin/Marble crates; approved provisional prices, retained copy counts, preserved ownership/free starters, same installed pool and improved Marble rarity odds. Paid-random policy hides unavailable offers and rechecks on spend; no Robux products activated. Existing Glassy Coin economy preserved; provisional Glassy Marble 30/300.
+- Larger shops, owned/unowned inventories, copy/equip details and generic server-pinned reels/category capsule firing. Creator follow-up repaired scrolling card anchors/art/nameplates, replaced generic gradients with native gem buttons, and corrected front-facing, bounds-fitted/resizing Kiln/capsule/item cameras. Refreshed purchase failures retain visible errors.
+- 111 Lune tests / 68 focused native layout/theme/wrap/policy checks pass. Actual isolated mock one-Finisher/ten-Flyer purchases, duplicate counts, save/reload, one firing/ten cards, replay rejection, policy changes, malformed/insufficient rejection and close cleanup verified. Details: docs/testing/CRATE_SHOPS.md.
+- Editable StarterGui templates, original UI backups and places/CrateShop_v1.rbxm saved (487761 bytes; SHA256 in report). Native script-free deserialize verified. Studio Edit/unpublished; scheduling paused; unrelated art/UI work preserved.
+Next:
+- Creator reviews rolling/capsule feel and real phone/controller layouts; prices/odds remain provisional. Cosmetic-spending simulation/real persistence and broader combat balance remain separate work.
+Balance/economy sims (required for Balance.Crates addition; combat/reward tuning unchanged):
+- Mirrors 19.6–36.8 seconds, 0% timeouts; side-one bias 49%, comebacks 39%; existing equal-stat powers 21–83%. Economy ~5.7-minute matches, 10.5/hour; Glassy pulls day 1/day 30: 3/81; Rare/Epic/Legendary medians 57 min/2.8 h/11.3 h. Existing economy sim excludes cosmetic spending.
+
 ## 2026-10-16 — Codex — Install Blender heroes; stop overnight schedule
 Done:
 - Creator confirms import and explicitly stops scheduled tasks. Paused the single Glass Clash overnight heartbeat through the app tool, verified PAUSED. No new schedules created.

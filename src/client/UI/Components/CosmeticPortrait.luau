@@ -28,6 +28,9 @@ function Portrait.new(parent, category, id, size, position, name)
 		if child:IsA("WorldModel") or child:IsA("Camera") then
 			child:Destroy()
 		end
+		if child.Name == "Icon" or child.Name == "Placeholder" then
+			child.Visible = false
+		end
 	end
 	local world = Instance.new("WorldModel")
 	world.Parent = viewport
@@ -36,12 +39,9 @@ function Portrait.new(parent, category, id, size, position, name)
 	if source then
 		source:Clone().Parent = world
 	end
-	local camera = Instance.new("Camera")
-	camera.FieldOfView = 38
-	camera.CFrame = if category == "Rideables"
-		then CFrame.lookAt(Vector3.new(9, 8, 10), Vector3.new(0, -0.25, 0))
-		else CFrame.lookAt(Vector3.new(0, 1, 10), Vector3.zero)
-	camera.Parent, viewport.CurrentCamera = viewport, camera
+	local rotation =
+		CFrame.lookAt(if category == "Rideables" then Vector3.new(6, 5, 9) else Vector3.new(4, 2, 10), Vector3.zero)
+	require(script.Parent.GlassyPortrait).fitOnResize(viewport, rotation, 35)
 	return viewport, world
 end
 return Portrait

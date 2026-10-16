@@ -133,7 +133,14 @@ function Schema.grant(data, id, rainbow, now)
 	owned.Stars = stars
 	local bonus = (overflow - previousOverflow) * Balance.Growth.DuplicateCoinsAtMaxStars
 	data.Coins += bonus
-	return { Id = id, Duplicate = duplicate, Stars = stars, Rainbow = owned.Rainbow, BonusCoins = bonus }
+	return {
+		Id = id,
+		Count = owned.Count,
+		Duplicate = duplicate,
+		Stars = stars,
+		Rainbow = owned.Rainbow,
+		BonusCoins = bonus,
+	}
 end
 
 function Schema.recordMatch(data, id, match, side, rewards, observed)

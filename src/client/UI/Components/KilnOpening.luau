@@ -3,17 +3,17 @@
 local RS = game:GetService("ReplicatedStorage")
 local SoundService = game:GetService("SoundService")
 local TweenService = game:GetService("TweenService")
-local Glassies = require(RS.Shared.Config.Glassies)
 local Audio = require(RS.Shared.Config.Audio)
 local Theme = require(script.Parent.Parent.Theme)
 local S = require(script.Parent.StainedGlass)
-local Portrait = require(script.Parent.GlassyPortrait)
 local Reels = require(script.Parent.KilnReels)
 local Opening = {}
 Opening.__index = Opening
 local K = Theme.Kiln
+local Item = require(script.Parent.ItemPresentation)
+local titles = { Glassies = "THE KILN", Finishers = "BURST CAPSULE", Rideables = "SKY CAPSULE" }
 
-function Opening.new(window, results, odds, collected)
+function Opening.new(window, results, odds, collected, category, currency)
 	local self = setmetatable({
 		Window = window,
 		Content = window.Content,
@@ -25,12 +25,30 @@ function Opening.new(window, results, odds, collected)
 		Cards = {},
 		Dead = false,
 		OnCollected = collected,
+		Category = category or "Glassies",
+		Currency = currency or "Coins",
 	}, Opening)
+	self.TintDark = if self.Category == "Finishers"
+		then Theme.Palette.amethystDark
+		elseif self.Category == "Rideables" then Theme.Palette.aquaDark
+		else Theme.Palette.amberDark
+	self.TintLight = if self.Category == "Finishers"
+		then Theme.Palette.amethystLight
+		elseif self.Category == "Rideables" then Theme.Palette.aquaLight
+		else Theme.Palette.amberLight
 	local c = self.Content
 	c.Reels.Visible, c.KilnStage.Visible, c.Rewards.Visible = true, false, false
 	c.Skip.Visible, c.Collect.Visible = true, false
-	c.Status.Text = if #results == 1 then "SHAPING YOUR GLASS…" else "SHAPING " .. #results .. " GLASSIES…"
-	window.Title.Text = "THE KILN"
+	c.Status.Text = if self.Category == "Glassies"
+		then (if #results == 1 then "SHAPING YOUR GLASS…" else "SHAPING " .. #results .. " GLASSIES…")
+		else "FINDING YOUR " .. (if self.Category == "Finishers" then "FINISHER" else "FLYER") .. "…"
+	window.Title.Text = titles[self.Category]
+	if self.Category ~= "Glassies" then
+		local slot = c.KilnStage.KilnPortrait
+		Item.crate(c.KilnStage, self.Category, self.Currency, slot.Size, slot.Position, "KilnPortrait")
+		local tint = if self.Category == "Finishers" then Theme.Palette.amethystLight else Theme.Palette.aquaLight
+		c.KilnStage.Flame.ImageColor3, c.KilnStage.Burst.ImageColor3 = tint, tint
+	end
 	window.Gui:SetAttribute("AwardCount", #results)
 	window.Gui:SetAttribute("FireCount", 0)
 	self.Sounds = Instance.new("Folder")
@@ -40,7 +58,7 @@ function Opening.new(window, results, odds, collected)
 		sound.Name, sound.SoundId, sound.Volume = name, id, if name == "Tick" then 0.10 else 0.35
 		sound.Parent = self.Sounds
 	end
-	self.Reels = Reels.new(c, results, odds)
+	self.Reels = Reels.new(c, results, odds, self.Category)
 	window:Connect(c.Skip, function()
 		self:Skip()
 	end)
@@ -65,10 +83,10 @@ function Opening:BeginFire()
 	self:SetPhase("Fire")
 	local c, stage = self.Content, self.Content.KilnStage
 	c.Reels.Visible, stage.Visible = false, true
-	c.Status.Text = "FIRING THE KILN…"
+	c.Status.Text = if self.Category == "Glassies" then "FIRING THE KILN…" else "CRACKING THE CAPSULE…"
 	-- Project the chamber into UI coordinates, keeping fire inside the kiln mouth.
 	local viewport = stage.KilnPortrait
-	local chamber = viewport:FindFirstChild("Kiln_ChamberBackGlow", true)
+	local chamber = viewport:FindFirstChild("RevealCore", true) or viewport:FindFirstChild("Kiln_ChamberBackGlow", true)
 	local camera = viewport.CurrentCamera
 	local p = camera.CFrame:PointToObjectSpace(chamber.Position)
 	local tangent = math.tan(math.rad(camera.FieldOfView) / 2)
@@ -83,10 +101,17 @@ function Opening:BeginFire()
 	stage.FlameEcho.Visible = false
 	self.GlowParts = {}
 	for _, part in stage.KilnPortrait:GetDescendants() do
-		if part:IsA("BasePart") and (part.Name == "Kiln_ChamberBackGlow" or part.Name == "Kiln_MoltenPool") then
+		if
+			part:IsA("BasePart")
+			and (part.Name == "Kiln_ChamberBackGlow" or part.Name == "Kiln_MoltenPool" or part.Name == "RevealCore")
+		then
 			table.insert(self.GlowParts, part)
 			part.Material = Enum.Material.Neon
 		end
+	end
+	local lid = viewport:FindFirstChild("RevealLid", true)
+	if lid then
+		self.Lid, self.LidPose = lid, lid.CFrame
 	end
 	for i = 1, K.SparkCount do
 		local spark = Instance.new("Frame")
@@ -106,9 +131,7 @@ function Opening:ShowRewards(instant)
 	local c = self.Content
 	c.Reels.Visible, c.Rewards.Visible = false, true
 	c.KilnStage.Visible = not instant
-	c.Status.Text = if #self.Results == 1
-		then "FRESH FROM THE KILN!"
-		else "ALL " .. #self.Results .. " GLASSIES ARE YOURS!"
+	c.Status.Text = if #self.Results == 1 then "IT’S YOURS!" else "ALL " .. #self.Results .. " ITEMS ARE YOURS!"
 	c.Skip.Visible, c.Collect.Visible = not instant, instant
 	if not instant then
 		self.Sounds.Reveal:Play()
@@ -120,7 +143,7 @@ function Opening:ShowRewards(instant)
 	) / math.max(1, c.Rewards.AbsoluteSize.Y)
 	for i, result in self.Results do
 		local card = c.Templates.RewardCard:Clone()
-		local def = Glassies.get(result.Id)
+		local def = Item.definition(self.Category, result.Id)
 		card.Name, card.Visible = "Reward" .. i, true
 		card:SetAttribute("AwardIndex", i)
 		card:SetAttribute("GlassyId", result.Id)
@@ -135,8 +158,11 @@ function Opening:ShowRewards(instant)
 		card.Rarity.Text, card.Rarity.TextColor3 = def.Rarity:upper(), Theme.Rarity[def.Rarity].Top
 		card.NameLabel.Text = def.Name
 		card.RewardLabel.Text = if result.Duplicate
-			then "DUPLICATE • " .. (result.Stars or 0) .. " STARS"
-			else "NEW GLASSY!"
+			then "ANOTHER COPY · OWNED ×" .. (result.Count or 1)
+			else "NEW " .. (if self.Category == "Glassies"
+				then "GLASSY"
+				elseif self.Category == "Finishers" then "FINISHER"
+				else "FLYER") .. "!"
 		card.RewardLabel.TextColor3 = if result.Duplicate then Theme.Palette.milk else Theme.Palette.emeraldLight
 		card.BonusLabel.Text = if result.Rainbow then "RAINBOW!" else ""
 		if (result.BonusCoins or 0) > 0 then
@@ -144,7 +170,7 @@ function Opening:ShowRewards(instant)
 		end
 		card.Glow.ImageColor3 = Theme.Rarity[def.Rarity].Top
 		card.Parent = c.Rewards
-		Portrait.new(card, result.Id)
+		Item.portrait(card, self.Category, result.Id)
 		table.insert(self.Cards, { Object = card, Destination = destination, Delay = (i - 1) * K.CardStagger })
 	end
 	S.bindSlices(c.Rewards)
@@ -289,7 +315,7 @@ function Opening:Step(dt)
 			self.Sounds.Tick:Play()
 		end
 		if done then
-			self.Content.Status.Text = "GLASS SELECTED • HEATING UP…"
+			self.Content.Status.Text = "SELECTED · HERE IT COMES…"
 			self:SetPhase("Landed")
 		end
 	elseif self.Phase == "Landed" then
@@ -302,6 +328,10 @@ function Opening:Step(dt)
 		local heat = math.clamp(charge / 0.72, 0, 1)
 		local release = math.clamp((charge - 0.72) / 0.28, 0, 1)
 		local pulse = math.sin(release * math.pi)
+		if self.Lid then
+			self.Lid.CFrame = (self.LidPose + Vector3.yAxis * release * 2.4)
+				* CFrame.Angles(0, release * 0.7, release * 0.18)
+		end
 		-- Anticipation, a short hot pulse, then release. The furnace remains readable.
 		stage.Flame.Size = UDim2.fromScale(0.075 + heat * 0.022, 0.16 + heat * 0.065 + math.sin(t * 23) * 0.008)
 		stage.Flame.ImageTransparency = 0.60 - heat * 0.25 + release * 0.2
@@ -314,9 +344,7 @@ function Opening:Step(dt)
 			- math.sin(heat * math.pi) * 0.015
 			+ pulse * 0.035
 		for _, part in self.GlowParts do
-			part.Color = Theme.Palette.amberDark
-				:Lerp(Theme.Palette.amberLight, heat * 0.8)
-				:Lerp(Theme.Palette.milkLight, pulse * 0.65)
+			part.Color = self.TintDark:Lerp(self.TintLight, heat * 0.8):Lerp(Theme.Palette.milkLight, pulse * 0.65)
 		end
 		for i, spark in stage.Sparks:GetChildren() do
 			local age = (charge * 1.2 + i / K.SparkCount) % 1

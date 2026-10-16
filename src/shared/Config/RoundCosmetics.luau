@@ -81,10 +81,22 @@ C.Finishers = {
 		Description = "Orbiting stars collapse into a tiny colorful supernova.",
 	},
 }
+local rarities = {
+	skyboard = "Common",
+	cloud_cushion = "Uncommon",
+	rocket_skiff = "Rare",
+	prism_ray = "Epic",
+	glass_burst = "Common",
+	party_burst = "Uncommon",
+	bubble_bloom = "Rare",
+	brick_boom = "Epic",
+	starfall = "Legendary",
+}
 C.ByCategory = {}
 for _, category in { "Rideables", "Finishers" } do
 	local map = {}
 	for _, def in C[category] do
+		def.Rarity = rarities[def.Id]
 		map[def.Id] = def
 	end
 	C.ByCategory[category] = map

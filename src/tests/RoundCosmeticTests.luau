@@ -16,7 +16,7 @@ return function(t)
 		t.eq(data.Cosmetics.Fills[1], "soda")
 		t.eq(data.Cosmetics.EquippedRideables, "skyboard")
 	end)
-	t.test("only eligible completed matches unlock free cosmetic milestones", function()
+	t.test("completed matches no longer auto grant crate cosmetics and existing items stay owned", function()
 		local data = Schema.new(0)
 		Schema.recordMatch(
 			data,
@@ -36,8 +36,8 @@ return function(t)
 			{ Eligible = true }
 		)
 		t.eq(data.Stats.MatchLosses, 1)
-		t.ok(table.find(data.Cosmetics.Rideables, "cloud_cushion"))
-		t.ok(table.find(data.Cosmetics.Finishers, "party_burst"))
+		t.eq(table.find(data.Cosmetics.Rideables, "cloud_cushion"), nil)
+		t.eq(table.find(data.Cosmetics.Finishers, "party_burst"), nil)
 		Schema.recordMatch(
 			data,
 			"done",
@@ -49,8 +49,11 @@ return function(t)
 		t.eq(Rules.matches(data), 1)
 		data.Stats.MatchWins = 9
 		Rules.reconcile(data)
-		t.eq(#data.Cosmetics.Rideables, 4)
-		t.eq(#data.Cosmetics.Finishers, 5)
+		t.eq(#data.Cosmetics.Rideables, 1)
+		t.eq(#data.Cosmetics.Finishers, 1)
+		table.insert(data.Cosmetics.Finishers, "party_burst")
+		Rules.reconcile(data)
+		t.eq(Rules.count(data, "Finishers", "party_burst"), 1)
 	end)
 	t.test("equipping validates category identity ownership and does not spend currency", function()
 		local data = Schema.new(0)
@@ -69,6 +72,7 @@ return function(t)
 		end
 		t.eq(Rules.equip(data, "Rideables", "skyboard"), true)
 		data.Stats.MatchWins = 5
+		Rules.grant(data, "Rideables", "rocket_skiff")
 		t.eq(Rules.equip(data, "Rideables", "rocket_skiff"), true)
 		t.eq(data.Cosmetics.EquippedRideables, "rocket_skiff")
 		t.eq(data.Coins, 555)

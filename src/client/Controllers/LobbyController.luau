@@ -98,6 +98,9 @@ function Controller:Start()
 			end
 		end
 		self.Profile = profile
+		if self.Screen and self.Screen.UpdateProfile then
+			self.Screen:UpdateProfile(profile)
+		end
 		if self.Screen and self.Screen.CosmeticViews then
 			self.Screen.Profile = profile
 			for _, view in self.Screen.CosmeticViews do
@@ -136,12 +139,15 @@ function Controller:Start()
 		self:Close()
 		self.Screen = Kiln.new(data, function()
 			self:Close()
-		end, function(count, quote)
-			Remotes.PullKiln:FireServer(count, quote)
+		end, function(count, quote, category, currency)
+			Remotes.PullKiln:FireServer(count, quote, category, currency)
 		end, function()
 			Remotes.RequestKiln:FireServer()
 		end, initialTab)
 		self.Screen.Profile = self.Profile
+		if self.Screen.UpdateProfile then
+			self.Screen:UpdateProfile(self.Profile)
+		end
 		for _, view in self.Screen.CosmeticViews or {} do
 			view:Refresh(self.Profile)
 		end
@@ -212,8 +218,13 @@ function Controller:Start()
 				self.Screen.Opening:Skip()
 			elseif action == "KilnPull" and self.Screen and self.Screen.Pull and not self.Screen.Busy then
 				self.Screen.Busy = true
-				self.Screen:Pending()
-				self.Screen.Pull(if value == 10 then 10 else 1, self.Screen.Data.Quote)
+				local category = if type(value) == "table" then value.Category else "Glassies"
+				local currency = if type(value) == "table" then value.Currency else "Coins"
+				local count = if type(value) == "table" then value.Count else value
+				local offer = self.Screen.Data.Crates[category][currency]
+				self.Screen.SelectedPoolOdds = offer.Odds
+				self.Screen:Pending(category)
+				self.Screen.Pull(if count == 10 then 10 else 1, self.Screen.Data.Quote, category, currency)
 			elseif action == "KilnCollect" and self.Screen and self.Screen.Opening then
 				self.Screen.Opening:Collect()
 			elseif action == "PreviewMatch" then

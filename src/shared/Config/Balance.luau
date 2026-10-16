@@ -730,4 +730,15 @@ Balance.CosmeticPresentation = {
 	FinisherFadeSeconds = 0.28,
 }
 
+-- Creator-approved provisional cosmetic crate prices; every item stays in both pools.
+Balance.Crates = {
+	Prices = {
+		Finishers = { Coins = 300, Marbles = 30 },
+		Rideables = { Coins = 1000, Marbles = 100 },
+		Glassies = { Coins = Balance.Economy.KilnCoinCost, Marbles = 30 },
+	},
+	CoinWeights = { Common = 60, Uncommon = 25, Rare = 10, Epic = 4, Legendary = 1 },
+	MarbleWeights = { Common = 25, Uncommon = 30, Rare = 25, Epic = 15, Legendary = 5, Mythic = 1 },
+}
+
 return Balance

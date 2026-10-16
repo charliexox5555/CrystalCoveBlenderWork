@@ -13,6 +13,8 @@ October 16, 2026. Creator authorized overnight independent improvements to the l
 
 ## Follow-up priorities
 
+Completed follow-up: finisher previews now fit their full expansion to both viewport axes, refit on visible resize and restore close icon framing when selection changes. Focused native framing/replay/close fixture passes; runtime source only, native snapshots unchanged. See newest DEVLOG. Avoid repeating that review without a new concern.
+
 1. Check latest report/log and current Studio mode first. If this pass has been committed and verified, do one targeted native visual/cleanup review. Improve a concrete issue found; avoid inventing unrelated features or broad balance changes.
 2. Good potential review areas: normal-camera finisher readability/tempo, ray ride wing silhouette, lobby sightlines/sign legibility, actual UI preview/equip feedback and lifecycle after round exit. Full phone/multiplayer/fairness review remains creator work; do not claim it passed.
 3. Preserve the fixed 24 glassies and all previous camera/selection/avatar fixes. Do not change any accepted decisions beyond the creator's explicit move from grounded avatars to rides.

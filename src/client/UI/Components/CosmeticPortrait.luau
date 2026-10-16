@@ -1,6 +1,19 @@
 local RS = game:GetService("ReplicatedStorage")
 local U = require(script.Parent.Util)
 local Portrait = {}
+function Portrait.fitEffect(viewport, radius)
+	local camera = viewport.CurrentCamera
+	if not camera then
+		return
+	end
+	local size = viewport.AbsoluteSize
+	local aspect = math.max(1, size.X) / math.max(1, size.Y)
+	local vertical = math.rad(camera.FieldOfView) / 2
+	local limiting = math.atan(math.tan(vertical) * math.min(1, aspect))
+	-- Fit a sphere so expansion/depth stays within both axes, including narrow previews.
+	local distance = radius / math.sin(limiting)
+	camera.CFrame = CFrame.lookAt(Vector3.zAxis * distance, Vector3.zero)
+end
 function Portrait.new(parent, category, id, size, position, name)
 	local viewport = U.make("ViewportFrame", parent, {
 		Name = name or "CosmeticPortrait",

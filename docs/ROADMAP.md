@@ -74,6 +74,8 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 ## F5 — Polish and soft launch (Nov 10–16)
 
+- [x] **C:** overnight follow-up: fit animated finisher previews to both axes instead of clipping them with icon framing; resize/replay/selection/close cleanup verified in a focused five-effect native fixture. Authored layout/native art and combat unchanged.
+
 - [x] **C:** overnight lobby composition/gardens/wayfinding/glare pass; four functional match rides, five distinct cosmetic finishers and free earned/equipped Inventory/Shop catalogs. Profile ownership/rate guards, frozen match equipment and avatar restoration. 106 logic, 301 cosmetic / 179 finish checks, live round and mock save/reload pass; [report/recovery](testing/overnight/README.md). Creator feel/milestone/device review remains.
 
 - [x] **C:** clearer Pop cap/pressure/recoil, Jam real lid/block, Prism aimed lens/white ray/afterglow, corrected actual Axe sweep/trail and shared impact spokes/rings. Creator-requested Hourglass spinning self-heal: 7% maximum HP twice, below 65%, eight-second cooldown and no overtime. 102 logic tests, 31 hero / 264 presentation / 179 finish checks, 48 real-swing regression rounds pass; [readability report](testing/combat_release/POWER_READABILITY_V3.md). Feel, full fairness and phone review remain open.

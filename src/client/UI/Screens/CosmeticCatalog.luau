@@ -7,6 +7,7 @@ local U = require(script.Parent.Parent.Components.Util)
 local Button = require(script.Parent.Parent.Components.Button)
 local Portrait = require(script.Parent.Parent.Components.CosmeticPortrait)
 local FX = require(script.Parent.Parent.Parent.Presentation.FinisherFX)
+local Tuning = require(RS.Shared.Config.Balance).CosmeticPresentation
 local Catalog = {}
 Catalog.__index = Catalog
 function Catalog.new(parent, profile, category)
@@ -49,23 +50,34 @@ function Catalog.new(parent, profile, category)
 	table.insert(
 		self.Connections,
 		self.Preview.Activated:Connect(function()
-			if self.Category == "Finishers" and self.World then
-				for _, child in self.World:GetChildren() do
-					child:Destroy()
-				end
-				FX.emit(self.World, self.Selected, Vector3.zero, false, self.Portrait.CurrentCamera.CFrame.Rotation)
-				self.Preview.Text = "PREVIEW AGAIN"
-			elseif self.Portrait then
-				-- A bounded model turn without spinning text or changing the equipped item.
-				local model = self.World:FindFirstChildOfClass("Model")
-				if model then
-					model:PivotTo(model:GetPivot() * CFrame.Angles(0, math.pi / 2, 0))
-				end
-			end
+			self:PreviewSelected()
 		end)
 	)
 	self:Refresh(profile)
 	return self
+end
+function Catalog:FitPreview()
+	if self.Previewing and self.Portrait then
+		Portrait.fitEffect(self.Portrait, Tuning.FinisherRadius + Tuning.FinisherCoreSize / 2)
+	end
+end
+function Catalog:PreviewSelected()
+	if self.Category == "Finishers" and self.World then
+		self.Previewing = true
+		self:FitPreview()
+		for _, child in self.World:GetChildren() do
+			child:Destroy()
+		end
+		local effect =
+			FX.emit(self.World, self.Selected, Vector3.zero, false, self.Portrait.CurrentCamera.CFrame.Rotation)
+		self.Preview.Text = "PREVIEW AGAIN"
+		return effect
+	elseif self.Portrait then
+		local model = self.World:FindFirstChildOfClass("Model")
+		if model then
+			model:PivotTo(model:GetPivot() * CFrame.Angles(0, math.pi / 2, 0))
+		end
+	end
 end
 function Catalog:Refresh(profile)
 	self.Profile = profile or { Cosmetics = {}, Stats = {} }
@@ -135,6 +147,11 @@ function Catalog:Detail(id)
 		return
 	end
 	self.Selected = id
+	self.Previewing = false
+	if self.PreviewResize then
+		self.PreviewResize:Disconnect()
+		self.PreviewResize = nil
+	end
 	local cosmetics = self.Profile.Cosmetics or {}
 	self.Owned = table.find(cosmetics[self.Category] or {}, id) ~= nil
 	self.Equipped = cosmetics["Equipped" .. self.Category] == id
@@ -148,12 +165,19 @@ function Catalog:Detail(id)
 	self.Preview.Text = if self.Category == "Finishers" then "PREVIEW EFFECT" else "TURN PREVIEW"
 	self.Portrait, self.World =
 		Portrait.new(self.Info, self.Category, id, UDim2.fromScale(1, 0.38), UDim2.fromScale(0, 0.12), "PreviewModel")
+	self.PreviewResize = self.Portrait:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+		self:FitPreview()
+	end)
 	for key, tile in self.Tiles do
 		tile.UIStroke.Transparency = if key == id then 0 else 0.6
 		tile.UIStroke.Thickness = if key == id then 2.5 else 1
 	end
 end
 function Catalog:Destroy()
+	if self.PreviewResize then
+		self.PreviewResize:Disconnect()
+		self.PreviewResize = nil
+	end
 	for _, list in { self.Connections, self.TileConnections } do
 		for _, connection in list do
 			connection:Disconnect()

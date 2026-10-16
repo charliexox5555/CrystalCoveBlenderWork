@@ -14,6 +14,14 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Codex — Overnight follow-up: finisher preview framing
+Done:
+- Focused preview/cleanup review found that the close icon camera clipped animated finisher shockwaves/pieces. Fit the full effect envelope against both viewport axes, refit on visible preview resize, and restore close icon framing on selection. Preview button now calls one testable action; replay clears the old world and catalog close disconnects its resize listener.
+- One native five-finisher framing/resize/replay/close fixture passes (1266 assertions including corner/depth checks). Original normalized extent 2.420 (outside frame); fitted maximum 0.766. Narrow visible resize refits; selection/close clear active effects, zero test GUI/fight views, Custom camera restored. Hidden ScreenGui resize does not run normal layout; corrected fixture to use a visible UI. No broad logic/multiplayer/device rerun: rules, balance, native art and authored geometry unchanged. StyLua/diff checks pass.
+- Native snapshots remain valid (runtime preview source only). Rojo connected, Studio Edit/unpublished, unrelated work preserved. No new design decision.
+Next:
+- Remaining bounded follow-up may review another concrete gap; otherwise stop. Creator still owns normal-game/phone feel and milestone tuning.
+
 ## 2026-10-16 — Codex — Overnight lobby, rides and finishers
 Done:
 - Creator authorizes overnight lobby art/repositioning, flyers and explosion/part finishers. Added original native courts/workbench/display, ride showroom, medallion, gate/pennants, benches, gardens/trees, kiosk canopies/lanterns; balanced boards and moved corresponding spots/kiosks. Verified 1,315 original functional parts unchanged. Rays 0.483→0.035, sun size 21→6, redundant Kiln labels hidden; warm sky retained. Full originals preserved.

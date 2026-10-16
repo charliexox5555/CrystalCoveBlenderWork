@@ -47,6 +47,8 @@ The effect strip is an offworld scripted fixture, not live combat evidence. The 
 
 ## Checks
 
+Follow-up: fixed clipping in the animated finisher preview (icon camera was too close). Camera now fits the effect envelope against both axes, refits on visible resize and restores close static framing on selection. A focused five-effect native fixture passes framing/replay/close checks: original normalized maximum extent 2.420, fitted 0.766. Closing clears active previews and listeners. This is not device-layout approval; native art/snapshots and combat rules are unchanged.
+
 - **106 Lune/native logic tests**, **301 native cosmetic checks**, **179 all-24 finish/avatar/ghost/camera checks** pass. Coverage includes additive profile migration preserving legacy cosmetics, deep snapshots, eligible/idempotent milestone rewards, invalid/unowned equip, deck/feet alignment, real model portraits, nova contract-then-burst, confetti hold, bubble growth and cleanup.
 - Native rate audit rejects unowned Pocket Nova/immediate spam and accepts an owned starter. Studio mock save/reload retains Rocket Skiff/Pocket Nova with zero currency. Production persistence remains creator verification.
 - One player-versus-bot round completed with Prism Ray/Block Boom selected. Player won a round; mid-match equipment remained frozen. Exit restored visible avatar at 100 humanoid health, original spawn/unanchored state/Custom camera, zero fight/stage roots. Separate early-abandon staging left zero matches/Coins.

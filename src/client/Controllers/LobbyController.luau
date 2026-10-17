@@ -185,7 +185,7 @@ function Controller:Start()
 		if pg:GetAttribute("InMatch") or pg:GetAttribute("ResultsOpen") then
 			return
 		end
-		local initialTab = self.Screen and self.Screen.Pull and self.Screen.Tab or "Featured"
+		local initialTab = data.Tab or self.Screen and self.Screen.Pull and self.Screen.Tab or "Featured"
 		self:Close()
 		self.Screen = Kiln.new(data, function()
 			self:Close()

@@ -14,6 +14,11 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — Kiln prompts fixed
+Done:
+- Both world kiln prompts did nothing: KilnService only wired `Lobby.GlassClashProps.Kiln.OpenKiln`, but the creator's kilns now live at `Workspace.Kilns.{Kiln, MarbleKiln}`. KilnService now connects every `OpenKiln` prompt under `Workspace.Kilns` (and the old path), with a distance check that also works for attachments, and opens the shop on the Glassies page (`KilnOdds.Tab`, read by LobbyController). The Marble Kiln's prompt text is corrected at runtime to "Glassies • Marble pulls"; the creator's model is untouched.
+- Studio Play: triggering each prompt opens KilnScreen on Glassies. 138 tests pass.
+
 ## 2026-10-17 — Claude — Hide lobby HUD while queued; round-end cast cleanup
 Done:
 - `LobbyController` now also hides the lobby HUD (currency, Shop/Inventory, PLAY, quests) while `Queued`, and blocks opening menus then; it returns on QueueLeft/match end (InMatch already hid it in selection and the fight). Checked in Play: queued -> LobbyHUD disabled, after the match it is back.

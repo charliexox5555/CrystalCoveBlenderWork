@@ -37,7 +37,7 @@ function Service:Pool()
 	return available, table.concat(ids, ",")
 end
 
-function Service:Open(player, message)
+function Service:Open(player, message, tab)
 	local data = self.Services.DataService:Get(player)
 	if not data or self.Services.MatchService.ByPlayer[player] then
 		return
@@ -76,6 +76,7 @@ function Service:Open(player, message)
 	quote.Crates = crates
 	Remotes.KilnOdds:FireClient(player, {
 		Error = message,
+		Tab = tab,
 		Crates = crates,
 		PaidRandomAllowed = paidAllowed,
 		Quote = quote.Id,
@@ -197,20 +198,36 @@ function Service:Start()
 		self.Quotes[player] = nil
 		self.Guard:Remove(player)
 	end)
-	local props = workspace.Lobby:FindFirstChild("GlassClashProps")
-	local kiln = props and props:FindFirstChild("Kiln")
-	local prompt = kiln and kiln:FindFirstChild("OpenKiln", true)
-	if prompt then
-		prompt.Triggered:Connect(function(player)
-			if not self.Guard:Allow(player, "Open", Balance.Data.RequestRateSeconds) then
-				return
+	-- Every world kiln (Workspace.Kilns.*, or the older Lobby.GlassClashProps.Kiln) has an "OpenKiln"
+	-- prompt; each opens the shop on the Glassies page.
+	local roots = { workspace:FindFirstChild("Kilns") }
+	local props = workspace:FindFirstChild("Lobby") and workspace.Lobby:FindFirstChild("GlassClashProps")
+	table.insert(roots, props and props:FindFirstChild("Kiln"))
+	for _, root in roots do
+		for _, prompt in root:GetDescendants() do
+			if prompt:IsA("ProximityPrompt") and prompt.Name == "OpenKiln" then
+				self:ConnectPrompt(prompt)
 			end
-			local root = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
-			if root and (root.Position - prompt.Parent.Position).Magnitude <= prompt.MaxActivationDistance then
-				self:Open(player)
-			end
-		end)
+		end
 	end
+end
+
+function Service:ConnectPrompt(prompt)
+	local model = prompt:FindFirstAncestorWhichIsA("Model")
+	if model and model.Name:find("Marble") then
+		prompt.ObjectText = "Glassies • Marble pulls"
+	end
+	prompt.Triggered:Connect(function(player)
+		if not self.Guard:Allow(player, "Open", Balance.Data.RequestRateSeconds) then
+			return
+		end
+		local anchor = prompt.Parent
+		local position = if anchor:IsA("Attachment") then anchor.WorldPosition else anchor.Position
+		local root = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+		if root and (root.Position - position).Magnitude <= prompt.MaxActivationDistance + 2 then
+			self:Open(player, nil, "Glassies")
+		end
+	end)
 end
 
 return Service

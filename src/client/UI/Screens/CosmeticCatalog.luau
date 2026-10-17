@@ -214,7 +214,7 @@ function Catalog:AddTile(def, root, order, unowned, equipped)
 	-- Keep text inside the plaque's flat middle (its pointed ends are ~14% each side).
 	local label = tile:FindFirstChild("Name")
 	label.TextScaled, label.AnchorPoint, label.TextXAlignment = true, Vector2.zero, Enum.TextXAlignment.Center
-	label.Size, label.Position = UDim2.fromScale(0.66, 0.13), UDim2.fromScale(0.17, 0.83)
+	label.Size, label.Position = UDim2.fromScale(0.66, 0.16), UDim2.fromScale(0.17, 0.815) -- taller box = readable text on phones
 	local badge = U.text(
 		tile,
 		"Equipped",

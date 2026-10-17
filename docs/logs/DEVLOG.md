@@ -14,6 +14,16 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Claude — Phone-size UI pass (follow-up)
+Done:
+- Phone check without resizing Studio: a client Play harness moves a screen's children into an 844x390 (and 390x844) frame, using `Dev/UIPreview` fixtures and real profile/kiln data. Reviewed Queue, Roll, Results, Rewards (all 4 tabs), Index, Inventory, Shop Featured. Screens in `docs/testing/phone_size/`.
+- Fixed: queue panel buttons spilled out of the panel at 844x390 (panel now has a 260x150 minimum); Results history rows were shifted up by the portrait helper's centred anchor, which hid the "3 – 2" score and put WIN/LOSS on top of the icons (rows placed from top-left, labels under the icons); roll-card text confirmed clear of the frame after the inset; inventory tile names and the Ownership line given taller boxes.
+- No overlaps found on Rewards, Index and the Shop Featured page at 844x390. Smallest text at that size: tile names ~8px, shop tab labels ~7px, roll-card descriptions ~5px.
+Next:
+- Windows (Inventory, Shop) keep a 16:9 shape, so at 390x844 they shrink to a ~300px-wide letterbox with unreadable text; needs a decision (landscape-only prompt or a portrait layout). Queue/Roll/Results/Rewards/Index still use the older flat panel style. Real device check still wanted.
+Problems / questions for the user:
+- Studio Play kept being stopped by another session mid-test, so the Index/Rewards checks used Play runs of a few minutes each.
+
 ## 2026-10-17 — Claude — Lobby map polish: flyer display, wayfinding, kiln court
 Done:
 - Flyers display rebuilt as four separate ruby hover pads in an arc behind the creator's Flyers stand (Prism Ray, Rocket Skiff, Cloud Cushion at eye level; Skyboard flying high above the stand sign). Duplicate FLYERS sign and platform removed. Play check: no oriented-box overlaps between rides, riders, signs or fences; feet/seat contact matches matches (standing feet on the deck pivot, Cloud Cushion seated). Rider yaw sway 0.22 -> 0.12; the floating example flyer above the Flyers stand is off (`Showcase.FlyerStandExample`), the Finishers stand still cycles finishers.

@@ -165,7 +165,7 @@ function Screen:AddTile(d, root, order, unowned)
 	U.make("UIStroke", count, { Color = require(script.Parent.Parent.Theme).Palette.lead, Thickness = 1.5 })
 	-- Keep text inside the plaque's flat middle (its pointed ends are ~14% each side).
 	local label = tile:FindFirstChild("Name")
-	label.Size, label.Position = UDim2.fromScale(0.66, 0.13), UDim2.fromScale(0.17, 0.83)
+	label.Size, label.Position = UDim2.fromScale(0.66, 0.16), UDim2.fromScale(0.17, 0.815) -- taller box = readable text on phones
 	label.TextXAlignment = Enum.TextXAlignment.Center
 	local installed = RS.Assets.Glassies:FindFirstChild(d.Id) ~= nil
 	tile.Portrait.Visible, tile.Unknown.Visible = installed, not installed
@@ -208,6 +208,19 @@ function Screen:Detail(id)
 	if starLabel then
 		starLabel.Visible = owned ~= nil
 		starLabel.Text = string.rep("★", stars) .. string.rep("☆", 5 - stars)
+	end
+	if not p.Ownership:GetAttribute("Grown") then
+		-- The authored line is only ~9px tall on phone-sized windows; give it room (once).
+		p.Ownership:SetAttribute("Grown", true)
+		local size, position = p.Ownership.Size, p.Ownership.Position
+		local taller = size.Y.Scale * 1.6
+		p.Ownership.Size = UDim2.new(size.X.Scale, size.X.Offset, taller, size.Y.Offset)
+		p.Ownership.Position = UDim2.new(
+			position.X.Scale,
+			position.X.Offset,
+			position.Y.Scale - (taller - size.Y.Scale) / 2,
+			position.Y.Offset
+		)
 	end
 	p.Ownership.Text = if owned then "OWNED • x" .. owned.Count else "UNOWNED • BASE STATS"
 	if owned and not Glassies.isRelease(id) then

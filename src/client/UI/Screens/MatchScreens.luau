@@ -29,6 +29,8 @@ end
 function Screens.queue(data, leave)
 	local self = Screens.new("QueuePanel")
 	local panel = Panel.new(self.Gui, "Queue", UDim2.fromScale(0.55, 0.28), UDim2.fromScale(0.225, 0.54), true)
+	-- Phones: keep room for the title, bar and two 44px buttons.
+	U.make("UISizeConstraint", panel, { MinSize = Vector2.new(260, 150) })
 	self.Title = U.text(
 		panel,
 		"Title",
@@ -172,12 +174,12 @@ function Screens.results(data, replay, lobby)
 	)
 	local history = U.make("Frame", panel, {
 		Name = "History",
-		Size = UDim2.fromScale(0.92, 0.28),
-		Position = UDim2.fromScale(0.04, 0.31),
+		Size = UDim2.fromScale(0.92, 0.3),
+		Position = UDim2.fromScale(0.04, 0.32),
 		BackgroundTransparency = 1,
 	})
 	for _, child in history:GetChildren() do
-		if child.Name:match("^Round%d+_") then
+		if child.Name:match("^Round%d+_") or child.Name:match("^Result%d+") then
 			child:Destroy()
 		end
 	end
@@ -186,8 +188,8 @@ function Screens.results(data, replay, lobby)
 			history,
 			"Side" .. row,
 			if row == 1 then "YOU" else string.upper(data.Names and data.Names[side] or "RIVAL"),
-			UDim2.fromScale(0.12, 0.4),
-			UDim2.fromScale(0, (row - 1) * 0.5),
+			UDim2.fromScale(0.12, 0.2),
+			UDim2.fromScale(0, (row - 1) * 0.55 + 0.08),
 			Theme.Fonts.Caption
 		)
 		for i, round in data.History do
@@ -196,23 +198,27 @@ function Screens.results(data, replay, lobby)
 			local p = Portrait.new(
 				history,
 				round.Picks[side],
-				UDim2.fromScale(0.16, 0.5),
-				UDim2.fromScale(0.13 + (i - 1) * 0.175, (row - 1) * 0.5),
+				UDim2.fromScale(0.16, 0.36),
+				UDim2.fromScale(0.13 + (i - 1) * 0.175, (row - 1) * 0.55),
 				name
 			)
-			p.Position, p.Size = UDim2.fromScale(0.13 + (i - 1) * 0.175, (row - 1) * 0.5), UDim2.fromScale(0.16, 0.5)
+			-- The portrait helper centres its anchor; place from the top-left so rows sit inside the history box.
+			p.AnchorPoint = Vector2.zero
+			p.Position, p.Size = UDim2.fromScale(0.13 + (i - 1) * 0.175, (row - 1) * 0.55), UDim2.fromScale(0.16, 0.36)
+			local template = p:FindFirstChild("Round")
+			if template then
+				template.Visible = false
+			end
 			if row == 1 then
-				local resultLabel = U.text(
-					p,
-					"Round",
+				-- Under the portrait, not on top of it.
+				U.text(
+					history,
+					"Result" .. i,
 					if round.Winner == side then "WIN" else "LOSS",
-					UDim2.fromScale(1, 0.28),
-					UDim2.fromScale(0, 0.72),
+					UDim2.fromScale(0.16, 0.14),
+					UDim2.fromScale(0.13 + (i - 1) * 0.175, 0.37),
 					Theme.Fonts.Caption
 				)
-				resultLabel.Visible = true
-			elseif p:FindFirstChild("Round") then
-				p.Round.Visible = false
 			end
 		end
 	end

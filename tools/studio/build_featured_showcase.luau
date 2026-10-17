@@ -445,7 +445,7 @@ end
 -- ShowcaseController cycles every installed flyer through RiderSpot1..2, one rider each.
 local flyers = model(root, "FlyersDisplay")
 local flyerLook = Vector3.new(14, 0, 5)
-for i, at in { Vector3.new(34.5, 2.6, -1.5), Vector3.new(34.5, 2.6, 10.0) } do
+for i, at in { Vector3.new(34.5, 3.4, -1.5), Vector3.new(34.5, 3.4, 10.0) } do
 	local face = CFrame.lookAt(Vector3.new(at.X, 0, at.Z), flyerLook)
 	anchor(flyers, "RiderSpot" .. i, face + Vector3.yAxis * at.Y)
 	part(

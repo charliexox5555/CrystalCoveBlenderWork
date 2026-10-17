@@ -105,7 +105,6 @@ root:SetAttribute("BuiltBy", "tools/studio/build_lobby_concepts.luau")
 local fountain = model(root, "MarbleFountain")
 local F = CFrame.new(0, 0, 17)
 disc(fountain, "Basin", 9, 0.9, F * CFrame.new(0, 0.45, 0), LEAD, { CanCollide = true, CanQuery = true })
-disc(fountain, "BasinLip", 9.3, 0.18, F * CFrame.new(0, 0.95, 0), hex("amber"))
 glass(
 	fountain,
 	"Water",
@@ -287,8 +286,9 @@ for i, swatch in { "ruby", "amber", "emerald", "aqua", "amethyst" } do
 	)
 end
 local banner = part(gate, "Banner", Vector3.new(7.4, 1.6, 0.3), G * CFrame.new(0, 8.3, -0.6), hex("emerald", 3))
-part(gate, "BannerFrame", Vector3.new(7.9, 2.0, 0.2), G * CFrame.new(0, 8.3, -0.45), LEAD)
+part(gate, "BannerFrame", Vector3.new(7.9, 2.0, 0.2), G * CFrame.new(0, 8.3, -0.75), LEAD)
 label(banner, "ARENAS")
+banner:FindFirstChildOfClass("SurfaceGui").Face = Enum.NormalId.Back -- reads from the spawn side
 for i = 0, 6 do
 	local x = -3.9 + i * 1.3
 	local swatch = ({ "ruby", "amber", "emerald", "aqua", "sapphire", "amethyst", "ruby" })[i + 1]

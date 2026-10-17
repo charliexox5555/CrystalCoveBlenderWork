@@ -65,6 +65,15 @@ Next:
 Problems / questions for the user:
 - Studio Play kept being stopped by another session mid-test, so the Index/Rewards checks used Play runs of a few minutes each.
 
+## 2026-10-17 — Claude — Rotating flyer pads + lobby landmark concepts
+Done:
+- Flyers display replaced by two ruby hover pads either side of the Flyers stand. Each carries the player's avatar through every installed flyer (Skyboard, Cloud Cushion, Rocket Skiff, Prism Ray, Moonlantern Carriage) every 7 s: the old flyer zooms up and away, the new one drops in with a spin and a ring flash (`Showcase.FlyerRotation`). Play check: all five flyers cycled; deck raised to 3.4 so the wide carriage clears the stand base.
+- Concept landmarks built in Studio for the creator to judge (`Workspace.LobbyConcepts`, `tools/studio/build_lobby_concepts.luau`, 71 parts): A) Marble Fountain between spawn and the trophy board, B) giant Pop and Prism Blade glassies on stained-glass plinths at the bridge, C) stained-glass Arena Gate with ARENAS banner and pennants over the north lane.
+Next:
+- Creator picks which concepts to keep; then set dressing (path edging, planters, lamp posts, swaying pennants, floating glass shards) and a recovery .rbxm.
+Problems / questions for the user:
+- Studio's viewport rendered blank to screen capture late in the session, so only the gate concept has a screenshot.
+
 ## 2026-10-17 — Claude — Lobby map polish: flyer display, wayfinding, kiln court
 Done:
 - Flyers display rebuilt as four separate ruby hover pads in an arc behind the creator's Flyers stand (Prism Ray, Rocket Skiff, Cloud Cushion at eye level; Skyboard flying high above the stand sign). Duplicate FLYERS sign and platform removed. Play check: no oriented-box overlaps between rides, riders, signs or fences; feet/seat contact matches matches (standing feet on the deck pivot, Cloud Cushion seated). Rider yaw sway 0.22 -> 0.12; the floating example flyer above the Flyers stand is off (`Showcase.FlyerStandExample`), the Finishers stand still cycles finishers.

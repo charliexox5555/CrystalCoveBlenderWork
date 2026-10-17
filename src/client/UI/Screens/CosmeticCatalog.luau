@@ -9,6 +9,7 @@ local S = require(script.Parent.Parent.Components.StainedGlass)
 local Portrait = require(script.Parent.Parent.Components.CosmeticPortrait)
 local Sections = require(script.Parent.Parent.Components.InventorySections)
 local FX = require(script.Parent.Parent.Parent.Presentation.FinisherFX)
+local FinisherAudio = require(script.Parent.Parent.Parent.Presentation.FinisherAudio)
 local Tuning = require(RS.Shared.Config.Balance).CosmeticPresentation
 local Catalog = {}
 Catalog.__index = Catalog
@@ -108,6 +109,9 @@ function Catalog:PreviewSelected()
 		end
 		local effect =
 			FX.emit(self.World, self.Selected, Vector3.zero, false, self.Portrait.CurrentCamera.CFrame.Rotation)
+		if typeof(effect) == "Instance" then
+			FinisherAudio.preview(effect, self.Selected)
+		end
 		require(script.Parent.Parent.Components.StainedGlass).buttonText(self.Preview, "PREVIEW AGAIN")
 		return effect
 	elseif self.Portrait then

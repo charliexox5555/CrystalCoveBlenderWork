@@ -14,6 +14,16 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Claude — Finisher sound design (handoff step 2)
+Done:
+- `Config/FinisherAudio` gives each of the six finishers its own Rise/Fly/Burst cue timeline; new `Presentation/FinisherAudio` plays them (impact priority, 8-voice cap, 20–70 stud rolloff, impact-only for unwatched arenas, cancels on owner destroy). FightFinisher cues the rise, launch and impact; the inventory preview plays the burst in 2D and stops on replay/close. Old one-sound `Sound` field removed.
+- 15 creator-approved ProSoundEffects sounds added to `Config/Audio` with trims in `AudioCues`; IDs and provenance in docs/audio/SOUND_LIST.md. New config test checks every finisher has charge/launch/burst, one impact cue and only bank sounds (119 tests).
+- Studio Play: all six finishers play every phase with loaded audio; six simultaneous bursts peak at 8 voices; destroying owners and preview replay leave 0 sounds. A real bot finish played charge → whoosh (0.53 s) → shatter (1.2 s) → tinkle → glitter. No client/server errors.
+Next:
+- Creator listens to each finisher (Inventory → Finishers → Preview, and in a match) and flags mix changes; then Lantern Eclipse rework (its cues will be retimed to the new show), then flyer.
+Problems / questions for the user:
+- None blocking. Shop preview uses the same catalog path, so it gets the sounds too.
+
 ## 2026-10-16 — Claude — Hollowlight glassy and Skins removal (handoff step 1)
 Done:
 - New standalone seasonal glassy `hollowlight` (Heavy, Epic stats, outside the 24 roster/crates/bots). Kit **Lantern Seeds** in SignatureTraits/SignatureAttacks: clashes plant up to 3 seeds on the foe; a full set blooms on the pumpkin's turnaround into homing wisps that resolve through FightRules.resolveAbility. Heavy hits knock seeds loose, seeds fade after 6 s. HollowlightTests (4) added.

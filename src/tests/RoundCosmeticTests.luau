@@ -23,6 +23,27 @@ return function(t)
 		t.eq(data.Marbles, 0)
 		t.eq(data.Glassies.hollowlight, nil, "cosmetics never add a combat glassy")
 	end)
+	t.test("every finisher has a timed cue set built only from the sound bank", function()
+		local Config = if script then game.ReplicatedStorage.Shared.Config else nil
+		local C = if Config then require(Config.RoundCosmetics) else require("../shared/Config/RoundCosmetics")
+		local Audio = if Config then require(Config.Audio) else require("../shared/Config/Audio")
+		local Cues = if Config then require(Config.FinisherAudio) else require("../shared/Config/FinisherAudio")
+		for _, def in C.catalog("Finishers") do
+			local cues = Cues.Finishers[def.Id]
+			t.ok(cues, def.Id .. " has cues")
+			local impacts, phases = 0, {}
+			for _, cue in cues do
+				t.ok(Audio[cue.Sound] ~= nil, def.Id .. " uses bank sound " .. cue.Sound)
+				t.ok(cue.Phase == "Rise" or cue.Phase == "Fly" or cue.Phase == "Burst", "known phase")
+				t.ok(cue.At >= 0 and cue.At <= 1.5, "cue lands inside the finisher")
+				t.ok((cue.Volume or 1) <= 1.5, "volume stays limited")
+				impacts += if cue.Priority == 1 then 1 else 0
+				phases[cue.Phase] = true
+			end
+			t.eq(impacts, 1, def.Id .. " has exactly one impact cue")
+			t.ok(phases.Rise and phases.Fly and phases.Burst, def.Id .. " has charge, movement and burst")
+		end
+	end)
 	t.test("seasonal looks never enter ordinary paid or coin crate pools", function()
 		local Crates = if script
 			then require(game.ReplicatedStorage.Shared.CrateRules)

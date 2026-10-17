@@ -38,7 +38,6 @@ C.Finishers = {
 	{
 		Id = "glass_burst",
 		Name = "Crystal Pop",
-		Sound = "ShatterScatter",
 		Matches = 0,
 		Color = "#7EDFF2",
 		Accent = "#FFFFFF",
@@ -47,7 +46,6 @@ C.Finishers = {
 	{
 		Id = "party_burst",
 		Name = "Party Pop",
-		Sound = "BubblePop",
 		Matches = 1,
 		Color = "#F9ADDA",
 		Accent = "#FFE790",
@@ -56,7 +54,6 @@ C.Finishers = {
 	{
 		Id = "bubble_bloom",
 		Name = "Bubble Bloom",
-		Sound = "WaterSlap",
 		Matches = 3,
 		Color = "#80E8DA",
 		Accent = "#A9BBFF",
@@ -65,7 +62,6 @@ C.Finishers = {
 	{
 		Id = "brick_boom",
 		Name = "Block Boom",
-		Sound = "ClinkHeavy",
 		Matches = 5,
 		Color = "#FFAE62",
 		Accent = "#FFF2A0",
@@ -74,7 +70,6 @@ C.Finishers = {
 	{
 		Id = "starfall",
 		Name = "Pocket Nova",
-		Sound = "ChargeGlass",
 		Matches = 10,
 		Color = "#A995FF",
 		Accent = "#FFAFE9",
@@ -100,7 +95,6 @@ C.Seasonal = {
 			Id = "lantern_eclipse",
 			Name = "Lantern Eclipse",
 			Rarity = "Legendary",
-			Sound = "ChargeGlass",
 			Color = "#63EFBC",
 			Accent = "#FFAA55",
 			AssetBundle = "Hollowlight",

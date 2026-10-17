@@ -7,7 +7,7 @@ local Feel = require(RS.Shared.Config.Balance).Feel
 local Finish = {}
 local FinisherFX = require(script.Parent.FinisherFX)
 local Cosmetics = require(RS.Shared.Config.RoundCosmetics)
-local Audio = require(RS.Shared.Config.Audio)
+local FinisherAudio = require(script.Parent.FinisherAudio)
 Finish.__index = Finish
 
 function Finish.new(scene, loser, now)
@@ -47,18 +47,32 @@ function Finish:Avatar()
 	return folder and folder:FindFirstChild("Bot" .. self.Loser)
 end
 
-function Finish:Impact()
-	local scene = self.Scene
-	local finishers = scene.Data.Finishers
+function Finish:Id()
+	local finishers = self.Scene.Data.Finishers
 	local def = Cosmetics.ByCategory.Finishers[finishers and finishers[3 - self.Loser] or "glass_burst"]
 		or Cosmetics.Finishers[1]
-	scene:Sound(Audio[def.Sound], self.Winner.Body)
-	FinisherFX.emit(
-		scene.Root,
-		finishers and finishers[3 - self.Loser] or "glass_burst",
-		self.Target,
-		not scene.Viewing
-	)
+	return def.Id
+end
+
+-- Rise/Fly cues follow the winner; the burst cue sits at the impact point. Off-screen arenas keep
+-- only the impact so distant finishers stay quiet.
+function Finish:Cue(phase, emitter)
+	local scene = self.Scene
+	if not scene.Muted then
+		FinisherAudio.phase(scene.Root, self:Id(), phase, emitter, { Quiet = not scene.Viewing })
+	end
+end
+
+function Finish:Impact()
+	local scene = self.Scene
+	local id = self:Id()
+	local anchor = Instance.new("Part")
+	anchor.Name, anchor.Size, anchor.Transparency = "FinisherAudio", Vector3.one * 0.1, 1
+	anchor.Anchored, anchor.CanCollide, anchor.CanTouch, anchor.CanQuery = true, false, false, false
+	anchor.Position, anchor.Parent = self.Target, scene.Root
+	Debris:AddItem(anchor, Feel.FinisherFallbackSeconds)
+	self:Cue("Burst", anchor)
+	FinisherFX.emit(scene.Root, id, self.Target, not scene.Viewing)
 	local color = self.Winner.Body.Color
 	self.Winner.Trail.Enabled = false
 	self.Winner.Pivot = self.Winner.Model:GetPivot()
@@ -108,10 +122,18 @@ function Finish:Step(now)
 	if t < 0 then
 		return false
 	end
+	if not self.RiseCued then
+		self.RiseCued = true
+		self:Cue("Rise", self.Winner.Body)
+	end
 	local rise = math.clamp(t / Feel.FinisherRiseSeconds, 0, 1)
 	local fly = math.clamp((t - Feel.FinisherRiseSeconds) / Feel.FinisherFlySeconds, 0, 1)
 	local pose = self.Start:Lerp(self.Lift, 1 - (1 - rise) ^ 3)
 	if fly > 0 then
+		if not self.FlyCued then
+			self.FlyCued = true
+			self:Cue("Fly", self.Winner.Body)
+		end
 		self.Winner.Trail.Enabled = true
 		local destination = CFrame.new(self.Target) * self.Lift.Rotation
 		pose = self.Lift:Lerp(destination, fly * fly * fly)

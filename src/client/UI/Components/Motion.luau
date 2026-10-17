@@ -14,11 +14,9 @@ local counters = setmetatable({}, { __mode = "k" })
 
 Motion.Tuning = {
 	WindowFrom = 0.9,
-	WindowOpen = TweenInfo.new(0.24, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+	WindowOpen = TweenInfo.new(0.2, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
 	WindowClose = TweenInfo.new(0.13, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
-	WindowCloseScale = 0.94,
-	DimTransparency = 0.5,
-	DimSeconds = 0.2,
+	WindowCloseScale = 0.92,
 	HoverScale = 1.045,
 	PressScale = 0.94,
 	HoverTween = TweenInfo.new(0.14, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
@@ -270,6 +268,40 @@ local function ambienceOff()
 		end)
 	end
 end
+-- Properties that fade an element out, by class (only the ones that exist on it are tweened).
+local FADE = {
+	Frame = { "BackgroundTransparency" },
+	TextLabel = { "BackgroundTransparency", "TextTransparency", "TextStrokeTransparency" },
+	TextButton = { "BackgroundTransparency", "TextTransparency", "TextStrokeTransparency" },
+	ImageLabel = { "BackgroundTransparency", "ImageTransparency" },
+	ImageButton = { "BackgroundTransparency", "ImageTransparency" },
+	ViewportFrame = { "BackgroundTransparency", "ImageTransparency" },
+	ScrollingFrame = { "BackgroundTransparency" },
+}
+local function fadeOut(panel, info)
+	local count = 0
+	for _, object in panel:GetDescendants() do
+		local props = FADE[object.ClassName]
+		if props then
+			local goal = {}
+			for _, prop in props do
+				if object[prop] < 1 then
+					goal[prop] = 1
+				end
+			end
+			if next(goal) then
+				count += 1
+				if count > 700 then
+					return
+				end
+				TweenService:Create(object, info, goal):Play()
+			end
+		end
+	end
+end
+
+-- Window pop: quick scale-in with a light Back ease; closing scales down a touch while everything fades.
+-- No backdrop dim (Config.Dim = 0); the menu ambience (blur + FOV) is the only background change.
 function Motion.windowIn(gui, panel, instant)
 	local T = Motion.Tuning
 	local scale = panel:FindFirstChild("OpenScale")
@@ -277,19 +309,6 @@ function Motion.windowIn(gui, panel, instant)
 		scale = Instance.new("UIScale")
 		scale.Name, scale.Parent = "OpenScale", panel
 	end
-	local dimGui = Instance.new("ScreenGui")
-	dimGui.Name, dimGui.ResetOnSpawn = gui.Name .. "Dim", false
-	dimGui.DisplayOrder, dimGui.ScreenInsets = gui.DisplayOrder - 1, Enum.ScreenInsets.None
-	dimGui.IgnoreGuiInset = true
-	local dim = Instance.new("Frame")
-	dim.Name, dim.Size, dim.BorderSizePixel = "Dim", UDim2.fromScale(1, 1), 0
-	dim.BackgroundColor3, dim.BackgroundTransparency = Theme.Palette.lead, 1
-	dim.Active = false
-	dim.Parent = dimGui
-	dimGui.Parent = gui.Parent
-	gui.Destroying:Connect(function()
-		dimGui:Destroy()
-	end)
 	local reduced = instant or Motion.reduced()
 	local ambient = ambienceOn()
 	local released = false
@@ -301,17 +320,10 @@ function Motion.windowIn(gui, panel, instant)
 	end
 	gui.Destroying:Connect(release)
 	if reduced then
-		scale.Scale, dim.BackgroundTransparency = 1, 1 - Config.Dim
+		scale.Scale = 1
 	else
 		scale.Scale = T.WindowFrom
 		TweenService:Create(scale, T.WindowOpen, { Scale = 1 }):Play()
-		TweenService
-			:Create(
-				dim,
-				TweenInfo.new(T.DimSeconds, Enum.EasingStyle.Quad),
-				{ BackgroundTransparency = 1 - Config.Dim }
-			)
-			:Play()
 	end
 	if not instant then
 		UiAudio.play("Open")
@@ -325,18 +337,13 @@ function Motion.windowIn(gui, panel, instant)
 			closing = true
 			release()
 			if reduced or Motion.reduced() then
-				dimGui:Destroy()
 				done()
 				return
 			end
 			TweenService:Create(scale, T.WindowClose, { Scale = T.WindowCloseScale }):Play()
-			TweenService:Create(dim, T.WindowClose, { BackgroundTransparency = 1 }):Play()
-			task.delay(T.WindowClose.Time + 0.02, function()
-				dimGui:Destroy()
-				done()
-			end)
+			fadeOut(panel, T.WindowClose)
+			task.delay(T.WindowClose.Time + 0.02, done)
 		end,
-		Dim = dimGui,
 	}
 end
 

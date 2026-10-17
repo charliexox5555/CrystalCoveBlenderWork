@@ -14,6 +14,11 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — No background dim, cleaner window pop
+Done:
+- Dim sources found and removed: the authored full-screen `Backdrop` frames (bgT 0.4) in the CollectionScreen and KilnScreen templates (now cleared in `Window.new`), plus my own transparent dim ScreenGui in `Motion.windowIn` (deleted). Play sampling with Inventory, Index, Rewards, Shop, Queue, Roll, Results open: no full-screen overlay instance, Lighting ColorCorrection/Blur values unchanged; only the UiBlur (8) and -5 FOV remain.
+- Window pop: open 0.9 -> 1 scale, Back out 0.2 s; close 0.13 s scale to 0.92 with every element fading (capped at 700 objects), sampled monotonic with no wobble. BundlePreview untouched.
+
 ## 2026-10-17 — Claude — Bundle preview orbit fix
 Done:
 - Creator: rotation felt off-centre. The orbit now pivots on each subject's measured bounding-box centre (rider + carriage for the bundle/flyer, the hanging glassy, the eclipse area), measured once at rest so bob/sway don't move it. A lens-shift camera keeps that pivot on the centre of the stage area beside the cards (checked: projected pivot = stage-area centre at every angle), distance is fitted to the subject and the stage area so it stays steady, pitch clamped 0.02–0.6 rad, zoom is a 0.55–1.6 multiplier, and focus/reset ease and turn the short way. Lantern post moved out so the carriage no longer blocks the glassy close-up. Screens: `docs/testing/bundle_preview/orbit_*.jpg`.

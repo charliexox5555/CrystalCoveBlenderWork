@@ -64,6 +64,17 @@ function Window.new(name, title, close)
 		end
 	end
 	self.Gui = U.screen(name, 20)
+	-- Menus never darken the world: the authored full-screen "Backdrop" frames go clear (blur + FOV do the work).
+	for _, child in self.Gui:GetChildren() do
+		if
+			child:IsA("Frame")
+			and child.Name ~= "Panel"
+			and child.Size.X.Scale >= 0.95
+			and child.Size.Y.Scale >= 0.9
+		then
+			child.BackgroundTransparency = 1
+		end
+	end
 	self.Panel = Panel.new(self.Gui, "Panel", UDim2.fromScale(0.94, 0.94), UDim2.fromScale(0.03, 0.03))
 	dress(self.Panel, name)
 	self.Panel.Active = true

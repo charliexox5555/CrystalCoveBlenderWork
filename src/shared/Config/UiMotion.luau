@@ -4,8 +4,6 @@ return {
 	-- While a menu is open: gentle client-side blur and a small FOV pull-in. Both restore exactly on close.
 	Blur = { Size = 8, InSeconds = 0.22, OutSeconds = 0.16 },
 	Fov = { Delta = -5, InSeconds = 0.3, OutSeconds = 0.22 },
-	-- Windows only dim their backdrop when this is above 0 (0 = no dim, blur only).
-	Dim = 0,
 	-- Primary (green/amber) buttons get a slow shine sweep and a tiny breathing pulse.
 	Shine = { Every = 3.2, Seconds = 0.7, Width = 0.22, Transparency = 0.55 },
 	Pulse = { Scale = 0.025, Seconds = 1.4 },

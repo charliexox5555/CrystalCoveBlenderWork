@@ -17,6 +17,8 @@ Workspace: `C:/Users/charl/Documents/CrystalCoveBlenderWork`.
 
 Read AGENTS.md, current ROADMAP milestone and last DEVLOG entries first, then this handoff. Latest implementation commit before this documentation handoff: **050d887**; preceding imports/VFX: **dbbc8b6**; refined Blender exports: **0e8aabb**. Branch currently `claude/roblox-game-concepts-0x0lnj`, remote `https://github.com/charliexox5555/CrystalCoveBlenderWork.git`. Pull and inspect status before working.
 
+A concurrent setup-only commit **8544f21** adds `.claude/skills/roblox-vfx/SKILL.md`, `.claude/skills/blender-pipeline/SKILL.md`, `.mcp.json` and `docs/prompts/05_claude_local_setup.md`; it was merged without modifying those files. These are environment references. Use already-working connections where possible; do not blindly reinstall add-ons/plugins, run installation commands or change settings. Verify compatibility with the actual connected Blender/Studio tools. The focused correction/prompt in this handoff takes precedence over the older broad-audit starter prompt.
+
 - The creator explicitly transfers this implementation to Claude; the old AGENTS division assigning Studio implementation to Codex is not a reason to refuse the transfer. Follow the remaining repository practices and applicable permissions.
 - **Do not touch the map, terrain, arenas, global lighting, or creator's unrelated assets/UI.** The creator owns map work.
 - Use MCP/file tools. No desktop takeover, device/security settings changes, publishing, paid products/sales activation, or new schedules. Existing overnight automation was paused at the user's request.

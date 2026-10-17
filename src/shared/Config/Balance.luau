@@ -763,6 +763,11 @@ Balance.CosmeticPresentation = {
 	RideFlapSharpness = 0.6, -- 0 = sine flap, 1 = quick down-stroke, slow recovery
 	RideSwingAngle = 0.22, -- lantern pendulum swing (radians)
 	RideSwingLag = 0.9, -- lantern lags the bob by this phase (radians)
+	RideSpinSpeed = 1.2, -- radians/second for RideMotion=Spin parts (tail star)
+	RidePulseHz = 0.9, -- RideMotion=Pulse parts (hover halo) breathe at this rate
+	RidePulseScale = 0.08,
+	RidePulseFade = 0.25,
+	RideLightFlicker = 0.18, -- lantern light brightness wobble (fraction)
 	FinisherSeconds = 1.2,
 	FinisherParts = 12,
 	FinisherRadius = 7,

@@ -64,7 +64,8 @@ function Controller:Attach(folder)
 		end
 		for _, p in ride:GetDescendants() do
 			if p:IsA("BasePart") and p:GetAttribute("RideMotion") and not entry.Parts[p] then
-				entry.Parts[p] = { Pose = entry.Base:ToObjectSpace(p.CFrame), Size = p.Size }
+				entry.Parts[p] =
+					{ Pose = entry.Base:ToObjectSpace(p.CFrame), Size = p.Size, Transparency = p.Transparency }
 			end
 		end
 	end
@@ -88,12 +89,27 @@ function Controller:Step(time)
 			* CFrame.Angles(math.cos(phase) * T.RideNod, 0, wave * T.RideBank)
 		local near = (camera.CFrame.Position - entry.Base.Position).Magnitude <= T.RideEmitterDistance
 		if entry.EmittersOn ~= near then
-			entry.EmittersOn = near
-			for _, emitter in model:GetDescendants() do
-				if emitter:IsA("ParticleEmitter") and emitter:GetAttribute("RideEmitter") then
-					emitter.Enabled = near
+			-- Particles, trails, beams and lights tagged RideEmitter only run near the camera.
+			entry.EmittersOn, entry.Lights = near, {}
+			for _, effect in model:GetDescendants() do
+				if
+					effect:GetAttribute("RideEmitter")
+					and (
+						effect:IsA("ParticleEmitter")
+						or effect:IsA("Trail")
+						or effect:IsA("Beam")
+						or effect:IsA("Light")
+					)
+				then
+					effect.Enabled = near
+					if effect:IsA("Light") then
+						entry.Lights[effect] = effect:GetAttribute("BaseBrightness") or effect.Brightness
+					end
 				end
 			end
+		end
+		for light, brightness in entry.Lights do
+			light.Brightness = brightness * (1 - T.RideLightFlicker * (0.5 + 0.5 * math.noise(time * 6, light.Range)))
 		end
 		model:PivotTo(entry.Base * motion)
 		local rider = model:FindFirstChild("Rider")
@@ -142,6 +158,12 @@ function Controller:Step(time)
 					* CFrame.new(pivot)
 					* CFrame.Angles(swing, 0, -swing * 0.5)
 					* CFrame.new(-pivot)
+			elseif kind == "Spin" then
+				part.CFrame = entry.Base * motion * rest.Pose * CFrame.Angles(0, 0, time * T.RideSpinSpeed)
+			elseif kind == "Pulse" then
+				local breathe = math.sin(time * T.RidePulseHz * math.pi * 2)
+				part.Size = rest.Size * (1 + T.RidePulseScale * breathe)
+				part.Transparency = (rest.Transparency or 0) + T.RidePulseFade * (0.5 + 0.5 * breathe)
 			else
 				part.Size = rest.Size * Vector3.new(1, 1, 0.8 + math.sin(time * T.RideExhaustSpeed) * 0.2)
 			end

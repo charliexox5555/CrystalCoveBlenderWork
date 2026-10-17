@@ -14,6 +14,23 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — Moonlantern Carriage VFX
+Done:
+- Added the carriage's ride effects to the template via `tools/studio/add_carriage_vfx.luau` (VfxVersion 3):
+  - mint HoverHalo (`RideMotion=Pulse`)
+  - falling stardust
+  - star twinkles on the moon
+  - soft violet/mint MoonAura mist
+  - wingtip ribbons
+  - rising lantern embers
+  - a flickering LanternGlow light
+  - TailStar `RideMotion=Spin`
+  All 11 effects are tagged `RideEmitter`, disabled in the template, and about 90 live particles per ride.
+- `RideController`: RideEmitter gating now covers trails, beams and lights as well as particles, with lantern light flicker, Spin and Pulse motion. New numbers live in `CosmeticPresentation` (RideSpinSpeed, RidePulse*, RideLightFlicker).
+- Studio Play through the real RideController: all 11 effects switch on near the camera, the light flickers and the star spins. The first pass was far too faint at arena scale, so particle sizes and rates were raised before locking v3. 134 tests pass.
+Next:
+- Creator feel check in a match and at the showcase (the showcase clone enables the same RideEmitter effects).
+
 ## 2026-10-17 — Claude — Crate Machines v2 (Finisher/Flyer openings)
 Done:
 - Six original Blender concepts (Spark Forge, Burst Globe, Kaleidoscope; Sky Dome, Cloud Globe, Beacon Tower) rendered to `assets/blender/crates_v2/concepts/`. Creator picked Sky Dome (re-themed purple as the Finisher **Burst Dome**) and **Cloud Globe** for Flyers.

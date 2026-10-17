@@ -104,7 +104,7 @@ function Stage.start(entry)
 			character = bot(folder, "Bot" .. side, pose, side)
 		end
 		local id = entry.Cosmetics and entry.Cosmetics.Rideables[side] or "skyboard"
-		local source = RS.Assets.Rideables:FindFirstChild(id) or RS.Assets.Rideables.skyboard
+		local source = require(script.Parent.AssetCatalog).cosmetic("Rideables", id) or RS.Assets.Rideables.skyboard
 		local ride = source:Clone()
 		ride.Name = "Ride" .. side
 		local top = entry.Arena.Pads[side].Position + Vector3.yAxis * Tuning.RideLift

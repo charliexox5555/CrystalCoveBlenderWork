@@ -132,7 +132,7 @@ function Catalog:Refresh(profile)
 		end
 	end
 	local owned, missing = {}, {}
-	for _, def in C[self.Category] do
+	for _, def in C.catalog(self.Category) do
 		table.insert(if Rules.count(self.Profile, self.Category, def.Id) > 0 then owned else missing, def)
 	end
 	local equipped = (self.Profile.Cosmetics or {})["Equipped" .. self.Category]
@@ -152,14 +152,15 @@ function Catalog:Refresh(profile)
 				"Count",
 				"×" .. Rules.count(self.Profile, self.Category, def.Id),
 				UDim2.fromScale(0.17, 0.12),
-				UDim2.fromScale(0.75, 0.82),
+				UDim2.fromScale(0.78, 0.66),
 				Theme.Fonts.Heading
 			)
 			count.Visible = not section[3]
 			count.TextColor3, count.ZIndex = Theme.Palette.lead, 3
-			tile:FindFirstChild("Name").Size = UDim2.fromScale(0.68, 0.18)
+			tile:FindFirstChild("Name").Size = UDim2.fromScale(0.9, 0.18)
+			tile:FindFirstChild("Name").TextScaled = true
 			tile:FindFirstChild("Name").AnchorPoint = Vector2.zero
-			tile:FindFirstChild("Name").Position = UDim2.fromScale(0.035, 0.8)
+			tile:FindFirstChild("Name").Position = UDim2.fromScale(0.05, 0.8)
 			local badge = U.text(
 				tile,
 				"Equipped",
@@ -202,6 +203,7 @@ function Catalog:Detail(id)
 		string.upper(def.Rarity), Theme.Rarity[def.Rarity].Top, true
 	self.Status.Text = if count > 0
 		then "OWNED: " .. count .. (if self.Equipped then " · EQUIPPED" else "")
+		elseif def.Seasonal then "SEASONAL · NOT AVAILABLE YET"
 		else "UNOWNED · OPEN A CRATE"
 	self.Status.Visible = true
 	local default = self.Equipped and def.Matches == 0
@@ -211,6 +213,7 @@ function Catalog:Detail(id)
 			then "DEFAULT"
 			elseif self.Equipped then "UNEQUIP"
 			elseif self.Owned then "EQUIP"
+			elseif def.Seasonal then "SEASONAL ITEM"
 			else "FIND IN THE SHOP"
 	)
 	self.Equip.Visible = true

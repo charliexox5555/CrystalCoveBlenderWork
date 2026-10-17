@@ -14,6 +14,15 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Codex — Seasonal inventory, saving and match equipment
+Done:
+- Added runtime themed Skins tab using existing authored components; native portraits/counts/equip for Hollowlight Pop, Lantern Skiff and Lantern Eclipse. Long names fit plaques, locked seasonal items remain previewable with truthful unavailable labels. StarterGui/map originals untouched. Seasonal catalog is separate from ordinary crate/bot arrays, so existing Coin/Marble pools/odds stay unchanged; no login grants or sales activation.
+- Additive Skins ownership/count/equipment reconciliation and validated, rate-limited installed-art/ownership equip. Base-glassy check, empty default look, preserved other cosmetics. Server freezes loadout at match creation; matching Pop skin follows selection/aim/countdown/combat/round-end and late-sync descriptions. Stage resolves skiff; finisher catalog resolves sound/animation. No stats, power/hit rules or currency changes.
+- 114 Lune tests, 30 native mock server and 27 isolated UI checks pass. Actual ProfileStore mock save/reload retains all equipment/copy counts. Real MCP clicks confirm Skins/Flyers/Finishers selection, preview/replay and equip/unequip. One normal mock release passes four session assertions, retains Pop/112 max HP, syncs permanent pumpkin mesh to client and keeps avatar at 100 health. Cancelled after inspection, no completion reward. Observer corrected separate MCP require cache and deferred-click timing; temporary scripts/UI removed, Studio Edit/unpublished.
+- Studio+mock-only idempotent CosmeticDev PreviewHollowlight command unlocks test set without real ownership/paid grants. Report/creator command: docs/testing/HOLLOWLIGHT_EQUIPMENT.md. Rojo connected; format/diff checks pass. No Balance/Glassies/Powers changes, simulator rerun, device/map edits or schedules; unrelated changes preserved.
+Next:
+- Creator tests normal-round/phone feel with the documented unlock; bundle storefront/real ownership receipts/product IDs/dates and personalized daily shop remain queued. Existing native art snapshot still applies; this pass is source-only.
+
 ## 2026-10-16 — Codex — Hollowlight installation and animated presentation
 Done:
 - Creator confirms import. Verified Rojo connected to GlassClash; installed all 68 permanent meshes from checked-in manifest, corrected 100× import scale/baked facing, fitted pumpkin to Pop width and normalized skiff deck/nose. Ten wing/vein/rim pieces share hinges; PoseId supports original glider animation. Raw import archived intact under ServerStorage.HollowlightBeforeV2; IDs recorded. Seasonal library remains outside ordinary crates/catalog, sale disabled, fixed 24 roster and base Pop combat definition preserved.

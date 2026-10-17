@@ -81,6 +81,60 @@ C.Finishers = {
 		Description = "Orbiting stars collapse into a tiny colorful supernova.",
 	},
 }
+C.Skins = {}
+-- Seasonal entries are inspectable/equippable but never members of the ordinary crate pools above.
+C.Seasonal = {
+	Skins = {
+		{
+			Id = "hollowlight",
+			Name = "Hollowlight Pop",
+			BaseGlassy = "pop",
+			Rarity = "Legendary",
+			AssetBundle = "Hollowlight",
+			AssetName = "pop_hollowlight",
+			Seasonal = true,
+			Description = "A friendly pumpkin lantern look for Pop. Same stats and pressure power.",
+		},
+	},
+	Rideables = {
+		{
+			Id = "lantern_skiff",
+			Name = "Lantern Skiff",
+			Rarity = "Legendary",
+			AssetBundle = "Hollowlight",
+			AssetName = "lantern_skiff",
+			Seasonal = true,
+			Description = "A moon-skiff with fluttering wings and mint lantern engines.",
+		},
+	},
+	Finishers = {
+		{
+			Id = "lantern_eclipse",
+			Name = "Lantern Eclipse",
+			Rarity = "Legendary",
+			Sound = "ChargeGlass",
+			Color = "#63EFBC",
+			Accent = "#FFAA55",
+			AssetBundle = "Hollowlight",
+			AssetName = "lantern_eclipse",
+			Seasonal = true,
+			Description = "Friendly ghost wisps gather, then burst through a glowing lantern eclipse.",
+		},
+	},
+}
+function C.catalog(category)
+	local out = {}
+	for _, def in C[category] or {} do
+		table.insert(out, def)
+	end
+	for _, def in C.Seasonal[category] or {} do
+		table.insert(out, def)
+	end
+	return out
+end
+function C.default(category)
+	return C[category] and C[category][1] and C[category][1].Id or ""
+end
 local rarities = {
 	skyboard = "Common",
 	cloud_cushion = "Uncommon",
@@ -93,10 +147,10 @@ local rarities = {
 	starfall = "Legendary",
 }
 C.ByCategory = {}
-for _, category in { "Rideables", "Finishers" } do
+for _, category in { "Rideables", "Finishers", "Skins" } do
 	local map = {}
-	for _, def in C[category] do
-		def.Rarity = rarities[def.Id]
+	for _, def in C.catalog(category) do
+		def.Rarity = def.Rarity or rarities[def.Id]
 		map[def.Id] = def
 	end
 	C.ByCategory[category] = map

@@ -4,6 +4,59 @@ local Schema = if script
 	then require(game.ServerScriptService.Server.Data.ProfileSchema)
 	else require("../server/Data/ProfileSchema")
 return function(t)
+	t.test("seasonal cosmetics persist ownership, validate equipment and preserve the base roster", function()
+		local data = Schema.new(0)
+		t.eq(data.Cosmetics.EquippedSkins, "")
+		t.eq(#data.Cosmetics.Skins, 0)
+		for category, id in { Skins = "hollowlight", Rideables = "lantern_skiff", Finishers = "lantern_eclipse" } do
+			t.eq(Rules.equip(data, category, id), false)
+			Rules.grant(data, category, id)
+			t.eq(Rules.equip(data, category, id), true)
+		end
+		local frozen = Rules.loadout(data)
+		t.eq(frozen.Skins, "hollowlight")
+		local saved = Schema.copy(data)
+		Schema.reconcile(saved, 1)
+		t.eq(saved.Cosmetics.EquippedSkins, "hollowlight")
+		t.eq(saved.Cosmetics.Counts.Finishers.lantern_eclipse, 1)
+		t.eq(Rules.equip(data, "Skins", ""), true)
+		t.eq(data.Cosmetics.EquippedSkins, "")
+		t.eq(frozen.Skins, "hollowlight", "current match stays frozen")
+		t.eq(Rules.equip(data, "Finishers", "hollowlight"), false)
+		data.Glassies.pop = nil
+		t.eq(Rules.equip(data, "Skins", "hollowlight"), false)
+		t.eq(data.Coins, 0)
+		t.eq(data.Marbles, 0)
+		t.eq(data.Glassies.hollowlight, nil, "a skin never adds a combat glassy")
+	end)
+	t.test("seasonal looks never enter ordinary paid or coin crate pools", function()
+		local Crates = if script
+			then require(game.ReplicatedStorage.Shared.CrateRules)
+			else require("../shared/CrateRules")
+		for _, category in { "Rideables", "Finishers" } do
+			for _, currency in { "Coins", "Marbles" } do
+				for _, entry in Crates.odds(category, currency) do
+					t.ok(entry.Id ~= "lantern_skiff" and entry.Id ~= "lantern_eclipse")
+				end
+			end
+		end
+		t.eq(#Crates.odds("Skins", "Marbles"), 0)
+	end)
+	t.test("seasonal legacy profiles repair malformed counts without granting free items", function()
+		local data = Schema.new(0)
+		data.Cosmetics.Skins = { "hollowlight" }
+		data.Cosmetics.Counts.Skins.hollowlight = 0 / 0
+		data.Cosmetics.EquippedSkins = "hollowlight"
+		Schema.reconcile(data, 1)
+		t.eq(data.Cosmetics.Counts.Skins.hollowlight, 1)
+		local other = Schema.new(0)
+		other.Cosmetics.Skins = false
+		other.Cosmetics.Counts.Skins = "bad"
+		other.Cosmetics.EquippedSkins = "hollowlight"
+		Schema.reconcile(other, 1)
+		t.eq(other.Cosmetics.EquippedSkins, "")
+		t.eq(Rules.count(other, "Skins", "hollowlight"), 0)
+	end)
 	t.test("new and legacy profiles own only free starter round cosmetics", function()
 		local data = Schema.new(1)
 		t.eq(data.Cosmetics.EquippedRideables, "skyboard")

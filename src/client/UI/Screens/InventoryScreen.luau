@@ -20,8 +20,15 @@ function Screen.new(profile, close)
 		cosmeticPage.Visible = false
 	end
 	self.Tab = "Glassies"
-	for _, name in { "Glassies", "Finishers", "Flyers" } do
+	local tabs = self.Window.Panel.Tabs
+	if not tabs:FindFirstChild("SkinsTab") then
+		local skinTab = tabs.GlassiesTab:Clone()
+		skinTab.Name, skinTab.Parent = "SkinsTab", tabs
+		S.buttonText(skinTab, "Skins")
+	end
+	for order, name in { "Glassies", "Skins", "Finishers", "Flyers" } do
 		local tab = self.Window.Panel.Tabs[name .. "Tab"]
+		tab.LayoutOrder, tab.Size = order, UDim2.fromScale((1 - tabs.UIListLayout.Padding.Scale * 3) / 4, 1)
 		tab.Active, tab.Interactable, tab.Selectable = true, true, true
 		self.Window:Connect(tab, function()
 			self:SelectTab(name)
@@ -71,7 +78,7 @@ function Screen:Refresh(profile)
 end
 
 function Screen:SelectTab(name)
-	local tints = { Glassies = "aqua", Flyers = "ruby", Finishers = "amethyst" }
+	local tints = { Glassies = "aqua", Skins = "amber", Flyers = "ruby", Finishers = "amethyst" }
 	if not tints[name] then
 		return
 	end
@@ -89,7 +96,7 @@ function Screen:SelectTab(name)
 	self.Grid.Visible, self.Info.Visible = name == "Glassies", name == "Glassies"
 	if name ~= "Glassies" then
 		self.CosmeticView =
-			Catalog.new(self.Window.Content, self.Profile, if name == "Flyers" then "Rideables" else "Finishers")
+			Catalog.new(self.Window.Content, self.Profile, if name == "Flyers" then "Rideables" else name)
 	end
 	self.Window.Gui:SetAttribute("InventoryCategory", name)
 end
@@ -117,7 +124,14 @@ function Screen:AddTile(d, root, order, unowned)
 	tile.Portrait.Visible, tile.Unknown.Visible = installed, not installed
 	tile:SetAttribute("ArtworkPending", not installed)
 	if installed then
-		Portrait.new(tile, d.Id, tile.Portrait.Size, tile.Portrait.Position)
+		Portrait.new(
+			tile,
+			d.Id,
+			tile.Portrait.Size,
+			tile.Portrait.Position,
+			nil,
+			(self.Profile.Cosmetics or {}).EquippedSkins
+		)
 	end
 	S.bindSlices(tile)
 	table.insert(self.Tiles, tile)
@@ -160,7 +174,14 @@ function Screen:Detail(id)
 	p.InfoPortrait.Visible, p.UnknownPortrait.Visible, p.ArtworkPending.Visible =
 		installed, not installed, not installed
 	if installed then
-		self.DetailPortrait = Portrait.new(p, id, p.InfoPortrait.Size, p.InfoPortrait.Position, "InfoPortrait")
+		self.DetailPortrait = Portrait.new(
+			p,
+			id,
+			p.InfoPortrait.Size,
+			p.InfoPortrait.Position,
+			"InfoPortrait",
+			(self.Profile.Cosmetics or {}).EquippedSkins
+		)
 	end
 	p.PassiveName.Text = passive.Name
 	p.PassiveDescription.Text = passive.Description

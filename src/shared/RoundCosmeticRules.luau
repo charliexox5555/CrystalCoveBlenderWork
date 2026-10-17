@@ -8,7 +8,7 @@ end
 function Rules.reconcile(data)
 	data.Cosmetics = if type(data.Cosmetics) == "table" then data.Cosmetics else {}
 	data.Cosmetics.Counts = if type(data.Cosmetics.Counts) == "table" then data.Cosmetics.Counts else {}
-	for _, category in { "Rideables", "Finishers" } do
+	for _, category in { "Rideables", "Finishers", "Skins" } do
 		local owned = data.Cosmetics[category]
 		if type(owned) ~= "table" then
 			owned = {}
@@ -19,7 +19,7 @@ function Rules.reconcile(data)
 			counts = {}
 			data.Cosmetics.Counts[category] = counts
 		end
-		for _, def in C[category] do
+		for _, def in C.catalog(category) do
 			local count = counts[def.Id]
 			count = if type(count) == "number"
 					and count == count
@@ -37,7 +37,7 @@ function Rules.reconcile(data)
 		local key = "Equipped" .. category
 		local id = data.Cosmetics[key]
 		if not C.ByCategory[category][id] or not table.find(owned, id) then
-			data.Cosmetics[key] = C[category][1].Id
+			data.Cosmetics[key] = C.default(category)
 		end
 	end
 	return data.Cosmetics
@@ -69,13 +69,27 @@ function Rules.equip(data, category, id)
 	end
 	local cosmetics = Rules.reconcile(data)
 	if id == "" then
-		cosmetics["Equipped" .. category] = C[category][1].Id
+		cosmetics["Equipped" .. category] = C.default(category)
 		return true
 	end
 	if not table.find(cosmetics[category], id) then
 		return false
 	end
+	local def = C.ByCategory[category][id]
+	if def.BaseGlassy and (not data.Glassies or not data.Glassies[def.BaseGlassy]) then
+		return false
+	end
 	cosmetics["Equipped" .. category] = id
 	return true
+end
+-- Freeze a validated cosmetic loadout at match creation, independently of combat setup/stats.
+function Rules.loadout(data)
+	local cosmetics = Rules.reconcile(data)
+	local skin = cosmetics.EquippedSkins
+	local def = C.ByCategory.Skins[skin]
+	if def and (not data.Glassies or not data.Glassies[def.BaseGlassy]) then
+		skin = ""
+	end
+	return { Rideables = cosmetics.EquippedRideables, Finishers = cosmetics.EquippedFinishers, Skins = skin }
 end
 return Rules

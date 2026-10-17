@@ -36,8 +36,19 @@ function Portrait.new(parent, category, id, size, position, name)
 	world.Parent = viewport
 	local folder = RS.Assets:FindFirstChild(if category == "Rideables" then "Rideables" else "RoundFinishers")
 	local source = folder and folder:FindFirstChild(id)
+	local config = require(RS.Shared.Config.RoundCosmetics)
+	local def = config.ByCategory[category] and config.ByCategory[category][id]
+	if def and def.AssetBundle then
+		local seasonal = RS.Assets:FindFirstChild("Seasonal")
+		local bundle = seasonal and seasonal:FindFirstChild(def.AssetBundle)
+		source = bundle and bundle:FindFirstChild(def.AssetName)
+	end
 	if source then
-		source:Clone().Parent = world
+		local model = source:Clone()
+		if category == "Skins" and model:FindFirstChild("Shards") then
+			model.Shards:Destroy()
+		end
+		model.Parent = world
 	end
 	local rotation =
 		CFrame.lookAt(if category == "Rideables" then Vector3.new(6, 5, 9) else Vector3.new(4, 2, 10), Vector3.zero)

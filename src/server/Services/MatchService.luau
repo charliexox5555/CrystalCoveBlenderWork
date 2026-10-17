@@ -49,6 +49,7 @@ function Service:Meta(entry)
 		StageName = entry.Stage and entry.Stage.Folder.Name,
 		Rideables = entry.Cosmetics and entry.Cosmetics.Rideables,
 		Finishers = entry.Cosmetics and entry.Cosmetics.Finishers,
+		Skins = entry.Cosmetics and entry.Cosmetics.Skins,
 	}
 	for side = 1, 2 do
 		local player = entry.Players[side]
@@ -73,6 +74,7 @@ function Service:Offer(entry, side, message, reelAction)
 		Deadline = entry.Runner.Deadline,
 		Offers = state.Offers,
 		Collection = collection,
+		Skin = entry.Cosmetics and entry.Cosmetics.Skins[side],
 		HandRevision = state.HandRevision,
 		ReelAction = reelAction,
 		SelectionRevision = state.SelectionRevision,
@@ -119,13 +121,14 @@ function Service:StartMatch(arena, players, now, spectate)
 		Used = { {}, {} },
 		BotNames = {},
 		Finished = false,
-		Cosmetics = { Rideables = {}, Finishers = {} },
+		Cosmetics = { Rideables = {}, Finishers = {}, Skins = {} },
 	}
 	for side = 1, 2 do
 		local data = players[side] and self.Services.DataService and self.Services.DataService:Get(players[side])
-		local cosmetics = data and CosmeticRules.reconcile(data)
-		entry.Cosmetics.Rideables[side] = cosmetics and cosmetics.EquippedRideables or "skyboard"
-		entry.Cosmetics.Finishers[side] = cosmetics and cosmetics.EquippedFinishers or "glass_burst"
+		local cosmetics = data and CosmeticRules.loadout(data)
+		entry.Cosmetics.Rideables[side] = cosmetics and cosmetics.Rideables or "skyboard"
+		entry.Cosmetics.Finishers[side] = cosmetics and cosmetics.Finishers or "glass_burst"
+		entry.Cosmetics.Skins[side] = cosmetics and cosmetics.Skins or ""
 		if not players[side] then
 			-- Visual variety without consuming or changing the gameplay RNG stream.
 			entry.Cosmetics.Rideables[side] = CosmeticConfig.Rideables[(seed + side) % #CosmeticConfig.Rideables + 1].Id

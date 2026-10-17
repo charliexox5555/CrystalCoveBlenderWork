@@ -4,6 +4,7 @@ local Remotes = require(RS.Shared.Remotes)
 local Rules = require(RS.Shared.RoundCosmeticRules)
 local Balance = require(RS.Shared.Config.Balance)
 local Guard = require(script.Parent.Parent.Util.RemoteGuard)
+local Assets = require(script.Parent.Parent.Util.AssetCatalog)
 local Service = {}
 function Service:Init(services)
 	self.Services, self.Guard = services, Guard.new()
@@ -16,10 +17,11 @@ function Service:Equip(player, category, id)
 	if not data then
 		return false
 	end
-	local ok = Rules.equip(data, category, id)
+	local installed = id == "" or Assets.cosmetic(category, id) ~= nil
+	local ok = installed and Rules.equip(data, category, id)
 	Remotes.CosmeticResult:FireClient(player, {
 		Ok = ok,
-		Message = if ok then "Equipped for your next match" else "Open a crate to collect this cosmetic",
+		Message = if ok then "Equipped for your next match" else "Collect this item before equipping it",
 	})
 	if ok then
 		self.Services.DataService:Sync(player)
@@ -37,6 +39,25 @@ function Service:Start()
 		local dev = Instance.new("BindableFunction")
 		dev.Name, dev.Parent = "CosmeticDev", game.ServerStorage
 		dev.OnInvoke = function(command, player, category, id)
+			if command == "PreviewHollowlight" and self.Services.DataService.Mock then
+				local data = self.Services.DataService:Get(player)
+				if not data then
+					return false
+				end
+				local set = { Skins = "hollowlight", Rideables = "lantern_skiff", Finishers = "lantern_eclipse" }
+				for key, item in set do
+					if not Assets.cosmetic(key, item) then
+						return false
+					end
+				end
+				for key, item in set do
+					if Rules.count(data, key, item) == 0 then
+						Rules.grant(data, key, item)
+					end
+				end
+				self.Services.DataService:Sync(player)
+				return true
+			end
 			if command == "Equip" then
 				return self:Equip(player, category, id)
 			end

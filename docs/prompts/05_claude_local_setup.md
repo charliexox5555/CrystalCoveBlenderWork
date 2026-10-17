@@ -20,10 +20,10 @@ Paste this after setup:
 
 ---
 
-You're taking over Glass Clash from Codex, focusing on **visual effects and game feel**. You have the Roblox Studio MCP and the Blender MCP connected.
+You're taking over Glass Clash from Codex, focusing on **visual effects, finishers and sound**. You have the Roblox Studio MCP and the Blender MCP connected.
 
-1. `git pull`. Read `AGENTS.md`, Codex's handoff (newest file in `docs/logs/`, e.g. a HANDOFF or the latest `DEVLOG.md` / `MORNING.md` entries), `docs/ROADMAP.md`, `docs/vfx/VFX_LIST.md`, GAME_DESIGN section 9, and the skills `roblox-vfx` and `blender-pipeline`.
-2. Check the tools: in Studio run `require(game.ServerStorage.Tests.RunAll)()` through the MCP; in Blender load `tools/blender/glassclash_blender.py` and run `self_check()`. Report anything broken before changing code.
-3. **VFX audit:** run several bot-vs-bot fights (fixed seeds) on Arena 1 and watch every moment: release, hits (small/big/crit/smash), each passive, each power (including misses), overtime, the final blow and shatter, heart pop, results, Kiln reveal, lobby idle. List what looks flat, unclear or missing, ranked by impact on fun. Show me the list before big changes.
-4. Then improve in that order, one effect at a time: implement → trigger it in Studio → watch/screenshot → tune → tests → commit. Make VFX textures/flipbooks in Blender where needed (`assets/vfx/`), and tell me which files to bulk-import into Studio.
-5. Respect the rules: client-only effects, pooled and cleaned up, mobile budget, numbers in `Balance.Feel`, kid-friendly, Stained Glass palette, no Toolbox assets without reading them. Keep `docs/vfx/VFX_LIST.md`, DEVLOG and ROADMAP updated, commit and push as you go.
+1. `git pull`. Read `AGENTS.md`, then **`docs/HANDOFF_CLAUDE_HALLOWEEN_REWORK.md` (Codex's handoff: it is the task and it overrides older prompts)**, the current ROADMAP milestone, the last DEVLOG entries, `docs/vfx/VFX_LIST.md`, and the skills `roblox-vfx` and `blender-pipeline`.
+2. Check the connections without reinstalling anything: confirm the connected Studio place is **Glass Clash** (not Cookie Inc) and Rojo is connected; run `require(game.ServerStorage.Tests.RunAll)()`; in Blender load `tools/blender/glassclash_blender.py` and run `self_check()`. Report anything broken before changing code.
+3. Follow the handoff's priorities: the pumpkin as its own glassy with its own powers (remove the Skins tab), a much cooler flyer, much cooler finishers, and sound effects for every finisher. Show me a short plan first.
+4. Work one effect at a time: implement → trigger it in Studio → short clip or screenshot → tune → focused tests → commit. Make geometry and textures in Blender (`assets/vfx/`, glassy folders) and tell me exactly which files to import into Studio.
+5. Respect the handoff's limits (don't touch the map, arenas, lighting or my unrelated files; don't stage the dirty files it lists; no publishing or paid activation) and the usual rules (client-only effects, pooled and cleaned up, mobile budget, numbers in `Balance.Feel`, kid-friendly, Stained Glass palette). Keep usage modest: focused checks, no broad suites unless needed. Update DEVLOG and ROADMAP, commit and push as you go.

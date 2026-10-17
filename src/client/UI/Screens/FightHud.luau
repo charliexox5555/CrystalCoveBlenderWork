@@ -5,89 +5,80 @@ local UIS = game:GetService("UserInputService")
 local Balance = require(RS.Shared.Config.Balance)
 local Theme = require(script.Parent.Parent.Theme)
 local U = require(script.Parent.Parent.Components.Util)
-local Panel = require(script.Parent.Parent.Components.Panel)
-local Button = require(script.Parent.Parent.Components.Button)
+local S = require(script.Parent.Parent.Components.StainedGlass)
+local Kit = require(script.Parent.Parent.Components.MatchKit)
 local Hud = {}
 Hud.__index = Hud
 
 -- `stop` is given only when spectating: the HUD then hides aim controls and offers STOP WATCHING.
+-- Everything is built here in the Stained Glass style and floats over the fight: no panels hide the arena.
 function Hud.new(data, maxima, lock, stop)
 	local self = setmetatable({ Maxima = maxima }, Hud)
 	self.Spectator = stop ~= nil
 	self.Hearts = data.Hearts or { Balance.Match.Hearts, Balance.Match.Hearts }
-	self.Gui = U.screen("FightHud", 20)
+	self.Gui = Kit.gui("FightHud", 20)
 	self.Gui:SetAttribute("FightId", data.Id)
 	self.Billboards = require(script.Parent.FightBillboards).new(data)
-	self.Headline = U.text(
+	-- Countdown / "PULL BACK" / "LET GO!"
+	self.Headline = Kit.label(
 		self.Gui,
 		"Headline",
 		"PULL BACK",
-		UDim2.fromScale(0.7, 0.1),
-		UDim2.fromScale(0.15, 0.24),
-		Theme.Fonts.Heading
+		UDim2.fromScale(0.7, 0.2),
+		UDim2.fromScale(0.15, 0.16),
+		{ MaxSize = 150, Outline = 4 }
 	)
-	self.Headline.UITextSizeConstraint.MaxTextSize = Theme.TextSize.Title
-	self.Instruction = U.text(
+	self.Instruction = Kit.label(
 		self.Gui,
 		"Instruction",
 		"Drag to pull • aim for gold",
-		UDim2.fromScale(0.7, 0.07),
-		UDim2.fromScale(0.15, 0.83),
-		Theme.Fonts.Caption
+		UDim2.fromScale(0.7, 0.06),
+		UDim2.fromScale(0.15, 0.84),
+		{ Font = Theme.Fonts.Body, MaxSize = Theme.TextSize.Label, Outline = 2 }
 	)
-	self.AimPanel = Panel.new(self.Gui, "AimMeter", UDim2.fromScale(0.5, 0.1), UDim2.fromScale(0.07, 0.7), true)
-	local rail = U.make("Frame", self.AimPanel, {
-		Name = "Rail",
-		Size = UDim2.fromScale(0.9, 0.18),
-		Position = UDim2.fromScale(0.05, 0.5),
-		BackgroundColor3 = Theme.Colors.Inset,
-		BorderSizePixel = 0,
-	})
-	U.corner(rail, Theme.Radius.Bar)
+	-- Aim meter: a glass rail with the gold sweet spot and a white marker.
+	self.AimPanel = Kit.frame(self.Gui, "AimMeter", UDim2.fromScale(0.5, 0.13), UDim2.fromScale(0.05, 0.7))
+	self.AimText = Kit.label(
+		self.AimPanel,
+		"Aim",
+		"PULL",
+		UDim2.fromScale(0.94, 0.42),
+		UDim2.fromScale(0.03, 0),
+		{ Font = Theme.Fonts.Body, MaxSize = Theme.TextSize.Label, Outline = 2 }
+	)
+	local rail = Instance.new("ImageLabel")
+	rail.Name, rail.BackgroundTransparency = "Rail", 1
+	rail.Size, rail.Position, rail.Parent = UDim2.fromScale(0.94, 0.3), UDim2.fromScale(0.03, 0.56), self.AimPanel
+	S.setAsset(rail, "bar/stat_track")
 	local m = Balance.Motion
 	local lo = (data.SweetSpot - m.SweetSpotWidth - m.AimMin) / (m.AimMax - m.AimMin)
-	local band = U.make("Frame", rail, {
-		Name = "PerfectBand",
-		Size = UDim2.fromScale(2 * m.SweetSpotWidth / (m.AimMax - m.AimMin), 2),
-		Position = UDim2.fromScale(lo, -0.5),
-		BackgroundColor3 = Theme.Colors.Highlight,
-		BorderSizePixel = 0,
-	})
-	-- The band is game state (this round's sweet spot), so it must move even when the template authored a
-	-- placement. Keep any authored vertical styling; only the horizontal span follows the round.
-	band.Position = UDim2.new(lo, 0, band.Position.Y.Scale, band.Position.Y.Offset)
-	band.Size = UDim2.new(2 * m.SweetSpotWidth / (m.AimMax - m.AimMin), 0, band.Size.Y.Scale, band.Size.Y.Offset)
-	self.Marker = U.make("Frame", rail, {
-		Name = "Marker",
-		AnchorPoint = Vector2.new(0.5, 0.5),
-		Size = UDim2.fromScale(0.012, 3),
-		Position = UDim2.fromScale(0.5, 0.5),
-		BackgroundColor3 = Theme.Colors.Text,
-		BorderSizePixel = 0,
-		ZIndex = 3,
-	})
-	self.AimText = U.text(self.AimPanel, "Aim", "PULL", UDim2.fromScale(0.9, 0.36), UDim2.fromScale(0.05, 0.02))
-	self.Lock = Button.new(self.Gui, "Lock", "LOCK", "Green", UDim2.fromScale(0.23, 0.13), UDim2.fromScale(0.69, 0.69))
-	U.make("UISizeConstraint", self.Lock, { MinSize = Vector2.new(80, 44) })
-	self.LockConnection = self.Lock.Activated:Connect(lock)
+	local band = Instance.new("ImageLabel")
+	band.Name, band.BackgroundTransparency, band.ZIndex = "PerfectBand", 1, 2
+	band.Size = UDim2.fromScale(2 * m.SweetSpotWidth / (m.AimMax - m.AimMin), 1)
+	band.Position, band.Parent = UDim2.fromScale(lo, 0), rail
+	S.setAsset(band, "bar/stat_fill_amber")
+	self.Marker = Instance.new("Frame")
+	self.Marker.Name, self.Marker.AnchorPoint, self.Marker.BorderSizePixel = "Marker", Vector2.new(0.5, 0.5), 0
+	self.Marker.Size, self.Marker.Position = UDim2.new(0, 5, 1.9, 0), UDim2.fromScale(0.5, 0.5)
+	self.Marker.BackgroundColor3, self.Marker.ZIndex, self.Marker.Parent = Theme.Colors.Text, 3, rail
+	Kit.outline(self.Marker, 1.5)
+	self.Lock = Kit.gem(self.Gui, "Lock", "LOCK", "emerald", UDim2.fromScale(0.26, 0.15), UDim2.fromScale(0.79, 0.77))
+	self.LockConnection = self.Lock.Activated:Connect(function()
+		lock()
+		-- One press per round: grey it out until the next aiming phase.
+		Kit.enable(self.Lock, false)
+	end)
 	if stop then
-		self.Stop = Button.new(
+		self.Stop = Kit.gem(
 			self.Gui,
 			"StopWatching",
 			"STOP WATCHING",
-			"Red",
-			UDim2.fromScale(0.26, 0.1),
-			UDim2.fromScale(0.5, 0.98),
-			Vector2.new(0.5, 1) -- bottom-anchored so the 44 px minimum grows upward on short phones
+			"ruby",
+			UDim2.fromScale(0.28, 0.11),
+			UDim2.fromScale(0.5, 0.92)
 		)
-		self.Stop.Visible = true
-		U.make("UISizeConstraint", self.Stop, { MinSize = Vector2.new(120, 44) })
 		self.StopConnection = self.Stop.Activated:Connect(stop)
-	elseif self.Gui:FindFirstChild("StopWatching") then
-		self.Gui.StopWatching.Visible = false
 	end
-	self.PowerBanner = self.Gui.PowerBanner
-	self.PowerBanner.Visible = false
 	self.BannerSerial = 0
 	self:Update({ Hp = maxima })
 	return self
@@ -110,6 +101,11 @@ function Hud:Phase(phase, text)
 	self.Gui:SetAttribute("Phase", phase)
 	local aiming = phase == "Aiming" and not self.Spectator
 	self.AimPanel.Visible, self.Lock.Visible = aiming, aiming
+	if aiming and phase ~= self.LastPhase then
+		Kit.enable(self.Lock, true)
+		S.buttonText(self.Lock, "LOCK")
+	end
+	self.LastPhase = phase
 	self.Headline.Text = if phase == "Fighting" then "" else text or ""
 	if self.Stop then
 		self.Stop.Visible = phase ~= "Fighting"

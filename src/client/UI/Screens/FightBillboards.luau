@@ -2,6 +2,8 @@ local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
 local Glassies = require(RS.Shared.Config.Glassies)
 local S = require(script.Parent.Parent.Components.StainedGlass)
+local Kit = require(script.Parent.Parent.Components.MatchKit)
+local Theme = require(script.Parent.Parent.Theme)
 local TweenService = game:GetService("TweenService")
 local Debris = game:GetService("Debris")
 local Feel = require(RS.Shared.Config.Balance).Feel
@@ -16,6 +18,13 @@ function Billboards.new(data)
 		gui.LightInfluence = 0
 		gui.Body.OwnerName.Text = data.Names and data.Names[side] or (if side == 1 then "YOU" else "BOT")
 		S.tag(gui.Body.GlassyTag, d.Name, S.Types[d.Type])
+		-- The name wears its arena side's colour (matches the queue pad glow); the HP line gets the same ink outline.
+		gui.Body.OwnerName.TextColor3 = Theme.Sides[side]
+		local amount = gui.Body:FindFirstChild("HpAmount")
+		if amount then
+			amount.FontFace, amount.TextColor3 = Theme.Fonts.Body, Theme.Palette.milkLight
+			Kit.outline(amount, 1.5)
+		end
 		local player = data.PlayerIds and Players:GetPlayerByUserId(data.PlayerIds[side])
 		local head = player and player.Character and player.Character:FindFirstChild("Head")
 		local position = if data.AvatarPositions

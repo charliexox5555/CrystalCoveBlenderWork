@@ -14,6 +14,22 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — Match UI revamp: Stained Glass selection, queue camera, Marble spends, Pick Any confirm
+Done:
+- Selection (`MatchSelection`) is built in code with no backing frame: title with a gold timer, two player chips with heart icons, three tall cards, and a bottom row (PICK ANY, Marble wallet, REROLL, ODDS) all float over the arena. The arena boards are hidden while choosing. Place-authored RollScreen/QueuePanel/FightHud/RoundEnd/ResultsScreen templates are no longer used (their children are cleared on open); `tools/studio/*match_selection*` scripts that index them are stale.
+- New `Presentation/MatchCamera`: while queued or choosing, the camera holds the fight's resting arena-middle shot (same side/facing math as `FightService:Geometry`), then hands the saved normal camera to `FightView.EnterView`, so queue -> selection -> aiming never jumps. `MatchController` starts it on Queue/Rolling and stops it on QueueLeft/Result/CharacterRemoving (also re-enables movement on QueueLeft, per the arena-queue contract).
+- Queue panel: LEAVE (big red) fires `LeaveQueue`, INVITE FRIEND, bot countdown and bar; the world board already shows the title.
+- Marbles: PICK ANY / REROLL buttons show the Marble icon and cost (FREE when free), the wallet plaque counts down with the icon, insufficient funds shows "Need [icon] N more Marbles" with a wallet bump and the Error cue, and a spend floats "-[icon] N" and plays Success.
+- Pick Any: tiles open `PickAnyConfirm` (portrait, name, "Costs [icon] N Marbles" or FREE, YES/NO); nothing is sent until YES. The list itself is a `Window` ("PICK ANY"/"REROLL ODDS").
+- FightHud rebuilt in code (huge countdown, glass aim rail with gold sweet spot, LOCK/STOP WATCHING gem buttons, LOCK greys out after pressing); FightBillboards names use the arena side colours; RoundEnd banner and Results pane restyled (UIPreview only; the live game has no results overlay).
+- New shared pieces: `Components/MatchKit` (gem buttons with cost chips, marble line/chip, hearts, tags, pop in/out) and `PickAnyConfirm`; `HandRoll` now takes a card factory instead of cloning a template.
+- Verified in Studio Play (mock profile, bot match with Hold): queue camera, real click on LEAVE restores Custom camera/FOV 70, selection, reel reroll (30 -> 27 -> 24 Marbles), need-Marbles message, real clicks on Pick Any tile -> NO (nothing sent) and -> YES (Glass Dragon locked in), aim HUD, countdown, results/round-end previews. Screens: `docs/testing/match_ui/`. Lune 137 passed.
+Next:
+- Creator feel check on phone landscape (card text is small there); the spend float and paid-confirm Marble layout were checked visually only by forcing the values.
+- Unverified: spectator view (STOP WATCHING) and a Reroll spend float after the final fix (the Offers-before-wallet ordering fix was added after the last Play run).
+Problems / questions for the user:
+- None blocking.
+
 ## 2026-10-17 — Claude — Locked arena queue, VS board, win-100 rewards
 Done:
 - `ArenaService` rewritten: queue by a "Join Battle" ProximityPrompt on each pad (key E, hidden while that side is taken or the arena is busy); stepping on pads no longer queues. Queueing snaps the avatar onto its pad facing the other pad and locks it (anchored, WalkSpeed/Jump 0, no AutoRotate; `MatchStage.lock/unlock`) through selection and fight. `LeaveQueue` leaves the queue or forfeits a live match; a reset does the same. Every path unlocks (leave, reset, match end, player leaving). Only arenas under `workspace` are used now (old lobby backups in ServerStorage carry the same tags).

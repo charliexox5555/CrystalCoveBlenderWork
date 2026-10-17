@@ -8,6 +8,7 @@ local Screens = require(script.Parent.Parent.UI.Screens.MatchScreens)
 local U = require(script.Parent.Parent.UI.Components.Util)
 local Motion = require(script.Parent.Parent.UI.Components.Motion)
 local Theme = require(script.Parent.Parent.UI.Theme)
+local MatchCamera = require(script.Parent.Parent.Presentation.MatchCamera)
 local Controller = {}
 
 function Controller:Init(controllers)
@@ -78,12 +79,16 @@ function Controller:State(data)
 		self.Player.PlayerGui:SetAttribute("Queued", true)
 		self:CloseScreen()
 		self:Movement(false)
+		-- Queued: look at the middle of the arena (the same shot the fight uses) until the match starts or we leave.
+		MatchCamera.start(data.ArenaId)
 		self.Screen = Screens.queue(data, function()
 			Remotes.LeaveQueue:FireServer()
 		end)
 		return
 	elseif data.Phase == "QueueLeft" then
 		self.Player.PlayerGui:SetAttribute("Queued", false)
+		MatchCamera.stop()
+		self:Movement(false)
 		if self.Screen and self.Screen.Gui.Name == "QueuePanel" then
 			self:CloseScreen()
 		end
@@ -98,6 +103,7 @@ function Controller:State(data)
 	if data.Phase == "Rolling" then
 		self:CloseScreen()
 		self:Movement(true)
+		MatchCamera.start(data.ArenaId, true) -- steady arena-middle shot while choosing; the fight view takes it over
 		self.Screen = Screens.roll(data, function(id)
 			Remotes.PickGlassy:FireServer(id)
 		end, function(quote)
@@ -144,6 +150,7 @@ end
 function Controller:Result(data)
 	self:CloseScreen()
 	self:Movement(false)
+	MatchCamera.stop()
 	self.Pending = {}
 	self.SeenHands = {}
 	-- Rewards still arrive through ProfileSnapshot. Return directly to the lobby.
@@ -207,6 +214,7 @@ function Controller:Start()
 	self.Player.CharacterRemoving:Connect(function()
 		self:CloseScreen()
 		self:Movement(false)
+		MatchCamera.stop()
 	end)
 	RunService.RenderStepped:Connect(function()
 		if self.Screen then

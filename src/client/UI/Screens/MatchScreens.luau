@@ -5,57 +5,53 @@ local Glassies = require(RS.Shared.Config.Glassies)
 local Powers = require(RS.Shared.CombatText)
 local Theme = require(script.Parent.Parent.Theme)
 local U = require(script.Parent.Parent.Components.Util)
-local Panel = require(script.Parent.Parent.Components.Panel)
-local Button = require(script.Parent.Parent.Components.GemButton)
 local S = require(script.Parent.Parent.Components.StainedGlass)
 local Portrait = require(script.Parent.Parent.Components.GlassyPortrait)
 local Window = require(script.Parent.Parent.Components.Window)
+local Kit = require(script.Parent.Parent.Components.MatchKit)
 local Screens = {}
 Screens.__index = Screens
 
 function Screens.new(name)
 	local self = setmetatable({ Connections = {}, Portraits = {} }, Screens)
-	self.Gui = U.screen(name, 15)
+	self.Gui = Kit.gui(name, 15)
 	return self
 end
 
-function Screens:Connect(button, callback, compact)
-	U.make("UISizeConstraint", button, {
-		MinSize = Vector2.new(if compact then 44 else 70, 44),
-		MaxSize = if compact then Vector2.new(56, 56) else Vector2.new(math.huge, math.huge),
-	})
+function Screens:Connect(button, callback)
 	table.insert(self.Connections, button.Activated:Connect(callback))
 end
 
+-- Floating queue controls over the arena: no backing frame, the camera sits on the arena middle meanwhile.
 function Screens.queue(data, leave)
 	local self = Screens.new("QueuePanel")
-	local panel = Panel.glass(self.Gui, "Queue", UDim2.fromScale(0.55, 0.28), UDim2.fromScale(0.225, 0.54))
-	-- Phones: keep room for the title, bar and two 44px buttons.
-	U.make("UISizeConstraint", panel, { MinSize = Vector2.new(260, 150) })
-	self.Title = U.text(
+	local panel = Kit.frame(self.Gui, "Queue", UDim2.fromScale(1, 1))
+	self.Panel = panel
+	-- The arena board already says "waiting for a challenger"; here only the countdown, the bar and the buttons.
+	self.Timer = Kit.label(
 		panel,
-		"Title",
-		"WAITING FOR A CHALLENGER",
-		UDim2.fromScale(0.94, 0.22),
-		UDim2.fromScale(0.03, 0.05),
-		Theme.Fonts.Heading
+		"Timer",
+		"",
+		UDim2.fromScale(0.5, 0.055),
+		UDim2.fromScale(0.25, 0.6),
+		{ Font = Theme.Fonts.Body, MaxSize = Theme.TextSize.Label }
 	)
-	self.Timer = U.text(panel, "Timer", "", UDim2.fromScale(0.94, 0.19), UDim2.fromScale(0.03, 0.3))
 	local track = Instance.new("ImageLabel")
 	track.Name, track.Size, track.Position, track.BackgroundTransparency =
-		"Progress", UDim2.fromScale(0.86, 0.075), UDim2.fromScale(0.07, 0.52), 1
+		"Progress", UDim2.fromScale(0.36, 0.032), UDim2.fromScale(0.32, 0.665), 1
 	track.Parent = panel
 	S.setAsset(track, "bar/stat_track")
 	self.Fill = Instance.new("ImageLabel")
 	self.Fill.Name, self.Fill.Size, self.Fill.BackgroundTransparency = "Fill", UDim2.fromScale(0, 1), 1
 	self.Fill.Parent = track
 	S.setAsset(self.Fill, "bar/stat_fill_aqua")
+	-- Leave is the big red button; inviting a friend is the quieter blue one.
 	self:Connect(
-		Button.new(panel, "Leave", "LEAVE", "Red", UDim2.fromScale(0.37, 0.28), UDim2.fromScale(0.08, 0.65)),
+		Kit.gem(panel, "Leave", "LEAVE", "ruby", UDim2.fromScale(0.25, 0.14), UDim2.fromScale(0.38, 0.79)),
 		leave
 	)
 	self:Connect(
-		Button.new(panel, "Invite", "INVITE FRIEND", "Blue", UDim2.fromScale(0.43, 0.28), UDim2.fromScale(0.51, 0.65)),
+		Kit.gem(panel, "Invite", "INVITE FRIEND", "sapphire", UDim2.fromScale(0.22, 0.11), UDim2.fromScale(0.64, 0.79)),
 		function()
 			local ok = pcall(function()
 				SocialService:PromptGameInvite(Players.LocalPlayer)
@@ -66,6 +62,7 @@ function Screens.queue(data, leave)
 		end
 	)
 	self.Data = data
+	Kit.popIn(panel, true)
 	return self
 end
 
@@ -94,10 +91,8 @@ function Screens:PowerInfo(id)
 	copy.TextWrapped, copy.TextXAlignment = true, Enum.TextXAlignment.Left
 end
 
-local function hearts(count)
-	local total = require(RS.Shared.Config.Balance).Match.Hearts
-	count = math.clamp(count or 0, 0, total)
-	return string.rep("♥", count) .. string.rep("♡", total - count)
+local function heartRow(parent, name, count, position, right)
+	return Kit.hearts(parent, name, count, UDim2.fromScale(0.3, 0.55), position, right)
 end
 
 -- Round result banner. Hidden until the fight view has actually played the shatter.
@@ -110,23 +105,30 @@ function Screens.roundEnd(data, side)
 	local title = if won
 		then (if matchOver then "YOU WIN THE MATCH!" else "YOU WIN ROUND " .. data.Round .. "!")
 		else string.upper(rival) .. (if matchOver then " WINS THE MATCH" else " WINS ROUND " .. data.Round)
-	local label =
-		U.text(self.Gui, "Round", title, UDim2.fromScale(0.7, 0.1), UDim2.fromScale(0.15, 0.58), Theme.Fonts.Heading)
-	label.UITextSizeConstraint.MaxTextSize = Theme.TextSize.Title
-	label.TextColor3 = if won then Theme.Colors.Highlight else Theme.Colors.Text
-	U.make("UIStroke", label, { Thickness = 2, Color = Theme.Colors.Shadow, Transparency = 0.2 })
-	local summary = U.text(
-		self.Gui,
-		"Hearts",
-		"YOU " .. hearts(data.Hearts[side]) .. "     " .. string.upper(rival) .. " " .. hearts(data.Hearts[3 - side]),
-		UDim2.fromScale(0.6, 0.06),
-		UDim2.fromScale(0.2, 0.69),
-		Theme.Fonts.Body
-	)
-	summary.TextColor3 = Theme.Colors.Heart
-	U.make("UIStroke", summary, { Thickness = 1.5, Color = Theme.Colors.Shadow, Transparency = 0.2 })
+	local banner = Kit.frame(self.Gui, "Banner", UDim2.fromScale(1, 1))
+	local label = Kit.label(banner, "Round", title, UDim2.fromScale(0.7, 0.1), UDim2.fromScale(0.15, 0.58), {
+		MaxSize = Theme.TextSize.Title,
+		Outline = 3,
+		Color = if won then Theme.Palette.amberLight else Theme.Colors.Text,
+	})
+	self.Label = label
+	-- Hearts left for each side, with the names above them.
+	local summary = Kit.frame(banner, "Hearts", UDim2.fromScale(0.6, 0.12), UDim2.fromScale(0.2, 0.69))
+	for column, who in { side, 3 - side } do
+		local right = column == 2
+		local x = if right then Enum.TextXAlignment.Right else Enum.TextXAlignment.Left
+		Kit.label(
+			summary,
+			"Name" .. column,
+			if column == 1 then "YOU" else string.upper(rival),
+			UDim2.fromScale(0.4, 0.42),
+			UDim2.fromScale(if right then 0.6 else 0, 0),
+			{ XAlign = x, Color = Theme.Sides[who], MaxSize = 26 }
+		)
+		heartRow(summary, "Hearts" .. column, data.Hearts[who], UDim2.fromScale(if right then 0.7 else 0, 0.45), right)
+	end
 	self.Data, self.Started = data, os.clock()
-	self.Scale = U.make("UIScale", label, { Name = "PopScale" })
+	self.Scale = U.make("UIScale", banner, { Name = "PopScale" })
 	return self
 end
 
@@ -143,93 +145,100 @@ function Screens:Reveal()
 	end
 end
 
+-- Match results in the same cut-glass pane as the lobby windows.
 function Screens.results(data, replay, lobby)
 	local self = Screens.new("ResultsScreen")
 	self.Result = data
 	self.Started = os.clock()
-	local panel = Panel.glass(self.Gui, "Results", UDim2.fromScale(0.8, 0.8), UDim2.fromScale(0.1, 0.06))
-	local title = U.text(
+	local panel = Instance.new("ImageLabel")
+	panel.Name, panel.AnchorPoint, panel.Position = "Results", Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.5)
+	panel.Size, panel.BackgroundTransparency, panel.Parent = UDim2.fromScale(0.8, 0.86), 1, self.Gui
+	S.setAsset(panel, "panel/pane_dark")
+	local ratio = Instance.new("UIAspectRatioConstraint")
+	ratio.AspectRatio, ratio.Parent = 1.6, panel
+	self.Panel = panel
+	Kit.label(
 		panel,
 		"Title",
 		if data.NoContest then "MATCH ENDED" elseif data.Won then "YOU WIN!" else "GOOD CLASH!",
-		UDim2.fromScale(0.9, 0.15),
-		UDim2.fromScale(0.05, 0.04),
-		Theme.Fonts.Heading
+		UDim2.fromScale(0.9, 0.14),
+		UDim2.fromScale(0.05, 0.05),
+		{ MaxSize = Theme.TextSize.Title, Color = if data.Won then Theme.Palette.amberLight else Theme.Colors.Text }
 	)
-	title.UITextSizeConstraint.MaxTextSize = Theme.TextSize.Title
-	title.TextColor3 = if data.Won then Theme.Colors.Highlight else Theme.Colors.Text
 	local wins = { 0, 0 }
 	for _, round in data.History do
 		wins[round.Winner] += 1
 	end
-	U.text(
+	Kit.label(
 		panel,
 		"Score",
 		wins[data.Side] .. " – " .. wins[3 - data.Side],
-		UDim2.fromScale(0.8, 0.1),
-		UDim2.fromScale(0.1, 0.21),
-		Theme.Fonts.Heading
+		UDim2.fromScale(0.5, 0.1),
+		UDim2.fromScale(0.25, 0.2)
 	)
-	local history = U.make("Frame", panel, {
-		Name = "History",
-		Size = UDim2.fromScale(0.92, 0.3),
-		Position = UDim2.fromScale(0.04, 0.32),
-		BackgroundTransparency = 1,
-	})
-	for _, child in history:GetChildren() do
-		if child.Name:match("^Round%d+_") or child.Name:match("^Result%d+") then
-			child:Destroy()
-		end
-	end
+	local history = Kit.frame(panel, "History", UDim2.fromScale(0.92, 0.3), UDim2.fromScale(0.04, 0.31))
 	for row, side in { data.Side, 3 - data.Side } do
-		U.text(
+		Kit.label(
 			history,
 			"Side" .. row,
 			if row == 1 then "YOU" else string.upper(data.Names and data.Names[side] or "RIVAL"),
 			UDim2.fromScale(0.12, 0.2),
 			UDim2.fromScale(0, (row - 1) * 0.55 + 0.08),
-			Theme.Fonts.Caption
+			{ Font = Theme.Fonts.Caption, Color = Theme.Sides[side], MaxSize = 16 }
 		)
 		for i, round in data.History do
-			local name = "Round" .. row .. "_" .. i
-			U.prototype(history, "RoundPortrait", name)
 			local p = Portrait.new(
 				history,
 				round.Picks[side],
 				UDim2.fromScale(0.16, 0.36),
 				UDim2.fromScale(0.13 + (i - 1) * 0.175, (row - 1) * 0.55),
-				name
+				"Round" .. row .. "_" .. i
 			)
 			-- The portrait helper centres its anchor; place from the top-left so rows sit inside the history box.
 			p.AnchorPoint = Vector2.zero
 			p.Position, p.Size = UDim2.fromScale(0.13 + (i - 1) * 0.175, (row - 1) * 0.55), UDim2.fromScale(0.16, 0.36)
-			local template = p:FindFirstChild("Round")
-			if template then
-				template.Visible = false
-			end
 			if row == 1 then
-				-- Under the portrait, not on top of it.
-				U.text(
+				Kit.label(
 					history,
 					"Result" .. i,
 					if round.Winner == side then "WIN" else "LOSS",
 					UDim2.fromScale(0.16, 0.14),
 					UDim2.fromScale(0.13 + (i - 1) * 0.175, 0.37),
-					Theme.Fonts.Caption
+					{
+						Font = Theme.Fonts.Caption,
+						Color = if round.Winner == side then Theme.Palette.emeraldLight else Theme.Palette.rubyLight,
+						MaxSize = 16,
+					}
 				)
 			end
 		end
 	end
-	self.Coins = U.text(panel, "Coins", "", UDim2.fromScale(0.42, 0.1), UDim2.fromScale(0.06, 0.6), Theme.Fonts.Heading)
-	self.Trophies =
-		U.text(panel, "Trophies", "", UDim2.fromScale(0.42, 0.1), UDim2.fromScale(0.52, 0.6), Theme.Fonts.Heading)
+	-- Rewards: our coin icon beside the coins, trophies on the other side.
+	Kit.icon(panel, "CoinIcon", "icon/coin", UDim2.fromScale(0.08, 0.1), UDim2.fromScale(0.06, 0.61)).UIAspectRatioConstraint.DominantAxis =
+		Enum.DominantAxis.Height
+	self.Coins = Kit.label(
+		panel,
+		"Coins",
+		"",
+		UDim2.fromScale(0.34, 0.1),
+		UDim2.fromScale(0.15, 0.61),
+		{ XAlign = Enum.TextXAlignment.Left, Color = Theme.Palette.amberLight }
+	)
+	self.Trophies = Kit.label(
+		panel,
+		"Trophies",
+		"",
+		UDim2.fromScale(0.4, 0.1),
+		UDim2.fromScale(0.54, 0.61),
+		{ XAlign = Enum.TextXAlignment.Left }
+	)
 	local ready = 0
 	for _, q in data.Quests or {} do
 		if not q.Claimed and q.Progress >= q.Goal then
 			ready += 1
 		end
 	end
-	U.text(
+	Kit.label(
 		panel,
 		"Save",
 		(
@@ -243,18 +252,19 @@ function Screens.results(data, replay, lobby)
 					then " • " .. ready .. (if ready == 1 then " quest" else " quests") .. " ready to claim"
 					else ""
 			),
-		UDim2.fromScale(0.9, 0.07),
-		UDim2.fromScale(0.05, 0.69),
-		Theme.Fonts.Caption
+		UDim2.fromScale(0.9, 0.06),
+		UDim2.fromScale(0.05, 0.71),
+		{ Font = Theme.Fonts.Caption, Color = Theme.Palette.milkDark, MaxSize = 18, Outline = 1.5 }
 	)
 	self:Connect(
-		Button.new(panel, "PlayAgain", "PLAY AGAIN", "Green", UDim2.fromScale(0.4, 0.16), UDim2.fromScale(0.07, 0.8)),
+		Kit.gem(panel, "PlayAgain", "PLAY AGAIN", "emerald", UDim2.fromScale(0.4, 0.17), UDim2.fromScale(0.28, 0.88)),
 		replay
 	)
 	self:Connect(
-		Button.new(panel, "Lobby", "LOBBY", "Blue", UDim2.fromScale(0.4, 0.16), UDim2.fromScale(0.53, 0.8)),
+		Kit.gem(panel, "Lobby", "LOBBY", "sapphire", UDim2.fromScale(0.4, 0.17), UDim2.fromScale(0.72, 0.88)),
 		lobby
 	)
+	Kit.popIn(panel)
 	return self
 end
 
@@ -264,9 +274,6 @@ function Screens:Render(now)
 		self.Timer.Text = "A bot joins in " .. math.ceil(remaining) .. "s"
 		self.Fill.Size =
 			UDim2.fromScale(1 - remaining / require(RS.Shared.Config.Balance).Match.QueueBotAfterSeconds, 1)
-	elseif self.Gui.Name == "RollScreen" then
-		self.Title.Text = "CHOOSE YOUR GLASSY · " .. tostring(math.max(0, math.ceil(self.Data.Deadline - now)))
-		-- Upright, centered portraits match Inventory and Shop.
 	elseif self.Gui.Name == "RoundEnd" then
 		local fallback = require(RS.Shared.Config.Balance).Feel.RoundBannerFallbackSeconds
 		if not self.Gui.Enabled and os.clock() - self.Started > fallback then
@@ -280,19 +287,22 @@ function Screens:Render(now)
 end
 
 function Screens:Destroy()
-	for _, c in self.CardConnections or {} do
-		c:Disconnect()
-	end
-	if self.CardsTemplate then
-		self.CardsTemplate:Destroy()
-	end
 	if self.Info then
 		self.Info:Destroy()
 	end
 	for _, connection in self.Connections do
 		connection:Disconnect()
 	end
-	self.Gui:Destroy()
+	local gui, panel = self.Gui, self.Panel
+	if not panel or not gui.Parent or not gui.Enabled then
+		gui:Destroy()
+		return
+	end
+	-- Same quick pop-out as the lobby windows; the name is freed for whatever opens next.
+	gui.Name = gui.Name .. "_Closing"
+	Kit.popOut(panel, function()
+		gui:Destroy()
+	end)
 end
 
 return Screens

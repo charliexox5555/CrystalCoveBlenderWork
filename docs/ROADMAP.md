@@ -9,6 +9,8 @@ Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DES
 
 - [x] **C:** creator's first-six feedback: glassy-following numeric HP, complete popup text/stroke fade, stronger contact/charge/release/block effects and fast-swing trails. 88 logic tests and 46 isolated native presentation checks pass; [checkpoint](testing/combat_release/FIRST_SIX_CHECKPOINT.md). Historical first-six checkpoint; all 24 kits are now integrated (see F5).
 
+- [x] **CL:** match/fight UI revamp in Stained Glass: frameless selection over a steady arena-middle camera (`MatchCamera`), queue camera + LEAVE, Marble icon/cost on every mid-round spend, Pick Any YES/NO confirm, rebuilt FightHud/round banner/results. Verified in Studio with real clicks; [screens](testing/match_ui/). Phone-landscape feel check remains with the creator.
+
 Owner key: **C** = Codex (code / Studio MCP), **B** = Codex with Blender MCP, **CL** = Claude (research, design, pure rules, docs), **U** = you.
 
 ## F0 — Restructure (Claude, Oct 13)

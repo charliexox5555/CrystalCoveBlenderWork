@@ -16,6 +16,7 @@ local Scene = require(script.Parent.Parent.Presentation.FightScene)
 local Hud = require(script.Parent.Parent.UI.Screens.FightHud)
 local Orbit = require(script.Parent.FightOrbit)
 local FinisherCamera = require(script.Parent.FinisherCamera)
+local MatchCamera = require(script.Parent.MatchCamera)
 local Theme = require(script.Parent.Parent.UI.Theme)
 local Audio = require(RS.Shared.Config.Audio)
 local M, Feel = Balance.Motion, Balance.Feel
@@ -236,7 +237,10 @@ function Controller:EnterView()
 	end
 	TouchGate.acquire(self)
 	local camera = workspace.CurrentCamera
-	self.OldCamera = { Type = camera.CameraType, Subject = camera.CameraSubject, FOV = camera.FieldOfView }
+	-- If the queue/selection camera is holding the shot, take over its saved normal-camera state so the
+	-- player's own camera is what comes back when the fight ends.
+	self.OldCamera = MatchCamera.handoff()
+		or { Type = camera.CameraType, Subject = camera.CameraSubject, FOV = camera.FieldOfView }
 	camera.CameraType, camera.FieldOfView = Enum.CameraType.Scriptable, Feel.CameraFieldOfView
 	self.CameraPose = nil
 	self.Orbit = Orbit.new(self)

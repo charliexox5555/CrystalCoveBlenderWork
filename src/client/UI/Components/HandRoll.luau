@@ -4,16 +4,23 @@ local Audio = require(game.ReplicatedStorage.Shared.Config.Audio)
 local Glassies = require(game.ReplicatedStorage.Shared.Config.Glassies)
 local Roll = {}
 Roll.__index = Roll
-function Roll.new(panel, offers, collection, render)
+-- makeCard(parent, name) builds one empty card; render(card, id) fills it.
+function Roll.new(panel, offers, collection, makeCard, render)
 	local ids = {}
 	for id in collection do
 		table.insert(ids, id)
 	end
 	table.sort(ids)
-	local self = setmetatable(
-		{ Panel = panel, Offers = offers, Ids = ids, Render = render, Rows = {}, Hidden = {}, Random = Random.new() },
-		Roll
-	)
+	local self = setmetatable({
+		Panel = panel,
+		Offers = offers,
+		Ids = ids,
+		MakeCard = makeCard,
+		Render = render,
+		Rows = {},
+		Hidden = {},
+		Random = Random.new(),
+	}, Roll)
 	self.Sounds = Instance.new("Folder")
 	self.Sounds.Name = "HandRollAudio"
 	self.Sounds.Parent = game:GetService("SoundService")
@@ -57,10 +64,9 @@ function Roll:Build()
 		end
 		row.Stream[row.Target] = id
 		for n = 1, 3 do
-			local c = p.Cards.Templates.GlassyCard:Clone()
-			c.Name, c.Visible, c.Size, c.AnchorPoint, c.Parent =
-				"Cell" .. n, true, UDim2.fromScale(1, 1), Vector2.new(0.5, 0.5), clip
-			c.Select.Active, c.Select.Selectable = false, false
+			local c = self.MakeCard(clip, "Cell" .. n)
+			c.Visible, c.Size, c.AnchorPoint = true, UDim2.fromScale(1, 1), Vector2.new(0.5, 0.5)
+			c.Open.Active, c.Open.Selectable = false, false
 			table.insert(row.Cells, c)
 		end
 		for _, o in source:GetChildren() do

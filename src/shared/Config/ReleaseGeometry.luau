@@ -1,6 +1,7 @@
 -- Measured from release_v2 body bounds; excludes cosmetic weapons/details.
 return {
 	pop = { Radius = 0.650000, Center = 1.375000 },
+	hollowlight = { Radius = 0.900000, Center = 1.130383 },
 	jam = { Radius = 0.950000, Center = 1.150000 },
 	prism = { Radius = 0.810000, Center = 1.620000 },
 	crescent_axe = { Radius = 0.890000, Center = 1.420000 },

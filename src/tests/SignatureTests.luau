@@ -160,7 +160,7 @@ return function(t, deps)
 	end)
 	t.test("release pools contain 24 identities and preserve owned dormant data", function()
 		t.eq(#deps.Glassies.ReleaseList, 24)
-		t.eq(#deps.Glassies.List, 37)
+		t.eq(#deps.Glassies.List, 37 + #deps.Glassies.SeasonalIds, "24 release + 13 dormant + seasonal")
 		local odds = deps.Formula.kilnOdds()
 		t.eq(#odds, 21)
 		for _, e in odds do

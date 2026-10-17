@@ -1,5 +1,7 @@
 # Hollowlight inventory and match equipment
 
+> **Superseded (Oct 16, Claude):** Hollowlight is now a standalone seasonal glassy, and the Skins tab/category is removed (DECISIONS 72). The skin behaviour below is historical. `PreviewHollowlight` now unlocks the `hollowlight` glassy plus Lantern Skiff and Lantern Eclipse (mock only).
+
 October 16, 2026. Seasonal art stays in `ReplicatedStorage.Assets.Seasonal.Hollowlight`; no additional imports or map changes.
 
 ## Behavior

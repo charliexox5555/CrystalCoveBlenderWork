@@ -57,13 +57,6 @@ function Service:Describe(arena, setup, metadata)
 	local frame, _, hooks = self:Geometry(arena)
 	local out = table.clone(metadata)
 	out.A, out.B, out.Frame = table.clone(setup.A), table.clone(setup.B), frame
-	local skins = require(RS.Shared.Config.RoundCosmetics).ByCategory.Skins
-	for side, fighter in { out.A, out.B } do
-		local skin = skins[metadata.Skins and metadata.Skins[side]]
-		if skin and skin.BaseGlassy == fighter.Id then
-			fighter.Skin = skin.Id
-		end
-	end
 	out.HookPositions = { hooks[1].WorldPosition, hooks[2].WorldPosition }
 	out.HeartPositions = { arena.Pads[1].Position, arena.Pads[2].Position }
 	out.AvatarPositions = Stage.positions(arena)

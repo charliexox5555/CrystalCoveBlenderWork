@@ -38,6 +38,11 @@ function Traits.damaged(state, target, amount, kind, emit, begin)
 		s.Stored = math.min(target.MaxHp * kit.StoreCap, (s.Stored or 0) + amount * kit.StoreFraction)
 		s.Charge = math.min(1, s.Stored / (target.MaxHp * kit.StoreCap))
 		emit(state, { Type = "Charge", Side = target.Side, Kit = target.Id, Count = s.Charge, Total = 1 })
+	elseif kit.Shape == "seed_contact" and kind == "body" and (s.Seeds or 0) > 0 then
+		if amount >= target.MaxHp * kit.KnockThreshold then
+			s.Seeds -= 1
+			status(state, emit, target.Side, "SeedLost", { Target = 3 - target.Side, Count = s.Seeds })
+		end
 	end
 end
 
@@ -53,6 +58,11 @@ function Traits.turnaround(state, side, emit, begin)
 		local stored = s.Stored
 		if begin(state, side, emit, { Damage = math.min(kit.Damage, stored / f.Power) }) then
 			s.Stored = 0
+		end
+	elseif kit.Shape == "seed_contact" and (s.Seeds or 0) >= kit.MaxSeeds then
+		local seeds = s.Seeds
+		if begin(state, side, emit, { Shape = "bloom", Pulses = seeds, Damage = kit.SeedDamage * seeds }) then
+			s.Seeds, s.SeedsUntil = 0, nil
 		end
 	elseif kit.Shape == "echo_contact" and s.EchoPoint then
 		local origin = s.EchoPoint
@@ -100,6 +110,12 @@ function Traits.contact(state, side, point, emit)
 			target.Signature.Mark = { Source = side, Damage = kit.MarkDamage, Until = state.Time + kit.StatusSeconds }
 		end
 		status(state, emit, side, "Mark", { Target = target.Side, Seconds = kit.StatusSeconds })
+	elseif kit.Shape == "seed_contact" then
+		if (s.Seeds or 0) >= kit.MaxSeeds then
+			return true
+		end
+		s.Seeds, s.SeedsUntil = (s.Seeds or 0) + 1, state.Time + kit.SeedSeconds
+		status(state, emit, side, "Seed", { Target = target.Side, Count = s.Seeds, Seconds = kit.SeedSeconds })
 	elseif kit.Shape == "echo_contact" then
 		if s.EchoPoint then
 			return
@@ -172,6 +188,10 @@ function Traits.tick(state, emit)
 		end
 		if s.Mark and state.Time >= s.Mark.Until then
 			s.Mark = nil
+		end
+		if s.SeedsUntil and state.Time >= s.SeedsUntil then
+			s.Seeds, s.SeedsUntil = 0, nil
+			status(state, emit, side, "SeedFade", { Target = 3 - side, Count = 0 })
 		end
 		if s.MirrorUntil and s.MirrorUntil > 0 and state.Time >= s.MirrorUntil then
 			s.MirrorUntil, s.ContactBonus, s.Charge = -1, s.Kit.ContactBonus, 1

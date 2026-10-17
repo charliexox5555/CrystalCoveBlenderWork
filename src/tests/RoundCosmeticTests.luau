@@ -6,28 +6,22 @@ local Schema = if script
 return function(t)
 	t.test("seasonal cosmetics persist ownership, validate equipment and preserve the base roster", function()
 		local data = Schema.new(0)
-		t.eq(data.Cosmetics.EquippedSkins, "")
-		t.eq(#data.Cosmetics.Skins, 0)
-		for category, id in { Skins = "hollowlight", Rideables = "lantern_skiff", Finishers = "lantern_eclipse" } do
+		t.eq(data.Cosmetics.Skins, nil, "the Skins category is retired")
+		for category, id in { Rideables = "lantern_skiff", Finishers = "lantern_eclipse" } do
 			t.eq(Rules.equip(data, category, id), false)
 			Rules.grant(data, category, id)
 			t.eq(Rules.equip(data, category, id), true)
 		end
 		local frozen = Rules.loadout(data)
-		t.eq(frozen.Skins, "hollowlight")
+		t.eq(frozen.Skins, nil)
 		local saved = Schema.copy(data)
 		Schema.reconcile(saved, 1)
-		t.eq(saved.Cosmetics.EquippedSkins, "hollowlight")
 		t.eq(saved.Cosmetics.Counts.Finishers.lantern_eclipse, 1)
-		t.eq(Rules.equip(data, "Skins", ""), true)
-		t.eq(data.Cosmetics.EquippedSkins, "")
-		t.eq(frozen.Skins, "hollowlight", "current match stays frozen")
-		t.eq(Rules.equip(data, "Finishers", "hollowlight"), false)
-		data.Glassies.pop = nil
 		t.eq(Rules.equip(data, "Skins", "hollowlight"), false)
+		t.eq(Rules.equip(data, "Finishers", "hollowlight"), false)
 		t.eq(data.Coins, 0)
 		t.eq(data.Marbles, 0)
-		t.eq(data.Glassies.hollowlight, nil, "a skin never adds a combat glassy")
+		t.eq(data.Glassies.hollowlight, nil, "cosmetics never add a combat glassy")
 	end)
 	t.test("seasonal looks never enter ordinary paid or coin crate pools", function()
 		local Crates = if script
@@ -40,22 +34,53 @@ return function(t)
 				end
 			end
 		end
-		t.eq(#Crates.odds("Skins", "Marbles"), 0)
 	end)
-	t.test("seasonal legacy profiles repair malformed counts without granting free items", function()
-		local data = Schema.new(0)
-		data.Cosmetics.Skins = { "hollowlight" }
-		data.Cosmetics.Counts.Skins.hollowlight = 0 / 0
-		data.Cosmetics.EquippedSkins = "hollowlight"
-		Schema.reconcile(data, 1)
-		t.eq(data.Cosmetics.Counts.Skins.hollowlight, 1)
-		local other = Schema.new(0)
-		other.Cosmetics.Skins = false
-		other.Cosmetics.Counts.Skins = "bad"
-		other.Cosmetics.EquippedSkins = "hollowlight"
-		Schema.reconcile(other, 1)
-		t.eq(other.Cosmetics.EquippedSkins, "")
-		t.eq(Rules.count(other, "Skins", "hollowlight"), 0)
+	t.test("legacy Hollowlight skin owners migrate once to the standalone glassy", function()
+		local owner = Schema.new(0)
+		owner.Cosmetics.Skins = { "hollowlight" }
+		owner.Cosmetics.Counts.Skins = { hollowlight = 0 / 0 }
+		owner.Cosmetics.EquippedSkins = "hollowlight"
+		owner.Coins = 42
+		Schema.reconcile(owner, 5)
+		t.eq(owner.Glassies.hollowlight.Count, 1)
+		t.eq(owner.Glassies.hollowlight.Stars, 0)
+		t.eq(owner.Glassies.pop.Count, 1, "Pop is untouched")
+		t.eq(owner.Coins, 42)
+		t.eq(owner.Cosmetics.Skins, nil)
+		t.eq(owner.Cosmetics.EquippedSkins, nil)
+		t.eq(owner.Cosmetics.Counts.Skins, nil)
+		t.eq(owner.Cosmetics.EquippedFinishers, "glass_burst", "other equipment survives")
+		Schema.reconcile(owner, 6)
+		t.eq(owner.Glassies.hollowlight.Count, 1, "repeated loads never duplicate")
+
+		local counted = Schema.new(0)
+		counted.Cosmetics.Counts.Skins = { hollowlight = 2 }
+		Schema.reconcile(counted, 1)
+		t.eq(counted.Glassies.hollowlight.Count, 1, "a positive saved count is ownership")
+
+		local already = Schema.new(0)
+		already.Glassies.hollowlight = { Count = 3, Stars = 1, Rainbow = false, FirstAt = 1 }
+		already.Cosmetics.Skins = { "hollowlight" }
+		Schema.reconcile(already, 2)
+		t.eq(already.Glassies.hollowlight.Count, 3, "existing glassy copies are kept, not stacked")
+
+		for _, legacy in
+			{
+				{ Skins = false, Counts = { Skins = "bad" }, EquippedSkins = "hollowlight" },
+				{ Skins = {}, Counts = { Skins = { hollowlight = 0 } }, EquippedSkins = "hollowlight" },
+				{ Skins = { "other" }, Counts = { Skins = { hollowlight = -1 / 0 } } },
+			}
+		do
+			local data = Schema.new(0)
+			for key, value in legacy do
+				data.Cosmetics[key] = if key == "Counts" then nil else value
+			end
+			data.Cosmetics.Counts = legacy.Counts
+			Schema.reconcile(data, 1)
+			t.eq(data.Glassies.hollowlight, nil, "equipped, zero or malformed data grants nothing")
+			t.eq(data.Cosmetics.Skins, nil)
+			t.ok(type(data.Cosmetics.Counts) == "table" and data.Cosmetics.Counts.Finishers ~= nil)
+		end
 	end)
 	t.test("new and legacy profiles own only free starter round cosmetics", function()
 		local data = Schema.new(1)

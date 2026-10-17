@@ -14,6 +14,20 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Claude — Hollowlight glassy and Skins removal (handoff step 1)
+Done:
+- New standalone seasonal glassy `hollowlight` (Heavy, Epic stats, outside the 24 roster/crates/bots). Kit **Lantern Seeds** in SignatureTraits/SignatureAttacks: clashes plant up to 3 seeds on the foe; a full set blooms on the pumpkin's turnaround into homing wisps that resolve through FightRules.resolveAbility. Heavy hits knock seeds loose, seeds fade after 6 s. HollowlightTests (4) added.
+- Retired Skins: config/category/tab/loadout/`setup.Skin`/skin portraits removed. `RoundCosmeticRules.migrateSkins` (called from ProfileSchema.reconcile) gives legacy skin owners one Hollowlight copy once and drops the legacy fields.
+- Studio: `Assets.Glassies.hollowlight` cloned from the v2 pumpkin at Heavy size (radius 0.9, center 1.13); original seasonal art untouched. Crack paths projected from the v2 body by new `tools/blender/export_hollowlight_cracks.py`. New `LanternSeeds.luau`: pooled seeds orbit the foe, flare on windup, become trail wisps that arc home; face lights when armed. Verified in a live bot fight; no gameplay errors.
+- Creator test: Play, then Server `game.ServerStorage.FightDev:Invoke("BotVsBot", "hollowlight", "jam", 101, true)`; `CosmeticDev:Invoke("PreviewHollowlight", player)` now unlocks the glassy plus skiff/finisher (mock only).
+Next:
+- Creator feel check of seeds/wisps; then finisher sounds, Lantern Eclipse rework, flyer.
+Problems / questions for the user:
+- Studio Assets change (`Assets.Glassies.hollowlight`) needs a place save. Old `tools/studio/verify_hollowlight_*` skin fixtures are now historical.
+- MCP Edit-mode `require` cache was stale; run Studio tests in a Play server.
+Balance sim (if balance changed):
+- 24-roster BalanceSim/EconomySim unchanged (Hollowlight is outside the release pool; pop mirror 28.9 s/11.5 hits, side bias 49%; Kiln odds unchanged). Real-swing `lune run tools/calibration_fairness hollowlight 16`: 22% with no seed damage, 65% at 0.22, **51.5% at 0.14** (chosen). Reference: jam 40%, pickle_jar 22%.
+
 ## 2026-10-16 — Codex — Creator correction and Claude handoff
 Done:
 - Creator explicitly corrects pumpkin to a standalone glassy with new powers, requests removal of Skins tab, stronger VFX/premium flyer/finisher and fitting sounds for every added finisher. Latest direction supersedes the earlier skin choice; mechanics/seasonal roster treatment remain to be designed. User transfers implementation to Claude and authorizes simple scoped delegation to other Claude agents.

@@ -81,21 +81,9 @@ C.Finishers = {
 		Description = "Orbiting stars collapse into a tiny colorful supernova.",
 	},
 }
-C.Skins = {}
 -- Seasonal entries are inspectable/equippable but never members of the ordinary crate pools above.
+-- The Hollowlight pumpkin is a standalone seasonal glassy (Config/Glassies), not a skin.
 C.Seasonal = {
-	Skins = {
-		{
-			Id = "hollowlight",
-			Name = "Hollowlight Pop",
-			BaseGlassy = "pop",
-			Rarity = "Legendary",
-			AssetBundle = "Hollowlight",
-			AssetName = "pop_hollowlight",
-			Seasonal = true,
-			Description = "A friendly pumpkin lantern look for Pop. Same stats and pressure power.",
-		},
-	},
 	Rideables = {
 		{
 			Id = "lantern_skiff",
@@ -147,7 +135,7 @@ local rarities = {
 	starfall = "Legendary",
 }
 C.ByCategory = {}
-for _, category in { "Rideables", "Finishers", "Skins" } do
+for _, category in { "Rideables", "Finishers" } do
 	local map = {}
 	for _, def in C.catalog(category) do
 		def.Rarity = def.Rarity or rarities[def.Id]

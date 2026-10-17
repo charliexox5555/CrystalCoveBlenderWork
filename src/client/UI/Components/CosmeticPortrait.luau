@@ -44,11 +44,7 @@ function Portrait.new(parent, category, id, size, position, name)
 		source = bundle and bundle:FindFirstChild(def.AssetName)
 	end
 	if source then
-		local model = source:Clone()
-		if category == "Skins" and model:FindFirstChild("Shards") then
-			model.Shards:Destroy()
-		end
-		model.Parent = world
+		source:Clone().Parent = world
 	end
 	local rotation =
 		CFrame.lookAt(if category == "Rideables" then Vector3.new(6, 5, 9) else Vector3.new(4, 2, 10), Vector3.zero)

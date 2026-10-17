@@ -1,5 +1,13 @@
 -- Authored release identity and presentation; numbers live in Balance.
 return {
+	hollowlight = {
+		Name = "Lantern Seeds",
+		Description = "Clashes plant glowing seeds; three seeds burst into wisps that fly home.",
+		ReleaseSound = "ChargeGlass",
+		ContactSound = "ClinkLightA",
+		MeshA = "Ring",
+		MeshB = "CrystalChip",
+	},
 	pop = {
 		Name = "Pressure Pop",
 		Description = "Every third clash pops a pressure burst.",

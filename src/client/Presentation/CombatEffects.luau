@@ -7,6 +7,7 @@ local Visuals = require(RS.Shared.Config.CombatKitVisuals)
 local Presentation = require(script.Parent.SignaturePresentation)
 local Accent = require(script.Parent.SignatureAccent)
 local Hero = require(script.Parent.HeroPowers)
+local Seeds = require(script.Parent.LanternSeeds)
 local Impact = require(script.Parent.ImpactBeat)
 local K, VFX, M = Balance.CombatRelease.Kits, Balance.CombatVFX, Balance.Motion
 local Effects = {}
@@ -50,6 +51,9 @@ function Effects.new(scene)
 		guard.Material, guard.Color, guard.Transparency = Enum.Material.Glass, Color3.fromRGB(214, 171, 83), 1
 		guard.Parent, f.SignatureGuard = root, guard
 		Hero.init(self, f)
+		if f.Id == "hollowlight" then
+			Seeds.init(self, f)
+		end
 	end
 	return self
 end
@@ -98,6 +102,11 @@ function Effects:ClearTransient()
 	for id in self.Casts do
 		self:ClearCast(id)
 	end
+	for _, f in self.Scene.Fighters do
+		if f.Seeds then
+			Seeds.reset(f)
+		end
+	end
 	for _, sound in self.Sounds do
 		if sound.Parent then
 			sound:Destroy()
@@ -105,7 +114,7 @@ function Effects:ClearTransient()
 	end
 	self.Sounds = {}
 	for _, child in self.Root:GetChildren() do
-		if child.Name ~= "LidGuard" then
+		if child.Name ~= "LidGuard" and not child:GetAttribute("Pooled") then
 			child:Destroy()
 		end
 	end
@@ -168,6 +177,9 @@ function Effects:Event(e)
 	end
 	self.Seen[key] = true
 	local color = Presentation.color(f)
+	if f.Seeds and Seeds.event(self, f, e) then
+		return true
+	end
 	local origin = if e.Origin then self.Scene.Frame:PointToWorldSpace(vector(e.Origin)) else f.Body.Position
 	if e.Type == "SignatureStatus" then
 		if e.Kind == "Echo" then
@@ -298,6 +310,9 @@ function Effects:Update(r, time)
 	self.Time = time
 	for side, f in self.Scene.Fighters do
 		local kit = K[f.Id]
+		if f.Seeds then
+			Seeds.update(self, f, r, time, not (f.Broken or f.Finishing))
+		end
 		if not kit or f.Broken or f.Finishing then
 			f.SignatureGuard.Transparency = 1
 			Hero.guard(self, f, false)

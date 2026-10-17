@@ -11,7 +11,7 @@ local function array(v)
 end
 
 function Attacks.add(sim, cast, origin, direction, target)
-	if not table.find({ "projectile", "volley", "cone", "breath", "pulse", "orbit" }, cast.Shape) then
+	if not table.find({ "projectile", "volley", "cone", "breath", "pulse", "orbit", "bloom" }, cast.Shape) then
 		return false
 	end
 	sim.ReleaseAttacks = sim.ReleaseAttacks or {}
@@ -93,12 +93,19 @@ function Attacks.step(sim, dt, center)
 				a.NextPulse += 1
 			end
 			done = a.NextPulse > p.Pulses
+		elseif c.Shape == "bloom" then
+			-- Wisps burst out of the seeded foe one at a time and home back; shields still block.
+			while a.NextPulse <= p.Pulses and a.Age >= (a.NextPulse - 0.5) * p.Duration / p.Pulses do
+				Rules.resolveAbility(sim.Fight, c.Id, true, array(target), a.NextPulse)
+				a.NextPulse += 1
+			end
+			done = a.NextPulse > p.Pulses
 		else
 			hit = Geometry.coneSphere(a.Origin, a.Direction, p.Range, p.Arc, target, radius)
 			done = hit or a.Age >= p.Duration
 		end
 		if done then
-			if c.Shape ~= "breath" and p.Path ~= "return" then
+			if c.Shape ~= "breath" and c.Shape ~= "bloom" and p.Path ~= "return" then
 				Rules.resolveAbility(sim.Fight, c.Id, hit, if hit then array(point) else nil, a.Index)
 			end
 		else

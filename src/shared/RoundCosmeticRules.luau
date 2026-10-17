@@ -8,7 +8,7 @@ end
 function Rules.reconcile(data)
 	data.Cosmetics = if type(data.Cosmetics) == "table" then data.Cosmetics else {}
 	data.Cosmetics.Counts = if type(data.Cosmetics.Counts) == "table" then data.Cosmetics.Counts else {}
-	for _, category in { "Rideables", "Finishers", "Skins" } do
+	for _, category in { "Rideables", "Finishers" } do
 		local owned = data.Cosmetics[category]
 		if type(owned) ~= "table" then
 			owned = {}
@@ -85,11 +85,33 @@ end
 -- Freeze a validated cosmetic loadout at match creation, independently of combat setup/stats.
 function Rules.loadout(data)
 	local cosmetics = Rules.reconcile(data)
-	local skin = cosmetics.EquippedSkins
-	local def = C.ByCategory.Skins[skin]
-	if def and (not data.Glassies or not data.Glassies[def.BaseGlassy]) then
-		skin = ""
+	return { Rideables = cosmetics.EquippedRideables, Finishers = cosmetics.EquippedFinishers }
+end
+-- Retired skins that became standalone glassies. Legitimate owners get the glassy exactly once;
+-- the legacy fields are then dropped, so repeated loads change nothing.
+local LegacySkinGlassies = { hollowlight = "hollowlight" }
+function Rules.migrateSkins(data, now)
+	local cosmetics = data.Cosmetics
+	if type(cosmetics) ~= "table" then
+		return 0
 	end
-	return { Rideables = cosmetics.EquippedRideables, Finishers = cosmetics.EquippedFinishers, Skins = skin }
+	local owned = if type(cosmetics.Skins) == "table" then cosmetics.Skins else {}
+	local counts = if type(cosmetics.Counts) == "table" and type(cosmetics.Counts.Skins) == "table"
+		then cosmetics.Counts.Skins
+		else {}
+	local migrated = 0
+	for skin, glassy in LegacySkinGlassies do
+		local count = counts[skin]
+		local counted = type(count) == "number" and count == count and count < math.huge and count >= 1
+		if (table.find(owned, skin) or counted) and type(data.Glassies) == "table" and data.Glassies[glassy] == nil then
+			data.Glassies[glassy] = { Count = 1, Stars = 0, Rainbow = false, FirstAt = now }
+			migrated += 1
+		end
+	end
+	cosmetics.Skins, cosmetics.EquippedSkins = nil, nil
+	if type(cosmetics.Counts) == "table" then
+		cosmetics.Counts.Skins = nil
+	end
+	return migrated
 end
 return Rules

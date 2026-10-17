@@ -71,13 +71,13 @@ local function begin(state, side, emit, overrides)
 	s.BusyUntil = cast.Release + (kit.Hold or 0) + kit.Duration
 	s.NextReady = state.Time + (kit.Interval or math.huge) + (kit.Jitter or 0) * state.Rng()
 	table.insert(state.PendingCasts, cast)
-	event(
-		state,
-		emit,
-		side,
-		"CastStart",
-		{ CastId = cast.Id, Windup = kit.Windup + (kit.Hold or 0), Shape = kit.Shape, ReleaseAt = cast.Release }
-	)
+	event(state, emit, side, "CastStart", {
+		CastId = cast.Id,
+		Windup = kit.Windup + (kit.Hold or 0),
+		Shape = kit.Shape,
+		ReleaseAt = cast.Release,
+		Pulses = kit.Pulses,
+	})
 	return true
 end
 
@@ -259,6 +259,9 @@ function Signatures.progress(state, f)
 	end
 	if s.Kit.Trigger == "threshold" then
 		return if s.Used then 0 else math.clamp((1 - f.Hp / f.MaxHp) / (1 - s.Kit.Threshold), 0, 1)
+	end
+	if s.Kit.Shape == "seed_contact" then
+		return (s.Seeds or 0) / s.Kit.MaxSeeds
 	end
 	return s.Charge / (s.Kit.Every or 1)
 end

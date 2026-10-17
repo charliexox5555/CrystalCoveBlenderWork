@@ -630,6 +630,24 @@ do
 	table.insert(list, definition)
 end
 
+-- Seasonal additions sit outside the 24-item release roster, crates and bot pools. Epic stats
+-- match ordinary Epic crate glassies, so a paid seasonal never out-stats the free roster.
+local seasonalIds = { "hollowlight" }
+table.insert(list, {
+	Id = "hollowlight",
+	Name = "Hollowlight",
+	Type = "Heavy",
+	Rarity = "Epic",
+	Base = { Power = 20, HP = 112, Swing = 6 },
+	Passive = "sturdy",
+	Special = "slam",
+	Radius = 0.9,
+	Tint = "#FF9A3C",
+	ClinkPitch = 0.85,
+	Asset = "hollowlight",
+	Description = "Plants lantern seeds on clashes, then calls them home as wisps.",
+})
+
 local Glassies = {
 	List = list,
 	ById = {} :: { [string]: GlassyDef },
@@ -659,6 +677,10 @@ for _, id in ReleaseRoster.Ids do
 end
 function Glassies.isRelease(id: string): boolean
 	return ReleaseRoster.ById[id] == true
+end
+Glassies.SeasonalIds = seasonalIds
+function Glassies.isSeasonal(id: string): boolean
+	return table.find(seasonalIds, id) ~= nil
 end
 -- Owned legacy entries remain inspectable; they do not inflate the release's 24-item total.
 function Glassies.visible(collection)

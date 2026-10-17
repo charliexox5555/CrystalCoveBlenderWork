@@ -5,6 +5,7 @@ local Rules = require(RS.Shared.RoundCosmeticRules)
 local Balance = require(RS.Shared.Config.Balance)
 local Guard = require(script.Parent.Parent.Util.RemoteGuard)
 local Assets = require(script.Parent.Parent.Util.AssetCatalog)
+local Schema = require(script.Parent.Parent.Data.ProfileSchema)
 local Service = {}
 function Service:Init(services)
 	self.Services, self.Guard = services, Guard.new()
@@ -44,16 +45,22 @@ function Service:Start()
 				if not data then
 					return false
 				end
-				local set = { Skins = "hollowlight", Rideables = "lantern_skiff", Finishers = "lantern_eclipse" }
+				local set = { Rideables = "lantern_skiff", Finishers = "lantern_eclipse" }
 				for key, item in set do
 					if not Assets.cosmetic(key, item) then
 						return false
 					end
 				end
+				if not Assets.has("hollowlight") then
+					return false
+				end
 				for key, item in set do
 					if Rules.count(data, key, item) == 0 then
 						Rules.grant(data, key, item)
 					end
+				end
+				if not data.Glassies.hollowlight then
+					Schema.grant(data, "hollowlight", false, os.time())
 				end
 				self.Services.DataService:Sync(player)
 				return true

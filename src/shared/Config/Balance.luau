@@ -232,6 +232,21 @@ Balance.CombatRelease = {
 			Duration = 1.2,
 			LandChance = 0.75,
 		},
+		-- Seasonal Lantern Seeds: each clash plants a seed on the foe (cap MaxSeeds, all fade
+		-- SeedSeconds after the newest). At MaxSeeds the next turnaround calls them home as wisps,
+		-- SeedDamage each. A body hit of KnockThreshold x max HP knocks one seed loose.
+		hollowlight = {
+			Trigger = "contact",
+			Every = 1,
+			Shape = "seed_contact",
+			MaxSeeds = 3,
+			SeedSeconds = 6,
+			SeedDamage = 0.14,
+			KnockThreshold = 0.08,
+			Windup = 0.35,
+			Duration = 0.9,
+			Radius = 0.2,
+		},
 		pop = {
 			Trigger = "contact",
 			Every = 3,
@@ -292,6 +307,25 @@ Balance.CombatRelease = {
 
 Balance.CombatVFX = {
 	-- Presentation only; no charge cadence, damage or attack volumes change.
+	-- Hollowlight Lantern Seeds: seeds orbit the seeded foe, wisps arc home to the pumpkin.
+	-- Sizes and distances are fractions of the foe's displayed body width.
+	LanternSeeds = {
+		SeedColor = "#FFB347",
+		GlowColor = "#9CFFD8",
+		SeedSize = 0.17,
+		ShellScale = 1.8,
+		OrbitGap = 0.2,
+		OrbitHz = 0.45,
+		OrbitTilt = 0.45,
+		Bob = 0.05,
+		PopInSeconds = 0.18,
+		FlareScale = 1.7,
+		WispSize = 0.2,
+		WispSeconds = 0.38,
+		WispArc = 0.9,
+		TrailSeconds = 0.22,
+		FaceGlowSeconds = 0.3,
+	},
 	ImpactRingSeconds = 0.28,
 	ImpactRingStart = 0.7,
 	ImpactRingEnd = 2.8,

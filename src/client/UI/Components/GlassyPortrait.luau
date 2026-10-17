@@ -4,7 +4,7 @@ local Portrait = {}
 local resizeBindings = setmetatable({}, { __mode = "k" })
 
 -- The approved meshes provide a sharp portrait without another texture upload.
-function Portrait.new(parent, id, size, position, name, skin)
+function Portrait.new(parent, id, size, position, name)
 	local viewport = U.make("ViewportFrame", parent, {
 		Name = name or "Portrait",
 		Size = size,
@@ -15,7 +15,6 @@ function Portrait.new(parent, id, size, position, name, skin)
 		LightDirection = Vector3.new(-1, -1, -2),
 	})
 	viewport:SetAttribute("GlassyId", id)
-	viewport:SetAttribute("SkinId", skin or "")
 	require(script.Parent.Motion).center(viewport)
 	local shape = viewport:FindFirstChildOfClass("UIAspectRatioConstraint")
 	if shape then
@@ -32,7 +31,7 @@ function Portrait.new(parent, id, size, position, name, skin)
 			viewport,
 			{ Name = "Icon", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Image = "" }
 		)
-	icon.Visible = icon.Image ~= "" and (skin == nil or skin == "")
+	icon.Visible = icon.Image ~= ""
 	local placeholder = viewport:FindFirstChild("Placeholder")
 	if placeholder then
 		placeholder.Visible = false
@@ -45,12 +44,6 @@ function Portrait.new(parent, id, size, position, name, skin)
 	local def = require(RS.Shared.Config.Glassies).get(id)
 	local source = RS.Assets.Glassies:FindFirstChild(id)
 		or RS.Assets.Glassies[if def.Type == "Heavy" then "jam" elseif def.Type == "Sharp" then "prism" else "pop"]
-	local look = require(RS.Shared.Config.RoundCosmetics).ByCategory.Skins[skin]
-	local bundle = look and RS.Assets:FindFirstChild("Seasonal") and RS.Assets.Seasonal:FindFirstChild(look.AssetBundle)
-	local appearance = look and look.BaseGlassy == id and bundle and bundle:FindFirstChild(look.AssetName)
-	if appearance then
-		source = appearance
-	end
 	local parts = { source.Body }
 	for _, detail in (source:FindFirstChild("Details") and source.Details:GetChildren() or {}) do
 		if not detail:GetAttribute("EffectOnly") then
@@ -60,7 +53,7 @@ function Portrait.new(parent, id, size, position, name, skin)
 	for _, template in parts do
 		local part = template:Clone()
 		part.Anchored, part.CanCollide, part.CanTouch, part.CanQuery = true, false, false, false
-		if template == source.Body and source.Name ~= def.Asset and not appearance then
+		if template == source.Body and source.Name ~= def.Asset then
 			part.Color = Color3.fromHex(def.Tint)
 		end
 		part:PivotTo(CFrame.identity)

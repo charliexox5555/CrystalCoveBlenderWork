@@ -22,12 +22,12 @@ local messages = {
 	not_owned = "That glassy is not in your inventory.",
 	data_unavailable = "Your inventory is unavailable. Please try again.",
 }
-local function renderCard(card, id, skin)
+local function renderCard(card, id)
 	local d = Glassies.get(id)
 	S.setAsset(card.Artwork, "card/card_" .. S.rarity(d.Rarity))
 	card:FindFirstChild("Name").Text = d.Name
-	if card.Portrait:GetAttribute("GlassyId") ~= id or card.Portrait:GetAttribute("SkinId") ~= (skin or "") then
-		Portrait.new(card, id, card.Portrait.Size, card.Portrait.Position, nil, skin)
+	if card.Portrait:GetAttribute("GlassyId") ~= id then
+		Portrait.new(card, id, card.Portrait.Size, card.Portrait.Position)
 	end
 	S.tag(card.TypeTag, d.Type, S.Types[d.Type])
 	S.tag(card.RarityTag, d.Rarity, S.Rarity[d.Rarity])
@@ -157,7 +157,7 @@ function Screen:Offers(data)
 		local card, id = self.Panel.Cards["Card" .. i], data.Offers[i]
 		card.Visible = id ~= nil
 		if id then
-			renderCard(card, id, data.Skin)
+			renderCard(card, id)
 			card.SelectedOutline.Visible = data.Picked == id
 			if card:FindFirstChild("SelectedCheck") then
 				card.SelectedCheck.Visible = data.Picked == id
@@ -173,7 +173,7 @@ function Screen:Offers(data)
 	end
 	if data.Animate and not data.Picked and not self.Animation then
 		self.Animation = HandRoll.new(self.Panel, data.Offers, data.Collection, function(card, id)
-			renderCard(card, id, data.Skin)
+			renderCard(card, id)
 		end)
 		self.AnimationStarted = workspace:GetServerTimeNow()
 		self.Gui:SetAttribute("RollAnimationCount", (self.Gui:GetAttribute("RollAnimationCount") or 0) + 1)
@@ -231,7 +231,7 @@ function Screen:OpenPicker(oddsOnly)
 		tile.Name, tile.LayoutOrder, tile.Visible, tile.Parent = id, i, true, chooser.Grid.Tiles
 		S.setAsset(tile.Artwork, "tile/tile_" .. S.rarity(def.Rarity))
 		tile:FindFirstChild("Name").Text = def.Name
-		Portrait.new(tile, id, tile.Portrait.Size, tile.Portrait.Position, nil, self.OfferData.Skin)
+		Portrait.new(tile, id, tile.Portrait.Size, tile.Portrait.Position)
 		tile.SelectedOutline.Visible = false
 		S.bindSlices(tile)
 		if oddsOnly then

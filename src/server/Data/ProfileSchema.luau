@@ -89,6 +89,7 @@ function Schema.reconcile(data, now)
 		end
 	end
 	fill(data, Schema.new(now))
+	RoundCosmetics.migrateSkins(data, now)
 	data.Version = Balance.Data.Version
 	data.Coins, data.Marbles, data.Trophies =
 		integer(data.Coins, 0), integer(data.Marbles, 0), integer(data.Trophies, 0)

@@ -22,4 +22,5 @@ return {
 	FightRules = load({ "FightRules" }, "../shared/FightRules"),
 	MatchLogic = load({ "MatchLogic" }, "../shared/MatchLogic"),
 	Rng = load({ "Rng" }, "../shared/Rng"),
+	SignatureRules = load({ "SignatureRules" }, "../shared/SignatureRules"),
 }

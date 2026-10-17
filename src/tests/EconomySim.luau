@@ -5,6 +5,7 @@
 
 local Deps = if script then require(script.Parent.Deps) else require("./Deps")
 local Balance, Formula, Glassies, Rng = Deps.Balance, Deps.Formula, Deps.Glassies, Deps.Rng
+local MatchLogic = Deps.MatchLogic
 
 local EconomySim = {}
 
@@ -44,10 +45,10 @@ local function playMatch(rng: () -> number): (number, boolean)
 		end
 	end
 	local win = won == hearts
-	local coins = won * r.RoundWinCoins + (if win then r.MatchWinCoins else r.MatchLossCoins)
-	if rng() < e.BotMatchShare then
-		coins = math.floor(coins * r.BotMatchFraction + 0.5)
-	end
+	-- Same rule as MatchLogic.rewards: a win pays a flat amount, a loss pays for damage dealt.
+	local coins = if win
+		then r.MatchWinCoins
+		else MatchLogic.lossCoins(won, lost * e.LossChipPerRound * (0.75 + 0.5 * rng()), e.PerfectsPerMatch)
 	return coins, win
 end
 

@@ -191,7 +191,7 @@ Starters Pop (Fizzy), Jam (Heavy), Prism (Sharp) plus 28 configured for the Kiln
 - Fill any pad after 15 s alone. Name them like players' pets ("Bottle Bot", original names only), with a small BOT tag.
 - **Collection:** the starters plus random glassies up to the player's best rarity, same size as the player's collection (`MatchLogic.botCollection`).
 - **Skill** 0.2–0.7 (`BotSkillMin/Max`): aim error and smarter picks (counter the player's last type). Bots auto-fire specials.
-- Rewards vs bots: 60% coins, +5 trophies on a win, never lose trophies.
+- Rewards vs bots: same coins as vs players, +5 trophies on a win, never lose trophies.
 
 ## 7. Social and events
 
@@ -202,7 +202,7 @@ Starters Pop (Fizzy), Jam (Heavy), Prism (Sharp) plus 28 configured for the Kiln
 
 ## 8. Economy (summary; full numbers in [design/ECONOMY.md](design/ECONOMY.md))
 
-- **Coins** (earned): 10 per round won + 60 for a match win or 20 for a loss (60% vs bots); daily quests 75 each; playtime gifts; first win of the day 100.
+- **Coins** (earned, decision 84): **100 for every match win**; a loss pays 8 + 10 per heart taken + 5 per glassy of chip damage + 2 per Perfect Release, max 40 (quitting pays 0); daily quests 75 each; playtime gifts; first win of the day 100.
 - **Abandoned matches:** until at least one real round completes, neither player earns coins, trophies, match/quest stats or welcome-pull eligibility. Results say "No rewards — finish a round first". After a completed round, existing MatchLogic forfeit rewards apply. Creator accepted October 14 (DECISIONS 42).
 - **The Kiln:** 300 coins a pull (10 for 2,700). **Odds are always shown before pulling.** New players get 1 free pull after their first match.
 - **Marbles** (premium): Robux packs + small free amounts (login streak, group join). Spent on **match-hand rerolls** (3 / 3 / 6 / 6 / 9, capped at 9) and **Pick Any** (one free per match, then 6 / 9 / 12, capped at 12), Shatter FX, and later cosmetics. Both usage counters reset each match. Marble packs and free grants remain deferred in the current implementation.

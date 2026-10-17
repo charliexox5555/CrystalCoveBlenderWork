@@ -142,6 +142,7 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 - [x] **C:** remote validation/rate-limit/security review and double-KO cleanup soak; 71 tests pass
 - [x] **U/C:** no rewards before a real completed round; native disconnect verifies zero currency and unchanged match stats, 74 tests pass
 - [x] **CL:** playtested polish pass: Perfect-band/round-result/ownership fixes, survivor settle, arena state and signs, lobby lane, lighting, Watch any fight, faster forfeit, binary snapshots (−83% payload), render cost −30%; native multiplayer + 39 layouts pass ([report](testing/POLISH_PASS.md))
+- [x] **CL:** locked arena queue: ProximityPrompt per pad side, avatar fixed on its spot facing the arena until Leave/reset/match end (forfeit in a live match), stained-glass VS board with headshots, "n / 2 PLAYERS" and "WIN 100"; wins pay 100, losses pay for performance (decision 84). Client camera/Leave button belong to the match-ui work; creator look check of the board pending.
 - [ ] **U:** real low-end-phone performance/MicroProfiler, manual close/gamepad checks, published datastore/leaderboard verification
 - [ ] **B:** fixed release art roster: 24 playable glassies, including 12 existing-model revisions and 12 new models; source/export/icon/shard/import checklist in the combat handoff
 - [ ] **U:** maturity questionnaire, icon, thumbnails, description; cross-promote from your other game

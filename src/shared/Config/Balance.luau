@@ -586,8 +586,8 @@ Balance.Growth = {
 -- Matches (GAME_DESIGN 2). 1v1, each player has 3 hearts; losing a round costs a heart.
 Balance.Match = {
 	QueueCheckSeconds = 0.2,
-	QueueMargin = 0.5,
-	QueueHeight = 7,
+	QueuePromptDistance = 10, -- studs; the ProximityPrompt on each queue pad
+	QueuePromptRateSeconds = 0.5,
 	LeaveRateSeconds = 0.25,
 	RequestRateSeconds = 0.5,
 	Hearts = 3,
@@ -610,10 +610,17 @@ Balance.Match = {
 	PickAnyRateSeconds = 0.5,
 	AimRateSeconds = 0.05,
 	Rewards = {
-		RoundWinCoins = 10,
-		MatchWinCoins = 60,
-		MatchLossCoins = 20,
-		BotMatchFraction = 0.6, -- coins against bots
+		-- DECISIONS 84 (Proposed): a match win always pays MatchWinCoins, bots included. A loss pays
+		-- for performance: LossBaseCoins + LossHeartCoins per heart taken (round won) +
+		-- LossChipCoins per glassy's worth of chip damage in rounds you lost (fights are close, so
+		-- chip is weighted lightly) + LossPerfectCoins per Perfect Release, capped at LossMaxCoins.
+		-- Quitting (reset or Leave mid-match) pays the quitter 0.
+		MatchWinCoins = 100,
+		LossBaseCoins = 8,
+		LossHeartCoins = 10,
+		LossChipCoins = 5,
+		LossPerfectCoins = 2,
+		LossMaxCoins = 40,
 		WinTrophies = 20,
 		LossTrophies = 8, -- subtracted, never below 0
 		BotWinTrophies = 5, -- bots never take trophies
@@ -659,14 +666,16 @@ Balance.EconomyModel = {
 	RoundSecondsEstimate = 27, -- average fight length; BalanceSim prints the real one
 	SecondsBetweenMatches = 25, -- results screen, walking to a pad, queue
 	QuestsCompletedPerDay = 2,
+	LossChipPerRound = 0.8, -- average share of the winner's HP a loser chips off (FightModel ~0.82)
+	PerfectsPerMatch = 1,
 	Players = 2000,
 }
 
 -- Presentation only (client). The fight itself uses Balance.Fight.
 Balance.Feel = {
 	SpectatorDistance = 120,
-	ArenaLabelHeight = 4,
-	ArenaLabelWidth = 11, -- studs
+	ArenaBoardHeight = 6.5, -- studs above the crossbar
+	ArenaBoardWidth = 15, -- studs
 	AimDragPixels = 170,
 	AimYawPixels = 180,
 	CameraDistance = 33,

@@ -11,6 +11,56 @@ function Stage.positions(arena)
 	}
 end
 
+-- Middle of the arena between the two pads (camera focus while queued).
+function Stage.center(arena)
+	return (arena.Pads[1].Position + arena.Pads[2].Position) / 2
+end
+
+-- Where a queued avatar stands: on its pad, facing the other pad.
+function Stage.spot(arena, side, root, human)
+	local height = if human.RigType == Enum.HumanoidRigType.R6
+		then Feel.PadRootHeight
+		else human.HipHeight + root.Size.Y / 2
+	local position = arena.Pads[side].Position + Vector3.yAxis * height
+	local center = Stage.center(arena)
+	return CFrame.lookAt(position, Vector3.new(center.X, position.Y, center.Z))
+end
+
+-- Fix a queued player to their spot: anchored, no walking, jumping or turning until unlock.
+function Stage.lock(arena, side, character)
+	local root = character and character:FindFirstChild("HumanoidRootPart")
+	local human = character and character:FindFirstChildOfClass("Humanoid")
+	if not root or not human or human.Health <= 0 then
+		return nil
+	end
+	local saved = {
+		Character = character,
+		Root = root,
+		Humanoid = human,
+		Anchored = root.Anchored,
+		AutoRotate = human.AutoRotate,
+		WalkSpeed = human.WalkSpeed,
+		JumpPower = human.JumpPower,
+		JumpHeight = human.JumpHeight,
+	}
+	root.Anchored, human.AutoRotate = true, false
+	human.WalkSpeed, human.JumpPower, human.JumpHeight = 0, 0, 0
+	character:PivotTo(Stage.spot(arena, side, root, human))
+	root.AssemblyLinearVelocity, root.AssemblyAngularVelocity = Vector3.zero, Vector3.zero
+	human:Move(Vector3.zero)
+	return saved
+end
+
+function Stage.unlock(saved)
+	if not saved or not saved.Root.Parent or not saved.Character.Parent then
+		return
+	end
+	saved.Root.AssemblyLinearVelocity, saved.Root.AssemblyAngularVelocity = Vector3.zero, Vector3.zero
+	saved.Root.Anchored, saved.Humanoid.AutoRotate = saved.Anchored, saved.AutoRotate
+	saved.Humanoid.WalkSpeed, saved.Humanoid.JumpPower, saved.Humanoid.JumpHeight =
+		saved.WalkSpeed, saved.JumpPower, saved.JumpHeight
+end
+
 local function bot(parent, name, pose, side)
 	local model = Instance.new("Model")
 	model.Name = name

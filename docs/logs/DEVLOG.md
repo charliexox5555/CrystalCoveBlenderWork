@@ -14,6 +14,32 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — Locked arena queue, VS board, win-100 rewards
+Done:
+- `ArenaService` rewritten: queue by a "Join Battle" ProximityPrompt on each pad (key E, hidden while that side is taken or the arena is busy); stepping on pads no longer queues. Queueing snaps the avatar onto its pad facing the other pad and locks it (anchored, WalkSpeed/Jump 0, no AutoRotate; `MatchStage.lock/unlock`) through selection and fight. `LeaveQueue` leaves the queue or forfeits a live match; a reset does the same. Every path unlocks (leave, reset, match end, player leaving). Only arenas under `workspace` are used now (old lobby backups in ServerStorage carry the same tags).
+- MatchState contract for the client (sent to match-ui): `Queue {ArenaId, Side, Deadline, Locked, CanLeave, Spot, Center}` and `QueueLeft {ArenaId, Reason = Left|Reset|MatchOver}`.
+- New `Util/ArenaBoard`: stained-glass VS board over each stand (blue/violet/orange panes, headshot portraits via rbxthumb, BOT/? glyphs, "1 / 2 PLAYERS", "WIN 100" + coin icon, status line "Bot joins in 12s" / hearts and round in battle). Keeps the `ArenaStatus` name so FightView still hides it during the fight camera.
+- Rewards (decision 84): win = 100 coins always; loss = 8 + 10 per heart taken + 5 per glassy of chip damage in lost rounds + 2 per Perfect, max 40; the quitter gets 0. `MatchService` records chip from the winner's remaining HP. Tests updated.
+- Studio Play (bot matches): prompt queue locks and snaps; Leave remote unlocks and re-enables the prompt; reset in queue -> QueueLeft Reset; reset after one completed round -> forfeit, 0 coins, unlocked; Leave mid-match -> no-contest, unlocked; full natural loss paid out and freed the avatar (that run used the first, damage-only formula, which paid the cap of 40 for a 0-heart loss, which is why chip is now weighted lightly). Lune 137 passed, Studio RunAll 137 passed.
+Next:
+- match-ui: camera to the arena middle while queued, Leave button during the match, re-enable movement on QueueLeft.
+Problems / questions for the user:
+- Look of the VS board (height/size in `Balance.Feel.ArenaBoard*`), and the loss formula numbers.
+- Friends could trade quick forfeits after one completed fight for 100 coins; watch for it.
+Economy sim (after):
+- Glass Clash economy report (2000 players, 40 min a day for 30 days, 50% wins, 40% bot matches)
+- Match length ~5.7 min (4.12 rounds), 10.5 matches per hour
+- Kiln: 300 coins a pull, 21 glassies inside
+- Pulls on day 1: 4   by day 30: 92
+- Unique glassies (of 21 + 3 starters): day 7 12, day 30 18
+- Median play time to a player's first:
+- Rare      51 min  (100% of players get one within 30 days)
+- Epic      2.3 h of play  (100% of players get one within 30 days)
+- Legendary 9.4 h of play  (76% of players get one within 30 days)
+- Mythic    not within the sim (median player never)  (20% of players get one within 30 days)
+- Before: pulls day 1 3, day 30 81; first Rare 57 min, Epic 2.8 h, Legendary 11.3 h (71%), Mythic 19%.
+- Balance sim unchanged (no fight values changed); pop mirror 28.9 s, side bias 49%.
+
 ## 2026-10-17 — Claude — Shop redesign: Daily Store cards, bundle banner, Marbles tab
 Done:
 - New `Components/ShopCard` (big art panel with the item filling it, name band, rarity/owned pills, wide price button; grey SOLD OUT when bought). Daily offers use it; "Glassy · new for you" text removed, owned shown as an OWNED ×N pill. Bundle banner restyled after the creator's reference: LIMITED-TIME BUNDLE pill, big title, "Glassy + Flyer + Finisher", overlapping hero art, View › and Robux price buttons. Timer reads "Refreshes in hh:mm:ss".

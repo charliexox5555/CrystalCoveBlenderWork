@@ -10,7 +10,7 @@
 --   MatchLogic.setAim(match, 1, 0.9, 0.2)      -- pull-back angle, sideways yaw
 --   local setup = MatchLogic.fightSetup(match) -- pass to FightRules.new
 --   MatchLogic.endRound(match, winnerSide)     -- returns true when the match is over
---   MatchLogic.rewards(match, side)            -- coins and trophies for the results screen
+--   MatchLogic.rewards(match, side, ...)       -- coins and trophies for the results screen
 
 local Balance = if script then require(script.Parent.Config.Balance) else require("./Config/Balance")
 local Glassies = if script then require(script.Parent.Config.Glassies) else require("./Config/Glassies")
@@ -317,12 +317,28 @@ function MatchLogic.endRound(match: Match, winnerSide: number): boolean
 	return match.Over
 end
 
+-- Observed stats MatchService records per side (all optional; defaults come from `match`).
+--   Hearts: hearts taken in completed fights; Chip: summed share of the winner's HP dealt in
+--   rounds this side lost; Perfects: Perfect Releases; Forfeited: this side quit before the end
+export type RewardStats = { Hearts: number?, Chip: number?, Perfects: number?, Forfeited: boolean? }
+
+-- Coins for a loss, from performance only (capped well below a win).
+function MatchLogic.lossCoins(hearts: number, chip: number, perfects: number): number
+	local r = B.Rewards
+	local coins = r.LossBaseCoins
+		+ math.max(hearts, 0) * r.LossHeartCoins
+		+ math.floor(math.max(chip, 0) * r.LossChipCoins + 0.5)
+		+ math.max(perfects, 0) * r.LossPerfectCoins
+	return math.min(r.LossMaxCoins, coins)
+end
+
 -- Rewards (GAME_DESIGN 8.1). `trophies` = the player's current trophies (never goes below 0).
 function MatchLogic.rewards(
 	match: Match,
 	sideIndex: number,
 	trophies: number?,
-	eligible: boolean?
+	eligible: boolean?,
+	stats: RewardStats?
 ): { Coins: number, Trophies: number }
 	-- MatchService supplies eligibility from observed completed fights, never forfeited hearts.
 	if eligible == false then
@@ -332,9 +348,15 @@ function MatchLogic.rewards(
 	local side = match.Sides[sideIndex]
 	local won = match.Winner == sideIndex
 	local vsBot = match.Sides[3 - sideIndex].IsBot
-	local coins = side.RoundsWon * r.RoundWinCoins + (if won then r.MatchWinCoins else r.MatchLossCoins)
-	if vsBot then
-		coins = math.floor(coins * r.BotMatchFraction + 0.5)
+	local coins = r.MatchWinCoins
+	if not won then
+		coins = if stats and stats.Forfeited
+			then 0
+			else MatchLogic.lossCoins(
+				stats and stats.Hearts or side.RoundsWon,
+				stats and stats.Chip or 0,
+				stats and stats.Perfects or 0
+			)
 	end
 	local delta = if won then r.WinTrophies else -r.LossTrophies
 	if vsBot then

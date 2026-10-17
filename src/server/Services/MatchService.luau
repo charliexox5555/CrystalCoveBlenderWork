@@ -116,6 +116,8 @@ function Service:StartMatch(arena, players, now, spectate)
 		Perfects = { 0, 0 },
 		ActualWins = { 0, 0 },
 		HeavyShatters = { 0, 0 },
+		Chip = { 0, 0 }, -- share of the winner's HP dealt in lost fights (loss coins)
+		Forfeited = { false, false },
 		Used = { {}, {} },
 		BotNames = {},
 		Finished = false,
@@ -163,7 +165,12 @@ function Service:Finish(entry)
 		local profile = self.Services.DataService and self.Services.DataService:Get(player)
 		local temp = self.Temporary[player] or { Coins = 0, Trophies = 0 }
 		self.Temporary[player] = temp
-		local rewards = Logic.rewards(match, side, profile and profile.Trophies or temp.Trophies, eligible)
+		local rewards = Logic.rewards(match, side, profile and profile.Trophies or temp.Trophies, eligible, {
+			Hearts = entry.ActualWins[side],
+			Chip = entry.Chip[side],
+			Perfects = entry.Perfects[side],
+			Forfeited = entry.Forfeited[side],
+		})
 		if self.Services.DataService then
 			self.Services.DataService:RecordMatch(player, entry.Id, match, side, rewards, {
 				Eligible = eligible,
@@ -244,6 +251,8 @@ function Service:Dispatch(entry, now)
 					end
 					if entry.Runner:FightEnded(fight.Winner, workspace:GetServerTimeNow()) then
 						entry.ActualWins[fight.Winner] += 1
+						local winner = fight.Fighters[fight.Winner]
+						entry.Chip[3 - fight.Winner] += math.clamp(1 - winner.Hp / math.max(winner.MaxHp, 1), 0, 1)
 						if Glassies.get(match.Sides[3 - fight.Winner].Pick).Type == "Heavy" then
 							entry.HeavyShatters[fight.Winner] += 1
 						end
@@ -260,18 +269,7 @@ function Service:Dispatch(entry, now)
 			self:Finish(entry)
 		end
 		if not entry.Finished then
-			self.Services.ArenaService:Label(
-				entry.Arena,
-				meta.Names[1]
-					.. " vs "
-					.. meta.Names[2]
-					.. "\n"
-					.. string.rep("♥", meta.Hearts[1])
-					.. " • ROUND "
-					.. meta.Round
-					.. " • "
-					.. string.rep("♥", meta.Hearts[2])
-			)
+			self.Services.ArenaService:MatchBoard(entry.Arena, meta)
 		end
 	end
 end
@@ -289,7 +287,8 @@ end
 
 function Service:Forfeit(player)
 	local owned = self.ByPlayer[player]
-	if owned then
+	if owned and not owned.Entry.Finished then
+		owned.Entry.Forfeited[owned.Side] = true
 		owned.Entry.Runner:Forfeit(owned.Side, workspace:GetServerTimeNow())
 		self:Dispatch(owned.Entry, workspace:GetServerTimeNow())
 	end

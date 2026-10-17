@@ -1,3 +1,12 @@
+-- Arena queues. Players join a side with the ProximityPrompt on its pad (or PLAY / Rematch),
+-- are fixed to that spot facing the arena until the match ends or they leave (LeaveQueue or a
+-- reset), and a bot fills an empty side after Balance.Match.QueueBotAfterSeconds.
+--
+-- MatchState messages sent to the queued player (the client moves the camera and shows Leave):
+--   { Phase = "Queue", ArenaId, Side, Deadline, Locked = true, CanLeave = true,
+--     Spot: CFrame (where the avatar is fixed), Center: Vector3 (middle of the arena) }
+--   { Phase = "QueueLeft", ArenaId, Reason = "Left" | "Reset" | "MatchOver" }
+--     "MatchOver" is sent once the match ends and the avatar is free to move again.
 local Players = game:GetService("Players")
 local CollectionService = game:GetService("CollectionService")
 local RunService = game:GetService("RunService")
@@ -5,22 +14,24 @@ local RS = game:GetService("ReplicatedStorage")
 local Balance = require(RS.Shared.Config.Balance)
 local Remotes = require(RS.Shared.Remotes)
 local Guard = require(script.Parent.Parent.Util.RemoteGuard)
-local Theme = require(game.StarterPlayer.StarterPlayerScripts.Client.UI.Theme)
+local Stage = require(script.Parent.Parent.Util.MatchStage)
+local Board = require(script.Parent.Parent.Util.ArenaBoard)
 local Service = {}
 
 function Service:Init(services)
-	self.Services, self.Arenas, self.ByPlayer, self.RequireExit, self.Recent = services, {}, {}, {}, {}
+	self.Services, self.Arenas, self.ByPlayer, self.Locks, self.Recent = services, {}, {}, {}, {}
 	self.Guard, self.Accumulator = Guard.new(), 0
+	-- Backups of old lobbies in ServerStorage carry the same tags; only live stands count.
 	for _, stand in CollectionService:GetTagged("ArenaStand") do
 		local id = stand:GetAttribute("ArenaId")
-		if type(id) == "number" then
-			self.Arenas[id] = { Id = id, Stand = stand, Pads = {}, Queue = {} }
+		if type(id) == "number" and stand:IsDescendantOf(workspace) then
+			self.Arenas[id] = { Id = id, Stand = stand, Pads = {}, Queue = {}, Prompts = {} }
 		end
 	end
 	for _, pad in CollectionService:GetTagged("QueuePad") do
 		local arena = self.Arenas[pad:GetAttribute("ArenaId")]
 		local side = if pad:GetAttribute("Side") == "A" then 1 else 2
-		if arena then
+		if arena and pad:IsDescendantOf(arena.Stand) then
 			arena.Pads[side] = pad
 		end
 	end
@@ -29,39 +40,57 @@ function Service:Init(services)
 	end
 end
 
-function Service:OnPad(player, pad)
-	local root = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
-	local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
-	if not root or not humanoid or humanoid.Health <= 0 then
-		return false
-	end
-	local delta = root.Position - pad.Position
-	local radius = math.max(pad.Size.X, pad.Size.Y, pad.Size.Z) / 2 + Balance.Match.QueueMargin
-	return Vector3.new(delta.X, 0, delta.Z).Magnitude <= radius and math.abs(delta.Y) <= Balance.Match.QueueHeight
-end
-
-function Service:Label(arena, text)
-	if arena.LabelGui and not arena.LabelGui.Enabled then
-		-- Idle arenas keep a sign too, so players can find an open stand from the path.
-		arena.LabelGui.Enabled = true
-		arena.LabelGui:SetAttribute("ArenaActive", true)
-	end
-	if arena.Label and arena.Label.Text ~= text then
-		arena.Label.Text = text
-	end
-end
-
 function Service:Title(arena)
 	return if arena.Stand:GetAttribute("Featured") then "FEATURED ARENA" else "ARENA " .. arena.Id
 end
 
-function Service:IdleLabel(arena)
-	self:Label(arena, self:Title(arena) .. "\nOPEN • STEP ON A PAD")
+local function who(player)
+	return player and { UserId = player.UserId, Name = player.DisplayName } or nil
 end
 
--- Pad glows show the arena state: bright = free to join, dim = someone is waiting there, grey = match on.
+-- Queue board for an arena that is not fighting.
+function Service:QueueBoard(arena, now)
+	local a, b = arena.Queue[1], arena.Queue[2]
+	local count = (if a then 1 else 0) + (if b then 1 else 0)
+	local status = if count == 0
+		then "Walk up to a pad and press to join!"
+		else "Bot joins in " .. math.max(
+			0,
+			math.ceil((arena.QueuedAt or now) + Balance.Match.QueueBotAfterSeconds - now)
+		) .. "s"
+	Board.update(arena.Board, {
+		Title = self:Title(arena),
+		Count = count .. " / 2 PLAYERS",
+		Status = status,
+		Sides = { who(a), who(b) },
+	})
+end
+
+-- Board while a match runs; MatchService passes its meta (names, ids, hearts, round).
+function Service:MatchBoard(arena, meta)
+	local sides = {}
+	for side = 1, 2 do
+		sides[side] = { UserId = meta.PlayerIds[side], Name = meta.Names[side] }
+	end
+	Board.update(arena.Board, {
+		Title = self:Title(arena),
+		Count = "IN BATTLE",
+		Status = string.rep("♥", meta.Hearts[1]) .. "  ROUND " .. meta.Round .. "  " .. string.rep(
+			"♥",
+			meta.Hearts[2]
+		),
+		Sides = sides,
+	})
+end
+
+-- Pad glows and prompts show the arena state: open, someone waiting there, or match on.
 function Service:PadState(arena)
 	for side, pad in arena.Pads do
+		local prompt = arena.Prompts[side]
+		local open = not arena.Busy and not arena.Queue[side]
+		if prompt and prompt.Enabled ~= open then
+			prompt.Enabled = open
+		end
 		local glow = pad:FindFirstChild("Glow")
 		if not glow or not glow:IsA("BasePart") then
 			continue
@@ -75,8 +104,8 @@ function Service:PadState(arena)
 			continue
 		end
 		glow:SetAttribute("PadState", state)
-		local open, base = glow:GetAttribute("OpenColor"), glow:GetAttribute("OpenTransparency")
-		glow.Color = if state == "Busy" then Color3.fromHex(Balance.Lobby.BusyPadColor) else open
+		local openColor, base = glow:GetAttribute("OpenColor"), glow:GetAttribute("OpenTransparency")
+		glow.Color = if state == "Busy" then Color3.fromHex(Balance.Lobby.BusyPadColor) else openColor
 		glow.Transparency = if state == "Busy"
 			then Balance.Lobby.BusyPadTransparency
 			elseif state == "Waiting" then Balance.Lobby.WaitingPadTransparency
@@ -84,45 +113,51 @@ function Service:PadState(arena)
 	end
 end
 
-function Service:MakeLabel(arena)
-	local bar = arena.Stand:FindFirstChild("Crossbar")
-	local attachment = bar:FindFirstChild("ArenaLabelAnchor") or Instance.new("Attachment")
-	attachment.Name, attachment.Parent = "ArenaLabelAnchor", bar
-	attachment.Position = Vector3.yAxis * Balance.Feel.ArenaLabelHeight
-	local gui = attachment:FindFirstChild("ArenaStatus") or Instance.new("BillboardGui")
-	-- Sized in studs so distant signs shrink with perspective instead of stacking into one row.
-	gui.Name, gui.Size, gui.MaxDistance, gui.AlwaysOnTop, gui.LightInfluence =
-		"ArenaStatus",
-		UDim2.fromScale(Balance.Feel.ArenaLabelWidth, Balance.Feel.ArenaLabelWidth * 0.26),
-		Balance.Feel.SpectatorDistance,
-		false,
-		0
-	gui.Parent = attachment
-	arena.LabelGui = gui
-	local label = gui:FindFirstChild("Text") or Instance.new("TextLabel")
-	label.Name, label.Size, label.BackgroundColor3, label.BackgroundTransparency =
-		"Text", UDim2.fromScale(1, 1), Theme.Battle.PanelTop, Theme.Battle.PanelTransparency
-	label.TextColor3, label.FontFace, label.TextScaled, label.BorderSizePixel =
-		Theme.Colors.Text, Theme.Fonts.Body, true, 0
-	label.Parent = gui
-
-	arena.Label = label
-	self:IdleLabel(arena)
-	self:PadState(arena)
+function Service:MakePrompts(arena)
+	for side, pad in arena.Pads do
+		local anchor = pad:FindFirstChild("QueuePromptAnchor") or Instance.new("Attachment")
+		anchor.Name, anchor.Parent = "QueuePromptAnchor", pad
+		anchor.WorldPosition = pad.Position + Vector3.yAxis * 3
+		local prompt = anchor:FindFirstChild("QueuePrompt") or Instance.new("ProximityPrompt")
+		prompt.Name, prompt.ActionText, prompt.ObjectText = "QueuePrompt", "Join Battle", self:Title(arena)
+		prompt.HoldDuration, prompt.RequiresLineOfSight = 0, false
+		prompt.MaxActivationDistance = Balance.Match.QueuePromptDistance
+		prompt.KeyboardKeyCode = Enum.KeyCode.E
+		prompt:SetAttribute("ArenaId", arena.Id)
+		prompt:SetAttribute("Side", side)
+		prompt.Parent = anchor
+		arena.Prompts[side] = prompt
+		prompt.Triggered:Connect(function(player)
+			if self.Guard:Allow(player, "Prompt", Balance.Match.QueuePromptRateSeconds) then
+				self:Queue(player, arena, side, workspace:GetServerTimeNow())
+			end
+		end)
+	end
 end
 
-function Service:Leave(player, requireExit)
+function Service:Unlock(player)
+	local lock = self.Locks[player]
+	self.Locks[player] = nil
+	if lock then
+		if lock.Died then
+			lock.Died:Disconnect()
+		end
+		Stage.unlock(lock.Saved)
+	end
+end
+
+-- reason: "Left" (button), "Reset" (character died/removed) or nil (player leaving the game).
+function Service:Leave(player, reason)
 	local entry = self.ByPlayer[player]
 	if not entry then
 		return
 	end
 	entry.Arena.Queue[entry.Side] = nil
 	self.ByPlayer[player] = nil
-	if requireExit then
-		self.RequireExit[player] = entry.Arena.Pads[entry.Side]
-	end
+	self:Unlock(player)
+	self:PadState(entry.Arena)
 	if player.Parent == Players then
-		Remotes.MatchState:FireClient(player, { Phase = "QueueLeft", ArenaId = entry.Arena.Id })
+		Remotes.MatchState:FireClient(player, { Phase = "QueueLeft", ArenaId = entry.Arena.Id, Reason = reason })
 	end
 end
 
@@ -130,23 +165,45 @@ function Service:Queue(player, arena, side, now)
 	if arena.Busy or arena.Queue[side] or self.ByPlayer[player] or self.Services.MatchService.ByPlayer[player] then
 		return false
 	end
-	if not self.Services.MatchService:IsReady(player) then
+	if self.Locks[player] or not self.Services.MatchService:IsReady(player) then
 		return false
 	end
+	local character = player.Character
+	local saved = Stage.lock(arena, side, character)
+	if not saved then
+		return false
+	end
+	self.Locks[player] = {
+		Saved = saved,
+		-- A reset frees the spot at once; in a live match MatchService turns it into a forfeit.
+		Died = saved.Humanoid.Died:Once(function()
+			if self.ByPlayer[player] then
+				self:Leave(player, "Reset")
+			end
+		end),
+	}
 	arena.Queue[side] = player
 	arena.QueuedAt = arena.QueuedAt or now
 	self.ByPlayer[player] = { Arena = arena, Side = side }
-	Remotes.MatchState:FireClient(
-		player,
-		{ Phase = "Queue", ArenaId = arena.Id, Deadline = arena.QueuedAt + Balance.Match.QueueBotAfterSeconds }
-	)
+	self:PadState(arena)
+	self:QueueBoard(arena, now)
+	Remotes.MatchState:FireClient(player, {
+		Phase = "Queue",
+		ArenaId = arena.Id,
+		Side = side,
+		Deadline = arena.QueuedAt + Balance.Match.QueueBotAfterSeconds,
+		Locked = true,
+		CanLeave = true,
+		Spot = character:GetPivot(),
+		Center = Stage.center(arena),
+	})
 	return true
 end
 
 function Service:StartArena(arena, now)
 	local players = { [1] = arena.Queue[1], [2] = arena.Queue[2] }
 	for _, player in players do
-		self.ByPlayer[player] = nil
+		self.ByPlayer[player] = nil -- the lock stays on until Release
 	end
 	arena.Queue, arena.QueuedAt, arena.Busy = {}, nil, true
 	self:PadState(arena)
@@ -156,13 +213,23 @@ end
 function Service:Release(arena, players)
 	arena.Busy, arena.Queue, arena.QueuedAt = false, {}, nil
 	for side, player in players do
-		if player and player.Parent then
-			self.RequireExit[player] = arena.Pads[side]
+		self:Unlock(player)
+		if player.Parent == Players then
 			self.Recent[player] = { Arena = arena, Side = side }
+			Remotes.MatchState:FireClient(player, { Phase = "QueueLeft", ArenaId = arena.Id, Reason = "MatchOver" })
 		end
 	end
-	self:IdleLabel(arena)
+	self:QueueBoard(arena, workspace:GetServerTimeNow())
 	self:PadState(arena)
+end
+
+-- LeaveQueue: leave the queue, or forfeit the live match (same as a reset).
+function Service:LeaveBattle(player)
+	if self.ByPlayer[player] then
+		self:Leave(player, "Left")
+	elseif self.Services.MatchService.ByPlayer[player] then
+		self.Services.MatchService:Forfeit(player)
+	end
 end
 
 function Service:Replay(player)
@@ -171,7 +238,7 @@ function Service:Replay(player)
 	end
 	local recent = self.Recent[player]
 	if not recent or recent.Arena.Busy then
-		Remotes.MatchState:FireClient(player, { Phase = "Notice", Text = "That arena is busy. Step on a free pad." })
+		Remotes.MatchState:FireClient(player, { Phase = "Notice", Text = "That arena is busy. Try a free pad." })
 		return
 	end
 	local arena, side = recent.Arena, recent.Side
@@ -179,30 +246,28 @@ function Service:Replay(player)
 		side = 3 - side
 	end
 	if arena.Queue[side] then
-		Remotes.MatchState:FireClient(
-			player,
-			{ Phase = "Notice", Text = "That arena just filled up. Step on a free pad." }
-		)
+		Remotes.MatchState:FireClient(player, { Phase = "Notice", Text = "That arena just filled up. Try a free pad." })
 		return
-	end
-	self:Leave(player, false)
-	self.RequireExit[player] = nil
-	local character = player.Character
-	if character then
-		character:PivotTo(CFrame.new(arena.Pads[side].Position + Vector3.yAxis * Balance.Lobby.RescueHeight))
 	end
 	self:Queue(player, arena, side, workspace:GetServerTimeNow())
 end
 
 function Service:Step(now)
-	for player, pad in self.RequireExit do
-		if not player.Parent or not self:OnPad(player, pad) then
-			self.RequireExit[player] = nil
+	for player in self.ByPlayer do
+		local lock = self.Locks[player]
+		if
+			not lock
+			or not player.Parent
+			or player.Character ~= lock.Saved.Character
+			or lock.Saved.Humanoid.Health <= 0
+		then
+			self:Leave(player, "Reset")
 		end
 	end
-	for player, entry in self.ByPlayer do
-		if not player.Parent or not self:OnPad(player, entry.Arena.Pads[entry.Side]) then
-			self:Leave(player, false)
+	for player in self.Locks do
+		-- Locks outlive the queue only while a match holds the player.
+		if not self.ByPlayer[player] and not self.Services.MatchService.ByPlayer[player] then
+			self:Unlock(player)
 		end
 	end
 	for _, arena in self.Arenas do
@@ -210,45 +275,24 @@ function Service:Step(now)
 		if arena.Busy then
 			continue
 		end
-		for side, pad in arena.Pads do
-			if arena.Queue[side] then
-				continue
-			end
-			for _, player in Players:GetPlayers() do
-				if not self.RequireExit[player] and self:OnPad(player, pad) then
-					self:Queue(player, arena, side, now)
-				end
-			end
-		end
 		local a, b = arena.Queue[1], arena.Queue[2]
 		if not a and not b then
 			arena.QueuedAt = nil
-			self:IdleLabel(arena)
 		elseif a and b or now - arena.QueuedAt >= Balance.Match.QueueBotAfterSeconds then
 			self:StartArena(arena, now)
-		else
-			self:Label(
-				arena,
-				self:Title(arena)
-					.. "\n"
-					.. (a or b).DisplayName
-					.. " wants a clash! Bot in "
-					.. math.max(0, math.ceil(arena.QueuedAt + Balance.Match.QueueBotAfterSeconds - now))
-					.. "s"
-			)
+			continue
 		end
+		self:QueueBoard(arena, now)
 	end
 end
 
--- PLAY uses the same authoritative queue path as physically stepping onto a pad.
+-- PLAY uses the same authoritative queue path as the pad prompts.
 function Service:JoinNearest(player)
 	if self.ByPlayer[player] or self.Services.MatchService.ByPlayer[player] then
 		return
 	end
-	local character = player.Character
-	local root = character and character:FindFirstChild("HumanoidRootPart")
-	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-	if not root or not humanoid or humanoid.Health <= 0 or not self.Services.MatchService:IsReady(player) then
+	local root = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+	if not root then
 		return
 	end
 	local best, nearestSide, distance = nil, nil, math.huge
@@ -268,12 +312,16 @@ function Service:JoinNearest(player)
 		Remotes.MatchState:FireClient(player, { Phase = "Notice", Text = "All arenas are busy. Try again soon!" })
 		return
 	end
-	self.RequireExit[player] = nil
-	character:PivotTo(CFrame.new(best.Pads[nearestSide].Position + Vector3.yAxis * Balance.Lobby.RescueHeight))
 	self:Queue(player, best, nearestSide, workspace:GetServerTimeNow())
 end
 
 function Service:Start()
+	for _, arena in self.Arenas do
+		arena.Board = Board.build(arena)
+		self:MakePrompts(arena)
+		self:QueueBoard(arena, workspace:GetServerTimeNow())
+		self:PadState(arena)
+	end
 	Remotes.JoinNearestArena.OnServerEvent:Connect(function(player, ...)
 		if not self.Guard:Allow(player, "JoinNearest", Balance.Match.RequestRateSeconds) then
 			return
@@ -283,13 +331,11 @@ function Service:Start()
 		end
 		self:JoinNearest(player)
 	end)
-	for _, arena in self.Arenas do
-		self:MakeLabel(arena)
-	end
-	Remotes.LeaveQueue.OnServerEvent:Connect(function(player)
-		if self.Guard:Allow(player, "Leave", Balance.Match.LeaveRateSeconds) then
-			self:Leave(player, true)
+	Remotes.LeaveQueue.OnServerEvent:Connect(function(player, ...)
+		if select("#", ...) ~= 0 or not self.Guard:Allow(player, "Leave", Balance.Match.LeaveRateSeconds) then
+			return
 		end
+		self:LeaveBattle(player)
 	end)
 	Remotes.RequestRematch.OnServerEvent:Connect(function(player)
 		if self.Guard:Allow(player, "Replay", Balance.Match.RequestRateSeconds) then
@@ -297,8 +343,9 @@ function Service:Start()
 		end
 	end)
 	Players.PlayerRemoving:Connect(function(player)
-		self:Leave(player, false)
-		self.RequireExit[player], self.Recent[player] = nil, nil
+		self:Leave(player, nil)
+		self:Unlock(player)
+		self.Recent[player] = nil
 		self.Guard:Remove(player)
 	end)
 	RunService.Heartbeat:Connect(function(dt)

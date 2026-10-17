@@ -146,6 +146,8 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 ## After launch
 
+- [ ] **Gifting (creator note 2026-10-17):** Gift buttons on the bundle preview, daily offers and Marble packs (reference: Ball v Ball gift buttons beside Buy). Needs a recipient picker, gift developer products or receipt routing to another player, policy checks and abuse limits. Deliberately left out of the pre-release store.
+
 - [ ] Weekly polish/events/codes; roster remains at 24 unless the creator later authorizes expansion
 - [ ] Winter event (~Dec 12): snow globes, ornaments, glass reindeer
 - [ ] Bracket tournament event, 2v2, party pads, Rainbow "re-melt"

@@ -45,9 +45,15 @@ function Opening.new(window, results, odds, collected, category, currency)
 		then (if #results == 1 then "SHAPING YOUR GLASS…" else "SHAPING " .. #results .. " GLASSIES…")
 		else "FINDING YOUR " .. (if self.Category == "Finishers" then "FINISHER" else "FLYER") .. "…"
 	window.Title.Text = titles[self.Category]
+	local kilns = RS.Assets:FindFirstChild("Kilns")
+	if self.Category == "Glassies" and kilns and kilns:FindFirstChild(self.Currency) then
+		-- The Marble Kiln opening shows the creator's Marble Kiln (Assets.Kilns), framed like the shop.
+		local slot = c.KilnStage.KilnPortrait
+		Item.crate(c.KilnStage, self.Category, self.Currency, slot.Size, slot.Position, "KilnPortrait", true)
+	end
 	if self.Category ~= "Glassies" then
 		local slot = c.KilnStage.KilnPortrait
-		Item.crate(c.KilnStage, self.Category, self.Currency, slot.Size, slot.Position, "KilnPortrait")
+		Item.crate(c.KilnStage, self.Category, self.Currency, slot.Size, slot.Position, "KilnPortrait", true)
 		if CrateMachine.template(self.Category, self.Currency) then
 			window.Title.Text = MachineConfig.Names[self.Category]:upper()
 		end

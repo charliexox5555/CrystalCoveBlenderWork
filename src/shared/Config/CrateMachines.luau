@@ -23,9 +23,17 @@ CrateMachines.Opening = {
 	CrankTurns = 2.5,
 	ShakeStuds = 0.06,
 	CoreGrow = 0.45,
-	LidLiftStuds = 1.2, -- ItemPresentation frames this much headroom above the machine
+	LidLiftStuds = 1.2, -- the opening stage frames this much headroom above the machine
 	LidTurns = 1,
 	PropellerBoost = 5,
+}
+
+-- Shop/opening preview camera for machines and kilns (CrateFraming): front-on, centred, same margin everywhere.
+CrateMachines.Framing = {
+	FieldOfView = 30,
+	PitchDegrees = 12, -- look down slightly so the chamber contents read
+	Fill = 0.92, -- the silhouette spans 92% of the tighter viewport axis
+	LightDirection = Vector3.new(-0.6, -1, 1.2), -- light the -Z front faces
 }
 
 -- Idle motion (radians per second unless noted). Per-part speeds come from template attributes.

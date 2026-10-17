@@ -22,8 +22,12 @@ function P.portrait(parent, category, id, size, position, name)
 		name
 	)
 end
-function P.crate(parent, category, currency, size, position, name)
+-- opening = true on the opening stage: reserves headroom above the machine for the popping lid.
+function P.crate(parent, category, currency, size, position, name, opening)
 	local U = require(script.Parent.Util)
+	local Presentation = script.Parent.Parent.Parent.Presentation
+	local Machine = require(Presentation.CrateMachine)
+	local MachineConfig = require(RS.Shared.Config.CrateMachines)
 	local source = if category == "Glassies"
 		then game.StarterGui.KilnScreen.Panel.Content.GlassiesPage.CoinKiln:FindFirstChild("KilnPortrait", true)
 		else nil
@@ -43,23 +47,23 @@ function P.crate(parent, category, currency, size, position, name)
 	end
 	local world = Instance.new("WorldModel")
 	world.Parent = viewport
-	local Machine = require(script.Parent.Parent.Parent.Presentation.CrateMachine)
+	-- Preferred art: the v2 crate machines, and copies of the creator's lobby kilns (Assets.Kilns).
 	local machine = if category ~= "Glassies" then Machine.template(category, currency) else nil
+	local kilns = RS.Assets:FindFirstChild("Kilns")
+	local kiln = if category == "Glassies" and kilns then kilns:FindFirstChild(currency) else nil
 	local crates = RS.Assets:FindFirstChild("Crates")
-	local model = machine or crates and crates:FindFirstChild(category)
+	local model = machine or kiln or crates and crates:FindFirstChild(category)
 	if model then
 		model = model:Clone()
 		model.Parent = world
-		if machine then
+		if machine and opening then
 			-- Invisible marker so the camera fit leaves room for the lid to pop up during the opening.
-			local pose, size = model:GetBoundingBox()
+			local pose, extent = model:GetBoundingBox()
 			local headroom = Instance.new("Part")
 			headroom.Name, headroom.Transparency, headroom.Size = "FrameHeadroom", 1, Vector3.one * 0.1
 			headroom.Anchored, headroom.CanCollide, headroom.CanQuery = true, false, false
-			headroom.CFrame = CFrame.new(
-				pose.Position
-					+ Vector3.yAxis * (size.Y / 2 + require(RS.Shared.Config.CrateMachines).Opening.LidLiftStuds)
-			)
+			headroom.CFrame =
+				CFrame.new(pose.Position + Vector3.yAxis * (extent.Y / 2 + MachineConfig.Opening.LidLiftStuds))
 			headroom.Parent = world
 		end
 	elseif source then
@@ -75,9 +79,17 @@ function P.crate(parent, category, currency, size, position, name)
 			p.Color = if currency == "Marbles" then Color3.fromHex("#93BCFF") else Color3.fromHex("#FFD98A")
 		end
 	end
-	local rotation =
-		CFrame.lookAt(if category == "Glassies" then Vector3.new(1.2, 0.4, 4) else Vector3.new(-3, 2, -8), Vector3.zero)
-	Glassy.fitOnResize(viewport, rotation, 35, 1.04)
+	if machine or kiln then
+		-- Front-on, centred framing that refits on resize (phone/desktop) unless an opening freezes it.
+		viewport.LightDirection = MachineConfig.Framing.LightDirection
+		require(Presentation.CrateFraming).bind(viewport)
+	else
+		local rotation = CFrame.lookAt(
+			if category == "Glassies" then Vector3.new(1.2, 0.4, 4) else Vector3.new(-3, 2, -8),
+			Vector3.zero
+		)
+		Glassy.fitOnResize(viewport, rotation, 35, 1.04)
+	end
 	if machine then
 		Machine.attachViewport(viewport, model)
 	end

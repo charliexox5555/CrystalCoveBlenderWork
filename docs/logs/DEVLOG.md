@@ -31,6 +31,15 @@ Done:
 Next:
 - Creator feel check in a match and at the showcase (the showcase clone enables the same RideEmitter effects).
 
+## 2026-10-17 — Claude — Crate/Kiln preview framing + creator's Marble Kiln
+Done:
+- New `Presentation/CrateFraming` (numbers in `Config/CrateMachines.Framing`): front-on camera (12° down, 30° FOV) that centres the projected silhouette and fills 92% of the tighter axis, refitting on resize unless an opening froze it. Used by `ItemPresentation.crate` for all four machines and both kilns (shop pages and the opening stage); viewport light now hits the -Z fronts. Lid headroom is reserved only on the opening stage.
+- `tools/studio/install_kiln_previews.luau` copied the creator's lobby kilns (`Workspace.Kilns.Kiln`/`MarbleKiln`, read only) into `ReplicatedStorage.Assets.Kilns.{Coins,Marbles}` (creator colours, facing -Z, floor pivot). The Marble Kiln preview and the Glassy opening now show the creator's recoloured Marble Kiln; `Assets.Crates.Glassies` kept as fallback.
+- Verified in Play: 16 framing cases (4 models × wide/square/tall/phone-small) centred within 2% and filling 92%; 24 opening checks across Glassies/Finishers/Flyers × Coins/Marbles (right kiln, lid stays in frame, launch from the chamber, cleanup); Studio RunAll and Lune 134 passed. Screens: `docs/testing/crate_framing/`.
+Next:
+- Creator: look at the shop pages and an opening; the preview box itself is small on the shop page (layout belongs to `CrateShopPanel`, shop-cards session) if you want the machines bigger still.
+- Shop page headings still say BURST CAPSULE / SKY CAPSULE (CrateShopPanel titles); rename to BURST DOME / CLOUD GLOBE there if wanted.
+
 ## 2026-10-17 — Claude — Crate Machines v2 (Finisher/Flyer openings)
 Done:
 - Six original Blender concepts (Spark Forge, Burst Globe, Kaleidoscope; Sky Dome, Cloud Globe, Beacon Tower) rendered to `assets/blender/crates_v2/concepts/`. Creator picked Sky Dome (re-themed purple as the Finisher **Burst Dome**) and **Cloud Globe** for Flyers.

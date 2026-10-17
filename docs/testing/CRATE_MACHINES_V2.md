@@ -32,3 +32,9 @@ Triangles: Burst Dome 2,740, Cloud Globe 3,692 (per template, one emblem each).
 - `tools/studio/verify_crate_machines_v2.luau` (Play client, no purchases): **46/46** — all four category/currency openings use the right machine and title, core grows during anticipation, lid stays shut until release then opens and stays inside the viewport frame, first card launches from RevealCore (<3 px), pose resets on destroy, no leaked audio; `Item.crate` preview idles; the two showcase machines in Workspace get their pooled light.
 - Studio `RunAll` passed; Lune **134 passed, 0 failed**. Existing Glassy Kiln path unchanged.
 - Screens checked in Play: Burst Dome charging, Cloud Globe lid popped. Creator feel and phone review remain.
+
+## Preview framing and kilns (2026-10-17, creator follow-up)
+
+- `src/client/Presentation/CrateFraming.luau` frames machines and kilns front-on (12° down, 30° FOV), centred, filling 92% of the tighter axis, refitting on resize; the opening stage adds lid headroom. Settings: `Config/CrateMachines.Framing`.
+- `ReplicatedStorage.Assets.Kilns.{Coins,Marbles}` are read-only copies of the creator's lobby kilns (`tools/studio/install_kiln_previews.luau`); the Marble Kiln preview/opening now use the creator's recoloured Marble Kiln. `Assets.Crates.Glassies` remains as fallback.
+- Checks: 16 framing cases (centre within 2%, fill 92%) and 24 opening checks over all categories/currencies. Before/after screens in `docs/testing/crate_framing/`.

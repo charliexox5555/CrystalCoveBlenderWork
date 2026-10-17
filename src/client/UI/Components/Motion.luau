@@ -6,6 +6,8 @@ local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local Theme = require(script.Parent.Parent.Theme)
 local UiAudio = require(script.Parent.UiAudio)
+local Lighting = game:GetService("Lighting")
+local Config = require(game:GetService("ReplicatedStorage").Shared.Config.UiMotion)
 local Motion = {}
 local bound = setmetatable({}, { __mode = "k" })
 local counters = setmetatable({}, { __mode = "k" })
@@ -59,6 +61,52 @@ function Motion.center(object)
 	object.AnchorPoint = Vector2.new(0.5, 0.5)
 end
 
+-- Primary gem buttons (green/amber/play) get a slow shine sweep and a faint breathing pulse.
+local function idleShine(button, art)
+	local path = art:GetAttribute("AssetPath")
+	if
+		art:FindFirstChild("ShineGradient")
+		or button.Name:match("Tab$")
+		or not (path and (path:find("gem_emerald") or path:find("gem_amber") or path:find("gem_play")))
+	then
+		return
+	end
+	local cfg = Config.Shine
+	local gradient = Instance.new("UIGradient")
+	gradient.Name, gradient.Rotation, gradient.Offset = "ShineGradient", 22, Vector2.new(-1.3, 0)
+	local base, w = Color3.fromRGB(214, 214, 214), cfg.Width / 2
+	gradient.Color = ColorSequence.new({
+		ColorSequenceKeypoint.new(0, base),
+		ColorSequenceKeypoint.new(math.clamp(0.5 - w, 0.01, 0.49), base),
+		ColorSequenceKeypoint.new(0.5, Color3.new(1, 1, 1)),
+		ColorSequenceKeypoint.new(math.clamp(0.5 + w, 0.51, 0.99), base),
+		ColorSequenceKeypoint.new(1, base),
+	})
+	gradient.Parent = art
+	local pulse = Instance.new("UIScale")
+	pulse.Name = "PulseScale"
+	pulse.Parent = button
+	task.spawn(function()
+		task.wait(math.random() * cfg.Every)
+		while button:IsDescendantOf(game) do
+			if not Motion.reduced() and button.Visible and button.AbsoluteSize.X > 0 and button.Active then
+				gradient.Offset = Vector2.new(-1.3, 0)
+				TweenService:Create(
+					gradient,
+					TweenInfo.new(cfg.Seconds, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
+					{ Offset = Vector2.new(1.3, 0) }
+				):Play()
+			end
+			task.wait(cfg.Every)
+		end
+	end)
+	TweenService:Create(
+		pulse,
+		TweenInfo.new(Config.Pulse.Seconds, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
+		{ Scale = 1 + Config.Pulse.Scale }
+	):Play()
+end
+
 local function accepts(input)
 	return input.UserInputType == Enum.UserInputType.MouseButton1
 		or input.UserInputType == Enum.UserInputType.Touch
@@ -81,6 +129,9 @@ function Motion.button(button)
 	scale.Name, scale.Parent = "InteractionScale", target
 	local art = button:FindFirstChild("Artwork")
 	local rest = if art and art:IsA("ImageLabel") then art.ImageColor3 else nil
+	if art and art:IsA("ImageLabel") then
+		idleShine(button, art)
+	end
 	local hovering, pressing, tween, tint = false, false, nil, nil
 	local T = Motion.Tuning
 	local function refresh()
@@ -148,6 +199,77 @@ end
 
 -- Window: dimmed backdrop + scale-in with overshoot. Returns { Close = function(done) }.
 -- `instant` (a refresh of a window that was just closed) skips the animation and sound.
+-- Menu ambience: blur + FOV pull-in while any window is open (skipped during matches), restored exactly.
+local ambience = { Count = 0 }
+local function ambienceOn()
+	local gui = Players.LocalPlayer and Players.LocalPlayer:FindFirstChildOfClass("PlayerGui")
+	if gui and gui:GetAttribute("InMatch") then
+		return false
+	end
+	ambience.Count += 1
+	if ambience.Count > 1 then
+		return true
+	end
+	local camera = workspace.CurrentCamera
+	local blur = Lighting:FindFirstChild("UiBlur") or Instance.new("BlurEffect")
+	blur.Name, blur.Size, blur.Parent = "UiBlur", 0, Lighting
+	ambience.Blur, ambience.BaseFov, ambience.Camera = blur, camera and camera.FieldOfView, camera
+	if ambience.Tweens then
+		for _, t in ambience.Tweens do
+			t:Cancel()
+		end
+	end
+	ambience.Tweens = {
+		TweenService:Create(
+			blur,
+			TweenInfo.new(Config.Blur.InSeconds, Enum.EasingStyle.Quad),
+			{ Size = Config.Blur.Size }
+		),
+	}
+	if camera then
+		table.insert(
+			ambience.Tweens,
+			TweenService:Create(
+				camera,
+				TweenInfo.new(Config.Fov.InSeconds, Enum.EasingStyle.Quad),
+				{ FieldOfView = ambience.BaseFov + Config.Fov.Delta }
+			)
+		)
+	end
+	for _, t in ambience.Tweens do
+		t:Play()
+	end
+	return true
+end
+local function ambienceOff()
+	ambience.Count = math.max(0, ambience.Count - 1)
+	if ambience.Count > 0 then
+		return
+	end
+	for _, t in ambience.Tweens or {} do
+		t:Cancel()
+	end
+	local blur, camera, base = ambience.Blur, ambience.Camera, ambience.BaseFov
+	if camera and base and camera.Parent then
+		TweenService:Create(camera, TweenInfo.new(Config.Fov.OutSeconds, Enum.EasingStyle.Quad), { FieldOfView = base })
+			:Play()
+		task.delay(Config.Fov.OutSeconds + 0.02, function()
+			if ambience.Count == 0 then
+				camera.FieldOfView = base -- exact restore even if a tween was interrupted
+			end
+		end)
+	end
+	if blur then
+		local out =
+			TweenService:Create(blur, TweenInfo.new(Config.Blur.OutSeconds, Enum.EasingStyle.Quad), { Size = 0 })
+		out:Play()
+		out.Completed:Connect(function()
+			if ambience.Count == 0 and blur.Parent then
+				blur:Destroy()
+			end
+		end)
+	end
+end
 function Motion.windowIn(gui, panel, instant)
 	local T = Motion.Tuning
 	local scale = panel:FindFirstChild("OpenScale")
@@ -169,8 +291,17 @@ function Motion.windowIn(gui, panel, instant)
 		dimGui:Destroy()
 	end)
 	local reduced = instant or Motion.reduced()
+	local ambient = ambienceOn()
+	local released = false
+	local function release()
+		if ambient and not released then
+			released = true
+			ambienceOff()
+		end
+	end
+	gui.Destroying:Connect(release)
 	if reduced then
-		scale.Scale, dim.BackgroundTransparency = 1, T.DimTransparency
+		scale.Scale, dim.BackgroundTransparency = 1, 1 - Config.Dim
 	else
 		scale.Scale = T.WindowFrom
 		TweenService:Create(scale, T.WindowOpen, { Scale = 1 }):Play()
@@ -178,7 +309,7 @@ function Motion.windowIn(gui, panel, instant)
 			:Create(
 				dim,
 				TweenInfo.new(T.DimSeconds, Enum.EasingStyle.Quad),
-				{ BackgroundTransparency = T.DimTransparency }
+				{ BackgroundTransparency = 1 - Config.Dim }
 			)
 			:Play()
 	end
@@ -192,6 +323,7 @@ function Motion.windowIn(gui, panel, instant)
 				return
 			end
 			closing = true
+			release()
 			if reduced or Motion.reduced() then
 				dimGui:Destroy()
 				done()

@@ -37,4 +37,12 @@ return {
 	FallingShimmer = "rbxassetid://9116418035",
 	LanternBell = "rbxassetid://9126073001",
 	GhostWhoo = "rbxassetid://9113080188",
+	-- UI sounds (ProSoundEffects, creator-approved 2026-10-17); levels live in Config/UiMotion.
+	UiClick = "rbxassetid://9119717523",
+	UiHover = "rbxassetid://9119717529",
+	UiOpen = "rbxassetid://9119927252",
+	UiClose = "rbxassetid://9119927012",
+	UiTab = "rbxassetid://9119717523",
+	UiSuccess = "rbxassetid://9116394876",
+	UiError = "rbxassetid://9116737766",
 }

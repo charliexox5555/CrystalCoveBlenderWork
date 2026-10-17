@@ -5,25 +5,26 @@ local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
 local SoundService = game:GetService("SoundService")
 local Audio: { [string]: string } = require(RS.Shared.Config.Audio) :: any
+local Levels = require(RS.Shared.Config.UiMotion).Sounds
 local UiAudio = {}
 
 -- Volume and pitch are per cue; one shared Sound per cue is restarted rather than cloned.
 local Cues = {
-	Click = { Key = "UiClick", Volume = 0.45, Pitch = 1 },
-	Hover = { Key = "UiHover", Volume = 0.1, Pitch = 1.8 },
-	Open = { Key = "UiOpen", Volume = 0.4, Pitch = 1.15 },
-	Close = { Key = "UiClose", Volume = 0.35, Pitch = 0.85 },
-	Tab = { Key = "UiTab", Volume = 0.4, Pitch = 1.25 },
-	Success = { Key = "UiSuccess", Volume = 0.45, Pitch = 1 },
-	Error = { Key = "UiError", Volume = 0.35, Pitch = 0.9 },
+	Click = { Key = "UiClick" },
+	Hover = { Key = "UiHover" },
+	Open = { Key = "UiOpen" },
+	Close = { Key = "UiClose" },
+	Tab = { Key = "UiTab" },
+	Success = { Key = "UiSuccess" },
+	Error = { Key = "UiError" },
 }
 local sounds: { [string]: Sound } = {}
 local group: SoundGroup? = nil
 
 local function muted(): boolean
 	local gui = Players.LocalPlayer and Players.LocalPlayer:FindFirstChildOfClass("PlayerGui")
-	-- The music controller's mute also silences UI sounds once it publishes this attribute.
-	return gui ~= nil and (gui:GetAttribute("MusicMuted") == true or gui:GetAttribute("UiSoundsMuted") == true)
+	-- UI sounds follow only their own switch, never the music mute.
+	return gui ~= nil and gui:GetAttribute("UiSoundsMuted") == true
 end
 
 function UiAudio.play(cue: string)
@@ -40,13 +41,16 @@ function UiAudio.play(cue: string)
 	local sound = sounds[cue]
 	if not sound then
 		sound = Instance.new("Sound")
-		sound.Name, sound.SoundId, sound.Volume, sound.PlaybackSpeed = cue, id, spec.Volume, spec.Pitch
+		local level = Levels[cue]
+		sound.Name, sound.SoundId, sound.Volume, sound.PlaybackSpeed = cue, id, level.Volume, level.Pitch
+		sound.RollOffMode = Enum.RollOffMode.Linear
 		sound.SoundGroup = group
 		sound.Parent = group
 		sounds[cue] = sound
 	end
 	sound.TimePosition = 0
 	sound:Play()
+	UiAudio.LastPlayed = cue
 end
 
 return UiAudio

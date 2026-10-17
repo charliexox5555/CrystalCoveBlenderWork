@@ -63,15 +63,18 @@ return {
 			cue("FallingShimmer", "Burst", 0.32, 0.9, 1.1),
 			cue("ChimeCluster", "Burst", 0.6, 0.6, 1.4),
 		},
-		-- Lantern Eclipse (beats: converge 0.25 s, release 0.65 s, fade 0.85 s): bell, friendly
-		-- ghost whoo as the wisps gather, release poof, glittering lantern fade.
+		-- Lantern Eclipse (Balance.CosmeticPresentation.Eclipse: eclipse 0.55 s, release 0.85 s):
+		-- lantern bell pops in, ghosts whoo as they swoop, rising shimmer under the moon, then a
+		-- release poof with the lantern's glass bursting and a glittering fade.
 		lantern_eclipse = {
-			cue("LanternBell", "Rise", 0, 0.8, 0.9),
+			cue("LanternBell", "Rise", 0, 0.7, 0.9),
 			cue("RisingWhoosh", "Fly", 0, 0.9, 0.85),
-			cue("GhostWhoo", "Burst", 0.1, 1, 1.15),
-			cue("MagicPoof", "Burst", 0.65, 1.1, 0.95, 1),
-			cue("LanternBell", "Burst", 0.68, 0.9, 1.2),
-			cue("ChimeCluster", "Burst", 0.85, 0.7, 0.9),
+			cue("LanternBell", "Burst", 0, 0.9, 1.05),
+			cue("GhostWhoo", "Burst", 0.05, 1, 1.2),
+			cue("MagicRiser", "Burst", 0.4, 0.8, 1.25),
+			cue("MagicPoof", "Burst", 0.85, 1.2, 0.9, 1),
+			cue("SafetyGlass", "Burst", 0.87, 0.7, 1.2),
+			cue("ChimeCluster", "Burst", 1.0, 0.8, 0.95),
 		},
 	},
 }

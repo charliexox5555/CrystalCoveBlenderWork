@@ -14,6 +14,17 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Claude — Lantern Eclipse rework (handoff step 3)
+Done:
+- Rebuilt `HollowlightFX` as a four-beat show (numbers in `Balance.CosmeticPresentation.Eclipse`). The lantern pops in above the recipient with squash and stretch; ghosts spiral in with trails, circle tight and tremble; the halo and spirals wind up; a glass crescent moon slides across and the lantern flickers. After a short hush comes the flash, gold shock crown, mint ring, light pulse, stars and particle kit, then the lantern bursts into Hollowlight's 16 real shards (glowing amber alternating with glass) while the ghosts scatter and the moon drifts off. Lantern Seeds' `pressure` puff is kept.
+- New Blender actor via `tools/blender/build_eclipse_moon.py` → `assets/blender/seasonal/hollowlight_v3/` (3,704 tris). Creator imported it; Claude installed a normalized `Assets.Seasonal.Hollowlight.EclipseMoon` and archived the raw import in `ServerStorage.HollowlightV3Import`.
+- `FinisherCamera` supports per-finisher `CameraHoldSeconds`/`KickAt` (Eclipse 1.6 s, kick at release; other finishers unchanged). Eclipse sound cues retimed: bell, ghost whoo, rising shimmer, release poof, glass burst, chime.
+- Studio: stepped review captures at 0.45/0.7/0.9/1.3 s; first pass had an opaque flash and yellow light wash (fixed: smaller, faster flash, half the light). Real-time runs: 69 / 37 (low detail) peak instances, fully cleaned at 3.1 s. Camera mock confirms hold and kick. 119 tests, no client/server errors.
+Next:
+- Creator feel check in Inventory → Finishers → Lantern Eclipse → Preview and in a match; then step 4, the flyer.
+Problems / questions for the user:
+- Save the place to keep `EclipseMoon` and the archive. Creator says future models can be imported through their API; `ROBLOX_ASSETS_KEY` is present, and the target group ID still needs confirming.
+
 ## 2026-10-16 — Claude — Finisher sound design (handoff step 2)
 Done:
 - `Config/FinisherAudio` gives each of the six finishers its own Rise/Fly/Burst cue timeline; new `Presentation/FinisherAudio` plays them (impact priority, 8-voice cap, 20–70 stud rolloff, impact-only for unwatched arenas, cancels on owner destroy). FightFinisher cues the rise, launch and impact; the inventory preview plays the burst in 2D and stops on replay/close. Old one-sound `Sound` field removed.

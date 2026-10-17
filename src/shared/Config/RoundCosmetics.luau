@@ -100,7 +100,10 @@ C.Seasonal = {
 			AssetBundle = "Hollowlight",
 			AssetName = "lantern_eclipse",
 			Seasonal = true,
-			Description = "Friendly ghost wisps gather, then burst through a glowing lantern eclipse.",
+			-- Longer show: the camera holds on it and kicks on the release beat (seconds after impact).
+			CameraHoldSeconds = 1.6,
+			KickAt = 0.85,
+			Description = "Ghosts gather round a pumpkin lantern, a glass moon eclipses it, and it bursts into glowing shards.",
 		},
 	},
 }

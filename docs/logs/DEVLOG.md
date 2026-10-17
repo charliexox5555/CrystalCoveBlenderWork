@@ -14,6 +14,19 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — Production playtest prep, tester Marbles, ability numbers
+Done:
+- `Config/Testing.TesterMarbles` (Enabled, Amount 10000, Wave "playtest-1"): `ProfileSchema.testerGrant` gives each player the Marbles once per wave on load (rejoining never stacks; a new Wave grants again; the flag survives saves). New ProfileTests case.
+- New `Presentation/AbilityNumbers`, called from `FightScene:Event` in place of the old ability popup block:
+  - Multi-pulse ability damage (wisps, breath, volleys) counts up on one label instead of overwriting.
+  - Heals show +N; guard blocks and mirror reflects show their amounts.
+  - Statuses get short calls: SLOWED, MARKED, BOOST!, MIRROR UP, COUNTER READY, ECHO STORED, SEED n/3, SEED KNOCKED!.
+  - Contact-boosted clashes name the ability.
+  - Events are de-duplicated per cast pulse.
+- Production audit: no Animation assets are used (no IDs to publish); every dev hook and QA harness is Studio-only; live servers use DataStore `GlassClash_v2`; all 23 developer products are configured. Checklist: `docs/testing/PRODUCTION_TEST_1.md`. 138 Lune tests pass.
+Next:
+- Live Studio check of the ability labels and the grant (Studio was busy with other sessions' Play runs). The creator saves, publishes and sets access, then turns the grant off or bumps Wave after the playtest.
+
 ## 2026-10-17 — Claude — Wallet gain animation
 Done:
 - New `Components/CurrencyGain.luau` + `LobbyController:ApplyWallet/FlushGains`: when coins or Marbles go up, coin/Marble icons burst from screen centre and fly into the HUD counter (3 to 14 icons by size), the counter holds the old number, then ticks up on the first landing with a bump, a currency-colour glow and Success/Hover tick sounds. Decreases and equal balances count normally; reduced motion just ticks. If the HUD is hidden (queue, match, results) the gain waits and plays 0.5 s after it returns. Repeat snapshots don't cancel a waiting gain.

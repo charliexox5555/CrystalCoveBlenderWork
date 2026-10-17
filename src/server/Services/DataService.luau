@@ -124,6 +124,10 @@ function Service:Load(player)
 	if self.Services.RetentionService then
 		self.Services.RetentionService:Loaded(player)
 	end
+	local granted = Schema.testerGrant(profile.Data, require(RS.Shared.Config.Testing).TesterMarbles)
+	if granted > 0 then
+		player:SetAttribute("TesterMarblesGranted", granted)
+	end
 	self:Sync(player)
 end
 

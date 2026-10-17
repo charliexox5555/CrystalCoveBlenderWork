@@ -7,6 +7,7 @@ local Glassies = require(RS.Shared.Config.Glassies)
 local Powers = require(RS.Shared.Config.Powers)
 local Audio = require(RS.Shared.Config.Audio)
 local Health = require(script.Parent.FightHealth)
+local AbilityNumbers = require(script.Parent.AbilityNumbers)
 local Hero = require(script.Parent.HeroPowers)
 local M, Feel = Balance.Motion, Balance.Feel
 local Scene = {}
@@ -289,30 +290,7 @@ end
 
 function Scene:Event(e, hud)
 	if self.Combat and self.Combat:Event(e) then
-		if e.Type == "CastContact" and not e.Missed then
-			local target = self.Fighters[e.Target]
-			Health.bump(target)
-			if hud then
-				hud:Popup(
-					if e.Blocked then "BLOCKED" else "−" .. math.floor(e.Amount + 0.5),
-					target.Body.Position,
-					Color3.fromHex(self.Fighters[e.Side].Def.Tint),
-					if e.Target == 1 then -1 else 1,
-					"PowerDamage" .. e.Target
-				)
-			end
-		elseif e.Type == "SignatureStatus" and e.Kind == "Heal" and e.Amount > 0 then
-			Health.bump(self.Fighters[e.Side])
-			if hud then
-				hud:Popup(
-					"+" .. math.floor(e.Amount + 0.5),
-					self.Fighters[e.Side].Body.Position,
-					Color3.fromHex("#86EDB8"),
-					0,
-					"Heal" .. e.Side
-				)
-			end
-		end
+		AbilityNumbers.event(self, e, hud)
 		return
 	end
 	local f = e.Side and self.Fighters[e.Side]

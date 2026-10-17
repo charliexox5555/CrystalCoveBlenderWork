@@ -187,6 +187,20 @@ function Schema.recordMatch(data, id, match, side, rewards, observed)
 	return true
 end
 
+-- Playtest grant (Config/Testing): once per wave while enabled; returns the Marbles added.
+function Schema.testerGrant(data, config)
+	if not config or not config.Enabled or type(config.Wave) ~= "string" or (config.Amount or 0) <= 0 then
+		return 0
+	end
+	data.Flags.TesterGrants = if type(data.Flags.TesterGrants) == "table" then data.Flags.TesterGrants else {}
+	if data.Flags.TesterGrants[config.Wave] then
+		return 0
+	end
+	data.Flags.TesterGrants[config.Wave] = true
+	data.Marbles += math.floor(config.Amount)
+	return math.floor(config.Amount)
+end
+
 function Schema.welcomePulls(data)
 	return if not data.Flags.WelcomePullUsed and data.Stats.MatchWins + data.Stats.MatchLosses > 0
 		then Balance.Economy.WelcomeKilnPulls

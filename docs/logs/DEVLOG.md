@@ -14,6 +14,20 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — Lobby Featured Collection showcase + capsule stands
+Done:
+- Built `Workspace.FeaturedShowcase` (Persistent, 160 matte Stained Glass parts, `tools/studio/build_featured_showcase.luau`, re-runnable) after the creator approved the top-down layout: Hollowlight stage on the creator's marker (exact mirror of the Marble Kiln base; marker untouched under the dais) with three stained-glass windows, HOLLOWLIGHT / HALLOWEEN COLLECTION title, LIMITED TIME pill, museum plaques; a Flyers display on the east side; two capsule stands (Finishers, Flyers) beside the arena path.
+- `ShowcaseController` (client-only, `Config/Showcase`): the Hollowlight bottle hangs on a hook, rises, swoops into a practice target and shatters into its real shards while the real Lantern Eclipse plays (FinisherFX + FinisherAudio impact only, 0.45x volume, within 60 studs, low detail past 55 studs); 10 s loop, everything owned by a per-loop folder. The Moonlantern Carriage and four example flyers carry a local copy of the player's own avatar in the RidePose seat/stand poses, with RideController-matching bob/wing/lantern/spin/pulse motion and RideEmitter effects near the camera. Hollowlight glassy turns above its pedestal. Stands cycle example finishers and flyers overhead. Sections build within 130 studs, tear down past 142 or in a match.
+- Prompts: "View Collection" (stage), "Open Finishers", "Open Flyers" call `LobbyController:Open("Kiln")` then `SelectTab`; verified in Play that E on the Finishers stand opens the shop on the Finishers page. No shop UI files edited.
+- Crate machines: the crate-machines session's `Finishers_Coins` (Burst Dome) and `Rideables_Coins` (Cloud Globe) templates are placed on the stands' `MachineSlot`s (still tagged CrateMachine, so their ambience runs); the build script falls back to a named `MachinePlaceholder` when templates are missing. Verified in Play: E on the Flyers machine opens the Flyers page.
+- Recovery: places/FeaturedShowcase_v1.rbxm (107,717 bytes, SHA256 948a58fb4cc18135b89cfdf7ba6d07ce2407deb23518447187437286e423081f; script-free round trip 243 descendants). Lune and Studio RunAll: 134 passed.
+Next:
+- Creator: save the place; walk it on a phone preset (plaques are small, the eclipse demo is loud visually next to the carriage); say if the demo audio should be quieter or off.
+- Creator: say if you want the Marbles machines beside the Coins ones (stands would need widening).
+Problems / questions for the user:
+- The creator's `Arenatest` frame and the two capsule models at about (24, 3) plus `PlayerReference` at (22.7, -5.8) sit between spawn and the Flyers display / stage and block the view; left untouched (not mine to move).
+- The countdown pill shows LIMITED TIME because the Hollowlight bundle has no end date; add `EndsAt` (unix seconds) to it in `Config/DailyStore` to show "ENDS IN …".
+
 ## 2026-10-16 — Claude — Personalized daily Featured store + Hollowlight bundle
 Done:
 - `Config/DailyStore` + `DailyStoreRules`: 00:00 UTC reset; seed = FNV-1a(version, user, day, slot); 3 Robux slots (Glassy/Finisher/Flyer) + 1 Coin slot rotating by (UserId + day) % 3; rarity weights from the brief with empty buckets renormalized; per-player shuffled bag (no consecutive-day repeats), unowned preferred, else a labelled extra copy; no duplicates per day. Offers lock in `data.Store` for the day (additive profile field).

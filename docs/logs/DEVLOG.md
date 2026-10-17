@@ -14,6 +14,18 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — Lobby landmarks in Blender, spawn rosette, island decor
+Done:
+- Creator kept the gate and guardians, asked for Blender models, a new spawn point, light island decor, and the Marble Fountain removed (it covered a leaderboard). Fountain deleted; no leaderboard was moved.
+- `tools/blender/build_lobby_landmarks.py` (scene LobbyLandmarks_v1): stained-glass Arena Gate (pointed arch, rose window, six glass colours, 964 tris), Guardian Plinth (lead/milk/gold/glass, 316), Spawn Rosette (lead rim, glass kites and wedges, gold star, 2,100) and Crystal Cluster (224). FBX + .blend in `assets/blender/map/landmarks_v1/`; combined model uploaded as asset 90727861432563 (group 11116787).
+- `tools/studio/install_lobby_landmarks.luau` builds `ServerStorage.LobbyKit` (floor pivots, glass styling, invisible colliders; fixes the import's 100x scale and -42° yaw), swaps the concept gate (keeps banner and pennants) and plinth parts (keeps statues, sparkles, tints) for kit models, and puts the rosette on the spawn. The creator's 10 Arrival* parts are moved to `ServerStorage.ArrivalPad_Original`, not deleted.
+- `tools/studio/build_island_decor.luau` builds `Workspace.IslandDecor`: tinted crystal clusters in free island corners and two lanterns beside each lane on every non-lobby island. 15 pieces placed, 7 busy corners skipped (each spot raycasts for island floor and checks for nothing nearby).
+- Recovery: places/LobbyLandmarks_v1.rbxm (LobbyConcepts, IslandDecor, LobbyKit, ArrivalPad_Original; 228 instances).
+Next:
+- Creator look/phone review of the gate, plinths, rosette and island decor; save the place.
+Problems / questions for the user:
+- To restore the old arrival pad, move the parts from ServerStorage.ArrivalPad_Original back into Workspace.Lobby.Folder and delete LobbyConcepts.SpawnRosette.
+
 ## 2026-10-17 — Claude — Hollowlight bundle preview screen
 Done:
 - `Screens/BundlePreview.luau`: `open(bundleId[, view])` / `close()` / `isOpen()`, opened by the bundle card's VIEW button. Header with name, tagline, LIMITED TIME pill (switches to "Ends in …" if the bundle gets an `EndsAt`) and the shop's close button. Left: "HOLLOWLIGHT ONLY" card (buys bundle `hollowlight_glassy`, COMING SOON until its product exists) and "COMPLETE BUNDLE" card (three tiles, owned marks, "x of 3 owned", GET SET · 499). A small store adapter at the top keeps remote/view details in one place. No Gift buttons; Combat Preview shown disabled "SOON".

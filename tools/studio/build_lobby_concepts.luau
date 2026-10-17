@@ -1,6 +1,7 @@
 -- Builds Workspace.LobbyConcepts: three landmark concepts for the creator to judge before the lobby gets more
--- set dressing. A) Marble Fountain centrepiece between spawn and the trophy board, B) giant glassy guardians
--- on stained-glass plinths at the bridge, C) a stained-glass Arena Gate arch with pennants over the north lane.
+-- set dressing: B) giant glassy guardians on stained-glass plinths at the bridge, C) a stained-glass Arena Gate
+-- arch with pennants over the north lane. (A, the Marble Fountain, was removed at the creator's request because it
+-- covered a leaderboard.) tools/studio/install_lobby_landmarks.luau then swaps the gate and plinths for Blender kit models.
 -- Static, matte Stained Glass / low-poly pieces; glassies are clones of the real collectibles.
 -- Refuses to run if LobbyConcepts exists (set _G.LobbyConceptsRebuild = true to replace it).
 assert(not game:GetService("RunService"):IsRunning(), "Build the lobby concepts in Edit mode")
@@ -100,73 +101,6 @@ end
 local root = Instance.new("Model")
 root.Name = "LobbyConcepts"
 root:SetAttribute("BuiltBy", "tools/studio/build_lobby_concepts.luau")
-
--- ── A) Marble Fountain: octagonal lead basin, glass water, a giant glowing marble on a pillar ──────
-local fountain = model(root, "MarbleFountain")
-local F = CFrame.new(0, 0, 17)
-disc(fountain, "Basin", 9, 0.9, F * CFrame.new(0, 0.45, 0), LEAD, { CanCollide = true, CanQuery = true })
-glass(
-	fountain,
-	"Water",
-	Vector3.new(0.3, 7.8, 7.8),
-	F * CFrame.new(0, 0.8, 0) * CFrame.Angles(0, 0, math.rad(90)),
-	hex("aqua", 2),
-	{
-		Shape = Enum.PartType.Cylinder,
-		Transparency = 0.35,
-	}
-)
-for i = 0, 7 do
-	local a = i * math.pi / 4
-	local swatch = ({ "amethyst", "aqua", "amber", "ruby", "emerald", "sapphire", "amethyst", "aqua" })[i + 1]
-	glass(
-		fountain,
-		"RimPane",
-		Vector3.new(2.9, 0.7, 0.25),
-		F * CFrame.Angles(0, a, 0) * CFrame.new(0, 0.55, -4.45),
-		hex(swatch),
-		{
-			Transparency = 0.2,
-		}
-	)
-end
-disc(fountain, "PillarBase", 2.6, 0.5, F * CFrame.new(0, 1.15, 0), LEAD)
-part(fountain, "Pillar", Vector3.new(1.3, 3.4, 1.3), F * CFrame.new(0, 3.0, 0), hex("milk", 3))
-part(fountain, "PillarBand", Vector3.new(1.45, 0.35, 1.45), F * CFrame.new(0, 3.4, 0), hex("amethyst"))
-disc(fountain, "Cup", 2.8, 0.4, F * CFrame.new(0, 4.85, 0), hex("amber"))
-local marble = glass(fountain, "Marble", Vector3.new(3, 3, 3), F * CFrame.new(0, 6.6, 0), hex("aqua"), {
-	Shape = Enum.PartType.Ball,
-	Transparency = 0.25,
-	Reflectance = 0.1,
-})
-local swirl = part(fountain, "Swirl", Vector3.new(1.4, 1.4, 1.4), F * CFrame.new(0, 6.6, 0), hex("amethyst", 2), {
-	Shape = Enum.PartType.Ball,
-	Material = Enum.Material.Neon,
-	CastShadow = false,
-})
-local light = Instance.new("PointLight")
-light.Color, light.Range, light.Brightness, light.Shadows = hex("aqua", 2), 14, 1, false
-light.Parent = swirl
-sparkles(marble, hex("aqua", 2), 6, { Acceleration = Vector3.new(0, -3, 0), EmissionDirection = Enum.NormalId.Top })
-for i = 0, 3 do
-	local a = i * math.pi / 2 + math.pi / 4
-	local spout = part(
-		fountain,
-		"Spout",
-		Vector3.new(0.5, 0.5, 0.5),
-		F * CFrame.Angles(0, a, 0) * CFrame.new(0, 1.2, -1.6),
-		hex("amber"),
-		{
-			Shape = Enum.PartType.Ball,
-		}
-	)
-	sparkles(spout, hex("aqua", 2), 4, {
-		Acceleration = Vector3.new(0, -12, 0),
-		Speed = NumberRange.new(5, 6),
-		SpreadAngle = Vector2.new(8, 8),
-		Lifetime = NumberRange.new(0.6, 0.8),
-	})
-end
 
 -- ── B) Giant glassy guardians on stained-glass plinths at the bridge ────────────────────────────
 local guardians = model(root, "GlassyGuardians")

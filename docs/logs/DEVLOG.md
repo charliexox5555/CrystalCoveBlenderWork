@@ -14,6 +14,17 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Claude — Prize-card backdrop, inventory refresh/finisher icons, text pass
+Done:
+- Prize cards: viewport backdrop removed, items sit on the card's own dark pane (carousel and View-all).
+- Inventory glitch cause: the server re-sends the profile every few seconds (RetentionService SnapshotSeconds) and `InventoryScreen`/`CosmeticCatalog` destroyed and rebuilt every tile and portrait (and any running finisher preview) each time. Both now compare a signature of the profile and do nothing when unchanged; real changes update only the affected tiles. Studio: 4 snapshots received, all 24 glassy tiles and all 6 finisher tiles/portraits kept.
+- Finisher icons: new `Components/FinisherStill.luau` builds a frozen mid-burst frame from the real effect pieces (core glow, two rings, shards/confetti/bubbles/blocks/stars). `CosmeticPortrait` uses it for finishers (Lantern Eclipse keeps its authored model). After Preview Effect the pane returns to the still.
+- Text pass (desktop only): tile counts moved to the tile corner and names kept inside the plaque's flat middle; Equipped badge no longer sits on the frame border; Featured tags show only the rarity inside the pill (category moved to the status line) and keep their 3.75:1 shape; roll-card power text inset from the frame; queue panel moved up off the PLAY button. Screens in `docs/testing/ui_polish/`.
+Next:
+- Phone-size check on a real device/emulator: Studio viewport could not be resized through the MCP, so only desktop was checked. Not reviewed: results screen, rewards, index, crate-opening UI (other session). Roll-card inset and queue move were not re-captured after the edit. Glassy detail pane "OWNED" line is tiny (template-authored).
+Problems / questions for the user:
+- Queue/Roll/Results still use the older flat Panel/Button style instead of stained glass.
+
 ## 2026-10-17 — Claude — Moonlantern Carriage VFX
 Done:
 - Added the carriage's ride effects to the template via `tools/studio/add_carriage_vfx.luau` (VfxVersion 3):

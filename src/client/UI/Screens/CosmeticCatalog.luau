@@ -13,8 +13,11 @@ local FinisherAudio = require(script.Parent.Parent.Parent.Presentation.FinisherA
 local Tuning = require(RS.Shared.Config.Balance).CosmeticPresentation
 local Catalog = {}
 Catalog.__index = Catalog
+local function entrySignature(profile, category, id, equipped)
+	return id .. ":" .. Rules.count(profile, category, id) .. ":" .. tostring(id == equipped)
+end
 function Catalog.new(parent, profile, category)
-	local self = setmetatable({ Category = category, Connections = {}, TileConnections = {}, Tiles = {} }, Catalog)
+	local self = setmetatable({ Category = category, Connections = {}, Tiles = {}, TileEntries = {} }, Catalog)
 	local old = parent:FindFirstChild("CosmeticPage")
 	if old then
 		old.Visible = false
@@ -113,6 +116,14 @@ function Catalog:PreviewSelected()
 			FinisherAudio.preview(effect, self.Selected)
 		end
 		require(script.Parent.Parent.Components.StainedGlass).buttonText(self.Preview, "PREVIEW AGAIN")
+		-- When the burst is over, put the still icon back instead of leaving an empty pane.
+		local id, token = self.Selected, {}
+		self.PreviewToken = token
+		task.delay(Tuning.FinisherSeconds + 0.5, function()
+			if self.PreviewToken == token and self.Selected == id and self.Previewing and self.Root.Parent then
+				self:Detail(id)
+			end
+		end)
 		return effect
 	elseif self.Portrait then
 		local model = self.World:FindFirstChildOfClass("Model")
@@ -121,71 +132,109 @@ function Catalog:PreviewSelected()
 		end
 	end
 end
+-- Snapshots arrive every few seconds: an unchanged profile leaves tiles, portraits and a running preview
+-- alone, and a real change only rebuilds the tiles whose item changed.
 function Catalog:Refresh(profile)
 	self.Profile = profile or { Cosmetics = {}, Stats = {} }
-	for _, c in self.TileConnections do
-		c:Disconnect()
+	local equipped = (self.Profile.Cosmetics or {})["Equipped" .. self.Category]
+	local parts = {}
+	for _, def in C.catalog(self.Category) do
+		table.insert(parts, entrySignature(self.Profile, self.Category, def.Id, equipped))
 	end
-	self.TileConnections = {}
-	self.Tiles = {}
-	for _, root in { self.Grid.Tiles, self.Grid.UnownedTiles } do
-		for _, child in root:GetChildren() do
-			if child:IsA("GuiObject") then
-				child:Destroy()
+	local sig = table.concat(parts, "|")
+	if sig == self.Signature and self.Selected then
+		return
+	end
+	if not self.Signature then -- first build: drop any authored placeholder tiles
+		for _, root in { self.Grid.Tiles, self.Grid.UnownedTiles } do
+			for _, o in root:GetChildren() do
+				if o:IsA("GuiObject") then
+					o:Destroy()
+				end
 			end
 		end
 	end
+	self.Signature = sig
 	local owned, missing = {}, {}
 	for _, def in C.catalog(self.Category) do
 		table.insert(if Rules.count(self.Profile, self.Category, def.Id) > 0 then owned else missing, def)
 	end
-	local equipped = (self.Profile.Cosmetics or {})["Equipped" .. self.Category]
+	self.Tiles = {}
 	for _, section in { { owned, self.Grid.Tiles, false }, { missing, self.Grid.UnownedTiles, true } } do
 		for i, def in section[1] do
-			local tile = self.Grid.Templates[if section[3] then "UnownedGlassyTile" else "GlassyTile"]:Clone()
-			tile.Name, tile.Visible, tile.LayoutOrder, tile.Parent = def.Id, true, i, section[2]
-			tile:SetAttribute("Unowned", section[3])
-			S.setAsset(tile.Artwork, "tile/tile_" .. S.rarity(def.Rarity))
-			tile:FindFirstChild("Name").Text = def.Name
-			tile.Unknown.Visible = false
-			local viewport =
-				Portrait.new(tile, self.Category, def.Id, tile.Portrait.Size, tile.Portrait.Position, "Portrait")
-			viewport.ImageTransparency = if section[3] then 0.5 else 0
-			local count = U.text(
-				tile,
-				"Count",
-				"×" .. Rules.count(self.Profile, self.Category, def.Id),
-				UDim2.fromScale(0.17, 0.12),
-				UDim2.fromScale(0.78, 0.66),
-				Theme.Fonts.Heading
-			)
-			count.Visible = not section[3]
-			count.TextColor3, count.ZIndex = Theme.Palette.lead, 3
-			tile:FindFirstChild("Name").Size = UDim2.fromScale(0.9, 0.18)
-			tile:FindFirstChild("Name").TextScaled = true
-			tile:FindFirstChild("Name").AnchorPoint = Vector2.zero
-			tile:FindFirstChild("Name").Position = UDim2.fromScale(0.05, 0.8)
-			local badge = U.text(
-				tile,
-				"Equipped",
-				"✓ EQUIPPED",
-				UDim2.fromScale(0.88, 0.13),
-				UDim2.fromScale(0.06, 0.04),
-				Theme.Fonts.Caption
-			)
-			badge.TextColor3, badge.Visible = Theme.Palette.emeraldLight, def.Id == equipped
-			tile.SelectedOutline.Visible = def.Id == self.Selected
-			table.insert(
-				self.TileConnections,
-				tile.Open.Activated:Connect(function()
-					self:Detail(def.Id)
-				end)
-			)
-			self.Tiles[def.Id] = tile
+			local entry = self.TileEntries[def.Id]
+			if entry and entry.Unowned ~= section[3] then
+				entry.Connection:Disconnect()
+				entry.Tile:Destroy()
+				entry = nil
+			end
+			if entry then
+				local tile = entry.Tile
+				tile.Parent, tile.LayoutOrder = section[2], i
+				entry.Count.Text = "×" .. Rules.count(self.Profile, self.Category, def.Id)
+				entry.Badge.Visible = def.Id == equipped
+			else
+				entry = self:AddTile(def, section[2], i, section[3], equipped)
+				self.TileEntries[def.Id] = entry
+			end
+			self.Tiles[def.Id] = entry.Tile
 		end
 	end
 	Sections.layout(self.Grid, #owned, #missing)
-	self:Detail(self.Selected or (owned[1] or missing[1]).Id)
+	local id = self.Selected or (owned[1] or missing[1]).Id
+	if self.Selected == nil or self.SelectedSignature ~= entrySignature(self.Profile, self.Category, id, equipped) then
+		self:Detail(id)
+	else
+		for key, tile in self.Tiles do
+			tile.SelectedOutline.Visible = key == id
+		end
+	end
+end
+function Catalog:AddTile(def, root, order, unowned, equipped)
+	local tile = self.Grid.Templates[if unowned then "UnownedGlassyTile" else "GlassyTile"]:Clone()
+	tile.Name, tile.Visible, tile.LayoutOrder, tile.Parent = def.Id, true, order, root
+	tile:SetAttribute("Unowned", unowned)
+	S.setAsset(tile.Artwork, "tile/tile_" .. S.rarity(def.Rarity))
+	tile:FindFirstChild("Name").Text = def.Name
+	tile.Unknown.Visible = false
+	local viewport = Portrait.new(tile, self.Category, def.Id, tile.Portrait.Size, tile.Portrait.Position, "Portrait")
+	viewport.ImageTransparency = if unowned then 0.5 else 0
+	local count = U.text(
+		tile,
+		"Count",
+		"×" .. Rules.count(self.Profile, self.Category, def.Id),
+		UDim2.fromScale(0.3, 0.12),
+		UDim2.fromScale(0.6, 0.085),
+		Theme.Fonts.Heading
+	)
+	-- Count sits in the tile's top corner so the plaque keeps its full width for the name.
+	count.Visible, count.TextXAlignment = not unowned, Enum.TextXAlignment.Right
+	count.TextColor3, count.ZIndex = Theme.Colors.Text, 3
+	U.make("UIStroke", count, { Color = Theme.Palette.lead, Thickness = 1.5 })
+	-- Keep text inside the plaque's flat middle (its pointed ends are ~14% each side).
+	local label = tile:FindFirstChild("Name")
+	label.TextScaled, label.AnchorPoint, label.TextXAlignment = true, Vector2.zero, Enum.TextXAlignment.Center
+	label.Size, label.Position = UDim2.fromScale(0.66, 0.13), UDim2.fromScale(0.17, 0.83)
+	local badge = U.text(
+		tile,
+		"Equipped",
+		"✓ EQUIPPED",
+		UDim2.fromScale(0.46, 0.09),
+		UDim2.fromScale(0.12, 0.09),
+		Theme.Fonts.Caption
+	)
+	badge.TextColor3, badge.Visible = Theme.Palette.emeraldLight, def.Id == equipped
+	badge.TextXAlignment = Enum.TextXAlignment.Left
+	tile.SelectedOutline.Visible = def.Id == self.Selected
+	return {
+		Tile = tile,
+		Unowned = unowned,
+		Count = count,
+		Badge = badge,
+		Connection = tile.Open.Activated:Connect(function()
+			self:Detail(def.Id)
+		end),
+	}
 end
 function Catalog:Detail(id)
 	local def = C.ByCategory[self.Category][id]
@@ -193,6 +242,8 @@ function Catalog:Detail(id)
 		return
 	end
 	self.Selected, self.Previewing = id, false
+	self.SelectedSignature =
+		entrySignature(self.Profile, self.Category, id, (self.Profile.Cosmetics or {})["Equipped" .. self.Category])
 	if self.PreviewResize then
 		self.PreviewResize:Disconnect()
 		self.PreviewResize = nil
@@ -239,10 +290,11 @@ function Catalog:Destroy()
 		self.PreviewResize:Disconnect()
 		self.PreviewResize = nil
 	end
-	for _, list in { self.Connections, self.TileConnections } do
-		for _, c in list do
-			c:Disconnect()
-		end
+	for _, c in self.Connections do
+		c:Disconnect()
+	end
+	for _, entry in self.TileEntries do
+		entry.Connection:Disconnect()
 	end
 	self.Root:Destroy()
 end

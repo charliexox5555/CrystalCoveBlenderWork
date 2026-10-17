@@ -9,8 +9,27 @@ local Catalog = require(script.Parent.CosmeticCatalog)
 local Screen = {}
 Screen.__index = Screen
 
+-- One string per glassy that changes what the tiles or the detail pane show.
+local function entrySignature(profile, id)
+	local owned = profile.Glassies[id]
+	return id
+		.. ":"
+		.. (owned and owned.Count or 0)
+		.. ":"
+		.. (owned and owned.Stars or 0)
+		.. ":"
+		.. tostring(owned and owned.Rainbow or false)
+end
+local function signature(profile)
+	local parts = {}
+	for _, d in Glassies.visible(profile.Glassies) do
+		table.insert(parts, entrySignature(profile, d.Id))
+	end
+	return table.concat(parts, "|")
+end
+
 function Screen.new(profile, close)
-	local self = setmetatable({ Index = false, Tiles = {}, TileConnections = {} }, Screen)
+	local self = setmetatable({ Index = false, Tiles = {}, TileById = {} }, Screen)
 	self.Window = Window.new("CollectionScreen", "INVENTORY", close)
 	self.Grid = self.Window.Content.Grid
 	self.Info = self.Window.Content.InfoPane
@@ -31,6 +50,8 @@ function Screen.new(profile, close)
 	return self
 end
 
+-- Profile snapshots arrive every few seconds. Unchanged profiles leave every tile and portrait alone; a
+-- real change only touches the tiles whose glassy changed (or moved between owned and unowned).
 function Screen:Refresh(profile)
 	self.Profile = profile
 	if self.CosmeticView then
@@ -39,35 +60,63 @@ function Screen:Refresh(profile)
 	if not profile then
 		return
 	end
-	for _, c in self.TileConnections do
-		c:Disconnect()
+	local sig = signature(profile)
+	if sig == self.Signature and self.Selected then
+		return
 	end
-	self.TileConnections = {}
-	self.Tiles = {}
-	for _, root in { self.Grid.Tiles, self.Grid.UnownedTiles } do
-		for _, o in root:GetChildren() do
-			if o:IsA("GuiObject") then
-				o:Destroy()
+	if not self.Signature then -- first build: drop any authored placeholder tiles
+		for _, root in { self.Grid.Tiles, self.Grid.UnownedTiles } do
+			for _, o in root:GetChildren() do
+				if o:IsA("GuiObject") then
+					o:Destroy()
+				end
 			end
 		end
 	end
-	local ownedEntries, unownedEntries = {}, {}
+	self.Signature = sig
+	local ownedEntries, unownedEntries, wanted = {}, {}, {}
 	for _, d in Glassies.visible(profile.Glassies) do
 		local owned = profile.Glassies[d.Id]
 		table.insert(if owned and owned.Count > 0 then ownedEntries else unownedEntries, d)
+		wanted[d.Id] = true
 	end
+	for id, entry in self.TileById do
+		if not wanted[id] then
+			self:RemoveTile(id, entry)
+		end
+	end
+	self.Tiles = {}
 	for _, section in { { ownedEntries, self.Grid.Tiles, false }, { unownedEntries, self.Grid.UnownedTiles, true } } do
 		for i, d in section[1] do
-			self:AddTile(d, section[2], i, section[3])
+			local entry = self.TileById[d.Id]
+			if entry and entry.Unowned ~= section[3] then
+				self:RemoveTile(d.Id, entry)
+				entry = nil
+			end
+			if entry then
+				entry.Tile.Parent, entry.Tile.LayoutOrder = section[2], i
+				entry.Count.Text = "×" .. ((profile.Glassies[d.Id] or {}).Count or 0)
+				table.insert(self.Tiles, entry.Tile)
+			else
+				self:AddTile(d, section[2], i, section[3])
+			end
 		end
 	end
 	self:LayoutSections(#ownedEntries, #unownedEntries)
 	if not self.Selected or not Glassies.ById[self.Selected] then
 		self.Selected = (ownedEntries[1] or unownedEntries[1]).Id
+		self.SelectedSignature = nil
 	end
-	if self.Selected then
+	local selectedSignature = entrySignature(profile, self.Selected)
+	if selectedSignature ~= self.SelectedSignature then
 		self:Detail(self.Selected)
 	end
+end
+
+function Screen:RemoveTile(id, entry)
+	entry.Connection:Disconnect()
+	entry.Tile:Destroy()
+	self.TileById[id] = nil
 end
 
 function Screen:SelectTab(name)
@@ -106,13 +155,18 @@ function Screen:AddTile(d, root, order, unowned)
 		tile,
 		"Count",
 		"×" .. ((self.Profile.Glassies[d.Id] or {}).Count or 0),
-		UDim2.fromScale(0.22, 0.14),
-		UDim2.fromScale(0.73, 0.82)
+		UDim2.fromScale(0.3, 0.12),
+		UDim2.fromScale(0.6, 0.085)
 	)
-	count.Visible, count.ZIndex = not unowned, 3
-	count.TextColor3 = require(script.Parent.Parent.Theme).Palette.lead
-	tile:FindFirstChild("Name").Size = UDim2.fromScale(0.63, 0.13)
-	tile:FindFirstChild("Name").Position = UDim2.fromScale(0.08, 0.83)
+	-- Count sits in the tile's top corner so the plaque keeps its full width for the name.
+	count.Visible, count.ZIndex, count.TextXAlignment = not unowned, 3, Enum.TextXAlignment.Right
+	count.TextColor3 = require(script.Parent.Parent.Theme).Colors.Text
+	count.FontFace = require(script.Parent.Parent.Theme).Fonts.Heading
+	U.make("UIStroke", count, { Color = require(script.Parent.Parent.Theme).Palette.lead, Thickness = 1.5 })
+	-- Keep text inside the plaque's flat middle (its pointed ends are ~14% each side).
+	local label = tile:FindFirstChild("Name")
+	label.Size, label.Position = UDim2.fromScale(0.66, 0.13), UDim2.fromScale(0.17, 0.83)
+	label.TextXAlignment = Enum.TextXAlignment.Center
 	local installed = RS.Assets.Glassies:FindFirstChild(d.Id) ~= nil
 	tile.Portrait.Visible, tile.Unknown.Visible = installed, not installed
 	tile:SetAttribute("ArtworkPending", not installed)
@@ -121,12 +175,14 @@ function Screen:AddTile(d, root, order, unowned)
 	end
 	S.bindSlices(tile)
 	table.insert(self.Tiles, tile)
-	table.insert(
-		self.TileConnections,
-		tile.Open.Activated:Connect(function()
+	self.TileById[d.Id] = {
+		Tile = tile,
+		Unowned = unowned,
+		Count = count,
+		Connection = tile.Open.Activated:Connect(function()
 			self:Detail(d.Id)
-		end)
-	)
+		end),
+	}
 end
 
 function Screen:LayoutSections(ownedCount, unownedCount)
@@ -138,6 +194,7 @@ function Screen:Detail(id)
 		return
 	end
 	self.Selected = id
+	self.SelectedSignature = entrySignature(self.Profile, id)
 	local d = Glassies.get(id)
 	local owned = self.Profile.Glassies[id]
 	local stats = Formula.stats(d, owned)
@@ -199,8 +256,8 @@ function Screen:Destroy()
 	if self.CosmeticView then
 		self.CosmeticView:Destroy()
 	end
-	for _, c in self.TileConnections do
-		c:Disconnect()
+	for _, entry in self.TileById do
+		entry.Connection:Disconnect()
 	end
 	self.Window:Destroy()
 end

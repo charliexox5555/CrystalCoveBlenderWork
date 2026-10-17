@@ -28,7 +28,7 @@ end
 
 function Screens.queue(data, leave)
 	local self = Screens.new("QueuePanel")
-	local panel = Panel.new(self.Gui, "Queue", UDim2.fromScale(0.55, 0.28), UDim2.fromScale(0.225, 0.62), true)
+	local panel = Panel.new(self.Gui, "Queue", UDim2.fromScale(0.55, 0.28), UDim2.fromScale(0.225, 0.54), true)
 	self.Title = U.text(
 		panel,
 		"Title",

@@ -41,9 +41,12 @@ function Featured.new(page, message)
 			Size = UDim2.fromScale(0.86, 0.1),
 			ZIndex = 3,
 		})
+		-- The tag art keeps its own 3.75:1 shape; the box matches it so the text sits inside the pill.
+		U.make("UIAspectRatioConstraint", tag, { AspectRatio = 3.75, DominantAxis = Enum.DominantAxis.Height })
 		local label =
-			U.text(tag, "Label", "", UDim2.fromScale(0.84, 0.72), UDim2.fromScale(0.08, 0.14), Theme.Fonts.Caption)
+			U.text(tag, "Label", "", UDim2.fromScale(0.74, 0.62), UDim2.fromScale(0.13, 0.19), Theme.Fonts.Caption)
 		label.ZIndex, label.UITextSizeConstraint.MaxTextSize = 4, Theme.TextSize.Small
+		label.UITextSizeConstraint.MinTextSize = 1
 		local status =
 			U.text(card, "Status", "", UDim2.fromScale(0.88, 0.07), UDim2.fromScale(0.06, 0.585), Theme.Fonts.Caption)
 		status.ZIndex, status.UITextSizeConstraint.MaxTextSize = 3, Theme.TextSize.Small
@@ -171,11 +174,7 @@ function Featured:Apply(view)
 			self:Portrait(card, "Portrait", offer.Category, offer.Id)
 			card.ItemName.Text = def and def.Name or offer.Id
 			local band = if offer.ValueBand == "Featured" then " ★" else ""
-			S.tag(
-				card.Tag,
-				string.upper(offer.Rarity) .. " " .. categoryNames[offer.Category] .. band,
-				S.Rarity[offer.Rarity] or "milk"
-			)
+			S.tag(card.Tag, string.upper(offer.Rarity) .. band, S.Rarity[offer.Rarity] or "milk")
 		end
 	end
 	self:Refresh()
@@ -214,10 +213,11 @@ function Featured:Refresh()
 		S.setAsset(card.Price.Artwork, "button/gem_" .. gem)
 		card.Price.Label.TextTransparency = if dim then 0.3 else 0
 		card.Price.Artwork.ImageTransparency = if dim then 0.25 else 0
+		local kind = categoryNames[offer.Category] or ""
 		card.Status.Text = if offer.Empty
 			then ""
-			elseif owned > 0 then "OWNED ×" .. owned .. (if offer.Purchased then "" else " · +1 COPY")
-			else "NEW FOR YOU"
+			elseif owned > 0 then kind .. " · OWNED ×" .. owned .. (if offer.Purchased then "" else " · +1 COPY")
+			else kind .. " · NEW FOR YOU"
 		card.Status.TextColor3 = if owned > 0 then Theme.Palette.emeraldLight else Theme.Palette.amberLight
 	end
 	local bundle

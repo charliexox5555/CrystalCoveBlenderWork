@@ -43,7 +43,10 @@ function Portrait.new(parent, category, id, size, position, name)
 		local bundle = seasonal and seasonal:FindFirstChild(def.AssetBundle)
 		source = bundle and bundle:FindFirstChild(def.AssetName)
 	end
-	if source then
+	-- Finishers show a frozen frame of their real burst; the seasonal show keeps its authored model.
+	local frozen = category == "Finishers" and not (def and def.AssetBundle) and require(script.Parent.FinisherStill)
+	local built = frozen and frozen.build(world, id)
+	if not built and source then
 		source:Clone().Parent = world
 	end
 	local rotation =

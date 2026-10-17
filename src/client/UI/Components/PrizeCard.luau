@@ -48,7 +48,7 @@ function PrizeCard.new(parent, activated)
 	})
 	local area = make("Frame", root, {
 		Name = "PortraitArea",
-		BackgroundColor3 = Theme.Palette.smoke2,
+		BackgroundTransparency = 1, -- the item sits straight on the card's own dark pane
 		BorderSizePixel = 0,
 		Position = UDim2.fromScale(0.108, 0.108),
 		Size = UDim2.fromScale(0.784, 0.512),
@@ -100,7 +100,6 @@ function PrizeCard.set(card, def, chance, portrait, digits)
 	S.setAsset(card.Chip, "tag/tag_" .. colour)
 	card.Chance.TextColor3 = if colour == "milk" then Theme.Colors.TextDark else Theme.Colors.Text
 	card.Chance.UIStroke.Enabled = colour ~= "milk"
-	card.Area.BackgroundColor3 = Theme.Palette.smoke2:Lerp(Theme.Rarity[def.Rarity].Bottom, 0.22)
 	portrait.ZIndex = 3 -- above the area even under ZIndexBehavior.Global
 	portrait.Parent = card.Area
 end

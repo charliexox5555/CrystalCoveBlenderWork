@@ -33,6 +33,19 @@ local function renderCard(card, id)
 	S.tag(card.RarityTag, d.Rarity, S.Rarity[d.Rarity])
 	local power = Powers.special(d)
 	card.Power.Text = power.Name .. ": " .. power.Description
+	if not card.Power:GetAttribute("Inset") then
+		-- Keep the description clear of the card frame's side and bottom borders (done once per card).
+		card.Power:SetAttribute("Inset", true)
+		local size, position, anchor = card.Power.Size, card.Power.Position, card.Power.AnchorPoint
+		local width = size.X.Scale * 0.86
+		card.Power.Size = UDim2.new(width, size.X.Offset, size.Y.Scale, size.Y.Offset)
+		card.Power.Position = UDim2.new(
+			position.X.Scale + (0.5 - anchor.X) * (size.X.Scale - width),
+			position.X.Offset,
+			position.Y.Scale - 0.015,
+			position.Y.Offset
+		)
+	end
 	S.bindSlices(card)
 end
 function Screen:Connect(button, callback, group)

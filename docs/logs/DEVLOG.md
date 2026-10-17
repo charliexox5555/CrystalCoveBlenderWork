@@ -14,6 +14,18 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Claude — Background music
+Done:
+- Searched the Creator Store for APM Music (APMOfficial, Roblox-licensed) tracks, loaded 22 candidates in Studio and showed the creator options; creator approved Lobby (Rainbow Garden), Match (I know that you like it, no vocals) and Calm (Positive Pre School Program). IDs and provenance in `docs/audio/SOUND_LIST.md`.
+- New `Config/Music.luau` (tracks, gains, fades, duck, prefs), `Controllers/MusicController.luau` (looped Sounds in a `MusicMaster` SoundGroup, crossfades, shatter duck, round mute button) and `Services/MusicPrefsService.luau` (per-player mute/volume in its own DataStore; three remotes added to `Remotes.luau`).
+- State comes from `PlayerGui` attributes other controllers already set: ResultsOpen -> Calm, InMatch/Watching -> Match, `LobbyController.PanelOpen` -> Calm, else Lobby.
+- Studio Play checks: Lobby -> Match -> Calm -> Lobby switch correctly with crossfade; the real mouse click on the button muted and unmuted; the shatter duck dipped to 0.35 and recovered; a saved mute came back after stopping and restarting Play. 135 Lune tests pass.
+Next:
+- Creator listening/mix review on a phone; swap in longer APM tracks if the 20-32 s loops feel repetitive (IDs only).
+- Button sits top right under Roblox's top bar; check it doesn't collide with future HUD pieces on phones.
+Problems / questions for the user:
+- The Studio MCP mouse tool only landed some clicks, so mute/unmute was confirmed by a real click twice and the rest by state checks.
+
 ## 2026-10-16 — Claude — Phone-size UI pass (follow-up)
 Done:
 - Phone check without resizing Studio: a client Play harness moves a screen's children into an 844x390 (and 390x844) frame, using `Dev/UIPreview` fixtures and real profile/kiln data. Reviewed Queue, Roll, Results, Rewards (all 4 tabs), Index, Inventory, Shop Featured. Screens in `docs/testing/phone_size/`.

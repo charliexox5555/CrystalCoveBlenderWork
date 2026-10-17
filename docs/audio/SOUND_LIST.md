@@ -15,7 +15,7 @@ Current follow-up: the creator requested replacement combat sounds on 2026-10-15
 | Cork throw, wobble, catch / escape | M3 | |
 | Crate open (shatter reveal), rarity stings | M3 | |
 | Tournament start, final, champion fanfare | M4 | |
-| Music: lobby, route, battle, tournament final | M2-M4 | Loopable, kid-friendly |
+| Music: lobby, route, battle, tournament final | M2-M4 | Loopable, kid-friendly. Lobby, match and calm tracks approved 2026-10-16 (see Background music below) |
 
 Record real glass clinks if you can (safely, with care); they'll be unique. Otherwise use licensed Creator Store audio and list the IDs here.
 
@@ -55,3 +55,15 @@ Creator approved these 15 ProSoundEffects Creator Store sounds (Roblox's license
 | GhostWhoo | [9113080188](https://create.roblox.com/store/asset/9113080188) | Airy Pass By Fast Breathing Rush Of Air 4 | 2.39 s | Lantern Eclipse |
 
 No ProSoundEffects confetti popper was found; Party Pop layers the horn, MagicPoof, BubblePop and CapRattle instead. Search: Studio MCP `search_asset`, Creator Store, creator "ProSoundEffects" only.
+
+## Background music (approved 2026-10-16)
+
+Creator picked these three APM Music cues from Roblox's licensed music library. They are published by the verified Creator Store account **APMOfficial** ("Courtesy of APM Music"); Roblox's [audio asset documentation](https://create.roblox.com/docs/audio/assets) describes its licensed library as free to use in experiences. All three loaded in a Studio client (IsLoaded=true) and loop. They are short cues, so each repeats often; if players tire of them, swap in longer APM tracks by changing IDs in `src/shared/Config/Music.luau` only.
+
+| Role | Asset ID | Name | Length | Plays when | Notes |
+|---|---|---|---|---|---|
+| Lobby | [9043613723](https://create.roblox.com/store/asset/9043613723) | Rainbow Garden (a 30) | 30.1 s | In the lobby | KPM Main Series, "Creativity & Tasking": breezy folk, bright acoustic guitar, piano, shakers, handclaps |
+| Match | [9042710302](https://create.roblox.com/store/asset/9042710302) | I know that you like it 30 sec no vocals | 32.0 s | Queued match, aiming, fight, spectating | Invasion From Mars, "Festival Nights": energetic danceable beats with builds, no vocals |
+| Calm | [1836139113](https://create.roblox.com/store/asset/1836139113) | Positive Pre School Program | 20.0 s | Results screen, and Kiln / Glassies / Rewards panels | APM cue; vibe judged from its title, no store description |
+
+How it plays (`Config/Music.luau`, `Controllers/MusicController.luau`): one looped Sound per track in a `MusicMaster` SoundGroup so music never competes with the effects bank (track gains 0.28-0.32, player volume 0.7 by default). Tracks crossfade (1.6 s in, 1.2 s out, 0.6 s settle delay). Music ducks to 35% for about 2.4 s when the fight HUD stamps `LastShatter`. A round button at the top right mutes/unmutes; the choice is saved per player by `MusicPrefsService` (DataStore `GlassClashMusicPrefs_v1`, falls back to defaults if the store fails). Listening and mix review on a real phone are still pending.

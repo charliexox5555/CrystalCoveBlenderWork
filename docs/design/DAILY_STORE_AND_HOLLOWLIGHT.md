@@ -1,5 +1,7 @@
 # Personalized daily store and Hollowlight bundle
 
+**Latest creator correction:** pumpkin must be a standalone glassy with its own powers, and the Skins tab must go. Halloween flyer/VFX/finisher quality and all-finisher sound design are being transferred to Claude. [Current handoff](../HANDOFF_CLAUDE_HALLOWEEN_REWORK.md) supersedes this document's pumpkin-as-Pop-skin sections; daily-store requirements remain unchanged. Existing code still reflects the earlier skin implementation.
+
 Creator direction, 2026-10-16. This is the implementation queue/design brief; product IDs, prices, dates and sales are not activated.
 
 ## Accepted requirements

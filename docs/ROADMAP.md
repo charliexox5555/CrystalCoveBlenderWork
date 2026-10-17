@@ -74,6 +74,8 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 ## F5 — Polish and soft launch (Nov 10–16)
 
+- [ ] **CL (current creator handoff):** replace the rejected pumpkin-as-skin approach with a standalone glassy/own powers, remove Skins tab with safe data migration, redesign premium Halloween flyer/VFX/finisher and add fitting sound design to every current finisher. Preserve map/originals; sales inactive. [Latest instructions/handoff](HANDOFF_CLAUDE_HALLOWEEN_REWORK.md), [copyable Claude prompt](prompts/06_claude_halloween_rework.md). Earlier completed skin entries below describe historical implementation, not approved final direction.
+
 - [x] **C:** inventory feedback: enable actual Flyer/Finisher tab clicks; match square preview/backing geometry. Rework heat/pressure burst and item launch from the actual chamber; freeze moving-lid camera framing and restore decoration on skip. 788 opening / 63 category regressions and real clicks pass; [report](testing/INVENTORY_OPENING_V2.md). Map untouched.
 - [ ] **C/U:** personalized daily Featured store: three visible Robux offers + one modest Coin offer, stable per-player/day rotation, fixed 6 PM CST/00:00 UTC reset, Robux rarity/value-band product matrix, persistence/receipt/reset tests and larger cards. [Formula/task brief](design/DAILY_STORE_AND_HOLLOWLIGHT.md); prices/IDs and sales activation deferred.
 - [x] **C:** first Hollowlight Blender art prototypes and VFX research: Pumpkin Pop seasonal look (24 roster preserved), Lantern Skiff, Lantern Eclipse; 16 closed shards, three renders, FBX validation and editable disabled native burst/ribbon kit. [Sources](../assets/blender/seasonal/hollowlight_v1/README.md).

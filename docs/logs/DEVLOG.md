@@ -14,6 +14,13 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Codex — Creator correction and Claude handoff
+Done:
+- Creator explicitly corrects pumpkin to a standalone glassy with new powers, requests removal of Skins tab, stronger VFX/premium flyer/finisher and fitting sounds for every added finisher. Latest direction supersedes the earlier skin choice; mechanics/seasonal roster treatment remain to be designed. User transfers implementation to Claude and authorizes simple scoped delegation to other Claude agents.
+- Wrote docs/HANDOFF_CLAUDE_HALLOWEEN_REWORK.md and docs/prompts/06_claude_halloween_rework.md with current state/commits, source paths, permanent imports/recovery, migration/removal work, sound gaps, creative direction, tool/test constraints and unrelated dirty files. Roadmap/current decision updated; older design/art docs point to the superseding handoff. 114 Lune tests and diff checks pass. No game/art/Studio changes in this docs-only transfer; existing Skins implementation remains for Claude to replace. Originals/map/settings/schedules untouched.
+Next:
+- Give Claude the saved prompt and folder access. Claude should perform the rework and focused verification; no automatic cross-chat dispatch or scheduled work created.
+
 ## 2026-10-16 — Codex — Seasonal inventory, saving and match equipment
 Done:
 - Added runtime themed Skins tab using existing authored components; native portraits/counts/equip for Hollowlight Pop, Lantern Skiff and Lantern Eclipse. Long names fit plaques, locked seasonal items remain previewable with truthful unavailable labels. StarterGui/map originals untouched. Seasonal catalog is separate from ordinary crate/bot arrays, so existing Coin/Marble pools/odds stay unchanged; no login grants or sales activation.

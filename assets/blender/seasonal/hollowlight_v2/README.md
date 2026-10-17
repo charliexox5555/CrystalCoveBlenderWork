@@ -1,5 +1,7 @@
 # Hollowlight — refined import package
 
+**Creator rework requested:** pumpkin is to become a standalone glassy, Skins tab removed, and Halloween art/VFX/audio substantially improved by Claude. [Latest handoff](../../../../docs/HANDOFF_CLAUDE_HALLOWEEN_REWORK.md). This README records the preserved installed v2 implementation; its Pop-skin behavior is now historical, not the target design.
+
 **Imported and installed, October 16, 2026.** All 68 permanent meshes load. Sources are at `ReplicatedStorage.Assets.Seasonal.Hollowlight`; raw import preserved intact at `ServerStorage.HollowlightBeforeV2.HOLLOWLIGHT_V2_IMPORT`. Do not reimport or rerun the installer over this installed set. Supersedes the v1 prototypes, which remain preserved. This package is original art for a seasonal **Pop appearance**, Lantern Skiff flyer and Lantern Eclipse finisher. The release remains 24 glassies; no new combat stats, sales or product activation.
 
 ## What to import

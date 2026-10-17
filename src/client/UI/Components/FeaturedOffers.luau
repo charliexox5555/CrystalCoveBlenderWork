@@ -1,8 +1,10 @@
 -- Featured shop page: four personalized daily offers (3 Robux, 1 Coin), the featured limited
--- bundle and one shared reset countdown. Drives the authored FeaturedPage cards; the server
--- (StoreService) owns offers, prices and purchases. Lives in the Shop's CrateViews so the
--- screen steps, refreshes and destroys it with the other shop panels.
+-- bundle banner and one shared reset countdown. Restyles the authored FeaturedPage frames
+-- (big art cards via ShopCard, a hero bundle banner); the server (StoreService) owns offers,
+-- prices and purchases. Lives in the Shop's CrateViews so the screen steps, refreshes and
+-- destroys it with the other shop panels.
 local RS = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService")
 local Remotes = require(RS.Shared.Remotes)
 local Rules = require(RS.Shared.DailyStoreRules)
 local U = require(script.Parent.Util)
@@ -10,99 +12,78 @@ local S = require(script.Parent.StainedGlass)
 local Theme = require(script.Parent.Parent.Theme)
 local Item = require(script.Parent.ItemPresentation)
 local Motion = require(script.Parent.Motion)
-local TweenService = game:GetService("TweenService")
+local Gem = require(script.Parent.GemButton)
+local Card = require(script.Parent.ShopCard)
 local Featured = {}
 Featured.__index = Featured
-local categoryNames = { Glassies = "GLASSY", Finishers = "FINISHER", Rideables = "FLYER" }
-local showcaseSlots = { "ShowcasePop", "ShowcaseJam", "ShowcasePrism" }
-local ROBUX = utf8.char(0xE002)
+local categoryNames = { Glassies = "Glassy", Finishers = "Finisher", Rideables = "Flyer" }
+-- Hero slots in the bundle banner, back to front: flyer (left), finisher (right), glassy (centre).
+local heroSlots = {
+	ShowcasePop = { X = 0.75, Size = 0.9, Z = 5 },
+	ShowcaseJam = { X = 0.57, Size = 0.72, Z = 4 },
+	ShowcasePrism = { X = 0.92, Size = 0.72, Z = 4 },
+}
+local heroOrder = { "ShowcasePop", "ShowcaseJam", "ShowcasePrism" }
+local rarityColours = {
+	Common = Theme.Palette.milk,
+	Uncommon = Theme.Palette.emeraldLight,
+	Rare = Theme.Palette.sapphireLight,
+	Epic = Theme.Palette.amethystLight,
+	Legendary = Theme.Palette.amberLight,
+	Mythic = Theme.Palette.rubyLight,
+}
+local ROBUX = Card.ROBUX
 
 local function clock(seconds)
 	seconds = math.max(0, math.floor(seconds))
 	return string.format("%02d:%02d:%02d", seconds // 3600, seconds % 3600 // 60, seconds % 60)
 end
 
+local function bob(viewport)
+	if Motion.reduced() then
+		return
+	end
+	local base = viewport.Position
+	local lift = UDim2.new(base.X.Scale, base.X.Offset, base.Y.Scale - 0.018, base.Y.Offset)
+	task.delay(math.random() * 1.2, function()
+		if viewport.Parent then
+			TweenService:Create(
+				viewport,
+				TweenInfo.new(1.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
+				{ Position = lift }
+			):Play()
+		end
+	end)
+end
+
 function Featured.new(page, message)
-	local self = setmetatable({ Page = page, Message = message, Connections = {}, Portraits = {} }, Featured)
+	local self = setmetatable({ Page = page, Message = message, Connections = {}, Cards = {} }, Featured)
 	self.Offers = page.DailyOffers
 	self.Showcase = page.Showcase
-	self.Default = {}
-	for _, object in { self.Offers, self.Showcase } do
-		self.Default[object] = { Position = object.Position, Size = object.Size }
+	page.DailyTitle.Text = "DAILY SHOP"
+	page.RefreshTimer.Text = ""
+	local timerSize = page.RefreshTimer:FindFirstChildOfClass("UITextSizeConstraint")
+	if timerSize then
+		timerSize.MaxTextSize = 22
 	end
 	for i = 1, 4 do
-		local card = self.Offers["Offer" .. i]
-		self.Default[card] = { Position = card.Position, Size = card.Size }
-		card.ItemName.Text = ""
-		S.buttonText(card.Price, "LOADING…")
-		-- The authored placeholders ship disabled (Active = false), which swallows every click.
-		card.Price.Active, card.Price.Selectable = true, true
-		local tag = U.make("ImageLabel", card, {
-			Name = "Tag",
-			BackgroundTransparency = 1,
-			AnchorPoint = Vector2.new(0.5, 0),
-			Position = UDim2.fromScale(0.5, 0.035),
-			Size = UDim2.fromScale(0.86, 0.1),
-			ZIndex = 3,
-		})
-		-- The tag art keeps its own 3.75:1 shape; the box matches it so the text sits inside the pill.
-		U.make("UIAspectRatioConstraint", tag, { AspectRatio = 3.75, DominantAxis = Enum.DominantAxis.Height })
-		local label =
-			U.text(tag, "Label", "", UDim2.fromScale(0.74, 0.62), UDim2.fromScale(0.13, 0.19), Theme.Fonts.Caption)
-		label.ZIndex, label.UITextSizeConstraint.MaxTextSize = 4, Theme.TextSize.Small
-		label.UITextSizeConstraint.MinTextSize = 1
-		local status =
-			U.text(card, "Status", "", UDim2.fromScale(0.88, 0.07), UDim2.fromScale(0.06, 0.585), Theme.Fonts.Caption)
-		status.ZIndex, status.UITextSizeConstraint.MaxTextSize = 3, Theme.TextSize.Small
-		status.TextColor3 = Theme.Palette.amberLight
+		local frame = self.Offers["Offer" .. i]
+		for _, child in frame:GetChildren() do
+			if child:IsA("GuiObject") then
+				child:Destroy()
+			end
+		end
+		local card = Card.new(frame)
+		Card.button(card, "soon", "…")
+		self.Cards[i] = card
 		table.insert(
 			self.Connections,
-			card.Price.Activated:Connect(function()
+			card.Button.Activated:Connect(function()
 				self:Buy(i)
 			end)
 		)
 	end
-	for _, name in showcaseSlots do
-		local slot = self.Showcase:FindFirstChild(name)
-		if slot then
-			local mark =
-				U.text(slot, "Owned", "", UDim2.fromScale(1, 0.16), UDim2.fromScale(0, 0.86), Theme.Fonts.Caption)
-			mark.ZIndex, mark.UITextSizeConstraint.MaxTextSize = 4, Theme.TextSize.Small
-			mark.TextColor3 = Theme.Palette.emeraldLight
-		end
-	end
-	-- The template's glow sits behind the first portrait (the Hollowlight lantern), not the flyer.
-	local glint, first = self.Showcase:FindFirstChild("Glint"), self.Showcase:FindFirstChild(showcaseSlots[1])
-	if glint and first then
-		glint.AnchorPoint, glint.Position = Vector2.new(0.5, 0.5), first.Position
-		glint.Size, glint.ImageTransparency = UDim2.fromScale(0.3, 0.9), 0.35
-	end
-	self.Showcase.Eyebrow.Text = "FEATURED COLLECTION · LIMITED"
-	self.Showcase.Title.Text = "Loading…"
-	self.Showcase.Description.Text = ""
-	S.buttonText(self.Showcase.Explore, "LOADING…")
-	self.Showcase.Explore.Active, self.Showcase.Explore.Selectable = true, true
-	-- VIEW opens the fullscreen bundle preview (Screens/BundlePreview) once that module exists.
-	local view = require(script.Parent.GemButton).new(
-		self.Showcase,
-		"View",
-		"VIEW",
-		"Purple",
-		UDim2.fromScale(0.15, 0.2),
-		UDim2.fromScale(0.43, 0.75)
-	)
-	table.insert(
-		self.Connections,
-		view.Activated:Connect(function()
-			self:Preview()
-		end)
-	)
-	table.insert(
-		self.Connections,
-		self.Showcase.Explore.Activated:Connect(function()
-			self:BuyBundle()
-		end)
-	)
+	self:BuildBanner()
 	table.insert(
 		self.Connections,
 		Remotes.StoreOffers.OnClientEvent:Connect(function(view)
@@ -117,15 +98,88 @@ function Featured.new(page, message)
 			end
 		end)
 	)
-	table.insert(
-		self.Connections,
-		page:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
-			self:Layout()
-		end)
-	)
-	self:Layout()
 	Remotes.RequestStore:FireServer()
 	return self
+end
+
+-- Limited bundle banner: pill, big title, item line, status; overlapping hero art on the right
+-- with View and price buttons in front of it.
+function Featured:BuildBanner()
+	local show = self.Showcase
+	show.Eyebrow.Visible = false
+	local pill = U.make("ImageLabel", show, {
+		Name = "Pill",
+		BackgroundTransparency = 1,
+		Position = UDim2.fromScale(0.03, 0.08),
+		Size = UDim2.fromScale(0.4, 0.17),
+		ZIndex = 3,
+	})
+	U.make("UIAspectRatioConstraint", pill, { AspectRatio = 3.75, DominantAxis = Enum.DominantAxis.Height })
+	local label = U.text(pill, "Label", "", UDim2.fromScale(0.78, 0.6), UDim2.fromScale(0.11, 0.2), Theme.Fonts.Caption)
+	label.ZIndex, label.UITextSizeConstraint.MinTextSize = 4, 1
+	S.tag(pill, "LIMITED-TIME BUNDLE", "amethyst")
+	show.Title.Position, show.Title.Size = UDim2.fromScale(0.03, 0.27), UDim2.fromScale(0.46, 0.3)
+	show.Title.FontFace, show.Title.TextXAlignment = Theme.Fonts.Heading, Enum.TextXAlignment.Left
+	show.Title.UITextSizeConstraint.MaxTextSize = 64
+	U.make("Frame", show, {
+		Name = "Divider",
+		BorderSizePixel = 0,
+		BackgroundColor3 = Theme.Palette.amethystLight,
+		BackgroundTransparency = 0.2,
+		Position = UDim2.fromScale(0.03, 0.59),
+		Size = UDim2.fromScale(0.42, 0.012),
+	})
+	show.Description.Position, show.Description.Size = UDim2.fromScale(0.03, 0.63), UDim2.fromScale(0.44, 0.13)
+	show.Description.TextXAlignment = Enum.TextXAlignment.Left
+	show.Description.UITextSizeConstraint.MaxTextSize = 26
+	local status =
+		U.text(show, "Status", "", UDim2.fromScale(0.44, 0.11), UDim2.fromScale(0.03, 0.8), Theme.Fonts.Caption)
+	status.TextXAlignment, status.TextColor3 = Enum.TextXAlignment.Left, Theme.Palette.amberLight
+	status.UITextSizeConstraint.MaxTextSize = 22
+	self.BannerStatus = status
+	local glint = show:FindFirstChild("Glint")
+	if glint then
+		glint.AnchorPoint, glint.Position = Vector2.new(0.5, 0.5), UDim2.fromScale(heroSlots.ShowcasePop.X, 0.4)
+		glint.Size, glint.ImageTransparency, glint.ZIndex = UDim2.fromScale(0.42, 1.2), 0.3, 2
+	end
+	for name, slot in heroSlots do
+		local viewport = show:FindFirstChild(name)
+		if viewport then
+			viewport.AnchorPoint = Vector2.new(0.5, 0.5)
+			viewport.Position = UDim2.fromScale(slot.X, 0.4)
+			viewport.Size = UDim2.fromScale(0.4, slot.Size)
+			viewport.ZIndex = slot.Z
+			local mark =
+				U.text(viewport, "Owned", "", UDim2.fromScale(1, 0.14), UDim2.fromScale(0, 0.84), Theme.Fonts.Caption)
+			mark.ZIndex, mark.UITextSizeConstraint.MaxTextSize = slot.Z + 1, Theme.TextSize.Small
+			mark.TextColor3 = Theme.Palette.emeraldLight
+		end
+	end
+	local view = Gem.new(show, "View", "VIEW  ›", "Blue", UDim2.fromScale(0.19, 0.24), UDim2.fromScale(0.52, 0.73))
+	show.Explore.Visible = false
+	local price = Gem.new(show, "Price", "…", "Green", UDim2.fromScale(0.24, 0.24), UDim2.fromScale(0.73, 0.73))
+	self.Price = price
+	for _, button in { view, price } do
+		button.ZIndex = 8
+		for _, child in button:GetDescendants() do
+			if child:IsA("GuiObject") then
+				child.ZIndex = 9
+			end
+		end
+	end
+	S.buttonText(price, "…")
+	table.insert(
+		self.Connections,
+		view.Activated:Connect(function()
+			self:Preview()
+		end)
+	)
+	table.insert(
+		self.Connections,
+		price.Activated:Connect(function()
+			self:BuyBundle()
+		end)
+	)
 end
 
 function Featured:Say(text)
@@ -134,56 +188,21 @@ function Featured:Say(text)
 	end
 end
 
--- Portrait phones get a 2x2 grid; short landscape phones give the cards more height.
-function Featured:Layout()
-	local size = self.Page.AbsoluteSize
-	if size.X <= 1 then
-		return
-	end
-	local narrow, short = size.X < 520, size.Y < 300
-	for object, default in self.Default do
-		object.Position, object.Size = default.Position, default.Size
-	end
-	if narrow then
-		self.Offers.Size = UDim2.fromScale(0.96, 0.6)
-		self.Showcase.Position, self.Showcase.Size = UDim2.fromScale(0.02, 0.715), UDim2.fromScale(0.96, 0.275)
-		for i = 1, 4 do
-			local card = self.Offers["Offer" .. i]
-			local col, row = (i - 1) % 2, (i - 1) // 2
-			card.Position = UDim2.fromScale(col * 0.515, row * 0.515)
-			card.Size = UDim2.fromScale(0.485, 0.485)
-		end
-	elseif short then
-		self.Offers.Size = UDim2.fromScale(0.96, 0.56)
-		self.Showcase.Position, self.Showcase.Size = UDim2.fromScale(0.02, 0.68), UDim2.fromScale(0.96, 0.31)
-	end
-end
-
-function Featured:Portrait(parent, name, category, id)
+function Featured:Portrait(parent, name, category, id, size, position)
 	local key = category .. ":" .. id
 	local existing = parent:FindFirstChild(name)
 	if existing and existing:GetAttribute("StoreItem") == key then
 		return existing
 	end
-	local slot = existing
-	local size = slot and slot.Size or UDim2.fromScale(0.78, 0.6)
-	local position = slot and slot.Position or UDim2.fromScale(0.5, 0.34)
+	size = size or existing and existing.Size
+	position = position or existing and existing.Position
 	local viewport = Item.portrait(parent, category, id, size, position, name)
-	viewport:SetAttribute("StoreItem", key)
-	-- Gentle bob so the offer art feels alive; each portrait gets its own phase.
-	if not Motion.reduced() then
-		local base = viewport.Position
-		local lift = UDim2.new(base.X.Scale, base.X.Offset, base.Y.Scale - 0.018, base.Y.Offset)
-		task.delay(math.random() * 1.2, function()
-			if viewport.Parent then
-				TweenService:Create(
-					viewport,
-					TweenInfo.new(1.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
-					{ Position = lift }
-				):Play()
-			end
-		end)
+	viewport.AnchorPoint = Vector2.new(0.5, 0.5)
+	if size and position then
+		viewport.Size, viewport.Position = size, position
 	end
+	viewport:SetAttribute("StoreItem", key)
+	bob(viewport)
 	return viewport
 end
 
@@ -195,30 +214,45 @@ function Featured:Apply(view)
 	self.Offset = (view.ServerNow or workspace:GetServerTimeNow()) - workspace:GetServerTimeNow()
 	self.Requested = nil
 	for i = 1, 4 do
-		local card, offer = self.Offers["Offer" .. i], view.Offers[i]
-		card.Visible = offer ~= nil
+		local card, offer = self.Cards[i], view.Offers[i]
+		card.Frame.Visible = offer ~= nil
+		local portrait = card.Art:FindFirstChild("Portrait")
 		if offer and offer.Empty then
-			card.ItemName.Text = "Sold out today"
-			S.tag(card.Tag, categoryNames[offer.Category] or "", "slate")
-			card.Status.Text = ""
-			card.Portrait.Visible = false
+			card.Name.Text = "Back tomorrow"
+			Card.pill(card.Rarity, nil)
+			Card.accent(card, Theme.Palette.slate)
+			if portrait then
+				portrait.Visible = false
+			end
 		elseif offer then
 			local def = Item.definition(offer.Category, offer.Id)
-			card.Portrait.Visible = true
-			self:Portrait(card, "Portrait", offer.Category, offer.Id)
-			card.ItemName.Text = def and def.Name or offer.Id
+			local viewport = self:Portrait(
+				card.Art,
+				"Portrait",
+				offer.Category,
+				offer.Id,
+				UDim2.fromScale(0.86, 0.86),
+				UDim2.fromScale(0.5, 0.44)
+			)
+			viewport.Visible, viewport.ZIndex = true, 3
+			card.Name.Text = def and def.Name or offer.Id
 			local band = if offer.ValueBand == "Featured" then " ★" else ""
-			S.tag(card.Tag, string.upper(offer.Rarity) .. band, S.Rarity[offer.Rarity] or "milk")
+			Card.pill(
+				card.Rarity,
+				string.upper(offer.Rarity .. " " .. categoryNames[offer.Category]) .. band,
+				S.Rarity[offer.Rarity] or "milk"
+			)
+			Card.accent(card, rarityColours[offer.Rarity] or Theme.Palette.milk)
 		end
 	end
 	self:Refresh()
 	if not self.Entered then
-		-- First fill: the four offers and the bundle card pop in one after another.
+		-- First fill: the four offers and the bundle banner pop in one after another.
 		self.Entered = true
 		local cards = {}
 		for i = 1, 4 do
 			if view.Offers[i] then
-				table.insert(cards, self.Offers["Offer" .. i])
+				table.insert(cards, self.Cards[i].Frame)
 			end
 		end
 		table.insert(cards, self.Showcase)
@@ -229,7 +263,7 @@ function Featured:Apply(view)
 	end
 end
 
--- Owned/afford state from the live profile; prices and availability from the server view.
+-- Owned/sold state from the live profile; prices and availability from the server view.
 function Featured:Refresh()
 	local view = self.View
 	if not view then
@@ -237,34 +271,26 @@ function Featured:Refresh()
 	end
 	local profile = self.Profile or {}
 	for i = 1, 4 do
-		local card, offer = self.Offers["Offer" .. i], view.Offers[i]
+		local card, offer = self.Cards[i], view.Offers[i]
 		if not offer then
 			continue
 		end
-		local owned = if offer.Empty then 0 else Rules.owns(profile, offer.Category, offer.Id)
-		local text, gem, dim
 		if offer.Empty then
-			text, gem, dim = "CHECK TOMORROW", "sapphire", true
-		elseif offer.Purchased then
-			text, gem, dim = "BOUGHT", "emerald", true
-		elseif offer.Currency == "Coins" then
-			text, gem = offer.Price .. " COINS", "amber"
-			dim = (self.Coins or 0) < offer.Price
-		elseif offer.Available and offer.RobuxPrice then
-			text, gem, dim = ROBUX .. " " .. offer.RobuxPrice, "emerald", false
-		else
-			text, gem, dim = "COMING SOON", "sapphire", true
+			Card.button(card, "sold", "SOLD OUT")
+			Card.pill(card.Corner, nil)
+			continue
 		end
-		S.buttonText(card.Price, text)
-		S.setAsset(card.Price.Artwork, "button/gem_" .. gem)
-		card.Price.Label.TextTransparency = if dim then 0.3 else 0
-		card.Price.Artwork.ImageTransparency = if dim then 0.25 else 0
-		local kind = categoryNames[offer.Category] or ""
-		card.Status.Text = if offer.Empty
-			then ""
-			elseif owned > 0 then kind .. " · OWNED ×" .. owned .. (if offer.Purchased then "" else " · +1 COPY")
-			else kind .. " · NEW FOR YOU"
-		card.Status.TextColor3 = if owned > 0 then Theme.Palette.emeraldLight else Theme.Palette.amberLight
+		local owned = Rules.owns(profile, offer.Category, offer.Id)
+		if offer.Purchased then
+			Card.button(card, "sold", "SOLD OUT")
+		elseif offer.Currency == "Coins" then
+			Card.button(card, "coins", offer.Price .. " COINS")
+		elseif offer.Available and offer.RobuxPrice then
+			Card.button(card, "robux", ROBUX .. " " .. offer.RobuxPrice)
+		else
+			Card.button(card, "soon", "COMING SOON")
+		end
+		Card.pill(card.Corner, if owned > 0 then "OWNED ×" .. owned else nil, "emerald")
 	end
 	local bundle
 	for _, entry in view.Bundles or {} do
@@ -278,42 +304,35 @@ function Featured:Refresh()
 	if not bundle then
 		return
 	end
-	local names, ownedCount = {}, 0
+	local kinds, ownedCount = {}, 0
 	for index, item in bundle.Items do
-		local def = Item.definition(item.Category, item.Id)
-		table.insert(names, def and def.Name or item.Id)
+		table.insert(kinds, categoryNames[item.Category] or item.Category)
 		local owned = Rules.owns(profile, item.Category, item.Id)
 		ownedCount += if owned > 0 then 1 else 0
-		local slotName = showcaseSlots[index]
-		local slot = slotName and self.Showcase:FindFirstChild(slotName)
-		if slot then
+		local slotName = heroOrder[index]
+		if slotName and self.Showcase:FindFirstChild(slotName) then
 			local viewport = self:Portrait(self.Showcase, slotName, item.Category, item.Id)
-			local mark = slot:FindFirstChild("Owned")
-			if mark and mark.Parent ~= viewport then
-				mark.Parent = viewport
-			end
-			mark = viewport:FindFirstChild("Owned")
+			local mark = viewport:FindFirstChild("Owned")
 			if mark then
 				mark.Text = if owned > 0 then "OWNED" else ""
 			end
 		end
 	end
 	self.Showcase.Title.Text = bundle.Name
-	self.Showcase.Description.Text = table.concat(names, " · ")
-		.. "\n"
-		.. ownedCount
-		.. " of "
-		.. #bundle.Items
-		.. " owned"
+	self.Showcase.Description.Text = table.concat(kinds, " + ")
 	local allOwned = ownedCount == #bundle.Items
-	local text = if allOwned
-		then "COLLECTION OWNED"
-		elseif bundle.Available and bundle.RobuxPrice then "GET SET · " .. ROBUX .. " " .. bundle.RobuxPrice
-		else "COMING SOON"
-	S.buttonText(self.Showcase.Explore, text)
-	local dim = allOwned or not bundle.Available
-	self.Showcase.Explore.Label.TextTransparency = if dim then 0.3 else 0
-	S.setAsset(self.Showcase.Explore.Artwork, if dim then "button/gem_sapphire" else "button/gem_amber")
+	self.BannerStatus.Text = (bundle.Tagline or "Limited time")
+		.. (if ownedCount > 0 then " · " .. ownedCount .. " of " .. #bundle.Items .. " owned" else "")
+	local price = self.Price
+	local gem, text = "sapphire", "COMING SOON"
+	if allOwned then
+		gem, text = "sapphire", "OWNED"
+	elseif bundle.Available and bundle.RobuxPrice then
+		gem, text = "emerald", ROBUX .. " " .. bundle.RobuxPrice
+	end
+	S.setAsset(price.Artwork, "button/gem_" .. gem)
+	S.buttonText(price, text)
+	price.Label.TextTransparency = if gem == "sapphire" then 0.25 else 0
 end
 
 function Featured:Buy(slot)
@@ -323,7 +342,7 @@ function Featured:Buy(slot)
 		return
 	end
 	if offer.Purchased then
-		self:Say("Already bought today. New offers at the reset")
+		self:Say("Sold out for you today. New offers at the reset")
 	elseif offer.Currency == "Coins" then
 		if (self.Coins or 0) < offer.Price then
 			self:Say("Need " .. (offer.Price - (self.Coins or 0)) .. " more coins")
@@ -384,7 +403,7 @@ function Featured:Step()
 	end
 	local remaining = view.NextReset - (workspace:GetServerTimeNow() + (self.Offset or 0))
 	if remaining > 0 then
-		self.Page.RefreshTimer.Text = "New offers in " .. clock(remaining)
+		self.Page.RefreshTimer.Text = "Refreshes in " .. clock(remaining)
 		return
 	end
 	self.Page.RefreshTimer.Text = "Refreshing…"

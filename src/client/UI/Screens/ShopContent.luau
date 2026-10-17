@@ -7,7 +7,9 @@ local MarbleShop = require(script.Parent.Parent.Components.MarbleShop)
 local Shop = {}
 local lastPullAt = -math.huge
 local pullRate = require(game.ReplicatedStorage.Shared.Config.Balance).Data.KilnRateSeconds
-local tabs = { Featured = "amber", Glassies = "aqua", Finishers = "amethyst", Flyers = "ruby" }
+local tabs = { Featured = "amber", Glassies = "aqua", Finishers = "amethyst", Flyers = "ruby", Marbles = "aqua" }
+-- The Marbles tab reuses the aqua tab art, tinted toward sapphire.
+local MARBLE_TINT = Color3.fromRGB(150, 175, 255)
 local categories = { Glassies = "Glassies", Finishers = "Finishers", Flyers = "Rideables" }
 function Shop.select(self, name)
 	if not tabs[name] then
@@ -19,8 +21,9 @@ function Shop.select(self, name)
 		c[tab .. "Page"].Visible = tab == name
 		S.setAsset(p.Tabs[tab .. "Tab"].Artwork, "tab/tab_" .. tint .. (if tab == name then "_active" else "_idle"))
 	end
+	p.Tabs.MarblesTab.Artwork.ImageColor3 = MARBLE_TINT
 	c.PoolPage.Visible = false
-	self.Message.Text = if name == "Featured"
+	self.Message.Text = if name == "Featured" or name == "Marbles"
 		then ""
 		elseif
 			self.Data.PaidRandomAllowed == true
@@ -28,6 +31,35 @@ function Shop.select(self, name)
 		else "Open with Coins · duplicates add copies"
 	self.Window.Gui:SetAttribute("ShopTab", name)
 end
+-- Fifth tab + page for Marble packs, cloned from the authored Flyers tab and Featured page.
+function Shop.addMarblesTab(panel, content)
+	local row = panel.Tabs
+	if not row:FindFirstChild("MarblesTab") then
+		local tab = row.FlyersTab:Clone()
+		tab.Name, tab.Label.Text = "MarblesTab", "Marbles"
+		local order = 0
+		for _, child in row:GetChildren() do
+			if child:IsA("GuiObject") then
+				order = math.max(order, child.LayoutOrder)
+			end
+		end
+		tab.LayoutOrder = order + 1
+		tab.Parent = row
+		row.Size = UDim2.new(0.585, 0, row.Size.Y.Scale, row.Size.Y.Offset)
+		for _, child in row:GetChildren() do
+			if child:IsA("GuiButton") then
+				child.Size = UDim2.new(0.18, 0, child.Size.Y.Scale, child.Size.Y.Offset)
+			end
+		end
+	end
+	if not content:FindFirstChild("MarblesPage") then
+		local page = Instance.new("Frame")
+		page.Name, page.BackgroundTransparency = "MarblesPage", 1
+		page.Position, page.Size = content.FeaturedPage.Position, content.FeaturedPage.Size
+		page.Visible, page.Parent = false, content
+	end
+end
+
 function Shop.showPool(self, currency, category)
 	category = category or categories[self.Tab] or "Glassies"
 	local tab = if category == "Rideables" then "Flyers" else category
@@ -40,8 +72,11 @@ function Shop.showPool(self, currency, category)
 	Pools.grid(self, c.PoolPage.Grid, currency, category)
 end
 function Shop.bind(self, data)
-	local tab = self.Tab or "Featured"
+	local pg = game.Players.LocalPlayer.PlayerGui
+	local tab = pg:GetAttribute(MarbleShop.TabRequest) or self.Tab or "Featured"
+	pg:SetAttribute(MarbleShop.TabRequest, nil)
 	local c = self:Page("KilnScreen", "SHOP")
+	Shop.addMarblesTab(self.Window.Panel, c)
 	self.Data, self.Busy, self.PoolConnections = data, false, {}
 	self.Message = c.Message
 	self.CrateViews = {}
@@ -78,7 +113,7 @@ function Shop.bind(self, data)
 				self.Message.Text = "Need " .. (cost - (self.Data[currency] or 0)) .. " more " .. string.lower(currency)
 				if currency == "Marbles" then
 					self.Window.Gui:SetAttribute("MarbleStoreRequested", true)
-					MarbleShop.open()
+					Shop.select(self, "Marbles")
 				end
 				return
 			end
@@ -104,7 +139,21 @@ function Shop.bind(self, data)
 	end
 	-- Daily offers + featured bundle; stepped and destroyed with the crate panels.
 	self.CrateViews.Featured = FeaturedOffers.new(c.FeaturedPage, self.Message)
+	self.CrateViews.Marbles = MarbleShop.page(c.MarblesPage, function(text)
+		self.Message.Text = text
+	end)
 	MarbleShop.attachPlus(self.Window.Panel:FindFirstChild("Marbles"))
+	-- A "+" (here or on the HUD) while the shop is open switches to the Marbles page.
+	table.insert(
+		self.Window.Connections,
+		pg:GetAttributeChangedSignal(MarbleShop.TabRequest):Connect(function()
+			local requested = pg:GetAttribute(MarbleShop.TabRequest)
+			if requested then
+				pg:SetAttribute(MarbleShop.TabRequest, nil)
+				Shop.select(self, requested)
+			end
+		end)
+	)
 	self.UpdateProfile = function(_, profile)
 		if not profile then
 			return

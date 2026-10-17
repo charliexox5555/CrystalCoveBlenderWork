@@ -1,0 +1,94 @@
+-- Shared shop card: a large art panel (item fills it, name on a band at the bottom), optional
+-- pills in the corners and a wide price button underneath. Used by the daily offers and the
+-- Marble packs so every purchasable card reads the same way.
+local U = require(script.Parent.Util)
+local S = require(script.Parent.StainedGlass)
+local Gem = require(script.Parent.GemButton)
+local Theme = require(script.Parent.Parent.Theme)
+local Card = {}
+local ROBUX = utf8.char(0xE002)
+Card.ROBUX = ROBUX
+local GREY = Color3.fromRGB(150, 150, 165)
+
+local function pill(parent, name, anchorX, x)
+	local tag = U.make("ImageLabel", parent, {
+		Name = name,
+		BackgroundTransparency = 1,
+		AnchorPoint = Vector2.new(anchorX, 0),
+		Position = UDim2.fromScale(x, 0.04),
+		Size = UDim2.fromScale(0.62, 0.13),
+		ZIndex = 8,
+		Visible = false,
+	})
+	U.make("UIAspectRatioConstraint", tag, { AspectRatio = 3.75, DominantAxis = Enum.DominantAxis.Height })
+	local label =
+		U.text(tag, "Label", "", UDim2.fromScale(0.74, 0.62), UDim2.fromScale(0.13, 0.19), Theme.Fonts.Caption)
+	label.ZIndex, label.UITextSizeConstraint.MinTextSize = 9, 1
+	label.UITextSizeConstraint.MaxTextSize = Theme.TextSize.Small
+	return tag
+end
+
+-- Builds the card inside `frame` (any size). Returns parts for the caller to fill.
+function Card.new(frame)
+	local art = S.image(frame, "Art", "panel/pane_viewport", UDim2.fromScale(1, 0.78))
+	local aspect = art:FindFirstChildOfClass("UIAspectRatioConstraint")
+	if aspect then
+		aspect:Destroy()
+	end
+	art.ClipsDescendants = true
+	local glow = S.image(art, "Glow", "kiln/glow", UDim2.fromScale(0.9, 0.9))
+	glow.AnchorPoint, glow.Position = Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.45)
+	glow.ImageTransparency, glow.ZIndex = 0.55, 1
+	local band = U.make("Frame", art, {
+		Name = "Band",
+		BorderSizePixel = 0,
+		BackgroundColor3 = Theme.Palette.lead,
+		BackgroundTransparency = 0.25,
+		AnchorPoint = Vector2.new(0, 1),
+		Position = UDim2.fromScale(0, 1),
+		Size = UDim2.fromScale(1, 0.2),
+		ZIndex = 6,
+	})
+	local name =
+		U.text(band, "ItemName", "", UDim2.fromScale(0.92, 0.8), UDim2.fromScale(0.04, 0.1), Theme.Fonts.Heading)
+	name.ZIndex, name.UITextSizeConstraint.MaxTextSize = 7, 26
+	U.make("UIStroke", name, { Thickness = 1.5, Color = Theme.Palette.lead })
+	local button = Gem.new(frame, "Buy", "…", "Green", UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.8))
+	button.Label.UITextSizeConstraint.MaxTextSize = 30
+	return {
+		Frame = frame,
+		Art = art,
+		Glow = glow,
+		Name = name,
+		Rarity = pill(art, "RarityPill", 0, 0.03),
+		Corner = pill(art, "CornerPill", 1, 0.97),
+		Button = button,
+	}
+end
+
+-- Pill text/colour, or hidden when text is nil.
+function Card.pill(tag, text, colour)
+	tag.Visible = text ~= nil
+	if text then
+		S.tag(tag, text, colour)
+	end
+end
+
+-- Tints the art panel and glow toward an accent colour (rarity or pack tier).
+function Card.accent(card, colour)
+	local base = Color3.new(1, 1, 1)
+	card.Art.ImageColor3 = base:Lerp(colour, 0.35)
+	card.Glow.ImageColor3 = colour
+end
+
+-- kind: "robux" (green), "coins" (amber), "sold" (grey SOLD OUT), "soon" (dim blue).
+function Card.button(card, kind, text)
+	local button = card.Button
+	local gem = if kind == "coins" then "amber" elseif kind == "robux" then "emerald" else "sapphire"
+	S.setAsset(button.Artwork, "button/gem_" .. gem)
+	button.Artwork.ImageColor3 = if kind == "sold" then GREY else Color3.new(1, 1, 1)
+	S.buttonText(button, text)
+	button.Label.TextTransparency = if kind == "soon" then 0.3 else 0
+end
+
+return Card

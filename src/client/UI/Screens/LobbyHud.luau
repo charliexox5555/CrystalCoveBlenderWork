@@ -23,8 +23,10 @@ function Hud.new(open)
 			end
 		end)
 	)
-	-- "+" on the Marble counter opens the Marble shop.
-	require(script.Parent.Parent.Components.MarbleShop).attachPlus(gui.Currency.Marbles)
+	-- "+" on the Marble counter opens the shop on its Marbles page.
+	require(script.Parent.Parent.Components.MarbleShop).attachPlus(gui.Currency.Marbles, function()
+		open("Kiln")
+	end)
 	return {
 		Gui = gui,
 		Currency = gui.Currency.Coins.CoinsAmount,

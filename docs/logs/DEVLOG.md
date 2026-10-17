@@ -14,6 +14,12 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — Shop redesign: Daily Store cards, bundle banner, Marbles tab
+Done:
+- New `Components/ShopCard` (big art panel with the item filling it, name band, rarity/owned pills, wide price button; grey SOLD OUT when bought). Daily offers use it; "Glassy · new for you" text removed, owned shown as an OWNED ×N pill. Bundle banner restyled after the creator's reference: LIMITED-TIME BUNDLE pill, big title, "Glassy + Flyer + Finisher", overlapping hero art, View › and Robux price buttons. Timer reads "Refreshes in hh:mm:ss".
+- Marble shop moved into the shop window as a fifth "Marbles" tab/page (MarbleShop.page, same ShopCard style, bigger marble piles). The HUD "+" and the shop-header "+" open the shop on that page; running short of Marbles switches to it.
+- Verified in Studio Play: redesigned Featured page and Marbles page (docs/testing/shop_daily_store_v2.jpg, shop_marbles_page.jpg); HUD "+" opens the Marbles tab; a pack click creates its purchase intent. Lune and Studio RunAll 137 passed. Note: `rojo serve` had stopped earlier; the main session restarted it.
+
 ## 2026-10-17 — Claude — No background dim, cleaner window pop
 Done:
 - Dim sources found and removed: the authored full-screen `Backdrop` frames (bgT 0.4) in the CollectionScreen and KilnScreen templates (now cleared in `Window.new`), plus my own transparent dim ScreenGui in `Motion.windowIn` (deleted). Play sampling with Inventory, Index, Rewards, Shop, Queue, Roll, Results open: no full-screen overlay instance, Lighting ColorCorrection/Blur values unchanged; only the UiBlur (8) and -5 FOV remain.

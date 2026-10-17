@@ -6,6 +6,7 @@ local Window = require(script.Parent.Parent.Components.Window)
 local Portrait = require(script.Parent.Parent.Components.GlassyPortrait)
 local S = require(script.Parent.Parent.Components.StainedGlass)
 local Catalog = require(script.Parent.CosmeticCatalog)
+local Motion = require(script.Parent.Parent.Components.Motion)
 local Screen = {}
 Screen.__index = Screen
 
@@ -47,6 +48,7 @@ function Screen.new(profile, close)
 		end)
 	end
 	self:Refresh(profile)
+	self.Opened = true
 	return self
 end
 
@@ -86,6 +88,7 @@ function Screen:Refresh(profile)
 		end
 	end
 	self.Tiles = {}
+	local fresh = {}
 	for _, section in { { ownedEntries, self.Grid.Tiles, false }, { unownedEntries, self.Grid.UnownedTiles, true } } do
 		for i, d in section[1] do
 			local entry = self.TileById[d.Id]
@@ -99,10 +102,12 @@ function Screen:Refresh(profile)
 				table.insert(self.Tiles, entry.Tile)
 			else
 				self:AddTile(d, section[2], i, section[3])
+				table.insert(fresh, self.TileById[d.Id].Tile)
 			end
 		end
 	end
 	self:LayoutSections(#ownedEntries, #unownedEntries)
+	Motion.stagger(fresh)
 	if not self.Selected or not Glassies.ById[self.Selected] then
 		self.Selected = (ownedEntries[1] or unownedEntries[1]).Id
 		self.SelectedSignature = nil
@@ -141,6 +146,14 @@ function Screen:SelectTab(name)
 			Catalog.new(self.Window.Content, self.Profile, if name == "Flyers" then "Rideables" else name)
 	end
 	self.Window.Gui:SetAttribute("InventoryCategory", name)
+	if self.Opened then
+		-- Tab switch: content slides in and the chosen tab pops (not on the first build).
+		Motion.slideIn(if name == "Glassies" then self.Grid else self.CosmeticView.Root)
+		if name == "Glassies" then
+			Motion.slideIn(self.Info)
+		end
+		Motion.bump(self.Window.Panel.Tabs[name .. "Tab"])
+	end
 end
 
 function Screen:AddTile(d, root, order, unowned)

@@ -2,7 +2,9 @@ local Theme = require(script.Parent.Parent.Theme)
 local U = require(script.Parent.Parent.Components.Util)
 local Window = require(script.Parent.Parent.Components.Window)
 local Panel = require(script.Parent.Parent.Components.Panel)
-local Button = require(script.Parent.Parent.Components.Button)
+local Button = require(script.Parent.Parent.Components.GemButton)
+local S = require(script.Parent.Parent.Components.StainedGlass)
+local Motion = require(script.Parent.Parent.Components.Motion)
 local Screen = {}
 Screen.__index = Screen
 local tabs = { "Quests", "Gifts", "Streak", "Codes" }
@@ -22,27 +24,24 @@ function Screen.new(profile, close, claim, redeem)
 			UDim2.fromScale(0.235, 0.17),
 			UDim2.fromScale((i - 1) * 0.255, 0)
 		)
+		self.TabButtons = self.TabButtons or {}
+		self.TabButtons[name] = button
 		self.Window:Connect(button, function()
 			self:Select(name)
 		end)
-		self.Pages[name] = U.make(
-			"Frame",
-			parent,
-			{
-				Name = name,
-				BackgroundTransparency = 1,
-				Size = UDim2.fromScale(1, 0.76),
-				Position = UDim2.fromScale(0, 0.23),
-			}
-		)
+		self.Pages[name] = U.make("Frame", parent, {
+			Name = name,
+			BackgroundTransparency = 1,
+			Size = UDim2.fromScale(1, 0.76),
+			Position = UDim2.fromScale(0, 0.23),
+		})
 	end
 	for i = 1, 3 do
-		local row = Panel.new(
+		local row = Panel.glass(
 			self.Pages.Quests,
 			"Quest" .. i,
 			UDim2.fromScale(0.96, 0.3),
-			UDim2.fromScale(0.02, (i - 1) * 0.335),
-			true
+			UDim2.fromScale(0.02, (i - 1) * 0.335)
 		)
 		local name = U.text(row, "Name", "Quest", UDim2.fromScale(0.64, 0.36), UDim2.fromScale(0.03, 0.08))
 		local progress = U.text(
@@ -66,12 +65,11 @@ function Screen.new(profile, close, claim, redeem)
 		end)
 	end
 	for i = 1, 4 do
-		local row = Panel.new(
+		local row = Panel.glass(
 			self.Pages.Gifts,
 			"Gift" .. i,
 			UDim2.fromScale(0.47, 0.46),
-			UDim2.fromScale(0.01 + ((i - 1) % 2) * 0.51, math.floor((i - 1) / 2) * 0.52),
-			true
+			UDim2.fromScale(0.01 + ((i - 1) % 2) * 0.51, math.floor((i - 1) / 2) * 0.52)
 		)
 		local label = U.text(row, "Gift", "5 MIN • 40 COINS", UDim2.fromScale(0.92, 0.4), UDim2.fromScale(0.04, 0.03))
 		local button =
@@ -90,7 +88,7 @@ function Screen.new(profile, close, claim, redeem)
 		if i == 7 then
 			size, pos = UDim2.fromScale(0.245, 0.85), UDim2.fromScale(0.75, 0)
 		end
-		local card = Panel.new(self.Pages.Streak, "Day" .. i, size, pos, true)
+		local card = Panel.glass(self.Pages.Streak, "Day" .. i, size, pos)
 		U.text(card, "Day", "DAY " .. i, UDim2.fromScale(0.92, 0.32), UDim2.fromScale(0.04, 0.08), Theme.Fonts.Heading)
 		self.Days[i] = U.text(
 			card,
@@ -143,12 +141,20 @@ function Screen.new(profile, close, claim, redeem)
 		U.text(parent, "Message", "", UDim2.fromScale(1, 0.08), UDim2.fromScale(0, 0.18), Theme.Fonts.Caption)
 	self:Select("Quests")
 	self:Refresh(profile)
+	self.Ready = true
 	return self
 end
 function Screen:Select(tab)
+	local changed = self.Selected ~= tab
 	self.Selected = tab
 	for name, page in self.Pages do
 		page.Visible = name == tab
+		if name == tab and changed and self.Ready then
+			Motion.slideIn(page)
+		end
+	end
+	for name, button in self.TabButtons do
+		S.setAsset(button.Artwork, "button/gem_" .. (if name == tab then "amber" else "sapphire"))
 	end
 end
 function Screen:Refresh(profile)
@@ -161,7 +167,7 @@ function Screen:Refresh(profile)
 		local q = r.Quests[i]
 		row.Name.Text = q.Name
 		row.Progress.Text = q.Progress .. " / " .. q.Goal .. " • +" .. q.Coins .. " COINS"
-		row.Button.Text = if q.Claimed then "DONE" elseif q.Progress >= q.Goal then "CLAIM" else "PLAY"
+		S.buttonText(row.Button, if q.Claimed then "DONE" elseif q.Progress >= q.Goal then "CLAIM" else "PLAY")
 		row.Button.Active = not q.Claimed
 	end
 	local cycle = (r.Streak - 1) % 7 + 1
@@ -182,10 +188,13 @@ function Screen:Step()
 		local g = r.Gifts[i]
 		local left = math.max(0, math.ceil(g.Seconds - r.PlaytimeSeconds - elapsed))
 		row.Label.Text = (g.Seconds / 60) .. " MIN • " .. g.Coins .. " COINS"
-		row.Button.Text = if g.Claimed
-			then "CLAIMED"
-			elseif left == 0 then "CLAIM"
-			else string.format("%d:%02d", math.floor(left / 60), left % 60)
+		S.buttonText(
+			row.Button,
+			if g.Claimed
+				then "CLAIMED"
+				elseif left == 0 then "CLAIM"
+				else string.format("%d:%02d", math.floor(left / 60), left % 60)
+		)
 		row.Button.Active = not g.Claimed and left == 0
 	end
 end

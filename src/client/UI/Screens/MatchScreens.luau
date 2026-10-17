@@ -6,7 +6,8 @@ local Powers = require(RS.Shared.CombatText)
 local Theme = require(script.Parent.Parent.Theme)
 local U = require(script.Parent.Parent.Components.Util)
 local Panel = require(script.Parent.Parent.Components.Panel)
-local Button = require(script.Parent.Parent.Components.Button)
+local Button = require(script.Parent.Parent.Components.GemButton)
+local S = require(script.Parent.Parent.Components.StainedGlass)
 local Portrait = require(script.Parent.Parent.Components.GlassyPortrait)
 local Window = require(script.Parent.Parent.Components.Window)
 local Screens = {}
@@ -28,7 +29,7 @@ end
 
 function Screens.queue(data, leave)
 	local self = Screens.new("QueuePanel")
-	local panel = Panel.new(self.Gui, "Queue", UDim2.fromScale(0.55, 0.28), UDim2.fromScale(0.225, 0.54), true)
+	local panel = Panel.glass(self.Gui, "Queue", UDim2.fromScale(0.55, 0.28), UDim2.fromScale(0.225, 0.54))
 	-- Phones: keep room for the title, bar and two 44px buttons.
 	U.make("UISizeConstraint", panel, { MinSize = Vector2.new(260, 150) })
 	self.Title = U.text(
@@ -40,18 +41,15 @@ function Screens.queue(data, leave)
 		Theme.Fonts.Heading
 	)
 	self.Timer = U.text(panel, "Timer", "", UDim2.fromScale(0.94, 0.19), UDim2.fromScale(0.03, 0.3))
-	local track = U.make("Frame", panel, {
-		Name = "Progress",
-		Size = UDim2.fromScale(0.86, 0.04),
-		Position = UDim2.fromScale(0.07, 0.54),
-		BackgroundColor3 = Theme.Colors.Inset,
-		BorderSizePixel = 0,
-	})
-	self.Fill = U.make(
-		"Frame",
-		track,
-		{ Name = "Fill", Size = UDim2.fromScale(0, 1), BackgroundColor3 = Theme.Colors.EdgeA, BorderSizePixel = 0 }
-	)
+	local track = Instance.new("ImageLabel")
+	track.Name, track.Size, track.Position, track.BackgroundTransparency =
+		"Progress", UDim2.fromScale(0.86, 0.075), UDim2.fromScale(0.07, 0.52), 1
+	track.Parent = panel
+	S.setAsset(track, "bar/stat_track")
+	self.Fill = Instance.new("ImageLabel")
+	self.Fill.Name, self.Fill.Size, self.Fill.BackgroundTransparency = "Fill", UDim2.fromScale(0, 1), 1
+	self.Fill.Parent = track
+	S.setAsset(self.Fill, "bar/stat_fill_aqua")
 	self:Connect(
 		Button.new(panel, "Leave", "LEAVE", "Red", UDim2.fromScale(0.37, 0.28), UDim2.fromScale(0.08, 0.65)),
 		leave
@@ -149,7 +147,7 @@ function Screens.results(data, replay, lobby)
 	local self = Screens.new("ResultsScreen")
 	self.Result = data
 	self.Started = os.clock()
-	local panel = Panel.new(self.Gui, "Results", UDim2.fromScale(0.8, 0.8), UDim2.fromScale(0.1, 0.06))
+	local panel = Panel.glass(self.Gui, "Results", UDim2.fromScale(0.8, 0.8), UDim2.fromScale(0.1, 0.06))
 	local title = U.text(
 		panel,
 		"Title",

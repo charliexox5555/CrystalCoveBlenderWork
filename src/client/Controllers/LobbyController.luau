@@ -6,6 +6,7 @@ local RS = game:GetService("ReplicatedStorage")
 local Remotes = require(RS.Shared.Remotes)
 local Theme = require(script.Parent.Parent.UI.Theme)
 local U = require(script.Parent.Parent.UI.Components.Util)
+local Motion = require(script.Parent.Parent.UI.Components.Motion)
 local Panel = require(script.Parent.Parent.UI.Components.Panel)
 local Button = require(script.Parent.Parent.UI.Components.Button)
 local Collection = require(script.Parent.Parent.UI.Screens.CollectionScreen)
@@ -107,8 +108,9 @@ function Controller:Start()
 				view:Refresh(profile)
 			end
 		end
-		self.Currency.Text = tostring(profile.Coins)
-		self.Marbles.Text = tostring(profile.Marbles or 0)
+		-- Counts up/down to the new balance instead of snapping.
+		Motion.countTo(self.Currency, profile.Coins)
+		Motion.countTo(self.Marbles, profile.Marbles or 0)
 		if
 			self.Screen
 			and self.Screen.Refresh

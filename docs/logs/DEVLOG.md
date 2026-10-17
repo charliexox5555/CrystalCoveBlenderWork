@@ -14,6 +14,13 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — UI revamp, part 1 (motion + stained-glass menus; unfinished)
+Done:
+- `Components/Motion.luau`: button hover/press (overshoot scale + darken), window open/close with dim backdrop, tab slide + bump, staggered tile entrance, currency count-up, notice toast; all TweenService, reduced-motion aware (PlayerGui `ReducedMotion` or Roblox setting). `Window` now animates close and dresses Rewards/Index/info windows in the Inventory stained-glass frame; `Button` reuses the Motion feedback. Wired: inventory/catalog/View-all tile stagger, inventory and Rewards tab transitions, HUD coin/marble tick-up, match notice toast. Rewards, Queue and Results now use gem buttons, glass panes and a glass progress bar.
+- `Components/UiAudio.luau`: click/hover/open/close/tab/success/error cues, silent until `Config/Audio` gets keys UiClick, UiHover, UiOpen, UiClose, UiTab, UiSuccess, UiError. Candidate ProSoundEffects verified loading in Studio: Switch Click 1/2 (9119717529 / 9119717523, 0.23 s), ClinkLightA 9119927252 (0.5 s), ClinkLightB 9119927012, LidClick 9116737766, ChimeCluster 9116394876, MagicPoof 9116406610, Whoosh 9120704978. NOT added: waiting for creator approval.
+Next:
+- Creator approves sounds, then add keys and wire success/error cues. Queue LEAVE button lost its gem art in the last capture (check Button/GemButton path); Index screen and Kiln/Shop pages not restyled yet; before/after open-close sequence not captured; Shop/Featured files untouched (other sessions).
+
 ## 2026-10-17 — Claude — Daily store developer products
 Done:
 - The Open Cloud key can list and create developer products. With the creator's approval, created 16 products in universe 10770493435 (regional pricing off): 15 daily-offer slots (39–699 R$) and the Hollowlight Collection (499 R$, no end date). IDs and prices recorded in `Config/DailyStore` (decision 80).

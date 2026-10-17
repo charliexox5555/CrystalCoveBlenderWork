@@ -1,20 +1,73 @@
 local Players = game:GetService("Players")
-local TweenService = game:GetService("TweenService")
+
 local Theme = require(script.Parent.Parent.Theme)
 local U = require(script.Parent.Util)
 local Panel = require(script.Parent.Panel)
 local Button = require(script.Parent.Button)
+local Motion = require(script.Parent.Motion)
+local S = require(script.Parent.StainedGlass)
 local Window = {}
 Window.__index = Window
+-- Windows closed this frame, by screen name. A new window of the same kind opening straight after (a refresh)
+-- replaces it instantly instead of playing a close and an open animation back to back.
+local closing = {}
+local bannerTints = { RewardsScreen = "amber", IndexScreen = "aqua", RollInfoScreen = "amethyst" }
+
+-- Screens without an authored cut-glass frame (Rewards, Index, power info) borrow the Inventory window's art,
+-- title banner and close diamond, so every menu opens in the same Stained Glass window.
+local function dress(panel, name)
+	if panel:GetAttribute("StainedGlass") then
+		return
+	end
+	local starter = game.StarterGui:FindFirstChild("CollectionScreen")
+	local source = starter and starter:FindFirstChild("Panel")
+	if not source then
+		return
+	end
+	panel.BackgroundTransparency = 1
+	for _, child in panel:GetChildren() do
+		if child:IsA("UIGradient") or child:IsA("UIStroke") or child:IsA("UICorner") then
+			child:Destroy()
+		end
+	end
+	panel.AnchorPoint, panel.Position, panel.Size =
+		Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.5), UDim2.fromScale(0.86, 0.9)
+	U.make("UIAspectRatioConstraint", panel, { AspectRatio = 1.7727272727, DominantAxis = Enum.DominantAxis.Width })
+	for _, part in { "WindowArtwork", "TitleBanner", "Title", "Close" } do
+		local old = panel:FindFirstChild(part)
+		if old then
+			old:Destroy()
+		end
+		source[part]:Clone().Parent = panel
+	end
+	U.make("Frame", panel, {
+		Name = "Content",
+		BackgroundTransparency = 1,
+		Size = source.Content.Size,
+		Position = source.Content.Position,
+	})
+	panel.WindowArtwork.ZIndex = 0 -- always behind the content, whatever the child order
+	panel.TitleBanner.ZIndex, panel.Title.ZIndex, panel.Close.ZIndex = 3, 4, 5
+	S.setAsset(panel.TitleBanner, "panel/title_" .. (bannerTints[name] or "sapphire"))
+	panel:SetAttribute("StainedGlass", true)
+	S.bindSlices(panel)
+end
 
 function Window.new(name, title, close)
 	local self = setmetatable({ Connections = {} }, Window)
+	local previous = closing[name]
+	local refresh = previous ~= nil and previous.Gui.Parent ~= nil and os.clock() - previous.At < 0.1
+	if previous then
+		closing[name] = nil
+		if previous.Gui.Parent then
+			previous.Gui:Destroy()
+		end
+	end
 	self.Gui = U.screen(name, 20)
 	self.Panel = Panel.new(self.Gui, "Panel", UDim2.fromScale(0.94, 0.94), UDim2.fromScale(0.03, 0.03))
+	dress(self.Panel, name)
 	self.Panel.Active = true
-	local scale = U.make("UIScale", self.Panel, { Scale = Theme.Motion.PanelOpenScaleFrom })
-	scale.Scale = Theme.Motion.PanelOpenScaleFrom
-	TweenService:Create(scale, Theme.Motion.PanelOpen, { Scale = 1 }):Play()
+	self.Motion = Motion.windowIn(self.Gui, self.Panel, refresh)
 	self.Title = U.text(
 		self.Panel,
 		"Title",
@@ -70,7 +123,22 @@ function Window:Destroy()
 	for _, connection in self.Connections do
 		connection:Disconnect()
 	end
-	self.Gui:Destroy()
+	local gui = self.Gui
+	if not self.Motion or not gui.Parent then
+		gui:Destroy()
+		return
+	end
+	-- Free the name right away so a new window of the same kind never reuses this closing one.
+	local base = gui.Name
+	closing[base] = { Gui = gui, At = os.clock() }
+	gui.Name = base .. "_Closing"
+	self.Panel.Active = false
+	self.Motion.Close(function()
+		if closing[base] and closing[base].Gui == gui then
+			closing[base] = nil
+		end
+		gui:Destroy()
+	end)
 end
 
 return Window

@@ -1,6 +1,19 @@
 local Theme = require(script.Parent.Parent.Theme)
 local U = require(script.Parent.Util)
 local Panel = {}
+-- Cut-glass pane for rows, cards and small panels inside Stained Glass windows (stretches without clipping).
+function Panel.glass(parent, name, size, position)
+	local S = require(script.Parent.StainedGlass)
+	local old = parent:FindFirstChild(name)
+	if old then
+		old:Destroy()
+	end
+	local pane = Instance.new("ImageLabel")
+	pane.Name, pane.Size, pane.Position, pane.BackgroundTransparency = name, size, position, 1
+	pane.Parent = parent
+	S.setAsset(pane, "panel/pane_dark")
+	return pane
+end
 function Panel.new(parent, name, size, position, compact)
 	local authored = parent:FindFirstChild(name)
 	if authored and authored:GetAttribute("StainedGlass") then

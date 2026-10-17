@@ -1,6 +1,7 @@
 local Pools = {}
 local Item = require(script.Parent.Parent.Components.ItemPresentation)
 local PrizeCard = require(script.Parent.Parent.Components.PrizeCard)
+local Motion = require(script.Parent.Parent.Components.Motion)
 local MIN_CARD, MIN_COLUMNS, MAX_COLUMNS = 150, 3, 6 -- cards stay square; phones get 3 columns, wide windows up to 6
 local function entries(self, kind)
 	local category = self.PoolCategory or "Glassies"
@@ -38,6 +39,7 @@ function Pools.grid(self, root, kind, category)
 	end
 	table.insert(self.PoolConnections[root], root:GetPropertyChangedSignal("AbsoluteSize"):Connect(fit))
 	fit()
+	local cards = {}
 	for i, entry in list do
 		local def = Item.definition(self.PoolCategory, entry.Id)
 		local card = PrizeCard.new(root, function()
@@ -51,7 +53,9 @@ function Pools.grid(self, root, kind, category)
 		card.Root:SetAttribute("ExactChance", entry.Chance)
 		card.Root:SetAttribute("PreviewOnly", false)
 		table.insert(self.PoolConnections[root], card.Connection)
+		table.insert(cards, card.Root)
 	end
+	Motion.stagger(cards)
 end
 function Pools.destroy(self)
 	for _, list in self.PoolConnections or {} do

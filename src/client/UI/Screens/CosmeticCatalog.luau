@@ -11,6 +11,7 @@ local Sections = require(script.Parent.Parent.Components.InventorySections)
 local FX = require(script.Parent.Parent.Parent.Presentation.FinisherFX)
 local FinisherAudio = require(script.Parent.Parent.Parent.Presentation.FinisherAudio)
 local Tuning = require(RS.Shared.Config.Balance).CosmeticPresentation
+local Motion = require(script.Parent.Parent.Components.Motion)
 local Catalog = {}
 Catalog.__index = Catalog
 local function entrySignature(profile, category, id, equipped)
@@ -160,6 +161,7 @@ function Catalog:Refresh(profile)
 		table.insert(if Rules.count(self.Profile, self.Category, def.Id) > 0 then owned else missing, def)
 	end
 	self.Tiles = {}
+	local fresh = {}
 	for _, section in { { owned, self.Grid.Tiles, false }, { missing, self.Grid.UnownedTiles, true } } do
 		for i, def in section[1] do
 			local entry = self.TileEntries[def.Id]
@@ -176,11 +178,13 @@ function Catalog:Refresh(profile)
 			else
 				entry = self:AddTile(def, section[2], i, section[3], equipped)
 				self.TileEntries[def.Id] = entry
+				table.insert(fresh, entry.Tile)
 			end
 			self.Tiles[def.Id] = entry.Tile
 		end
 	end
 	Sections.layout(self.Grid, #owned, #missing)
+	Motion.stagger(fresh)
 	local id = self.Selected or (owned[1] or missing[1]).Id
 	if self.Selected == nil or self.SelectedSignature ~= entrySignature(self.Profile, self.Category, id, equipped) then
 		self:Detail(id)

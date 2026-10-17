@@ -6,6 +6,7 @@ local RS = game:GetService("ReplicatedStorage")
 local Remotes = require(RS.Shared.Remotes)
 local Screens = require(script.Parent.Parent.UI.Screens.MatchScreens)
 local U = require(script.Parent.Parent.UI.Components.Util)
+local Motion = require(script.Parent.Parent.UI.Components.Motion)
 local Theme = require(script.Parent.Parent.UI.Theme)
 local Controller = {}
 
@@ -61,7 +62,7 @@ function Controller:Notice(text)
 	local label = U.text(gui, "Notice", text, UDim2.fromScale(0.8, 0.1), UDim2.fromScale(0.1, 0.75), Theme.Fonts.Body)
 	label.TextColor3 = Theme.Colors.Highlight
 	self.NoticeGui = gui
-	task.delay(3, function()
+	Motion.toast(label, 2.6, function()
 		if gui.Parent then
 			gui:Destroy()
 		end

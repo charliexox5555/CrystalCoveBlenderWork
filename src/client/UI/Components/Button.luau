@@ -1,7 +1,6 @@
 local Theme = require(script.Parent.Parent.Theme)
 local U = require(script.Parent.Util)
 local Button = {}
-local TweenService = game:GetService("TweenService")
 function Button.new(parent, name, text, variant, size, position, anchor)
 	local authored = parent:FindFirstChild(name)
 	if authored and authored:GetAttribute("StainedGlass") then
@@ -30,31 +29,8 @@ function Button.new(parent, name, text, variant, size, position, anchor)
 		{ Color = Theme.Colors.Text, Thickness = Theme.Stroke.Button, Transparency = Theme.Stroke.ButtonTransparency }
 	)
 	U.make("UITextSizeConstraint", button, { MinTextSize = 14, MaxTextSize = Theme.TextSize.Heading })
-	local scale = U.make("UIScale", button, { Name = "PressScale" })
-	button.InputBegan:Connect(function(input)
-		if
-			button.Active
-			and (
-				input.UserInputType == Enum.UserInputType.MouseButton1
-				or input.UserInputType == Enum.UserInputType.Touch
-				or input.KeyCode == Enum.KeyCode.ButtonA
-			)
-		then
-			TweenService:Create(scale, Theme.Motion.ButtonPress, { Scale = Theme.Motion.ButtonPressScale }):Play()
-		end
-	end)
-	button.InputEnded:Connect(function(input)
-		if
-			input.UserInputType == Enum.UserInputType.MouseButton1
-			or input.UserInputType == Enum.UserInputType.Touch
-			or input.KeyCode == Enum.KeyCode.ButtonA
-		then
-			TweenService:Create(scale, Theme.Motion.ButtonPress, { Scale = 1 }):Play()
-		end
-	end)
-	button.MouseLeave:Connect(function()
-		scale.Scale = 1
-	end)
+	-- Same hover/press feedback and click sound as every other button.
+	require(script.Parent.Motion).button(button)
 	return button
 end
 return Button

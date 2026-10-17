@@ -5,6 +5,8 @@
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local RS = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService")
+local Debris = game:GetService("Debris")
 local S = require(RS.Shared.Config.Showcase)
 local T = require(RS.Shared.Config.Balance).CosmeticPresentation
 local Cosmetics = require(RS.Shared.Config.RoundCosmetics)
@@ -492,32 +494,99 @@ end
 -- ── Flyers display: example rides with the player's avatar aboard ───────────────────────────────
 function Controller:FlyersSection(root)
 	local display = root:WaitForChild("FlyersDisplay")
-	local section = { Center = display:GetPivot().Position, UsesAvatar = true }
+	local section = { Center = display:GetPivot().Position, UsesAvatar = true, Slots = {} }
+	local R = S.FlyerRotation
+	-- Every flyer with installed art, in catalog order (seasonal ones included).
+	local ids = {}
+	for _, def in Cosmetics.catalog("Rideables") do
+		if rideSource(def.Id) then
+			table.insert(ids, def.Id)
+		end
+	end
+	local function flash(slot)
+		local ring = invisible(
+			"SwapRing",
+			slot.Spot * CFrame.new(0, 0.4 - slot.Spot.Y, 0) * CFrame.Angles(0, 0, math.rad(90)),
+			section.Folder
+		)
+		ring.Shape, ring.Material, ring.Color, ring.Transparency =
+			Enum.PartType.Cylinder, Enum.Material.Neon, Color3.fromHex(R.FlashColor), 0.2
+		ring.Size = Vector3.new(0.12, 1, 1)
+		TweenService
+			:Create(ring, TweenInfo.new(R.TransitionSeconds, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+				Size = Vector3.new(0.12, R.FlashSize, R.FlashSize),
+				Transparency = 1,
+			})
+			:Play()
+		Debris:AddItem(ring, R.TransitionSeconds)
+	end
 	function section.Build()
 		section.Active = true
 		section.Folder = sectionFolder("Flyers")
-		section.Rides = {}
-		for i, id in S.ExampleRiders do
+		section.Slots = {}
+		local now = os.clock()
+		for i = 1, R.Slots do
 			local spot = display:FindFirstChild("RiderSpot" .. i)
-			local ride = spot and Ride.new(section.Folder, id, spot.CFrame, self.Avatar)
-			if ride then
-				section.Rides[i] = { Ride = ride, Spot = spot.CFrame }
+			if spot then
+				-- Slots start spread through the list and swap half a cycle apart.
+				table.insert(section.Slots, {
+					Spot = spot.CFrame,
+					Index = math.floor((i - 1) * #ids / R.Slots),
+					Next = now + (i - 1) * R.Seconds / R.Slots,
+					Phase = i * 1.7,
+				})
 			end
 		end
 	end
 	function section.Teardown()
 		section.Active = false
-		for _, entry in section.Rides do
-			entry.Ride:Destroy()
+		for _, slot in section.Slots do
+			for _, ride in { slot.Ride, slot.Leaving } do
+				if ride then
+					ride:Destroy()
+				end
+			end
 		end
 		section.Folder:Destroy()
-		section.Rides = {}
+		section.Slots = {}
 	end
 	function section.Step(_, now, distance)
 		local near = distance <= S.EmitterDistance
-		for i, entry in section.Rides do
-			local yaw = math.sin(now * S.RiderYawHz * TAU + i * 1.7) * S.RiderYawSway
-			entry.Ride:Step(now, entry.Spot * CFrame.Angles(0, yaw, 0), near)
+		for _, slot in section.Slots do
+			if now >= slot.Next and #ids > 0 then
+				-- Swap: the current flyer zooms up and away, the next one drops onto the pad.
+				if slot.Leaving then
+					slot.Leaving:Destroy()
+				end
+				slot.Leaving, slot.LeftAt = slot.Ride, now
+				slot.Index = slot.Index % #ids + 1
+				slot.Ride, slot.Born, slot.Next =
+					Ride.new(section.Folder, ids[slot.Index], slot.Spot, self.Avatar), now, now + R.Seconds
+				if near then
+					flash(slot)
+				end
+			end
+			local sway = CFrame.Angles(0, math.sin(now * S.RiderYawHz * TAU + slot.Phase) * S.RiderYawSway, 0)
+			if slot.Leaving then
+				local t = (now - slot.LeftAt) / R.TransitionSeconds
+				if t >= 1 then
+					slot.Leaving:Destroy()
+					slot.Leaving = nil
+				else
+					local lift = t * t
+					slot.Leaving:Step(
+						now,
+						slot.Spot * CFrame.new(0, lift * R.LeaveRise, -lift * R.LeaveForward) * sway,
+						near
+					)
+				end
+			end
+			if slot.Ride then
+				local arrive = ease((now - slot.Born) / R.TransitionSeconds)
+				local drop = CFrame.new(0, (1 - arrive) * R.ArriveDrop, 0)
+					* CFrame.Angles(0, (1 - arrive) * R.ArriveSpin, 0)
+				slot.Ride:Step(now, slot.Spot * drop * sway, near)
+			end
 		end
 	end
 	return section
@@ -568,8 +637,7 @@ function Controller:BaySection(root)
 		end
 		section.Folder:Destroy()
 	end
-	local flyers = table.clone(S.ExampleRiders)
-	table.insert(flyers, 1, S.Featured.Flyer)
+	local flyers = { S.Featured.Flyer }
 	function section.Step(_, now, distance)
 		local near = distance <= S.EmitterDistance
 		if section.EmittersOn ~= near then

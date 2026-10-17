@@ -441,19 +441,11 @@ do
 	end
 end
 
--- ── Flyers display: one hover pad per example rider in an arc behind the Flyers stand ─────────────
--- Spaced so the widest flyers (Prism Ray 8.2 studs) never touch a neighbour; the skyboarder flies high
--- above the stand sign. Order matches Config/Showcase ExampleRiders.
+-- ── Flyers display: two rotating hover pads either side of the Flyers stand ─────────────────────
+-- ShowcaseController cycles every installed flyer through RiderSpot1..2, one rider each.
 local flyers = model(root, "FlyersDisplay")
-local flyerLook = Vector3.new(20, 0, 6)
-for i, at in
-	{
-		Vector3.new(36.5, 3.0, 19.5),
-		Vector3.new(37.5, 2.6, -3.5),
-		Vector3.new(41.5, 9.5, 4.0),
-		Vector3.new(41.0, 2.6, 11.0),
-	}
-do
+local flyerLook = Vector3.new(14, 0, 5)
+for i, at in { Vector3.new(34.5, 2.6, -1.5), Vector3.new(34.5, 2.6, 10.0) } do
 	local face = CFrame.lookAt(Vector3.new(at.X, 0, at.Z), flyerLook)
 	anchor(flyers, "RiderSpot" .. i, face + Vector3.yAxis * at.Y)
 	part(

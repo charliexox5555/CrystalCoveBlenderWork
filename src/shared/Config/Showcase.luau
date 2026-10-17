@@ -44,10 +44,20 @@ Showcase.Demo = {
 -- The Hollowlight glassy turning above its pedestal.
 Showcase.Glassy = { Scale = 1.75, SpinSpeed = 0.7, Bob = 0.25, BobHz = 0.35 }
 
--- Flyers: the carriage on the stage plus example riders on the Flyers display, all wearing the local
--- player's avatar. Riders map to RiderSpot1..4 in order.
+-- Flyers: the carriage on the stage plus two rotating pads beside the Flyers stand, each carrying a
+-- copy of the local player's avatar through every installed flyer in turn.
 Showcase.Carriage = { YawSway = 0.18, YawHz = 0.08 }
-Showcase.ExampleRiders = { "prism_ray", "rocket_skiff", "skyboard", "cloud_cushion" }
+Showcase.FlyerRotation = {
+	Slots = 2, -- RiderSpot1..N in FeaturedShowcase.FlyersDisplay
+	Seconds = 7, -- each flyer shows this long
+	TransitionSeconds = 0.7,
+	LeaveRise = 14, -- studs the outgoing flyer zooms up and away
+	LeaveForward = 6,
+	ArriveDrop = 6, -- studs the incoming flyer drops from
+	ArriveSpin = 3, -- radians it turns while landing
+	FlashSize = 7,
+	FlashColor = "#FF8EA0", -- ruby light
+}
 Showcase.RiderYawSway = 0.12
 Showcase.RiderYawHz = 0.11
 

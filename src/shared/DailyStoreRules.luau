@@ -6,6 +6,7 @@ local B = if script then require(script.Parent.Config.Balance) else require("./C
 local G = if script then require(script.Parent.Config.Glassies) else require("./Config/Glassies")
 local C = if script then require(script.Parent.Config.RoundCosmetics) else require("./Config/RoundCosmetics")
 local Rng = if script then require(script.Parent.Rng) else require("./Rng")
+local M = if script then require(script.Parent.Config.MarbleShop) else require("./Config/MarbleShop")
 
 local Rules = {}
 Rules.Categories = { "Glassies", "Finishers", "Rideables" }
@@ -139,6 +140,17 @@ function Rules.bundle(id)
 end
 function Rules.bundleProduct(bundle)
 	return validProduct(bundle)
+end
+function Rules.marblePack(id)
+	for _, pack in M.Packs do
+		if pack.Id == id then
+			return pack
+		end
+	end
+	return nil
+end
+function Rules.packProduct(pack)
+	return validProduct(pack)
 end
 
 -- Deterministic shuffled bag per player/category/rarity: walking one item per day through a
@@ -330,11 +342,17 @@ function Rules.buyCoins(data, slot, expectedId, expectedDay, now, grant)
 end
 
 local function sameItem(a, b)
-	return a.Kind == b.Kind and a.Id == b.Id and a.Day == b.Day and a.Slot == b.Slot and a.BundleId == b.BundleId
+	return a.Kind == b.Kind
+		and a.Id == b.Id
+		and a.Day == b.Day
+		and a.Slot == b.Slot
+		and a.BundleId == b.BundleId
+		and a.PackId == b.PackId
 end
 
 -- Persist what a Robux prompt is for before prompting. kind "Offer": ref = { Slot, Id, Day };
--- kind "Bundle": ref = { Id }. An unresolved intent for another item is never overwritten.
+-- kind "Bundle": ref = { Id }; kind "Marbles": ref = { Id } (a Marble pack). An unresolved
+-- intent for another item is never overwritten.
 function Rules.beginIntent(data, kind, ref, now)
 	local store = Rules.reconcile(data)
 	if type(ref) ~= "table" then
@@ -383,6 +401,13 @@ function Rules.beginIntent(data, kind, ref, now)
 		for i, item in intent.Items do
 			intent.Items[i] = table.clone(item)
 		end
+	elseif kind == "Marbles" then
+		local pack = type(ref.Id) == "string" and Rules.marblePack(ref.Id)
+		if not pack then
+			return fail("Choose a pack")
+		end
+		product = Rules.packProduct(pack)
+		intent = { Kind = "Marbles", PackId = pack.Id, Marbles = pack.Marbles }
 	else
 		return fail("Choose an offer")
 	end
@@ -439,6 +464,9 @@ function Rules.applyReceipt(data, receipt, now, grant)
 		if store.Day == intent.Day and type(offer) == "table" and offer.Id == intent.Id then
 			offer.Purchased, offer.PurchasedAt = true, now
 		end
+	elseif intent.Kind == "Marbles" then
+		data.Marbles = (data.Marbles or 0) + intent.Marbles
+		table.insert(grants, { Marbles = intent.Marbles })
 	else
 		for _, item in intent.Items do
 			table.insert(grants, grant(item.Category, item.Id))
@@ -501,6 +529,24 @@ function Rules.view(data, now)
 		})
 	end
 	return view
+end
+
+-- Marble packs for the client grid (config is shared; availability = product configured).
+function Rules.marblePacks()
+	local out = {}
+	for _, pack in M.Packs do
+		local product = Rules.packProduct(pack)
+		table.insert(out, {
+			Id = pack.Id,
+			Name = pack.Name,
+			Marbles = pack.Marbles,
+			Bonus = pack.Bonus,
+			Art = pack.Art,
+			RobuxPrice = product and product.Price,
+			Available = product ~= nil,
+		})
+	end
+	return out
 end
 
 -- Every (Category, Rarity, ValueBand) a Robux slot can actually show, for the creator's

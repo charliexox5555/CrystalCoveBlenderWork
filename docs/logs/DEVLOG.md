@@ -14,6 +14,16 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — Shop buy-button fix, Marble shop, Hollowlight-only item
+Done:
+- Bug: daily shop buy buttons did nothing. The authored Price buttons ship with `Active = false`, which swallows clicks; FeaturedOffers now enables them. Verified with real clicks in Studio Play: Coin offer (wallet message), Robux offer and bundle (intent saved, prompt sent). Pushed separately (ca0086d).
+- Marble shop: `Components/MarbleShop` panel on the shop window frame with six pack cards (tinted marble-pile illustrations, bonus tag, Robux button), opened by a "+" on the HUD Marble counter (LobbyHud) and on the shop window's Marble plaque (ShopContent); "need more Marbles" also opens it. `Config/MarbleShop` holds the 6 packs; new remote `BuyMarblePack`; intent kind "Marbles" in DailyStoreRules adds Marbles on receipt.
+- Hollowlight alone: bundle `hollowlight_glassy` (249 R$). The bundle-preview session buys it with `BuyStoreBundle("hollowlight_glassy")`; FeaturedOffers has a VIEW button that opens `Screens/BundlePreview`.
+- Created 7 developer products (decision 83). Tests: Marble pack unavailable/receipt/replay, glassy-only grant and refusal, every product unique. Lune 137 passed. Studio: the preview shows 249 / 499 and its glassy Buy button creates the right intent.
+Next:
+- Studio screenshot of the Marble shop and a click on the VIEW button were cut short when another session restarted Play; the creator should click the Marble "+" once.
+- One real purchase in a published test server before announcing sales.
+
 ## 2026-10-17 — Claude — Stage prompt opens the bundle preview
 Done:
 - The Hollowlight stage's "View Collection" prompt now opens the fullscreen bundle preview (`BundlePreview.open("hollowlight_collection")`) instead of the shop page; it falls back to the shop's Featured tab if the preview module is missing (`Showcase.FeaturedPrompt.Bundle`, `ShowcaseController:OpenBundle`). Play check: pressing the prompt opened the preview with its 3D stage and no shop; the close button restored camera (Custom/Humanoid/70), walk speed, HUD and music button, and left no stage, fade or finisher sounds.

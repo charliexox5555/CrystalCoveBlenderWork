@@ -23,6 +23,8 @@ function Hud.new(open)
 			end
 		end)
 	)
+	-- "+" on the Marble counter opens the Marble shop.
+	require(script.Parent.Parent.Components.MarbleShop).attachPlus(gui.Currency.Marbles)
 	return {
 		Gui = gui,
 		Currency = gui.Currency.Coins.CoinsAmount,

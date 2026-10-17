@@ -19,6 +19,7 @@
 --     RequestStore   (RemoteEvent)  (no args) -> StoreOffers: today's daily offers + featured bundle
 --     BuyStoreOffer  (RemoteEvent)  slot: number, id: string, day: number (Coins buy now; Robux prompts)
 --     BuyStoreBundle (RemoteEvent)  bundleId: string (Robux prompt once a product ID is configured)
+--     BuyMarblePack  (RemoteEvent)  packId: string (Config/MarbleShop; Robux prompt)
 --     RequestMusicPrefs (RemoteEvent) (no args) -> MusicPrefs { Muted, Volume }
 --     SetMusicPrefs  (RemoteEvent)  muted: boolean, volume: number (0-1); saved by MusicPrefsService
 --   Server -> client: StoreOffers (view, NextReset, ServerNow, Message), StoreResult (purchase outcome)
@@ -55,6 +56,7 @@ local reliable = {
 	"BuyStoreOffer",
 	"BuyStoreBundle",
 	"StoreResult",
+	"BuyMarblePack",
 	"RequestMusicPrefs",
 	"MusicPrefs",
 	"SetMusicPrefs",

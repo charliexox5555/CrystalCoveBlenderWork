@@ -78,7 +78,8 @@ DailyStore.Excluded = {
 	Rideables = { lantern_skiff = true },
 }
 
--- Limited bundles. The first entry with Featured = true headlines the Featured page.
+-- Limited bundles. The first entry with Featured = true headlines the Featured page; others are
+-- sold from the bundle preview (e.g. the Hollowlight glassy on its own).
 DailyStore.Bundles = {
 	{
 		Id = "hollowlight_collection",
@@ -91,6 +92,17 @@ DailyStore.Bundles = {
 			{ Category = "Glassies", Id = "hollowlight" },
 			{ Category = "Rideables", Id = "lantern_skiff" },
 			{ Category = "Finishers", Id = "lantern_eclipse" },
+		},
+	},
+	{
+		Id = "hollowlight_glassy",
+		Name = "Hollowlight",
+		Tagline = "Seasonal glassy",
+		Featured = false,
+		ProductId = 3719142095 :: number?,
+		Price = 249 :: number?,
+		Items = {
+			{ Category = "Glassies", Id = "hollowlight" },
 		},
 	},
 }

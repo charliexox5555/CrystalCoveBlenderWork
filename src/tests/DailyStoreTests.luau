@@ -6,6 +6,9 @@ local Rules = if script
 local D = if script
 	then require(game.ReplicatedStorage.Shared.Config.DailyStore)
 	else require("../shared/Config/DailyStore")
+local M = if script
+	then require(game.ReplicatedStorage.Shared.Config.MarbleShop)
+	else require("../shared/Config/MarbleShop")
 local Crates = if script then require(game.ReplicatedStorage.Shared.CrateRules) else require("../shared/CrateRules")
 local Schema = if script
 	then require(game.ServerScriptService.Server.Data.ProfileSchema)
@@ -16,6 +19,12 @@ local LEAP = 1835395200 -- 2028-02-29 00:00:00 UTC
 
 return function(t, d)
 	local catalog = Rules.catalog()
+	local function validEntry(entry)
+		return type(entry.ProductId) == "number"
+			and entry.ProductId > 0
+			and type(entry.Price) == "number"
+			and entry.Price > 0
+	end
 	local function profile()
 		local data = Schema.new(0)
 		data.Coins = 100000
@@ -49,7 +58,12 @@ return function(t, d)
 			end
 		end
 		local bundle = D.Bundles[1]
-		table.insert(entries, bundle)
+		for _, extra in D.Bundles do
+			table.insert(entries, extra)
+		end
+		for _, pack in M.Packs do
+			table.insert(entries, pack)
+		end
 		for _, entry in entries do
 			saved[entry] = { entry.ProductId, entry.Price }
 			n += 1
@@ -270,8 +284,18 @@ return function(t, d)
 			local category, rarity, band = string.match(key, "(%a+)/(%a+)/(%a+)")
 			t.ok(Rules.product(category, rarity, band), key)
 		end
-		t.ok(Rules.bundleProduct(D.Bundles[1]), "bundle product")
 		local seen = {}
+		local function unique(entry, label)
+			t.ok(validEntry(entry), label .. " has a product and price")
+			t.ok(not seen[entry.ProductId], label .. " reuses a product")
+			seen[entry.ProductId] = true
+		end
+		for _, bundle in D.Bundles do
+			unique(bundle, bundle.Id)
+		end
+		for _, pack in M.Packs do
+			unique(pack, pack.Id)
+		end
 		for _, byRarity in D.RobuxProducts do
 			for _, bands in byRarity do
 				for _, entry in bands do
@@ -282,7 +306,69 @@ return function(t, d)
 				end
 			end
 		end
-		t.ok(not seen[D.Bundles[1].ProductId], "bundle product reused")
+	end)
+
+	t.test("Marble packs: unavailable without a product, receipts add Marbles once", function()
+		withConfig(false, function()
+			local data = profile()
+			t.eq(select(2, Rules.beginIntent(data, "Marbles", { Id = "pouch" }, MIDNIGHT)), "Coming soon")
+			t.eq(select(2, Rules.beginIntent(data, "Marbles", { Id = "nope" }, MIDNIGHT)), "Choose a pack")
+			for _, pack in Rules.marblePacks() do
+				t.eq(pack.Available, false)
+			end
+		end)
+		withProducts(function()
+			local data = profile()
+			local before = data.Marbles
+			local ok, intent = Rules.beginIntent(data, "Marbles", { Id = "pouch" }, MIDNIGHT)
+			t.ok(ok, tostring(intent))
+			Rules.beginIntent(data, "Marbles", { Id = "pouch" }, MIDNIGHT) -- second prompt, same pack
+			local grant = grantFn(data)
+			t.eq(
+				Rules.applyReceipt(data, { PurchaseId = "m1", ProductId = intent.ProductId }, MIDNIGHT, grant),
+				"Granted"
+			)
+			t.eq(data.Marbles, before + 420)
+			t.eq(
+				Rules.applyReceipt(data, { PurchaseId = "m1", ProductId = intent.ProductId }, MIDNIGHT, grant),
+				"Duplicate"
+			)
+			t.eq(
+				Rules.applyReceipt(data, { PurchaseId = "m2", ProductId = intent.ProductId }, MIDNIGHT, grant),
+				"Granted"
+			)
+			t.eq(data.Marbles, before + 840, "both paid prompts honored")
+			t.eq(
+				Rules.applyReceipt(data, { PurchaseId = "m3", ProductId = intent.ProductId }, MIDNIGHT, grant),
+				"NoIntent"
+			)
+			t.eq(data.Marbles, before + 840)
+			for _, pack in Rules.marblePacks() do
+				t.eq(pack.Available, true)
+				t.ok(pack.Marbles >= pack.RobuxPrice, pack.Id .. " never worse than 1 Marble per Robux")
+			end
+		end)
+	end)
+
+	t.test("the Hollowlight glassy sells alone and is refused once owned", function()
+		withProducts(function()
+			local data = profile()
+			local ok, intent = Rules.beginIntent(data, "Bundle", { Id = "hollowlight_glassy" }, MIDNIGHT)
+			t.ok(ok, tostring(intent))
+			t.eq(#intent.Items, 1)
+			Rules.applyReceipt(data, { PurchaseId = "g1", ProductId = intent.ProductId }, MIDNIGHT, grantFn(data))
+			t.eq(Rules.owns(data, "Glassies", "hollowlight"), 1)
+			t.eq(Rules.owns(data, "Rideables", "lantern_skiff"), 0)
+			t.eq(
+				select(2, Rules.beginIntent(data, "Bundle", { Id = "hollowlight_glassy" }, MIDNIGHT)),
+				"You already own this collection"
+			)
+			local view = Rules.view(data, MIDNIGHT)
+			t.eq(view.Bundles[2].Id, "hollowlight_glassy")
+			t.eq(view.Bundles[2].AllOwned, true)
+			t.eq(view.Bundles[1].AllOwned, false, "full set still sellable")
+			t.eq(view.Bundles[1].Available, true)
+		end)
 	end)
 
 	t.test("missing product IDs keep Robux offers and the bundle unavailable", function()

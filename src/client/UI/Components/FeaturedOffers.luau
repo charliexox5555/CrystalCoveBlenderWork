@@ -80,6 +80,21 @@ function Featured.new(page, message)
 	self.Showcase.Description.Text = ""
 	S.buttonText(self.Showcase.Explore, "LOADING…")
 	self.Showcase.Explore.Active, self.Showcase.Explore.Selectable = true, true
+	-- VIEW opens the fullscreen bundle preview (Screens/BundlePreview) once that module exists.
+	local view = require(script.Parent.GemButton).new(
+		self.Showcase,
+		"View",
+		"VIEW",
+		"Purple",
+		UDim2.fromScale(0.15, 0.2),
+		UDim2.fromScale(0.43, 0.75)
+	)
+	table.insert(
+		self.Connections,
+		view.Activated:Connect(function()
+			self:Preview()
+		end)
+	)
 	table.insert(
 		self.Connections,
 		self.Showcase.Explore.Activated:Connect(function()
@@ -292,6 +307,22 @@ function Featured:Buy(slot)
 		Remotes.BuyStoreOffer:FireServer(slot, offer.Id, view.Day)
 	else
 		self:Say("Robux offers open soon")
+	end
+end
+
+function Featured:Preview()
+	local bundle = self.Bundle
+	local screens = script.Parent.Parent:FindFirstChild("Screens")
+	local module = screens and screens:FindFirstChild("BundlePreview")
+	if not bundle or not module then
+		self:Say("Preview coming soon")
+		return
+	end
+	local ok, preview = pcall(require, module)
+	if ok and type(preview) == "table" and type(preview.open) == "function" then
+		preview.open(bundle.Id)
+	else
+		self:Say("Preview coming soon")
 	end
 end
 

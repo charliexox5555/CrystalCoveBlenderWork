@@ -3,6 +3,7 @@ local S = require(script.Parent.Parent.Components.StainedGlass)
 local Pools = require(script.Parent.ShopPools)
 local CratePanel = require(script.Parent.Parent.Components.CrateShopPanel)
 local FeaturedOffers = require(script.Parent.Parent.Components.FeaturedOffers)
+local MarbleShop = require(script.Parent.Parent.Components.MarbleShop)
 local Shop = {}
 local lastPullAt = -math.huge
 local pullRate = require(game.ReplicatedStorage.Shared.Config.Balance).Data.KilnRateSeconds
@@ -77,6 +78,7 @@ function Shop.bind(self, data)
 				self.Message.Text = "Need " .. (cost - (self.Data[currency] or 0)) .. " more " .. string.lower(currency)
 				if currency == "Marbles" then
 					self.Window.Gui:SetAttribute("MarbleStoreRequested", true)
+					MarbleShop.open()
 				end
 				return
 			end
@@ -102,6 +104,7 @@ function Shop.bind(self, data)
 	end
 	-- Daily offers + featured bundle; stepped and destroyed with the crate panels.
 	self.CrateViews.Featured = FeaturedOffers.new(c.FeaturedPage, self.Message)
+	MarbleShop.attachPlus(self.Window.Panel:FindFirstChild("Marbles"))
 	self.UpdateProfile = function(_, profile)
 		if not profile then
 			return

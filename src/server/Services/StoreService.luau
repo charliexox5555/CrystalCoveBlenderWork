@@ -128,6 +128,16 @@ function Service:BuyBundle(player, bundleId)
 	self:Prompt(player, "Bundle", { Id = bundleId })
 end
 
+function Service:BuyPack(player, packId)
+	if not self.Guard:Allow(player, "Buy", D.PurchaseRateSeconds) then
+		return
+	end
+	if type(packId) ~= "string" or #packId > 32 then
+		return
+	end
+	self:Prompt(player, "Marbles", { Id = packId })
+end
+
 -- Persist the exact offer intent before prompting so delayed receipts honor what was shown.
 function Service:Prompt(player, kind, ref)
 	local data = self.Services.DataService:Get(player)
@@ -166,7 +176,7 @@ function Service:ProcessReceipt(receipt)
 	if not data then
 		return Enum.ProductPurchaseDecision.NotProcessedYet
 	end
-	local status = Rules.applyReceipt(data, receipt, os.time(), self:Grant(data))
+	local status, applied = Rules.applyReceipt(data, receipt, os.time(), self:Grant(data))
 	if status == "NoIntent" then
 		warn("[GlassClash] receipt without a store intent: " .. tostring(receipt.ProductId))
 		return Enum.ProductPurchaseDecision.NotProcessedYet
@@ -177,8 +187,12 @@ function Service:ProcessReceipt(receipt)
 	end)
 	if status == "Granted" then
 		self.Services.DataService:Sync(player)
-		Remotes.StoreResult:FireClient(player, { Ok = true, Receipt = true })
-		self:Send(player, "Thank you! Your items are in your Inventory")
+		local kind = applied and applied.Intent.Kind
+		local message = if kind == "Marbles"
+			then "Thank you! " .. applied.Intent.Marbles .. " Marbles added"
+			else "Thank you! Your items are in your Inventory"
+		Remotes.StoreResult:FireClient(player, { Ok = true, Receipt = true, Kind = kind, Message = message })
+		self:Send(player, message)
 	end
 	return if saved then Enum.ProductPurchaseDecision.PurchaseGranted else Enum.ProductPurchaseDecision.NotProcessedYet
 end
@@ -194,6 +208,9 @@ function Service:Start()
 	end)
 	Remotes.BuyStoreBundle.OnServerEvent:Connect(function(player, bundleId)
 		self:BuyBundle(player, bundleId)
+	end)
+	Remotes.BuyMarblePack.OnServerEvent:Connect(function(player, packId)
+		self:BuyPack(player, packId)
 	end)
 	MarketplaceService.ProcessReceipt = function(receipt)
 		return self:ProcessReceipt(receipt)
@@ -222,9 +239,11 @@ function Service:Start()
 				self.DevOffset = a
 				return self:Now()
 			elseif command == "Prompt" then
-				-- a = slot number, or a bundle id string; opens Studio's free test-purchase dialog.
+				-- a = slot number, a bundle id, or "pack:<id>"; opens Studio's free test-purchase dialog.
 				self.Guard:Remove(player)
-				if type(a) == "string" then
+				if type(a) == "string" and a:sub(1, 5) == "pack:" then
+					self:BuyPack(player, a:sub(6))
+				elseif type(a) == "string" then
 					self:BuyBundle(player, a)
 				else
 					local view = self:Send(player)

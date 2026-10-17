@@ -209,9 +209,18 @@ local function ambienceOn()
 		return true
 	end
 	local camera = workspace.CurrentCamera
-	local blur = Lighting:FindFirstChild("UiBlur") or Instance.new("BlurEffect")
-	blur.Name, blur.Size, blur.Parent = "UiBlur", 0, Lighting
-	ambience.Blur, ambience.BaseFov, ambience.Camera = blur, camera and camera.FieldOfView, camera
+	local blur = Lighting:FindFirstChild("UiBlur")
+	if not blur then
+		blur = Instance.new("BlurEffect")
+		blur.Name, blur.Size, blur.Parent = "UiBlur", 0, Lighting
+	end
+	-- A menu opening while the previous one is still restoring must keep the original FOV as its base.
+	local base = if ambience.Restoring and ambience.BaseFov then ambience.BaseFov else camera and camera.FieldOfView
+	if ambience.RestoreTween then
+		ambience.RestoreTween:Cancel()
+	end
+	ambience.Restoring = false
+	ambience.Blur, ambience.BaseFov, ambience.Camera = blur, base, camera
 	if ambience.Tweens then
 		for _, t in ambience.Tweens do
 			t:Cancel()
@@ -249,11 +258,17 @@ local function ambienceOff()
 	end
 	local blur, camera, base = ambience.Blur, ambience.Camera, ambience.BaseFov
 	if camera and base and camera.Parent then
-		TweenService:Create(camera, TweenInfo.new(Config.Fov.OutSeconds, Enum.EasingStyle.Quad), { FieldOfView = base })
-			:Play()
+		ambience.Restoring = true
+		ambience.RestoreTween = TweenService:Create(
+			camera,
+			TweenInfo.new(Config.Fov.OutSeconds, Enum.EasingStyle.Quad),
+			{ FieldOfView = base }
+		)
+		ambience.RestoreTween:Play()
 		task.delay(Config.Fov.OutSeconds + 0.02, function()
-			if ambience.Count == 0 then
+			if ambience.Count == 0 and ambience.Restoring then
 				camera.FieldOfView = base -- exact restore even if a tween was interrupted
+				ambience.Restoring = false
 			end
 		end)
 	end

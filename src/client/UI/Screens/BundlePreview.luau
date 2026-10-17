@@ -29,6 +29,7 @@ local BundlePreview = {}
 local current = nil
 
 local ROBUX = utf8.char(0xE002)
+local TAU = math.pi * 2
 local P = Theme.Palette
 local kindNames = { Glassies = "GLASSY", Rideables = "FLYER", Finishers = "FINISHER" }
 
@@ -709,10 +710,18 @@ function Screen:HandBack()
 end
 
 -- ── Orbit camera ────────────────────────────────────────────────────────────────────────────────
+-- Eases the orbit onto a subject: pivot on its bounding-box centre, its starting angles and a fitted
+-- distance (zoom back to 1). RESET VIEW is SetFocus("Overview").
 function Screen:SetFocus(kind)
 	local focus = Config.Focus[kind] or Config.Focus.Overview
 	self.Focus = if Config.Focus[kind] then kind else "Overview"
-	self.Goal = { At = self.Stage:World(focus.At), Distance = focus.Distance, Yaw = focus.Yaw, Pitch = focus.Pitch }
+	local box = self.Stage:Focus(self.Focus) or { Center = self.Stage:World(Vector3.new(0, 5, 0)), Radius = 8 }
+	-- Turn the short way round from wherever the orbit is now.
+	local yaw = focus.Yaw
+	if self.Cam then
+		yaw += math.round((self.Cam.Yaw - yaw) / TAU) * TAU
+	end
+	self.Goal = { At = box.Center, Radius = box.Radius, Fill = focus.Fill, Yaw = yaw, Pitch = focus.Pitch, Zoom = 1 }
 	self.LastInput = os.clock()
 	for _, entry in self.Tiles do
 		entry.Outline.Visible = entry.Item.Category == kind
@@ -727,7 +736,14 @@ function Screen:StartCamera()
 	self:SetFocus("Overview")
 	local goal = self.Goal
 	-- Start a little wider and swing in.
-	self.Cam = { At = goal.At, Distance = goal.Distance * 1.45, Yaw = goal.Yaw - 0.5, Pitch = goal.Pitch + 0.1 }
+	self.Cam = {
+		At = goal.At,
+		Radius = goal.Radius,
+		Fill = goal.Fill,
+		Zoom = 1.45,
+		Yaw = goal.Yaw - 0.5,
+		Pitch = math.min(goal.Pitch + 0.1, C.MaxPitch),
+	}
 	local function inArea(position)
 		local p, s = self.Area.AbsolutePosition, self.Area.AbsoluteSize
 		local inset = GuiService:GetGuiInset()
@@ -735,7 +751,7 @@ function Screen:StartCamera()
 		return x >= p.X and y >= p.Y and x <= p.X + s.X and y <= p.Y + s.Y
 	end
 	local function zoom(factor)
-		self.Goal.Distance = math.clamp(self.Goal.Distance * factor, C.MinDistance, C.MaxDistance)
+		self.Goal.Zoom = math.clamp(self.Goal.Zoom * factor, C.MinZoom, C.MaxZoom)
 		self.LastInput = os.clock()
 	end
 	self:Connect(self.Area.InputBegan:Connect(function(input)
@@ -783,10 +799,10 @@ function Screen:StartCamera()
 	self:Connect(UIS.TouchPinch:Connect(function(positions, scale, _, state)
 		if state == Enum.UserInputState.Begin then
 			if positions[1] and inArea(positions[1]) then
-				self.Pinching, self.PinchStart, self.Drag = true, self.Goal.Distance, nil
+				self.Pinching, self.PinchStart, self.Drag = true, self.Goal.Zoom, nil
 			end
 		elseif state == Enum.UserInputState.Change and self.Pinching then
-			self.Goal.Distance = math.clamp(self.PinchStart / math.max(scale, 0.05), C.MinDistance, C.MaxDistance)
+			self.Goal.Zoom = math.clamp(self.PinchStart / math.max(scale, 0.05), C.MinZoom, C.MaxZoom)
 			self.LastInput = os.clock()
 		elseif state == Enum.UserInputState.End or state == Enum.UserInputState.Cancel then
 			self.Pinching = false
@@ -812,33 +828,33 @@ function Screen:StepCamera(dt)
 	end
 	local k = 1 - math.exp(-C.Smooth * dt)
 	cam.At = cam.At:Lerp(goal.At, k)
-	cam.Distance += (goal.Distance - cam.Distance) * k
-	cam.Yaw += (goal.Yaw - cam.Yaw) * k
-	cam.Pitch += (goal.Pitch - cam.Pitch) * k
+	for _, key in { "Radius", "Fill", "Zoom", "Yaw", "Pitch" } do
+		cam[key] += (goal[key] - cam[key]) * k
+	end
 	local camera = workspace.CurrentCamera
 	if camera.CameraType ~= Enum.CameraType.Scriptable then
 		camera.CameraType = Enum.CameraType.Scriptable
 	end
 	local viewport = camera.ViewportSize
+	local vw, vh = math.max(viewport.X, 1), math.max(viewport.Y, 1)
 	local area, areaSize = self.Area.AbsolutePosition, self.Area.AbsoluteSize
-	-- Pull back when the stage area is a smaller share of the screen than on desktop (phones, portrait).
-	local fit = math.clamp(
-		math.max(0.54 * viewport.X / math.max(areaSize.X, 1), 0.71 * viewport.Y / math.max(areaSize.Y, 1)),
-		0.85,
-		2.4
-	)
-	local rotation = CFrame.Angles(0, cam.Yaw, 0) * CFrame.Angles(-cam.Pitch, 0, 0)
-	local eye = cam.At + rotation:VectorToWorldSpace(Vector3.new(0, 0, cam.Distance * fit))
-	-- Turn the camera so the look-at point lands in the middle of the stage area, not behind the cards.
+	local tanV = math.tan(math.rad(camera.FieldOfView) / 2)
+	local tanH = tanV * vw / vh
+	-- Fit the subject to the stage area (not the whole screen), so the distance stays steady while orbiting.
+	local tanArea = math.min(tanV * areaSize.Y / vh, tanH * areaSize.X / vw)
+	local distance = cam.Radius / math.max(cam.Fill * tanArea, 0.01) * cam.Zoom
+	-- Orbit straight at the pivot, then slide the camera sideways (a lens shift) so the pivot lands on the
+	-- centre of the stage area beside the cards; the view never turns away from the subject.
 	local inset = GuiService:GetGuiInset()
 	local center = area + areaSize / 2 + inset
-	local nx = center.X / math.max(viewport.X, 1) * 2 - 1
-	local ny = 1 - center.Y / math.max(viewport.Y, 1) * 2
-	local tanV = math.tan(math.rad(camera.FieldOfView) / 2)
-	local tanH = tanV * viewport.X / math.max(viewport.Y, 1)
-	camera.CFrame = CFrame.lookAt(eye, cam.At)
-		* CFrame.Angles(0, math.atan(nx * tanH), 0)
-		* CFrame.Angles(-math.atan(ny * tanV), 0, 0)
+	local nx = center.X / vw * 2 - 1
+	local ny = 1 - center.Y / vh * 2
+	local rotation = CFrame.Angles(0, cam.Yaw, 0) * CFrame.Angles(-cam.Pitch, 0, 0)
+	local eye = cam.At
+		+ rotation.LookVector * -distance
+		- rotation.RightVector * (nx * distance * tanH)
+		- rotation.UpVector * (ny * distance * tanV)
+	camera.CFrame = CFrame.new(eye) * rotation
 	camera.Focus = CFrame.new(cam.At)
 end
 

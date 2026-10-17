@@ -14,6 +14,12 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — Bundle preview orbit fix
+Done:
+- Creator: rotation felt off-centre. The orbit now pivots on each subject's measured bounding-box centre (rider + carriage for the bundle/flyer, the hanging glassy, the eclipse area), measured once at rest so bob/sway don't move it. A lens-shift camera keeps that pivot on the centre of the stage area beside the cards (checked: projected pivot = stage-area centre at every angle), distance is fitted to the subject and the stage area so it stays steady, pitch clamped 0.02–0.6 rad, zoom is a 0.55–1.6 multiplier, and focus/reset ease and turn the short way. Lantern post moved out so the carriage no longer blocks the glassy close-up. Screens: `docs/testing/bundle_preview/orbit_*.jpg`.
+Next:
+- Creator feel check of the new orbit.
+
 ## 2026-10-17 — Claude — UI revamp part 2: sounds, blur/FOV, text fit
 Done:
 - Creator couldn't hear clicks: UI sounds are now in `Config/Audio` (UiClick/Hover/Open/Close/Tab/Success/Error, ProSoundEffects) with louder levels in new `Config/UiMotion`, and no longer silenced by the music mute (own `UiSoundsMuted` attribute). Verified in Studio with real presses: Click, Hover, Open, Tab, Close Sounds created in the game's own UiSounds group, all IsLoaded.

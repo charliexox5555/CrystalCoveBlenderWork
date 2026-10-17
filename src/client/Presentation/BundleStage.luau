@@ -507,7 +507,52 @@ function Stage.new(items)
 	if items.Glassy then
 		self:BuildDemo(items.Glassy)
 	end
+	self:StepRide(0)
+	self:MeasureFocus()
 	return self
+end
+
+-- World-space box around several models: centre and half-diagonal.
+local function bounds(models)
+	local low, high = Vector3.one * math.huge, -Vector3.one * math.huge
+	for _, model in models do
+		local cf, size = model:GetBoundingBox()
+		for _, x in { -0.5, 0.5 } do
+			for _, y in { -0.5, 0.5 } do
+				for _, z in { -0.5, 0.5 } do
+					local corner = cf:PointToWorldSpace(size * Vector3.new(x, y, z))
+					low, high = low:Min(corner), high:Max(corner)
+				end
+			end
+		end
+	end
+	if low.X == math.huge then
+		return nil
+	end
+	return { Center = (low + high) / 2, Radius = (high - low).Magnitude / 2 }
+end
+
+-- Orbit pivots, measured once at rest so the bob and sway never move them: the rider + carriage for the
+-- whole bundle and the flyer, the hanging glassy, and the eclipse area.
+function Stage:MeasureFocus()
+	local focus = {}
+	local ride = self.Ride
+	if ride then
+		focus.Rideables = bounds(if ride.Npc then { ride.Model, ride.Npc } else { ride.Model })
+	end
+	if self.Demo then
+		focus.Glassies = bounds({ self.Demo.Model })
+		local f = Config.FinisherArea
+		focus.Finishers =
+			{ Center = (self.Origin * CFrame.new(Config.Glassy.Target + f.Offset)).Position, Radius = f.Radius }
+	end
+	focus.Overview = focus.Rideables or focus.Glassies or focus.Finishers
+	self.FocusBounds = focus
+end
+
+-- { Center, Radius } for a focus kind, or nil.
+function Stage:Focus(kind)
+	return self.FocusBounds and (self.FocusBounds[kind] or self.FocusBounds.Overview)
 end
 
 -- Stage-space point -> world.

@@ -20,33 +20,35 @@ BundlePreview.Carriage = {
 -- The Hollowlight hangs from a lantern post, swings, then flies into the eclipse (same beats as the
 -- lobby stage demo; Config/Showcase.Demo supplies the timing).
 BundlePreview.Glassy = {
-	Post = Vector3.new(8, 0, 3), -- foot of the post, on the floor beside the pedestal
-	Hook = Vector3.new(6.2, 9.6, 3),
-	Arc = Vector3.new(-1, 12, 9),
+	Post = Vector3.new(12.5, 0, 2.5), -- foot of the post, on the floor beside the pedestal
+	Hook = Vector3.new(10.8, 9.6, 2.5),
+	Arc = Vector3.new(1, 12.5, 9),
 	Target = Vector3.new(-9.5, 4.5, 7), -- where the Lantern Eclipse plays
 }
 
--- Where each focus puts the camera: look-at point (stage space), distance and orbit angles (radians).
+-- Orbit per focus. The pivot is the subject's measured bounding-box centre (BundleStage:MeasureFocus): the
+-- rider + carriage for the overview and the flyer, the hanging glassy, or the eclipse area. Yaw/Pitch are
+-- the starting angles (radians); Fill is how much of the stage area's height the subject spans.
 BundlePreview.Focus = {
-	Overview = { At = Vector3.new(-2, 5.4, 2.5), Distance = 28, Yaw = 0, Pitch = 0.2 },
-	Glassies = { At = Vector3.new(6.2, 7.6, 3), Distance = 10, Yaw = 0.35, Pitch = 0.08 },
-	Rideables = { At = Vector3.new(0, 5.4, -0.5), Distance = 20, Yaw = -0.35, Pitch = 0.18 },
-	Finishers = { At = Vector3.new(-8, 5.5, 6), Distance = 19, Yaw = -0.45, Pitch = 0.12 },
+	Overview = { Yaw = -0.35, Pitch = 0.22, Fill = 0.75 },
+	Rideables = { Yaw = -0.35, Pitch = 0.18, Fill = 0.78 },
+	Glassies = { Yaw = 1.0, Pitch = 0.1, Fill = 0.45 },
+	Finishers = { Yaw = -0.3, Pitch = 0.14, Fill = 0.8 },
 }
+-- The eclipse has no model at rest, so its area is a sphere around the burst point.
+BundlePreview.FinisherArea = { Offset = Vector3.new(0, 1.5, 0), Radius = 6 }
 
 BundlePreview.Camera = {
 	FieldOfView = 50,
-	MinDistance = 7,
-	MaxDistance = 42,
-	MinPitch = -0.05, -- radians above/below the look-at point (positive looks down)
-	MaxPitch = 0.75,
-	DragSpeed = 0.009, -- radians per pixel dragged
-	WheelStep = 0.12, -- fraction of the distance per wheel notch
-	Smooth = 10, -- higher follows input faster
+	MinZoom = 0.55, -- multiplier on the fitted distance (smaller is closer)
+	MaxZoom = 1.6,
+	MinPitch = 0.02, -- radians above the pivot (positive looks down)
+	MaxPitch = 0.6,
+	DragSpeed = 0.008, -- radians per pixel dragged
+	WheelStep = 0.1, -- zoom change per wheel notch
+	Smooth = 7, -- higher follows input faster; also eases focus changes and reset
 	AutoSpin = 0.06, -- radians per second while idle on the overview
 	IdleSeconds = 4, -- idle time before the slow auto spin resumes
-	-- The look-at point sits in the middle of the stage area to the right of the cards; the camera turns
-	-- towards it so the subject is framed there rather than behind the cards.
 }
 
 -- Replay a few seconds before the eclipse when its tile is chosen.

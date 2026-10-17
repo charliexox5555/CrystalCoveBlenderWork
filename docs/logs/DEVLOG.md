@@ -14,6 +14,14 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — Stage prompt opens the bundle preview
+Done:
+- The Hollowlight stage's "View Collection" prompt now opens the fullscreen bundle preview (`BundlePreview.open("hollowlight_collection")`) instead of the shop page; it falls back to the shop's Featured tab if the preview module is missing (`Showcase.FeaturedPrompt.Bundle`, `ShowcaseController:OpenBundle`). Play check: pressing the prompt opened the preview with its 3D stage and no shop; the close button restored camera (Custom/Humanoid/70), walk speed, HUD and music button, and left no stage, fade or finisher sounds.
+Next:
+- Creator feel check on a phone.
+Problems / questions for the user:
+- None.
+
 ## 2026-10-17 — Claude — Lobby landmarks in Blender, spawn rosette, island decor
 Done:
 - Creator kept the gate and guardians, asked for Blender models, a new spawn point, light island decor, and the Marble Fountain removed (it covered a leaderboard). Fountain deleted; no leaderboard was moved.

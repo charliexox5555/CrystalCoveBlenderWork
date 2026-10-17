@@ -68,7 +68,13 @@ Showcase.Stands = {
 	Finishers = { Tab = "Finishers", ActionText = "Open Finishers", ObjectText = "Burst Capsule" },
 	Rideables = { Tab = "Flyers", ActionText = "Open Flyers", ObjectText = "Sky Capsule" },
 }
-Showcase.FeaturedPrompt = { Tab = "Featured", ActionText = "View Collection", ObjectText = "Hollowlight" }
+-- The stage prompt opens the bundle preview screen directly (falls back to the shop's Featured tab).
+Showcase.FeaturedPrompt = {
+	Bundle = "hollowlight_collection",
+	Tab = "Featured",
+	ActionText = "View Collection",
+	ObjectText = "Hollowlight",
+}
 Showcase.PromptDistance = 10
 Showcase.ShopWaitSeconds = 4 -- how long to wait for the shop to open before giving up on the tab switch
 

@@ -217,6 +217,18 @@ function Controller:OpenShop(tab)
 	self.PendingTab, self.PendingUntil = tab, os.clock() + S.ShopWaitSeconds
 end
 
+-- Opens the fullscreen bundle preview (UI/Screens/BundlePreview); false if it is unavailable.
+function Controller:OpenBundle(bundleId)
+	local screens = script.Parent.Parent:FindFirstChild("UI") and script.Parent.Parent.UI:FindFirstChild("Screens")
+	local module = screens and screens:FindFirstChild("BundlePreview")
+	local ok, preview = pcall(require, module)
+	if not (module and ok and type(preview) == "table" and type(preview.open) == "function") then
+		return false
+	end
+	preview.open(bundleId)
+	return true
+end
+
 function Controller:Prompt(parent, conf)
 	local prompt = Instance.new("ProximityPrompt")
 	prompt.Name = "ShowcasePrompt"
@@ -224,7 +236,9 @@ function Controller:Prompt(parent, conf)
 	prompt.MaxActivationDistance, prompt.RequiresLineOfSight, prompt.HoldDuration = S.PromptDistance, false, 0
 	prompt.Parent = parent
 	prompt.Triggered:Connect(function()
-		self:OpenShop(conf.Tab)
+		if not (conf.Bundle and self:OpenBundle(conf.Bundle)) then
+			self:OpenShop(conf.Tab)
+		end
 	end)
 	return prompt
 end

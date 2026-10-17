@@ -1,7 +1,7 @@
 --!strict
 -- Personalized daily Featured store (design/DAILY_STORE_AND_HOLLOWLIGHT.md). Pure data; the
--- selection and purchase rules live in DailyStoreRules. Robux product IDs and prices stay nil
--- until the creator supplies them: a nil entry keeps that offer visibly unavailable.
+-- selection and purchase rules live in DailyStoreRules. A missing product ID or price keeps that
+-- offer visibly unavailable.
 
 local DailyStore = {}
 
@@ -44,25 +44,32 @@ DailyStore.FeaturedBand = {
 	Rideables = { prism_ray = true },
 }
 
--- Robux product matrix keyed [Category][Rarity][ValueBand]. Each entry gets its own developer
--- product. Fill ProductId (number) and Price (Robux, shown on the card) from the Creator
--- Dashboard; both must be set for the offer to become purchasable.
-local function bands()
-	return {
-		Standard = { ProductId = nil :: number?, Price = nil :: number? },
-		Featured = { ProductId = nil :: number?, Price = nil :: number? },
-	}
+-- Robux product matrix keyed [Category][Rarity][ValueBand]. Each entry is its own developer
+-- product (universe 10770493435, created 2026-10-17, regional pricing off so Price is what the
+-- player pays). Price must match the Creator Dashboard. Combos no item can reach are left out.
+local function p(id: number, price: number)
+	return { ProductId = id, Price = price }
 end
-DailyStore.RobuxProducts = {} :: { [string]: { [string]: { [string]: { ProductId: number?, Price: number? } } } }
-for _, category in { "Glassies", "Finishers", "Rideables" } do
-	DailyStore.RobuxProducts[category] = {
-		Uncommon = bands(),
-		Rare = bands(),
-		Epic = bands(),
-		Legendary = bands(),
-		Mythic = bands(),
-	}
-end
+DailyStore.RobuxProducts = {
+	Glassies = {
+		Uncommon = { Standard = p(3719124013, 49) },
+		Rare = { Standard = p(3719124035, 99), Featured = p(3719124041, 129) },
+		Epic = { Standard = p(3719124045, 179), Featured = p(3719124054, 229) },
+		Legendary = { Standard = p(3719124061, 349) },
+		Mythic = { Standard = p(3719124065, 599), Featured = p(3719124069, 699) },
+	},
+	Finishers = {
+		Uncommon = { Standard = p(3719124072, 39) },
+		Rare = { Standard = p(3719124077, 79) },
+		Epic = { Standard = p(3719124084, 149) },
+		Legendary = { Featured = p(3719124089, 279) },
+	},
+	Rideables = {
+		Uncommon = { Standard = p(3719124092, 59) },
+		Rare = { Standard = p(3719124095, 119) },
+		Epic = { Featured = p(3719124103, 249) },
+	},
+} :: { [string]: { [string]: { [string]: { ProductId: number?, Price: number? } } } }
 
 -- Never in the ordinary daily rotation (seasonal items are sold only as bundles).
 DailyStore.Excluded = {
@@ -78,8 +85,8 @@ DailyStore.Bundles = {
 		Name = "Hollowlight Collection",
 		Tagline = "Halloween limited set",
 		Featured = true,
-		ProductId = nil :: number?,
-		Price = nil :: number?,
+		ProductId = 3719124109 :: number?,
+		Price = 499 :: number?,
 		Items = {
 			{ Category = "Glassies", Id = "hollowlight" },
 			{ Category = "Rideables", Id = "lantern_skiff" },

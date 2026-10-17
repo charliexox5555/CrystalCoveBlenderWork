@@ -221,6 +221,21 @@ function Service:Start()
 			elseif command == "Offset" and self.Services.DataService.Mock and type(a) == "number" then
 				self.DevOffset = a
 				return self:Now()
+			elseif command == "Prompt" then
+				-- a = slot number, or a bundle id string; opens Studio's free test-purchase dialog.
+				self.Guard:Remove(player)
+				if type(a) == "string" then
+					self:BuyBundle(player, a)
+				else
+					local view = self:Send(player)
+					local offer = view and view.Offers[a]
+					self:BuyOffer(player, a, offer and offer.Id, view and view.Day)
+				end
+				local data = self.Services.DataService:Get(player)
+				return data and data.Store.Intents
+			elseif command == "Receipt" and self.Services.DataService.Mock then
+				local decision = self:ProcessReceipt({ PlayerId = player.UserId, ProductId = a, PurchaseId = b })
+				return decision.Name
 			elseif command == "Required" then
 				return Rules.requiredProducts(self:Catalog())
 			end

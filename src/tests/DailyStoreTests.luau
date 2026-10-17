@@ -26,28 +26,49 @@ return function(t, d)
 			return Schema.grantItem(data, category, id, 0)
 		end
 	end
-	-- Temporarily configure products; always restored so other tests see the shipped nil config.
-	local function withProducts(fn)
-		local saved = {}
+	-- Temporarily replace every product (test IDs, or nil for "not configured") and always restore
+	-- the shipped config, so these tests do not depend on the real product IDs.
+	local function withConfig(configured, fn)
+		local saved, n, entries, added = {}, 0, {}, {}
 		for _, category in Rules.Categories do
-			for rarity, bands in D.RobuxProducts[category] do
-				for band, entry in bands do
-					table.insert(saved, entry)
-					entry.ProductId = 1000 + #saved
-					entry.Price = 99
+			for rarity, weight in D.Weights.Robux do
+				if weight > 0 then
+					if not D.RobuxProducts[category][rarity] then
+						D.RobuxProducts[category][rarity] = {}
+						table.insert(added, { D.RobuxProducts[category], rarity })
+					end
+					local byRarity = D.RobuxProducts[category][rarity]
+					for _, band in D.ValueBands do
+						if not byRarity[band] then
+							byRarity[band] = {}
+							table.insert(added, { byRarity, band })
+						end
+						table.insert(entries, byRarity[band])
+					end
 				end
 			end
 		end
 		local bundle = D.Bundles[1]
-		bundle.ProductId, bundle.Price = 5000, 499
-		local ok, err = pcall(fn)
-		for _, entry in saved do
-			entry.ProductId, entry.Price = nil, nil
+		table.insert(entries, bundle)
+		for _, entry in entries do
+			saved[entry] = { entry.ProductId, entry.Price }
+			n += 1
+			entry.ProductId, entry.Price = if configured then 1000 + n else nil, if configured then 99 else nil
 		end
-		bundle.ProductId, bundle.Price = nil, nil
+		bundle.Price = if configured then 499 else nil
+		local ok, err = pcall(fn)
+		for entry, values in saved do
+			entry.ProductId, entry.Price = values[1], values[2]
+		end
+		for i = #added, 1, -1 do
+			added[i][1][added[i][2]] = nil
+		end
 		if not ok then
 			error(err, 0)
 		end
+	end
+	local function withProducts(fn)
+		withConfig(true, fn)
 	end
 
 	t.test("day resets at 00:00 UTC, including a leap day", function()
@@ -244,27 +265,56 @@ return function(t, d)
 		t.eq(Rules.view(data, now).NextReset, MIDNIGHT)
 	end)
 
-	t.test("Robux offers and the bundle stay unavailable while product IDs are nil", function()
-		local data = profile()
-		local store = Rules.today(data, 5, MIDNIGHT, catalog)
-		local view = Rules.view(data, MIDNIGHT)
-		for slot = 1, 3 do
-			t.eq(view.Offers[slot].Available, false)
-			t.eq(view.Offers[slot].RobuxPrice, nil)
-			local ok, message =
-				Rules.beginIntent(data, "Offer", { Slot = slot, Id = store.Offers[slot].Id, Day = store.Day }, MIDNIGHT)
-			t.eq(ok, false)
-			t.eq(message, "Coming soon")
-		end
-		t.eq(view.Bundles[1].Available, false)
-		t.eq(select(2, Rules.beginIntent(data, "Bundle", { Id = "hollowlight_collection" }, MIDNIGHT)), "Coming soon")
-		t.eq(next(store.Intents), nil, "no intent persisted without a product")
-		local required = Rules.requiredProducts(catalog)
-		t.ok(#required >= 10)
-		for _, key in required do
+	t.test("every reachable Robux slot and the bundle have a real product and price", function()
+		for _, key in Rules.requiredProducts(catalog) do
 			local category, rarity, band = string.match(key, "(%a+)/(%a+)/(%a+)")
-			t.ok(D.RobuxProducts[category][rarity][band], key)
+			t.ok(Rules.product(category, rarity, band), key)
 		end
+		t.ok(Rules.bundleProduct(D.Bundles[1]), "bundle product")
+		local seen = {}
+		for _, byRarity in D.RobuxProducts do
+			for _, bands in byRarity do
+				for _, entry in bands do
+					if entry.ProductId then
+						t.ok(not seen[entry.ProductId], "product reused " .. entry.ProductId)
+						seen[entry.ProductId] = true
+					end
+				end
+			end
+		end
+		t.ok(not seen[D.Bundles[1].ProductId], "bundle product reused")
+	end)
+
+	t.test("missing product IDs keep Robux offers and the bundle unavailable", function()
+		withConfig(false, function()
+			local data = profile()
+			local store = Rules.today(data, 5, MIDNIGHT, catalog)
+			local view = Rules.view(data, MIDNIGHT)
+			for slot = 1, 3 do
+				t.eq(view.Offers[slot].Available, false)
+				t.eq(view.Offers[slot].RobuxPrice, nil)
+				local ok, message = Rules.beginIntent(
+					data,
+					"Offer",
+					{ Slot = slot, Id = store.Offers[slot].Id, Day = store.Day },
+					MIDNIGHT
+				)
+				t.eq(ok, false)
+				t.eq(message, "Coming soon")
+			end
+			t.eq(view.Bundles[1].Available, false)
+			t.eq(
+				select(2, Rules.beginIntent(data, "Bundle", { Id = "hollowlight_collection" }, MIDNIGHT)),
+				"Coming soon"
+			)
+			t.eq(next(store.Intents), nil, "no intent persisted without a product")
+			local required = Rules.requiredProducts(catalog)
+			t.ok(#required >= 10)
+			for _, key in required do
+				local category, rarity, band = string.match(key, "(%a+)/(%a+)/(%a+)")
+				t.ok(D.RobuxProducts[category][rarity][band], key)
+			end
+		end)
 	end)
 
 	t.test("Robux receipts are idempotent and honor the original snapshot across reset", function()

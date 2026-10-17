@@ -14,6 +14,17 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — Daily store developer products
+Done:
+- The Open Cloud key can list and create developer products. With the creator's approval, created 16 products in universe 10770493435 (regional pricing off): 15 daily-offer slots (39–699 R$) and the Hollowlight Collection (499 R$, no end date). IDs and prices recorded in `Config/DailyStore` (decision 80).
+- Tests no longer assume nil products: one checks every reachable slot and the bundle have a unique product and price, one keeps the "missing product stays unavailable" check on a temporary config. Studio-only `StoreDev` gains `Prompt` (opens the real test dialog) and `Receipt` (feeds a mock receipt).
+- Studio (test purchases, not charged): slot 1 (Arc Coil, 99 R$) went intent → test purchase → ProcessReceipt → granted and marked bought. Bundle receipt granted all three items; replaying the same PurchaseId granted nothing more; a receipt with no intent returned NotProcessedYet. Cards and bundle show Robux prices (docs/testing/daily_store_prices.jpg, daily_store_test_purchase.jpg). Lune and Studio RunAll: 135 passed.
+Next:
+- One real purchase in a published test server before announcing sales (the place is not published by agents).
+Problems / questions for the user:
+- The Studio test-purchase dialog cannot be clicked through the MCP, so the bundle's own dialog was closed by stopping Play; its receipt path was checked with a mock receipt instead.
+- In the last capture Studio drew no 3D at all (world and card previews blank); the previews exist and rendered in the earlier capture.
+
 ## 2026-10-16 — Claude — Background music
 Done:
 - Searched the Creator Store for APM Music (APMOfficial, Roblox-licensed) tracks, loaded 22 candidates in Studio and showed the creator options; creator approved Lobby (Rainbow Garden), Match (I know that you like it, no vocals) and Calm (Positive Pre School Program). IDs and provenance in `docs/audio/SOUND_LIST.md`.

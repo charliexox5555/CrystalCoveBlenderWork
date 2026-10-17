@@ -1,7 +1,7 @@
-local S = require(script.Parent.Parent.Components.StainedGlass)
 local Pools = {}
 local Item = require(script.Parent.Parent.Components.ItemPresentation)
-local U = require(script.Parent.Parent.Components.Util)
+local PrizeCard = require(script.Parent.Parent.Components.PrizeCard)
+local MIN_CARD, MIN_COLUMNS, MAX_COLUMNS = 150, 3, 6 -- cards stay square; phones get 3 columns, wide windows up to 6
 local function entries(self, kind)
 	local category = self.PoolCategory or "Glassies"
 	local offer = self.Data.Crates and self.Data.Crates[category] and self.Data.Crates[category][kind]
@@ -18,68 +18,39 @@ local function clear(self, root)
 		end
 	end
 end
-local function tile(self, root, entry, index, kind)
-	local result = root.Templates.GlassyTile:Clone()
-	local category = self.PoolCategory or "Glassies"
-	local def = Item.definition(category, entry.Id)
-	result.Name, result.Visible, result.LayoutOrder, result.Parent = def.Id, true, index, root
-	S.setAsset(result.Artwork, "tile/tile_" .. S.rarity(def.Rarity))
-	local name = result:FindFirstChild("Name")
-	name.Text = def.Name
-	name.UITextSizeConstraint.MinTextSize = 1
-	name.AnchorPoint, name.Position, name.Size = Vector2.zero, UDim2.fromScale(0.04, 0.75), UDim2.fromScale(0.92, 0.12)
-	result.NamePlaque.AnchorPoint, result.NamePlaque.Position, result.NamePlaque.Size =
-		Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.855), UDim2.fromScale(0.95, 0.27)
-	local plaqueAspect = result.NamePlaque:FindFirstChildOfClass("UIAspectRatioConstraint")
-	if plaqueAspect then
-		plaqueAspect:Destroy()
-	end
-	result.NamePlaque.ScaleType = Enum.ScaleType.Stretch
-	result.SelectedOutline.Visible = false
-	Item.portrait(result, category, def.Id, result.Portrait.Size, result.Portrait.Position)
-	local chance = U.text(
-		result,
-		"Chance",
-		string.format("%.4g%%", entry.Chance * 100),
-		UDim2.fromScale(0.95, 0.12),
-		UDim2.fromScale(0.025, 0.87)
-	)
-	chance.TextColor3, chance.ZIndex = require(script.Parent.Parent.Theme).Palette.lead, 3
-	result:SetAttribute("ExactChance", entry.Chance)
-	result:SetAttribute("PreviewOnly", false)
-	table.insert(
-		self.PoolConnections[root],
-		result.Open.Activated:Connect(function()
-			self.Message.Text = if entry.Chance
-				then def.Name .. " · " .. string.format("%.4g%%", entry.Chance * 100) .. " per " .. kind .. " opening"
-				else def.Name
-		end)
-	)
-	S.bindSlices(result)
-	return result
-end
-function Pools.strip(self, root, kind)
-	clear(self, root)
-	local list = entries(self, kind)
-	local canvas = math.max(1, #list * 0.32)
-	root.CanvasSize = UDim2.fromScale(canvas, 0)
-	root.UIListLayout.Padding = UDim.new(0.025 / canvas, 0)
-	for i, entry in list do
-		local t = tile(self, root, entry, i, kind)
-		t.Size = UDim2.fromScale(0.295 / canvas, 1)
-	end
-end
+-- "View all" list: every prize as the same square card the carousel shows, with its exact odds.
 function Pools.grid(self, root, kind, category)
 	self.PoolCategory = category or "Glassies"
 	clear(self, root)
 	local list = entries(self, kind)
-	local rows = math.max(1, math.ceil(#list / 3))
-	local canvas = math.max(1, rows * 0.49)
-	root.CanvasSize = UDim2.fromScale(0, canvas)
-	root.UIGridLayout.CellSize, root.UIGridLayout.CellPadding =
-		UDim2.fromScale(0.31, 0.46 / canvas), UDim2.fromScale(0.025, 0.03 / canvas)
+	local layout = root.UIGridLayout
+	local function fit()
+		local width = root.AbsoluteSize.X
+		if width <= 0 then
+			return
+		end
+		local columns = math.clamp(math.floor(width / MIN_CARD), MIN_COLUMNS, MAX_COLUMNS)
+		local gap = math.floor(width * 0.02)
+		local cell = math.floor((width - gap * (columns - 1)) / columns) - 1
+		local rows = math.max(1, math.ceil(#list / columns))
+		layout.CellSize, layout.CellPadding = UDim2.fromOffset(cell, cell), UDim2.fromOffset(gap, gap)
+		root.CanvasSize = UDim2.fromOffset(0, rows * (cell + gap))
+	end
+	table.insert(self.PoolConnections[root], root:GetPropertyChangedSignal("AbsoluteSize"):Connect(fit))
+	fit()
 	for i, entry in list do
-		tile(self, root, entry, i, kind)
+		local def = Item.definition(self.PoolCategory, entry.Id)
+		local card = PrizeCard.new(root, function()
+			self.Message.Text = if entry.Chance
+				then def.Name .. " · " .. string.format("%.4g%%", entry.Chance * 100) .. " per " .. kind .. " opening"
+				else def.Name
+		end)
+		card.Root.Name, card.Root.LayoutOrder, card.Root.AnchorPoint = def.Id, i, Vector2.zero
+		local portrait = Item.portrait(card.Area, self.PoolCategory, def.Id, UDim2.fromScale(1, 1), UDim2.new())
+		PrizeCard.set(card, def, entry.Chance, portrait, 4)
+		card.Root:SetAttribute("ExactChance", entry.Chance)
+		card.Root:SetAttribute("PreviewOnly", false)
+		table.insert(self.PoolConnections[root], card.Connection)
 	end
 end
 function Pools.destroy(self)

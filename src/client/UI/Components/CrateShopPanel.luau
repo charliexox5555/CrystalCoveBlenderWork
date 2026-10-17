@@ -27,7 +27,6 @@ function Panel.new(parent, category, offers, callbacks)
 			pane.Visible = false
 		end
 	end
-	local template = game.StarterGui.CollectionScreen.Panel.Content.Grid.Templates.GlassyTile
 	for _, currency in { "Coins", "Marbles" } do
 		local offer = offers and offers[currency]
 		if not offer then
@@ -50,13 +49,16 @@ function Panel.new(parent, category, offers, callbacks)
 			UDim2.fromScale(0.03, 0.02),
 			Theme.Fonts.Heading
 		)
-		Item.crate(pane, category, currency, UDim2.fromScale(0.41, 0.34), UDim2.fromScale(0.025, 0.105))
+		-- Reused template objects keep their authored layout, so set the geometry explicitly.
+		local crate = Item.crate(pane, category, currency, UDim2.fromScale(0.41, 0.3), UDim2.fromScale(0.025, 0.105))
+		crate.Size, crate.Position = UDim2.fromScale(0.41, 0.3), UDim2.fromScale(0.025, 0.105)
 		local odds = U.make("Frame", pane, {
 			Name = "Odds",
 			BackgroundTransparency = 1,
-			Size = UDim2.fromScale(0.53, 0.35),
+			Size = UDim2.fromScale(0.53, 0.3),
 			Position = UDim2.fromScale(0.45, 0.105),
 		})
+		odds.Size, odds.Position = UDim2.fromScale(0.53, 0.3), UDim2.fromScale(0.45, 0.105)
 		local totals = {}
 		for _, entry in offer.Odds do
 			totals[entry.Rarity] = (totals[entry.Rarity] or 0) + entry.Chance
@@ -86,22 +88,24 @@ function Panel.new(parent, category, offers, callbacks)
 			chance.TextXAlignment = Enum.TextXAlignment.Right
 			row += 1
 		end
-		U.text(
+		local previewTitle = U.text(
 			pane,
 			"PreviewTitle",
 			"PRIZE PREVIEW",
-			UDim2.fromScale(0.6, 0.06),
-			UDim2.fromScale(0.025, 0.46),
+			UDim2.fromScale(0.6, 0.055),
+			UDim2.fromScale(0.025, 0.42),
 			Theme.Fonts.Heading
 		)
+		previewTitle.Size, previewTitle.Position = UDim2.fromScale(0.6, 0.055), UDim2.fromScale(0.025, 0.42)
 		local view = Button.new(
 			pane,
 			"ViewAll",
 			"VIEW ALL  ›",
 			"Blue",
 			UDim2.fromScale(0.31, 0.065),
-			UDim2.fromScale(0.665, 0.455)
+			UDim2.fromScale(0.665, 0.415)
 		)
+		view.AnchorPoint, view.Position = Vector2.new(0.5, 0.5), UDim2.fromScale(0.82, 0.4475)
 		table.insert(
 			self.Connections,
 			view.Activated:Connect(function()
@@ -110,13 +114,14 @@ function Panel.new(parent, category, offers, callbacks)
 		)
 		local strip = U.make("Frame", pane, {
 			Name = "Prizes",
-			Size = UDim2.fromScale(0.95, 0.235),
-			Position = UDim2.fromScale(0.025, 0.535),
+			Size = UDim2.fromScale(0.95, 0.3),
+			Position = UDim2.fromScale(0.025, 0.485),
 			BackgroundTransparency = 1,
 		})
+		strip.Size, strip.Position = UDim2.fromScale(0.95, 0.3), UDim2.fromScale(0.025, 0.485)
 		table.insert(
 			self.Carousels,
-			Carousel.new(strip, category, offer.Odds, template, function(entry)
+			Carousel.new(strip, category, offer.Odds, function(entry)
 				callbacks.Inspect(category, currency, entry)
 			end)
 		)

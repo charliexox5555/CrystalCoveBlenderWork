@@ -14,6 +14,18 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Claude — Square shop prize cards + seamless carousel
+Done:
+- Creator feedback: the odds carousel tiles looked stretched and flickered/reset after long scrolls. Cause: tiles were 0.31x0.98 of a wide strip with stretched art, and every frame each tile was reassigned from the offset, so all five rebuilt their portraits whenever the whole offset advanced.
+- Figma board "Prize Card — square" (node 22:177; copy `docs/ui/prize_card_square.png`): rarity mosaic frame, portrait area, milk name plaque, rarity odds chip, desktop and phone strips.
+- New `tile/prize_<rarity>` 240x240 frames (`tools/ui/prize_card.mjs`, uploaded; ids in `Config/PrizeCardAssets.luau`). New `Components/PrizeCard.luau` (square via UIAspectRatioConstraint, height-driven).
+- `PrizeCarousel` rewritten: pooled cards at constant speed; a card is rebound only after it has fully left the strip and re-enters off the right edge; portraits are built once per prize and re-parented. `ShopPools` View-all grid uses the same square card (3 to 6 columns by width, exact odds). `CrateShopPanel` strip is taller (reused template objects keep authored sizes, so geometry is now set explicitly).
+- Studio (Glass Clash, Play): 25 s sample at 60 fps, 9 wraps, all off-screen; 0 visible jumps, text changes or portrait swaps; max 1.3 px per frame. Glassies, Finishers and View-all verified; a phone-size (323x108 strip) test renders correctly. Screenshots in `docs/testing/prize_cards/`. 134 Lune tests and Studio RunAll pass.
+Next:
+- Creator phone/device feel check of the strip; Flyers page was not separately screenshotted (same code path).
+Problems / questions for the user:
+- The odds chip uses the existing slanted rarity tag, not the hexagon drawn in the mockup.
+
 ## 2026-10-16 — Claude — Halloween rework closed
 Done:
 - Creator approved the feel of all four handoff steps: Hollowlight with Lantern Seeds, finisher sounds, Lantern Eclipse and the Moonlantern Carriage. Ticked the parent roadmap item and marked decisions 72–75 approved; Hollowlight's Epic rarity stays Proposed until storefront work.

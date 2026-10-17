@@ -14,6 +14,18 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — Lobby map polish: flyer display, wayfinding, kiln court
+Done:
+- Flyers display rebuilt as four separate ruby hover pads in an arc behind the creator's Flyers stand (Prism Ray, Rocket Skiff, Cloud Cushion at eye level; Skyboard flying high above the stand sign). Duplicate FLYERS sign and platform removed. Play check: no oriented-box overlaps between rides, riders, signs or fences; feet/seat contact matches matches (standing feet on the deck pivot, Cloud Cushion seated). Rider yaw sway 0.22 -> 0.12; the floating example flyer above the Flyers stand is off (`Showcase.FlyerStandExample`), the Finishers stand still cycles finishers.
+- New `Workspace.LobbyPolish` (`tools/studio/build_lobby_polish.luau`, 194 parts): stepping-stone lanes from spawn to the Kilns, Featured stage, Finishers and Flyers stands (matching the creator's LobbyLane stones), a stained-glass signpost beside spawn with jewel arrows (ARENAS emerald, FEATURED amber, KILNS aqua, FINISHERS amethyst, FLYERS ruby), lantern posts at each lane end, and the Kiln court: lead rim + amber lip around the kiln base, warm/cool mosaic, two tall stained-glass windows (amber behind the Coin Kiln, aqua behind the Marble Kiln), THE KILNS / OPEN GLASSIES title and COINS / MARBLES plaques. Kiln models untouched.
+- Showcase `Anchors` moved inside `Stage` (controller reads Stage.Anchors first) so the eclipse demo follows the stage. Both build scripts now refuse to run when their model exists (set `_G.FeaturedShowcaseRebuild` / `_G.LobbyPolishRebuild` to replace); the showcase script uses the creator's stand positions and the new flyer pads.
+- Nothing of the creator's needed moving (Arenatest, capsule models and PlayerReference were already gone).
+- Recovery: places/FeaturedShowcase_LobbyPolish_v2.rbxm (114,704 bytes, SHA256 4ae9a28a87990281f8352512114432863bd699567e65a72e8b5b8d6a98b2fb17; script-free round trip 500 descendants). Lune and Studio RunAll: 134 passed.
+Next:
+- Creator: save the place; phone check of the signpost arrows (they are small) and the high skyboarder.
+Problems / questions for the user:
+- A Studio Play run auto-queued the test character into a practice match once; the showcase hides itself during matches as designed.
+
 ## 2026-10-16 — Claude — Prize-card backdrop, inventory refresh/finisher icons, text pass
 Done:
 - Prize cards: viewport backdrop removed, items sit on the card's own dark pane (carousel and View-all).

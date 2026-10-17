@@ -48,7 +48,7 @@ Showcase.Glassy = { Scale = 1.75, SpinSpeed = 0.7, Bob = 0.25, BobHz = 0.35 }
 -- player's avatar. Riders map to RiderSpot1..4 in order.
 Showcase.Carriage = { YawSway = 0.18, YawHz = 0.08 }
 Showcase.ExampleRiders = { "prism_ray", "rocket_skiff", "skyboard", "cloud_cushion" }
-Showcase.RiderYawSway = 0.22
+Showcase.RiderYawSway = 0.12
 Showcase.RiderYawHz = 0.11
 
 -- Capsule opening stands, keyed by the stand's Category attribute. The build script places the
@@ -65,6 +65,8 @@ Showcase.ShopWaitSeconds = 4 -- how long to wait for the shop to open before giv
 -- Examples floating above the stands.
 Showcase.ExampleFinishers = { "glass_burst", "party_burst", "bubble_bloom", "brick_boom", "starfall" }
 Showcase.FinisherExampleSeconds = 4.5
+-- Off: the riders on the Flyers display behind the stand already show the flyers.
+Showcase.FlyerStandExample = false
 Showcase.FlyerExampleSeconds = 5
 Showcase.FlyerExampleSpin = 0.6
 Showcase.FlyerExampleRise = 0.45 -- seconds for a new example flyer to swoop up into place

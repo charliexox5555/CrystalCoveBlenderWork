@@ -420,7 +420,9 @@ function Controller:StepDemo(demo, now, distance, folder)
 end
 
 function Controller:StageSection(root)
-	local stage, anchors = root:WaitForChild("Stage"), root:WaitForChild("Anchors")
+	-- Anchors live inside Stage so the demo follows when the stage is moved.
+	local stage = root:WaitForChild("Stage")
+	local anchors = stage:FindFirstChild("Anchors") or root:WaitForChild("Anchors")
 	local section = { Center = stage:GetPivot().Position, UsesAvatar = true }
 	local emitters = {}
 	for _, obj in stage:GetDescendants() do
@@ -583,7 +585,7 @@ function Controller:BaySection(root)
 						FinisherFX.emit(section.Folder, S.ExampleFinishers[entry.Index], entry.Spot.Position, true)
 					end
 				end
-			else
+			elseif S.FlyerStandExample then
 				if now >= entry.Next then
 					entry.Next, entry.Born = now + S.FlyerExampleSeconds, now
 					entry.Index = entry.Index % #flyers + 1

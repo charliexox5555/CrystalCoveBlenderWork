@@ -169,10 +169,14 @@ local function window(parent, name, frame, width, height, cols, rows, palette, g
 	return w
 end
 
-local old = workspace:FindFirstChild("FeaturedShowcase")
-if old then
-	old:Destroy()
+-- Never wipe the creator's manual moves: refuse unless a rebuild is asked for explicitly.
+if workspace:FindFirstChild("FeaturedShowcase") then
+	if not _G.FeaturedShowcaseRebuild then
+		return "FeaturedShowcase already exists: nothing changed (set _G.FeaturedShowcaseRebuild = true to replace it)"
+	end
+	workspace.FeaturedShowcase:Destroy()
 end
+_G.FeaturedShowcaseRebuild = nil
 local root = Instance.new("Model")
 root.Name = "FeaturedShowcase"
 root.ModelStreamingMode = Enum.ModelStreamingMode.Persistent
@@ -191,6 +195,9 @@ for _, p in workspace:GetChildren() do
 	end
 end
 local spawnAt = Vector3.new(0, 0, 6)
+local function flat(v)
+	return Vector3.new(v.X, 0, v.Z)
+end
 local center = if marker then Vector3.new(marker.Position.X, 0, marker.Position.Z) else Vector3.new(24.8, 0, -14.8)
 local look = if marker then marker.CFrame.LookVector else Vector3.new(0.7071, 0, -0.7071)
 if look:Dot(spawnAt - center) < 0 then
@@ -203,7 +210,7 @@ local function S(x, y, z)
 end
 
 local stage = model(root, "Stage")
-local anchors = model(root, "Anchors")
+local anchors = model(stage, "Anchors") -- inside Stage so the demo follows the stage
 local L, D, TOP = 21.5, 9.5, 1.2
 
 -- Dais with a mosaic top, amber lip and a front step.
@@ -434,44 +441,65 @@ do
 	end
 end
 
--- ── Flyers display, east side ───────────────────────────────────────────────────────────────────
+-- ── Flyers display: one hover pad per example rider in an arc behind the Flyers stand ─────────────
+-- Spaced so the widest flyers (Prism Ray 8.2 studs) never touch a neighbour; the skyboarder flies high
+-- above the stand sign. Order matches Config/Showcase ExampleRiders.
 local flyers = model(root, "FlyersDisplay")
-local fc = Vector3.new(40.4, 0, -7.6)
-local F0 = CFrame.lookAt(fc, fc + (spawnAt - fc) * Vector3.new(1, 0, 1))
-local function F(x, y, z)
-	return F0 * CFrame.new(x, y, z)
-end
-part(flyers, "Platform", Vector3.new(17, 0.8, 3.6), F(0, 0.4, 0.6), LEAD, { CanCollide = true, CanQuery = true })
-part(flyers, "Top", Vector3.new(16.6, 0.15, 3.2), F(0, 0.82, 0.6), hex("ruby", 3))
-part(flyers, "Lip", Vector3.new(17.1, 0.3, 0.3), F(0, 0.75, -1.2), hex("amber"))
-part(flyers, "Post", Vector3.new(0.8, 9.6, 0.8), F(0, 5.6, 1.6), LEAD)
-local flyerSign = part(flyers, "Sign", Vector3.new(6, 2.4, 0.45), F(0, 11.3, 1.3), hex("ruby"))
-part(flyers, "SignFrame", Vector3.new(6.6, 3.0, 0.35), F(0, 11.3, 1.55), LEAD)
-label(flyerSign, "FLYERS", { Lines = { { Name = "Title", Text = "FLYERS", Height = 1, StrokeThickness = 8 } } })
-for i, spot in { { -4.4, 2.6, -0.4, 15 }, { 4.4, 2.6, -0.4, -15 }, { -5.6, 7.0, 0.3, 8 }, { 5.6, 7.0, 0.3, -8 } } do
-	anchor(flyers, "RiderSpot" .. i, F(spot[1], spot[2], spot[3]) * CFrame.Angles(0, math.rad(spot[4]), 0))
+local flyerLook = Vector3.new(20, 0, 6)
+for i, at in
+	{
+		Vector3.new(36.5, 3.0, 19.5),
+		Vector3.new(37.5, 2.6, -3.5),
+		Vector3.new(41.5, 9.5, 4.0),
+		Vector3.new(41.0, 2.6, 11.0),
+	}
+do
+	local face = CFrame.lookAt(Vector3.new(at.X, 0, at.Z), flyerLook)
+	anchor(flyers, "RiderSpot" .. i, face + Vector3.yAxis * at.Y)
 	part(
 		flyers,
-		"HoverMark" .. i,
-		Vector3.new(0.1, 2.6, 2.6),
-		F(spot[1], 0.92, spot[3] + 0.4) * CFrame.Angles(0, 0, math.rad(90)),
+		"PadRim" .. i,
+		Vector3.new(0.25, 4.6, 4.6),
+		face * CFrame.new(0, 0.12, 0) * CFrame.Angles(0, 0, math.rad(90)),
+		LEAD,
+		{
+			Shape = Enum.PartType.Cylinder,
+			CastShadow = false,
+		}
+	)
+	part(
+		flyers,
+		"PadGlow" .. i,
+		Vector3.new(0.12, 4.0, 4.0),
+		face * CFrame.new(0, 0.26, 0) * CFrame.Angles(0, 0, math.rad(90)),
 		hex("ruby", 2),
 		{
 			Shape = Enum.PartType.Cylinder,
 			Material = Enum.Material.Neon,
-			Transparency = 0.35,
+			Transparency = 0.3,
+			CastShadow = false,
+		}
+	)
+	part(
+		flyers,
+		"PadCore" .. i,
+		Vector3.new(0.14, 2.2, 2.2),
+		face * CFrame.new(0, 0.3, 0) * CFrame.Angles(0, 0, math.rad(90)),
+		hex("ruby"),
+		{
+			Shape = Enum.PartType.Cylinder,
 			CastShadow = false,
 		}
 	)
 end
 
--- ── Capsule opening stands, beside the arena path ───────────────────────────────────────────────
+-- ── Capsule opening stands, west and east of spawn (creator placement) ───────────────────────────── ───────────────────────────────────────────────
 local bay = model(root, "CapsuleBay")
 -- `lift` raises the sign so the two stands stay readable when one is behind the other from spawn.
 local function stand(name, category, at, colour, title, subtitle, lift)
 	local m = model(bay, name)
 	m:SetAttribute("Category", category)
-	local face = Vector3.new(-0.9, 0, 0.44).Unit
+	local face = flat(spawnAt - at).Unit
 	local B0 = CFrame.lookAt(at, at + face)
 	local function B(x, y, z)
 		return B0 * CFrame.new(x, y, z)
@@ -543,8 +571,8 @@ local function stand(name, category, at, colour, title, subtitle, lift)
 	anchor(m, "ExampleSpot", B(0, 10 + lift, 0.4))
 	return m
 end
-stand("Stand_Finishers", "Finishers", Vector3.new(7.6, 0, -16.6), "amethyst", "FINISHERS", "Open Burst Capsules", 1.4)
-stand("Stand_Rideables", "Rideables", Vector3.new(8.0, 0, -23.3), "ruby", "FLYERS", "Open Sky Capsules", 3.4)
+stand("Stand_Finishers", "Finishers", Vector3.new(-29.8, 0, 4.2), "amethyst", "FINISHERS", "Open Burst Capsules", 1.4)
+stand("Stand_Rideables", "Rideables", Vector3.new(29.8, 0, 4.2), "ruby", "FLYERS", "Open Sky Capsules", 3.4)
 
 root.Parent = workspace
 local count = 0

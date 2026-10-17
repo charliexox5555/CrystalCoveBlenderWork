@@ -9,6 +9,8 @@ local U = require(script.Parent.Util)
 local S = require(script.Parent.StainedGlass)
 local Theme = require(script.Parent.Parent.Theme)
 local Item = require(script.Parent.ItemPresentation)
+local Motion = require(script.Parent.Motion)
+local TweenService = game:GetService("TweenService")
 local Featured = {}
 Featured.__index = Featured
 local categoryNames = { Glassies = "GLASSY", Finishers = "FINISHER", Rideables = "FLYER" }
@@ -168,6 +170,20 @@ function Featured:Portrait(parent, name, category, id)
 	local position = slot and slot.Position or UDim2.fromScale(0.5, 0.34)
 	local viewport = Item.portrait(parent, category, id, size, position, name)
 	viewport:SetAttribute("StoreItem", key)
+	-- Gentle bob so the offer art feels alive; each portrait gets its own phase.
+	if not Motion.reduced() then
+		local base = viewport.Position
+		local lift = UDim2.new(base.X.Scale, base.X.Offset, base.Y.Scale - 0.018, base.Y.Offset)
+		task.delay(math.random() * 1.2, function()
+			if viewport.Parent then
+				TweenService:Create(
+					viewport,
+					TweenInfo.new(1.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
+					{ Position = lift }
+				):Play()
+			end
+		end)
+	end
 	return viewport
 end
 
@@ -196,6 +212,18 @@ function Featured:Apply(view)
 		end
 	end
 	self:Refresh()
+	if not self.Entered then
+		-- First fill: the four offers and the bundle card pop in one after another.
+		self.Entered = true
+		local cards = {}
+		for i = 1, 4 do
+			if view.Offers[i] then
+				table.insert(cards, self.Offers["Offer" .. i])
+			end
+		end
+		table.insert(cards, self.Showcase)
+		Motion.stagger(cards)
+	end
 	if view.Message then
 		self:Say(view.Message)
 	end

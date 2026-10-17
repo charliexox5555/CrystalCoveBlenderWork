@@ -16,6 +16,10 @@
 --     SetAim         (RemoteEvent)  aim: number, yaw: number (radians; clamped by FightRules.clampAim / clampYaw)
 --     LeaveQueue     (RemoteEvent)  (no args)
 --     RequestFightState (RemoteEvent) late-join/respawn bootstrap (no args)
+--     RequestStore   (RemoteEvent)  (no args) -> StoreOffers: today's daily offers + featured bundle
+--     BuyStoreOffer  (RemoteEvent)  slot: number, id: string, day: number (Coins buy now; Robux prompts)
+--     BuyStoreBundle (RemoteEvent)  bundleId: string (Robux prompt once a product ID is configured)
+--   Server -> client: StoreOffers (view, NextReset, ServerNow, Message), StoreResult (purchase outcome)
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
@@ -44,6 +48,11 @@ local reliable = {
 	"RequestFightState",
 	"EquipRoundCosmetic",
 	"CosmeticResult",
+	"RequestStore",
+	"StoreOffers",
+	"BuyStoreOffer",
+	"BuyStoreBundle",
+	"StoreResult",
 }
 local unreliable = { "FightSnapshot" }
 

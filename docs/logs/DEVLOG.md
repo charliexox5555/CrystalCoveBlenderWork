@@ -14,6 +14,18 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Claude — Personalized daily Featured store + Hollowlight bundle
+Done:
+- `Config/DailyStore` + `DailyStoreRules`: 00:00 UTC reset; seed = FNV-1a(version, user, day, slot); 3 Robux slots (Glassy/Finisher/Flyer) + 1 Coin slot rotating by (UserId + day) % 3; rarity weights from the brief with empty buckets renormalized; per-player shuffled bag (no consecutive-day repeats), unowned preferred, else a labelled extra copy; no duplicates per day. Offers lock in `data.Store` for the day (additive profile field).
+- `StoreService`: rate-limited, validated `RequestStore`/`BuyStoreOffer`/`BuyStoreBundle`; Coin offers buyable once per slot per day; Robux intent snapshots saved before prompting; idempotent `ProcessReceipt` (granted only after the save confirms). Robux offers and the bundle show COMING SOON while product IDs are nil. Studio-only `StoreDev` (View/Buy/clock Offset in mock mode).
+- Featured page (`FeaturedOffers`, wired into `ShopContent`): four cards with rarity/category tag, portrait, NEW/OWNED state and price; Hollowlight Collection bundle (Hollowlight, Moonlantern Carriage, Lantern Eclipse) with portraits and owned count; shared countdown that re-requests at the reset; layouts for short and narrow screens. Screenshot: docs/testing/daily_store_featured.jpg.
+- 15 new tests (DailyStoreTests): boundaries incl. leap day, stability, distribution, renormalizing, unowned preference, bag repeats, rejoin/other server, Coin wallet/boundary, nil-product unavailability, receipt replay/delayed/cancel/double prompt, bundle grants, profile reconcile. Lune and Studio RunAll: 134 passed. Studio Play: mock Coin purchase (900-coin Mason Jar, debited, second buy refused) and the clock stepped across 00:00 UTC (new day, new offers, next reset +86,400 s).
+Next:
+- Creator supplies 15 Robux product IDs + prices for (Category, Rarity, ValueBand): Glassies Uncommon/Standard, Rare/Standard, Rare/Featured, Epic/Standard, Epic/Featured, Legendary/Standard, Mythic/Standard, Mythic/Featured; Finishers Uncommon/Standard, Rare/Standard, Epic/Standard, Legendary/Featured; Flyers Uncommon/Standard, Rare/Standard, Epic/Featured. Plus one bundle product + price. Then a live receipt test before sales.
+- Creator review of Coin prices, Featured value band items and Hollowlight Epic rarity (decision 76). Phone device check.
+Problems / questions for the user:
+- Flyers have only one non-free Uncommon item (Cloud Cushion), so it repeats whenever that rarity is drawn; more Flyers fix this.
+
 ## 2026-10-16 — Claude — Square shop prize cards + seamless carousel
 Done:
 - Creator feedback: the odds carousel tiles looked stretched and flickered/reset after long scrolls. Cause: tiles were 0.31x0.98 of a wide strip with stretched art, and every frame each tile was reassigned from the offset, so all five rebuilt their portraits whenever the whole offset advanced.

@@ -2,6 +2,7 @@
 local S = require(script.Parent.Parent.Components.StainedGlass)
 local Pools = require(script.Parent.ShopPools)
 local CratePanel = require(script.Parent.Parent.Components.CrateShopPanel)
+local FeaturedOffers = require(script.Parent.Parent.Components.FeaturedOffers)
 local Shop = {}
 local lastPullAt = -math.huge
 local pullRate = require(game.ReplicatedStorage.Shared.Config.Balance).Data.KilnRateSeconds
@@ -99,11 +100,16 @@ function Shop.bind(self, data)
 			self.CrateViews[category] = CratePanel.new(page, category, crates[category], callbacks)
 		end
 	end
+	-- Daily offers + featured bundle; stepped and destroyed with the crate panels.
+	self.CrateViews.Featured = FeaturedOffers.new(c.FeaturedPage, self.Message)
 	self.UpdateProfile = function(_, profile)
 		if not profile then
 			return
 		end
 		self.Profile = profile
+		if self.CrateViews and self.CrateViews.Featured then
+			self.CrateViews.Featured.Profile = profile
+		end
 		self.Data.Coins, self.Data.Marbles = profile.Coins, profile.Marbles or 0
 		local p = self.Window.Panel
 		if p:FindFirstChild("Coins") then
@@ -126,9 +132,6 @@ function Shop.bind(self, data)
 			Shop.select(self, name)
 		end)
 	end
-	self.Window:Connect(c.FeaturedPage.Showcase.Explore, function()
-		Shop.select(self, "Glassies")
-	end)
 	self.Window:Connect(c.PoolPage.Back, function()
 		Shop.select(self, if self.PoolCategory == "Rideables" then "Flyers" else self.PoolCategory or "Glassies")
 	end)

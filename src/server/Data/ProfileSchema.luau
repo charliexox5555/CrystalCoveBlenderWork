@@ -5,6 +5,7 @@ local Glassies = if Shared then require(Shared.Config.Glassies) else require("..
 local Formula = if Shared then require(Shared.Formula) else require("../../shared/Formula")
 local Schema = {}
 local RoundCosmetics = if Shared then require(Shared.RoundCosmeticRules) else require("../../shared/RoundCosmeticRules")
+local DailyStore = if Shared then require(Shared.DailyStoreRules) else require("../../shared/DailyStoreRules")
 
 function Schema.copy(value)
 	if type(value) ~= "table" then
@@ -49,6 +50,8 @@ function Schema.new(now)
 		CodesRedeemed = {},
 		ProcessedReceipts = {},
 		RecentMatches = {},
+		-- Daily Featured store: today's locked offers, open Robux intents, bundle purchases.
+		Store = { Version = 0, Day = -1, Offers = {}, Intents = {}, Bundles = {} },
 	}
 	for _, id in Glassies.Starters do
 		data.Glassies[id] = { Stars = 0, Rainbow = false, Count = 1, FirstAt = now }
@@ -113,6 +116,7 @@ function Schema.reconcile(data, now)
 	end
 	data.Flags.WelcomePullUsed = data.Flags.WelcomePullUsed == true
 	RoundCosmetics.reconcile(data)
+	DailyStore.reconcile(data)
 	return data
 end
 
@@ -142,6 +146,14 @@ function Schema.grant(data, id, rainbow, now)
 		Rainbow = owned.Rainbow,
 		BonusCoins = bonus,
 	}
+end
+
+-- Grant one store item (a glassy copy or a cosmetic copy) and return its result.
+function Schema.grantItem(data, category, id, now)
+	if category == "Glassies" then
+		return Schema.grant(data, id, false, now)
+	end
+	return RoundCosmetics.grant(data, category, id)
 end
 
 function Schema.recordMatch(data, id, match, side, rewards, observed)

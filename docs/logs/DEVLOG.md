@@ -14,6 +14,14 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — UI revamp part 2: sounds, blur/FOV, text fit
+Done:
+- Creator couldn't hear clicks: UI sounds are now in `Config/Audio` (UiClick/Hover/Open/Close/Tab/Success/Error, ProSoundEffects) with louder levels in new `Config/UiMotion`, and no longer silenced by the music mute (own `UiSoundsMuted` attribute). Verified in Studio with real presses: Click, Hover, Open, Tab, Close Sounds created in the game's own UiSounds group, all IsLoaded.
+- Menus: dim removed (`UiMotion.Dim = 0`); instead a client BlurEffect (8) and a -5 FOV pull-in tween in on open and restore exactly on close (FOV back to 70, blur removed), skipped during matches. Primary green/amber/play gem buttons get a slow shine sweep and faint pulse.
+- Text fit audit at desktop and 844x390 (Inventory 3 tabs, Rewards 4 tabs, HUD, Queue/Roll/Results/Index/Shop Featured): fixed glassy/finisher/flyer tile names, Equipped badge and Owned/Unowned headers; the rest had no overflow. One finisher tile name ('Pocket Nova') still measures slightly over on phone.
+Next:
+- Featured/offer card call-to-action polish (daily-shop files now free), Kiln page, Index restyle, per-button Success/Error cue wiring on purchase results, open/close screenshot sequence.
+
 ## 2026-10-17 — Claude — Shop buy-button fix, Marble shop, Hollowlight-only item
 Done:
 - Bug: daily shop buy buttons did nothing. The authored Price buttons ship with `Active = false`, which swallows clicks; FeaturedOffers now enables them. Verified with real clicks in Studio Play: Coin offer (wallet message), Robux offer and bundle (intent saved, prompt sent). Pushed separately (ca0086d).

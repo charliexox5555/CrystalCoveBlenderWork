@@ -179,6 +179,14 @@ function Screen:AddTile(d, root, order, unowned)
 	-- Keep text inside the plaque's flat middle (its pointed ends are ~14% each side).
 	local label = tile:FindFirstChild("Name")
 	label.Size, label.Position = UDim2.fromScale(0.66, 0.16), UDim2.fromScale(0.17, 0.815) -- taller box = readable text on phones
+	-- Always shrink to fit the plaque (the unowned template relies on a late async fit that can lag behind).
+	-- Wrapped + scaled text always fits both width and height at once (the async single-line fit lagged on phones).
+	label:SetAttribute("FitSingleLine", false)
+	label.TextScaled, label.TextWrapped = true, true
+	local limit = label:FindFirstChildOfClass("UITextSizeConstraint")
+	if limit then
+		limit.MinTextSize, limit.MaxTextSize = 1, 20
+	end
 	label.TextXAlignment = Enum.TextXAlignment.Center
 	local installed = RS.Assets.Glassies:FindFirstChild(d.Id) ~= nil
 	tile.Portrait.Visible, tile.Unknown.Visible = installed, not installed

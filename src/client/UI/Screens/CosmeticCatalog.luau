@@ -219,6 +219,12 @@ function Catalog:AddTile(def, root, order, unowned, equipped)
 	local label = tile:FindFirstChild("Name")
 	label.TextScaled, label.AnchorPoint, label.TextXAlignment = true, Vector2.zero, Enum.TextXAlignment.Center
 	label.Size, label.Position = UDim2.fromScale(0.66, 0.16), UDim2.fromScale(0.17, 0.815) -- taller box = readable text on phones
+	-- Always shrink to fit the plaque (the unowned template relies on a late async fit that can lag behind).
+	label:SetAttribute("FitSingleLine", true) -- S.bindSlices fits it to both width and height
+	local limit = label:FindFirstChildOfClass("UITextSizeConstraint")
+	if limit then
+		limit.MinTextSize, limit.MaxTextSize = 1, 20
+	end
 	local badge = U.text(
 		tile,
 		"Equipped",
@@ -229,7 +235,10 @@ function Catalog:AddTile(def, root, order, unowned, equipped)
 	)
 	badge.TextColor3, badge.Visible = Theme.Palette.emeraldLight, def.Id == equipped
 	badge.TextXAlignment = Enum.TextXAlignment.Left
+	badge:SetAttribute("FitSingleLine", true)
+	badge.UITextSizeConstraint.MinTextSize = 1
 	tile.SelectedOutline.Visible = def.Id == self.Selected
+	S.bindSlices(tile)
 	return {
 		Tile = tile,
 		Unowned = unowned,

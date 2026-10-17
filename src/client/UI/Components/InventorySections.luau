@@ -1,3 +1,4 @@
+local S = require(script.Parent.StainedGlass)
 local Sections = {}
 function Sections.layout(grid, ownedCount, unownedCount)
 	local height, gap = grid:GetAttribute("SectionTileHeight"), grid:GetAttribute("SectionTileGap")
@@ -31,6 +32,8 @@ function Sections.layout(grid, ownedCount, unownedCount)
 		local title = grid[name .. "Header"]
 		title.Position, title.Size = UDim2.fromScale(0, y / total), UDim2.fromScale(1, header / total)
 		title.Label.Text = name:upper() .. "  ·  " .. count
+		title.Label:SetAttribute("FitSingleLine", true)
+		S.bindText(title.Label)
 		root.Position, root.Size = UDim2.fromScale(0, (y + header) / total), UDim2.fromScale(1, sectionHeight / total)
 		local layout = root.UIGridLayout
 		layout.CellSize = UDim2.fromScale(layout.CellSize.X.Scale, height / sectionHeight)

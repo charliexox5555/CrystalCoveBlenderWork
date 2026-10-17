@@ -14,6 +14,12 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Claude — Halloween rework closed
+Done:
+- Creator approved the feel of all four handoff steps: Hollowlight with Lantern Seeds, finisher sounds, Lantern Eclipse and the Moonlantern Carriage. Ticked the parent roadmap item and marked decisions 72–75 approved; Hollowlight's Epic rarity stays Proposed until storefront work.
+Next:
+- Storefront, real ownership grants and the personalized daily shop remain separate roadmap items. Creator saves the place so the Studio installs persist.
+
 ## 2026-10-16 — Claude — Moonlantern Carriage flyer (handoff step 4)
 Done:
 - `tools/blender/build_lantern_carriage.py` → `assets/blender/seasonal/hollowlight_v4/`, 17 meshes and 7,856 tris: lofted glass crescent hull with a front scroll, gold piping, cushion and backrest, handlebar, footrest, bat wings with ribs, mint engine pods and a tail star. The first build was 9.5k tris; trimmed the gold piping.

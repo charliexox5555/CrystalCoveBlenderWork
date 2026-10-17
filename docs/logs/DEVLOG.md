@@ -14,6 +14,17 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — Hollowlight bundle preview screen
+Done:
+- `Screens/BundlePreview.luau`: `open(bundleId[, view])` / `close()` / `isOpen()`, opened by the bundle card's VIEW button. Header with name, tagline, LIMITED TIME pill (switches to "Ends in …" if the bundle gets an `EndsAt`) and the shop's close button. Left: "HOLLOWLIGHT ONLY" card (buys bundle `hollowlight_glassy`, COMING SOON until its product exists) and "COMPLETE BUNDLE" card (three tiles, owned marks, "x of 3 owned", GET SET · 499). A small store adapter at the top keeps remote/view details in one place. No Gift buttons; Combat Preview shown disabled "SOON".
+- `Presentation/BundleStage.luau` + `Config/BundlePreview.luau`: the stage is built in the world (client-only room at Y=1400) because ViewportFrames don't render particles/beams/trails/lights (decision 81). The player's avatar rides the Moonlantern Carriage (lantern_carriage pose, RideMotion parts, RideEmitter effects), the Hollowlight swings on a lantern post then flies into the Lantern Eclipse on a loop with its Rise/Fly/Burst cues (2D preview volume). Drag to orbit, scroll/pinch to zoom (clamped), RESET VIEW, idle auto-spin; clicking a tile focuses the camera on that item (the Eclipse tile replays the burst). Uses Motion buttons/UiAudio (open + click/close cues), tile stagger and reduced motion.
+- Studio checks: opened from the shop VIEW button; drag and wheel zoom moved the camera; Eclipse tile focus played all 7 cue sounds; close left no stage, GUIs or finisher sounds, and restored camera (Custom/Humanoid/70), HUD, music button and touch controls. Layout checked at desktop and in 844x390 / 390x700 frames. Screens in `docs/testing/bundle_preview/`. Lune: 136 pass, 1 fail belongs to the daily-shop session's uncommitted `hollowlight_glassy` product check.
+Next:
+- Creator feel review (stage framing, pedestal lighting, eclipse spot) and a real phone check of pinch zoom.
+- `BundleStage` copies ShowcaseController's ride/demo motion; worth moving both onto one shared module later.
+Problems / questions for the user:
+- The phone checks resized the screen's frame inside the desktop viewport, so the camera framing there is not exactly what a phone shows.
+
 ## 2026-10-17 — Claude — UI revamp, part 1 (motion + stained-glass menus; unfinished)
 Done:
 - `Components/Motion.luau`: button hover/press (overshoot scale + darken), window open/close with dim backdrop, tab slide + bump, staggered tile entrance, currency count-up, notice toast; all TweenService, reduced-motion aware (PlayerGui `ReducedMotion` or Roblox setting). `Window` now animates close and dresses Rewards/Index/info windows in the Inventory stained-glass frame; `Button` reuses the Motion feedback. Wired: inventory/catalog/View-all tile stagger, inventory and Rewards tab transitions, HUD coin/marble tick-up, match notice toast. Rewards, Queue and Results now use gem buttons, glass panes and a glass progress bar.

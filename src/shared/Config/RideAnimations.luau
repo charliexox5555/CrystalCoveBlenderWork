@@ -63,5 +63,24 @@ local A = {
 		},
 		Keys = { { 0, 0, 0, 0 }, { 0.25, 3, 0, -5 }, { 0.5, 0, 0, 0 }, { 0.75, -3, 0, 5 }, { 1, 0, 0, 0 } },
 	},
+	-- Moonlantern Carriage: seated on the cushion, legs forward to the footrest, hands on the handlebar.
+	lantern_carriage = {
+		Seconds = 2.6,
+		Seated = true,
+		Pose = {
+			Spine = { -6, 0, 0 },
+			LeftArm = { 72, -6, -10 },
+			RightArm = { 72, 6, 10 },
+			LeftElbow = { 30, 0, 0 },
+			RightElbow = { 30, 0, 0 },
+			LeftHip = { 92, -6, 0 },
+			RightHip = { 92, 6, 0 },
+			LeftKnee = { -28, 0, 0 },
+			RightKnee = { -28, 0, 0 },
+			LeftAnkle = { 12, 0, 0 },
+			RightAnkle = { 12, 0, 0 },
+		},
+		Keys = { { 0, 0, 0, 0 }, { 0.25, 2, 1, -2 }, { 0.5, 0, 0, 0 }, { 0.75, -1, -1, 2 }, { 1, 0, 0, 0 } },
+	},
 }
 return A

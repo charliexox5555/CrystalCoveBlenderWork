@@ -14,6 +14,17 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-16 — Claude — Moonlantern Carriage flyer (handoff step 4)
+Done:
+- `tools/blender/build_lantern_carriage.py` → `assets/blender/seasonal/hollowlight_v4/`, 17 meshes and 7,856 tris: lofted glass crescent hull with a front scroll, gold piping, cushion and backrest, handlebar, footrest, bat wings with ribs, mint engine pods and a tail star. The first build was 9.5k tris; trimmed the gold piping.
+- First Open Cloud upload with the creator's key to group 11116787: Model asset 116060877121665 (Approved). Inserted via the Studio MCP, normalized (100×, +Z facing), scaled 1.35× after an in-game size check, recoloured, and given wing hinge, lantern swing (the real Hollowlight pumpkin at 0.45×) and exhaust emitters. Raw insert archived in `ServerStorage.HollowlightV4Import`; the v2 skiff is untouched.
+- Code: `lantern_skiff` now points at `moonlantern_carriage` (same id). New seated `lantern_carriage` pose. `RideController` adds a nose nod, a sharper wing down-stroke, the lantern pendulum and distance-gated exhaust emitters. New numbers are in `CosmeticPresentation`.
+- Studio: real bot match with the carriage equipped (mock unlock). The rider sits with arms forward, and the lantern swings (0.6 studs in 0.4 s). The carriage reads at arena distance; the Hollowlight glassy also appeared in the live hand. 119 tests, no client/server errors.
+Next:
+- Creator normal-round/phone feel review of the carriage; then the parent Halloween item can be closed. Storefront and real grants stay deferred.
+Problems / questions for the user:
+- Save the place to keep `moonlantern_carriage` and the archive.
+
 ## 2026-10-16 — Claude — Lantern Eclipse rework (handoff step 3)
 Done:
 - Rebuilt `HollowlightFX` as a four-beat show (numbers in `Balance.CosmeticPresentation.Eclipse`). The lantern pops in above the recipient with squash and stretch; ghosts spiral in with trails, circle tight and tremble; the halo and spirals wind up; a glass crescent moon slides across and the lantern flickers. After a short hush comes the flash, gold shock crown, mint ring, light pulse, stars and particle kit, then the lantern bursts into Hollowlight's 16 real shards (glowing amber alternating with glass) while the ghosts scatter and the moon drifts off. Lantern Seeds' `pressure` puff is kept.

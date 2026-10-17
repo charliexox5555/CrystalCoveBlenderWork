@@ -82,8 +82,19 @@ function Controller:Step(time)
 		if (camera.CFrame.Position - entry.Base.Position).Magnitude > T.RideDistance then
 			continue
 		end
-		local wave = math.sin(time * T.RideBobHz * math.pi * 2 + entry.Base.Position.X)
-		local motion = CFrame.new(0, wave * T.RideBob, 0) * CFrame.Angles(0, 0, wave * T.RideBank)
+		local phase = time * T.RideBobHz * math.pi * 2 + entry.Base.Position.X
+		local wave = math.sin(phase)
+		local motion = CFrame.new(0, wave * T.RideBob, 0)
+			* CFrame.Angles(math.cos(phase) * T.RideNod, 0, wave * T.RideBank)
+		local near = (camera.CFrame.Position - entry.Base.Position).Magnitude <= T.RideEmitterDistance
+		if entry.EmittersOn ~= near then
+			entry.EmittersOn = near
+			for _, emitter in model:GetDescendants() do
+				if emitter:IsA("ParticleEmitter") and emitter:GetAttribute("RideEmitter") then
+					emitter.Enabled = near
+				end
+			end
+		end
 		model:PivotTo(entry.Base * motion)
 		local rider = model:FindFirstChild("Rider")
 		local character = rider and rider.Value
@@ -110,13 +121,26 @@ function Controller:Step(time)
 				entry.Parts[part] = nil
 				continue
 			end
-			if part:GetAttribute("RideMotion") == "Wing" then
+			local kind = part:GetAttribute("RideMotion")
+			if kind == "Wing" then
 				local pivot = part:GetAttribute("WingPivot") or Vector3.zero
+				-- Quick down-stroke, slower recovery reads as a real wingbeat.
+				local flap = wave + T.RideFlapSharpness * 0.35 * math.sin(phase * 2)
 				part.CFrame = entry.Base
 					* motion
 					* rest.Pose
 					* CFrame.new(pivot)
-					* CFrame.Angles(0, 0, wave * T.RideWingAngle * part:GetAttribute("WingSide"))
+					* CFrame.Angles(0, 0, flap * T.RideWingAngle * part:GetAttribute("WingSide"))
+					* CFrame.new(-pivot)
+			elseif kind == "Swing" then
+				-- The hanging lantern trails the bob and bank like a pendulum.
+				local pivot = part:GetAttribute("SwingPivot") or Vector3.zero
+				local swing = math.sin(phase - T.RideSwingLag) * T.RideSwingAngle
+				part.CFrame = entry.Base
+					* motion
+					* rest.Pose
+					* CFrame.new(pivot)
+					* CFrame.Angles(swing, 0, -swing * 0.5)
 					* CFrame.new(-pivot)
 			else
 				part.Size = rest.Size * Vector3.new(1, 1, 0.8 + math.sin(time * T.RideExhaustSpeed) * 0.2)

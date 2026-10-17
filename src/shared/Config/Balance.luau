@@ -758,6 +758,11 @@ Balance.CosmeticPresentation = {
 	RideWingAngle = 0.16,
 	RideExhaustSpeed = 22,
 	RideDistance = 120,
+	RideEmitterDistance = 70, -- exhaust particles only run for rides this close to the camera
+	RideNod = 0.03, -- nose pitch (radians) following the bob
+	RideFlapSharpness = 0.6, -- 0 = sine flap, 1 = quick down-stroke, slow recovery
+	RideSwingAngle = 0.22, -- lantern pendulum swing (radians)
+	RideSwingLag = 0.9, -- lantern lags the bob by this phase (radians)
 	FinisherSeconds = 1.2,
 	FinisherParts = 12,
 	FinisherRadius = 7,

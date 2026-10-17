@@ -81,13 +81,13 @@ C.Finishers = {
 C.Seasonal = {
 	Rideables = {
 		{
-			Id = "lantern_skiff",
-			Name = "Lantern Skiff",
+			Id = "lantern_skiff", -- id kept so existing ownership carries over to the v4 carriage
+			Name = "Moonlantern Carriage",
 			Rarity = "Legendary",
 			AssetBundle = "Hollowlight",
-			AssetName = "lantern_skiff",
+			AssetName = "moonlantern_carriage",
 			Seasonal = true,
-			Description = "A moon-skiff with fluttering wings and mint lantern engines.",
+			Description = "Ride a glass crescent moon with bat wings, wisp engines and a swinging pumpkin lantern.",
 		},
 	},
 	Finishers = {

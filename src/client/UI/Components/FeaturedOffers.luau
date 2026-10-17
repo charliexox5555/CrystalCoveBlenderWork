@@ -33,6 +33,8 @@ function Featured.new(page, message)
 		self.Default[card] = { Position = card.Position, Size = card.Size }
 		card.ItemName.Text = ""
 		S.buttonText(card.Price, "LOADING…")
+		-- The authored placeholders ship disabled (Active = false), which swallows every click.
+		card.Price.Active, card.Price.Selectable = true, true
 		local tag = U.make("ImageLabel", card, {
 			Name = "Tag",
 			BackgroundTransparency = 1,
@@ -77,6 +79,7 @@ function Featured.new(page, message)
 	self.Showcase.Title.Text = "Loading…"
 	self.Showcase.Description.Text = ""
 	S.buttonText(self.Showcase.Explore, "LOADING…")
+	self.Showcase.Explore.Active, self.Showcase.Explore.Selectable = true, true
 	table.insert(
 		self.Connections,
 		self.Showcase.Explore.Activated:Connect(function()

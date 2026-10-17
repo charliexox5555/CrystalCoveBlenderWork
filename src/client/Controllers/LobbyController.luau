@@ -31,6 +31,7 @@ function Controller:Close()
 	end
 	if self.Gui then
 		self.Gui.Enabled = not self.Player.PlayerGui:GetAttribute("InMatch")
+			and not self.Player.PlayerGui:GetAttribute("Queued")
 			and not self.Player.PlayerGui:GetAttribute("ResultsOpen")
 			and not self.Player.PlayerGui:GetAttribute("Watching")
 	end
@@ -44,7 +45,12 @@ end
 
 function Controller:Open(kind)
 	local pg = self.Player.PlayerGui
-	if pg:GetAttribute("InMatch") or pg:GetAttribute("ResultsOpen") or pg:GetAttribute("Watching") then
+	if
+		pg:GetAttribute("InMatch")
+		or pg:GetAttribute("Queued")
+		or pg:GetAttribute("ResultsOpen")
+		or pg:GetAttribute("Watching")
+	then
 		return
 	end
 	self:Close()
@@ -109,7 +115,9 @@ function Controller:Start()
 	self.Gui, self.Currency, self.Hint = hud.Gui, hud.Currency, hud.Hint
 	self.Marbles = hud.Marbles
 	local function inMatch()
+		-- Queued players see only the queue panel: the lobby HUD (currency, shop, PLAY...) is hidden until they leave.
 		self.Gui.Enabled = not pg:GetAttribute("InMatch")
+			and not pg:GetAttribute("Queued")
 			and not pg:GetAttribute("ResultsOpen")
 			and not pg:GetAttribute("Watching")
 		if not self.Gui.Enabled then
@@ -126,6 +134,7 @@ function Controller:Start()
 		self.Hint.Visible = not pg:GetAttribute("Queued")
 	end)
 	pg:GetAttributeChangedSignal("InMatch"):Connect(inMatch)
+	pg:GetAttributeChangedSignal("Queued"):Connect(inMatch)
 	pg:GetAttributeChangedSignal("ResultsOpen"):Connect(inMatch)
 	pg:GetAttributeChangedSignal("Watching"):Connect(inMatch)
 	inMatch()

@@ -14,6 +14,13 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — Hide lobby HUD while queued; round-end cast cleanup
+Done:
+- `LobbyController` now also hides the lobby HUD (currency, Shop/Inventory, PLAY, quests) while `Queued`, and blocks opening menus then; it returns on QueueLeft/match end (InMatch already hid it in selection and the fight). Checked in Play: queued -> LobbyHUD disabled, after the match it is back.
+- Ghost outline: could not reproduce a leftover ghost in three bot matches (Highlights at round end: none; leftovers were only the winner glassy, its cracks, finisher impact flash and shards). Found and closed one real cause: the render clock stops at the final snapshot, so ability casts (ray rings, weapon + always-on-top outline, Jam guard lid copy) never reached their end time and stayed visible until Idle. `Scene:EndRoundEffects()` (FightScene) now cancels both sides' casts and guard lids at the Shatter event and in HideBroken. CombatEffects/HeroPowers untouched.
+Next:
+- If the creator still sees a ghost outline, a screenshot with the glassy names would pin it down (candidates left: the finisher's `GlassyImpact` highlight and `AvatarGlassShard`s, ~1-2 s after the shatter).
+
 ## 2026-10-17 — Claude — Production playtest prep, tester Marbles, ability numbers
 Done:
 - `Config/Testing.TesterMarbles` (Enabled, Amount 10000, Wave "playtest-1"): `ProfileSchema.testerGrant` gives each player the Marbles once per wave on load (rejoining never stacks; a new Wave grants again; the flag survives saves). New ProfileTests case.

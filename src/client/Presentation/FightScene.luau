@@ -200,13 +200,23 @@ function Scene:HideGhost()
 	self.Ghost = {}
 end
 
+-- The round is over: casts of both sides (ray lenses, weapons, guard lids...) stop here. The render clock stops at
+-- the final snapshot, so their end times never arrive and they would hang in the air until the scene goes Idle.
+function Scene:EndRoundEffects()
+	if not self.Combat then
+		return
+	end
+	for side, f in self.Fighters do
+		self.Combat:CancelSide(side)
+		Hero.guard(self.Combat, f, false)
+	end
+end
+
 function Scene:HideBroken(side)
 	local f = self.Fighters[side]
 	f.Broken = true
 	f.Health.Enabled = false
-	if self.Combat then
-		self.Combat:CancelSide(side)
-	end
+	self:EndRoundEffects()
 	for _, p in f.Parts do
 		p.Transparency = 1
 	end
@@ -382,6 +392,7 @@ function Scene:Event(e, hud)
 	elseif e.Type == "Shatter" and not f.Broken then
 		self.Shatter:Break(f, self.Root)
 		f.Broken = true
+		self:EndRoundEffects()
 		f.Health.Enabled = false
 		f.Bubble.Transparency, f.Glints.Enabled, f.Trail.Enabled = 1, false, false
 		f.Highlight.Enabled = false

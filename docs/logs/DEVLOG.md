@@ -14,6 +14,18 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — Crate Machines v2 (Finisher/Flyer openings)
+Done:
+- Six original Blender concepts (Spark Forge, Burst Globe, Kaleidoscope; Sky Dome, Cloud Globe, Beacon Tower) rendered to `assets/blender/crates_v2/concepts/`. Creator picked Sky Dome (re-themed purple as the Finisher **Burst Dome**) and **Cloud Globe** for Flyers.
+- `tools/blender/build_crate_machines_v2.py` builds both with animation-ready parts (glass chamber, RevealCore, lid group, spinning tokens/shards/swirl/propeller/crank, blinking lamps) and Coin/Marble emblems; r1 export (FBX, manifest, .blend, reviews) in `assets/blender/crates_v2/r1/`. Burst Dome 2,740 tris, Cloud Globe 3,692.
+- Uploaded as Model 115123551485957 (group); raw insert archived in `ServerStorage.CrateMachinesV2Raw`; `tools/studio/install_crate_machines_v2.luau` built `ReplicatedStorage.Assets.CrateMachines.{Finishers,Rideables}_{Coins,Marbles}` (Root at the floor, PromptPoint, LaunchPoint, tag `CrateMachine`). Old `Assets.Crates` capsules untouched.
+- Client: `Presentation/CrateMachine` animator, `Controllers/CrateMachineController` (lobby idle + pooled light/sparkles within 90 studs), `Config/CrateMachines`. `ItemPresentation.crate` prefers the machines (shop previews idle-animate, frame headroom for the lid); `KilnFire`/`KilnOpening` drive anticipation (1.5 s), lid pop (0.45 s) and launch from the core; titles BURST DOME / CLOUD GLOBE. Purchase/odds/rewards untouched.
+- Verified: `tools/studio/verify_crate_machines_v2.luau` 46/46 in Play (all four variants, lid stays in frame, launch origin, reset, sound cleanup, shop preview idle, two showcase machines lit); Studio RunAll and Lune 134 passed.
+Next:
+- Creator: watch a Finisher and a Flyer opening and the lobby machines; say if anticipation should be longer/shorter or the Marble trim should differ more from the blue Cloud Globe body.
+Problems / questions for the user:
+- At small sizes the coin emblem's star can read like a sleepy face; easy to swap for a bolder star in r2 if it bothers you.
+
 ## 2026-10-17 — Claude — Lobby Featured Collection showcase + capsule stands
 Done:
 - Built `Workspace.FeaturedShowcase` (Persistent, 160 matte Stained Glass parts, `tools/studio/build_featured_showcase.luau`, re-runnable) after the creator approved the top-down layout: Hollowlight stage on the creator's marker (exact mirror of the Marble Kiln base; marker untouched under the dais) with three stained-glass windows, HOLLOWLIGHT / HALLOWEEN COLLECTION title, LIMITED TIME pill, museum plaques; a Flyers display on the east side; two capsule stands (Finishers, Flyers) beside the arena path.

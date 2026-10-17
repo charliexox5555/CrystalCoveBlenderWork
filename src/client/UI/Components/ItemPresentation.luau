@@ -43,10 +43,25 @@ function P.crate(parent, category, currency, size, position, name)
 	end
 	local world = Instance.new("WorldModel")
 	world.Parent = viewport
+	local Machine = require(script.Parent.Parent.Parent.Presentation.CrateMachine)
+	local machine = if category ~= "Glassies" then Machine.template(category, currency) else nil
 	local crates = RS.Assets:FindFirstChild("Crates")
-	local model = crates and crates:FindFirstChild(category)
+	local model = machine or crates and crates:FindFirstChild(category)
 	if model then
-		model:Clone().Parent = world
+		model = model:Clone()
+		model.Parent = world
+		if machine then
+			-- Invisible marker so the camera fit leaves room for the lid to pop up during the opening.
+			local pose, size = model:GetBoundingBox()
+			local headroom = Instance.new("Part")
+			headroom.Name, headroom.Transparency, headroom.Size = "FrameHeadroom", 1, Vector3.one * 0.1
+			headroom.Anchored, headroom.CanCollide, headroom.CanQuery = true, false, false
+			headroom.CFrame = CFrame.new(
+				pose.Position
+					+ Vector3.yAxis * (size.Y / 2 + require(RS.Shared.Config.CrateMachines).Opening.LidLiftStuds)
+			)
+			headroom.Parent = world
+		end
 	elseif source then
 		local original = source:FindFirstChildOfClass("WorldModel")
 		if original then
@@ -63,6 +78,9 @@ function P.crate(parent, category, currency, size, position, name)
 	local rotation =
 		CFrame.lookAt(if category == "Glassies" then Vector3.new(1.2, 0.4, 4) else Vector3.new(-3, 2, -8), Vector3.zero)
 	Glassy.fitOnResize(viewport, rotation, 35, 1.04)
+	if machine then
+		Machine.attachViewport(viewport, model)
+	end
 	return viewport, world
 end
 return P

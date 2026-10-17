@@ -1,0 +1,1034 @@
+{
+  "version": 2,
+  "front": "-Z",
+  "meshes": [
+    {
+      "name": "BD_BodyFoot",
+      "machine": "Finishers",
+      "part": "BodyFoot",
+      "center": [
+        0.0,
+        0.15,
+        -0.0
+      ],
+      "size": [
+        3.9,
+        0.3,
+        3.5
+      ],
+      "color": "#1A1E4A",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": false,
+      "idle": null,
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 44
+    },
+    {
+      "name": "BD_BodyBase",
+      "machine": "Finishers",
+      "part": "BodyBase",
+      "center": [
+        0.0,
+        1.25,
+        -0.0
+      ],
+      "size": [
+        3.6,
+        1.9,
+        3.2
+      ],
+      "color": "#8B4FE0",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": false,
+      "idle": null,
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 60
+    },
+    {
+      "name": "BD_BodyDoor",
+      "machine": "Finishers",
+      "part": "BodyDoor",
+      "center": [
+        0.0,
+        1.15,
+        -1.6
+      ],
+      "size": [
+        1.9,
+        1.35,
+        0.2
+      ],
+      "color": "#57299F",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": false,
+      "idle": null,
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 44
+    },
+    {
+      "name": "BD_TrimEmblemCoin",
+      "machine": "Finishers",
+      "part": "TrimEmblemCoin",
+      "center": [
+        0.0,
+        1.15,
+        -1.8175
+      ],
+      "size": [
+        0.96,
+        0.96,
+        0.275
+      ],
+      "color": "#FFD98A",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": true,
+      "idle": null,
+      "lid": false,
+      "variant": "Coins",
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 136
+    },
+    {
+      "name": "BD_TrimEmblemMarble",
+      "machine": "Finishers",
+      "part": "TrimEmblemMarble",
+      "center": [
+        0.0,
+        1.15,
+        -1.86
+      ],
+      "size": [
+        0.96,
+        0.96,
+        0.6912
+      ],
+      "color": "#93BCFF",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": true,
+      "idle": null,
+      "lid": false,
+      "variant": "Marbles",
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 240
+    },
+    {
+      "name": "BD_TrimStripeL",
+      "machine": "Finishers",
+      "part": "TrimStripeL",
+      "center": [
+        -1.25,
+        1.15,
+        -1.62
+      ],
+      "size": [
+        0.24,
+        1.05,
+        0.12
+      ],
+      "color": "#FFD98A",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": true,
+      "idle": null,
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 44
+    },
+    {
+      "name": "BD_NeonLampL",
+      "machine": "Finishers",
+      "part": "NeonLampL",
+      "center": [
+        -1.5,
+        2.0,
+        -1.45
+      ],
+      "size": [
+        0.3041,
+        0.34,
+        0.2892
+      ],
+      "color": "#CDAAFF",
+      "material": "Neon",
+      "transparency": 0,
+      "tint": false,
+      "idle": "Blink",
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 20
+    },
+    {
+      "name": "BD_TrimStripeR",
+      "machine": "Finishers",
+      "part": "TrimStripeR",
+      "center": [
+        1.25,
+        1.15,
+        -1.62
+      ],
+      "size": [
+        0.24,
+        1.05,
+        0.12
+      ],
+      "color": "#FFD98A",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": true,
+      "idle": null,
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 44
+    },
+    {
+      "name": "BD_NeonLampR",
+      "machine": "Finishers",
+      "part": "NeonLampR",
+      "center": [
+        1.5,
+        2.0,
+        -1.45
+      ],
+      "size": [
+        0.3041,
+        0.34,
+        0.2892
+      ],
+      "color": "#CDAAFF",
+      "material": "Neon",
+      "transparency": 0,
+      "tint": false,
+      "idle": "Blink",
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 20
+    },
+    {
+      "name": "BD_TrimRing",
+      "machine": "Finishers",
+      "part": "TrimRing",
+      "center": [
+        0.0,
+        2.375,
+        -0.0
+      ],
+      "size": [
+        3.9,
+        0.35,
+        3.9
+      ],
+      "color": "#FFD98A",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": true,
+      "idle": null,
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 144
+    },
+    {
+      "name": "BD_BodyDomeFloor",
+      "machine": "Finishers",
+      "part": "BodyDomeFloor",
+      "center": [
+        0.0,
+        2.585,
+        -0.0
+      ],
+      "size": [
+        3.4,
+        0.07,
+        3.4
+      ],
+      "color": "#57299F",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": false,
+      "idle": null,
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 96
+    },
+    {
+      "name": "BD_GlassChamber",
+      "machine": "Finishers",
+      "part": "GlassChamber",
+      "center": [
+        0.0,
+        3.36,
+        -0.0
+      ],
+      "size": [
+        3.5,
+        1.62,
+        3.5
+      ],
+      "color": "#E9DDFF",
+      "material": "Glass",
+      "transparency": 0.55,
+      "tint": false,
+      "idle": null,
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 1232
+    },
+    {
+      "name": "BD_BodyPedestal",
+      "machine": "Finishers",
+      "part": "BodyPedestal",
+      "center": [
+        0.0,
+        2.825,
+        -0.0
+      ],
+      "size": [
+        1.24,
+        0.45,
+        1.1793
+      ],
+      "color": "#EEE7D9",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": false,
+      "idle": null,
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 80
+    },
+    {
+      "name": "BD_RevealCore",
+      "machine": "Finishers",
+      "part": "RevealCore",
+      "center": [
+        0.0,
+        3.6725,
+        -0.0
+      ],
+      "size": [
+        1.0462,
+        0.995,
+        0.51
+      ],
+      "color": "#CDAAFF",
+      "material": "Neon",
+      "transparency": 0,
+      "tint": false,
+      "idle": "Spin",
+      "lid": false,
+      "variant": null,
+      "spinAxis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "spinSpeed": 0.9,
+      "triangles": 40
+    },
+    {
+      "name": "BD_NeonOrbitRing",
+      "machine": "Finishers",
+      "part": "NeonOrbitRing",
+      "center": [
+        0.0,
+        3.62,
+        -0.0
+      ],
+      "size": [
+        2.04,
+        0.62,
+        1.9775
+      ],
+      "color": "#8B4FE0",
+      "material": "Neon",
+      "transparency": 0,
+      "tint": false,
+      "idle": "Spin",
+      "lid": false,
+      "variant": null,
+      "spinAxis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "spinSpeed": 1.4,
+      "triangles": 256
+    },
+    {
+      "name": "BD_NeonSwirl",
+      "machine": "Finishers",
+      "part": "NeonSwirl",
+      "center": [
+        0.11,
+        3.3401,
+        -0.11
+      ],
+      "size": [
+        2.38,
+        1.2199,
+        2.16
+      ],
+      "color": "#E3CCFF",
+      "material": "Neon",
+      "transparency": 0,
+      "tint": false,
+      "idle": "Orbit",
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": -1.1,
+      "triangles": 324
+    },
+    {
+      "name": "BD_SpinShard1",
+      "machine": "Finishers",
+      "part": "SpinShard1",
+      "center": [
+        1.0191,
+        3.2744,
+        -0.0
+      ],
+      "size": [
+        0.3618,
+        0.4726,
+        0.3575
+      ],
+      "color": "#FF8EA0",
+      "material": "Neon",
+      "transparency": 0,
+      "tint": false,
+      "idle": "Orbit",
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": 1.7,
+      "triangles": 20
+    },
+    {
+      "name": "BD_SpinShard2",
+      "machine": "Finishers",
+      "part": "SpinShard2",
+      "center": [
+        -0.5043,
+        3.5722,
+        -0.852
+      ],
+      "size": [
+        0.3795,
+        0.4682,
+        0.3469
+      ],
+      "color": "#FFD98A",
+      "material": "Neon",
+      "transparency": 0,
+      "tint": false,
+      "idle": "Orbit",
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": 1.7,
+      "triangles": 20
+    },
+    {
+      "name": "BD_SpinShard3",
+      "machine": "Finishers",
+      "part": "SpinShard3",
+      "center": [
+        -0.5107,
+        3.8751,
+        0.8579
+      ],
+      "size": [
+        0.3746,
+        0.474,
+        0.354
+      ],
+      "color": "#9BF3F8",
+      "material": "Neon",
+      "transparency": 0,
+      "tint": false,
+      "idle": "Orbit",
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": 1.7,
+      "triangles": 20
+    },
+    {
+      "name": "BD_RevealLid",
+      "machine": "Finishers",
+      "part": "RevealLid",
+      "center": [
+        0.0,
+        4.36,
+        -0.0
+      ],
+      "size": [
+        1.56,
+        0.48,
+        1.56
+      ],
+      "color": "#FFD98A",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": true,
+      "idle": null,
+      "lid": true,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 72
+    },
+    {
+      "name": "BD_NeonTopGem",
+      "machine": "Finishers",
+      "part": "NeonTopGem",
+      "center": [
+        0.0,
+        4.945,
+        -0.0
+      ],
+      "size": [
+        0.68,
+        0.69,
+        0.5889
+      ],
+      "color": "#CDAAFF",
+      "material": "Neon",
+      "transparency": 0,
+      "tint": false,
+      "idle": "Spin",
+      "lid": true,
+      "variant": null,
+      "spinAxis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "spinSpeed": 0.8,
+      "triangles": 24
+    },
+    {
+      "name": "CG_BodyCloudBase",
+      "machine": "Rideables",
+      "part": "BodyCloudBase",
+      "center": [
+        -0.0132,
+        1.2933,
+        -0.0323
+      ],
+      "size": [
+        4.0418,
+        2.5804,
+        3.2006
+      ],
+      "color": "#FFFFFF",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": false,
+      "idle": null,
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 560
+    },
+    {
+      "name": "CG_BodyStem",
+      "machine": "Rideables",
+      "part": "BodyStem",
+      "center": [
+        0.0,
+        2.2,
+        -0.0
+      ],
+      "size": [
+        2.2,
+        1.4,
+        2.2
+      ],
+      "color": "#2E6BE6",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": false,
+      "idle": null,
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 48
+    },
+    {
+      "name": "CG_TrimCollar",
+      "machine": "Rideables",
+      "part": "TrimCollar",
+      "center": [
+        0.0,
+        3.04,
+        -0.0
+      ],
+      "size": [
+        2.5,
+        0.28,
+        2.5
+      ],
+      "color": "#FFD98A",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": true,
+      "idle": null,
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 80
+    },
+    {
+      "name": "CG_TrimEmblemCoin",
+      "machine": "Rideables",
+      "part": "TrimEmblemCoin",
+      "center": [
+        0.0,
+        2.35,
+        -1.1175
+      ],
+      "size": [
+        0.84,
+        0.84,
+        0.275
+      ],
+      "color": "#FFD98A",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": true,
+      "idle": null,
+      "lid": false,
+      "variant": "Coins",
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 136
+    },
+    {
+      "name": "CG_TrimEmblemMarble",
+      "machine": "Rideables",
+      "part": "TrimEmblemMarble",
+      "center": [
+        0.0,
+        2.35,
+        -1.16
+      ],
+      "size": [
+        0.84,
+        0.84,
+        0.6048
+      ],
+      "color": "#93BCFF",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": true,
+      "idle": null,
+      "lid": false,
+      "variant": "Marbles",
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 240
+    },
+    {
+      "name": "CG_TrimCrankHub",
+      "machine": "Rideables",
+      "part": "TrimCrankHub",
+      "center": [
+        1.1,
+        2.3,
+        -0.0
+      ],
+      "size": [
+        0.2,
+        0.68,
+        0.68
+      ],
+      "color": "#FFD98A",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": true,
+      "idle": null,
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 48
+    },
+    {
+      "name": "CG_SpinCrank",
+      "machine": "Rideables",
+      "part": "SpinCrank",
+      "center": [
+        1.3356,
+        2.3,
+        -0.0
+      ],
+      "size": [
+        0.2813,
+        0.26,
+        1.1212
+      ],
+      "color": "#EEE7D9",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": false,
+      "idle": "Crank",
+      "lid": false,
+      "variant": null,
+      "spinAxis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "spinSpeed": 0.0,
+      "triangles": 84
+    },
+    {
+      "name": "CG_GlassChamber",
+      "machine": "Rideables",
+      "part": "GlassChamber",
+      "center": [
+        0.0,
+        4.6,
+        -0.0
+      ],
+      "size": [
+        3.4,
+        2.9,
+        3.4
+      ],
+      "color": "#E2F6FF",
+      "material": "Glass",
+      "transparency": 0.55,
+      "tint": false,
+      "idle": null,
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 1456
+    },
+    {
+      "name": "CG_SpinTokensWhite",
+      "machine": "Rideables",
+      "part": "SpinTokensWhite",
+      "center": [
+        0.0739,
+        4.3027,
+        0.0873
+      ],
+      "size": [
+        2.4992,
+        1.5149,
+        2.2837
+      ],
+      "color": "#FFFFFF",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": false,
+      "idle": "Swirl",
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": 0.22,
+      "triangles": 754
+    },
+    {
+      "name": "CG_SpinTokensAqua",
+      "machine": "Rideables",
+      "part": "SpinTokensAqua",
+      "center": [
+        0.1255,
+        4.1223,
+        0.5136
+      ],
+      "size": [
+        1.785,
+        1.2714,
+        0.9372
+      ],
+      "color": "#9BF3F8",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": false,
+      "idle": "Swirl",
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": 0.22,
+      "triangles": 60
+    },
+    {
+      "name": "CG_SpinTokensPink",
+      "machine": "Rideables",
+      "part": "SpinTokensPink",
+      "center": [
+        0.0228,
+        4.1068,
+        -0.6643
+      ],
+      "size": [
+        1.4726,
+        1.5982,
+        0.9709
+      ],
+      "color": "#FF8EA0",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": false,
+      "idle": "Swirl",
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": 0.22,
+      "triangles": 56
+    },
+    {
+      "name": "CG_SpinTokensSapphire",
+      "machine": "Rideables",
+      "part": "SpinTokensSapphire",
+      "center": [
+        -0.4206,
+        4.4043,
+        -0.1443
+      ],
+      "size": [
+        2.0002,
+        1.1614,
+        2.4022
+      ],
+      "color": "#2E6BE6",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": false,
+      "idle": "Swirl",
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": 0.22,
+      "triangles": 60
+    },
+    {
+      "name": "CG_SpinTokensGold",
+      "machine": "Rideables",
+      "part": "SpinTokensGold",
+      "center": [
+        0.4817,
+        4.5519,
+        0.316
+      ],
+      "size": [
+        0.8937,
+        0.7344,
+        0.6152
+      ],
+      "color": "#FFD98A",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": false,
+      "idle": "Swirl",
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": 0.22,
+      "triangles": 36
+    },
+    {
+      "name": "CG_RevealCore",
+      "machine": "Rideables",
+      "part": "RevealCore",
+      "center": [
+        0.0,
+        5.358,
+        -0.3625
+      ],
+      "size": [
+        0.9,
+        0.204,
+        0.765
+      ],
+      "color": "#FFFFFF",
+      "material": "Neon",
+      "transparency": 0,
+      "tint": false,
+      "idle": "Bob",
+      "lid": false,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 18
+    },
+    {
+      "name": "CG_RevealLid",
+      "machine": "Rideables",
+      "part": "RevealLid",
+      "center": [
+        0.0,
+        6.35,
+        -0.0
+      ],
+      "size": [
+        2.1,
+        0.7,
+        2.1
+      ],
+      "color": "#2E6BE6",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": false,
+      "idle": null,
+      "lid": true,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 96
+    },
+    {
+      "name": "CG_TrimLidBand",
+      "machine": "Rideables",
+      "part": "TrimLidBand",
+      "center": [
+        0.0,
+        6.14,
+        -0.0
+      ],
+      "size": [
+        2.16,
+        0.16,
+        2.16
+      ],
+      "color": "#FFD98A",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": true,
+      "idle": null,
+      "lid": true,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 64
+    },
+    {
+      "name": "CG_BodyPropHub",
+      "machine": "Rideables",
+      "part": "BodyPropHub",
+      "center": [
+        0.0,
+        6.825,
+        -0.0
+      ],
+      "size": [
+        0.32,
+        0.35,
+        0.32
+      ],
+      "color": "#EEE7D9",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": false,
+      "idle": null,
+      "lid": true,
+      "variant": null,
+      "spinAxis": null,
+      "spinSpeed": null,
+      "triangles": 48
+    },
+    {
+      "name": "CG_SpinProp1",
+      "machine": "Rideables",
+      "part": "SpinProp1",
+      "center": [
+        0.0,
+        6.98,
+        -0.0
+      ],
+      "size": [
+        1.7839,
+        0.1371,
+        1.7839
+      ],
+      "color": "#E23A55",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": false,
+      "idle": "Spin",
+      "lid": true,
+      "variant": null,
+      "spinAxis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "spinSpeed": 2.4,
+      "triangles": 44
+    },
+    {
+      "name": "CG_SpinProp2",
+      "machine": "Rideables",
+      "part": "SpinProp2",
+      "center": [
+        0.0,
+        7.06,
+        -0.0
+      ],
+      "size": [
+        1.7839,
+        0.1371,
+        1.7839
+      ],
+      "color": "#F5A524",
+      "material": "SmoothPlastic",
+      "transparency": 0,
+      "tint": false,
+      "idle": "Spin",
+      "lid": true,
+      "variant": null,
+      "spinAxis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "spinSpeed": 2.4,
+      "triangles": 44
+    }
+  ],
+  "triangles": {
+    "Finishers": 2740,
+    "Rideables": 3692
+  }
+}

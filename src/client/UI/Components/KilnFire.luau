@@ -2,6 +2,8 @@
 local RS = game.ReplicatedStorage
 local K = require(script.Parent.Parent.Theme).Kiln
 local Assets = require(RS.Shared.Config.KilnAssets)
+local MachineConfig = require(RS.Shared.Config.CrateMachines)
+local CrateMachine = require(script.Parent.Parent.Parent.Presentation.CrateMachine)
 local Fire = {}
 Fire.__index = Fire
 local function image(parent, name, texture, color)
@@ -15,6 +17,9 @@ function Fire.new(stage, color, category)
 	local self = setmetatable({ Stage = stage, Color = color, Category = category, Objects = {}, GlowParts = {} }, Fire)
 	self.View = stage.KilnPortrait
 	self.View:SetAttribute("FreezePortraitCamera", true)
+	-- Crate Machines v2 drive their own lid/core/contents; older capsules use the lid tween below.
+	self.Machine = CrateMachine.forViewport(self.View)
+	self.Timing = if self.Machine then MachineConfig.Opening else K
 	self.Core = self.View:FindFirstChild("RevealCore", true) or self.View:FindFirstChild("Kiln_ChamberBackGlow", true)
 	stage.Flame.Visible, stage.FlameEcho.Visible, stage.Burst.Visible = false, false, false
 	self.Halo = image(stage.Sparks, "ChargeHalo", Assets.Burst, color)
@@ -33,7 +38,7 @@ function Fire.new(stage, color, category)
 		spark.Size, spark.Parent = UDim2.fromOffset(3 + i % 3, 3 + i % 3), stage.Sparks
 		table.insert(self.Objects, spark)
 	end
-	for _, p in self.View:GetDescendants() do
+	for _, p in if self.Machine then {} else self.View:GetDescendants() do
 		if
 			p:IsA("BasePart")
 			and (p.Name == "RevealCore" or p.Name == "Kiln_ChamberBackGlow" or p.Name == "Kiln_MoltenPool")
@@ -41,7 +46,7 @@ function Fire.new(stage, color, category)
 			table.insert(self.GlowParts, { Part = p, Color = p.Color })
 		end
 	end
-	self.Lid = self.View:FindFirstChild("RevealLid", true)
+	self.Lid = if self.Machine then nil else self.View:FindFirstChild("RevealLid", true)
 	if self.Lid then
 		self.LidPose = self.Lid.CFrame
 	end
@@ -62,8 +67,12 @@ function Fire:Place(o, pixel, width, height)
 	o.Size = UDim2.fromOffset(width, height or width)
 end
 function Fire:Step(time)
-	local heat = math.clamp(time / K.ChargeSeconds, 0, 1)
-	local release = math.clamp((time - K.ChargeSeconds) / K.ReleaseSeconds, 0, 1)
+	local timing = self.Timing
+	local heat = math.clamp(time / timing.ChargeSeconds, 0, 1)
+	local release = math.clamp((time - timing.ChargeSeconds) / timing.ReleaseSeconds, 0, 1)
+	if self.Machine then
+		self.Machine:SetOpening(heat ^ 1.4, release)
+	end
 	local localPixel = self:Pixel() - self.Stage.Sparks.AbsolutePosition
 	local unit = math.min(self.View.AbsoluteSize.X, self.View.AbsoluteSize.Y)
 	self:Place(self.Halo, localPixel, unit * (0.10 + heat * 0.30 + release * 0.5))
@@ -111,6 +120,9 @@ function Fire:Launch(time)
 end
 function Fire:Destroy()
 	self.View:SetAttribute("FreezePortraitCamera", nil)
+	if self.Machine then
+		self.Machine:Reset()
+	end
 	for _, s in self.Objects do
 		s:Destroy()
 	end

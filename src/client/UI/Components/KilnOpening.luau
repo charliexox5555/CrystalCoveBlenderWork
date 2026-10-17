@@ -12,6 +12,8 @@ Opening.__index = Opening
 local K = Theme.Kiln
 local Item = require(script.Parent.ItemPresentation)
 local titles = { Glassies = "THE KILN", Finishers = "BURST CAPSULE", Rideables = "SKY CAPSULE" }
+local MachineConfig = require(RS.Shared.Config.CrateMachines)
+local CrateMachine = require(script.Parent.Parent.Parent.Presentation.CrateMachine)
 
 function Opening.new(window, results, odds, collected, category, currency)
 	local self = setmetatable({
@@ -46,6 +48,9 @@ function Opening.new(window, results, odds, collected, category, currency)
 	if self.Category ~= "Glassies" then
 		local slot = c.KilnStage.KilnPortrait
 		Item.crate(c.KilnStage, self.Category, self.Currency, slot.Size, slot.Position, "KilnPortrait")
+		if CrateMachine.template(self.Category, self.Currency) then
+			window.Title.Text = MachineConfig.Names[self.Category]:upper()
+		end
 		local tint = if self.Category == "Finishers" then Theme.Palette.amethystLight else Theme.Palette.aquaLight
 		c.KilnStage.Flame.ImageColor3, c.KilnStage.Burst.ImageColor3 = tint, tint
 	end
@@ -83,7 +88,10 @@ function Opening:BeginFire()
 	self:SetPhase("Fire")
 	local c = self.Content
 	c.Reels.Visible, c.KilnStage.Visible = false, true
-	c.Status.Text = if self.Category == "Glassies" then "HEAT IT UP…" else "BUILDING PRESSURE…"
+	c.Status.Text = if self.Category == "Glassies"
+		then "HEAT IT UP…"
+		elseif self.Category == "Rideables" then "WINDING UP…"
+		else "BUILDING PRESSURE…"
 	self.FireFX = require(script.Parent.KilnFire).new(c.KilnStage, self.TintLight, self.Category)
 	self.Mouth = self.FireFX:InFrame(c.KilnStage)
 end
@@ -301,12 +309,13 @@ function Opening:Step(dt)
 		end
 	elseif self.Phase == "Fire" then
 		self.FireFX:Step(t)
-		if t >= K.ChargeSeconds and not self.PlayedFire then
+		local timing = self.FireFX.Timing
+		if t >= timing.ChargeSeconds and not self.PlayedFire then
 			self.PlayedFire = true
 			self.Content.Status.Text = "HERE IT COMES!"
 			self.Sounds.Fire:Play()
 		end
-		if t >= K.FireSeconds then
+		if t >= timing.FireSeconds then
 			self:ShowRewards(false)
 		end
 	elseif self.Phase == "Collect" then

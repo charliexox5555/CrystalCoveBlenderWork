@@ -1,0 +1,54 @@
+{
+  "passed": true,
+  "roundtrip": [
+    {
+      "chunk": "village_centre",
+      "meshes": 116,
+      "max_bounds_error_studs": 5.245208740234375e-06,
+      "sha256": "f9e870a2478422be1c237d37f919e3a13487b3eeac4c7c061c2dc2d386b3a473"
+    },
+    {
+      "chunk": "village_north",
+      "meshes": 117,
+      "max_bounds_error_studs": 1.52587890625e-05,
+      "sha256": "6fab697b768458604bf11a866b9f167d4e1c5c7f09811927e5d7c29cf1967ec7"
+    },
+    {
+      "chunk": "village_south",
+      "meshes": 133,
+      "max_bounds_error_studs": 2.09808349609375e-05,
+      "sha256": "5d7f9c2508c7cd9e262e5140099b43fde5220e6e6bf2492758cfae8f90966064"
+    },
+    {
+      "chunk": "cliffs_harbor",
+      "meshes": 113,
+      "max_bounds_error_studs": 3.4332275390625e-05,
+      "sha256": "424b9199be6e2dd1bdb5e7dc15f17abb057e826780a8104fedd07a54c95ba1d7"
+    },
+    {
+      "chunk": "yard_west",
+      "meshes": 83,
+      "max_bounds_error_studs": 2.002716064453125e-05,
+      "sha256": "dcacf6b6d1b2704bd9d0eb00131f4ff9244e5b275ea3d93e5ba81d0ccfd0dc74"
+    },
+    {
+      "chunk": "yard_south",
+      "meshes": 84,
+      "max_bounds_error_studs": 2.956390380859375e-05,
+      "sha256": "d5652d2747345bb4b84fddf8cdabbf75952f1c907d397f261b3448b1db0ac3e1"
+    },
+    {
+      "chunk": "cullet_pit",
+      "meshes": 34,
+      "max_bounds_error_studs": 2.9802322387695312e-05,
+      "sha256": "8ba40aba8bce4cf042e703c6299ece55f30bd555721cf10d9040e912b063812c"
+    },
+    {
+      "chunk": "terrain",
+      "meshes": 119,
+      "max_bounds_error_studs": 3.814697265625e-05,
+      "sha256": "815af5d04149b7c963b30eac1d89fb2e3bfd9658ddcaecf288b1f75f121a2537"
+    }
+  ],
+  "note": "Blender FBX round-trip plus raw FBX unit/axis audit; Studio asset upload/import is the next user step."
+}

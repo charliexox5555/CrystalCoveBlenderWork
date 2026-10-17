@@ -1,0 +1,78 @@
+{
+  "passed": true,
+  "note": "Raw vertex values already use studs. Select Stud, not From File or meters, in Studio. FBX unit metadata is retained separately with FBX_SCALE_UNITS.",
+  "chunks": [
+    {
+      "chunk": "village_centre",
+      "fbx_version": 7400,
+      "models": 116,
+      "raw_vertices_in_studs": true,
+      "raw_bounds_error": 0.0,
+      "node_transforms": "identity",
+      "unit_metadata_cm": 100
+    },
+    {
+      "chunk": "village_north",
+      "fbx_version": 7400,
+      "models": 117,
+      "raw_vertices_in_studs": true,
+      "raw_bounds_error": 0.0,
+      "node_transforms": "identity",
+      "unit_metadata_cm": 100
+    },
+    {
+      "chunk": "village_south",
+      "fbx_version": 7400,
+      "models": 133,
+      "raw_vertices_in_studs": true,
+      "raw_bounds_error": 0.0,
+      "node_transforms": "identity",
+      "unit_metadata_cm": 100
+    },
+    {
+      "chunk": "cliffs_harbor",
+      "fbx_version": 7400,
+      "models": 113,
+      "raw_vertices_in_studs": true,
+      "raw_bounds_error": 0.0,
+      "node_transforms": "identity",
+      "unit_metadata_cm": 100
+    },
+    {
+      "chunk": "yard_west",
+      "fbx_version": 7400,
+      "models": 83,
+      "raw_vertices_in_studs": true,
+      "raw_bounds_error": 0.0,
+      "node_transforms": "identity",
+      "unit_metadata_cm": 100
+    },
+    {
+      "chunk": "yard_south",
+      "fbx_version": 7400,
+      "models": 84,
+      "raw_vertices_in_studs": true,
+      "raw_bounds_error": 0.0,
+      "node_transforms": "identity",
+      "unit_metadata_cm": 100
+    },
+    {
+      "chunk": "cullet_pit",
+      "fbx_version": 7400,
+      "models": 34,
+      "raw_vertices_in_studs": true,
+      "raw_bounds_error": 0.0,
+      "node_transforms": "identity",
+      "unit_metadata_cm": 100
+    },
+    {
+      "chunk": "terrain",
+      "fbx_version": 7400,
+      "models": 119,
+      "raw_vertices_in_studs": true,
+      "raw_bounds_error": 0.0,
+      "node_transforms": "identity",
+      "unit_metadata_cm": 100
+    }
+  ]
+}

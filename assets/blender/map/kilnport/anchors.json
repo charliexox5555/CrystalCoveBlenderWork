@@ -1,0 +1,425 @@
+[
+  {
+    "id": "furnace",
+    "kind": "building",
+    "blender": [
+      0,
+      125,
+      0
+    ],
+    "facing": 0,
+    "size": [
+      62,
+      38,
+      30
+    ]
+  },
+  {
+    "id": "bazaar",
+    "kind": "building",
+    "blender": [
+      -102,
+      18,
+      0
+    ],
+    "facing": -90,
+    "size": [
+      30,
+      22,
+      16
+    ]
+  },
+  {
+    "id": "studio",
+    "kind": "building",
+    "blender": [
+      68,
+      92,
+      0
+    ],
+    "facing": 30,
+    "size": [
+      28,
+      20,
+      15
+    ]
+  },
+  {
+    "id": "repair",
+    "kind": "building",
+    "blender": [
+      -62,
+      92,
+      0
+    ],
+    "facing": -30,
+    "size": [
+      18,
+      14,
+      10
+    ]
+  },
+  {
+    "id": "notice",
+    "kind": "building",
+    "blender": [
+      -46,
+      -112,
+      0
+    ],
+    "facing": -60,
+    "size": [
+      14,
+      6,
+      10
+    ]
+  },
+  {
+    "id": "starter_hall",
+    "kind": "building",
+    "blender": [
+      48,
+      -112,
+      0
+    ],
+    "facing": 60,
+    "size": [
+      22,
+      16,
+      13
+    ]
+  },
+  {
+    "id": "house_1",
+    "kind": "building",
+    "blender": [
+      -120,
+      -100,
+      0
+    ],
+    "facing": -45,
+    "size": [
+      18,
+      16,
+      12
+    ]
+  },
+  {
+    "id": "house_2",
+    "kind": "building",
+    "blender": [
+      -140,
+      70,
+      0
+    ],
+    "facing": -100,
+    "size": [
+      20,
+      16,
+      13
+    ]
+  },
+  {
+    "id": "house_3",
+    "kind": "building",
+    "blender": [
+      -95,
+      140,
+      0
+    ],
+    "facing": -150,
+    "size": [
+      18,
+      14,
+      12
+    ]
+  },
+  {
+    "id": "house_4",
+    "kind": "building",
+    "blender": [
+      115,
+      -105,
+      0
+    ],
+    "facing": 45,
+    "size": [
+      20,
+      16,
+      12
+    ]
+  },
+  {
+    "id": "house_5",
+    "kind": "building",
+    "blender": [
+      -75,
+      -150,
+      0
+    ],
+    "facing": -20,
+    "size": [
+      16,
+      14,
+      11
+    ]
+  },
+  {
+    "id": "house_6",
+    "kind": "building",
+    "blender": [
+      85,
+      -150,
+      0
+    ],
+    "facing": 20,
+    "size": [
+      16,
+      14,
+      11
+    ]
+  },
+  {
+    "id": "hut",
+    "kind": "building",
+    "blender": [
+      -272,
+      -300,
+      -20
+    ],
+    "facing": 60,
+    "size": [
+      14,
+      12,
+      9
+    ]
+  },
+  {
+    "id": "crusher",
+    "kind": "building",
+    "blender": [
+      100,
+      -318,
+      -20
+    ],
+    "facing": 90,
+    "size": [
+      24,
+      18,
+      20
+    ]
+  },
+  {
+    "id": "arena",
+    "kind": "stand",
+    "blender": [
+      0,
+      0,
+      0
+    ],
+    "facing": 0,
+    "scale": 1
+  },
+  {
+    "id": "pvp_1",
+    "kind": "stand",
+    "blender": [
+      128,
+      -18,
+      0
+    ],
+    "facing": 90,
+    "scale": 0.8
+  },
+  {
+    "id": "pvp_2",
+    "kind": "stand",
+    "blender": [
+      148,
+      8,
+      0
+    ],
+    "facing": 90,
+    "scale": 0.8
+  },
+  {
+    "id": "pvp_3",
+    "kind": "stand",
+    "blender": [
+      148,
+      38,
+      0
+    ],
+    "facing": 90,
+    "scale": 0.8
+  },
+  {
+    "id": "pvp_4",
+    "kind": "stand",
+    "blender": [
+      128,
+      58,
+      0
+    ],
+    "facing": 90,
+    "scale": 0.8
+  },
+  {
+    "id": "fx_test",
+    "kind": "stand",
+    "blender": [
+      52,
+      66,
+      0
+    ],
+    "facing": 30,
+    "scale": 0.6
+  },
+  {
+    "id": "t_kevin",
+    "kind": "stand",
+    "blender": [
+      -240,
+      -20,
+      -20
+    ],
+    "facing": 0,
+    "scale": 0.7
+  },
+  {
+    "id": "t_sam",
+    "kind": "stand",
+    "blender": [
+      -362,
+      -170,
+      -20
+    ],
+    "facing": -90,
+    "scale": 0.7
+  },
+  {
+    "id": "t_cora",
+    "kind": "stand",
+    "blender": [
+      -300,
+      -228,
+      -20
+    ],
+    "facing": 45,
+    "scale": 0.7
+  },
+  {
+    "id": "t_jo",
+    "kind": "stand",
+    "blender": [
+      -140,
+      -298,
+      -20
+    ],
+    "facing": 180,
+    "scale": 0.7
+  },
+  {
+    "id": "t_bo",
+    "kind": "stand",
+    "blender": [
+      -60,
+      -345,
+      -20
+    ],
+    "facing": 0,
+    "scale": 0.7
+  },
+  {
+    "id": "t_rusty",
+    "kind": "stand",
+    "blender": [
+      45,
+      -335,
+      -18
+    ],
+    "facing": 0,
+    "scale": 1
+  },
+  {
+    "id": "spawn_point",
+    "kind": "spawn",
+    "blender": [
+      0,
+      -150,
+      0
+    ]
+  },
+  {
+    "id": "pedestal",
+    "kind": "pedestal",
+    "blender": [
+      30,
+      -84,
+      0
+    ]
+  },
+  {
+    "id": "bracket",
+    "kind": "board",
+    "blender": [
+      0,
+      104,
+      0
+    ]
+  },
+  {
+    "id": "leaders",
+    "kind": "board_small",
+    "blender": [
+      -30,
+      -84,
+      0
+    ]
+  },
+  {
+    "id": "kiln_gate",
+    "kind": "gate",
+    "blender": [
+      -175,
+      -40,
+      0
+    ]
+  },
+  {
+    "id": "harbor_gate",
+    "kind": "gate_locked",
+    "blender": [
+      152,
+      150,
+      0
+    ]
+  },
+  {
+    "id": "beach_gate",
+    "kind": "gate_locked",
+    "blender": [
+      95,
+      -385,
+      -20
+    ]
+  },
+  {
+    "id": "lift",
+    "kind": "lift",
+    "blender": [
+      75,
+      -262,
+      -20
+    ]
+  },
+  {
+    "id": "lift_top",
+    "kind": "lift",
+    "blender": [
+      75,
+      -200,
+      -20
+    ]
+  }
+]

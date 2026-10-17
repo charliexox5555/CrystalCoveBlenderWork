@@ -7,6 +7,7 @@ local Remotes = require(RS.Shared.Remotes)
 local Theme = require(script.Parent.Parent.UI.Theme)
 local U = require(script.Parent.Parent.UI.Components.Util)
 local Motion = require(script.Parent.Parent.UI.Components.Motion)
+local CurrencyGain = require(script.Parent.Parent.UI.Components.CurrencyGain)
 local Panel = require(script.Parent.Parent.UI.Components.Panel)
 local Button = require(script.Parent.Parent.UI.Components.Button)
 local Collection = require(script.Parent.Parent.UI.Screens.CollectionScreen)
@@ -66,6 +67,40 @@ function Controller:Open(kind)
 	end
 end
 
+-- Wallet display: gains fly icons into the counter (once the HUD is visible), anything else counts directly.
+function Controller:ApplyWallet(profile)
+	self.Shown = self.Shown or {}
+	self.PendingGain = self.PendingGain or {}
+	for kind, label in { Coins = self.Currency, Marbles = self.Marbles } do
+		local value = if kind == "Coins" then profile.Coins else (profile.Marbles or 0)
+		local shown = self.Shown[kind]
+		self.Shown[kind] = value
+		if shown ~= nil and value > shown then
+			-- Keep the label on the old number until the icons land; hidden HUD (queue, match, results) waits.
+			self.PendingGain[kind] = (self.PendingGain[kind] or 0) + (value - shown)
+		elseif value == shown and self.PendingGain[kind] then
+		-- A repeat snapshot with the same balance must not cancel a gain that is waiting for the HUD.
+		else
+			self.PendingGain[kind] = nil
+			Motion.countTo(label, value)
+		end
+	end
+	self:FlushGains()
+end
+
+function Controller:FlushGains()
+	if not self.Gui or not self.Gui.Enabled or not self.PendingGain then
+		return
+	end
+	for kind, amount in self.PendingGain do
+		self.PendingGain[kind] = nil
+		local label = if kind == "Coins" then self.Currency else self.Marbles
+		CurrencyGain.play(kind, amount, label, function()
+			Motion.countTo(label, self.Shown[kind])
+		end)
+	end
+end
+
 function Controller:Start()
 	local pg = self.Player.PlayerGui
 	local hud = LobbyHud.new(function(kind)
@@ -79,6 +114,11 @@ function Controller:Start()
 			and not pg:GetAttribute("Watching")
 		if not self.Gui.Enabled then
 			self:Close()
+		else
+			-- Coming back from a match/queue/results: any gains waiting while the HUD was hidden play now.
+			task.delay(0.5, function()
+				self:FlushGains()
+			end)
 		end
 	end
 	-- The "step on a pad" hint is noise once you're already standing on one.
@@ -109,8 +149,7 @@ function Controller:Start()
 			end
 		end
 		-- Counts up/down to the new balance instead of snapping.
-		Motion.countTo(self.Currency, profile.Coins)
-		Motion.countTo(self.Marbles, profile.Marbles or 0)
+		self:ApplyWallet(profile)
 		if
 			self.Screen
 			and self.Screen.Refresh

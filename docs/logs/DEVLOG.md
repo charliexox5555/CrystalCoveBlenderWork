@@ -14,6 +14,12 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-17 — Claude — Wallet gain animation
+Done:
+- New `Components/CurrencyGain.luau` + `LobbyController:ApplyWallet/FlushGains`: when coins or Marbles go up, coin/Marble icons burst from screen centre and fly into the HUD counter (3 to 14 icons by size), the counter holds the old number, then ticks up on the first landing with a bump, a currency-colour glow and Success/Hover tick sounds. Decreases and equal balances count normally; reduced motion just ticks. If the HUD is hidden (queue, match, results) the gain waits and plays 0.5 s after it returns. Repeat snapshots don't cancel a waiting gain.
+- Studio checks: Marble grants (dev hook) fly 9 icons for 200 and the label ticks 10000 to 10200; with the HUD hidden the label stayed 10000 and no icons showed, then on unhide it animated to 10400; Coins path checked directly (5 icons for 36). Not run: a real bot-match win and a Robux Marble purchase.
+- Commit includes only my hunks of LobbyController; the match-ui session's uncommitted Queued-hides-HUD edits in that file were left out.
+
 ## 2026-10-17 — Claude — Match UI revamp: Stained Glass selection, queue camera, Marble spends, Pick Any confirm
 Done:
 - Selection (`MatchSelection`) is built in code with no backing frame: title with a gold timer, two player chips with heart icons, three tall cards, and a bottom row (PICK ANY, Marble wallet, REROLL, ODDS) all float over the arena. The arena boards are hidden while choosing. Place-authored RollScreen/QueuePanel/FightHud/RoundEnd/ResultsScreen templates are no longer used (their children are cleared on open); `tools/studio/*match_selection*` scripts that index them are stale.

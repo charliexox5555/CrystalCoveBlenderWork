@@ -29,4 +29,9 @@ return {
 	["rbxassetid://9116418035"] = { Start = 0, Seconds = 1.6, Fade = 0.4, Volume = 0.35, Pitch = 1 },
 	["rbxassetid://9126073001"] = { Start = 0, Seconds = 1.15, Fade = 0.25, Volume = 0.35, Pitch = 1 },
 	["rbxassetid://9113080188"] = { Start = 0, Seconds = 1.3, Fade = 0.35, Volume = 0.35, Pitch = 1.1 },
+	-- Finishers V2 additions (workstream G): provisional trims, measured in Studio (docs/testing/finishers_v2).
+	["rbxassetid://9116385087"] = { Start = 0, Seconds = 2.2, Fade = 0.5, Volume = 0.4, Pitch = 1 },
+	["rbxassetid://9116393976"] = { Start = 0, Seconds = 1.0, Fade = 0.3, Volume = 0.35, Pitch = 1 },
+	["rbxassetid://9125640290"] = { Start = 0, Seconds = 1.0, Fade = 0.25, Volume = 0.45, Pitch = 1 },
+	["rbxassetid://9126073644"] = { Start = 0, Seconds = 0.7, Fade = 0.2, Volume = 0.35, Pitch = 1 },
 }

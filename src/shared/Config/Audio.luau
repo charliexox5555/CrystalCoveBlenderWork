@@ -37,6 +37,11 @@ return {
 	FallingShimmer = "rbxassetid://9116418035",
 	LanternBell = "rbxassetid://9126073001",
 	GhostWhoo = "rbxassetid://9113080188",
+	-- Finishers V2 additions (workstream G, 2026-10-19; ProSoundEffects, see docs/audio/SOUND_LIST.md).
+	FN_MagicBurst = "rbxassetid://9116385087",
+	FN_GlowSwell = "rbxassetid://9116393976",
+	FN_PunchyPoof = "rbxassetid://9125640290",
+	FN_GlassPing = "rbxassetid://9126073644",
 	-- UI sounds (ProSoundEffects, creator-approved 2026-10-17); levels live in Config/UiMotion.
 	UiClick = "rbxassetid://9119717523",
 	UiHover = "rbxassetid://9119717529",

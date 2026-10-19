@@ -37,43 +37,61 @@ C.Rideables = {
 C.Finishers = {
 	{
 		Id = "glass_burst",
-		Name = "Crystal Pop",
+		Name = "Prism Pop",
 		Matches = 0,
 		Color = "#7EDFF2",
 		Accent = "#FFFFFF",
-		Description = "A bright crystal shockwave and tumbling toy shards.",
+		-- Camera during the show (FinisherCamera): hold after impact, push-in scale, drift (radians).
+		CameraHoldSeconds = 0.9,
+		CameraPush = 0.76,
+		Description = "A crystal shell snaps shut around your foe and pops into rainbow glass.",
 	},
 	{
 		Id = "party_burst",
-		Name = "Party Pop",
+		Name = "Piñata Pop",
 		Matches = 1,
 		Color = "#F9ADDA",
 		Accent = "#FFE790",
-		Description = "A shower of spinning, colorful confetti.",
+		-- Camera during the show (FinisherCamera): hold after impact, push-in scale, drift (radians).
+		CameraHoldSeconds = 1.1,
+		CameraPush = 0.74,
+		Description = "A stained-glass piñata drops in, wiggles, and bursts into confetti and candy gems.",
 	},
 	{
 		Id = "bubble_bloom",
-		Name = "Bubble Bloom",
+		Name = "Fizz Bloom",
 		Matches = 3,
 		Color = "#80E8DA",
 		Accent = "#A9BBFF",
-		Description = "Big iridescent bubbles swell, float and pop.",
+		-- Camera during the show (FinisherCamera): hold after impact, push-in scale, drift (radians).
+		CameraHoldSeconds = 1.4,
+		CameraPush = 0.72,
+		CameraOrbit = 0.12,
+		Description = "A giant fizzy bubble swells, pops, and blooms into a bouquet of bubbles that pop in a chain.",
 	},
 	{
 		Id = "brick_boom",
-		Name = "Block Boom",
+		Name = "Ka-Block",
 		Matches = 5,
 		Color = "#FFAE62",
 		Accent = "#FFF2A0",
-		Description = "A toy explosion throws chunky blocks through a golden shockwave.",
+		-- Camera during the show (FinisherCamera): hold after impact, push-in scale, drift (radians).
+		CameraHoldSeconds = 1.6,
+		CameraPush = 0.78,
+		CameraOrbit = -0.1,
+		Description = "Glass toy blocks stack into a tower, go KA-BLOCK!, and bounce down spelling BOOM.",
 	},
 	{
 		Id = "starfall",
-		Name = "Pocket Nova",
+		Name = "Supernova",
 		Matches = 10,
 		Color = "#A995FF",
 		Accent = "#FFAFE9",
-		Description = "Orbiting stars collapse into a tiny colorful supernova.",
+		-- Camera during the show (FinisherCamera): hold after impact, push-in scale, drift (radians).
+		CameraHoldSeconds = 1.7,
+		CameraPush = 0.7,
+		CameraOrbit = 0.16,
+		Description = "Stars spiral into a glass star core, everything goes quiet, then it explodes into a rainbow supernova.",
 	},
 }
 -- Seasonal entries are inspectable/equippable but never members of the ordinary crate pools above.

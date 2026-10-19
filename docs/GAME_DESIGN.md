@@ -89,9 +89,17 @@ Crit chance = `CritBase + CritPerSwing × Swing` (max 30%), plus Lucky. All in `
 | Fizzy | 20 / 110 / 10 | 1.0 | Balanced |
 | Sharp | 21 / 105 / 14 | 0.85 | Swings high, crits more, cracks a bit sooner |
 
-### 3.5 Powers (no buttons)
+### 3.5 Powers (automatic, with an optional CAST)
 
-Every glassy has **one passive** (always on, or triggered by hits) and **one burst power** that **fires by itself** at random moments (DECISIONS 33). There is no special button: the player watches and hopes it goes off at a good time. Glassies can rename them ("Lid Shield", "Prism Beam", "Hot Streak"). Numbers live in `Config/Powers.luau`.
+Every glassy has **one signature power** with its own trigger (contacts, swing turnarounds, a timer, low HP, hits taken). When the trigger fires, the power becomes **Ready** and a big **CAST** button lights up (DECISIONS 85, revising 33):
+
+- **Tap CAST** to fire it now. The button glows gold and says NOW! at a good moment (the glassies closing in, or a smash about to land), so timing is learnable.
+- **Ignore it** and it fires by itself after `Cast.AutoSeconds` (2.5 s). Young players can just watch.
+- **Contact powers** (Pop, Pickle Jar, Ketchup, Briar Flask, Mason Jar) **arm** instead: the next contact within `Cast.ArmedSeconds` (3 s) pays off. Arm right before a smash; an arm with no contact fades.
+- Bots press CAST with a reaction delay and moment-reading that scale with their skill.
+- Target: a quick player who times casts beats an auto-only player 55–62% with the same glassy. Skill matters, never decides alone.
+
+The legacy passive/burst tables below describe dormant definitions. The 24 release kits live in `Balance.CombatRelease.Kits`. Glassies can rename them ("Lid Shield", "Prism Beam", "Hot Streak"). Numbers live in `Config/Powers.luau`.
 
 **When powers fire (placeholder formula, to be refined):** the first after a random 5–14 s, then again after 9–18 s, at most 3 times a round. Every hit (dealt or taken) brings the next one 0.5 s closer. A Perfect Release brings the first one 3 s closer. (`Balance.Fight.Power*`)
 
@@ -135,8 +143,9 @@ Every glassy has **one passive** (always on, or triggered by hits) and **one bur
 | Starter triangle | each starter beats one, loses to one (52–90%) |
 | Perfect vs worst aim | 53–75% |
 | Luck | winner was behind at some point in 35–80% of rounds; ≥ 1 lead change a round; 1.2–3 powers per glassy; 20–50% of aimed powers miss |
-| Mythic vs Common, 5 stars vs 0 | 60–95% / 60–98% |
-| Every glassy at equal stats vs the field | 38–62% |
+| Mythic vs Common at equal kit strength, 5 stars vs 0 | ~55% / ≤ 62% (DECISIONS 86) |
+| Every release glassy at equal stats vs the field, **real swing** (`tools/release_matrix.sh`) | 45–55% |
+| Timed CAST vs auto-only, same glassy | 55–62% |
 
 These run against **FightModel**, a stand-in for the swing. When the real swing works in Studio, log real hits per second and speeds and update `Balance.SimModel` so the simulator stays honest.
 
@@ -154,22 +163,22 @@ One entry in `Config/Glassies.luau` + one asset folder = a new glassy. Fields: T
 
 ### 4.2 Rarity: from kitchen to fantasy
 
-| Rarity | Stat × | Kiln odds | Examples |
+| Rarity | HP × | Kiln odds | Examples |
 |---|---|---|---|
-| Starter | 1.02 | — (everyone owns all 3) | Pop, Jam, Prism |
+| Starter | 1.01 | — (everyone owns all 3) | Pop, Jam, Prism |
 | Common | 1.00 | 56.25% | milk bottle, pickle jar, glass cup |
-| Uncommon | 1.02 | 22% | mason jar, hot sauce |
-| Rare | 1.04 | 14% | perfume, potion flask, light bulb |
-| Epic | 1.06 | 6% | rocket pop, jack-o'-glass, crystal ball |
-| Legendary | 1.08 | 1.5% | glass sword, unicorn, crystal crown |
-| Mythic | 1.10 | 0.25% | glass dragon, galaxy orb |
+| Uncommon | 1.01 | 22% | mason jar, hot sauce |
+| Rare | 1.015 | 14% | crescent axe, frostglobe |
+| Epic | 1.02 | 6% | rocket pop, prism blade |
+| Legendary | 1.025 | 1.5% | comet |
+| Mythic | 1.03 | 0.25% | glass dragon, galaxy orb |
 
-Rarity is mostly **flair, size and a cooler power**, with a small stat edge. A Mythic beats a Common about 80% of the time.
+Rarity buys **flair, size, more complex powers and bigger presentation**, not numbers (DECISIONS 86, like Blade Ball's sidegrade abilities). The multiplier touches **HP only**; Power and Swing stay at the glassy's base. At equal skill a Mythic beats a Common about **55%** of the time.
 
 ### 4.3 Stars and Rainbow
 
-- **Duplicates** from the Kiln add a **star** (+2% stats each, max 5). Past 5 stars a duplicate gives `DuplicateCoinsAtMaxStars` coins.
-- **Rainbow** variant: 1 in 500 Kiln pulls, +5% stats and an iridescent shimmer. (Later: fuse duplicates into Rainbow like Ball VS Ball's Shiny/Rainbow, but in our own way, e.g. "re-melt" 5 stars into Rainbow in the Kiln.)
+- **Duplicates** from the Kiln add a **star** (+1% HP each, max 5, so +5% at most). Past 5 stars a duplicate gives `DuplicateCoinsAtMaxStars` coins.
+- **Rainbow** variant: 1 in 500 Kiln pulls, +2% HP and an iridescent shimmer. (Later: fuse duplicates into Rainbow like Ball VS Ball's Shiny/Rainbow, but in our own way, e.g. "re-melt" 5 stars into Rainbow in the Kiln.)
 
 ### 4.4 The roster (31)
 

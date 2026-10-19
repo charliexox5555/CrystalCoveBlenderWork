@@ -6,6 +6,10 @@ local serde = require("@lune/serde")
 local Glassies = require("../src/shared/Config/Glassies")
 
 local dir = process.args[1] or "."
+local focus = {}
+for id in string.gmatch(process.args[2] or "", "[^,]+") do
+	focus[id] = true
+end
 local rows, mode = {}, "?"
 for _, name in fs.readDir(dir) do
 	if string.match(name, "^shard_%d+%.json$") then
@@ -60,6 +64,9 @@ print(
 )
 local inBand, lo, hi = 0, 1, 0
 for _, e in list do
+	if next(focus) ~= nil and not focus[e.Id] then
+		continue
+	end
 	local def = Glassies.ById[e.Id]
 	table.sort(e.Opp, function(a, b)
 		return a.Rate < b.Rate

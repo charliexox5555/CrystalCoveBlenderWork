@@ -25,6 +25,17 @@ Next:
 Problems / questions for the user:
 - The Studio MCP can't switch Device Emulator presets, so the phone preset check is still open.
 
+## 2026-10-19 — Claude — Release overhaul A: cast system, rarity curve, balance tooling
+Done:
+- Audit + research (`docs/research/COMBAT_OVERHAUL_RESEARCH.md`), plan and workstreams (`docs/design/RELEASE_OVERHAUL_PLAN.md`), creator decisions 85–87. Parallel sessions started: combat feel (B), glassy model revamp in Blender (C), roster design to 50 (D).
+- Optional CAST (decision 85): `SignatureRules` holds a triggered power as Ready for sides with a cast policy; `CastPower` remote (rate-limited, own side only); auto-cast after `Cast.AutoSeconds`; contact-payoff kits arm for `Cast.ArmedSeconds`; bots press via `Simulation/CastBrain` with skill-scaled reaction and moment-reading; shared `CastTiming` good-moment read; `UI/Screens/CastButton` (tap/Space/F/ButtonA/R2, auto bar, gold NOW! hint). New events SignatureReady, ReadyCancel, SignatureArmed; CastStart.Manual/Held. Sides without a policy behave exactly as before.
+- Rarity curve (decision 86): rarity, stars (+1% each) and Rainbow (+2%) now raise HP only, Mythic +3% max; Power/Swing stay at base. Ability copy explains CAST.
+- `tools/release_matrix.sh`: sharded real-swing round-robin (modes equal/rarity/stars5/mirror with cast policies, focus ids). 146 Lune tests pass.
+Next:
+- Real-swing baseline under bot casting, then retune all kits into the 45–55% band; measure the timed-CAST edge (target 55–62%); Studio Play check of the CAST button and bots.
+Problems / questions for the user:
+- The machine is heavily loaded by a long-running multi-core Python simulation from the Cookie Inc project and Blender renders, so balance runs are slow.
+
 ## 2026-10-17 — Claude — Kiln prompts fixed
 Done:
 - Both world kiln prompts did nothing: KilnService only wired `Lobby.GlassClashProps.Kiln.OpenKiln`, but the creator's kilns now live at `Workspace.Kilns.{Kiln, MarbleKiln}`. KilnService now connects every `OpenKiln` prompt under `Workspace.Kilns` (and the old path), with a distance check that also works for attachments, and opens the shop on the Glassies page (`KilnOdds.Tab`, read by LobbyController). The Marble Kiln's prompt text is corrected at runtime to "Glassies • Marble pulls"; the creator's model is untouched.

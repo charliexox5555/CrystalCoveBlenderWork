@@ -220,7 +220,7 @@ function Screen:Detail(id)
 		"POWER " .. stats.Power .. "   HP " .. stats.HP .. "   SWING " .. stats.Swing,
 		passive.Name .. ": " .. passive.Description,
 		special.Name .. ": " .. special.Description,
-		"Powers fire automatically during fights.",
+		"Powers charge by themselves. Tap CAST to time them, or let them go off automatically.",
 		"Used in " .. (self.Profile.Stats.GlassyUses[id] or 0) .. " matches",
 	}
 	local y = 0

@@ -583,26 +583,27 @@ Balance.Types = {
 }
 
 -- Rarities (GAME_DESIGN 4.2). CrateWeight = percent chance in the Kiln (coin gacha).
--- Starters are not in crates. Fight strength scales with Power x HP, i.e. roughly with
--- StatMultiplier squared, so keep the spread modest.
+-- Starters are not in crates. Decision 86: rarity is a small edge (~55% Mythic vs Common at
+-- equal skill). StatMultiplier applies to HP only (Formula.stats), because Power is ~20 and
+-- rounds to whole numbers, so a few percent on Power would jump in 5% steps.
 Balance.Rarities = {
 	Common = { Order = 1, StatMultiplier = 1.00, CrateWeight = 56.25 },
-	Uncommon = { Order = 2, StatMultiplier = 1.02, CrateWeight = 22 },
-	Rare = { Order = 3, StatMultiplier = 1.04, CrateWeight = 14 },
-	Epic = { Order = 4, StatMultiplier = 1.06, CrateWeight = 6 },
-	Legendary = { Order = 5, StatMultiplier = 1.08, CrateWeight = 1.5 },
-	Mythic = { Order = 6, StatMultiplier = 1.1, CrateWeight = 0.25 },
-	Starter = { Order = 0, StatMultiplier = 1.02, CrateWeight = 0 },
+	Uncommon = { Order = 2, StatMultiplier = 1.01, CrateWeight = 22 },
+	Rare = { Order = 3, StatMultiplier = 1.015, CrateWeight = 14 },
+	Epic = { Order = 4, StatMultiplier = 1.02, CrateWeight = 6 },
+	Legendary = { Order = 5, StatMultiplier = 1.025, CrateWeight = 1.5 },
+	Mythic = { Order = 6, StatMultiplier = 1.03, CrateWeight = 0.25 },
+	Starter = { Order = 0, StatMultiplier = 1.01, CrateWeight = 0 },
 }
 
 -- Stars from duplicates (GAME_DESIGN 4.3). Every duplicate from a crate adds a star.
 Balance.Growth = {
-	StatPerStar = 0.02,
+	StatPerStar = 0.01, -- HP only; 5 stars = +5% HP (decision 86)
 	MaxStars = 5,
 	DuplicatesPerStar = 1,
 	DuplicateCoinsAtMaxStars = 50, -- duplicates past max stars turn into coins
 	RainbowChance = 1 / 500,
-	RainbowBonus = 0.05,
+	RainbowBonus = 0.02, -- HP only
 }
 
 -- Matches (GAME_DESIGN 2). 1v1, each player has 3 hearts; losing a round costs a heart.

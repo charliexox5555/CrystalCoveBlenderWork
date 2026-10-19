@@ -46,10 +46,16 @@ return function(t, deps)
 		t.between(luck.PowerMisses, 0.2, 0.5, "aimed powers miss sometimes")
 	end)
 
-	t.test("rarity and stars help without deciding the fight", function()
-		local mythic = BalanceSim.matchup("galaxy_orb", "lemonade_bottle", N).WinRate -- both Fizzy
-		t.between(mythic, 0.6, 0.95, "Mythic vs Common")
-		t.between(BalanceSim.matchup("pop", "pop", N, { StarsA = 5 }).WinRate, 0.6, 0.98, "5 stars vs 0")
+	t.test("rarity and stars are a small edge, never decisive (decision 86)", function()
+		local Formula = deps.Formula
+		local common = Formula.stats({ Rarity = "Common", Base = { Power = 20, HP = 110, Swing = 10 } })
+		local mythic = Formula.stats({ Rarity = "Mythic", Base = { Power = 20, HP = 110, Swing = 10 } })
+		t.eq(mythic.Power, common.Power, "rarity never adds Power")
+		t.eq(mythic.Swing, common.Swing, "rarity never adds Swing")
+		t.ok(mythic.HP / common.HP <= 1.035, "Mythic HP edge at most ~3%")
+		local mythicRate = BalanceSim.matchup("galaxy_orb", "lemonade_bottle", N).WinRate -- both Fizzy
+		t.between(mythicRate, 0.35, 0.72, "Mythic vs Common (kits differ)")
+		t.between(BalanceSim.matchup("pop", "pop", N, { StarsA = 5 }).WinRate, 0.48, 0.7, "5 stars vs 0")
 	end)
 
 	t.test("every glassy is fair at equal stats (40-60% vs the field)", function()

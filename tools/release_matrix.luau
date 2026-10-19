@@ -1,5 +1,6 @@
 -- Real-swing round-robin over the release roster, one shard of the pair list per process.
---   lune run tools/release_matrix <shard> <shards> <rounds per pair> <mode> <out.json> [ids]
+--   lune run tools/release_matrix <shard> <shards> <rounds per pair> <mode> <out.json> [ids] [focus ids]
+-- focus ids: only pairs that include one of these (fast re-check of retuned glassies vs the field).
 -- mode: <base>[:<policy A>[:<policy B>]]
 --   base: equal (rarity multipliers = 1), rarity (real multipliers), stars5 (side A 5 stars vs 0),
 --         mirror (each glassy vs itself; use with two policies to measure the cast skill edge)
@@ -58,9 +59,15 @@ if base == "stars5" or base == "mirror" then
 		table.insert(pairs, { id, id })
 	end
 else
+	local focus = {}
+	for id in string.gmatch(process.args[7] or "", "[^,]+") do
+		focus[id] = true
+	end
 	for i = 1, #ids do
 		for j = i + 1, #ids do
-			table.insert(pairs, { ids[i], ids[j] })
+			if next(focus) == nil or focus[ids[i]] or focus[ids[j]] then
+				table.insert(pairs, { ids[i], ids[j] })
+			end
 		end
 	end
 end

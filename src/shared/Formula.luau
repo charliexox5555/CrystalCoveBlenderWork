@@ -39,12 +39,13 @@ function Formula.statMultiplier(rarity: string, options: StatOptions?): number
 		* (if opts.Rainbow then 1 + Balance.Growth.RainbowBonus else 1)
 end
 
+-- Rarity, stars and Rainbow raise HP only; Power and Swing stay at the glassy's base (decision 86).
 function Formula.stats(def: GlassyDef, options: StatOptions?): Stats
 	local mult = Formula.statMultiplier(def.Rarity, options)
 	return {
-		Power = round(def.Base.Power * mult),
+		Power = def.Base.Power,
 		HP = round(def.Base.HP * mult),
-		Swing = round(def.Base.Swing * mult),
+		Swing = def.Base.Swing,
 	}
 end
 

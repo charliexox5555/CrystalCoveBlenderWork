@@ -1,7 +1,7 @@
 # CodesScreen (top bar → Rewards gift → Codes)
 
-Design only (Oct 19): no controller, no remotes. A deliberately **small** Stained Glass window, about 38% of the screen
-width (min 480×211, max 760×334 px), short and wide (aspect 1000:440). Rebuild with `tools/studio/build_codes_screen.luau`
+Design only (Oct 19): no controller, no remotes. A deliberately **small** Stained Glass window, about 30% of the screen
+width (min 400×249, max 640×398 px), aspect 900:560. The REDEEM button sits **under** the code field (stacked, not side by side). Rebuild with `tools/studio/build_codes_screen.luau`
 (Studio Edit, lock held; copies the old screen to `ServerStorage.UIBackup_Topbar`, then replaces `StarterGui.CodesScreen`).
 
 | Default | Success | Invalid + focused |
@@ -10,7 +10,7 @@ width (min 480×211, max 760×334 px), short and wide (aspect 1000:440). Rebuild
 
 ## Element map
 
-`CodesScreen` (ScreenGui, `Enabled = false`, `TopbarScreen = true`) → `Panel` (aspect 1000:440, Scale only)
+`CodesScreen` (ScreenGui, `Enabled = false`, `TopbarScreen = true`) → `Panel` (aspect 900:560, Scale only)
 
 | Name | Class | What it will do |
 |---|---|---|
@@ -22,7 +22,7 @@ width (min 480×211, max 760×334 px), short and wide (aspect 1000:440). Rebuild
 | `InputField.Artwork` | ImageLabel | dark inset glass field (`field_inset`) |
 | `InputField.FocusOutline` | ImageLabel | aqua ring (`field_focus`), hidden; show it on `CodeInput.Focused`, hide on `FocusLost` |
 | `InputField.CodeInput` | **TextBox** | the code. `PlaceholderText = "Enter code…"`, `ClearTextOnFocus = false`, one line, centred, Nunito Heavy white, `TextScaled` with a max of 34. Attribute `TextFit = false` so TextFit never touches it. Read `.Text` on `FocusLost` or on redeem |
-| `Content.RedeemButton` | TextButton | green gem "REDEEM" (`button/gem_emerald`). Has the usual `Artwork`, `Label` (Denk One), `InteractionScale` parts |
+| `Content.RedeemButton` | TextButton | (under the field) green gem "REDEEM" (`button/gem_emerald`). Has the usual `Artwork`, `Label` (Denk One), `InteractionScale` parts |
 | `Content.Status` | TextLabel | one-line message slot. **Empty and `Visible = false`** by default |
 | `Content.Hint` | TextLabel | "Find codes in our group and socials!" (generic, no links) |
 
@@ -46,7 +46,7 @@ in `png`, uploads in `roblox_assets.json`. Decals were resolved to image ids wit
 
 | Key | Decal | Image id |
 |---|---|---|
-| `screens/codes/window_codes` (1000×440, 2×) | 96546351881397 | 130615538105152 |
+| `screens/codes/window_codes` (900×560, 2×) | 90013473722478 | 130439492899536 |
 | `screens/codes/field_inset` (520×80, 2×) | 84567967482821 | 98997316553457 |
 | `screens/codes/field_focus` | 133279075090658 | 99561576715408 |
 
@@ -55,6 +55,6 @@ Reused: `panel/title_amethyst`, `button/gem_emerald`, `button/close_diamond` + `
 ## Notes / not done
 
 - All positions and sizes are Scale; the Panel has a `UISizeConstraint` so it stays readable on small screens. The phone and
-  tablet scaling pass is still to do; at the 480 px minimum the REDEEM gem is about 130×37 px.
+  tablet scaling pass is still to do; at the 400 px minimum the field is about 284×44 px and the REDEEM gem about 151×43 px.
 - The window and field use Fit with their own aspect ratios (no 9-slice), so they need no `StainedAssetSpecs` entry.
 - The creator saves the place in Studio.

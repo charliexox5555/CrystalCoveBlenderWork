@@ -17,6 +17,7 @@ Balance sim (if balance changed):
 ## 2026-10-19 — Claude — CodesScreen design (top bar menus)
 Done:
 - Designed `StarterGui.CodesScreen`: a small, short, wide Stained Glass window (CODES amethyst banner, Close diamond, dark inset `CodeInput` TextBox with an aqua `FocusOutline`, green `RedeemButton`, hidden `Status` line, hint line). Rebuild: `tools/studio/build_codes_screen.luau`.
+- Creator feedback: stacked the layout (code field on top, REDEEM gem centred under it, Status and hint below) in a taller 900×560 window (new `window_codes` art, ~30% of screen width); recaptured the three states.
 - New art `tools/ui/codes_art.mjs` → `assets/ui/screens/codes` (window and two field images), uploaded to group 11116787; keys in `UIAssets` (`screens/codes/*`). Captures and element map: `docs/ui/screens/CodesScreen.md`.
 Next:
 - Wire it to a redeem remote later (controller reads `CodeInput.Text`, writes `Status`); phone/tablet scaling pass.

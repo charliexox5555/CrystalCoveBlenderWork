@@ -53,7 +53,7 @@ function fieldSvg(focus) {
 export function build() {
 	seed = 23;
 	return {
-		"window_codes": windowSvg(1000, 440, { band: 34, cut: [30, 14, 32, 16], pieces: 30, facets: 2 }),
+		"window_codes": windowSvg(900, 560, { band: 34, cut: [30, 14, 32, 16], pieces: 30, facets: 2 }),
 		"field_inset": fieldSvg(false),
 		"field_focus": fieldSvg(true),
 	};

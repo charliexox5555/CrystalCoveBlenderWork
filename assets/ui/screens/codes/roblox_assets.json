@@ -2,11 +2,11 @@
  "Group": "11116787",
  "Assets": {
   "window_codes": {
-   "AssetId": "96546351881397",
+   "AssetId": "90013473722478",
    "Path": "assets/ui/screens/codes/png/window_codes.png",
-   "Sha256": "24e5fce6d3484ebdf3630838d40ffd1e59727663908ca2cb31b3a4026d8a554f",
+   "Sha256": "c9f617cb766a4749d0729ba868106ea296716b43915ec3616da071cd7c6f7326",
    "Moderation": "Approved",
-   "Uploaded": "2026-10-19T19:18:23"
+   "Uploaded": "2026-10-19T19:23:50"
   },
   "field_inset": {
    "AssetId": "84567967482821",

@@ -34,8 +34,11 @@ Goal: fights that are fair, readable and exciting, with a small skill layer kids
 | C | Existing glassy model revamp in Blender: materials, silhouettes, moving `Details` parts for idle motion | session | `assets/blender/glassies/**` new versioned folders, Blender only | — |
 | D | Roster expansion design: 12 launch + 14 drop glassies with kits on the cast contract | session | `docs/design/ROSTER_V2.md` | creator approval before Blender |
 | E | Power VFX upgrade to Pumpkin-finisher quality, tiered by rarity, plus Ready/cast states | starts after A's retune lands | `Presentation/HeroPowers`, `SignaturePresentation`, `SignatureAccent`, `Config/CombatKitVisuals`, Studio VFX templates | A |
-| F | New glassies: Blender models → import → kits → balance | C's session after D is approved; kits by A | — | C, D |
-| G | Final test and polish: multiplayer, phones, performance, exploits | this session | — | all |
+| F | New glassies: Blender models (headless, v4 builder) → import → kits → balance | session `launch-glassies`; kits and balance by A | assets/blender/glassies/<new ids> | C, D |
+| G | Premium finishers: research, new names, effects, sound for the five standard finishers | session `finishers` | FinisherFX, FightFinisher, FinisherCamera, FinisherAudio, finisher entries | — |
+| H | Flyers rebuilt in Blender (headless), riding motion, displays | session `flyers` | RideController, RidePose, RideAnimations, flyer entries, flyer assets | — |
+| I | Hollowlight premium: Lantern Eclipse, Lantern Seeds, Moonlantern Carriage, special sound | session `hollowlight-premium` | HollowlightFX, LanternSeeds, Hollowlight entries, hollowlight_v5 | — |
+| T | Final test and polish: multiplayer, phones, performance, exploits | this session | — | all |
 
 **Shared Studio rules:** one Studio and one Rojo (this checkout) serve everyone. Before Play, check `get_studio_state`; if Play is running and not yours, wait. Stop Play when done. Run tests in a Play server. Commit only your own files by exact path; never `git add -A`, stash, reset or switch branches.
 
@@ -49,4 +52,4 @@ Goal: fights that are fair, readable and exciting, with a small skill layer kids
 | Thu 22 | F imports + kits + balance; integration; multiplayer/performance. |
 | Fri 23 | Release candidate, fixes, creator playtest and publish. |
 
-**After launch:** drops to 50, finisher and flyer upgrades (creator's next request), ranked/trophy matchmaking.
+**After launch:** weekly Saturday drops to 50 (decision 88), ranked/trophy matchmaking. Finishers, flyers and the Hollowlight set moved into this week (decision 89).

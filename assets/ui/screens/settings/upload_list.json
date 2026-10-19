@@ -1,0 +1,124 @@
+{
+ "Record": "assets/ui/screens/settings/roblox_assets.json",
+ "Items": [
+  {
+   "Key": "settings_icon_autocast",
+   "Path": "assets/ui/screens/settings/png/icon_autocast.png",
+   "Type": "Decal",
+   "Name": "Settings icon autocast",
+   "Description": "Glass Clash Settings screen art (Stained Glass)."
+  },
+  {
+   "Key": "settings_icon_bot",
+   "Path": "assets/ui/screens/settings/png/icon_bot.png",
+   "Type": "Decal",
+   "Name": "Settings icon bot",
+   "Description": "Glass Clash Settings screen art (Stained Glass)."
+  },
+  {
+   "Key": "settings_icon_cosmetics",
+   "Path": "assets/ui/screens/settings/png/icon_cosmetics.png",
+   "Type": "Decal",
+   "Name": "Settings icon cosmetics",
+   "Description": "Glass Clash Settings screen art (Stained Glass)."
+  },
+  {
+   "Key": "settings_icon_effects",
+   "Path": "assets/ui/screens/settings/png/icon_effects.png",
+   "Type": "Decal",
+   "Name": "Settings icon effects",
+   "Description": "Glass Clash Settings screen art (Stained Glass)."
+  },
+  {
+   "Key": "settings_icon_master",
+   "Path": "assets/ui/screens/settings/png/icon_master.png",
+   "Type": "Decal",
+   "Name": "Settings icon master",
+   "Description": "Glass Clash Settings screen art (Stained Glass)."
+  },
+  {
+   "Key": "settings_icon_motion",
+   "Path": "assets/ui/screens/settings/png/icon_motion.png",
+   "Type": "Decal",
+   "Name": "Settings icon motion",
+   "Description": "Glass Clash Settings screen art (Stained Glass)."
+  },
+  {
+   "Key": "settings_icon_music",
+   "Path": "assets/ui/screens/settings/png/icon_music.png",
+   "Type": "Decal",
+   "Name": "Settings icon music",
+   "Description": "Glass Clash Settings screen art (Stained Glass)."
+  },
+  {
+   "Key": "settings_icon_sfx",
+   "Path": "assets/ui/screens/settings/png/icon_sfx.png",
+   "Type": "Decal",
+   "Name": "Settings icon sfx",
+   "Description": "Glass Clash Settings screen art (Stained Glass)."
+  },
+  {
+   "Key": "settings_row_plate",
+   "Path": "assets/ui/screens/settings/png/row_plate.png",
+   "Type": "Decal",
+   "Name": "Settings row plate",
+   "Description": "Glass Clash Settings screen art (Stained Glass)."
+  },
+  {
+   "Key": "settings_section_rule",
+   "Path": "assets/ui/screens/settings/png/section_rule.png",
+   "Type": "Decal",
+   "Name": "Settings section rule",
+   "Description": "Glass Clash Settings screen art (Stained Glass)."
+  },
+  {
+   "Key": "settings_slider_fill_aqua",
+   "Path": "assets/ui/screens/settings/png/slider_fill_aqua.png",
+   "Type": "Decal",
+   "Name": "Settings slider fill aqua",
+   "Description": "Glass Clash Settings screen art (Stained Glass)."
+  },
+  {
+   "Key": "settings_slider_knob",
+   "Path": "assets/ui/screens/settings/png/slider_knob.png",
+   "Type": "Decal",
+   "Name": "Settings slider knob",
+   "Description": "Glass Clash Settings screen art (Stained Glass)."
+  },
+  {
+   "Key": "settings_slider_track",
+   "Path": "assets/ui/screens/settings/png/slider_track.png",
+   "Type": "Decal",
+   "Name": "Settings slider track",
+   "Description": "Glass Clash Settings screen art (Stained Glass)."
+  },
+  {
+   "Key": "settings_toggle_knob",
+   "Path": "assets/ui/screens/settings/png/toggle_knob.png",
+   "Type": "Decal",
+   "Name": "Settings toggle knob",
+   "Description": "Glass Clash Settings screen art (Stained Glass)."
+  },
+  {
+   "Key": "settings_toggle_off",
+   "Path": "assets/ui/screens/settings/png/toggle_off.png",
+   "Type": "Decal",
+   "Name": "Settings toggle off",
+   "Description": "Glass Clash Settings screen art (Stained Glass)."
+  },
+  {
+   "Key": "settings_toggle_on",
+   "Path": "assets/ui/screens/settings/png/toggle_on.png",
+   "Type": "Decal",
+   "Name": "Settings toggle on",
+   "Description": "Glass Clash Settings screen art (Stained Glass)."
+  },
+  {
+   "Key": "settings_window_settings",
+   "Path": "assets/ui/screens/settings/png/window_settings.png",
+   "Type": "Decal",
+   "Name": "Settings window settings",
+   "Description": "Glass Clash Settings screen art (Stained Glass)."
+  }
+ ]
+}

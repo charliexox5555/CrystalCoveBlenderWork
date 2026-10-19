@@ -1,0 +1,124 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "settings_icon_autocast": {
+   "AssetId": "137933941747338",
+   "Path": "assets/ui/screens/settings/png/icon_autocast.png",
+   "Sha256": "0246687849aaaa355c706e26ee01462d17f092aeb0d0aad63be969f176fe26eb",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:19:01"
+  },
+  "settings_icon_bot": {
+   "AssetId": "103177200019234",
+   "Path": "assets/ui/screens/settings/png/icon_bot.png",
+   "Sha256": "69ade9bd1d4a382be0c885e049a5c3a81ea34e39c29d72bb7fae05010fdb7e3b",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:19:05"
+  },
+  "settings_icon_cosmetics": {
+   "AssetId": "137251036179166",
+   "Path": "assets/ui/screens/settings/png/icon_cosmetics.png",
+   "Sha256": "64a91c930facb4141db436b80f29e2572b91053e1da07bb8aabc457f6e69e6c3",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:19:12"
+  },
+  "settings_icon_effects": {
+   "AssetId": "99935027064411",
+   "Path": "assets/ui/screens/settings/png/icon_effects.png",
+   "Sha256": "029e43d1206607296d7b8bbe5627e4403e1e1a66ed5aab4062d386547c26ab30",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:19:19"
+  },
+  "settings_icon_master": {
+   "AssetId": "115904099136307",
+   "Path": "assets/ui/screens/settings/png/icon_master.png",
+   "Sha256": "d2958c7fbed160081eb547e8d0e624a45fb47aa271b2ddca383e482c5f80cbcf",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:19:23"
+  },
+  "settings_icon_motion": {
+   "AssetId": "84130941145000",
+   "Path": "assets/ui/screens/settings/png/icon_motion.png",
+   "Sha256": "1e3d902aab9140ee7c9463caec7b4d2d1f48ea801994f9c2ad81e5e742f9f96f",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:19:27"
+  },
+  "settings_icon_music": {
+   "AssetId": "71244547541680",
+   "Path": "assets/ui/screens/settings/png/icon_music.png",
+   "Sha256": "87c23fb82fcef63e061b5a6e366b5b2e8b386ad332bc5f8852827330ef68dc59",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:19:30"
+  },
+  "settings_icon_sfx": {
+   "AssetId": "117317902883488",
+   "Path": "assets/ui/screens/settings/png/icon_sfx.png",
+   "Sha256": "33c2d438b83267c9e85055df52279c777609258b7664b7273f9c6d4612c19144",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:19:37"
+  },
+  "settings_row_plate": {
+   "AssetId": "114236886153020",
+   "Path": "assets/ui/screens/settings/png/row_plate.png",
+   "Sha256": "d63138ca81957e9b2f1ad5d9db340bdd655253fd9b3fd55a5390ef4e80eae3e4",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:19:41"
+  },
+  "settings_section_rule": {
+   "AssetId": "84867272900417",
+   "Path": "assets/ui/screens/settings/png/section_rule.png",
+   "Sha256": "564d3804c8429dd02aa46ca736db79a7476f1f1e22e1550a5637f11064fac07b",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:19:49"
+  },
+  "settings_slider_fill_aqua": {
+   "AssetId": "117920268641575",
+   "Path": "assets/ui/screens/settings/png/slider_fill_aqua.png",
+   "Sha256": "47d2333f3dfabd7b9782b2fc1ba775fd049a9fa32f8e54b1a73a61c5c62569ba",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:19:55"
+  },
+  "settings_slider_knob": {
+   "AssetId": "125582298348464",
+   "Path": "assets/ui/screens/settings/png/slider_knob.png",
+   "Sha256": "c0274780a22c0e2c936412d0b54ad6fa5a08ca7bab81183329213b8dc272da94",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:19:59"
+  },
+  "settings_slider_track": {
+   "AssetId": "110480176349310",
+   "Path": "assets/ui/screens/settings/png/slider_track.png",
+   "Sha256": "2cd720336b8723180de6cd5a7f799470739fdf1810d3461fd0c833bb07109ec1",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:20:03"
+  },
+  "settings_toggle_knob": {
+   "AssetId": "88348339811991",
+   "Path": "assets/ui/screens/settings/png/toggle_knob.png",
+   "Sha256": "40d8816f44303d44e32de62521d3f3aa44b11f68777929a0b1996db488b1e57c",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:20:06"
+  },
+  "settings_toggle_off": {
+   "AssetId": "138231988678547",
+   "Path": "assets/ui/screens/settings/png/toggle_off.png",
+   "Sha256": "b10075f61fd684ca1892bc41e6f7d272805cdca8a6a62ed2815e06e4fc6633c4",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:20:09"
+  },
+  "settings_toggle_on": {
+   "AssetId": "129604240826944",
+   "Path": "assets/ui/screens/settings/png/toggle_on.png",
+   "Sha256": "76c946eb6cffe9678a5d5510aca172e4efc7fa4439aa56088030a18019d723f8",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:20:13"
+  },
+  "settings_window_settings": {
+   "AssetId": "107001171539420",
+   "Path": "assets/ui/screens/settings/png/window_settings.png",
+   "Sha256": "4917554e2c1edb0d2be420495fd7e6b26f902bb422cb81ba154796c58e6e7162",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:20:22"
+  }
+ }
+}

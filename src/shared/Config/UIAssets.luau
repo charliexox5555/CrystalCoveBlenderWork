@@ -94,5 +94,23 @@ local UIAssets = {
 	["screens/codes/window_codes"] = "rbxassetid://130439492899536",
 	["screens/codes/field_inset"] = "rbxassetid://98997316553457",
 	["screens/codes/field_focus"] = "rbxassetid://99561576715408",
+	-- SettingsScreen (tools/ui/settings_art.mjs; assets/ui/screens/settings)
+	["screens/settings/window_settings"] = "rbxassetid://80745807985337",
+	["screens/settings/row_plate"] = "rbxassetid://98724888006039",
+	["screens/settings/section_rule"] = "rbxassetid://87454931589341",
+	["screens/settings/slider_track"] = "rbxassetid://108883153961201",
+	["screens/settings/slider_fill_aqua"] = "rbxassetid://131933425543030",
+	["screens/settings/slider_knob"] = "rbxassetid://106231438666779",
+	["screens/settings/toggle_on"] = "rbxassetid://119866084462346",
+	["screens/settings/toggle_off"] = "rbxassetid://97924136102909",
+	["screens/settings/toggle_knob"] = "rbxassetid://130946412636133",
+	["screens/settings/icon_master"] = "rbxassetid://116489759097215",
+	["screens/settings/icon_music"] = "rbxassetid://128441386984663",
+	["screens/settings/icon_sfx"] = "rbxassetid://77045510824948",
+	["screens/settings/icon_bot"] = "rbxassetid://75201543377719",
+	["screens/settings/icon_autocast"] = "rbxassetid://134988915857228",
+	["screens/settings/icon_effects"] = "rbxassetid://128977364740417",
+	["screens/settings/icon_motion"] = "rbxassetid://132131276091240",
+	["screens/settings/icon_cosmetics"] = "rbxassetid://121754588232337",
 }
 return UIAssets

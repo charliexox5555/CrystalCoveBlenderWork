@@ -14,6 +14,15 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — SettingsScreen design (top bar menus)
+Done:
+- Designed `StarterGui.SettingsScreen`: a compact one-page Stained Glass window (0.54 of screen width vs Inventory's 0.7, no scrolling), aqua accent. Left column SOUND: Master, Music, SFX sliders (track, aqua fill, gem knob, % readout on a milk plaque). Right column GAMEPLAY (Bot Play, Auto-Cast Powers) and GRAPHICS & COMFORT (Large Effects, Reduced Motion, Hide Others' Cosmetics) with one reusable emerald/slate ON/OFF toggle. Each row has an icon and a one-line helper. Rebuild: `tools/studio/build_settings_screen.luau`.
+- New art `tools/ui/settings_art.mjs` → `assets/ui/screens/settings` (window, row plate, section rule, slider and toggle parts, 8 row icons), 17 Decals uploaded to group 11116787; keys in `UIAssets` (`screens/settings/*`). Captures and element map: `docs/ui/screens/SettingsScreen.md`.
+Next:
+- Wire it (SettingsController, profile save, SoundGroups, effects/motion/cosmetics flags); phone/tablet scaling pass. The HUD music button is untouched.
+Problems / questions for the user:
+- Save the place (the rebuilt screen exists only in the open Edit session). Node isn't on PATH, but Codex's bundled one works with `sharp`: `NODE_PATH=~/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules ~/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node tools/ui/settings_art.mjs`.
+
 ## 2026-10-19 — Claude — CodesScreen design (top bar menus)
 Done:
 - Designed `StarterGui.CodesScreen`: a small, short, wide Stained Glass window (CODES amethyst banner, Close diamond, dark inset `CodeInput` TextBox with an aqua `FocusOutline`, green `RedeemButton`, hidden `Status` line, hint line). Rebuild: `tools/studio/build_codes_screen.luau`.

@@ -156,8 +156,13 @@ function Stage.start(entry)
 		local id = entry.Cosmetics and entry.Cosmetics.Rideables[side] or ""
 		local source = id ~= "" and require(script.Parent.AssetCatalog).cosmetic("Rideables", id)
 		if not source then
-			-- No flyer equipped (or not installed): the avatar stands on its pad.
-			continue
+			-- No flyer equipped (or not installed): the avatar stands in the air at rider height on a faint
+			-- hover pad (Assets.RideStand, PoseId "stand"; the client poses it like a ride).
+			source = RS.Assets:FindFirstChild("RideStand")
+			id = "stand"
+			if not source then
+				continue
+			end
 		end
 		local ride = source:Clone()
 		ride.Name = "Ride" .. side

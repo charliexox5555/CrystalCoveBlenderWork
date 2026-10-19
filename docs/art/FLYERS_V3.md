@@ -156,19 +156,40 @@ Every family has five clips: **Idle** (loop with breathing, weight shifts, head 
 
 ## 6. Adding a flyer
 
-1. **Pick a family** that matches how the rider stands or sits. Only add a new family when none fits; a new family
-   needs all five clips and its assets uploaded for R15 and R6.
-2. **Model** (Blender, `tools/blender/build_flyers_v3.py` as the pattern): origin = rider contact point (deck top
-   under the feet, or seat top under the hips), nose +Y in Blender (Roblox -Z), 1 BU = 1 stud.
-3. **Attachments** on the model (names are the contract):
-   - `RiderFeet` (standing families) or `RiderSeat` (seated families) at the origin.
-   - Handle flyers: `GripL` and `GripR` at the hand positions. Place them on the family's standard layout
-     (`RideFamilies.StandardGrips`): HandleStand at (-/+0.96, 2.58, -1.56), HandleSit at (-/+0.9, 1.45, -1.55)
-     in rider space. Grips can differ a little; IK covers R15 riders with tracks.
-   - Effect attachments as needed (`Trail*`, `Exhaust_*`, `Wake`, `Launch`).
-4. **Register** the flyer in `RideFamilies.Flyers` (`id = { Family = "..." }`) and give it a motion profile in
-   `RideAnimations.Motion` (float, drift, bank, launch, loop sound).
-5. **Install** in Studio with an installer like `tools/studio/install_flyers_v3.luau` and effects from
-   `tools/studio/flyer_effects.luau`. No new animation upload is needed when you reuse a family.
-6. **Check the fit** with `tools/studio/check_flyer_fit.luau` (feet/seat contact, hands on grips) and look at it in
-   a round, the lobby display and the shop portrait.
+The checklist for every new flyer (the launch batch follows it; `tools/blender/build_flyers_launch.py` is F's
+builder on top of `build_flyers_v3.py`).
+
+1. **Pick a family** that matches how the rider stands or sits: Surf (SS), Sit (SC), Kneel (KC), HandleStand (HS)
+   or HandleSit (HC). Only add a new family when none fits; a new family needs all five clips uploaded for R15
+   and R6 (`lune run tools/build_ride_animations <Family>`, then the uploader and
+   `tools/write_ride_animation_ids.py`).
+2. **Scale:** 1 Blender unit = 1 stud. The default R15 rider is about 5 studs tall, hips about 2.5 above the
+   feet, shoulders about 2 studs across. Standing decks are about 2.6–3.5 wide; seats about 1.8 wide. Keep each
+   mesh well under 10k triangles and the flyer within the rarity budget (§2).
+3. **Origin and axes:** origin = the rider contact point, nose = Blender +Y (Roblox -Z). Standing families: the
+   deck top under the feet. Seated families: the seat top under the hips; legs rest about 1.0–1.5 studs forward
+   and 0.7–1.0 down (Sit), or on a footrest about 2.0–2.4 forward (HandleSit). Kneel: the keel top; knees land
+   about 0.7 forward and shins about 1.3 back.
+4. **Attachments** (names are the contract; the installer reads them from `manifest.json`):
+   - `RiderFeet` (standing and kneeling families) or `RiderSeat` (seated families) at the origin.
+   - Handle families: `GripL` (rider's left, -X) and `GripR` (+X) where the hands hold. Put them on the family's
+     standard layout (`RideFamilies.StandardGrips`, rider space): HandleStand (-/+0.96, 2.58, -1.56), HandleSit
+     (-/+0.62, 1.46, -1.74). Grips can differ a little; IK locks R15 hands on.
+   - Effects: `Trail0`/`Trail1` (a trail is drawn from each point down by about 0.2 studs), `Wake` (wind
+     streaks fly backward from it), `Launch` (under the flyer, take-off burst). Optional extras like `Drip0`.
+5. **Moving parts** are separate meshes with `RideMotion` attributes in the manifest's `Motion`:
+   Wing, Spin (`SpinAxis`, `SpinSpeed`), Pulse, Puff (`PuffPhase`), Flame, Tail (`MotionPivot`, `TailAngle`,
+   `TailLag`), Fin (`MotionPivot`, `FinAxis`, `FinAngle`, `FinHz`, `FinPhase`, `FinBank`) and Bob (`BobAmp`,
+   `BobHz`, `BobPhase`: a vertical slide). If the rider sits on a moving part (a carousel pony), set the model
+   attribute `RiderMount` to that part's name and put the grips on it; the rider follows its motion.
+6. **Register:** `RideFamilies.Flyers` (`id = { Family = "..." }`), a motion profile in `RideAnimations.Motion`
+   (float, drift, bank, launch and a quiet ProSoundEffects loop), an entry in `Config/RoundCosmetics.Rideables`
+   (Id, Name ≤ 12 characters, Rarity, Color, Accent, Description; no Matches) and an effects function in
+   `tools/studio/flyer_effects.luau` (trail colours, particles, launch burst). Add the main part to the installer's
+   `MAIN` table, or `"Main"` in the manifest.
+7. **Upload and install:** upload the FBX (Open Cloud, group 11116787), then in Studio Edit run
+   `flyer_effects.luau` + `install_flyers_v3.luau` with `_G.FlyersV3[id] = { AssetId, Manifest }`. It fits the
+   import (scale and turn), sets materials and motion signs, adds attachments and effects, and keeps backups.
+   Crate pools pick the flyer up once its template is installed.
+8. **Check:** `tools/studio/check_flyer_fit.luau` (feet or seat contact, hands on grips), then a real round,
+   the lobby Flyers display and the shop portrait, with R15 and R6 riders.

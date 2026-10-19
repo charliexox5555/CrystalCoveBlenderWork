@@ -121,7 +121,7 @@ function Controller:Step(time)
 			if height then
 				localPose = CFrame.new(0, height, 0) * entry.RootLocal.Rotation
 			end
-			local rootPose = pose * localPose
+			local rootPose = entry.Motion:RiderPose(pose, localPose)
 			character:PivotTo(rootPose)
 			entry.Pose:PlaceAnchored(rootPose)
 		end

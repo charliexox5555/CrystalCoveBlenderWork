@@ -9,6 +9,7 @@ local TEX = {
 	fleck = "rbxassetid://119749428254490",
 	fire = "rbxasset://textures/particles/fire_main.dds",
 	sparkle = "rbxasset://textures/particles/sparkles_main.dds",
+	droplet = "rbxassetid://118823344389220",
 }
 local function v3(t)
 	return Vector3.new(t[1], t[2], t[3])
@@ -80,6 +81,31 @@ local function wake(att, color)
 		SpreadAngle = Vector2.new(20, 9),
 		Orientation = Enum.ParticleOrientation.VelocityParallel,
 		Squash = nseq({ { 0, 1.2 }, { 1, 1.2 } }),
+	})
+end
+
+-- A second attachment just below `att` so a Trail has height (launch flyers mark one point per trail).
+local function pairBelow(att, dy)
+	local b = Instance.new("Attachment")
+	b.Name = att.Name .. "Low"
+	b.Position = att.Position + Vector3.new(0, -(dy or 0.18), 0)
+	b.Parent = att.Parent
+	return b
+end
+local function launchBurst(att, color, count)
+	emitter(att, "LaunchPuff", {
+		Burst = count or 14,
+		Texture = TEX.puff,
+		Color = ColorSequence.new(Color3.fromHex(color)),
+		LightEmission = 0,
+		Brightness = 1.3,
+		Size = nseq({ { 0, 0.8 }, { 1, 2.4 } }),
+		Transparency = nseq({ { 0, 0.35 }, { 1, 1 } }),
+		Lifetime = NumberRange.new(0.45, 0.7),
+		Speed = NumberRange.new(5, 8),
+		EmissionDirection = Enum.NormalId.Bottom,
+		SpreadAngle = Vector2.new(75, 75),
+		Drag = 4,
 	})
 end
 
@@ -343,3 +369,132 @@ EFFECTS.prism_ray = function(P, A)
 	})
 end
 
+-- Launch flyers (Cosmetics V2, models by workstream F).
+EFFECTS.honey_hover = function(P, A)
+	for _, key in { "Trail0", "Trail1" } do
+		trail(A[key].Parent, "HexTrail", A[key], pairBelow(A[key]), {
+			Color = seq({ { 0, "#FFD23F" }, { 1, "#FFF1C9" } }),
+			Transparency = nseq({ { 0, 0.3 }, { 1, 1 } }),
+			Lifetime = 0.45,
+			LightEmission = 0.6,
+			MinLength = 0.04,
+		})
+	end
+	for _, key in { "Drip0", "Drip1" } do
+		emitter(A[key], "HoneyDrops", {
+			Texture = TEX.glint,
+			Color = seq({ { 0, "#FFD23F" }, { 1, "#C77A00" } }),
+			LightEmission = 0.4,
+			Size = nseq({ { 0, 0.28 }, { 1, 0.14 } }),
+			Transparency = nseq({ { 0, 0.1 }, { 1, 0.7 } }),
+			Lifetime = NumberRange.new(1, 1.4),
+			Rate = 3,
+			Speed = NumberRange.new(0.2, 0.6),
+			EmissionDirection = Enum.NormalId.Bottom,
+			SpreadAngle = Vector2.new(10, 10),
+			Acceleration = Vector3.new(0, -10, 0),
+		})
+	end
+	light(A.Launch, "#FFC94D", 1.1, 8)
+	wake(A.Wake, "#FFF1C9")
+	launchBurst(A.Launch, "#FFF1C9")
+	emitter(A.Launch, "LaunchGlints", {
+		Burst = 12,
+		Texture = TEX.glint,
+		Color = ColorSequence.new(Color3.fromHex("#FFD23F")),
+		LightEmission = 1,
+		Size = nseq({ { 0, 0.45 }, { 1, 0 } }),
+		Lifetime = NumberRange.new(0.4, 0.7),
+		Speed = NumberRange.new(6, 10),
+		SpreadAngle = Vector2.new(180, 180),
+		Drag = 3,
+	})
+end
+
+EFFECTS.bubble_pod = function(P, A)
+	local sheen = seq({ { 0, "#FF9CE0" }, { 0.5, "#FFE58A" }, { 1, "#8FF0FF" } })
+	for _, key in { "Trail0", "Trail1" } do
+		trail(A[key].Parent, "SheenTrail", A[key], pairBelow(A[key], 0.22), {
+			Color = sheen,
+			Transparency = nseq({ { 0, 0.35 }, { 1, 1 } }),
+			Lifetime = 0.55,
+			LightEmission = 0.5,
+			MinLength = 0.04,
+			WidthScale = nseq({ { 0, 1 }, { 1, 0.3 } }),
+		})
+	end
+	emitter(A.Wake, "BubbleWake", {
+		Texture = TEX.droplet,
+		Color = sheen,
+		LightEmission = 0.3,
+		Size = nseq({ { 0, 0.18 }, { 0.2, 0.42 }, { 1, 0.5 } }),
+		Transparency = nseq({ { 0, 1 }, { 0.15, 0.35 }, { 0.85, 0.45 }, { 1, 1 } }),
+		Lifetime = NumberRange.new(0.9, 1.1),
+		Rate = 6,
+		Speed = NumberRange.new(2, 4),
+		EmissionDirection = Enum.NormalId.Back,
+		SpreadAngle = Vector2.new(30, 30),
+		Drag = 1,
+		Acceleration = Vector3.new(0, 1.5, 0),
+	})
+	wake(A.Wake, "#F4FBFF")
+	launchBurst(A.Launch, "#F4FBFF", 12)
+	emitter(A.Launch, "LaunchBubbles", {
+		Burst = 18,
+		Texture = TEX.droplet,
+		Color = sheen,
+		LightEmission = 0.3,
+		Size = nseq({ { 0, 0.3 }, { 1, 0.55 } }),
+		Transparency = nseq({ { 0, 0.3 }, { 1, 1 } }),
+		Lifetime = NumberRange.new(0.6, 1),
+		Speed = NumberRange.new(4, 7),
+		SpreadAngle = Vector2.new(180, 180),
+		Drag = 2,
+	})
+end
+
+EFFECTS.paper_jet = function(P, A)
+	for _, key in { "Trail0", "Trail1" } do
+		trail(A[key].Parent, "CreaseStreamer", A[key], pairBelow(A[key], 0.12), {
+			Color = seq({ { 0, "#FFFFFF" }, { 1, "#BFD8FF" } }),
+			Transparency = nseq({ { 0, 0.25 }, { 1, 1 } }),
+			Lifetime = 0.5,
+			LightEmission = 0.4,
+			MinLength = 0.04,
+			WidthScale = nseq({ { 0, 1 }, { 1, 0.4 } }),
+		})
+	end
+	emitter(P.Keel, "PaperGlints", {
+		Texture = TEX.glint,
+		Color = seq({ { 0, "#FFFFFF" }, { 1, "#FFD84D" } }),
+		LightEmission = 1,
+		Size = nseq({ { 0, 0 }, { 0.3, 0.26 }, { 1, 0 } }),
+		Lifetime = NumberRange.new(0.5, 0.8),
+		Rate = 4,
+		Speed = NumberRange.new(0.3, 0.8),
+		Shape = Enum.ParticleEmitterShape.Box,
+		ShapeStyle = Enum.ParticleEmitterShapeStyle.Surface,
+	})
+	wake(A.Wake, "#FFFFFF")
+	launchBurst(A.Launch, "#FFFFFF")
+end
+
+-- No flyer equipped (decision 95): the faint hover pad under a standing rider.
+EFFECTS.stand = function(P, A)
+	emitter(A.Shimmer, "HoverShimmer", {
+		Texture = TEX.glint,
+		Color = seq({ { 0, "#DDFBFF" }, { 1, "#9FE3FF" } }),
+		LightEmission = 1,
+		Size = nseq({ { 0, 0 }, { 0.3, 0.22 }, { 1, 0 } }),
+		Transparency = nseq({ { 0, 0.2 }, { 1, 0.8 } }),
+		Lifetime = NumberRange.new(0.7, 1.1),
+		Rate = 6,
+		Speed = NumberRange.new(0.6, 1.2),
+		EmissionDirection = Enum.NormalId.Top,
+		SpreadAngle = Vector2.new(15, 15),
+		Shape = Enum.ParticleEmitterShape.Disc,
+		ShapeStyle = Enum.ParticleEmitterShapeStyle.Volume,
+	})
+	light(A.Shimmer, "#9FE3FF", 0.6, 6)
+	launchBurst(A.Shimmer, "#E8FFFE", 10)
+end

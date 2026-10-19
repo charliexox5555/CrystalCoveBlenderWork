@@ -114,6 +114,17 @@ function Pose.new(character, id, options)
 		self.AnimateDisabled = self.Animate.Disabled
 		self.Animate.Disabled = true
 	end
+	-- Staged riders float above the pad (anchored root, nothing underneath): keep the local player's humanoid
+	-- out of Freefall/FallingDown so no falling animation or sound kicks in; restored on Destroy.
+	if human and character == Players.LocalPlayer.Character then
+		self.Human = human
+		self.States = {}
+		for _, state in { Enum.HumanoidStateType.Freefall, Enum.HumanoidStateType.FallingDown } do
+			self.States[state] = human:GetStateEnabled(state)
+			human:SetStateEnabled(state, false)
+		end
+		human:ChangeState(Enum.HumanoidStateType.Running)
+	end
 	local animator = human and human:FindFirstChildOfClass("Animator")
 	local anchoredRig = true
 	for _, j in self.Joints do
@@ -408,6 +419,11 @@ function Pose:Destroy()
 	end
 	if self.Animate and self.Animate.Parent and self.AnimateDisabled ~= nil then
 		self.Animate.Disabled = self.AnimateDisabled
+	end
+	if self.Human and self.Human.Parent then
+		for state, enabled in self.States do
+			self.Human:SetStateEnabled(state, enabled)
+		end
 	end
 end
 

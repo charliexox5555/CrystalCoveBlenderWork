@@ -95,7 +95,7 @@ function Ride:Step(time, base, near)
 	end
 	if self.Pose and self.Npc.Parent then
 		self.Pose:Lean(self.Motion.Bank, self.Motion.Pitch)
-		local rootPose = pose * CFrame.new(0, self.Pose.Height or 0, 0)
+		local rootPose = self.Motion:RiderPose(pose, CFrame.new(0, self.Pose.Height or 0, 0))
 		self.Npc:PivotTo(rootPose)
 		self.Pose:PlaceAnchored(rootPose)
 	end

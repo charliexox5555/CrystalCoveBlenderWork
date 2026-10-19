@@ -987,7 +987,7 @@ Balance.Feel = {
 }
 
 Balance.CosmeticPresentation = {
-	RideLift = 2.2,
+	RideLift = 4.0, -- riders float well above the pad (creator, 2026-10-19; was 2.2)
 	RideBob = 0.16,
 	RideBobHz = 1.1,
 	RideBank = 0.035,

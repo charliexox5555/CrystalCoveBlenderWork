@@ -122,6 +122,90 @@ F.Families = {
 		},
 	},
 
+	-- No flyer (decision 95): standing tall in the air on a faint hover pad, a still, confident stand.
+	Stand = {
+		Contact = "Feet",
+		R6KneeFold = 0.5,
+		Base = {
+			Spine = { 3, 0, 0 },
+			Head = { -3, 0, 0 },
+			LeftArm = { -4, 0, -12 },
+			RightArm = { -4, 0, 12 },
+			LeftElbow = { 12, 0, 0 },
+			RightElbow = { 12, 0, 0 },
+			LeftHip = { 0, -4, -5 },
+			RightHip = { 0, 4, 5 },
+			LeftKnee = { -4, 0, 0 },
+			RightKnee = { -4, 0, 0 },
+			LeftAnkle = { 4, 0, 5 },
+			RightAnkle = { 4, 0, -5 },
+		},
+		Clips = {
+			Idle = {
+				Seconds = 3.6,
+				Waves = {
+					{ "Spine", 1, 1.5, 2, 0 }, -- calm breathing
+					{ "Root", 3, 1.2, 1, 0 }, -- slow weight shift
+					{ "LeftKnee", 1, 3, 1, 0 },
+					{ "RightKnee", 1, 3, 1, 0.5 },
+					{ "Head", 2, 6, 1, 0.3 }, -- looks around the arena
+					{ "Head", 1, 2, 2, 0.1 },
+					{ "LeftArm", 3, 2.5, 1, 0.15 },
+					{ "RightArm", 3, 2.5, 1, 0.65 },
+				},
+			},
+			LeanLeft = {
+				Seconds = 1.8,
+				Offset = {
+					Root = { 0, 2, 5 },
+					Spine = { 0, 0, 3 },
+					Head = { 0, 0, -5 },
+					LeftArm = { 0, 0, 6 },
+					RightArm = { 0, 0, 6 },
+				},
+				Waves = { { "Spine", 1, 1, 1, 0 } },
+			},
+			Launch = {
+				Seconds = 0.7,
+				Keys = {
+					{ 0, {} },
+					{
+						0.3,
+						{
+							LeftKnee = { -20, 0, 0 },
+							RightKnee = { -20, 0, 0 },
+							LeftHip = { 10, 0, 0 },
+							RightHip = { 10, 0, 0 },
+							Spine = { -6, 0, 0 },
+						},
+					},
+					{
+						0.6,
+						{ Spine = { 4, 0, 0 }, Head = { 4, 0, 0 }, LeftArm = { 0, 0, -10 }, RightArm = { 0, 0, 10 } },
+					},
+					{ 1, {} },
+				},
+			},
+			Land = {
+				Seconds = 0.5,
+				Keys = {
+					{ 0, {} },
+					{
+						0.35,
+						{
+							LeftKnee = { -18, 0, 0 },
+							RightKnee = { -18, 0, 0 },
+							LeftHip = { 9, 0, 0 },
+							RightHip = { 9, 0, 0 },
+							Spine = { -5, 0, 0 },
+						},
+					},
+					{ 1, {} },
+				},
+			},
+		},
+	},
+
 	-- Sitting in a soft seat, legs forward. Cloud Cushion.
 	Sit = {
 		Contact = "Seat",
@@ -401,14 +485,14 @@ F.Families = {
 		Base = {
 			Spine = { -6, 0, 0 },
 			Head = { 4, 0, 0 },
-			LeftArm = { 72, -6, -10 },
-			RightArm = { 72, 6, 10 },
-			LeftElbow = { 30, 0, 0 },
-			RightElbow = { 30, 0, 0 },
-			LeftHip = { 92, -6, 0 },
-			RightHip = { 92, 6, 0 },
-			LeftKnee = { -28, 0, 0 },
-			RightKnee = { -28, 0, 0 },
+			LeftArm = { 82, -4, 22 }, -- hands inward onto the carriage grips (+-0.62)
+			RightArm = { 82, 4, -22 },
+			LeftElbow = { 22, 0, 0 },
+			RightElbow = { 22, 0, 0 },
+			LeftHip = { 108, -6, 0 }, -- legs reach forward-up toward a footrest (measured on the v5 carriage)
+			RightHip = { 108, 6, 0 },
+			LeftKnee = { -12, 0, 0 },
+			RightKnee = { -12, 0, 0 },
 			LeftAnkle = { 12, 0, 0 },
 			RightAnkle = { 12, 0, 0 },
 		},
@@ -485,13 +569,18 @@ F.Flyers = {
 	prism_ray = { Family = "Surf" },
 	cloud_cushion = { Family = "Sit" },
 	rocket_skiff = { Family = "HandleStand" },
+	lantern_carriage = { Family = "HandleSit" }, -- Moonlantern Carriage (PoseId), grips added by workstream I
+	stand = { Family = "Stand" }, -- no flyer equipped: the hover pad (Assets.RideStand)
+	honey_hover = { Family = "Surf" },
+	bubble_pod = { Family = "Sit" },
+	paper_jet = { Family = "Kneel" },
 }
 
 -- Standard grip layout per handle family, in rider space (contact point at the origin, nose toward -Z). Handle
 -- flyers place their GripL/GripR attachments here (or close) so the family's authored hands already fit.
 F.StandardGrips = {
 	HandleStand = { L = { -0.96, 2.58, -1.56 }, R = { 0.96, 2.58, -1.56 } },
-	HandleSit = { L = { -0.9, 1.45, -1.55 }, R = { 0.9, 1.45, -1.55 } }, -- Moonlantern Carriage v5 handlebar ends
+	HandleSit = { L = { -0.62, 1.46, -1.74 }, R = { 0.62, 1.46, -1.74 } }, -- Moonlantern Carriage v5 handlebar corners
 }
 
 F.ClipNames = { "Idle", "LeanLeft", "LeanRight", "Launch", "Land" }
@@ -502,11 +591,11 @@ F.Loops = { Idle = true, LeanLeft = true, LeanRight = true }
 -- BEGIN ANIMATION IDS
 F.AnimationIds = {
 	HandleSit = {
-		Idle = { R15 = "rbxassetid://116463534970302", R6 = "rbxassetid://81131432052355" },
-		LeanLeft = { R15 = "rbxassetid://75118647512728", R6 = "rbxassetid://74415688345169" },
-		LeanRight = { R15 = "rbxassetid://89581119501473", R6 = "rbxassetid://132647811045146" },
-		Launch = { R15 = "rbxassetid://108307649271558", R6 = "rbxassetid://127170852511337" },
-		Land = { R15 = "rbxassetid://129236584753125", R6 = "rbxassetid://123605810418401" },
+		Idle = { R15 = "rbxassetid://136867290254632", R6 = "rbxassetid://119728664118108" },
+		LeanLeft = { R15 = "rbxassetid://105593890982328", R6 = "rbxassetid://105946790515834" },
+		LeanRight = { R15 = "rbxassetid://94267938707993", R6 = "rbxassetid://118618690542730" },
+		Launch = { R15 = "rbxassetid://90561652247397", R6 = "rbxassetid://90769939550746" },
+		Land = { R15 = "rbxassetid://93676222793236", R6 = "rbxassetid://111180934812673" },
 	},
 	HandleStand = {
 		Idle = { R15 = "rbxassetid://75105075466978", R6 = "rbxassetid://102210952721526" },
@@ -528,6 +617,13 @@ F.AnimationIds = {
 		LeanRight = { R15 = "rbxassetid://138163421499357", R6 = "rbxassetid://76405921719794" },
 		Launch = { R15 = "rbxassetid://131946276035619", R6 = "rbxassetid://131473690975463" },
 		Land = { R15 = "rbxassetid://135332403647717", R6 = "rbxassetid://92643804232249" },
+	},
+	Stand = {
+		Idle = { R15 = "rbxassetid://108357607085651", R6 = "rbxassetid://128435535784589" },
+		LeanLeft = { R15 = "rbxassetid://94179503119866", R6 = "rbxassetid://108113200663136" },
+		LeanRight = { R15 = "rbxassetid://99532351528821", R6 = "rbxassetid://95536629717905" },
+		Launch = { R15 = "rbxassetid://132708193018907", R6 = "rbxassetid://96769927126282" },
+		Land = { R15 = "rbxassetid://125949925509863", R6 = "rbxassetid://136892529657311" },
 	},
 	Surf = {
 		Idle = { R15 = "rbxassetid://131974159115214", R6 = "rbxassetid://99567348879394" },

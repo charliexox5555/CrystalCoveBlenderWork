@@ -11,7 +11,16 @@ local RS = game:GetService("ReplicatedStorage")
 local SS = game:GetService("ServerStorage")
 local input = assert(_G.FlyersV3, "_G.FlyersV3 missing")
 
-local MAIN = { skyboard = "Deck", cloud_cushion = "CloudBody", rocket_skiff = "Hull", prism_ray = "Body" }
+-- Main part (PrimaryPart, sound host) per flyer; a manifest may name its own with "Main".
+local MAIN = {
+	skyboard = "Deck",
+	cloud_cushion = "CloudBody",
+	rocket_skiff = "Hull",
+	prism_ray = "Body",
+	honey_hover = "Deck",
+	bubble_pod = "Shell",
+	paper_jet = "Keel",
+}
 
 local function folder(parent, name)
 	local f = parent:FindFirstChild(name)
@@ -149,7 +158,7 @@ for id, entry in input do
 		end
 		part.Parent = model
 	end
-	local main = model[MAIN[id]]
+	local main = model[manifest.Main or MAIN[id]]
 	main.PivotOffset = main.CFrame:Inverse() -- model pivot = contact point at the origin
 	model.PrimaryPart = main
 	local A = {}

@@ -1,4 +1,4 @@
--- lune run tools/build_ride_animations
+-- lune run tools/build_ride_animations [Family ...]
 -- Writes every rider animation family clip (Config/RideFamilies, sampled by RideKeyframes) as a KeyframeSequence
 -- .rbxm for R15 and R6 into assets/animations/rider/<Family>_<Clip>_<Rig>.rbxm, plus an upload list for
 -- tools/opencloud/upload_assets.py (Type "Animation"). Same output as tools/studio/build_ride_animations.luau,
@@ -7,6 +7,7 @@
 local roblox = require("@lune/roblox")
 local fs = require("@lune/fs")
 local serde = require("@lune/serde")
+local process = require("@lune/process")
 local K = require("../src/shared/RideKeyframes")
 local F = require("../src/shared/Config/RideFamilies")
 
@@ -93,7 +94,9 @@ end
 local items = {}
 local names = {}
 for name in F.Families do
-	table.insert(names, name)
+	if #process.args == 0 or table.find(process.args, name) then
+		table.insert(names, name)
+	end
 end
 table.sort(names)
 for _, familyName in names do
@@ -126,8 +129,27 @@ for _, familyName in names do
 		end
 	end
 end
+-- The upload list always covers every family (the uploader skips files whose hash is unchanged).
+items = {}
+for name in F.Families do
+	for _, clipName in F.ClipNames do
+		for _, rig in { "R15", "R6" } do
+			local key = ("%s_%s_%s"):format(name, clipName, rig)
+			table.insert(items, {
+				Key = key,
+				Path = ("%s/%s.rbxm"):format(OUT, key),
+				Type = "Animation",
+				Name = "GC Ride " .. key,
+				Description = "Glass Clash rider animation (original, family " .. name .. ").",
+			})
+		end
+	end
+end
+table.sort(items, function(a, b)
+	return a.Key < b.Key
+end)
 fs.writeFile(
 	OUT .. "/upload_list.json",
 	serde.encode("json", { Record = OUT .. "/roblox_assets.json", Items = items }, true)
 )
-print(("%d animations -> %s"):format(#items, OUT))
+print(("%d families built, %d in the upload list -> %s"):format(#names, #items, OUT))

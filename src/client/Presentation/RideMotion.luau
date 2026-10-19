@@ -253,6 +253,11 @@ function Motion:Step(time, base, near)
 			local breathe = math.sin(time * T.RidePulseHz * TAU)
 			part.Size = rest.Size * (1 + T.RidePulseScale * breathe)
 			part.Transparency = rest.Transparency + T.RidePulseFade * (0.5 + 0.5 * breathe)
+		elseif kind == "Bob" then
+			-- Vertical slide (carousel pony on its pole); a RiderMount part carries the rider with it.
+			local bobHz = part:GetAttribute("BobHz") or p.BobHz
+			local up = math.sin(time * bobHz * TAU + (part:GetAttribute("BobPhase") or 0) * TAU)
+			cf = pose * rest.Pose * CFrame.new(0, up * (part:GetAttribute("BobAmp") or 0.3) * calm, 0)
 		elseif kind == "Puff" then
 			local breathe = math.sin(time * (p.PuffHz or 0.7) * TAU + (part:GetAttribute("PuffPhase") or 0))
 			part.Size = rest.Size * (1 + (p.PuffScale or 0.06) * breathe * calm)
@@ -271,6 +276,19 @@ function Motion:Step(time, base, near)
 		self.FX:Step(time, phase, near)
 	end
 	return pose
+end
+
+-- Rider pose for a flyer with a moving mount (model attribute RiderMount = part name): the rider follows that
+-- part's motion relative to its rest pose. Without a mount this is just pose * localPose.
+function Motion:RiderPose(pose, localPose)
+	local mountName = self.Model:GetAttribute("RiderMount")
+	local mount = mountName and self.Model:FindFirstChild(mountName, true)
+	local rest = mount and self.Parts[mount]
+	if not rest then
+		return pose * localPose
+	end
+	local restWorld = pose * rest.Pose
+	return pose * rest.Pose * restWorld:ToObjectSpace(mount.CFrame) * rest.Pose:Inverse() * localPose
 end
 
 -- land: a parent for the ride's landing flourish (rides leaving while visible); nil = silent cleanup.

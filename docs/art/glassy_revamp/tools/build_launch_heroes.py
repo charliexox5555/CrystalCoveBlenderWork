@@ -340,3 +340,121 @@ def h_glass_unicorn(gid):
     e1, e2, mouth = (world @ Vector(p) for p in ((-0.3, -0.21, -0.36), (-0.3, 0.21, -0.36), (-0.64, -0.04, -0.7)))
     ds += face4(body, [(e1.x, e1.z), (e2.x, e2.z)], (0.085, 0.12), cheeks=True, smile=(mouth.x, mouth.z, 0.05), eye_segs=(8, 5))
     return body, ds
+
+
+@launch("glass_phoenix")
+def h_glass_phoenix(gid):
+    """Hanging firebird in flight: horizontal body, hang loop on the back (origin), wings raised in a V,
+    three long tail streamers, flame crest. Built facing -Y (symmetric in x for Quadriflow), then turned
+    35 degrees so it flies toward the camera's left, and scaled to the 0.85 radius."""
+    tint, flame, gold, red, ember = "#FF7A2E", "#FF4E1F", "#FFD34E", "#E8361C", "#FFE27A"
+    head = Vector((0, -0.74, -0.2))
+
+    def shape(bm):
+        ellipsoid_bm(bm, (0, 0.15, -0.58), (0.4, 0.62, 0.42), 20, 12, Quaternion((1, 0, 0), -0.12))
+        ellipsoid_bm(bm, (0, -0.3, -0.62), (0.37, 0.34, 0.42), 16, 10)
+        tube_bm(bm, [(0, -0.36, -0.42), (0, -0.56, -0.28), (0, -0.66, -0.22)], [0.2, 0.17, 0.15], 10)
+        ellipsoid_bm(bm, head, (0.27, 0.28, 0.27), 14, 10)
+        ellipsoid_bm(bm, (0, 0.72, -0.62), (0.2, 0.22, 0.17), 10, 8)
+    body = organic("Body", shape, 470, fit=None, max_tris=1000)
+    glass4(body, tint, "shell", role="Body")
+    ds = []
+    infl = blob("InnerFlame", (0, 0.0, -0.58), (0.26, 0.55, 0.3), 8, 5)
+    glass4(infl, flame, "inner")
+    inner_layer(infl)
+    core = paint(blob("EmberCore", (0, -0.26, -0.6), (0.15, 0.15, 0.17), 10, 6), ember, "Neon")
+    anim(core, (0, -0.26, -0.6), (0, 0, 1), pulse(0.12, 1.1), flash(0.35), extra_idle=[flicker(0.05, 8)],
+         note="Mythic ember core: stronger glow and faster pulse in phase 2 (after Rebirth)")
+    embers = bubbles("Embers", (0, 0.05, -0.6), 0.22, 5, (0.025, 0.045), seed=71, color="#FFF0B0", neon=True, height=0.55)
+    anim(embers, (0, 0.05, -0.58), (0, 1, 0), spin(30), spin_boost(240))
+    ds += [infl, core, embers]
+    bb = bmesh.new()
+    lathe_into(bb, [(0, 0), (0.09, 0), (0.07, 0.08), (0.035, 0.17), (0, 0.24)], Matrix.Translation((0, -0.9, -0.24)) @ Matrix.Rotation(math.pi / 2 + 0.2, 4, "X"), 10)
+    beak = glass4(smooth_normals(_obj("Beak", bb)), gold, "detail")
+    anim(beak, (0, -0.88, -0.24), (1, 0, 0), None, kick(10))
+    ds.append(beak)
+    for i in range(3):
+        x0 = (i - 1) * 0.07
+        path = spline([(x0, -0.74, -0.03), (x0 * 1.4, -0.66, 0.16), (x0 * 1.8, -0.5, 0.28 - 0.04 * abs(i - 1)), (x0 * 2.0, -0.32, 0.3 - 0.06 * abs(i - 1))], 7)
+        rb = bmesh.new()
+        ribbon_bm(rb, path, [0.07, 0.1, 0.11, 0.1, 0.08, 0.05, 0.03, 0.01][:len(path)], 0.03, side=(1, 0, 0))
+        crest = glass4(smooth_normals(_obj(f"Crest_{i + 1}", rb)), (gold, red, gold)[i], "detail")
+        anim(crest, path[0], (1, 0, 0), sway(6, 1.3, i * 0.6), kick(14))
+        ds.append(crest)
+    outline = [(0, 0), (0.25, 0.4), (0.6, 0.8), (1.1, 1.12), (1.0, 0.86), (1.2, 0.78), (0.98, 0.58), (1.12, 0.46), (0.86, 0.36),
+               (0.94, 0.2), (0.66, 0.14), (0.62, -0.02), (0.36, 0.0), (0.2, -0.1)]
+    for s_, label in ((-1, "L"), (1, "R")):
+        shoulder = Vector((s_ * 0.26, -0.18, -0.36))
+        rot = Matrix.Rotation(s_ * -0.38, 4, "Z") @ Matrix.Rotation(s_ * -0.42, 4, "Y")
+        m = Matrix.Translation(shoulder) @ rot
+        pts = [(s_ * u * 1.05, v * 1.05) for u, v in outline]
+        if s_ < 0:
+            pts = list(reversed(pts))
+        wb = bmesh.new()
+        slab_bm(wb, pts, 0.05, 0.02, 1, None)
+        for v in wb.verts:
+            v.co.y += 0.16 * (abs(v.co.x) ** 2) - 0.06 * v.co.z
+        bmesh.ops.transform(wb, matrix=m, verts=wb.verts)
+        wing = glass4(smooth_normals(_obj("Wing_" + label, wb), 60), tint, "detail")
+        axis = rot.to_3x3() @ Vector((0, s_, 0))
+        anim(wing, shoulder, axis, sway(16, 1.6), flare(30), lod_keep=True, note="slow wing beats; wings flare wide at Rebirth")
+        ib = bmesh.new()
+        inner_pts = [(s_ * u * 0.62, v * 0.62) for u, v in outline]
+        if s_ < 0:
+            inner_pts = list(reversed(inner_pts))
+        slab_bm(ib, inner_pts, 0.07, 0, 1, None)
+        for v in ib.verts:
+            v.co.y += 0.16 * (abs(v.co.x) ** 2) - 0.06 * v.co.z - 0.012
+        bmesh.ops.transform(ib, matrix=m @ Matrix.Translation((0, 0, 0.02)), verts=ib.verts)
+        wi = glass4(smooth_normals(_obj("WingGold_" + label, ib), 60), gold, "detail")
+        anim(wi, shoulder, axis, sway(16, 1.6), flare(30), note="moves with Wing_" + label)
+        qb = bmesh.new()
+        for tu, tv in ((1.1, 1.12), (1.2, 0.78), (1.12, 0.46)):
+            pts3 = []
+            for k in range(3):
+                t = 0.08 + 0.86 * k / 2
+                x, z = s_ * tu * 1.05 * t, tv * 1.05 * t
+                pts3.append(m @ Vector((x, 0.16 * x * x - 0.06 * z - 0.03, z)))
+            tube_bm(qb, pts3, [0.028, 0.02, 0.006], 4)
+        quills = glass4(smooth_normals(_obj("WingQuills_" + label, qb)), gold, "detail")
+        anim(quills, shoulder, axis, sway(16, 1.6), flare(30), note="moves with Wing_" + label)
+        ds += [wing, wi, quills]
+    glow = bmesh.new()
+    for i in range(3):
+        a = (i - 1) * 0.42
+        root = Vector((0, 0.82, -0.62))
+        path = spline([root, root + Vector((math.sin(a) * 0.3, 0.42, -0.12)), root + Vector((math.sin(a) * 0.6, 0.86, -0.4)),
+                       root + Vector((math.sin(a) * 0.78, 1.18, -0.78))], 9)
+        rb = bmesh.new()
+        ribbon_bm(rb, path, [0.1, 0.12, 0.13, 0.13, 0.12, 0.12, 0.15, 0.2, 0.18, 0.04][:len(path)], 0.035, side=(0.35, 0, 1))
+        tf = glass4(smooth_normals(_obj(f"TailFeather_{i + 1}", rb)), (red, tint, red)[i], "detail")
+        anim(tf, root, (0, 0, 1), sway(8, 1.5, i * 0.7), kick(16), lod_keep=(i == 1))
+        ds.append(tf)
+        tip = path[-2]
+        gem_bm(glow, tip, 0.06, 0.12, 6, Matrix.Rotation(math.pi / 2, 4, "X"))
+    tg = paint(_obj("TailGlow", glow, smooth=False), gold, "Neon")
+    anim(tg, (0, 0.82, -0.62), (0, 0, 1), sway(8, 1.5, 0.7), flash(0.25), extra_idle=[pulse(0.15, 1.1)], note="eye-spots on the tail tips; ride the tail sway")
+    ds.append(tg)
+    tb = bmesh.new()
+    for s_ in (-1, 1):
+        base = Vector((s_ * 0.15, -0.12, -0.96))
+        for k_ in (-1, 1):
+            tube_bm(tb, [base, base + Vector((k_ * 0.05, -0.1, -0.06)), base + Vector((k_ * 0.07, -0.16, -0.02))], [0.035, 0.025, 0.008], 4)
+    talons = paint(smooth_normals(_obj("Talons", tb)), gold, "Metal")
+    anim(talons, (0, -0.12, -0.96), (1, 0, 0), None, kick(8))
+    rb = bmesh.new()
+    torus_bm(rb, (0, 0.1, -0.1), 0.1, 0.03, 10, 4, Matrix.Rotation(math.pi / 2, 4, "Y"))
+    loop = paint(smooth_normals(_obj("HangLoop", rb)), gold, "Metal")
+    ds += [talons, loop]
+    turn = Matrix.Rotation(math.radians(-35), 4, "Z")
+    transform_all([body, *ds], turn)
+    bpy.context.view_layer.update()
+    lo, hi = _world_bounds([body])
+    k = 0.85 / max(-lo.x, hi.x, -lo.y, hi.y)
+    world = Matrix.Diagonal((k, k, k, 1))
+    transform_all([body, *ds], world)
+    bpy.context.view_layer.update()
+    world = world @ turn
+    e1, e2 = (world @ Vector(p) for p in ((-0.12, -0.86, -0.16), (0.12, -0.86, -0.16)))
+    ds += face4(body, [(e1.x, e1.z), (e2.x, e2.z)], (0.06, 0.085), cheeks=True, eye_segs=(8, 5))
+    return body, ds

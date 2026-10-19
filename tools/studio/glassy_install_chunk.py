@@ -99,6 +99,9 @@ def main():
     ap.add_argument("--split", action="store_true",
                     help="data-only chunk that calls _G.GlassyInstallV4 (send the installer once first with --installer-only)")
     ap.add_argument("--installer-only", action="store_true", help="chunk that only registers _G.GlassyInstallV4")
+    ap.add_argument("--rojo-carrier", action="store_true",
+                    help="write a TEMPORARY (never commit) src/tests/_GlassyInstallV4/ module tree (installer + Batch1..6 data) "
+                         "that Rojo syncs to ServerStorage.Tests._GlassyInstallV4; each MCP call is then one short require")
     args = ap.parse_args()
     body = (ROOT / "tools/studio/install_glassies_v4.luau").read_text()
     wrapped = "_G.GlassyInstallV4 = function(DATA, OPTIONS)\n" + body + "\nend\n"
@@ -108,6 +111,25 @@ def main():
             Path(args.out).write_text(chunk)
         else:
             sys.stdout.write(chunk)
+        return
+    if args.rojo_carrier:
+        out = ROOT / "src/tests/_GlassyInstallV4"
+        out.mkdir(parents=True, exist_ok=True)
+        assets = {}
+        for rec in RECORDS:
+            if (ROOT / rec).exists():
+                assets.update(json.loads((ROOT / rec).read_text()).get("Assets", {}))
+        allids = SETS["revamp"] + SETS["launch"]
+        for i in range(6):
+            ids = allids[i * 6:(i + 1) * 6]
+            data = {g: entry_for(g, args.version, assets, {}) for g in ids}
+            (out / f"Batch{i + 1}.luau").write_text("-- TEMPORARY install data (do not commit).\nreturn {\n" +
+                                                     "".join("\t%s = %s,\n" % (g, lua(e)) for g, e in data.items()) + "}\n")
+        (out / "init.luau").write_text("-- TEMPORARY (do not commit): Rojo carrier for tools/studio/install_glassies_v4.luau.\n"
+                                       "local function run(DATA, OPTIONS)\n" + body + "\nend\nreturn function(batches, OPTIONS)\n"
+                                       "\tlocal DATA = {}\n\tfor _, b in batches do\n\t\tfor id, e in require(script:FindFirstChild(b)) do\n"
+                                       "\t\t\tDATA[id] = e\n\t\tend\n\tend\n\treturn run(DATA, OPTIONS)\nend\n")
+        print("wrote", out.relative_to(ROOT), "(Batch1-6: revamp 1-4, launch 5-6). Delete it after the install.", file=sys.stderr)
         return
     ids = list(args.ids) + (SETS[args.set] if args.set else [])
     if not ids:

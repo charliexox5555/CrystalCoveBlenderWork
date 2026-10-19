@@ -1,5 +1,12 @@
 # Morning import runbook: v4 glassies (and the other waiting meshes)
 
+**Status, Oct 19:** steps 0–3 are done for all 36 glassies.
+- All 72 uploads are Approved.
+- Every batch dry-ran clean (scale 0.01, bounds error under 1e-6, no warnings), then installed: 24 replaced with backups in `ServerStorage.GlassiesBeforeV4`, 12 added.
+- `--mode verify` gave `Ok` for all 36.
+
+Remaining: step 4 (A: crack paths, roster and Kiln, tests) and the creator saving the place.
+
 One safe flow from "the Open Cloud key works" to "the new art is live in Studio". Every step can be re-run: uploads skip files whose hash is unchanged, and the installer skips models already at v4 from the same asset. Nothing replaces live art without a backup.
 
 What gets installed:
@@ -79,7 +86,29 @@ Do the same for the other workstreams' Records, then commit.
 tools/studio_lock.sh acquire glassy-install
 ```
 
-Studio must be in **Edit** (not Play), with Rojo connected. Then:
+Studio must be in **Edit** (not Play), with Rojo connected.
+
+**Recommended route (used for the Oct 19 install): the Rojo carrier.** Pasting 40–75 KB data chunks through the MCP by hand is slow and error-prone, and a long synchronous model download can drop the MCP connection.
+
+1. Write the carrier:
+
+   ```bash
+   python3 tools/studio/glassy_install_chunk.py --rojo-carrier
+   ```
+
+   This writes a **temporary, never committed** `src/tests/_GlassyInstallV4/`: the installer plus `Batch1`–`Batch6` (revamp in 1–4, launch in 5–6). Rojo syncs it to `ServerStorage.Tests._GlassyInstallV4`. RunAll ignores it, because RunAll uses an explicit suite list.
+2. Run each batch in a background thread in Studio and poll it with short MCP calls, so a slow download never blocks the MCP:
+
+   ```lua
+   task.spawn(function()
+   	_G.R = require(game.ServerStorage.Tests._GlassyInstallV4)({ "Batch1" }, { Mode = "dry", Version = "v4" })
+   end)
+   ```
+
+   Then poll `_G.R` until it's set. Use the same pattern with `Mode = "install"` and `Mode = "verify"`.
+3. Afterwards, delete `src/tests/_GlassyInstallV4/`. Rojo doesn't always remove the synced copy, so also destroy `ServerStorage.Tests._GlassyInstallV4` in Studio.
+
+The manual route below gives the same result.
 
 1. **Register the installer** (once per Studio session):
 

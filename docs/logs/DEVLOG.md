@@ -14,6 +14,19 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — v4 glassies installed in Studio (workstream C)
+Done:
+- All 36 v4 glassies are installed at ReplicatedStorage.Assets.Glassies.<id> with tools/studio/install_glassies_v4.luau: the 24 revamped and the 12 Roster V2 launch glassies, from the Approved Open Cloud uploads (Records in docs/art/glassy_revamp/ and docs/art/launch_glassies/roblox_assets.json).
+- Every model dry-ran clean: scale 0.01 fitted, a 180 degree yaw found, fit and bounds error below 1e-6, geometry equal to ReleaseGeometry, no warnings.
+- Install: 24 replaced (originals in ServerStorage.GlassiesBeforeV4), 12 added; raw inserts in ServerStorage.GlassyV4Import.
+- Verify: Ok for all 36. Models carry ReleaseVersion 2, ArtVersion v4, MotionVersion 4, and Pivot_<Detail> attachments for GlassyMotion.
+- The data was carried by a temporary Rojo module (glassy_install_chunk.py --rojo-carrier), since removed. The runbook documents this route.
+Next:
+- A: copy docs/art/glassy_revamp/ReleaseCrackPaths_v4.luau over Config/ReleaseCrackPaths.luau; add the 12 to ReleaseRoster and the Kiln; run tests on a Play server.
+- Creator: save/publish the place.
+Problems / questions for the user:
+- None from the install.
+
 ## 2026-10-19 — Claude — Flyers v3 installed (workstream H)
 Done:
 - Installed the four uploaded v3 flyers (A's Open Cloud upload) into `Assets.Rideables` with `install_flyers_v3.luau`; exact fit to the manifests, backups in `ServerStorage.FlyersBeforeV3` (+ `V2WithEffects`), raw imports in `FlyersV3Import`. Installer now corrects motion signs for the importer's 180° turn and retries slow asset loads.

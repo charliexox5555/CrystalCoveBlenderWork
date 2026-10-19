@@ -1,0 +1,54 @@
+{
+ "Record": "assets/blender/round_cosmetics/flyers_v3/launch_roblox_assets.json",
+ "Items": [
+  {
+   "Key": "honey_hover",
+   "Path": "assets/blender/round_cosmetics/flyers_v3/honey_hover/honey_hover.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Flyer Honey Hover",
+   "Description": "Glass Clash launch flyer (original art)."
+  },
+  {
+   "Key": "bubble_pod",
+   "Path": "assets/blender/round_cosmetics/flyers_v3/bubble_pod/bubble_pod.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Flyer Bubble Pod",
+   "Description": "Glass Clash launch flyer (original art)."
+  },
+  {
+   "Key": "paper_jet",
+   "Path": "assets/blender/round_cosmetics/flyers_v3/paper_jet/paper_jet.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Flyer Paper Jet",
+   "Description": "Glass Clash launch flyer (original art)."
+  },
+  {
+   "Key": "dragonfly",
+   "Path": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Flyer Dragonfly",
+   "Description": "Glass Clash launch flyer (original art)."
+  },
+  {
+   "Key": "carousel",
+   "Path": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Flyer Carousel",
+   "Description": "Glass Clash launch flyer (original art)."
+  },
+  {
+   "Key": "sunwing",
+   "Path": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Flyer Sunwing",
+   "Description": "Glass Clash launch flyer (original art)."
+  },
+  {
+   "Key": "starwhale",
+   "Path": "assets/blender/round_cosmetics/flyers_v3/starwhale/starwhale.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Flyer Starwhale",
+   "Description": "Glass Clash launch flyer (original art)."
+  }
+ ]
+}

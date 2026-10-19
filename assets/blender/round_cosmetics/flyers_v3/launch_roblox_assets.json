@@ -1,0 +1,26 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "honey_hover": {
+   "AssetId": "90127873036573",
+   "Path": "assets/blender/round_cosmetics/flyers_v3/honey_hover/honey_hover.fbx",
+   "Sha256": "de589638b7fda0ae99d55eb9064875607b18b70f2f52ebed13a54ea9a13010cb",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:34:25"
+  },
+  "bubble_pod": {
+   "AssetId": "101371211028774",
+   "Path": "assets/blender/round_cosmetics/flyers_v3/bubble_pod/bubble_pod.fbx",
+   "Sha256": "ac05e5d9c669e4024758245ca3d6a43d62c8e3367c0f355acf9a8fef1268863e",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:34:48"
+  },
+  "paper_jet": {
+   "AssetId": "115144514705339",
+   "Path": "assets/blender/round_cosmetics/flyers_v3/paper_jet/paper_jet.fbx",
+   "Sha256": "8607b0612b4871765687657aa557e67279e31a63526d4a70a01673b98dc198d9",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:35:09"
+  }
+ }
+}

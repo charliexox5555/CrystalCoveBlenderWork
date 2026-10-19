@@ -1,0 +1,378 @@
+{
+ "Id": "bubble_pod",
+ "Name": "Bubble Pod",
+ "Contact": "Seat",
+ "Tris": 5416,
+ "Budget": 5500,
+ "Extents": [
+  5.78003,
+  5.14481,
+  6.52026
+ ],
+ "Parts": {
+  "Shell": {
+   "Tris": 1512,
+   "Centre": [
+    0.0,
+    1.05,
+    0.87478
+   ],
+   "Size": [
+    4.8917,
+    4.8917,
+    3.9497
+   ],
+   "Color": "#E9DDFF",
+   "Material": "Glass",
+   "Transparency": 0.5,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Pulse"
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "RimTrim": {
+   "Tris": 384,
+   "Centre": [
+    -0.00016,
+    1.05,
+    -1.07007
+   ],
+   "Size": [
+    4.09377,
+    4.09408,
+    0.15
+   ],
+   "Color": "#FFE3F4",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.08,
+   "Kind": "Pearl",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "SheenPink": {
+   "Tris": 140,
+   "Centre": [
+    1.664,
+    0.99368,
+    1.41137
+   ],
+   "Size": [
+    1.29463,
+    3.9177,
+    0.22828
+   ],
+   "Color": "#FF9CE0",
+   "Material": "Glass",
+   "Transparency": 0.2,
+   "Reflectance": 0.05,
+   "Kind": "Frost",
+   "Motion": {
+    "RideMotion": "Pulse"
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "SheenCyan": {
+   "Tris": 140,
+   "Centre": [
+    0.82512,
+    2.14178,
+    1.41951
+   ],
+   "Size": [
+    2.90264,
+    2.4119,
+    0.2236
+   ],
+   "Color": "#8FF0FF",
+   "Material": "Glass",
+   "Transparency": 0.2,
+   "Reflectance": 0.05,
+   "Kind": "Frost",
+   "Motion": {
+    "RideMotion": "Pulse"
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "SheenGold": {
+   "Tris": 140,
+   "Centre": [
+    -0.91202,
+    2.62113,
+    1.41663
+   ],
+   "Size": [
+    2.36968,
+    1.42645,
+    0.2236
+   ],
+   "Color": "#FFE58A",
+   "Material": "Glass",
+   "Transparency": 0.2,
+   "Reflectance": 0.05,
+   "Kind": "Frost",
+   "Motion": {
+    "RideMotion": "Pulse"
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Glint": {
+   "Tris": 124,
+   "Centre": [
+    -0.14247,
+    3.14147,
+    -0.17868
+   ],
+   "Size": [
+    2.55127,
+    0.27421,
+    0.24553
+   ],
+   "Color": "#FFFFFF",
+   "Material": "Neon",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Bench": {
+   "Tris": 720,
+   "Centre": [
+    0.0,
+    0.57081,
+    0.35168
+   ],
+   "Size": [
+    1.9,
+    1.85838,
+    1.90337
+   ],
+   "Color": "#80E8DA",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.08,
+   "Kind": "Pearl",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "BenchPost": {
+   "Tris": 140,
+   "Centre": [
+    0.0,
+    -0.995,
+    0.4
+   ],
+   "Size": [
+    0.77994,
+    0.75,
+    0.8
+   ],
+   "Color": "#F4F1EA",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.08,
+   "Kind": "Pearl",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "WandHeart": {
+   "Tris": 416,
+   "Centre": [
+    0.00047,
+    2.09951,
+    3.21911
+   ],
+   "Size": [
+    2.30352,
+    1.9902,
+    1.21873
+   ],
+   "Color": "#B9F3FF",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Fin",
+    "MotionPivot": [
+     -0.00047,
+     -0.24951,
+     -0.51911
+    ],
+    "FinAxis": "X",
+    "FinAngle": 0.08,
+    "FinBank": 0.3
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "WandFilm": {
+   "Tris": 224,
+   "Centre": [
+    0.0,
+    2.1,
+    3.4
+   ],
+   "Size": [
+    1.8,
+    1.54058,
+    0.56268
+   ],
+   "Color": "#FF9CE0",
+   "Material": "Glass",
+   "Transparency": 0.6,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Fin",
+    "MotionPivot": [
+     -0.0,
+     -0.25,
+     -0.7
+    ],
+    "FinAxis": "X",
+    "FinAngle": 0.08,
+    "FinBank": 0.3
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Foam": {
+   "Tris": 900,
+   "Centre": [
+    -0.09907,
+    -1.1546,
+    0.6503
+   ],
+   "Size": [
+    2.84269,
+    0.9887,
+    2.66466
+   ],
+   "Color": "#F4FBFF",
+   "Material": "Glass",
+   "Transparency": 0.12,
+   "Reflectance": 0.05,
+   "Kind": "Frost",
+   "Motion": {
+    "RideMotion": "Puff",
+    "PuffPhase": 0.0
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "OrbitBubbles": {
+   "Tris": 576,
+   "Centre": [
+    0.0,
+    1.6,
+    0.4
+   ],
+   "Size": [
+    5.78004,
+    2.78,
+    6.18358
+   ],
+   "Color": "#B9F3FF",
+   "Material": "Glass",
+   "Transparency": 0.45,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Spin",
+    "SpinAxis": "Y",
+    "SpinSpeed": 0.7
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  }
+ },
+ "Attachments": {
+  "RiderSeat": {
+   "Part": "Bench",
+   "World": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "Offset": [
+    0.0,
+    -0.57081,
+    -0.35168
+   ]
+  },
+  "Trail0": {
+   "Part": "Shell",
+   "World": [
+    -1.6,
+    0.4,
+    2.2
+   ],
+   "Offset": [
+    -1.6,
+    -0.65,
+    1.32522
+   ]
+  },
+  "Trail1": {
+   "Part": "Shell",
+   "World": [
+    1.6,
+    0.4,
+    2.2
+   ],
+   "Offset": [
+    1.6,
+    -0.65,
+    1.32522
+   ]
+  },
+  "Wake": {
+   "Part": "Shell",
+   "World": [
+    0.0,
+    0.6,
+    2.7
+   ],
+   "Offset": [
+    0.0,
+    -0.45,
+    1.82522
+   ]
+  },
+  "Launch": {
+   "Part": "Foam",
+   "World": [
+    0.0,
+    -1.6,
+    0.35
+   ],
+   "Offset": [
+    0.09907,
+    -0.4454,
+    -0.3003
+   ]
+  }
+ },
+ "Axes": "Roblox (x, y, z) = Blender (x, z, -y); model pivot = origin = rider contact point",
+ "FbxRoundTrip": {
+  "objects": 12,
+  "missing": [],
+  "tri_mismatch": [],
+  "max_bounds_error": 0.0,
+  "ok": true
+ },
+ "Family": "Sit",
+ "Source": "tools/blender/build_flyers_launch.py (on build_flyers_v3.py)"
+}

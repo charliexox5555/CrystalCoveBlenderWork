@@ -1,0 +1,56 @@
+{
+ "honey_hover": {
+  "Tris": 4584,
+  "Budget": 5500,
+  "Family": "Surf",
+  "Extents": [
+   9.07459,
+   3.661,
+   6.67005
+  ],
+  "Parts": 13,
+  "RoundTrip": {
+   "objects": 13,
+   "missing": [],
+   "tri_mismatch": [],
+   "max_bounds_error": 0.0,
+   "ok": true
+  }
+ },
+ "paper_jet": {
+  "Tris": 2988,
+  "Budget": 5500,
+  "Family": "Kneel",
+  "Extents": [
+   5.2,
+   1.07917,
+   7.4302
+  ],
+  "Parts": 14,
+  "RoundTrip": {
+   "objects": 14,
+   "missing": [],
+   "tri_mismatch": [],
+   "max_bounds_error": 1.0000000000010001e-05,
+   "ok": true
+  }
+ },
+ "bubble_pod": {
+  "Tris": 5416,
+  "Budget": 5500,
+  "Family": "Sit",
+  "Extents": [
+   5.78003,
+   5.14481,
+   6.52026
+  ],
+  "Parts": 12,
+  "RoundTrip": {
+   "objects": 12,
+   "missing": [],
+   "tri_mismatch": [],
+   "max_bounds_error": 0.0,
+   "ok": true
+  }
+ }
+}

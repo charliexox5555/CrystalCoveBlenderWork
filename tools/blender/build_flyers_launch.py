@@ -107,7 +107,7 @@ def ellipsoid(centre, radii, segs=14, rings=9, rot=None):
     return bm
 
 
-def flat_slab(points2d, depth, matrix, bevel=0.03):
+def flat_slab(points2d, depth, matrix, bevel=0.03, segs=2):
     """Extruded 2D outline (u, v) in local XZ, depth along local Y, bevelled; transformed by matrix."""
     bm = bmesh.new()
     n = len(points2d)
@@ -119,7 +119,7 @@ def flat_slab(points2d, depth, matrix, bevel=0.03):
         bm.faces.new((vs[i], vs[j], vs[j + n], vs[i + n]))
     bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
     if bevel:
-        bmesh.ops.bevel(bm, geom=list(bm.edges), offset=bevel, segments=2, affect="EDGES", profile=0.5, clamp_overlap=True)
+        bmesh.ops.bevel(bm, geom=list(bm.edges), offset=bevel, segments=segs, affect="EDGES", profile=0.5, clamp_overlap=True)
     bmesh.ops.triangulate(bm, faces=[f for f in bm.faces if len(f.verts) > 4])
     bmesh.ops.transform(bm, matrix=matrix, verts=bm.verts)
     bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
@@ -407,7 +407,7 @@ def build_paper_jet():
         tip_root = Vector((side * (span - 0.7), tail + 0.5, wz(span - 0.7, tail + 0.5)))
         tipp = [Vector((side * (span - 0.7), tail + 0.85)), Vector((side * (span - 0.04), tail + 0.27)), Vector((side * (span - 0.24), tail + 0.02)), Vector((side * (span - 0.7), tail + 0.3))]
         add("WingTip_" + tag, plate(tipp, lambda x, y: wz(x, y) + 0.04, 0.1, 0.03), PAPER["frost"], "Frost",
-            motion={"RideMotion": "Fin", "MotionPivotWorld": tip_root, "FinAxis": "Y", "FinAngle": 0.1, "FinHz": 1.1, "FinPhase": 0 if side < 0 else 0.5, "FinBank": 0.25})
+            motion={"RideMotion": "Fin", "MotionPivotWorld": tip_root, "FinAxis": "Z", "FinAngle": 0.1, "FinHz": 1.1, "FinPhase": 0 if side < 0 else 0.5, "FinBank": 0.25})
         flap_root = Vector((side * 1.2, tail + 0.42, wz(1.2, tail + 0.42)))
         flp = [Vector((side * 0.6, tail + 0.62)), Vector((side * 1.9, tail + 0.36)), Vector((side * 1.9, tail + 0.05)), Vector((side * 0.6, tail + 0.3))]
         add("TailFlap_" + tag, plate(flp, lambda x, y: wz(x, y) + 0.05, 0.08, 0.025), PAPER["core"], "Core",
@@ -447,6 +447,308 @@ def build_paper_jet():
             "Launch": ("Fold", (0, 0, -1.0)),
         },
         "Notes": "Kneel family: knees on KneelPad (y -1.3..0.7), hands forward on the keel fold.",
+    }
+
+
+# ---------------------------------------------------------------------------------------------
+# 4. Dragonfly (Rare, HandleSit)
+# ---------------------------------------------------------------------------------------------
+DFLY = {"teal": "#2FD0B5", "core": "#0E6B5C", "wing": "#E6FFF8", "gold": "#F5D99A", "eye": "#B9FFF0", "veinA": "#FFB3E6", "veinB": "#9FE8FF"}
+
+
+def wing_outline(L, w, n=7):
+    """Long rounded dragonfly wing in (u, v): root at u=0, tip at u=L; slightly wider toward the tip."""
+    top, bot = [], []
+    for i in range(n + 1):
+        u = L * i / n
+        t = i / n
+        half = w * (0.35 + 0.65 * math.sin(math.pi * min(1.0, t * 0.95 + 0.05)) ** 0.6) * (1 - 0.15 * t)
+        top.append((u, half * 0.85))
+        bot.append((u, -half))
+    return top + list(reversed(bot))
+
+
+@flyer("dragonfly", 7500, "HandleSit")
+def build_dragonfly():
+    zc = -0.72
+    # Thorax under the saddle.
+    th = []
+    for u in spaced(12, 0.6):
+        y = -1.0 + 2.4 * u
+        k = math.sin(math.pi * u) ** 0.55
+        th.append((Vector((0, y, zc)), X, Z, max(0.78 * k, 0.05), max(0.64 * k, 0.05), max(0.6 * k, 0.05), 2.2))
+    add("Thorax", loft(th, n=20), DFLY["teal"], "Glass")
+    thc = [(c + Vector((0, 0, -0.04)), u_, v_, a * 0.7, b * 0.6, d * 0.6, e) for c, u_, v_, a, b, d, e in th[1:-1]]
+    add("ThoraxCore", loft(thc, n=12), DFLY["core"], "Core")
+    head = sphere(Vector((0, 1.85, zc + 0.2)), 0.62, 18, 12, (1.05, 0.85, 0.82))
+    add("Head", head, DFLY["teal"], "Glass")
+    eyes, pup, shine = [], [], []
+    for sx in (-1, 1):
+        c = Vector((sx * 0.46, 2.1, zc + 0.48))
+        eyes.append(sphere(c, 0.42, 14, 9))
+        pup.append(sphere(c + Vector((sx * 0.08, 0.33, 0.04)), 0.17, 10, 7, (1, 0.6, 1.2)))
+        shine.append(sphere(c + Vector((sx * 0.02, 0.42, 0.16)), 0.065, 8, 5))
+    add("Eyes", merge(*eyes), DFLY["eye"], "Neon", studio={"Transparency": 0.1})
+    add("Pupils", merge(*pup), EYE, "Matte")
+    add("EyeShine", merge(*shine), SHINE, "Matte")
+    # Long segmented abdomen with gold joints; sways behind like a tail.
+    seg_y = [-0.95 - 0.86 * i for i in range(7)]
+    ab, joints = [], []
+    for u in spaced(26, 0.2):
+        y = -0.9 - 5.3 * u
+        r = 0.48 * (1 - 0.66 * u) + 0.04 * math.cos(u * 6 * TAU) ** 2
+        ab.append((Vector((0, y, zc + 0.1 * u)), X, Z, r, r * 0.92, r * 0.92, 2.0))
+    tail_pivot = Vector((0, -0.95, zc))
+    tail_motion = {"RideMotion": "Tail", "MotionPivotWorld": tail_pivot, "TailAngle": 0.14, "TailLag": 0.9}
+    add("Abdomen", loft(ab, n=14), DFLY["teal"], "Glass", motion=dict(tail_motion))
+    abc = [(c + Vector((0, 0, -0.02)), u_, v_, a * 0.6, b * 0.6, d * 0.6, e) for c, u_, v_, a, b, d, e in ab[2:-2]]
+    add("AbdomenCore", loft(abc, n=8), DFLY["core"], "Core", motion=dict(tail_motion))
+    for i, y in enumerate(seg_y[1:]):
+        u = (-0.9 - y) / 5.3
+        r = 0.48 * (1 - 0.66 * u) + 0.03
+        ring = [Vector((r * math.cos(a), y, zc + 0.1 * u + r * 0.92 * math.sin(a))) for a in [TAU * j / 12 for j in range(12)]]
+        joints.append(tube(ring, 0.035 + 0.01 * (1 - u), n=4, cap=False, closed=True))
+    tipy = -0.9 - 5.3
+    for sx in (-1, 1):
+        joints.append(tube([Vector((0, tipy + 0.1, zc + 0.12)), Vector((sx * 0.14, tipy - 0.25, zc + 0.2)), Vector((sx * 0.24, tipy - 0.5, zc + 0.3))], [0.07, 0.05, 0.02], n=6))
+    add("TailJoints", merge(*joints), DFLY["gold"], "Gold", motion=dict(tail_motion))
+    # Four wings: clear glass with coloured veins; front and back pairs flutter out of phase (Fin about the nose axis).
+    wings = (("FL", -1, 0.62, 3.7, 0.62, 0.1, DFLY["veinA"], 0.0), ("FR", 1, 0.62, 3.7, 0.62, 0.1, DFLY["veinA"], 0.0),
+             ("BL", -1, -0.25, 3.5, 0.7, -0.18, DFLY["veinB"], 0.5), ("BR", 1, -0.25, 3.5, 0.7, -0.18, DFLY["veinB"], 0.5))
+    for tag, sd, y0, L, w, sweep, vein_c, ph in wings:
+        hinge = Vector((sd * 0.5, y0, zc + 0.42))
+        m = Matrix.Translation(hinge) @ Matrix.Rotation(sd * 0.1, 4, "Y") @ Matrix.Rotation(-sweep * sd, 4, "Z") @ Matrix.Diagonal((sd, 1, 1, 1)) @ Matrix.Rotation(math.pi / 2, 4, "X")
+        outline = wing_outline(L, w * 0.5)
+        add("Wing_" + tag, flat_slab(outline, 0.05, m, bevel=0.018, segs=1), DFLY["wing"], "Glass", studio={"Transparency": 0.55},
+            motion={"RideMotion": "Fin", "MotionPivotWorld": hinge, "FinAxis": "Z", "FinAngle": 0.32 * sd, "FinHz": 3.2, "FinPhase": ph, "FinBank": 0.1 * sd})
+        veins = []
+        mid = [Vector((L * t, 0, -0.03 * w)) for t in [i / 8 for i in range(9)]]
+        veins.append(tube([m @ p for p in mid], [0.03 - 0.018 * i / 8 for i in range(9)], n=4))
+        for t in (0.25, 0.45, 0.65, 0.82):
+            half = w * 0.5 * (0.35 + 0.65 * math.sin(math.pi * min(1.0, t * 0.95 + 0.05)) ** 0.6) * (1 - 0.15 * t)
+            veins.append(tube([m @ Vector((L * t, 0.03, -half * 0.85)), m @ Vector((L * (t + 0.06), 0.03, 0)), m @ Vector((L * t, 0.03, half * 0.75))], 0.012, n=4))
+        edge = [m @ Vector((u, 0.0, v)) for u, v in outline[:: 2]] + [m @ Vector(outline[0][:1] + (0.0,) + outline[0][1:])]
+        veins.append(tube(edge, 0.016, n=4, cap=False))
+        add("WingVeins_" + tag, merge(*veins), vein_c, "Neon", studio={"Transparency": 0.15},
+            motion={"RideMotion": "Fin", "MotionPivotWorld": hinge, "FinAxis": "Z", "FinAngle": 0.32 * sd, "FinHz": 3.2, "FinPhase": ph, "FinBank": 0.1 * sd})
+    # Saddle (seat top = origin), antenna handlebar to the standard HandleSit grips, footpegs, little legs.
+    sad = []
+    for u in spaced(10, 0.7):
+        y = -0.75 + 1.4 * u
+        k = rrect(u, 3)
+        sad.append((Vector((0, y, -0.11 + 0.07 * (1 - k))), X, Z, max(0.62 * k, 0.04), 0.11 * max(k, 0.3), 0.09 * max(k, 0.3), 3.0))
+    add("Saddle", loft(sad, n=16), PEARL, "Pearl")
+    rim = [Vector((0.64 * math.sin(a) * 1.0, 0.0 + 0.72 * math.cos(a), -0.12)) for a in [TAU * i / 24 for i in range(24)]]
+    add("SaddleTrim", tube(rim, 0.04, n=5, cap=False, closed=True), DFLY["gold"], "Gold")
+    gl, gr = GRIPS["HandleSit"]
+    bars, knobs = [], []
+    for g in (gl, gr):
+        sx = 1 if g[0] > 0 else -1
+        path = [Vector((sx * 0.18, 2.15, zc + 0.75)), Vector((sx * 0.38, 2.38, zc + 1.5)), Vector((sx * 0.72, 2.08, zc + 2.1)), Vector((g[0] * 0.92, g[1] + 0.15, g[2]))]
+        bars.append(tube([catmull_pt(path, t) for t in [i / 14 for i in range(15)]], [0.07 - 0.02 * i / 14 for i in range(15)], n=8))
+        knobs.append(tube([Vector((g[0] - sx * 0.12, g[1], g[2])), Vector((g[0] + sx * 0.2, g[1] - 0.03, g[2] + 0.02))], 0.085, n=10))
+        knobs.append(sphere(Vector((g[0] + sx * 0.22, g[1] - 0.03, g[2] + 0.02)), 0.1, 10, 6))
+    add("Antennae", merge(*bars), DFLY["gold"], "Gold")
+    add("Grips", merge(*knobs), NAVY, "Matte")
+    legs = []
+    for i, y in enumerate((0.85, 0.15, -0.55)):
+        for sx in (-1, 1):
+            legs.append(tube([Vector((sx * 0.45, y, zc - 0.35)), Vector((sx * 0.85, y + 0.15, zc - 0.85)), Vector((sx * 0.7, y + 0.35, zc - 1.35))], [0.06, 0.05, 0.03], n=6))
+    for sx in (-1, 1):
+        legs.append(tube([Vector((sx * 0.62, 1.0, zc - 0.25)), Vector((sx * 1.05, 1.15, zc - 0.3))], 0.07, n=8))
+    add("Legs", merge(*legs), DFLY["gold"], "Gold")
+    tips = {tag: (sd * (0.5 + 3.5), y0 - 0.2, zc + 0.42 + 0.35) for tag, sd, y0, L, w, sweep, vc, ph in wings}
+    return {
+        "Id": "dragonfly", "Name": "Dragonfly", "Contact": "Seat",
+        "Attachments": {
+            "RiderSeat": ("Saddle", (0, 0, 0)),
+            "GripL": ("Grips", gl), "GripR": ("Grips", gr),
+            "WingTrail0": ("Wing_FL", tips["FL"]), "WingTrail1": ("Wing_FR", tips["FR"]),
+            "WingTrail2": ("Wing_BL", tips["BL"]), "WingTrail3": ("Wing_BR", tips["BR"]),
+            "Wake": ("Abdomen", (0, -6.3, zc + 0.3)),
+            "Launch": ("Thorax", (0, 0.2, zc - 0.8)),
+        },
+        "Notes": "Wings flutter with Fin about the nose axis (FinHz 3.2, front/back pairs half a cycle apart). Grips on RideFamilies.StandardGrips.HandleSit.",
+    }
+
+
+def catmull_pt(pts, t):
+    """Point on a Catmull-Rom curve through pts (Vectors), t in [0, 1]."""
+    n = len(pts) - 1
+    f = min(t * n, n - 1e-6)
+    i = int(f)
+    u = f - i
+    p0, p1, p2, p3 = pts[max(i - 1, 0)], pts[i], pts[min(i + 1, n)], pts[min(i + 2, n)]
+    return 0.5 * ((2 * p1) + (-p0 + p2) * u + (2 * p0 - 5 * p1 + 4 * p2 - p3) * u * u + (-p0 + 3 * p1 - 3 * p2 + p3) * u ** 3)
+
+
+# ---------------------------------------------------------------------------------------------
+# 5. Carousel (Epic, HandleSit; the pony bobs on its pole and carries the rider)
+# ---------------------------------------------------------------------------------------------
+CAROUSEL = {"pink": "#FFD6F5", "rose": "#E58FC7", "gold": "#F5D99A", "mint": "#7CE7D5", "white": "#FFFFFF", "bulb": "#FFF4A8",
+            "mane1": "#FF9CD6", "mane2": "#C9A8FF", "mane3": "#8FE3FF"}
+
+
+@flyer("carousel", 7500, "HandleSit")
+def build_carousel():
+    gl, gr = GRIPS["HandleSit"]
+    pole_y = gl[1]
+    bob = {"RideMotion": "Bob", "BobAmp": 0.45, "BobHz": 0.45, "BobPhase": 0.0}
+    # Pony: one smooth glass body (voxel union), prancing (front legs curled, hind legs reaching back).
+    balls = [((0, -0.05, -0.75), 1.0, (0.62, 1.25, 0.62)), ((0, 0.85, -0.55), 0.75, (0.62, 0.7, 0.75)),
+             ((0, 1.35, 0.0), 0.5, (0.62, 0.62, 1.1)), ((0, 1.75, 0.55), 0.55, (0.72, 1.0, 0.8)), ((0, 2.25, 0.38), 0.33, (0.85, 1.0, 0.8))]
+    for sx in (-1, 1):
+        for t in range(5):
+            u = t / 4
+            balls.append(((sx * 0.3, 1.05 + 0.45 * math.sin(u * 2.4), -1.05 - 0.55 * u + 0.5 * u * u), 0.19 - 0.03 * u, (1, 1, 1)))
+            balls.append(((sx * 0.3, -1.0 - 0.75 * u, -1.15 - 0.3 * u), 0.22 - 0.04 * u, (1, 1, 1)))
+    PS = 1.25  # pony scale about the saddle (origin)
+    balls = [(tuple(c * PS for c in cen), r * PS, sc) for cen, r, sc in balls]
+    pony = H["voxel_union"]("Pony", balls, voxel=0.06, smooth_iter=6, target_tris=1700)
+    add("Pony", pony, CAROUSEL["pink"], "Glass", motion=dict(bob))
+    core = H["voxel_union"]("PonyCore", [((0, 0.0, -0.75 * PS), 0.8 * PS, (0.55, 1.15, 0.5)), ((0, 0.9 * PS, -0.5 * PS), 0.55 * PS, (0.6, 0.7, 0.7))], voxel=0.08, smooth_iter=4, target_tris=300)
+    add("PonyCore", core, CAROUSEL["rose"], "Core", motion=dict(bob))
+    tree = None
+    pony_obj = bpy.data.objects["Pony"]
+    tree = H["bvh_of"](pony_obj)
+    # Face on the head (eyes facing forward-out, carousel style) and a little horn.
+    eyes, shine = [], []
+    for sx in (-1, 1):
+        o = Vector((sx * 2.0, 1.95 * PS, 0.72 * PS))
+        hit = tree.ray_cast(o, Vector((-sx, -0.25, 0)).normalized())
+        if hit[0] is not None:
+            p, n = hit[0], hit[1]
+            eyes.append(sphere(p + n * 0.02, 0.1, 9, 6, (0.7, 0.9, 1.25)))
+            shine.append(sphere(p + n * 0.09 + Vector((0, 0.04, 0.05)), 0.035, 6, 4))
+    add("PonyEyes", merge(*eyes), EYE, "Matte", motion=dict(bob))
+    add("PonyEyeShine", merge(*shine), SHINE, "Matte", motion=dict(bob))
+    horn = lathe([(0.001, -0.02)] + [((0.1 * (1 - i / 6) + 0.006) * (1.15 if i % 2 else 1.0), 0.07 * i) for i in range(7)] + [(0.001, 0.46)],
+                 Vector((0, 2.0 * PS, 0.98 * PS)), (0, 0.45, 1), segs=8)
+    add("Horn", horn, CAROUSEL["gold"], "Gold", motion=dict(bob))
+    # Saddle (seat top = origin) with a gold rim and stirrups; mane and tail ribbons in three colours.
+    sad = []
+    for u in spaced(10, 0.7):
+        y = -0.75 + 1.4 * u
+        k = rrect(u, 3)
+        sad.append((Vector((0, y, -0.1 + 0.06 * (1 - k))), X, Z, max(0.66 * k, 0.04), 0.1 * max(k, 0.3), 0.1 * max(k, 0.3), 3.0))
+    add("Saddle", loft(sad, n=16), CAROUSEL["mint"], "Pearl", motion=dict(bob))
+    trim = [Vector((0.68 * math.sin(a), 0.74 * math.cos(a), -0.1)) for a in [TAU * i / 18 for i in range(18)]]
+    stir = []
+    for sx in (-1, 1):
+        stir.append(tube([Vector((sx * 0.62, 0.2, -0.3)), Vector((sx * 0.66, 0.3, -0.95))], 0.03, n=4))
+        ring = [Vector((sx * 0.67, 0.3 + 0.12 * math.cos(a), -1.05 + 0.1 * math.sin(a))) for a in [TAU * i / 8 for i in range(8)]]
+        stir.append(tube(ring, 0.03, n=4, cap=False, closed=True))
+    add("SaddleTrim", merge(tube(trim, 0.045, n=5, cap=False, closed=True), *stir), CAROUSEL["gold"], "Gold", motion=dict(bob))
+    for i, (col, dx) in enumerate(zip((CAROUSEL["mane1"], CAROUSEL["mane2"], CAROUSEL["mane3"]), (-0.12, 0.0, 0.12))):
+        mpath = [Vector((dx, 1.95, 1.0)) * PS, Vector((dx * 1.4, 1.45, 0.75)) * PS, Vector((dx * 1.8 + 0.05 * (i - 1), 1.1, 0.3)) * PS, Vector((dx * 2.2, 0.85, -0.1)) * PS]
+        pts = [catmull_pt(mpath, t / 10) for t in range(11)]
+        rib = tube(pts, [0.12 - 0.08 * t / 10 for t in range(11)], n=6, flat=0.45, up_hint=Vector((1, 0, 0)))
+        tpath = [Vector((dx, -1.35, -0.55)) * PS, Vector((dx * 1.5, -1.85, -0.75)) * PS, Vector((dx * 2.0, -2.15, -1.2)) * PS, Vector((dx * 2.3, -2.2, -1.65)) * PS]
+        tpts = [catmull_pt(tpath, t / 10) for t in range(11)]
+        tail = tube(tpts, [0.13 - 0.09 * t / 10 for t in range(11)], n=6, flat=0.45, up_hint=Vector((1, 0, 0)))
+        add("ManeTail_%d" % (i + 1), merge(rib, tail), col, "Glass", studio={"Transparency": 0.2}, motion=dict(bob))
+    # Twisted gold pole (fixed) through the withers; a sleeve with the crossbar rides the pony (grips move with it).
+    rings = []
+    for k in range(28):
+        z = -3.3 + 7.5 * k / 27
+        ring = []
+        for j in range(8):
+            a = TAU * j / 8 + z * 1.6
+            r = 0.12 if j % 2 == 0 else 0.085
+            ring.append(Vector((r * math.cos(a), pole_y + r * math.sin(a), z)))
+        rings.append(ring)
+    add("Pole", merge(ring_loft(rings), sphere(Vector((0, pole_y, -3.38)), 0.2, 12, 8)), CAROUSEL["gold"], "Gold")
+    sleeve = lathe([(0.001, -0.05), (0.2, 0.0), (0.22, 0.25), (0.2, 0.5), (0.001, 0.55)], Vector((0, pole_y, gl[2] - 0.3)), Z, segs=12)
+    bar = [Vector((x, pole_y, gl[2] + 0.04 * (abs(x) / 0.9) ** 2)) for x in [-0.95 + 1.9 * i / 10 for i in range(11)]]
+    add("Crossbar", merge(sleeve, tube(bar, 0.065, n=8)), CAROUSEL["gold"], "Gold", motion=dict(bob))
+    grips = []
+    for g in (gl, gr):
+        sx = 1 if g[0] > 0 else -1
+        grips.append(tube([Vector((g[0] - sx * 0.2, g[1], g[2] + 0.03)), Vector((g[0] + sx * 0.22, g[1], g[2] + 0.05))], 0.09, n=8))
+        grips.append(sphere(Vector((g[0] + sx * 0.25, g[1], g[2] + 0.05)), 0.11, 8, 6))
+    add("Grips", merge(*grips), "#FFFFFF", "Pearl", motion=dict(bob))
+    # Canopy: striped tent top that turns slowly, a scalloped valance, a ring of chase-blinking bulbs, a finial.
+    top_z, apex = 4.2, 5.15
+    Rc = 1.8
+    for name, col, parity in (("CanopyWhite", CAROUSEL["white"], 0), ("CanopyMint", CAROUSEL["mint"], 1)):
+        panels = []
+        for k in range(12):
+            if k % 2 != parity:
+                continue
+            a0, a1 = TAU * k / 12, TAU * (k + 1) / 12
+            rings_ = []
+            for i in range(5):
+                t = i / 4
+                z = top_z + (apex - top_z) * t ** 1.2
+                r = Rc * (1 - t) + 0.02
+                droop = 0.08 * math.sin(math.pi * t)
+                ring = []
+                for j in range(4):
+                    a = a0 + (a1 - a0) * j / 3
+                    ring.append(Vector((r * math.cos(a), pole_y + r * math.sin(a), z - droop * math.sin(math.pi * j / 3))))
+                rings_.append(ring)
+            inner = [[p + Vector((0, 0, -0.06)) for p in ring] for ring in rings_]
+            bm = bmesh.new()
+            vo = [[bm.verts.new(p) for p in ring] for ring in rings_]
+            vi = [[bm.verts.new(p) for p in ring] for ring in inner]
+            for a_, b_ in zip(range(4), range(1, 5)):
+                for j in range(3):
+                    bm.faces.new((vo[a_][j], vo[a_][j + 1], vo[b_][j + 1], vo[b_][j]))
+                    bm.faces.new((vi[b_][j], vi[b_][j + 1], vi[a_][j + 1], vi[a_][j]))
+            for r_ in range(4):
+                for side_j in (0, 3):
+                    bm.faces.new((vo[r_][side_j], vo[r_ + 1][side_j], vi[r_ + 1][side_j], vi[r_][side_j]))
+            for j in range(3):
+                bm.faces.new((vo[0][j + 1], vo[0][j], vi[0][j], vi[0][j + 1]))
+            bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=1e-4)
+            bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+            # scalloped valance flap under this panel
+            val = []
+            for i in range(9):
+                a = a0 + (a1 - a0) * i / 8
+                val.append(Vector(((Rc + 0.02) * math.cos(a), pole_y + (Rc + 0.02) * math.sin(a), top_z - 0.02)))
+            flap = []
+            for i in range(6):
+                a = a0 + (a1 - a0) * i / 5
+                drop = 0.32 + 0.12 * math.sin(math.pi * i / 5)
+                flap.append([Vector(((Rc + 0.03) * math.cos(a), pole_y + (Rc + 0.03) * math.sin(a), top_z - 0.02 - drop * d)) for d in (0.0, 1.0)])
+            fb = bmesh.new()
+            fv = [[fb.verts.new(p) for p in col_] for col_ in flap]
+            fvi = [[fb.verts.new(p * 1.0 - Vector((math.cos(a0 + (a1 - a0) * i / 5), math.sin(a0 + (a1 - a0) * i / 5), 0)) * 0.04) for p in col_] for i, col_ in enumerate(flap)]
+            for i in range(5):
+                fb.faces.new((fv[i][0], fv[i + 1][0], fv[i + 1][1], fv[i][1]))
+                fb.faces.new((fvi[i][1], fvi[i + 1][1], fvi[i + 1][0], fvi[i][0]))
+                fb.faces.new((fv[i][1], fv[i + 1][1], fvi[i + 1][1], fvi[i][1]))
+            fb.faces.new((fv[0][0], fv[0][1], fvi[0][1], fvi[0][0]))
+            fb.faces.new((fv[5][1], fv[5][0], fvi[5][0], fvi[5][1]))
+            bmesh.ops.recalc_face_normals(fb, faces=fb.faces)
+            panels += [bm, fb]
+        add(name, merge(*panels), col, "Pearl", motion={"RideMotion": "Spin", "SpinAxis": "Y", "SpinSpeed": 0.35})
+    ring = [Vector((Rc * 0.98 * math.cos(a), pole_y + Rc * 0.98 * math.sin(a), top_z - 0.06)) for a in [TAU * i / 28 for i in range(28)]]
+    add("CanopyRing", merge(tube(ring, 0.06, n=5, cap=False, closed=True),
+                            lathe([(0.001, -0.02), (0.2, 0.0), (0.24, 0.12), (0.12, 0.3), (0.2, 0.42), (0.001, 0.6)], Vector((0, pole_y, apex - 0.05)), Z, segs=12),
+                            lathe([(0.3, -0.1), (0.36, 0.0), (0.3, 0.1), (0.001, 0.12), (0.001, -0.12)], Vector((0, pole_y, top_z - 0.12)), Z, segs=14)),
+        CAROUSEL["gold"], "Gold")
+    bulbs = []
+    for k in range(16):
+        a = TAU * (k + 0.5) / 16
+        bulbs.append(sphere(Vector((Rc * 1.0 * math.cos(a), pole_y + Rc * math.sin(a), top_z - 0.16)), 0.09, 6, 4))
+    bulbs.append(sphere(Vector((0, pole_y, apex + 0.62)), 0.13, 8, 6))
+    add("Bulbs", merge(*bulbs), CAROUSEL["bulb"], "Neon", motion={"RideMotion": "Pulse"})
+    return {
+        "Id": "carousel", "Name": "Carousel", "Contact": "Seat",
+        "Attachments": {
+            "RiderSeat": ("Saddle", (0, 0, 0)),
+            "GripL": ("Crossbar", gl), "GripR": ("Crossbar", gr),
+            "Trail0": ("CanopyRing", (-Rc, pole_y, top_z - 0.2)), "Trail1": ("CanopyRing", (Rc, pole_y, top_z - 0.2)),
+            "Notes": ("Bulbs", (0, pole_y, apex + 0.6)),
+            "Wake": ("Pony", (0, -2.7, -1.5)),
+            "Launch": ("Pole", (0, pole_y, -3.4)),
+        },
+        "ModelAttributes": {"RiderMount": "Pony"},
+        "Notes": "Bob (BobAmp 0.45, BobHz 0.45) on Pony, PonyCore, eyes, Horn, Saddle, SaddleTrim, ManeTail_n, Crossbar and Grips; "
+                 "RiderSeat, GripL and GripR sit on bobbing parts and RiderMount = Pony. Pole, canopy ring and bulbs stay fixed; "
+                 "CanopyWhite/CanopyMint Spin about the pole; Bulbs Pulse (chase blink if your Pulse supports a phase).",
     }
 
 
@@ -503,11 +805,20 @@ def kneel_mannequin():
 
 def build(gid, render=False, samples=32):
     fn, budget, family = LAUNCH[gid]
-    H["BUILDERS"][gid] = fn
+    meta_box = {}
+
+    def run():
+        meta_box.update(fn())
+        return meta_box
+    H["BUILDERS"][gid] = run
     H["BUDGET"][gid] = budget
     manifest = H["build"](gid, False, samples)
     folder = os.path.join(H["OUT"], gid)
     manifest["Family"] = family
+    if meta_box.get("ModelAttributes"):
+        manifest["ModelAttributes"] = meta_box["ModelAttributes"]   # set on the Model in Studio (e.g. RiderMount)
+    if meta_box.get("Notes"):
+        manifest["Notes"] = meta_box["Notes"]
     manifest["Source"] = "tools/blender/build_flyers_launch.py (on build_flyers_v3.py)"
     assert manifest["Tris"] <= budget, (gid, manifest["Tris"], budget)
     assert manifest["FbxRoundTrip"]["ok"], (gid, manifest["FbxRoundTrip"])

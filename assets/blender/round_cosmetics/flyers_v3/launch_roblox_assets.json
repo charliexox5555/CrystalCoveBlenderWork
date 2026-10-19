@@ -21,6 +21,20 @@
    "Sha256": "8607b0612b4871765687657aa557e67279e31a63526d4a70a01673b98dc198d9",
    "Moderation": "Approved",
    "Uploaded": "2026-10-19T16:35:09"
+  },
+  "dragonfly": {
+   "AssetId": "71158262594750",
+   "Path": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+   "Sha256": "240c0c26652f0b5acedfb0162eee1a097a456ea756c558c3155eccd8f82dd981",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T17:11:12"
+  },
+  "carousel": {
+   "AssetId": "77529806457590",
+   "Path": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+   "Sha256": "fd5609451c9e2683b82cb3ea63675e537b8ff4e116b7c85a084fa7f73478828c",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T17:11:21"
   }
  }
 }

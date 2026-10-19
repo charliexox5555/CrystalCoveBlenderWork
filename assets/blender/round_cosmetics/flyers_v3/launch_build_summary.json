@@ -52,5 +52,41 @@
    "max_bounds_error": 0.0,
    "ok": true
   }
+ },
+ "dragonfly": {
+  "Tris": 7080,
+  "Budget": 7500,
+  "Family": "HandleSit",
+  "Extents": [
+   8.36677,
+   3.65312,
+   9.29113
+  ],
+  "Parts": 22,
+  "RoundTrip": {
+   "objects": 22,
+   "missing": [],
+   "tri_mismatch": [],
+   "max_bounds_error": 9.999999999621423e-06,
+   "ok": true
+  }
+ },
+ "carousel": {
+  "Tris": 7484,
+  "Budget": 7500,
+  "Family": "HandleSit",
+  "Extents": [
+   3.68671,
+   9.48,
+   6.2011
+  ],
+  "Parts": 17,
+  "RoundTrip": {
+   "objects": 17,
+   "missing": [],
+   "tri_mismatch": [],
+   "max_bounds_error": 0.0,
+   "ok": true
+  }
  }
 }

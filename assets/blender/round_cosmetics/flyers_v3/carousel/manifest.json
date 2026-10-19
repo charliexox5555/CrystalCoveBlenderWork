@@ -1,0 +1,561 @@
+{
+ "Id": "carousel",
+ "Name": "Carousel",
+ "Contact": "Seat",
+ "Tris": 7484,
+ "Budget": 7500,
+ "Extents": [
+  3.68671,
+  9.48,
+  6.2011
+ ],
+ "Parts": {
+  "Pony": {
+   "Tris": 1700,
+   "Centre": [
+    0.00039,
+    -0.39533,
+    -0.39337
+   ],
+   "Size": [
+    1.53841,
+    3.24582,
+    5.60599
+   ],
+   "Color": "#FFD6F5",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Bob",
+    "BobAmp": 0.45,
+    "BobHz": 0.45,
+    "BobPhase": 0.0
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "PonyCore": {
+   "Tris": 300,
+   "Centre": [
+    -0.00354,
+    -0.78755,
+    -0.23303
+   ],
+   "Size": [
+    1.08183,
+    1.27983,
+    2.73634
+   ],
+   "Color": "#E58FC7",
+   "Material": "Glass",
+   "Transparency": 0.08,
+   "Reflectance": 0.05,
+   "Kind": "Core",
+   "Motion": {
+    "RideMotion": "Bob",
+    "BobAmp": 0.45,
+    "BobHz": 0.45,
+    "BobPhase": 0.0
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "PonyEyes": {
+   "Tris": 180,
+   "Centre": [
+    0.00313,
+    0.90823,
+    -2.04603
+   ],
+   "Size": [
+    1.04097,
+    0.25288,
+    0.17972
+   ],
+   "Color": "#1B2440",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Matte",
+   "Motion": {
+    "RideMotion": "Bob",
+    "BobAmp": 0.45,
+    "BobHz": 0.45,
+    "BobPhase": 0.0
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "PonyEyeShine": {
+   "Tris": 72,
+   "Centre": [
+    0.00649,
+    0.98703,
+    -2.07418
+   ],
+   "Size": [
+    1.08861,
+    0.08294,
+    0.08941
+   ],
+   "Color": "#FFFFFF",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Matte",
+   "Motion": {
+    "RideMotion": "Bob",
+    "BobAmp": 0.45,
+    "BobHz": 0.45,
+    "BobPhase": 0.0
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Horn": {
+   "Tris": 144,
+   "Centre": [
+    0.0,
+    1.4132,
+    -2.54651
+   ],
+   "Size": [
+    0.212,
+    0.46339,
+    0.28634
+   ],
+   "Color": "#F5D99A",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.18,
+   "Kind": "Gold",
+   "Motion": {
+    "RideMotion": "Bob",
+    "BobAmp": 0.45,
+    "BobHz": 0.45,
+    "BobPhase": 0.0
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Saddle": {
+   "Tris": 352,
+   "Centre": [
+    0.0,
+    -0.1,
+    0.05
+   ],
+   "Size": [
+    1.32,
+    0.2,
+    1.4
+   ],
+   "Color": "#7CE7D5",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.08,
+   "Kind": "Pearl",
+   "Motion": {
+    "RideMotion": "Bob",
+    "BobAmp": 0.45,
+    "BobHz": 0.45,
+    "BobPhase": 0.0
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "SaddleTrim": {
+   "Tris": 340,
+   "Centre": [
+    0.0,
+    -0.6186,
+    0.0004
+   ],
+   "Size": [
+    1.42818,
+    1.1228,
+    1.56919
+   ],
+   "Color": "#F5D99A",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.18,
+   "Kind": "Gold",
+   "Motion": {
+    "RideMotion": "Bob",
+    "BobAmp": 0.45,
+    "BobHz": 0.45,
+    "BobPhase": 0.0
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "ManeTail_1": {
+   "Tris": 264,
+   "Centre": [
+    -0.23226,
+    -0.35202,
+    0.15529
+   ],
+   "Size": [
+    0.26526,
+    3.42479,
+    5.27974
+   ],
+   "Color": "#FF9CD6",
+   "Material": "Glass",
+   "Transparency": 0.2,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Bob",
+    "BobAmp": 0.45,
+    "BobHz": 0.45,
+    "BobPhase": 0.0
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "ManeTail_2": {
+   "Tris": 264,
+   "Centre": [
+    0.0,
+    -0.35174,
+    0.15555
+   ],
+   "Size": [
+    0.10132,
+    3.42423,
+    5.28027
+   ],
+   "Color": "#C9A8FF",
+   "Material": "Glass",
+   "Transparency": 0.2,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Bob",
+    "BobAmp": 0.45,
+    "BobHz": 0.45,
+    "BobPhase": 0.0
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "ManeTail_3": {
+   "Tris": 264,
+   "Centre": [
+    0.23226,
+    -0.35202,
+    0.15529
+   ],
+   "Size": [
+    0.26526,
+    3.42479,
+    5.27974
+   ],
+   "Color": "#8FE3FF",
+   "Material": "Glass",
+   "Transparency": 0.2,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Bob",
+    "BobAmp": 0.45,
+    "BobHz": 0.45,
+    "BobPhase": 0.0
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Pole": {
+   "Tris": 616,
+   "Centre": [
+    0.0,
+    0.31,
+    -1.55
+   ],
+   "Size": [
+    0.4,
+    7.78,
+    0.4
+   ],
+   "Color": "#F5D99A",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.18,
+   "Kind": "Gold",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Crossbar": {
+   "Tris": 296,
+   "Centre": [
+    0.0,
+    1.4,
+    -1.55
+   ],
+   "Size": [
+    1.91094,
+    0.6,
+    0.44
+   ],
+   "Color": "#F5D99A",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.18,
+   "Kind": "Gold",
+   "Motion": {
+    "RideMotion": "Bob",
+    "BobAmp": 0.45,
+    "BobHz": 0.45,
+    "BobPhase": 0.0
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Grips": {
+   "Tris": 224,
+   "Centre": [
+    0.0,
+    1.5,
+    -1.55
+   ],
+   "Size": [
+    2.52,
+    0.22,
+    0.22
+   ],
+   "Color": "#FFFFFF",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.08,
+   "Kind": "Pearl",
+   "Motion": {
+    "RideMotion": "Bob",
+    "BobAmp": 0.45,
+    "BobHz": 0.45,
+    "BobPhase": 0.0
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "CanopyWhite": {
+   "Tris": 624,
+   "Centre": [
+    0.0,
+    4.44794,
+    -1.55
+   ],
+   "Size": [
+    3.66,
+    1.40413,
+    3.66
+   ],
+   "Color": "#FFFFFF",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.08,
+   "Kind": "Pearl",
+   "Motion": {
+    "RideMotion": "Spin",
+    "SpinAxis": "Y",
+    "SpinSpeed": 0.35
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "CanopyMint": {
+   "Tris": 624,
+   "Centre": [
+    0.0,
+    4.44794,
+    -1.55
+   ],
+   "Size": [
+    3.66,
+    1.40413,
+    3.66
+   ],
+   "Color": "#7CE7D5",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.08,
+   "Kind": "Pearl",
+   "Motion": {
+    "RideMotion": "Spin",
+    "SpinAxis": "Y",
+    "SpinSpeed": 0.35
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "CanopyRing": {
+   "Tris": 564,
+   "Centre": [
+    -0.00015,
+    4.83,
+    -1.55
+   ],
+   "Size": [
+    3.62478,
+    1.74,
+    3.62508
+   ],
+   "Color": "#F5D99A",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.18,
+   "Kind": "Gold",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Bulbs": {
+   "Tris": 656,
+   "Centre": [
+    0.0,
+    4.925,
+    -1.55
+   ],
+   "Size": [
+    3.68672,
+    1.95,
+    3.71082
+   ],
+   "Color": "#FFF4A8",
+   "Material": "Neon",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {
+    "RideMotion": "Pulse"
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  }
+ },
+ "Attachments": {
+  "RiderSeat": {
+   "Part": "Saddle",
+   "World": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "Offset": [
+    0.0,
+    0.1,
+    -0.05
+   ]
+  },
+  "GripL": {
+   "Part": "Crossbar",
+   "World": [
+    -0.9,
+    1.45,
+    -1.55
+   ],
+   "Offset": [
+    -0.9,
+    0.05,
+    -0.0
+   ]
+  },
+  "GripR": {
+   "Part": "Crossbar",
+   "World": [
+    0.9,
+    1.45,
+    -1.55
+   ],
+   "Offset": [
+    0.9,
+    0.05,
+    -0.0
+   ]
+  },
+  "Trail0": {
+   "Part": "CanopyRing",
+   "World": [
+    -1.8,
+    4.0,
+    -1.55
+   ],
+   "Offset": [
+    -1.79985,
+    -0.83,
+    -0.0
+   ]
+  },
+  "Trail1": {
+   "Part": "CanopyRing",
+   "World": [
+    1.8,
+    4.0,
+    -1.55
+   ],
+   "Offset": [
+    1.80015,
+    -0.83,
+    -0.0
+   ]
+  },
+  "Notes": {
+   "Part": "Bulbs",
+   "World": [
+    0.0,
+    5.75,
+    -1.55
+   ],
+   "Offset": [
+    0.0,
+    0.825,
+    -0.0
+   ]
+  },
+  "Wake": {
+   "Part": "Pony",
+   "World": [
+    0.0,
+    -1.5,
+    2.7
+   ],
+   "Offset": [
+    -0.00039,
+    -1.10467,
+    3.09337
+   ]
+  },
+  "Launch": {
+   "Part": "Pole",
+   "World": [
+    0.0,
+    -3.4,
+    -1.55
+   ],
+   "Offset": [
+    -0.0,
+    -3.71,
+    -0.0
+   ]
+  }
+ },
+ "Axes": "Roblox (x, y, z) = Blender (x, z, -y); model pivot = origin = rider contact point",
+ "FbxRoundTrip": {
+  "objects": 17,
+  "missing": [],
+  "tri_mismatch": [],
+  "max_bounds_error": 0.0,
+  "ok": true
+ },
+ "Family": "HandleSit",
+ "ModelAttributes": {
+  "RiderMount": "Pony"
+ },
+ "Notes": "Bob (BobAmp 0.45, BobHz 0.45) on Pony, PonyCore, eyes, Horn, Saddle, SaddleTrim, ManeTail_n, Crossbar and Grips; RiderSeat, GripL and GripR sit on bobbing parts and RiderMount = Pony. Pole, canopy ring and bulbs stay fixed; CanopyWhite/CanopyMint Spin about the pole; Bulbs Pulse (chase blink if your Pulse supports a phase).",
+ "Source": "tools/blender/build_flyers_launch.py (on build_flyers_v3.py)"
+}

@@ -76,7 +76,7 @@
      -0.09166,
      -0.065
     ],
-    "FinAxis": "Y",
+    "FinAxis": "Z",
     "FinAngle": 0.1,
     "FinHz": 1.1,
     "FinPhase": 0,
@@ -203,7 +203,7 @@
      -0.09166,
      -0.065
     ],
-    "FinAxis": "Y",
+    "FinAxis": "Z",
     "FinAngle": 0.1,
     "FinHz": 1.1,
     "FinPhase": 0.5,

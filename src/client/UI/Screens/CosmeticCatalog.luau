@@ -223,8 +223,9 @@ function Catalog:AddTile(def, root, order, unowned, equipped)
 	label:SetAttribute("FitSingleLine", true) -- S.bindSlices fits it to both width and height
 	local limit = label:FindFirstChildOfClass("UITextSizeConstraint")
 	if limit then
-		limit.MinTextSize, limit.MaxTextSize = 1, 20
+		limit.MinTextSize, limit.MaxTextSize = Theme.TextFit.MinSmall, 20
 	end
+	label:SetAttribute("FitMin", Theme.TextFit.MinSmall) -- small plaque: readable floor, then "…"
 	local badge = U.text(
 		tile,
 		"Equipped",
@@ -236,7 +237,8 @@ function Catalog:AddTile(def, root, order, unowned, equipped)
 	badge.TextColor3, badge.Visible = Theme.Palette.emeraldLight, def.Id == equipped
 	badge.TextXAlignment = Enum.TextXAlignment.Left
 	badge:SetAttribute("FitSingleLine", true)
-	badge.UITextSizeConstraint.MinTextSize = 1
+	badge.UITextSizeConstraint.MinTextSize = Theme.TextFit.MinSmall
+	badge:SetAttribute("FitMin", Theme.TextFit.MinSmall)
 	tile.SelectedOutline.Visible = def.Id == self.Selected
 	S.bindSlices(tile)
 	return {

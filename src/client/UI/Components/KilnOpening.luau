@@ -136,8 +136,9 @@ function Opening:ShowRewards(instant)
 		S.setAsset(card.Artwork, "tile/tile_" .. S.rarity(def.Rarity))
 		card.Rarity.Text, card.Rarity.TextColor3 = def.Rarity:upper(), Theme.Rarity[def.Rarity].Top
 		card.NameLabel.Text = def.Name
+		-- The 10-pull cards are small: "OWNED ×2" fits at a readable size where the long line was cut.
 		card.RewardLabel.Text = if result.Duplicate
-			then "ANOTHER COPY · OWNED ×" .. (result.Count or 1)
+			then (if multi then "OWNED ×" else "ANOTHER COPY · OWNED ×") .. (result.Count or 1)
 			else "NEW " .. (if self.Category == "Glassies"
 				then "GLASSY"
 				elseif self.Category == "Finishers" then "FINISHER"

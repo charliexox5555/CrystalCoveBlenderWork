@@ -16,14 +16,15 @@ local function pill(parent, name, anchorX, x)
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(anchorX, 0),
 		Position = UDim2.fromScale(x, 0.04),
-		Size = UDim2.fromScale(0.62, 0.13),
+		Size = UDim2.fromScale(0.62, 0.15),
 		ZIndex = 8,
 		Visible = false,
 	})
-	U.make("UIAspectRatioConstraint", tag, { AspectRatio = 3.75, DominantAxis = Enum.DominantAxis.Height })
-	local label =
-		U.text(tag, "Label", "", UDim2.fromScale(0.74, 0.62), UDim2.fromScale(0.13, 0.19), Theme.Fonts.Caption)
-	label.ZIndex, label.UITextSizeConstraint.MinTextSize = 9, 1
+	-- Wide and tall enough for "UNCOMMON ★" at the readable minimum (the 3.75:1 pill cut it to "UNCOMM…").
+	U.make("UIAspectRatioConstraint", tag, { DominantAxis = Enum.DominantAxis.Height }).AspectRatio = 5.2
+	local label = U.text(tag, "Label", "", UDim2.fromScale(0.8, 0.66), UDim2.fromScale(0.1, 0.17), Theme.Fonts.Caption)
+	label.ZIndex, label.UITextSizeConstraint.MinTextSize = 9, Theme.TextFit.MinSmall
+	label:SetAttribute("FitMin", Theme.TextFit.MinSmall)
 	label.UITextSizeConstraint.MaxTextSize = Theme.TextSize.Small
 	return tag
 end
@@ -50,7 +51,8 @@ function Card.new(frame)
 		ZIndex = 6,
 	})
 	local name =
-		U.text(band, "ItemName", "", UDim2.fromScale(0.92, 0.8), UDim2.fromScale(0.04, 0.1), Theme.Fonts.Heading)
+		-- 0.72 tall: DenkOne's descenders (g, y) hang below its text bounds and were cut by the buy button.
+		U.text(band, "ItemName", "", UDim2.fromScale(0.92, 0.72), UDim2.fromScale(0.04, 0.06), Theme.Fonts.Heading)
 	name.ZIndex, name.UITextSizeConstraint.MaxTextSize = 7, 26
 	U.make("UIStroke", name, { Thickness = 1.5, Color = Theme.Palette.lead })
 	local button = Gem.new(frame, "Buy", "…", "Green", UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.8))

@@ -26,7 +26,8 @@ local function label(parent, name, font, size, position, zindex)
 		TextColor3 = Theme.Colors.TextDark,
 		ZIndex = zindex,
 	})
-	make("UITextSizeConstraint", text, { MinTextSize = 1, MaxTextSize = 28 })
+	make("UITextSizeConstraint", text, { MinTextSize = Theme.TextFit.MinSmall, MaxTextSize = 28 })
+	text:SetAttribute("FitMin", Theme.TextFit.MinSmall) -- small card: readable floor, two lines, then "…"
 	return text
 end
 
@@ -71,7 +72,8 @@ function PrizeCard.new(parent, activated)
 		ZIndex = 5,
 	})
 	local chance =
-		label(root, "Chance", Theme.Fonts.Heading, UDim2.fromScale(0.3, 0.075), UDim2.fromScale(0.35, 0.815), 6)
+		-- Fills the odds chip's flat middle: odds must stay readable on the small carousel cards.
+		label(root, "Chance", Theme.Fonts.Heading, UDim2.fromScale(0.34, 0.095), UDim2.fromScale(0.33, 0.806), 6)
 	chance.TextColor3 = Theme.Colors.Text
 	make("UIStroke", chance, { Color = Theme.Palette.lead, Thickness = 1.5, LineJoinMode = Enum.LineJoinMode.Round })
 	local open = make("TextButton", root, {

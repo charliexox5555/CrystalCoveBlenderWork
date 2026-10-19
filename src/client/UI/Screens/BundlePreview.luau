@@ -101,7 +101,8 @@ end
 local function label(parent, name, text, size, position, font, maxSize, colour)
 	local l = U.text(parent, name, text, size, position, font or Theme.Fonts.Caption)
 	l.UITextSizeConstraint.MaxTextSize = maxSize or Theme.TextSize.Small
-	l.UITextSizeConstraint.MinTextSize = 8
+	l.UITextSizeConstraint.MinTextSize = Theme.TextFit.MinSmall
+	l:SetAttribute("FitMin", Theme.TextFit.MinSmall)
 	l.TextXAlignment = Enum.TextXAlignment.Left
 	l.TextColor3 = colour or Theme.Colors.Text
 	return l

@@ -5,59 +5,21 @@ local Specs = require(script.Parent.StainedAssetSpecs)
 local Theme = require(script.Parent.Parent.Theme)
 local S = {}
 local sliceBound = setmetatable({}, { __mode = "k" })
-local textBound = setmetatable({}, { __mode = "k" })
+-- FitSingleLine labels (templates mark names, tabs and plaques with it) use the shared fit policy, kept to
+-- one line: shrink to Theme.TextFit.Min, then MinSmall, then end with "…". It used to be an async
+-- measure-and-set fitter here; the engine's TextScaled is synchronous and follows UIScale pop-ins.
 function S.bindText(label)
-	if not label:IsA("TextLabel") or not label:GetAttribute("FitSingleLine") or textBound[label] then
+	if not label:IsA("TextLabel") or not label:GetAttribute("FitSingleLine") then
 		return
 	end
-	textBound[label] = true
-	label.TextScaled, label.TextWrapped = false, false
-	local version = 0
-	local function fit()
-		version += 1
-		local serial = version
-		task.spawn(function()
-			local constraint = label:FindFirstChildOfClass("UITextSizeConstraint")
-			local maximum = if constraint then constraint.MaxTextSize else 40
-			local params = Instance.new("GetTextBoundsParams")
-			params.Text, params.Font, params.Size, params.Width = label.Text, label.FontFace, maximum, 100000
-			local ok, bounds =
-				pcall(game:GetService("TextService").GetTextBoundsAsync, game:GetService("TextService"), params)
-			if not ok or serial ~= version or not label.Parent then
-				params:Destroy()
-				return
-			end
-			local stroke = label:FindFirstChildOfClass("UIStroke")
-			local inset = if stroke then stroke.Thickness * 2 + 2 else 2
-			local size = label.AbsoluteSize - Vector2.one * inset
-			local ratio = math.min(1, size.X / math.max(1, bounds.X), size.Y / math.max(1, bounds.Y))
-			local minimum = if constraint then constraint.MinTextSize else 1
-			local fitted = math.max(minimum, math.floor(maximum * ratio))
-			-- Small glyphs round to whole pixels: scaling a large-font measurement can still clip.
-			while fitted < maximum and fitted > minimum do
-				params.Size = fitted
-				local measured, actual =
-					pcall(game:GetService("TextService").GetTextBoundsAsync, game:GetService("TextService"), params)
-				if not measured or (actual.X <= size.X and actual.Y <= size.Y) then
-					break
-				end
-				fitted -= 1
-			end
-			params:Destroy()
-			if serial == version and label.Parent then
-				label.TextSize = fitted
-			end
-		end)
+	if not label:FindFirstChildOfClass("UITextSizeConstraint") then
+		local limit = Instance.new("UITextSizeConstraint")
+		limit.MaxTextSize, limit.Parent = 40, label
 	end
-	for _, property in { "AbsoluteSize", "Text", "FontFace" } do
-		label:GetPropertyChangedSignal(property):Connect(fit)
-	end
-	local constraint = label:FindFirstChildOfClass("UITextSizeConstraint")
-	if constraint then
-		constraint:GetPropertyChangedSignal("MaxTextSize"):Connect(fit)
-		constraint:GetPropertyChangedSignal("MinTextSize"):Connect(fit)
-	end
-	fit()
+	label:SetAttribute("FitLines", 1)
+	local TextFit = require(script.Parent.TextFit)
+	TextFit.prefer(label, { TextScaled = true, TextWrapped = false, TextTruncate = Enum.TextTruncate.None })
+	TextFit.bind(label)
 end
 function S.bindSlice(object)
 	if sliceBound[object] or not object:IsA("ImageLabel") or object.ScaleType ~= Enum.ScaleType.Slice then
@@ -80,10 +42,54 @@ function S.bindSlice(object)
 	object:GetPropertyChangedSignal("AbsoluteSize"):Connect(resize)
 	resize()
 end
+-- Gem art is drawn with ScaleType.Fit, so a button wider (or taller) than the gem's 600:172 shape shows a
+-- narrower gem in its middle. Keep the Label's authored insets relative to the gem actually drawn, not the
+-- button box, so its text never runs past the pointed ends.
+local gemBound = setmetatable({}, { __mode = "k" })
+function S.bindGemLabel(button)
+	local art, label = button:FindFirstChild("Artwork"), button:FindFirstChild("Label")
+	if gemBound[button] or not button:IsA("GuiButton") or not art or not label or button:FindFirstChild("Cost") then
+		return
+	end
+	if art.ScaleType ~= Enum.ScaleType.Fit or art.Size ~= UDim2.fromScale(1, 1) then
+		return
+	end
+	local p, z = label.Position, label.Size
+	if
+		p.X.Offset ~= 0
+		or p.Y.Offset ~= 0
+		or z.X.Offset ~= 0
+		or z.Y.Offset ~= 0
+		or label.AnchorPoint ~= Vector2.zero
+	then
+		return
+	end
+	gemBound[button] = true
+	local x0, y0, w0, h0 = p.X.Scale, p.Y.Scale, z.X.Scale, z.Y.Scale
+	local function fit()
+		local spec = Specs[art:GetAttribute("AssetPath")]
+		local size = button.AbsoluteSize
+		if not spec or not string.match(art:GetAttribute("AssetPath"), "^button/gem") or size.X < 1 or size.Y < 1 then
+			return
+		end
+		local ratio = spec.Width / spec.Height
+		local fx = math.min(1, size.Y * ratio / size.X)
+		local fy = math.min(1, size.X / ratio / size.Y)
+		label.Position = UDim2.fromScale(0.5 + (x0 - 0.5) * fx, 0.5 + (y0 - 0.5) * fy)
+		label.Size = UDim2.fromScale(w0 * fx, h0 * fy)
+	end
+	button:GetPropertyChangedSignal("AbsoluteSize"):Connect(fit)
+	art:GetAttributeChangedSignal("AssetPath"):Connect(fit)
+	fit()
+end
 function S.bindSlices(root)
+	if root:IsA("GuiButton") then
+		S.bindGemLabel(root)
+	end
 	for _, o in root:GetDescendants() do
 		S.bindSlice(o)
 		S.bindText(o)
+		S.bindGemLabel(o)
 		require(script.Parent.Motion).button(o)
 	end
 end

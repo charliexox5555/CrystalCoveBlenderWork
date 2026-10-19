@@ -7,6 +7,7 @@ local Portrait = require(script.Parent.Parent.Components.GlassyPortrait)
 local S = require(script.Parent.Parent.Components.StainedGlass)
 local Catalog = require(script.Parent.CosmeticCatalog)
 local Motion = require(script.Parent.Parent.Components.Motion)
+local Theme = require(script.Parent.Parent.Theme)
 local Screen = {}
 Screen.__index = Screen
 
@@ -185,8 +186,9 @@ function Screen:AddTile(d, root, order, unowned)
 	label.TextScaled, label.TextWrapped = true, true
 	local limit = label:FindFirstChildOfClass("UITextSizeConstraint")
 	if limit then
-		limit.MinTextSize, limit.MaxTextSize = 1, 20
+		limit.MinTextSize, limit.MaxTextSize = Theme.TextFit.MinSmall, 20
 	end
+	label:SetAttribute("FitMin", Theme.TextFit.MinSmall) -- small plaque: readable floor, two lines, then "…"
 	label.TextXAlignment = Enum.TextXAlignment.Center
 	local installed = RS.Assets.Glassies:FindFirstChild(d.Id) ~= nil
 	tile.Portrait.Visible, tile.Unknown.Visible = installed, not installed

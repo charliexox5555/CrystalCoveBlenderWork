@@ -14,6 +14,35 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — UI text fit (workstream J)
+Done:
+- Every UI text now stays inside its button, label or panel (decision 97, Proposed).
+  - New `UI/Components/TextFit` plus `TextFitController` guard all of PlayerGui: shrink to 12 px, then two lines, then 10 px, then "…". A floor is never bigger than the box.
+  - Shared helpers (`Kit.label/tag/marbleChip/marbleLine`, `U.text`, `StainedGlass.bindText`) read `Theme.TextFit`.
+  - Gem labels follow the drawn gem (`StainedGlass.bindGemLabel`). This fixed "PREVIEW EFFECT" and "FIND IN THE SHOP" running past their gem.
+- Screens changed:
+  - Shop tabs: 8 px → readable.
+  - Daily-offer and Marble-pack pills: wider; daily offers show the rarity only.
+  - Bundle pill: "LIMITED TIME".
+  - Crate prize cards: odds fill their chip.
+  - Inventory and cosmetic tile names, counts and badges.
+  - Kiln 10-pull reveal: "OWNED ×N".
+  - Roll message line now shrinks to fit.
+  - Shop card names: the bottoms of g and y are no longer cut.
+- StarterGui templates: `tools/studio/fit_ui_templates.luau` raised 96 minimums of 1–8 px to 10 px. It is reversible: `restore` mode, with backups in the `TextFitBackup` attribute.
+- Audit:
+  - Scanner (`tools/studio/ui_text_fit_scan.luau`) and fixture (`ui_text_fit_fixture.luau`) cover 19 screen states, with phone and tablet estimates and a +40% string stress test.
+  - Original code: 1 overflow and 64 labels at 3–9 px.
+  - Final: 0 overflow, and 0 in the stress test.
+  - Report and before/after shots: `docs/testing/ui_text_fit/`.
+- Lune: 160 passed, 4 failed. The 4 are roster-count tests (expected 24 release ids, found 36) from other sessions' uncommitted roster work; none touch UI.
+Next:
+- **Save or publish the place** to keep the template edits; the runtime guard covers them either way.
+- Check on a phone or in the Device Emulator.
+- Layout follow-ups: crate prize cards too small for their odds (8 px); Inventory tiles too dense on phones; Kiln 10-pull reveal labels 9–10 px tall.
+Problems / questions for the user:
+- An edit of mine briefly cut the end off `TextFit.luau` (16:42–16:50). Studio Play clients couldn't start for those minutes (workstream G noticed). It's fixed, and the controller now loads TextFit inside a pcall.
+
 ## 2026-10-19 — Claude — Rider animation families (workstream H)
 Done:
 - Creator request: real, uploadable riding animations in reusable families. `Config/RideFamilies` (Surf, Sit, Kneel, HandleStand, HandleSit; Idle, LeanLeft/Right, Launch, Land) sampled by the new pure `RideKeyframes`; `lune run tools/build_ride_animations` writes 50 KeyframeSequence .rbxm (R15 + R6), uploaded through Open Cloud (`upload_assets.py` now takes .rbxm Animations) to group 11116787, all Approved; ids in `RideFamilies.AnimationIds`.

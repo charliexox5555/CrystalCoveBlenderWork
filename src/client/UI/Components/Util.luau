@@ -119,7 +119,8 @@ function Util.text(parent, name, text, size, position, font, transient)
 		FontFace = font or Theme.Fonts.Body,
 		TextScaled = true,
 	}, transient)
-	Util.make("UITextSizeConstraint", label, { MinTextSize = 10, MaxTextSize = Theme.TextSize.Label })
+	-- Fit policy: shrink to Theme.TextFit.Min, then two lines, then "…" (Components/TextFit guards every label).
+	Util.make("UITextSizeConstraint", label, { MinTextSize = Theme.TextFit.Min, MaxTextSize = Theme.TextSize.Label })
 	return label
 end
 return Util

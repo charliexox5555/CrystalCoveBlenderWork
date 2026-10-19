@@ -58,8 +58,13 @@ function Kit.label(parent, name, text, size, position, options)
 	label.TextYAlignment = Enum.TextYAlignment.Center
 	label.Parent = parent
 	local limit = Instance.new("UITextSizeConstraint")
-	limit.MinTextSize, limit.MaxTextSize = options.MinSize or 8, options.MaxSize or Theme.TextSize.Heading
+	-- Fit policy (Components/TextFit): shrink to the minimum, then two lines, then "…". `Small` = tags and chips.
+	local floor = if options.Small then Theme.TextFit.MinSmall else Theme.TextFit.Min
+	limit.MinTextSize, limit.MaxTextSize = options.MinSize or floor, options.MaxSize or Theme.TextSize.Heading
 	limit.Parent = label
+	if options.Small then
+		label:SetAttribute("FitMin", Theme.TextFit.MinSmall)
+	end
 	if options.Outline ~= false then
 		Kit.outline(label, options.Outline)
 	end
@@ -112,7 +117,7 @@ function Kit.tag(parent, name, text, colour, size, position)
 		text,
 		UDim2.fromScale(0.72, 0.8),
 		UDim2.fromScale(0.14, 0.08),
-		{ Font = Theme.Fonts.Caption, Outline = false, MaxSize = 20 }
+		{ Font = Theme.Fonts.Caption, Outline = false, MaxSize = 20, Small = true }
 	)
 	S.tag(tag, text, colour)
 	return tag
@@ -130,7 +135,7 @@ function Kit.marbleChip(parent, name, amount, size, position, anchor)
 		tostring(amount),
 		UDim2.fromScale(0.5, 1),
 		UDim2.fromScale(0.5, 0),
-		{ XAlign = Enum.TextXAlignment.Left, MaxSize = 30 }
+		{ XAlign = Enum.TextXAlignment.Left, MaxSize = 30, Small = true }
 	)
 	return chip, icon, value
 end
@@ -144,15 +149,16 @@ function Kit.marbleLine(parent, name, size, position, anchor)
 		Enum.HorizontalAlignment.Center, Enum.VerticalAlignment.Center
 	layout.Padding = UDim.new(0, 4)
 	layout.Parent = frame
-	local line = { Frame = frame, Text = "", Color = Theme.Colors.Text }
-	function line:Set(text, color)
-		self.Text, self.Color = text, color or self.Color
+	local line = { Frame = frame, Text = "", Color = Theme.Colors.Text, Shrink = 1 }
+	function line:Set(text, color, shrink)
+		self.Text, self.Color, self.Shrink = text, color or self.Color, shrink or 1
 		for _, child in frame:GetChildren() do
 			if child:IsA("GuiObject") then
 				child:Destroy()
 			end
 		end
 		local pixel = math.clamp(math.floor(frame.AbsoluteSize.Y * 0.8), 14, 30)
+		pixel = math.max(Theme.TextFit.MinSmall, math.floor(pixel * self.Shrink))
 		local order = 0
 		for index, piece in string.split(text, "{M}") do
 			if index > 1 then
@@ -178,6 +184,21 @@ function Kit.marbleLine(parent, name, size, position, anchor)
 	frame:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 		if line.Text ~= "" then
 			line:Set(line.Text)
+		end
+	end)
+	-- The pieces size themselves to their text, so a long sentence could run past the frame: shrink to fit
+	-- (down to Theme.TextFit.MinSmall). Measured from the glyphs, since automatic sizes stop at the frame.
+	layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+		local width, content = frame.AbsoluteSize.X, 0
+		for _, child in frame:GetChildren() do
+			if child:IsA("TextLabel") then
+				content += child.TextBounds.X + layout.Padding.Offset
+			elseif child:IsA("GuiObject") then
+				content += child.AbsoluteSize.X + layout.Padding.Offset
+			end
+		end
+		if line.Text ~= "" and content > width + 1 and width > 0 and line.Shrink > 0.3 then
+			line:Set(line.Text, nil, line.Shrink * math.max(0.5, width / content - 0.02))
 		end
 	end)
 	return line

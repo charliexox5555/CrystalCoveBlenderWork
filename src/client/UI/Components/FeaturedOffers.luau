@@ -114,10 +114,12 @@ function Featured:BuildBanner()
 		Size = UDim2.fromScale(0.4, 0.17),
 		ZIndex = 3,
 	})
-	U.make("UIAspectRatioConstraint", pill, { AspectRatio = 3.75, DominantAxis = Enum.DominantAxis.Height })
+	-- Wide enough for its words at the readable minimum (3.75:1 cut "LIMITED-TIME BUNDLE" to "LIMITED-TIME").
+	U.make("UIAspectRatioConstraint", pill, { DominantAxis = Enum.DominantAxis.Height }).AspectRatio = 5.5
 	local label = U.text(pill, "Label", "", UDim2.fromScale(0.78, 0.6), UDim2.fromScale(0.11, 0.2), Theme.Fonts.Caption)
-	label.ZIndex, label.UITextSizeConstraint.MinTextSize = 4, 1
-	S.tag(pill, "LIMITED-TIME BUNDLE", "amethyst")
+	label.ZIndex, label.UITextSizeConstraint.MinTextSize = 4, Theme.TextFit.MinSmall
+	label:SetAttribute("FitMin", Theme.TextFit.MinSmall)
+	S.tag(pill, "LIMITED TIME", "amethyst")
 	show.Title.Position, show.Title.Size = UDim2.fromScale(0.03, 0.27), UDim2.fromScale(0.46, 0.3)
 	show.Title.FontFace, show.Title.TextXAlignment = Theme.Fonts.Heading, Enum.TextXAlignment.Left
 	show.Title.UITextSizeConstraint.MaxTextSize = 64
@@ -237,11 +239,9 @@ function Featured:Apply(view)
 			viewport.Visible, viewport.ZIndex = true, 3
 			card.Name.Text = def and def.Name or offer.Id
 			local band = if offer.ValueBand == "Featured" then " ★" else ""
-			Card.pill(
-				card.Rarity,
-				string.upper(offer.Rarity .. " " .. categoryNames[offer.Category]) .. band,
-				S.Rarity[offer.Rarity] or "milk"
-			)
+			-- Rarity only: the portrait and the shop tabs already say what kind of item it is, and
+			-- "UNCOMMON FINISHER" can't fit a corner pill at a readable size.
+			Card.pill(card.Rarity, string.upper(offer.Rarity) .. band, S.Rarity[offer.Rarity] or "milk")
 			Card.accent(card, rarityColours[offer.Rarity] or Theme.Palette.milk)
 		end
 	end

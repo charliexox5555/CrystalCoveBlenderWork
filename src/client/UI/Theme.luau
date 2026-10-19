@@ -130,6 +130,17 @@ Theme.TextSize = {
 	PopUp = 96,
 }
 
+-- Text fit policy (Components/TextFit): shrink to Min, then wrap to Lines, then end with "…".
+-- Min is the smallest size a kid can read on a phone; MinSmall is for tags, chips and counters.
+Theme.TextFit = {
+	Min = 12,
+	MinSmall = 10,
+	Lines = 2, -- one-line text (names, buttons) may use two lines before it is cut
+	BodyLines = 3, -- descriptions
+	-- Cut-glass art isn't rectangular: keep text inside the inner face (fractions of the art's box).
+	GemInset = Vector2.new(0.1, 0.17),
+}
+
 -- Motion ---------------------------------------------------------------------------------------
 Theme.Motion = {
 	PanelOpen = TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),

@@ -14,6 +14,20 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — Living glassies: GlassyMotion (workstream E)
+Done:
+- `tools/gen_glassy_motion.luau` converts both Blender motion manifests (v3 release + v4 launch) into `Config/GlassyMotion` (36 glassies, 207 moving parts), through a pure converter (`GlassyMotionConvert`) with `GlassyMotionTests`. Lune 159/159.
+- `Presentation/GlassyMotion` animates Details parts relative to the body:
+  - idle (sway, spin, bob, pulse, flicker, blink, drip, swing-driven slosh) with `follows` chains;
+  - hit reactions scaled by B's tier (×0.6 in fights);
+  - livelier Ready, a cast flourish, and a tiny per-type body idle through Hero.motion that fades after hits.
+  - Reduced motion halves it. Unwatched fights rest. Previews share one 30 Hz loop.
+- Wired into fights (Hero.init/status, PowerFX hits/Ready/cast), every UI portrait (GlassyPortrait), the lobby showcase and the bundle stage. Gated to v3/v4 imports flagged `MotionVersion >= 3`, so today's v2 models are unchanged (verified in Studio Edit: none are flagged). Split with B agreed. Design: `docs/vfx/GLASSY_MOTION.md`.
+Next:
+- Run the Play fixture (`tools/studio/glassy_motion_fixture.luau`, steps in `docs/testing/glassy_motion/README.md`) once Studio is back. The installer must set `MotionVersion = 4` when the v4 bundles land.
+Problems / questions for the user:
+- **Studio is hung in a half-started Play** (since about 12:08): the Client never became reachable and the MCP can't stop it ("Start play hasn't finished yet"). Please press Stop in Studio, or restart it. The lock is released.
+
 ## 2026-10-19 — Claude — Finishers V2 (workstream G)
 Done:
 - The five standard finishers are now premium timed shows (gather, peak, release, linger) with new names; ids, prices, odds and rarities are unchanged: Prism Pop, Piñata Pop, Fizz Bloom, Ka-Block, Supernova. Design and short research: `docs/vfx/FINISHERS_V2.md`. Decision 91 (Proposed).

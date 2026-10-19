@@ -1117,7 +1117,7 @@ def b_jam(gid):
     prof = chaikin(ctrl, fixed=(1, 7, 8, 9, 10), iterations=1)
     body = paint(lathe3("Body", prof, h, 20), "#FF6B8B", role="Body")
     cap = paint(lathe3("Cap", [(0, 1.8), (0.93, 1.8), (0.98, 1.84), (0.98, 1.98), (0.92, 2.05), (0, 2.05)], h, 20), "#F5C860", "Metal")
-    cloth = lathe3("ClothCover", [(0, 2.08), (0.7, 2.08), (0.96, 2.04), (1.04, 1.96), (1.07, 1.8), (1.06, 1.68), (1.0, 1.68), (1.0, 1.8), (0.97, 1.92), (0.9, 2.0), (0.6, 2.03), (0, 2.03)], h, 16, sharp_deg=None)
+    cloth = lathe3("CapCloth", [(0, 2.08), (0.7, 2.08), (0.96, 2.04), (1.04, 1.96), (1.07, 1.8), (1.06, 1.68), (1.0, 1.68), (1.0, 1.8), (0.97, 1.92), (0.9, 2.0), (0.6, 2.03), (0, 2.03)], h, 16, sharp_deg=None)
     for v in cloth.data.vertices:
         a = math.atan2(v.co.y, v.co.x)
         if v.co.z < -0.18:
@@ -1129,8 +1129,8 @@ def b_jam(gid):
     anim(cloth, (0, 0, 0), (1, 0, 0), sway(3, 2.4), hop(0.06), lod_keep=True)
     tb = bmesh.new()
     torus_bm(tb, (0, 0, 1.79 - h), 1.035, 0.035, 16, 4)
-    tie = paint(_obj("TieBand", tb), "#FFFFFF", "SmoothPlastic")
-    anim(tie, (0, 0, 0), (1, 0, 0), sway(3, 2.4), hop(0.06), note="moves with ClothCover")
+    tie = paint(_obj("CapTie", tb), "#FFFFFF", "SmoothPlastic")
+    anim(tie, (0, 0, 0), (1, 0, 0), sway(3, 2.4), hop(0.06), note="moves with CapCloth; both names contain 'Cap' so the Lid Guard power lifts them with the lid")
     jam = paint(lathe3("JamInsert", inset(prof, 0.08, 0.06, 1.18), h, 12, sharp_deg=None), "#E0325A", alpha=0.7)
     anim(jam, (0, 0, 1.18 - h), (1, 0, 0), slosh(10, 0.25))
     berries = paint(blobs("Berries", [((0.32, -0.45, 0.62 - h), (0.17, 0.15, 0.2)), ((-0.36, -0.38, 0.42 - h), (0.15, 0.13, 0.17))], 6, 4), "#FF4D6D", "SmoothPlastic")
@@ -1484,3 +1484,130 @@ def b_chime(gid):
     ribbon = paint(_obj("Ribbon", bow), "#FF8FB0", "SmoothPlastic")
     anim(ribbon, (0, -0.27, 2.12 - h), (0, 1, 0), sway(5, 1.6), kick(12))
     return body, [clapper, rim, crown, ribbon]
+
+
+# ------------------------------------------------------------------------------------------
+# Batch 4: Commons (simple and clean: one fill or charm, 1-2 moving parts)
+# ------------------------------------------------------------------------------------------
+
+@builder("milk_bottle")
+def b_milk_bottle(gid):
+    h = 2.48
+    ctrl = [(0, 0), (0.47, 0), (0.62, 0.08), (0.68, 0.24), (0.68, 1.27), (0.65, 1.48), (0.54, 1.68), (0.37, 1.85), (0.3, 2.01), (0.3, 2.2), (0.37, 2.23), (0.37, 2.3), (0, 2.3)]
+    prof = chaikin(ctrl, fixed=(1, 3, 4, 8, 9, 10, 11), iterations=1)
+    body = paint(lathe3("Body", prof, h, 20), "#FFFFFF", role="Body")
+    cap = lathe3("Cap", [(0, 2.3), (0.36, 2.3), (0.39, 2.33), (0.39, 2.43), (0.34, 2.48), (0, 2.48)], h, 16)
+    paint(crimp(cap, 8, 0.04, -0.06), "#8DCFFF", "SmoothPlastic")
+    anim(cap, (0, 0, -0.18), (0, 0, 1), None, hop(0.07))
+    milk = paint(lathe3("MilkInsert", inset(prof, 0.08, 0.06, 1.52), h, 14, sharp_deg=None), "#FFF6DD", "SmoothPlastic")
+    anim(milk, (0, 0, 1.52 - h), (1, 0, 0), slosh(10, 0.25), lod_keep=True)
+    rb = bmesh.new()
+    torus_bm(rb, (0, 0, 2.15 - h), 0.32, 0.07, 16, 5)
+    foam = paint(_obj("FoamRim", rb), "#EAFBFF")
+    ds = [cap, milk, foam]
+    for i in range(3):
+        b = paint(blob(f"FoamBubble_{i + 1}", ((i - 1) * 0.17, -0.26, 2.19 - h), (0.09, 0.08, 0.09), 8, 5), "#EAFBFF")
+        ds.append(b)
+    return body, ds
+
+
+@builder("pickle_jar")
+def b_pickle_jar(gid):
+    h = 2.20
+    ctrl = [(0, 0), (0.63, 0), (0.84, 0.09), (0.93, 0.28), (0.93, 1.4), (0.87, 1.61), (0.79, 1.73), (0.79, 1.87), (0, 1.87)]
+    prof = chaikin(ctrl, fixed=(1, 6, 7), iterations=1)
+    body = paint(lathe3("Body", prof, h, 22), "#C9F2A6", role="Body")
+    cap = lathe3("Cap", [(0, 1.87), (0.9, 1.87), (0.96, 1.92), (0.96, 2.14), (0.9, 2.2), (0, 2.2)], h, 24)
+    paint(crimp(cap, 24, 0.018, -0.03), "#76B867", "SmoothPlastic")
+    ds = [cap]
+    rng = random.Random(5)
+    for i, (x, tilt) in enumerate(((-0.3, 0.12), (0.31, -0.1))):
+        zs = [0.32 + k * 0.1 for k in range(12)]
+        path = [(x + math.sin(tilt) * (z - 0.9), -0.2, z - h) for z in zs]
+        rs = [0.17 * math.sin(math.pi * (0.08 + 0.84 * k / 11)) ** 0.5 + 0.02 for k in range(12)]
+        pb = bmesh.new()
+        tube_bm(pb, path, rs, 8)
+        for v in pb.verts:
+            v.co += (v.co - Vector((x, -0.2, v.co.z))).normalized() * rng.uniform(-0.012, 0.02) if (v.co - Vector((x, -0.2, v.co.z))).length > 0.05 else Vector()
+        pk = paint(_obj(f"Pickle_{i + 1}", pb), "#71B545")
+        anim(pk, (x, -0.2, 0.9 - h), (0, 1, 0), sway(4, 2.4, i * 1.4), hop(0.05), extra_idle=[bob(0.04, 2.0, i * 1.1)], lod_keep=(i == 0))
+        ds.append(pk)
+    return body, ds
+
+
+@builder("ketchup_bottle")
+def b_ketchup_bottle(gid):
+    h = 2.62
+    ctrl = [(0, 0), (0.43, 0), (0.59, 0.08), (0.65, 0.24), (0.61, 0.84), (0.53, 1.42), (0.41, 1.7), (0.24, 1.94), (0.21, 2.15), (0, 2.15)]
+    prof = chaikin(ctrl, fixed=(1, 3, 8), iterations=1)
+    body = paint(lathe3("Body", prof, h, 20), "#FF5A4E", role="Body")
+    cap = paint(lathe3("Cap", [(0, 2.12), (0.25, 2.12), (0.28, 2.16), (0.28, 2.34), (0.22, 2.38), (0, 2.38)], h, 16), "#F8D76D", "SmoothPlastic")
+    nozzle = paint(lathe3("SqueezeNozzle", [(0, 2.36), (0.12, 2.36), (0.1, 2.5), (0.06, 2.58), (0, 2.6)], h, 10), "#F8D76D", "SmoothPlastic")
+    flip = paint(lathe3("FlipCap", [(0, 2.44), (0.17, 2.44), (0.18, 2.56), (0.15, 2.62), (0, 2.62)], h, 12), "#FFC94A", "SmoothPlastic")
+    anim(flip, (0.18, 0, 2.46 - h), (0, 1, 0), None, kick(35, 3.5, 0.4), lod_keep=True, note="hit flips the lid open, then it snaps shut")
+    badge = paint(blob("TomatoBadge", (0, -0.6, 0.82 - h), (0.27, 0.06, 0.23), 12, 6), "#EE7964", "SmoothPlastic")
+    leaf = paint(slab("TomatoLeaf", star_points(5, 0.1, 0.035), 0.03, Matrix.Translation((0, -0.66, 1.03 - h)), bevel=0.01, segments=1), "#4FB548", "SmoothPlastic")
+    return body, [cap, nozzle, flip, badge, leaf]
+
+
+@builder("glass_cup")
+def b_glass_cup(gid):
+    h = 1.95
+    prof = [(0, 0), (0.5, 0), (0.6, 0.06), (0.63, 0.22), (0.74, 1.78), (0.75, 1.9), (0.72, 1.95), (0.63, 1.95), (0.61, 1.84), (0.52, 0.29), (0.46, 0.2), (0, 0.2)]
+    body = paint(lathe3("Body", prof, h, 24), "#DFF6FF", role="Body")
+    rb = bmesh.new()
+    torus_bm(rb, (0, 0, -0.05), 0.69, 0.055, 24, 5)
+    rim = paint(_obj("ThickRim", rb), "#EAFBFF")
+    pts = [(0.12, 0.05, 0.28 - h), (0.2, 0.05, 1.3 - h), (0.27, 0.05, 1.82 - h), (0.3, 0.05, 1.9 - h), (0.36, 0.05, 1.96 - h), (0.46, 0.05, 2.0 - h), (0.66, 0.05, 2.06 - h)]
+    path = spline(pts, 18)
+    rs = []
+    for k, p in enumerate(path):
+        bendy = 1.75 - h < p.z < 2.0 - h and p.x < 0.42
+        rs.append(0.055 + (0.01 * math.cos(k * 3.0) if bendy else 0))
+    sb = bmesh.new()
+    tube_bm(sb, path, rs, 8)
+    straw = paint(_obj("Straw", sb), "#FF7AA8", "SmoothPlastic")
+    anim(straw, (0.12, 0.05, 0.28 - h), (0, 1, 0), sway(4, 2.2), kick(15), lod_keep=True)
+    return body, [rim, straw]
+
+
+@builder("water_jug")
+def b_water_jug(gid):
+    h = 2.65
+    prof = [(0, 0), (0.6, 0), (0.84, 0.13), (0.96, 0.46), (0.95, 1.25), (0.85, 1.57), (0.59, 1.91), (0.4, 2.25), (0.47, 2.36), (0.49, 2.57), (0.45, 2.65), (0.33, 2.65), (0.31, 2.38), (0.46, 1.99), (0.74, 1.53), (0.82, 1.23), (0.81, 0.48), (0.57, 0.23), (0, 0.23)]
+    prof = chaikin(prof, fixed=(1, 6, 7, 8, 9, 10, 11, 12, 13, 17), iterations=1)
+    body = paint(lathe3("Body", prof, h, 22), "#BFEFFF", role="Body")
+    path = spline([(-0.52, 0, 2.05 - h), (-0.95, 0, 2.02 - h), (-1.32, 0, 1.68 - h), (-1.36, 0, 1.12 - h), (-1.12, 0, 0.62 - h), (-0.88, 0, 0.52 - h)], 16)
+    hb = bmesh.new()
+    tube_bm(hb, path, 0.13, 8)
+    handle = paint(_obj("Handle", hb), "#BDEBFF")
+    water = paint(lathe3("WaterInsert", [(0, 0.27), (0.54, 0.27), (0.74, 0.48), (0.76, 1.12), (0, 1.12)], h, 14, sharp_deg=None), "#51BFF2", alpha=0.6)
+    anim(water, (0, 0, 1.12 - h), (1, 0, 0), slosh(14, 0.4), lod_keep=True, note="client also scales it by charge")
+    return body, [handle, water]
+
+
+@builder("lemonade_bottle")
+def b_lemonade_bottle(gid):
+    h = 2.60
+    ctrl = [(0, 0), (0.45, 0), (0.6, 0.08), (0.66, 0.25), (0.65, 1.18), (0.6, 1.43), (0.45, 1.69), (0.29, 1.94), (0.25, 2.15), (0.25, 2.37), (0, 2.37)]
+    prof = chaikin(ctrl, fixed=(1, 3, 8, 9), iterations=1)
+    body = paint(lathe3("Body", prof, h, 20), "#FFF27A", role="Body", transmission=0.4)
+    cap = paint(lathe3("Cap", [(0, 2.37), (0.27, 2.37), (0.3, 2.41), (0.3, 2.55), (0.25, 2.6), (0, 2.6)], h, 14), "#6CD381", "SmoothPlastic")
+    rind = paint(blob("LemonRind", (0.12, -0.6, 1.24 - h), (0.32, 0.06, 0.32), 16, 8), "#EABF3D", "SmoothPlastic")
+    pulp = paint(blob("LemonPulp", (0.12, -0.65, 1.24 - h), (0.25, 0.025, 0.25), 16, 6), "#FFF0A2", "SmoothPlastic")
+    m = Matrix.Translation((-0.3, -0.18, 2.02 - h)) @ Matrix.Rotation(-0.35, 4, "Y") @ Matrix.Rotation(1.25, 4, "X")
+    rb = bmesh.new()
+    torus_bm(rb, (0, 0, 0), 0.27, 0.045, 16, 4, m)
+    slc = paint(_obj("LemonSlice", rb), "#F2C230", "SmoothPlastic")
+    anim(slc, (-0.24, -0.08, 2.1 - h), (0, 1, 0), sway(4, 2.0), kick(14), lod_keep=True)
+    fb = bmesh.new()
+    lathe_bm(fb, [(0, -0.03), (0.25, -0.03), (0.25, 0.03), (0, 0.03)], 0, 16)
+    for v in fb.verts:
+        if math.hypot(v.co.x, v.co.y) > 0.1:
+            k = 1 - 0.1 * max(0.0, math.cos(8 * math.atan2(v.co.y, v.co.x))) ** 8
+            v.co.x *= k
+            v.co.y *= k
+    bmesh.ops.transform(fb, matrix=m, verts=fb.verts)
+    flesh = paint(_obj("LemonSliceFlesh", fb), "#FFF3A6", "SmoothPlastic")
+    anim(flesh, (-0.24, -0.08, 2.1 - h), (0, 1, 0), sway(4, 2.0), kick(14), note="moves with LemonSlice")
+    return body, [cap, rind, pulp, slc, flesh]

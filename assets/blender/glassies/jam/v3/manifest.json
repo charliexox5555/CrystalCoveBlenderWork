@@ -20,47 +20,47 @@
   "intact_triangles": 1448,
   "triangle_budget": 1500,
   "shard_count": 16,
-  "fracture_volume_ratio": 1.000000002444713,
+  "fracture_volume_ratio": 1.000000002206801,
   "checks": {
     "Body": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 4.650002398520862
+      "volume": 4.650002398520863
     },
     "Shard_01": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.20566608049202045
+      "volume": 0.20566608051138183
     },
     "Shard_02": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.5037021514714202
+      "volume": 0.5037021514009756
     },
     "Shard_03": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.4247450911887735
+      "volume": 0.4247450911887736
     },
     "Shard_04": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.38279283778975315
+      "volume": 0.3827928373338087
     },
     "Shard_05": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.3773972083321552
+      "volume": 0.37739721117798153
     },
     "Shard_06": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.37234578463312823
+      "volume": 0.37234578580821504
     },
     "Shard_07": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.3490652161521644
+      "volume": 0.34906521624022296
     },
     "Shard_08": {
       "boundary_edges": 0,
@@ -70,42 +70,42 @@
     "Shard_09": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.30802526572977085
+      "volume": 0.30802526280267467
     },
     "Shard_10": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.27261376650533653
+      "volume": 0.27261376695131295
     },
     "Shard_11": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.20995552218108082
+      "volume": 0.20995552247086335
     },
     "Shard_12": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.1898516497383372
+      "volume": 0.18985164685271608
     },
     "Shard_13": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.1595115771398613
+      "volume": 0.15951157713986122
     },
     "Shard_14": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.12602158164134214
+      "volume": 0.12602158104723013
     },
     "Shard_15": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.10995739947728177
+      "volume": 0.10995739879117188
     },
     "Shard_16": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.3160990841065714
+      "volume": 0.31609908575551643
     }
   },
   "crack_segments": 144,
@@ -175,8 +175,8 @@
       "effect_only": false
     },
     {
-      "name": "ClothCover",
-      "source_name": "ClothCover",
+      "name": "CapCloth",
+      "source_name": "CapCloth",
       "role": "Detail",
       "triangles": 320,
       "bounds_blender": [
@@ -240,11 +240,11 @@
         },
         "lod_keep": true
       },
-      "pivot_empty": "Pivot_ClothCover"
+      "pivot_empty": "Pivot_CapCloth"
     },
     {
-      "name": "TieBand",
-      "source_name": "TieBand",
+      "name": "CapTie",
+      "source_name": "CapTie",
       "role": "Detail",
       "triangles": 128,
       "bounds_blender": [
@@ -307,9 +307,9 @@
           "damping": 0.3
         },
         "lod_keep": false,
-        "note": "moves with ClothCover"
+        "note": "moves with CapCloth; both names contain 'Cap' so the Lid Guard power lifts them with the lid"
       },
-      "pivot_empty": "Pivot_TieBand"
+      "pivot_empty": "Pivot_CapTie"
     },
     {
       "name": "JamInsert",
@@ -456,7 +456,7 @@
           -1.4229810237884521
         ],
         [
-          0.01642213761806488,
+          0.016422145068645477,
           0.8876591324806213,
           -0.25
         ]
@@ -739,7 +739,7 @@
       "triangles": 138,
       "bounds_blender": [
         [
-          0.14658799767494202,
+          0.14658795297145844,
           -0.1459561288356781,
           -1.2474247217178345
         ],
@@ -900,11 +900,11 @@
       "bounds_blender": [
         [
           -0.9271732568740845,
-          -0.19314731657505035,
+          -0.19314730167388916,
           -2.0270259380340576
         ],
         [
-          -0.08803495764732361,
+          -0.08803500235080719,
           0.8335251212120056,
           -0.5876643061637878
         ]
@@ -967,12 +967,12 @@
     "cracks": "assets/blender/glassies/jam/v3/cracks.json"
   },
   "hashes": {
-    "body": "19083910a0e41f927fecb31987e6605ba39929541b242088f2e6945b08ea555d",
-    "details": "58bef05546ea1d72866ef57a2ca03c28309ff06a225cd8c451fc54d3ed267e2d",
-    "shards": "aefa90216f25b867e7022695b75384505b221cda30616e0a1d58f867d3eb2af3",
-    "bundle": "07ad60c844474da921174a1f6621861186b7cb810ad7d03c85080d29ecd38cdb",
-    "icon": "7fb3c24f2380f8148221e1b9d695e1f6a676b65bca7d0aea18670d82558648c0",
-    "blend": "debe72fa3c6456cfd482d24f2a026f9092ce61ae0991b599cec66cc9db843a87",
+    "body": "c35a7b620963eb76270c57481b13d675d9d2d3f9c862390aff7aa652ba3cb539",
+    "details": "d6450db8c93bd79cbe844a1cdacda36ca1a7e318304d6591356b851d8bca9495",
+    "shards": "494bdfdd21813fcc3b790128294b5159c99d404e548e72e9397013ca8a53df88",
+    "bundle": "e88f10116bf992bd7aaa594c618194adb43ad34033882e1cda5f269894ce72cd",
+    "icon": "152dcf147967c559768314867da43f9275d4799accf64c2e31942718ad8c5fb4",
+    "blend": "28a56e7ffadd1d6a150079cc103dcf66c1f397be9c5027d644fa20019db616e9",
     "cracks": "fd4799dc2564313dcbc5dfcbc670252ea538921a01d66c21413123b16c2c4a19"
   },
   "before": {
@@ -1025,12 +1025,12 @@
         "nonmanifold_edges": 0
       },
       {
-        "name": "ClothCover",
+        "name": "CapCloth",
         "bounds_error": 8.940696716308594e-08,
         "nonmanifold_edges": 0
       },
       {
-        "name": "TieBand",
+        "name": "CapTie",
         "bounds_error": 8.940696716308594e-08,
         "nonmanifold_edges": 0
       },
@@ -1116,7 +1116,7 @@
       },
       {
         "name": "Shard_15",
-        "bounds_error": 1.6049041769309353e-07,
+        "bounds_error": 1.4675941767984784e-07,
         "nonmanifold_edges": 0
       },
       {

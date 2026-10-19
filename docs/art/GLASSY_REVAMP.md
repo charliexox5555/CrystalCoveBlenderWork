@@ -99,7 +99,7 @@ Order of work: Mythic/Legendary/Epic, starters, Rare, Uncommon, Common. Collisio
 
 **Glass Dragon (Mythic).** *"A baby dragon who sneezes glitter and thinks it's terrifying."*
 - Visual: one chubby remeshed body (big round head, pinched neck, pear belly, stubby feet), soft belly plate in pale glass, two swept horns, three back spines, eyes with shine dots, a proper muzzle with nostrils, membrane wings with three scalloped fingers, curled tail with a spade tip, a Neon breath core glowing through the chest.
-- Moving parts: `Wing_L/R` (idle `sway` 14° at 1.4 s, mirrored; hit `flare` 28°), `Jaw` (idle `sway` 4° at 2.6 s; hit `kick` 18° = a little roar), `Tail` (idle `sway` 12° about vertical at 1.9 s; hit `kick` 20°), `BreathCore` (idle `pulse` 0.08 at 1.6 s; hit `flash`), `Eye_L/R` (`blink`), `Horn_L/R` static, `BellyPlate`, `Spines`, `Muzzle` static.
+- Moving parts: `Wing_L/R` (idle `sway` 14° at 1.4 s, mirrored; hit `flare` 28°), `Jaw` (idle `sway` 4° at 2.6 s; hit `kick` 18° = a little roar), `Tail` (idle `sway` 12° about vertical at 1.9 s; hit `kick` 20°), `BreathCore` (idle `pulse` 0.08 at 1.6 s; hit `flash`), `Eyes` + `EyeShine` (`blink`), `Horn_L/R` static, `BellyPlate`, `Spines`, `Muzzle` static.
 
 **Galaxy Orb (Mythic).** *"A pocket universe that hums to itself."*
 - Visual: perfect 32-segment orb with a short neck, star-tipped crown, a Neon spiral galaxy disc inside (layered: tinted inner glass shell around it), a bright core star, scattered Neon stardust, two thin orbit bands, each carrying two moons.
@@ -119,13 +119,13 @@ Order of work: Mythic/Legendary/Epic, starters, Rare, Uncommon, Common. Collisio
 
 **Glass Duck (Epic).** *"Quack. Clink. Quack. Unbothered."*
 - Visual: one remeshed duck body (round breast, head forward over it, perky tail), sunny yellow glass instead of olive, chunky orange beak, eyes with shine, wing volumes, a head-tuft curl, the crown bubble kept as its charm, a Neon heart core behind the chest (Epic glow).
-- Moving parts: `Wing_L/R` (idle `sway` 6° at 1.8 s; hit `flare` 30°), `TailFeather` (idle `sway` 10° at 1.2 s), `HeadTuft` (hit `kick` 25°), `CrownBubble` (idle `bob` 0.05 at 1.5 s), `Eye_L/R` (`blink`), `HeartCore` (idle `pulse`).
+- Moving parts: `Wing_L/R` (idle `sway` 6° at 1.8 s; hit `flare` 30°), `TailFeather` (idle `sway` 10° at 1.2 s), `HeadTuft` (hit `kick` 25°), `CrownBubble` (idle `bob` 0.05 at 1.5 s), `Eyes` + `EyeShine` (`blink`), `HeartCore` (idle `pulse`).
 
 ### Batch 2 — starters and first Rares
 
 **Pop (Starter).** *"Small bottle, big dreams, bigger burps."* Smoother 24-segment bottle with a belt band, crimped crown cap, soda fill. Moving: `Cap` (kept; hit `hop`), `ChargeBubble_1..3` (kept; client-lit), `SodaFill` (`slosh`).
 
-**Jam (Starter).** *"Grandma's toughest jar."* Gold lid with a gingham cloth cover and tie band, jam fill with two strawberry chunks. Moving: `ClothCover` (idle `sway` 3°; hit `hop`), `JamInsert` (kept; `slosh`), `Cap` (kept, static), `LidRidge` (kept).
+**Jam (Starter).** *"Grandma's toughest jar."* Gold lid under a scalloped cloth cover and tie band, jam fill with two strawberry chunks. Moving: `CapCloth` + `CapTie` (idle `sway` 3°; hit `hop`; named with `Cap` so the Lid Guard power lifts them with the lid), `JamInsert` (kept; `slosh`) + `Berries`, `Cap` (kept, static). `LidRidge` dropped (hidden by the cloth).
 
 **Prism (Starter).** *"A perfume bottle that thinks it's a gemstone."* Crisper octagonal facets with chamfered shoulders, taller diamond stopper, front lens kept. Moving: `GemStopper` (idle `sway` 3°; hit `kick` 12°), `RayLens` (kept; client-lit), `Sparkle` (idle `spin` around the stopper).
 
@@ -137,7 +137,7 @@ Order of work: Mythic/Legendary/Epic, starters, Rare, Uncommon, Common. Collisio
 
 ### Batch 3 — remaining Rares and Uncommons
 
-**Hourglass (Rare).** *"Patient. Very, very patient."* Turned frame caps with knobs, thicker posts, sand in both chambers, a thin falling stream. Moving: frame flip (kept names, client), `SandInsert` (kept), `SandTop` (idle `pulse` small), `SandStream` (idle `flicker`).
+**Hourglass (Rare).** *"Patient. Very, very patient."* Turned frame caps with ball feet, turned posts, sand in both chambers, a thin falling stream. Moving: `FrameCap_Bottom/Top`, `FramePost_1/2` (client flip), `SandInsert` (kept; client scale), `SandTop` (idle `pulse` small), `SandStream` (idle `flicker`).
 
 **Frostglobe (Rare).** *"A snow day you can carry."* Dome with snowy base, a faceted glowing crystal tree inside, a swirl of snowflakes, pearl hang knob. Moving: `SnowSwirl` (idle `spin` 30 °/s; hit `spin_boost`), `CrystalSprout` (kept; glow), `HangPearl` (hit `kick`).
 
@@ -158,15 +158,52 @@ Order of work: Mythic/Legendary/Epic, starters, Rare, Uncommon, Common. Collisio
 **Water Jug.** *"Big, round and full of splash."* Smoother jug and handle, water fill. Moving: `WaterInsert` (kept; `slosh` + client charge scale).
 **Lemonade Bottle.** *"Zesty and bubbly."* Brighter lemon tint, lemon slice on the neck. Moving: `LemonSlice` (idle `sway` 4°; hit `kick` 14°), `LemonPulp` (client glow).
 
-## 6. Results
+## 6. Results (all 24 built, Oct 19)
 
-Filled in per batch as glassies finish (tris, shards, body bounds vs release_v2, radius notes, round-trip). See §7.
+Tris are intact (Body + Details) release_v2 → v3; parts = Details / Details with manifest motion (client-driven kit parts such as `ChargeBubble_n` count as Details without manifest motion). Body change = largest body-bounds change vs release_v2 on any axis. All FBX bundles pass the Blender round-trip (bounds < 1e-4, origins at the hang point, closed body and shards, shards recombine to the body, release_v2 sources hash-unchanged).
+
+| Glassy | Rarity | Tris | Shards | Body change | Parts / animated | Round-trip |
+|---|---|---:|---:|---:|---:|---|
+| Glass Dragon | Mythic | 1212 → 2724 | 20 | 0.00% | 12 / 7 | Pass |
+| Galaxy Orb | Mythic | 880 → 2816 | 20 | 0.21% | 9 / 8 | Pass |
+| Comet | Legendary | 556 → 2304 | 20 | 0.60% | 7 / 7 | Pass |
+| Prism Blade | Epic | 220 → 864 | 18 | 0.22% | 7 / 6 | Pass |
+| Rocket Pop | Epic | 724 → 1472 | 18 | 1.52% | 10 / 8 | Pass |
+| Glass Duck | Epic | 1232 → 1478 | 18 | 0.00% | 9 / 9 | Pass |
+| Pop | Starter | 1184 → 1472 | 16 | 1.52% | 5 / 2 | Pass |
+| Jam | Starter | 1000 → 1448 | 16 | 0.00% | 5 / 4 | Pass |
+| Prism | Starter | 288 → 516 | 16 | 0.00% | 4 / 2 | Pass |
+| Crescent Axe | Rare | 480 → 1344 | 16 | 2.13% | 5 / 2 | Pass |
+| Briar Flask | Rare | 764 → 1486 | 16 | 1.83% | 8 / 7 | Pass |
+| Arc Coil | Rare | 996 → 1292 | 16 | 1.10% | 7 / 3 | Pass |
+| Hourglass | Rare | 824 → 1372 | 16 | 0.00% | 7 / 7 | Pass |
+| Frostglobe | Rare | 688 → 1332 | 16 | 2.06% | 5 / 3 | Pass |
+| Mason Jar | Uncommon | 1072 → 1360 | 16 | 0.82% | 6 / 3 | Pass |
+| Hot Sauce | Uncommon | 720 → 1088 | 16 | 2.45% | 7 / 3 | Pass |
+| Crystal Tumbler | Uncommon | 500 → 656 | 16 | 0.00% | 3 / 1 | Pass |
+| Chime | Uncommon | 752 → 1428 | 16 | 2.27% | 4 / 2 | Pass |
+| Milk Bottle | Common | 1096 → 1220 | 16 | 0.00% | 6 / 2 | Pass |
+| Pickle Jar | Common | 680 → 1060 | 16 | 1.02% | 3 / 2 | Pass |
+| Ketchup Bottle | Common | 720 → 1016 | 16 | 0.00% | 5 / 1 | Pass |
+| Glass Cup | Common | 672 → 1024 | 16 | 0.00% | 2 / 1 | Pass |
+| Water Jug | Common | 904 → 1396 | 16 | 1.28% | 2 / 1 | Pass |
+| Lemonade Bottle | Common | 788 → 1248 | 16 | 0.00% | 5 / 2 | Pass |
+
+**Collision:** no `Radius` change needed; every body is within 2.5% of release_v2 (the small losses are lathe segment counts on the depth axis).
+
+**Notes for the presentation owner**
+- The client's charge-glow list (`StarCore`, `Ember`, `LemonPulp`, `CrystalSprout`, `StressBand`) sets those parts to Glass at rest and Neon when charged, overriding the manifest's Neon. That is the kit design and is fine; the v3 Neon tag is what they look like when charged.
+- Preview materials in the icons are Cycles approximations (yellow glass reads paler, Neon reads pastel under AgX). Studio colours come from the manifest.
+
+Sheets: [batch 1](glassy_revamp/batch_1_before_after.png) · [batch 2](glassy_revamp/batch_2_before_after.png) · [batch 3](glassy_revamp/batch_3_before_after.png) · [batch 4](glassy_revamp/batch_4_before_after.png) · [all 24 v3 icons](glassy_revamp/roster_24_v3.png). Each before/after row: release_v2 icon | v3 icon | v3 three-quarter view. 3/4 previews are in `glassy_revamp/previews/`.
 
 ## 7. Status
 
 | Batch | Glassies | State |
 |---|---|---|
-| 1 | Dragon, Galaxy Orb, Comet, Prism Blade, Rocket Pop, Duck | in progress |
-| 2 | Pop, Jam, Prism, Crescent Axe, Briar Flask, Arc Coil | pending |
-| 3 | Hourglass, Frostglobe, Mason Jar, Hot Sauce, Crystal Tumbler, Chime | pending |
-| 4 | Milk, Pickle, Ketchup, Glass Cup, Water Jug, Lemonade | pending |
+| 1 | Dragon, Galaxy Orb, Comet, Prism Blade, Rocket Pop, Duck | Built, verified, committed |
+| 2 | Pop, Jam, Prism, Crescent Axe, Briar Flask, Arc Coil | Built, verified, committed |
+| 3 | Hourglass, Frostglobe, Mason Jar, Hot Sauce, Crystal Tumbler, Chime | Built, verified, committed |
+| 4 | Milk, Pickle, Ketchup, Glass Cup, Water Jug, Lemonade | Built, verified, committed |
+
+Not done here (outside this workstream): Studio import and normalization, idle-motion code, icon upload, creator art review, phone performance check with all details animated.

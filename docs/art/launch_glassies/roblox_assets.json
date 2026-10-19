@@ -1,0 +1,173 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "fishbowl_bundle": {
+   "AssetId": "75736471124318",
+   "Path": "assets/blender/glassies/fishbowl/v4/fishbowl_bundle.fbx",
+   "Sha256": "1343e428f14d561950edf12e237c26b34c80ebaa053dab5dcd5dcc7545e643ae",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:42:10"
+  },
+  "fishbowl_icon": {
+   "AssetId": "97477732016699",
+   "Path": "assets/blender/glassies/fishbowl/v4/fishbowl_icon.png",
+   "Sha256": "e0e1b3341ad7710ff475e8489baeb8b4bf136304a0d75f8b9be76ea780042aa6",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:45:40"
+  },
+  "cookie_jar_bundle": {
+   "AssetId": "127134765834117",
+   "Path": "assets/blender/glassies/cookie_jar/v4/cookie_jar_bundle.fbx",
+   "Sha256": "ade82c7b6b479f85907c58287f97b6e6431b1582c194c9e598094ebc58cdf459",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:45:51"
+  },
+  "cookie_jar_icon": {
+   "AssetId": "89661801902018",
+   "Path": "assets/blender/glassies/cookie_jar/v4/cookie_jar_icon.png",
+   "Sha256": "558efa71ab54b0b7a16dae521180306864f0450084acbce698c0ebaba4473e71",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:45:58"
+  },
+  "glass_top_bundle": {
+   "AssetId": "118168600970688",
+   "Path": "assets/blender/glassies/glass_top/v4/glass_top_bundle.fbx",
+   "Sha256": "ab81f0b5ddae4d69069feb7e21715cb38bce8362608786a766566907357cb475",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:46:08"
+  },
+  "glass_top_icon": {
+   "AssetId": "122474610904940",
+   "Path": "assets/blender/glassies/glass_top/v4/glass_top_icon.png",
+   "Sha256": "bf80affb87f8041f1ae5fe8bc8a6869e3af67ecbff7cffd80c17d8d7d859ca0f",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:46:13"
+  },
+  "bubble_wand_bundle": {
+   "AssetId": "85271071125126",
+   "Path": "assets/blender/glassies/bubble_wand/v4/bubble_wand_bundle.fbx",
+   "Sha256": "65cc30f47437d25258f43c39159cfd7674e717f4a562b45487a225c1e81e4d5f",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:46:31"
+  },
+  "bubble_wand_icon": {
+   "AssetId": "129230570324531",
+   "Path": "assets/blender/glassies/bubble_wand/v4/bubble_wand_icon.png",
+   "Sha256": "8835e32d97b77f15df0938e62f1502d9fdd69fa958c8d605b4783acd2caa1788",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:46:34"
+  },
+  "piggy_bank_bundle": {
+   "AssetId": "77287981565795",
+   "Path": "assets/blender/glassies/piggy_bank/v4/piggy_bank_bundle.fbx",
+   "Sha256": "a1a963f0a79a6edd93cc7151fc00cb06128643f405d282c051538d166a485b26",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:46:55"
+  },
+  "piggy_bank_icon": {
+   "AssetId": "72498281272236",
+   "Path": "assets/blender/glassies/piggy_bank/v4/piggy_bank_icon.png",
+   "Sha256": "bb340ce879afb476a8d2263cf5615a4e5eff7d49d088a75b037fd6aad7f024fb",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:46:59"
+  },
+  "light_bulb_bundle": {
+   "AssetId": "118854478019503",
+   "Path": "assets/blender/glassies/light_bulb/v4/light_bulb_bundle.fbx",
+   "Sha256": "8e28355c8464a5fb830bb4e664bfb3cfcd2ad56eb486229ca3cd25231bb131ee",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:47:11"
+  },
+  "light_bulb_icon": {
+   "AssetId": "137182050892617",
+   "Path": "assets/blender/glassies/light_bulb/v4/light_bulb_icon.png",
+   "Sha256": "7759b60aa60dc150dd6aca821dbc3d688c2912500d179626103c368385f48fdb",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:47:18"
+  },
+  "potion_flask_bundle": {
+   "AssetId": "138416027565761",
+   "Path": "assets/blender/glassies/potion_flask/v4/potion_flask_bundle.fbx",
+   "Sha256": "3805669c947b5cf29053dbce5be32d93e6ac8c6dfa7a22dbc70fb94537aff8e1",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:47:29"
+  },
+  "potion_flask_icon": {
+   "AssetId": "124305140251009",
+   "Path": "assets/blender/glassies/potion_flask/v4/potion_flask_icon.png",
+   "Sha256": "21ad992feeb12245d9ae78df3fa845373a457fe15ad325d3ead836254dfc21bd",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:47:35"
+  },
+  "honey_bear_bundle": {
+   "AssetId": "96258188305252",
+   "Path": "assets/blender/glassies/honey_bear/v4/honey_bear_bundle.fbx",
+   "Sha256": "4e8fef8a3496320bf07526950b8a05fe201118ce7b0d5a747c14e2ffa489a392",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:47:46"
+  },
+  "honey_bear_icon": {
+   "AssetId": "74430939942823",
+   "Path": "assets/blender/glassies/honey_bear/v4/honey_bear_icon.png",
+   "Sha256": "7d7b98de9c9105d44787f49f9f4ade97b48a2709c7e630a7ecd7661346cf7293",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:47:50"
+  },
+  "crystal_ball_bundle": {
+   "AssetId": "121969264426934",
+   "Path": "assets/blender/glassies/crystal_ball/v4/crystal_ball_bundle.fbx",
+   "Sha256": "11c32a3119a930b16fc2528d58b7b69d4e5aa2e785f40008158e395a36476690",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:48:06"
+  },
+  "crystal_ball_icon": {
+   "AssetId": "113293895607412",
+   "Path": "assets/blender/glassies/crystal_ball/v4/crystal_ball_icon.png",
+   "Sha256": "e268676d151a18cdba29ef2246cf123eee86924b6f59982d0b1d47af7f79cad4",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:48:11"
+  },
+  "grizzly_guardian_bundle": {
+   "AssetId": "101207143158616",
+   "Path": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
+   "Sha256": "210bd88dad22335bb07cc8664028315b405ba8dabaf348264fed6934d461bf82",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:48:21"
+  },
+  "grizzly_guardian_icon": {
+   "AssetId": "96840911184126",
+   "Path": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_icon.png",
+   "Sha256": "b16399f1927ef68a84508e0b4316ee9bd2e5767e0a3c36d39027b22eb8a058f2",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:48:25"
+  },
+  "glass_unicorn_bundle": {
+   "AssetId": "73965514862008",
+   "Path": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+   "Sha256": "566d2754b97323222c3d74a5fac3d5412d72b3a4389f66e80b0f9e54937835c2",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:48:37"
+  },
+  "glass_unicorn_icon": {
+   "AssetId": "140515402778503",
+   "Path": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_icon.png",
+   "Sha256": "b481f01c11f691a6acb57e73fc8dfd954a151a4f23cb655b3003b967d9b60e95",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:48:41"
+  },
+  "glass_phoenix_bundle": {
+   "AssetId": "136609492859597",
+   "Path": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+   "Sha256": "1c840640f5ff1c63d9339ca65030d25657cdf58bfe78c92ea4419a87e78aeab9",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:48:59"
+  },
+  "glass_phoenix_icon": {
+   "AssetId": "128519395942187",
+   "Path": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_icon.png",
+   "Sha256": "614d87ea7fc432e78cb7ca84478d8225f6139dacd844364f5b1442d03dd36b9d",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:49:03"
+  }
+ }
+}

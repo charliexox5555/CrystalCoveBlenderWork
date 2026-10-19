@@ -16,15 +16,38 @@ Oct 19 2026. Plan and beats are in [docs/vfx/HOLLOWLIGHT_PREMIUM.md](../../vfx/H
 | Real match in Play | The player owned the Studio test Hollowlight set and equipped Lantern Eclipse and the carriage. A player-vs-bot match picked Hollowlight (Pick Any) in rounds 1 and 2. The server staged `Ride1: lantern_skiff, CarriageFX=true`. |
 | Frame cost | A steady Eclipse step costs 0.13–0.20 ms (median at 0.5, 1.3, 1.8 and 2.6 s; p90 ≤ 0.29 ms). In a 60 fps step-through, 9–14 steps per show took 25–260 ms. Plain allocation loops, `Emit`, trail, beam and light toggles were all cheap (0.5 ms at most), so the spikes are still unexplained. The client wasn't rendering at the time (see below), so **re-measure with a visible viewport** before launch. |
 
-## Not verified yet (blocked)
+## On-screen verification in Play (Oct 19, Studio lock slot)
 
-The Studio Play client was **not rendering**: `RenderStepped` ran at 0 fps while `Heartbeat` ran at 60. The Studio window was presumably hidden or minimized, and the host was heavily loaded. As a result `screen_capture` timed out, and FightView and the ride motion (both on RenderStepped) never drew. These still need a visible Studio:
+The display had been going to sleep, which is why the viewport stopped rendering earlier. A fixed it. The host was still at a load average of about 80 on 8 cores, from other sessions' Lune simulations, so the client ran at about 1 fps (frames of 1.2–4.4 s).
 
-1. **Bot round:** Lantern Seeds plant, ripen, Ready, cast and wisps home, plus the Lantern Eclipse on a won round, with screenshots of the gather, the eclipse (shadow and grade) and the ember fall.
-2. **Riding the carriage in a round:** take-off burst, moon-dust stream, flame flicker, engine glow, the loop sound near the camera, and the landing when the match ends.
-3. **Bundle VIEW stage:** the carriage with CarriageFX through BundleStage, and the eclipse loop. `Showcase.Demo.AfterSeconds` is now 4.3.
-4. **Lobby showcase:** the carriage through RideMotion, and the eclipse demo (no grade in the lobby).
-5. **Phone presets** (Device Emulator), frame cost with rendering on, and the creator's listening review of the new sounds.
+Real match: player against Bottle Bot in arena 1, with Hollowlight picked every round, Lantern Eclipse equipped, and the Moonlantern Carriage as the ride.
+
+- **Watcher log (client):**
+  - The carriage appeared and its sparkle loop played (volume 0.043, fading in).
+  - Seeds planted 1 → 2 → 3, each with a flame and a shell.
+  - Ready: 2 orbit wisps and the ready light came on, and the HUD showed **CAST!**.
+  - The **real Lantern Eclipse played** on a won round, with the grade on at the start and off at the end.
+- **Rounds:** the player won rounds 1 and 3, and the bot won the match 1–2 on hearts. No leftovers or grade after the match.
+- **Not caught by the watcher:** the homing ghosts, blossoms and the manual-cast ghost puff. They last 0.3–0.6 s, which falls between frames at 1 fps, and the bot round used auto-casts. The mock step-through above covers them.
+
+Beat captures: a show built in the live fight folder and stepped by hand to each beat, so the grade applies.
+
+| File | What it shows |
+|---|---|
+| `01_round_carriage_and_hollowlight.jpg` | Round start: the player on the Moonlantern Carriage (glass crescent, lantern, wing ribbon) with Hollowlight on the stand |
+| `02_eclipse_gather_and_live_ready.jpg` | Gather: lantern, spirals, the moon arriving and ghosts swooping in. Meanwhile the live round shows Hollowlight Ready (**CAST!**) and a planted seed. |
+| `03_eclipse_peak_grade_choir.jpg` | Eclipse: the whole screen grades to moonlight, the five-ghost choir circles the moon-covered lantern, and binding beams show |
+| `04_moon_shadow_tuned.jpg` | The moon shadow after tuning (radius 10, transparency 0.3, colour #120826, 0.25 studs above the floor). The first values (8 / 0.5) were barely visible under the pad ring and fence. |
+| `05_eclipse_release.jpg` | Release: warm flash grade, gold shock crown and ring |
+| `06_eclipse_ember_fall.jpg` | Ember fall: orange glass falling like leaves, the moon rising and the ghosts scattering |
+| `07_bundle_view_eclipse_and_carriage.jpg` | Bundle VIEW stage: the Eclipse loop beside the carriage with its rider (BundleStage plus CarriageFX) |
+| `08_lobby_showcase_carriage.jpg` | Lobby showcase: the carriage with a copied rider inside the stained-glass stage (RideMotion plus CarriageFX). The showcase Eclipse demo runs with no grade, as intended. |
+
+Still open:
+- **Phone presets:** the Device Emulator can't be driven through the MCP. Needs a manual check.
+- **Frame cost with a normally loaded host:** steady Eclipse steps cost 0.13–0.2 ms, but the 1 fps client made live frame timing meaningless.
+- **Readability:** the ghosts read pale against a bright sky. They're fine under the grade, but a little faint before the eclipse.
+- **Creator review:** listening to the new sounds, and overall feel.
 
 ## How to repeat
 

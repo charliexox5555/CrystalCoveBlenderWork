@@ -257,7 +257,7 @@ function FX.create(parent, origin, lowDetail, orientation)
 	if not lowDetail then
 		local exclude = { root, parent }
 		local ground = floorY(origin, exclude)
-		state.ShadowY = ground + 0.06
+		state.ShadowY = ground + 0.25 -- above pad rings and grass
 		for i, scale in { 0.62, 0.82, 1 } do
 			local disc = still(Instance.new("Part"))
 			disc.Name, disc.Shape, disc.Material =
@@ -265,7 +265,7 @@ function FX.create(parent, origin, lowDetail, orientation)
 			disc.Color, disc.Transparency = Color3.fromHex(E.ShadowColor), 1
 			disc.Size = Vector3.new(0.04 + i * 0.01, E.ShadowRadius * 2 * scale, E.ShadowRadius * 2 * scale)
 			disc.Parent = root
-			table.insert(state.Shadow, { Part = disc, Alpha = E.ShadowTransparency + (i - 1) * 0.16 })
+			table.insert(state.Shadow, { Part = disc, Alpha = E.ShadowTransparency + (i - 1) * 0.18 })
 		end
 	end
 

@@ -17,6 +17,7 @@ return function(FX)
 		SignatureContact = true,
 		SignatureBlock = true,
 		SignatureStatus = true,
+		Charge = true, -- only Cycle kits use it (Charge.Next)
 	}
 
 	local function vector(a)
@@ -65,6 +66,16 @@ return function(FX)
 		local now = self:Time()
 		local side = e.Side
 		local stale = now > (e.Time or now) + self.C.Budget.StaleSeconds
+		if e.Brew then
+			self.Brew = self.Brew or {}
+			self.Brew[side] = e.Brew
+		end
+		if e.Type == "Charge" then
+			if e.Next and not stale then
+				Launch.brewPreview(self, side, e.Next)
+			end
+			return
+		end
 		if e.Type ~= "CastRelease" and not stale and Launch.event(self, e) then
 			if e.Type == "CastStart" then
 				States.clearReady(self, side)

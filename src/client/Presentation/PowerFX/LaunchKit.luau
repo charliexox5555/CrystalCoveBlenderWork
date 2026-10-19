@@ -25,7 +25,7 @@ function Launch.zone(fx, side, spec)
 	local parts = {}
 	local actor, rim, rim2
 	if kind == "bubble" then
-		actor = fx:Part("Ball", hex("#8FE6FF"), Enum.Material.ForceField)
+		actor = fx:Part("Ball", hex("#CFF6FF"), Enum.Material.Glass)
 		rim, rim2 = fx:Part("Ring", hex("#FF9BE0")), fx:Part("Ring", hex("#9BFFE8"))
 	elseif kind == "honey" then
 		actor = fx:Part("BubbleDome", color, Enum.Material.Glass)
@@ -42,6 +42,11 @@ function Launch.zone(fx, side, spec)
 	local fill = fx:Part("Ring", accent) -- telegraph: fills toward full size during Delay
 	table.insert(parts, ground)
 	table.insert(parts, fill)
+	-- The rune marks the predicted point in the air too (camera-facing), not only on the floor.
+	local air = if kind == "rune" then fx:Part("ShockCrown", accent) else nil
+	if air then
+		table.insert(parts, air)
+	end
 	local handle = { Live = delay <= 0 }
 	handle.Effect = fx:Spawn({
 		Side = side,
@@ -69,13 +74,13 @@ function Launch.zone(fx, side, spec)
 				local d = radius * 2 * appear
 				actor.Size = Vector3.new(d * wob, d / wob, d * wob)
 				actor.CFrame = CFrame.new(pos)
-				actor.Transparency = 0.05 + 0.95 * fade
+				actor.Transparency = 0.5 + 0.5 * fade
 				fx:Fit(rim, d * 1.02)
 				rim.CFrame = fx.face(pos) * CFrame.Angles(0, 0, age * 0.7)
-				rim.Transparency = 0.35 + 0.65 * fade
+				rim.Transparency = 0.1 + 0.9 * fade
 				fx:Fit(rim2, d * 0.95)
 				rim2.CFrame = fx.face(pos) * CFrame.Angles(0, 0, -age)
-				rim2.Transparency = 0.55 + 0.45 * fade
+				rim2.Transparency = 0.25 + 0.75 * fade
 			elseif kind == "honey" then
 				local d = radius * 2 * appear
 				local squish = 1 + math.sin(age * 4) * 0.06
@@ -101,6 +106,9 @@ function Launch.zone(fx, side, spec)
 				fx:Fit(rim2, d * 0.5)
 				rim2.CFrame = CFrame.new(pos.X, floor.Y + 0.12, pos.Z) * CFrame.Angles(math.pi / 2, 0, age)
 				rim2.Transparency = 0.2 + 0.8 * fade
+				fx:Fit(air, radius * 2 * fx.easeOut(age / 0.3) * (1 + 0.08 * math.sin(age * 10)))
+				air.CFrame = fx.face(pos) * CFrame.Angles(0, 0, age * 2)
+				air.Transparency = (if live then 0.05 else 0.4) + 0.95 * fade
 			end
 		end,
 	})
@@ -393,7 +401,48 @@ function Launch.rebirth(fx, side, spec)
 	-- SFX: rebirth flare (whoomph + rising chime).
 end
 
--- Event wiring for A's planned fields (ROSTER_V2 §3). Returns true when a launch builder handled the moment.
+-- A short brew swirl in the colour of the coming brew (Cycle kits: Charge.Next).
+function Launch.brewPreview(fx, side, index)
+	local v = fx:Visual(side)
+	local hexColor = v.Brews and v.Brews[index]
+	if hexColor then
+		Launch.brew(fx, side, hex(hexColor), 0.7, { Key = "brewpreview:" .. side })
+	end
+end
+
+-- Horizontal sweep (Glass Top's Spin Out): a flat glass ring whirls round the owner at the sweep's reach,
+-- with a bright leading edge, for the release + hold. spec: { Range, Seconds, Start }.
+function Launch.spin(fx, side, spec)
+	local color, accent = fx:Colors(side)
+	local range = spec.Range or 1.8
+	local ring, inner, edge = fx:Part("ShockCrown", color), fx:Part("Ring", accent), fx:Part("CurvedSlash", WHITE)
+	fx:Spawn({
+		Side = side,
+		Start = spec.Start,
+		Seconds = spec.Seconds or 0.6,
+		Parts = { ring, inner, edge },
+		Step = function(_, age, k)
+			local pos, size = fx:Body(side)
+			local r = (range + size * 0.4) * fx.pop(age / 0.15)
+			local fade = fx.smooth((k - 0.8) / 0.2)
+			local flat = CFrame.new(pos) * CFrame.Angles(math.pi / 2, 0, 0)
+			fx:Fit(ring, r * 2)
+			ring.CFrame = flat * CFrame.Angles(0, 0, age * 14)
+			ring.Transparency = 0.1 + 0.9 * fade
+			fx:Fit(inner, r * 1.7)
+			inner.CFrame = flat * CFrame.Angles(0, 0, -age * 9)
+			inner.Transparency = 0.35 + 0.65 * fade
+			local a = age * 14
+			fx:Fit(edge, size * 0.9)
+			edge.CFrame = CFrame.new(pos + Vector3.new(math.cos(a) * r, 0, math.sin(a) * r)) * CFrame.Angles(0, -a, 0)
+			edge.Transparency = 0.05 + 0.95 * fade
+		end,
+	})
+	fx:Glints(side, (fx:Body(side)), accent, 10, { Speed = NumberRange.new(4, 8), Spread = Vector2.new(90, 10) })
+	-- SFX: rising whistle.
+end
+
+-- Event wiring for A's fields (ROSTER_V2 §3, commit 5e4f930). Returns true when a launch builder handled the moment.
 function Launch.event(fx, e, ctx)
 	local side = e.Side
 	if e.Type == "CastRelease" and e.Shape == "zone" and e.Point then
@@ -417,12 +466,30 @@ function Launch.event(fx, e, ctx)
 	elseif e.Type == "SignatureStatus" and e.Kind == "Drain" then
 		Launch.drain(fx, side)
 		return true
-	elseif e.Type == "CastStart" and e.Rebirth then
-		Launch.rebirth(fx, side, { Gather = e.Windup })
+	elseif e.Type == "SignatureStatus" and e.Kind == "Pierce" then
+		Launch.pierce(fx, side, (fx:Body(e.Target or (3 - side))))
 		return true
-	elseif e.Type == "CastStart" and e.Riposte then
-		Launch.roar(fx, side, {})
+	elseif e.Type == "SignatureReady" and e.Brew then
+		-- The brew swirls round the flask while Ready (the shared Ready aura still runs: return false).
+		local v = fx:Visual(side)
+		local hexColor = v.Brews and v.Brews[e.Brew]
+		if hexColor then
+			Launch.brew(fx, side, hex(hexColor), e.Seconds or 2.5)
+		end
+		return false
+	elseif e.Type == "CastRelease" and e.Shape == "sweep" and e.Plane == "horizontal" then
+		Launch.spin(fx, side, { Range = e.Range, Seconds = (e.Duration or 0.5) + 0.15, Start = e.Time })
 		return true
+	elseif (e.Type == "CastStart" or e.Type == "SignatureArmed" or e.Type == "ReadyCancel") and e.Side then
+		fx:StopKey("brew:" .. side)
+		if e.Type == "CastStart" and e.Rebirth then
+			Launch.rebirth(fx, side, { Gather = e.Windup })
+			return true
+		elseif e.Type == "CastStart" and e.Riposte then
+			Launch.roar(fx, side, {})
+			return true
+		end
+		return false
 	elseif e.Type == "CastRelease" and e.PierceGuard then
 		Launch.dash(fx, side, e.Duration or 1.5)
 		return true

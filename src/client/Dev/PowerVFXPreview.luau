@@ -10,7 +10,7 @@ local RunService = game:GetService("RunService")
 local RS = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
-local ARMS = { contact = true, slow_contact = true, mark_contact = true, armed_contact = true }
+local ARMS = { contact = true, slow_contact = true, mark_contact = true, armed_contact = true, drain_contact = true }
 local SELF = { heal = "Heal", boost = "Boost", mirror = "Mirror" }
 
 local function cleanup()
@@ -55,6 +55,14 @@ local function timeline(id, kit, opts, frame, posAt)
 		return events, castAt
 	end
 	local arm = ARMS[shape] == true
+	local brew = if kit.Cycle then (opts.Brew or 3) else nil
+	if opts.Rebirth and kit.Rebirth then
+		kit = table.clone(kit)
+		for key, value in kit.Rebirth do
+			kit[key] = value
+		end
+		shape = kit.Shape
+	end
 	add(readyAt, {
 		Type = "SignatureReady",
 		ReadyId = 1,
@@ -62,6 +70,8 @@ local function timeline(id, kit, opts, frame, posAt)
 		Seconds = Cast.AutoSeconds,
 		Shape = shape,
 		Arm = arm,
+		Brew = brew,
+		Next = if brew then brew % 3 + 1 else nil,
 	})
 	if arm then
 		add(castAt, { Type = "SignatureArmed", Seconds = Cast.ArmedSeconds, Manual = opts.Manual, Shape = shape })
@@ -69,8 +79,11 @@ local function timeline(id, kit, opts, frame, posAt)
 		local point = arr(frame:PointToObjectSpace((posAt(1, hit) + posAt(2, hit)) / 2))
 		if opts.Miss then
 			add(castAt + Cast.ArmedSeconds, { Type = "SignatureStatus", Kind = "ArmedFade" })
-		elseif shape == "contact" or shape == "armed_contact" then
+		elseif shape == "contact" or shape == "armed_contact" or shape == "drain_contact" then
 			add(hit, { Type = "SignatureContact", CastId = 7, Shape = shape, Point = point })
+			if shape == "drain_contact" then
+				add(hit + 0.02, { Type = "SignatureStatus", Kind = "Drain", Target = 2, Amount = 0.5 })
+			end
 		elseif shape == "slow_contact" then
 			add(hit, { Type = "SignatureStatus", Kind = "Slow", Target = 2, Seconds = kit.StatusSeconds })
 		elseif shape == "mark_contact" then
@@ -94,27 +107,82 @@ local function timeline(id, kit, opts, frame, posAt)
 		Pulses = kit.Pulses,
 		Manual = opts.Manual,
 		Held = true,
+		Brew = brew,
+		Rebirth = if opts.Rebirth and kit.Then then true else nil,
 	})
 	local rel = castAt + windup
 	if shape == "guard" then
 		add(rel, { Type = "CastRelease", CastId = 1, Shape = shape, Duration = kit.Duration })
 		if not opts.Miss then
 			add(rel + 0.7, { Type = "SignatureBlock", Side = 1, Amount = 5 })
+			if kit.Riposte then
+				local r = kit.Riposte
+				local at = rel + 0.72
+				add(
+					at,
+					{
+						Type = "CastStart",
+						CastId = 2,
+						Windup = r.Windup,
+						Shape = "pulse",
+						Riposte = true,
+						ReleaseAt = at + r.Windup,
+					}
+				)
+				add(at + r.Windup, {
+					Type = "CastRelease",
+					CastId = 2,
+					Shape = "pulse",
+					Origin = arr(frame:PointToObjectSpace(posAt(1, at + r.Windup))),
+					Direction = arr(frame:VectorToObjectSpace((posAt(2, at) - posAt(1, at)).Unit)),
+					Range = r.Range,
+					Duration = r.Duration,
+				})
+				add(
+					at + r.Windup + 0.15,
+					{
+						Type = "CastContact",
+						CastId = 2,
+						Target = 2,
+						Pulse = 1,
+						Missed = false,
+						Amount = 3,
+						Point = arr(frame:PointToObjectSpace(posAt(2, at + 0.3))),
+					}
+				)
+			end
 		end
 		return events, castAt
 	end
 	if SELF[shape] then
-		add(rel, { Type = "CastRelease", CastId = 1, Shape = shape, Duration = kit.Duration })
+		add(
+			rel,
+			{ Type = "CastRelease", CastId = 1, Shape = shape, Duration = kit.Duration, PierceGuard = kit.PierceGuard }
+		)
 		add(rel, { Type = "SignatureStatus", Kind = SELF[shape], Amount = 6, Seconds = kit.Duration })
+		if kit.PierceGuard and not opts.Miss then
+			add(rel + 0.7, { Type = "SignatureStatus", Kind = "Pierce", Target = 2 })
+		end
 		return events, castAt
 	end
 	local origin = posAt(1, rel)
 	local target = posAt(2, rel + 0.15)
 	local dir = (target - origin).Unit
+	local zoneAt = nil
+	if shape == "zone" then
+		zoneAt = if kit.At == "foe_predicted"
+			then posAt(2, rel + (kit.Delay or 0))
+			elseif kit.At == "self_lead" then posAt(1, rel + 0.25)
+			else origin
+	end
 	add(rel, {
 		Type = "CastRelease",
 		CastId = 1,
 		Shape = shape,
+		Point = if zoneAt then arr(frame:PointToObjectSpace(zoneAt)) else nil,
+		Kind = kit.Look,
+		Delay = kit.Delay,
+		Plane = kit.Plane,
 		Origin = arr(frame:PointToObjectSpace(origin)),
 		Direction = arr(frame:VectorToObjectSpace(dir)),
 		Range = kit.Range,
@@ -126,8 +194,9 @@ local function timeline(id, kit, opts, frame, posAt)
 	})
 	local pulses = kit.Pulses or 1
 	for i = 1, pulses do
-		local at = if shape == "ray"
-			then rel + 0.02
+		local at = if shape == "zone"
+			then rel + (kit.Delay or 0) + (if opts.Miss then kit.Duration else 0.9)
+			elseif shape == "ray" then rel + 0.02
 			elseif shape == "projectile" or shape == "volley" then rel + kit.Duration * (if kit.Path
 					== "return"
 				then (if i == 1 then 0.3 else 0.85)

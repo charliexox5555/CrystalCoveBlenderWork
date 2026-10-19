@@ -23,6 +23,10 @@ local function upFor(direction)
 	return if up.Magnitude > 0.001 then up.Unit else Vector3.zAxis
 end
 function Hero.weapon(self, cast, color)
+	-- The axe model is Crescent Axe's; other sweeps (Glass Top's spin) are drawn by PowerFX.
+	if self.Scene.Fighters[cast.Side].Id ~= "crescent_axe" then
+		return
+	end
 	local weapon = self.Assets.Kits.crescent_axe.CrescentWeapon:Clone()
 	weapon:ScaleTo(M.GlassyScale)
 	cast.Weapon, cast.HeadCenter = weapon, weapon:GetPivot():PointToObjectSpace(weapon.AxeHead.Position)
@@ -94,11 +98,11 @@ function Hero.guard(self, f, active)
 			self.PowerFX:StopAll()
 		end
 	end
-	if f.Id == "glass_duck" then
-		f.SignatureGuard.Transparency = 1 -- PowerFX draws the bubble
+	if f.Id ~= "jam" then
+		f.SignatureGuard.Transparency = 1 -- PowerFX draws every other guard (Duck bubble, crystal plates)
 		return
 	end
-	if f.Id ~= "jam" or not f.HeroLid or not f.HeroLid.Parent then
+	if not f.HeroLid or not f.HeroLid.Parent then
 		return
 	end
 	f.HeroLidOutline.Enabled = active and not f.LowDetail and not f.Broken and not f.Finishing

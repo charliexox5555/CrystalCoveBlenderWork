@@ -251,4 +251,126 @@ return {
 		MeshA = "Ring",
 		MeshB = "HalfRing",
 	},
+	-- Launch glassies (ROSTER_V2); descriptions match Glassies.luau.
+	fishbowl = {
+		Name = "Fish Flip",
+		Color = "#2FA8FF", -- signature colour (power VFX v2)
+		Accent = "#FF8A3D",
+		Description = "A calm bowl with a tiny fish who thinks he's in charge.",
+		ReleaseSound = "WaterSlap",
+		ContactSound = "WaterSlap",
+		MeshA = "Droplet",
+		MeshB = "SplashSheet",
+	},
+	cookie_jar = {
+		Name = "Crumb Toss",
+		Color = "#E89A3C", -- signature colour (power VFX v2)
+		Accent = "#FFE7B0",
+		Description = "Generous and crumbly: bump it and it throws crumbs back.",
+		ReleaseSound = "LidClick",
+		ContactSound = "ClinkLightB",
+		MeshA = "CrystalChip",
+		MeshB = "Ring",
+	},
+	glass_top = {
+		Name = "Spin Out",
+		Color = "#FF4FA3", -- signature colour (power VFX v2)
+		Accent = "#FFFFFF",
+		Description = "Dizzy and delighted: whirls a glass ring all the way round.",
+		ReleaseSound = "AxeAir",
+		ContactSound = "ClinkLightA",
+		MeshA = "Ring",
+		MeshB = "HalfRing",
+	},
+	bubble_wand = {
+		Name = "Bubble Trap",
+		Color = "#5FD8FF", -- signature colour (power VFX v2)
+		Accent = "#FF9BE0",
+		Description = "Giggly: leaves a floating bubble that pops on whoever touches it.",
+		ReleaseSound = "BubblePop",
+		ContactSound = "BubblePop",
+		MeshA = "BubbleDome",
+		MeshB = "Ring",
+	},
+	piggy_bank = {
+		Name = "Spare Change",
+		Color = "#FF7AB0", -- signature colour (power VFX v2)
+		Accent = "#FFC93C",
+		Description = "Thrifty: saves every bump and shoots its savings back as coins.",
+		ReleaseSound = "CapRattle",
+		ContactSound = "ClinkLightB",
+		MeshA = "CrystalChip",
+		MeshB = "Ring",
+	},
+	light_bulb = {
+		Name = "Power Surge",
+		Color = "#FFD21F", -- signature colour (power VFX v2)
+		Accent = "#FFFFFF",
+		Description = "Bright idea, fragile ego: its charged clash steals the foe's power.",
+		ReleaseSound = "ElectricSnap",
+		ContactSound = "ElectricSnap",
+		MeshA = "Ring",
+		MeshB = "CrystalChip",
+	},
+	potion_flask = {
+		Name = "Mystery Brew",
+		Color = "#3FE07A", -- signature colour (power VFX v2)
+		Accent = "#FF7AC8",
+		Brews = { "#5ECB3A", "#FF7AC8", "#FFD34E" }, -- Cycle brew colours (slow, mark, heal)
+		Description = "A bubbling mystery: the colour inside shows which brew comes next.",
+		ReleaseSound = "BubblePop",
+		ContactSound = "BubblePop",
+		MeshA = "BubbleDome",
+		MeshB = "HalfRing",
+	},
+	honey_bear = {
+		Name = "Honey Puddle",
+		Color = "#FFA31A", -- signature colour (power VFX v2)
+		Accent = "#C96A00",
+		Description = "Cuddly and sticky: leaves a honey blob that slows whoever swings through.",
+		ReleaseSound = "WaterSlap",
+		ContactSound = "BubblePop",
+		MeshA = "BubbleDome",
+		MeshB = "Ring",
+	},
+	crystal_ball = {
+		Name = "Foresight",
+		Color = "#9A7BFF", -- signature colour (power VFX v2)
+		Accent = "#FFC93C",
+		Description = "It saw this battle coming: a star strikes where the foe is about to be.",
+		ReleaseSound = "ChargeGlass",
+		ContactSound = "ClinkLightB",
+		MeshA = "Ring",
+		MeshB = "CrystalChip",
+	},
+	grizzly_guardian = {
+		Name = "Guardian Roar",
+		Color = "#FFB347", -- signature colour (power VFX v2)
+		Accent = "#DDF6FF",
+		Description = "The shelf's protector: a crystal guard that roars back when it blocks.",
+		ReleaseSound = "LidClick",
+		ContactSound = "LidBlock",
+		MeshA = "GuardPlate",
+		MeshB = "Ring",
+	},
+	glass_unicorn = {
+		Name = "Rainbow Charge",
+		Color = "#FF7AD9", -- signature colour (power VFX v2)
+		Accent = "#8FE6FF",
+		Description = "Its horn always finds the crack: a rainbow dash that breaks through guards.",
+		ReleaseSound = "PressureAir",
+		ContactSound = "ClinkHeavy",
+		MeshA = "HalfRing",
+		MeshB = "Ring",
+	},
+	glass_phoenix = {
+		Name = "Ember Feathers",
+		Color = "#FF6A1F", -- signature colour (power VFX v2)
+		Accent = "#FFD34E",
+		Description = "A proud firebird: the lower it gets, the brighter it burns.",
+		ReleaseSound = "PressureAir",
+		ContactSound = "ClinkLightA",
+		MeshA = "Thorn",
+		MeshB = "Ring",
+	},
 }

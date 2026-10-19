@@ -119,6 +119,11 @@ function FX:Colors(side)
 	local f = self:Fighter(side)
 	local main = if v.Color then Color3.fromHex(v.Color) else Color3.fromHex(f and f.Def.Tint or "#FFFFFF")
 	local accent = if v.Accent then Color3.fromHex(v.Accent) else Color3.new(1, 1, 1)
+	-- Cycle kits (Potion Flask) take the current brew's colour.
+	local brew = self.Brew and self.Brew[side]
+	if brew and v.Brews and v.Brews[brew] then
+		return Color3.fromHex(v.Brews[brew]), main
+	end
 	return main, accent
 end
 
@@ -131,7 +136,9 @@ end
 
 function FX:Tier(side)
 	local f = self:Fighter(side)
-	return C.Tier[f and f.Def.Rarity or "Common"] or "Crisp"
+	-- A kit may ask for a higher presentation tier than its rarity (Hollowlight: premium seasonal set).
+	local kit = f and self.Kits and self.Kits[f.Id]
+	return (kit and kit.Tier) or C.Tier[f and f.Def.Rarity or "Common"] or "Crisp"
 end
 
 function FX:Rank(side)

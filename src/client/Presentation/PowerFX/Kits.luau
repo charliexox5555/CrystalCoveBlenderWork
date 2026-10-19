@@ -130,7 +130,9 @@ local function shots(fx, side, e, ctx, opts)
 				if opts.FaceCamera then
 					p.CFrame = fx.face(pos) * CFrame.Angles(0, 0, spin)
 				else
-					p.CFrame = CFrame.lookAt(pos, pos + dir) * CFrame.Angles(0, 0, spin)
+					p.CFrame = CFrame.lookAt(pos, pos + dir)
+						* CFrame.Angles(0, 0, spin)
+						* (opts.Rotate or CFrame.identity)
 				end
 				p.Transparency = 0.02 + 0.98 * fx.smooth((k - 0.9) / 0.1)
 				if core then
@@ -1628,19 +1630,144 @@ Kits.chime = {
 	end,
 }
 
--- Hollowlight keeps its bespoke LanternSeeds presentation.
-Kits.hollowlight = { Skip = true }
+-- ===================================================================================================================
+-- Launch glassies (ROSTER_V2): zones, drain, Cycle, riposte, dash, rebirth and the horizontal spin come from LaunchKit
+-- through Launch.event; these entries give the travelling shots their identity.
+-- ===================================================================================================================
+
+Kits.fishbowl = {
+	Release = function(fx, side, e, ctx)
+		local _, accent = fx:Colors(side)
+		-- The fish leaps out and back (return path), trailing water.
+		shots(fx, side, e, ctx, { Kind = "Droplet", Size = 1.1, Alternate = accent, Trail = 0.25, TrailWidth = 0.8 })
+		for _, shot in ctx.Shots do
+			if shot.Effect then
+				shot.Effect.Parts[1].Color = accent
+			end
+		end
+		fx:Chips(side, ctx.Origin, fx:Colors(side), 4, 4, 0.4, { Kind = "Droplet", Size = 0.35, Up = 2 })
+	end,
+	Hit = function(fx, side, e, at)
+		Kits.water_jug.Hit(fx, side, e, at)
+	end,
+}
+
+Kits.cookie_jar = {
+	Release = function(fx, side, e, ctx)
+		shots(fx, side, e, ctx, { Kind = "CrystalChip", Size = 0.85, Trail = 0.16, TrailWidth = 0.5, Spin = 14 })
+	end,
+	Hit = function(fx, side, _, at)
+		local color, accent = fx:Colors(side)
+		fx:Flash(side, at, accent, 1.3, 0.12)
+		fx:Chips(side, at, color, 6, 4, 0.45, { Kind = "CrystalChip", Size = 0.3, Up = 2 })
+	end,
+}
+
+Kits.piggy_bank = {
+	Release = function(fx, side, e, ctx)
+		local _, accent = fx:Colors(side)
+		-- Three glass coins.
+		shots(fx, side, e, ctx, { Kind = "Disc", Size = 0.9, Trail = 0.2, TrailWidth = 0.6, Spin = 16, Core = false })
+		for _, shot in ctx.Shots do
+			if shot.Effect then
+				shot.Effect.Parts[1].Color = accent
+			end
+		end
+	end,
+	Hit = function(fx, side, _, at)
+		local _, accent = fx:Colors(side)
+		fx:Flash(side, at, accent, 1.4, 0.12)
+		fx:Spokes(side, at, accent, 6, 1.6, 0.22, { Alternate = WHITE, Width = 0.3 })
+		fx:Glints(side, at, accent, 8)
+	end,
+}
+
+Kits.glass_top = {
+	Windup = function(fx, side, e)
+		gather(fx, side, e, { Motion = "spin", MotionAmount = 1.5, Motes = 4 })
+	end,
+}
+
+Kits.glass_phoenix = {
+	Release = function(fx, side, e, ctx)
+		local color, accent = fx:Colors(side)
+		-- Ember feathers: flame-trailed thorns (one before the rebirth, a volley of three after).
+		shots(fx, side, e, ctx, {
+			Kind = "Thorn",
+			Size = 1.1,
+			Rotate = CFrame.Angles(math.pi / 2, 0, 0), -- the feather's tip (+Y) leads
+			Alternate = accent,
+			Trail = 0.3,
+			TrailWidth = 0.7,
+			Spin = 0,
+			Step = function(pos, age)
+				if math.floor(age * 20) % 2 == 0 then
+					fx:Emit(side, "Fire", pos, 1, color, { Speed = NumberRange.new(0.5, 1.5) })
+				end
+			end,
+		})
+		fx:Flash(side, ctx.Origin, accent, 1.6, 0.12)
+	end,
+}
+
+-- Hollowlight keeps its bespoke LanternSeeds presentation, with the Hero tier of the shared Ready/cast states
+-- (premium seasonal set; rarity and stats stay Epic). docs/vfx/HOLLOWLIGHT_PREMIUM.md section 4.
+Kits.hollowlight = { Skip = true, Tier = "Hero" }
 
 -- ===================================================================================================================
 -- Shape defaults (new kits fall back to these until they get their own moments)
 -- ===================================================================================================================
+-- A faceted crystal plate facing the foe while a guard is up (kits without their own guard look).
+local function plate(fx, side, e)
+	local color, accent = fx:Vivid(side), select(2, fx:Colors(side))
+	local f = fx:Fighter(side)
+	local p, rim = fx:Part("GuardPlate", color, Enum.Material.Glass), fx:Part("ShockCrown", accent)
+	fx:Spawn({
+		Side = side,
+		Key = "guard:" .. side,
+		Start = e.Time,
+		Seconds = e.Duration or 2.5,
+		Parts = { p, rim },
+		Step = function(_, age, k)
+			if f.Broken or f.Finishing or f.GuardConsumed then
+				return false
+			end
+			local pos, size = fx:Body(side)
+			local dir = fx:Toward(side)
+			local at = pos + dir * size * 0.6
+			local normal = (dir - cam().LookVector * 0.6).Unit
+			local d = size * 1.2 * fx.pop(age / 0.22)
+			fx:Fit(p, d)
+			p.CFrame = CFrame.lookAt(at, at + normal)
+			p.Transparency = 0.2 + 0.8 * fx.smooth((k - 0.9) / 0.1)
+			fx:Fit(rim, d * 1.15)
+			rim.CFrame = CFrame.lookAt(at, at + normal) * CFrame.Angles(0, 0, age * 1.5)
+			rim.Transparency = 0.15 + 0.2 * math.sin(age * 8) + 0.65 * fx.smooth((k - 0.9) / 0.1)
+		end,
+	})
+	fx:Glints(side, (fx:Body(side)), accent, 8)
+end
+Kits.plate = plate
+
 Kits.default = {
 	Windup = function(fx, side, e)
 		gather(fx, side, e)
 	end,
 	Release = function(fx, side, e, ctx)
 		local s = e.Shape
-		if s == "ray" then
+		if s == "guard" then
+			plate(fx, side, e)
+		elseif s == "sweep" then
+			Kits.crescent_axe.Release(fx, side, e, ctx)
+		elseif s == "boost" then
+			local color = fx:Vivid(side)
+			local band = fx:Part("ShockCrown", color)
+			aura(fx, side, e, e.Duration or 2, function(pos, size, age, k)
+				fx:Fit(band, size * 1.2 * fx.pop(age / 0.2))
+				band.CFrame = CFrame.new(pos) * CFrame.Angles(math.pi / 2, 0, age * 6)
+				band.Transparency = 0.2 + 0.8 * fx.smooth((k - 0.9) / 0.1)
+			end, { band })
+		elseif s == "ray" then
 			ray(fx, side, e, ctx)
 		elseif s == "projectile" or s == "volley" then
 			shots(fx, side, e, ctx)
@@ -1667,6 +1794,7 @@ Kits.default = {
 	Block = function(fx, side)
 		local color = fx:Colors(side)
 		local at = (fx:Body(side))
+		fx:StopKey("guard:" .. side)
 		fx:Ring(side, at, color, 1, 5, 0.3, { Kind = "ShockCrown" })
 		fx:Move(side, "recoil", 0.3, 1)
 	end,

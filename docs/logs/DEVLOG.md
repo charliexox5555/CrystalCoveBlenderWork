@@ -14,6 +14,22 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — Hollowlight premium pass (workstream I)
+Done:
+- Plan with short research: `docs/vfx/HOLLOWLIGHT_PREMIUM.md`.
+- Lantern Eclipse v2 (3.2 s): a five-ghost singing choir, glow core and ember swirl; the moon's shadow sweeps the floor and the viewed screen grades to moonlight; a hush, a deep boom, orange glass shards and falling embers, then a final glint. Camera hold 2.6 s, kick at 1.7 s, push-in and drift.
+- Lantern Seeds v2: plants ring a rising Hollowlight chime; seeds have mint flames and trails and ripen at three; the Ready state adds a candle-flicker face, orbiting wisps and a light; a manual cast puffs a ring of ghosts; the bloom pops star blossoms and tiny ghosts fly home. Hollowlight uses E's Hero presentation tier (bd27ff2); rarity and stats unchanged.
+- CarriageFX: wing-tip flex (v5), lantern flame, glows, twinkles, take-off lift and bursts, a two-layer ride loop and a landing flourish. Hooked through RideMotion (H's hook) and BundleStage. Extras installed on the v4 carriage in Edit (backup in ServerStorage); the place still needs saving.
+- 9 new free licensed-library sounds (ProSoundEffects, APM), measured with a silent AudioAnalyzer and level-matched. New `Config/HollowlightAudio`; new `lantern_eclipse` cues.
+- hollowlight_v5 carriage mesh built headless (18,616 tris), waiting for upload (Open Cloud 403).
+- Verified headless in Play: Eclipse, Seeds and CarriageFX run clean with no leftovers. Eclipse steady step 0.13–0.2 ms. Lune 154/155 (the one failure is A's star-balance test).
+Next:
+- Visual verification once the Studio viewport renders: bot round, riding in a round, bundle VIEW, showcase, phone presets, frame cost with rendering on. Screenshots to docs/testing/hollowlight_premium/.
+- Upload and install the v5 mesh; creator listening and feel review.
+Problems / questions for the user:
+- The Studio Play client did not render (RenderStepped 0 fps), so no screenshots yet. Please bring the Studio window forward when testing.
+- Save the place to keep the carriage extras.
+
 ## 2026-10-19 — Claude — Power VFX v2 (workstream E)
 Done:
 - Audited all 24 release kits in Studio Play with a new preview harness (`Dev/PowerVFXPreview`, `tools/studio/preview_power_vfx.luau`) that stages each kit's real event sequence through CombatEffects. Every kit had the same thin rings and flat cards, no Ready state, no lights and no anticipation; the ray was about 7 px wide at the default camera; Lemonade pips were invisible; Milk was pink. Direction doc: `docs/vfx/POWER_VFX_V2.md`.

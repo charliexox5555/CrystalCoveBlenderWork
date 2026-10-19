@@ -111,9 +111,28 @@ Rejected: the Pocket Ghost stings (APM, no description, can't be confirmed kid-f
 
 ## 7. Hooks agreed with other workstreams
 
-- **E (power VFX):** `Kits.hollowlight.Tier = "Hero"` and the `kit.Tier` check in `FX:Tier`. Everything else lives in LanternSeeds.
-- **G (finishers):** FinisherFX/FightFinisher/FinisherCamera are unchanged. HollowlightFX owns its grade. FinisherAudio keeps its cue format.
-- **H (flyers):** RideController calls `CarriageFX` for rides whose model has `CarriageFX=true`: attach, step after the RideMotion pass, and detach plays the landing.
+- **E (power VFX):** `Kits.hollowlight.Tier = "Hero"` and the `kit.Tier` check in `FX:Tier`. E committed both in bd27ff2. With `Skip = true`, E's Dispatch still runs the shared Ready aura and cast flourish and skips only per-kit moments. Everything else lives in LanternSeeds, which gets Ready events through a 4-line hook in `CombatEffects:Event` (`Seeds.state`).
+- **G (finishers):** `FinisherFX.emit` passes `lantern_eclipse` straight to `HollowlightFX.emit`. `leadIn` is 0, and `duration` is `Eclipse.Duration + 0.6`, which also keeps the sound anchor alive for the 3.2 s tail. HollowlightFX owns its grade. The camera uses G's `CameraPush` and `CameraOrbit`.
+- **H (flyers):** RideMotion (shared by match rides and lobby displays) attaches `CarriageFX` for models with `CarriageFX = true`:
+  - `Offset` handles the take-off lift.
+  - `Step` runs after the RideMotion parts.
+  - RideController's drop calls `Land` when the ride was on screen.
+  - BundleStage keeps its own motion copy and calls CarriageFX directly.
+
+## 7b. Install status (Oct 19)
+
+- **Installed through code (Rojo):** everything in sections 3, 4 and 6.
+- **Carriage extras on the installed v4 model:** run `tools/studio/install_carriage_extras.luau` in Edit. It backs up to `ServerStorage.HollowlightCarriageBeforeExtras` and adds:
+  - the CarriageFX attribute
+  - engine glows and the tail-star twinkle
+  - the lantern flame
+  - the moon-dust and wisp stream
+  - the take-off bursts
+- **Waiting for upload:** `assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx` (18,616 tris). Open Cloud currently returns 403 until the creator adds asset permission to the key. Once it's uploaded:
+  1. Install it in place of the v4 meshes (keep v4 in ServerStorage).
+  2. Set `CarriageMotion = "WingTip"` on `WingTip_L/R` and `WingTipRibs_L/R` and `WingTipEdge_L/R`, with `FollowPart = "Wing_L/R"`, `WingSide = ±1`, and `TipAxis0/TipAxis1` set to the wing-space wrist and split points (`anchors.json` `WingWrist_*`, `WingSplit_*`, after the import transform).
+  3. Set `CarriageMotion = "Glow"` on `HullGlow_L/R`, `"Twinkle"` on `HullStars`, and `RideMotion = "Swing"` on `LanternChain` with the lantern's hinge.
+  4. Re-run the extras installer.
 
 ## 8. Verification
 

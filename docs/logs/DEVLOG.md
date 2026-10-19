@@ -14,6 +14,14 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — Flyers v3 installed (workstream H)
+Done:
+- Installed the four uploaded v3 flyers (A's Open Cloud upload) into `Assets.Rideables` with `install_flyers_v3.luau`; exact fit to the manifests, backups in `ServerStorage.FlyersBeforeV3` (+ `V2WithEffects`), raw imports in `FlyersV3Import`. Installer now corrects motion signs for the importer's 180° turn and retries slow asset loads.
+- Rider fit measured with the new `tools/studio/check_flyer_fit.luau`: rocket hands now on the handlebar grips, cloud hands on the arm puffs (`Config/RideAnimations`). Fixed the loop sound missing on streamed rides (`RideMotion:EnsureSound`). Ray core lightened.
+- Verified in Studio Play: player and bot rounds with all four, R15 and R6 riders, lobby display, shop/crate portraits; screenshots and notes in `docs/testing/flyers_v3/REPORT.md`.
+Next:
+- Creator: save/publish the place to keep the v3 templates; feel, phone and sound-level review.
+
 ## 2026-10-19 — Claude — Finishers V2: Blender meshes installed (workstream G)
 Done:
 - Installed the 16 finishers_v3 meshes (Model 100127262224695) in `Assets.VFX.FinishersV3`. Raw insert archived in `ServerStorage.FinishersV3Import`; sizes from the manifest; installer `tools/studio/install_finishers_v3.luau`. Uploaded the 5 particle textures (Decals, ids in `roblox_assets.json`) and wired their image ids into `Config/FinisherShows.Textures`.

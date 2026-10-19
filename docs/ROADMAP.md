@@ -13,7 +13,7 @@ Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DES
 - [ ] **B/E/G/H/I:** combat feel, power VFX + sounds, premium finishers, flyers v3, Hollowlight premium: Studio verification and reports (sessions in progress).
 - [ ] **U:** save/publish the place (overnight Studio installs live only in the open place).
 
-- [ ] **CL:** flyers v3 (workstream H, decision 93): four premium Blender flyers built and FBX-validated, shared `RideMotion` (float, drift, bank, launch, loop sound) live, trails/particles/lights on the current meshes. **Remaining:** Open Cloud upload (key needs asset permission), `install_flyers_v3.luau`, rider-pose fit on the new geometry, creator feel/phone review. [Report](testing/flyers_v3/REPORT.md)
+- [x] **CL:** flyers v3 (workstream H, decision 93): four premium Blender flyers built and FBX-validated, shared `RideMotion` (float, drift, bank, launch, loop sound) live, trails/particles/lights on the current meshes. Uploaded and installed (A's upload, H's installer), rider poses fitted, verified in rounds, lobby display and shop portraits. Creator feel/phone/sound review remains. [Report](testing/flyers_v3/REPORT.md)
 
 - [x] **CL:** combat feel pass (workstream B): tiered hits with pooled impacts, layered sound, client hitstop with smooth catch-up, capped camera kick/shake/FOV punch, glass wobble/crack glint, Perfect/power land-miss/block/comeback/tension/KO-hold/victory beats and the manual-cast hook; reduced motion and mobile budget. [Report](testing/combat_feel/README.md). Phone preset check and creator real-speed tuning remain.
 

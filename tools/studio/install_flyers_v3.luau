@@ -69,6 +69,12 @@ local function fit(raw, manifest)
 	return parts, scale, best, bestErr, rawCf, mCentre
 end
 
+local function axisSign(part, axis)
+	local v = ({ X = part.CFrame.RightVector, Y = part.CFrame.UpVector, Z = -part.CFrame.LookVector })[axis]
+	local world = ({ X = Vector3.xAxis, Y = Vector3.yAxis, Z = Vector3.zAxis })[axis]
+	return if v:Dot(world) < 0 then -1 else 1
+end
+
 local report = {}
 local imports = folder(SS, "FlyersV3Import")
 local backups = folder(SS, "FlyersBeforeV3")
@@ -77,7 +83,19 @@ for id, entry in input do
 	local manifest = HttpService:JSONDecode(entry.Manifest)
 	local raw = imports:FindFirstChild(id)
 	if not raw then
-		raw = game:GetObjects("rbxassetid://" .. entry.AssetId)[1]
+		-- Slow connections: asset loads can time out once, so retry with a growing wait.
+		for attempt = 1, 5 do
+			local ok, result = pcall(function()
+				return game:GetObjects("rbxassetid://" .. entry.AssetId)[1]
+			end)
+			if ok and result then
+				raw = result
+				break
+			end
+			warn(("install_flyers_v3: %s load attempt %d failed: %s"):format(id, attempt, tostring(result)))
+			task.wait(2 * attempt)
+		end
+		assert(raw, id .. " asset did not load")
 		raw.Name = id
 		raw.Parent = imports
 	end
@@ -113,6 +131,22 @@ for id, entry in input do
 				part:SetAttribute(key, value)
 			end
 		end
+		-- RideMotion turns parts about their local axes; the importer may flip them (it turned these 180°),
+		-- so flip the signed values to keep the motion as designed in world space.
+		local kind = p.Motion.RideMotion
+		if kind == "Wing" then
+			part:SetAttribute("WingSide", part:GetAttribute("WingSide") * axisSign(part, "Z"))
+		elseif kind == "Fin" then
+			local s = axisSign(part, part:GetAttribute("FinAxis") or "X")
+			part:SetAttribute("FinAngle", (part:GetAttribute("FinAngle") or 0.1) * s)
+			part:SetAttribute("FinBank", (part:GetAttribute("FinBank") or 0) * s)
+		end
+		if kind and part:GetAttribute("SpinSpeed") then
+			part:SetAttribute(
+				"SpinSpeed",
+				part:GetAttribute("SpinSpeed") * axisSign(part, part:GetAttribute("SpinAxis") or "Z")
+			)
+		end
 		part.Parent = model
 	end
 	local main = model[MAIN[id]]
@@ -134,6 +168,7 @@ for id, entry in input do
 	model:SetAttribute("DisplayName", manifest.Name)
 	model:SetAttribute("Triangles", manifest.Tris)
 	model:SetAttribute("SourceAsset", entry.AssetId)
+	model:SetAttribute("AxisFixed", true)
 	-- size check against the manifest
 	local _, size = model:GetBoundingBox()
 	local want = v3(manifest.Extents)

@@ -20,8 +20,9 @@ local A = {
 		Seated = true,
 		Pose = {
 			Spine = { -5, 0, 0 },
-			LeftArm = { 8, 0, -18 },
-			RightArm = { 8, 0, 18 },
+			-- v3 cloud: hands rest on the arm puffs
+			LeftArm = { 0, 0, -6 },
+			RightArm = { 0, 0, 6 },
 			LeftHip = { 85, -10, 0 },
 			RightHip = { 85, 10, 0 },
 			LeftKnee = { -80, 0, 0 },
@@ -35,10 +36,11 @@ local A = {
 		Seconds = 1.8,
 		Pose = {
 			Spine = { -12, 0, 0 },
-			LeftArm = { 48, -8, -14 },
-			RightArm = { 48, 8, 14 },
-			LeftElbow = { 28, 0, 0 },
-			RightElbow = { 28, 0, 0 },
+			-- v3 skiff: both hands on the handlebar grips (measured with tools/studio/check_flyer_fit.luau)
+			LeftArm = { 54, -8, 8 },
+			RightArm = { 54, 8, -8 },
+			LeftElbow = { 30, 0, 0 },
+			RightElbow = { 30, 0, 0 },
 			LeftHip = { 16, 0, 0 },
 			RightHip = { 22, 0, 0 },
 			LeftKnee = { -32, 0, 0 },

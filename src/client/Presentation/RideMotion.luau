@@ -46,20 +46,8 @@ function Motion.new(model, base, options)
 		Reduced = UIMotion.reduced(),
 	}, Motion)
 	self:Collect()
-	local sound = self.Profile.Sound
-	if sound and options.Sound ~= false then
-		local host = model.PrimaryPart or model:FindFirstChildWhichIsA("BasePart", true)
-		if host then
-			local loop = Instance.new("Sound")
-			loop.Name = "RideLoop"
-			loop.SoundId, loop.Looped = sound.Id, true
-			loop.Volume, loop.PlaybackSpeed = 0, sound.Pitch or 1
-			loop.RollOffMode = Enum.RollOffMode.InverseTapered
-			loop.RollOffMinDistance, loop.RollOffMaxDistance = sound.MinDistance or 6, sound.MaxDistance or 40
-			loop.Parent = host
-			self.Sound = loop
-		end
-	end
+	self.WantsSound = self.Profile.Sound ~= nil and options.Sound ~= false
+	self:EnsureSound()
 	if options.Launch then
 		self:Launch(options.Launch, true)
 	end
@@ -80,8 +68,29 @@ function Motion.new(model, base, options)
 	return self
 end
 
+-- The loop sound needs a part to live on; with streaming the ride can arrive before its parts.
+function Motion:EnsureSound()
+	if not self.WantsSound or self.Sound then
+		return
+	end
+	local host = self.Model.PrimaryPart or self.Model:FindFirstChildWhichIsA("BasePart", true)
+	if not host then
+		return
+	end
+	local sound = self.Profile.Sound
+	local loop = Instance.new("Sound")
+	loop.Name = "RideLoop"
+	loop.SoundId, loop.Looped = sound.Id, true
+	loop.Volume, loop.PlaybackSpeed = 0, sound.Pitch or 1
+	loop.RollOffMode = Enum.RollOffMode.InverseTapered
+	loop.RollOffMinDistance, loop.RollOffMaxDistance = sound.MinDistance or 6, sound.MaxDistance or 40
+	loop.Parent = host
+	self.Sound = loop
+end
+
 -- (Re)scan the model; streaming can deliver parts and effects after the ride itself.
 function Motion:Collect()
+	self:EnsureSound()
 	for _, obj in self.Model:GetDescendants() do
 		if obj:IsA("BasePart") and obj:GetAttribute("RideMotion") and not self.Parts[obj] then
 			self.Parts[obj] = {

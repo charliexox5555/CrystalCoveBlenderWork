@@ -39,9 +39,9 @@ return {
 	["rbxassetid://9125442175"] = { Start = 0.45, Seconds = 1.0, Fade = 0.3, Volume = 0.26, Pitch = 1 },
 	["rbxassetid://9125986205"] = { Start = 0, Seconds = 18, Fade = 0.5, Volume = 0.16, Pitch = 1 },
 	["rbxassetid://9126203855"] = { Start = 0, Seconds = 4.7, Fade = 0.5, Volume = 0.2, Pitch = 1 },
-	-- Finishers V2 additions (workstream G): provisional trims, measured in Studio (docs/testing/finishers_v2).
-	["rbxassetid://9116385087"] = { Start = 0, Seconds = 2.2, Fade = 0.5, Volume = 0.4, Pitch = 1 },
-	["rbxassetid://9116393976"] = { Start = 0, Seconds = 1.0, Fade = 0.3, Volume = 0.35, Pitch = 1 },
-	["rbxassetid://9125640290"] = { Start = 0, Seconds = 1.0, Fade = 0.25, Volume = 0.45, Pitch = 1 },
-	["rbxassetid://9126073644"] = { Start = 0, Seconds = 0.7, Fade = 0.2, Volume = 0.35, Pitch = 1 },
+	-- Finishers V2 additions (workstream G): levels matched to the bank by AudioAnalyzer RMS (docs/testing/finishers_v2).
+	["rbxassetid://9116385087"] = { Start = 0, Seconds = 1.8, Fade = 0.45, Volume = 0.36, Pitch = 1 },
+	["rbxassetid://9116393976"] = { Start = 0, Seconds = 1.4, Fade = 0.3, Volume = 0.35, Pitch = 1 },
+	["rbxassetid://9125640290"] = { Start = 0, Seconds = 1.0, Fade = 0.25, Volume = 0.75, Pitch = 1 },
+	["rbxassetid://9126073644"] = { Start = 0, Seconds = 0.6, Fade = 0.2, Volume = 0.3, Pitch = 1 },
 }

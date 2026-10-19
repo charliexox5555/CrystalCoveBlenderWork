@@ -86,3 +86,17 @@ Ten free ProSoundEffects Creator Store sounds (Roblox's licensed library) for th
 | PW_SlideUp | [9119198150](https://create.roblox.com/store/asset/9119198150) | Slide Whistle 6 | Glass Top spin |
 
 Creator listening review pending. Watch the roar in particular (kid-friendly level).
+
+## Finishers V2 additions (workstream G, 2026-10-19)
+
+Four free ProSoundEffects Creator Store sounds (Roblox's licensed library) for the five standard finishers (decision 91). Keys are in `Config/Audio`, trims in `AudioCues` and per-finisher timelines in `Config/FinisherAudio`. Searched with Studio MCP `search_asset` (verified creators, ProSoundEffects only). No ProSoundEffects boing or popper exists, so toy blocks and cap rattles cover those beats.
+
+| Key | Asset ID | Source name | Length | Used by |
+|---|---|---|---|---|
+| FN_MagicBurst | [9116385087](https://create.roblox.com/store/asset/9116385087) | Magic Burst 5 (big beefy impact, glowing decay) | 2.3 s | Supernova peak |
+| FN_GlowSwell | [9116393976](https://create.roblox.com/store/asset/9116393976) | Magic Glow Short Pulsing Bursts 9 (humming swell) | 1.8 s | Supernova and Fizz Bloom gather |
+| FN_PunchyPoof | [9125640290](https://create.roblox.com/store/asset/9125640290) | Magic Poofs Short Breathy Bursts Wheezy Punchy 2 | 1.5 s | Piñata Pop burst, Ka-Block |
+| FN_GlassPing | [9126073644](https://create.roblox.com/store/asset/9126073644) | Synth Sparkle Tone High Pitch Tone Burst Ding 5 (glassy) | 0.7 s | Prism Pop lock, Fizz Bloom and Ka-Block pops, Supernova twinkle |
+
+Creator listening review pending.
+

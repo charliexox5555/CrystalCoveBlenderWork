@@ -227,8 +227,9 @@ function FX.emit(parent, id, origin, lowDetail, orientation, options)
 end
 
 -- Builds a frozen frame of the show into `world` (a WorldModel/Model) for icons and portraits, facing the
--- portrait camera. Returns false for finishers without a standard show.
-function FX.still(world, id, orientation)
+-- portrait camera (or `orientation`), at its StillAt beat (or show time `at`, used by QA contact sheets).
+-- Returns false for finishers without a standard show.
+function FX.still(world, id, orientation, at)
 	local show = Shows.Shows[id]
 	if not show then
 		return false
@@ -243,7 +244,7 @@ function FX.still(world, id, orientation)
 	setView(rig, Vector3.zero, orientation or CFrame.lookAt(Vector3.new(4, 2, 10), Vector3.zero))
 	rig.Socket.CFrame = CFrame.new()
 	rig:Freeze()
-	frame(rig, show, show.StillAt)
+	frame(rig, show, at or show.StillAt)
 	rig.Root.Parent = world
 	return true
 end

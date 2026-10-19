@@ -14,6 +14,19 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — Finishers V2 (workstream G)
+Done:
+- The five standard finishers are now premium timed shows (gather, peak, release, linger) with new names; ids, prices, odds and rarities are unchanged: Prism Pop, Piñata Pop, Fizz Bloom, Ka-Block, Supernova. Design and short research: `docs/vfx/FINISHERS_V2.md`. Decision 91 (Proposed).
+- Code: `Presentation/FinisherFX` (pooled rigs, one Heartbeat clock, falls back to Prism Pop on a missing or broken show), `Presentation/Finishers/*` (Kit plus one module per show), tuning in the new `Config/FinisherShows`. `FightFinisher` starts each show `leadIn` seconds before impact so the peak lands on the hit. `FinisherCamera` adds `CameraPush`/`CameraOrbit`. Icons/portraits (`FinisherStill`) are frozen frames of the real show. The inventory preview waits for each show's length.
+- Sound: five new cue sets in `Config/FinisherAudio`, plus four ProSoundEffects sounds (FN_*), level-matched with AudioAnalyzer.
+- Blender: `tools/blender/build_finishers_v3.py` (headless) → `assets/blender/round_cosmetics/finishers_v3`, 16 original meshes (3,466 tris) and 5 particle textures.
+- Studio Play: all five played in real bot rounds with no errors and no rigs left behind; previews and stills checked in a ViewportFrame; desktop frame times 17-21 ms average under heavy machine load. Report and frames: `docs/testing/finishers_v2/`. Lune 155/155.
+Next:
+- Upload and install the finishers_v3 meshes and textures once the key works (install steps in the report). Creator feel and listening review, real-phone check. Re-check Supernova's softened grade in a live round.
+Problems / questions for the user:
+- Open Cloud asset uploads return 403 "User not authenticated" for ROBLOX_ASSETS_KEY, while universe and developer-product calls still work. Please re-add asset read/write to the key. Until then the shows use existing meshes and textures.
+- The Studio MCP can't switch Device Emulator presets, so the phone check is by code path only.
+
 ## 2026-10-19 — Claude — Power sounds and verification pass 2 (workstream E)
 Done:
 - The 17 `-- SFX:` markers are now real cues: `Config/PowerAudio`, 10 new free ProSoundEffects sounds (ids in `docs/audio/SOUND_LIST.md`) plus reused bank keys, played through `Scene:Sound` and cleaned up with `Effects.Sounds`.

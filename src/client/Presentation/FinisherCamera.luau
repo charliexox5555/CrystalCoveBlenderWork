@@ -29,16 +29,8 @@ function Camera.pose(finisher, normal, from, now)
 	end
 	local flyAt = Feel.FinisherPause + Feel.FinisherRiseSeconds
 	local impactAt = flyAt + Feel.FinisherFlySeconds
-	local id = finisher:Id()
-	local def = Cosmetics.ByCategory.Finishers[id]
-	if not def then
-		for _, pending in Cosmetics.PendingFinishers or {} do
-			if pending.Id == id then
-				def = pending
-			end
-		end
-	end
-	def = def or {}
+	-- "" (nothing equipped, decision 95) has no entry: default hold, no push.
+	local def = Cosmetics.ByCategory.Finishers[finisher:Id()] or {}
 	local hold = def.CameraHoldSeconds or Feel.FinisherCameraHoldSeconds
 	local amount = ease((age - flyAt) / Feel.FinisherFlySeconds)
 	if age > impactAt + hold then

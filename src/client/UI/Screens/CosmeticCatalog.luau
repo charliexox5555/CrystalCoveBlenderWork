@@ -12,8 +12,55 @@ local FX = require(script.Parent.Parent.Parent.Presentation.FinisherFX)
 local FinisherAudio = require(script.Parent.Parent.Parent.Presentation.FinisherAudio)
 local Tuning = require(RS.Shared.Config.Balance).CosmeticPresentation
 local Motion = require(script.Parent.Parent.Components.Motion)
+local Shows = require(RS.Shared.Config.FinisherShows)
 local Catalog = {}
 Catalog.__index = Catalog
+-- Decision 95: nothing equipped is a real choice. Finishers list "Basic Shatter" (the plain glass break) and
+-- flyers "No Flyer" first, always owned; equipping either sends "" (nothing equipped). Neither is a catalog
+-- item; Basic Shatter has a preview show, No Flyer an empty portrait (or Assets.RideStand when installed).
+local NONE = {
+	Finishers = {
+		Id = Shows.BasicId,
+		Name = "Basic Shatter",
+		Rarity = "Common",
+		None = true,
+		Description = "No finisher: your glassy flies in and simply shatters on your foe. Always yours.",
+	},
+	Rideables = {
+		Id = "no_flyer",
+		Name = "No Flyer",
+		Rarity = "Common",
+		None = true,
+		Description = "Stand tall on your own: you hover in place with a confident pose. Always yours.",
+	},
+}
+local function entries(category)
+	local list = C.catalog(category)
+	if NONE[category] then
+		table.insert(list, 1, NONE[category])
+	end
+	return list
+end
+local function isNone(category, id)
+	return NONE[category] ~= nil and id == NONE[category].Id
+end
+local function defOf(category, id)
+	if isNone(category, id) then
+		return NONE[category]
+	end
+	return C.ByCategory[category][id]
+end
+local function ownedCount(profile, category, id)
+	return if isNone(category, id) then 1 else Rules.count(profile, category, id)
+end
+-- The equipped id as the grid sees it: nothing equipped shows as the category's "none" entry.
+local function equippedKey(profile, category)
+	local equipped = (profile.Cosmetics or {})["Equipped" .. category]
+	if NONE[category] and (equipped == nil or equipped == "") then
+		return NONE[category].Id
+	end
+	return equipped
+end
 local function entrySignature(profile, category, id, equipped)
 	return id .. ":" .. Rules.count(profile, category, id) .. ":" .. tostring(id == equipped)
 end
@@ -85,7 +132,7 @@ function Catalog.new(parent, profile, category)
 			if self.Owned then
 				require(RS.Shared.Remotes).EquipRoundCosmetic:FireServer(
 					self.Category,
-					if self.Equipped then "" else self.Selected
+					if self.Equipped or isNone(self.Category, self.Selected) then "" else self.Selected
 				)
 			end
 		end)
@@ -137,9 +184,9 @@ end
 -- alone, and a real change only rebuilds the tiles whose item changed.
 function Catalog:Refresh(profile)
 	self.Profile = profile or { Cosmetics = {}, Stats = {} }
-	local equipped = (self.Profile.Cosmetics or {})["Equipped" .. self.Category]
+	local equipped = equippedKey(self.Profile, self.Category)
 	local parts = {}
-	for _, def in C.catalog(self.Category) do
+	for _, def in entries(self.Category) do
 		table.insert(parts, entrySignature(self.Profile, self.Category, def.Id, equipped))
 	end
 	local sig = table.concat(parts, "|")
@@ -157,8 +204,8 @@ function Catalog:Refresh(profile)
 	end
 	self.Signature = sig
 	local owned, missing = {}, {}
-	for _, def in C.catalog(self.Category) do
-		table.insert(if Rules.count(self.Profile, self.Category, def.Id) > 0 then owned else missing, def)
+	for _, def in entries(self.Category) do
+		table.insert(if ownedCount(self.Profile, self.Category, def.Id) > 0 then owned else missing, def)
 	end
 	self.Tiles = {}
 	local fresh = {}
@@ -212,7 +259,7 @@ function Catalog:AddTile(def, root, order, unowned, equipped)
 		Theme.Fonts.Heading
 	)
 	-- Count sits in the tile's top corner so the plaque keeps its full width for the name.
-	count.Visible, count.TextXAlignment = not unowned, Enum.TextXAlignment.Right
+	count.Visible, count.TextXAlignment = not unowned and not def.None, Enum.TextXAlignment.Right
 	count.TextColor3, count.ZIndex = Theme.Colors.Text, 3
 	U.make("UIStroke", count, { Color = Theme.Palette.lead, Thickness = 1.5 })
 	-- Keep text inside the plaque's flat middle (its pointed ends are ~14% each side).
@@ -252,31 +299,31 @@ function Catalog:AddTile(def, root, order, unowned, equipped)
 	}
 end
 function Catalog:Detail(id)
-	local def = C.ByCategory[self.Category][id]
+	local def = defOf(self.Category, id)
 	if not def then
 		return
 	end
 	self.Selected, self.Previewing = id, false
-	self.SelectedSignature =
-		entrySignature(self.Profile, self.Category, id, (self.Profile.Cosmetics or {})["Equipped" .. self.Category])
+	self.SelectedSignature = entrySignature(self.Profile, self.Category, id, equippedKey(self.Profile, self.Category))
 	if self.PreviewResize then
 		self.PreviewResize:Disconnect()
 		self.PreviewResize = nil
 	end
-	local count = Rules.count(self.Profile, self.Category, id)
+	local count = ownedCount(self.Profile, self.Category, id)
 	self.Owned = count > 0
-	self.Equipped = (self.Profile.Cosmetics or {})["Equipped" .. self.Category] == id
+	self.Equipped = equippedKey(self.Profile, self.Category) == id
 	self.Name.Text, self.Description.Text = def.Name, def.Description
 	self.Description.Visible = true
 	S.tag(self.Info.RarityTag, def.Rarity, S.Rarity[def.Rarity])
 	self.Rarity.Text, self.Rarity.TextColor3, self.Rarity.Visible =
 		string.upper(def.Rarity), Theme.Rarity[def.Rarity].Top, true
-	self.Status.Text = if count > 0
-		then "OWNED: " .. count .. (if self.Equipped then " · EQUIPPED" else "")
+	self.Status.Text = if def.None
+		then "ALWAYS YOURS" .. (if self.Equipped then " · EQUIPPED" else "")
+		elseif count > 0 then "OWNED: " .. count .. (if self.Equipped then " · EQUIPPED" else "")
 		elseif def.Seasonal then "SEASONAL · NOT AVAILABLE YET"
 		else "UNOWNED · OPEN A CRATE"
 	self.Status.Visible = true
-	local default = self.Equipped and def.Matches == 0
+	local default = self.Equipped and (def.Matches == 0 or def.None)
 	S.buttonText(
 		self.Equip,
 		if default

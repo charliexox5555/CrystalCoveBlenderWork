@@ -34,6 +34,31 @@ C.Rideables = {
 		Accent = "#7CE7D5",
 		Description = "A friendly crystal ray that flaps its broad wings.",
 	},
+	-- Launch flyers (Cosmetics V2; models by workstream F). In crate pools once installed (KilnService gate).
+	{
+		Id = "paper_jet",
+		Name = "Paper Jet",
+		Rarity = "Common",
+		Color = "#F4F8FF",
+		Accent = "#FFD84D",
+		Description = "A giant folded paper plane made of frosted glass, trailing crease streamers.",
+	},
+	{
+		Id = "bubble_pod",
+		Name = "Bubble Pod",
+		Rarity = "Uncommon",
+		Color = "#E9DDFF",
+		Accent = "#80E8DA",
+		Description = "Ride inside a giant soap bubble with a wake of popping bubbles.",
+	},
+	{
+		Id = "honey_hover",
+		Name = "Honey Hover",
+		Rarity = "Uncommon",
+		Color = "#FFB92E",
+		Accent = "#FFF1C9",
+		Description = "A floating glass honeycomb with two little glass bees on patrol.",
+	},
 }
 C.Finishers = {
 	{
@@ -159,11 +184,6 @@ C.Finishers = {
 		CameraOrbit = -0.1,
 		Description = "A glass unicorn gallops in on a rainbow, rears up, and its horn fires a column that rains stars and hearts.",
 	},
-}
--- Built and verified but not yet in the catalog: the first Mythic finisher joins C.Finishers once crates have a
--- Coin Mythic weight and the Daily Store a Mythic finisher tier (creator/A decisions; CrateTests and
--- DailyStoreTests require both). FinisherFX can already play it.
-C.PendingFinishers = {
 	{
 		Id = "emberwing",
 		Name = "Emberwing",

@@ -180,6 +180,11 @@ return {
 			cue("FallingShimmer", "Burst", 1.4, 0.9, 1.0),
 			cue("FN_GlassPing", "Burst", 1.5, 0.5, 1.3),
 		},
+		-- Basic Shatter: inventory preview only (fights use the glassy's own break sound). Not a catalog item.
+		basic_shatter = {
+			cue("ShatterHeavy", "Burst", 0.3, 0.9, 1.05, 1),
+			cue("ShatterScatter", "Burst", 0.38, 0.7, 1.2),
+		},
 		-- Lantern Eclipse v2 (Balance.CosmeticPresentation.Eclipse: gather 0.3, eclipse 1.0, hush 1.55, release 1.7 s).
 		-- The Hollowlight motif is LanternBell rung as a rising minor triad (x1, x1.19, x1.5): note 1 on ignite,
 		-- notes 2 and 3 as the ghosts arrive. Saw riser and choir under the eclipse, a hush, then a deep boom,

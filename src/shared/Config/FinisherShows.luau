@@ -5,6 +5,9 @@
 -- own numbers in Balance.CosmeticPresentation.Eclipse.
 local S = {}
 
+-- UI id for the Basic Shatter tile; equipping it sends "" (nothing equipped).
+S.BasicId = "basic_shatter"
+
 -- Particle textures rendered in Blender (assets/blender/round_cosmetics/finishers_v3/textures; image ids resolved
 -- from the Decals in roblox_assets.json). nil falls back to the combat bank texture named in Kit.
 S.Textures = {
@@ -157,6 +160,18 @@ S.Shows = {
 			PeakSeconds = 0.25,
 			FadeSeconds = 0.35,
 		},
+	},
+	-- Basic Shatter (decision 95): the "nothing equipped" look. Fights play no show for it (the glassy just
+	-- breaks); this entry only drives the inventory tile, preview and still.
+	basic_shatter = {
+		Module = "BasicShatter",
+		Duration = 1.2,
+		PeakAt = 0.3,
+		StillAt = 0.4,
+		Shake = 0,
+		Punch = 0,
+		GlassSize = 2.6,
+		Shards = 12,
 	},
 	-- Launch finishers (docs/design/COSMETICS_V2.md §4.2), built from Finishers/Modules.
 	frost_pop = {

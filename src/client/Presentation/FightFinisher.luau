@@ -51,8 +51,7 @@ end
 function Finish:Id()
 	local finishers = self.Scene.Data.Finishers
 	local id = finishers and finishers[3 - self.Loser]
-	-- Catalog finishers, plus built shows still waiting to join the catalog (RoundCosmetics.PendingFinishers),
-	-- which the server only ever sends from Studio QA.
+	-- Catalog finishers, plus any id with a show (Studio QA can send shows that aren't in the catalog).
 	if id and (Cosmetics.ByCategory.Finishers[id] or Shows.Shows[id]) then
 		return id
 	end

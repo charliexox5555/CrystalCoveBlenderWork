@@ -89,3 +89,22 @@ Lune: 164 passed, 0 failed.
   and the lobby showcase use the low-detail rig.
 - Emberwing joins the catalog after A's crate and store decisions.
 - Save the place to keep `Assets.VFX.FinishersV4`, `Assets.RoundFinishers.<new ids>` and the import archive.
+
+## Decision 95: nothing equipped = Basic Shatter (later the same day)
+
+- **Fights:** `FightFinisher` treats `""` as the basic finisher. The winner's glass still rises, flies into the
+  loser's avatar and breaks with the plain `Shatter:Break` (its own break and tinkle sounds). There is no
+  FinisherFX show, no finisher cue set and no camera push beyond the default.
+- **Inventory:** "Basic Shatter" is listed first among owned finishers, always owned, and shows as equipped when
+  nothing is. Equipping it sends `""`, and its DEFAULT button can't unequip. It has a short preview show
+  (`Finishers/BasicShatter`: a glass bubble wobbles, cracks white and bursts) and a portrait still.
+  - "No Flyer" (for H) is the flyer twin; its portrait is empty until H installs a RideStand under
+    `Assets.Rideables.no_flyer`.
+- **Emberwing** is now in the catalog. A's CrateTests update makes Mythic Marble-only.
+- **Studio (lock slot):**
+  - A fresh mock profile had `EquippedFinishers = ""`; the match sent `""` and the real round ended with the
+    winner flying in and breaking (51 shards seen), with no finisher rig and no grade.
+  - `tools/studio/verify_basic_shatter.luau`: 13 checks pass (tile first and owned, equipped badge, status,
+    DEFAULT inactive, still built, preview plays, badge moves when Frost Pop is equipped, No Flyer listed and
+    equipped). Screenshot: `basic_shatter_inventory.jpg` (the match HUD overlay comes from the QA round).
+- Lune 164/164.

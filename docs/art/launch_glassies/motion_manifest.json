@@ -804,6 +804,347 @@
      "follows": "Body"
     }
    ]
+  },
+  "grizzly_guardian": {
+   "name": "Grizzly Guardian",
+   "rarity": "Legendary",
+   "tint": "#FFC96B",
+   "version": "v4",
+   "bundle": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
+   "icon": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_icon.png",
+   "intact_triangles": 2714,
+   "shard_count": 20,
+   "release_geometry": {
+    "Radius": 0.994843,
+    "Center": 1.365667
+   },
+   "radius_target": 1.0,
+   "body_dimensions_roblox": [
+    1.9895366430282593,
+    2.447021245956421,
+    1.8199138641357422
+   ],
+   "fbx_roundtrip": true,
+   "animated_parts": 8,
+   "parts": [
+    {
+     "name": "Body",
+     "role": "Body",
+     "material": "Glass",
+     "color": "#FFC96B",
+     "transparency": 0.38,
+     "effect_only": false
+    },
+    {
+     "name": "InnerAmber",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#E8962A",
+     "transparency": 0.15,
+     "effect_only": false
+    },
+    {
+     "name": "InnerAmberHead",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#E8962A",
+     "transparency": 0.15,
+     "effect_only": false
+    },
+    {
+     "name": "HeartCore",
+     "role": "Detail",
+     "material": "Neon",
+     "color": "#FFC24A",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_HeartCore",
+     "pivot_roblox": [
+      0.0,
+      -1.5,
+      0.2
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "pulse",
+      "amp": 0.07,
+      "period_s": 3.0,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "flash",
+      "dur_s": 0.25
+     },
+     "lod_keep": false,
+     "note": "guardian heart: brightens with each received clash, flares at Ready"
+    },
+    {
+     "name": "Muzzle",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FFE6B8",
+     "transparency": 0.28,
+     "effect_only": false
+    },
+    {
+     "name": "Nose",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#3A2618",
+     "transparency": 0,
+     "effect_only": false
+    },
+    {
+     "name": "Eyes",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#1B2440",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Eyes",
+     "pivot_roblox": [
+      0.002789,
+      -0.545642,
+      0.570469
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "blink",
+      "interval_s": 3.6,
+      "dur_s": 0.12
+     },
+     "hit": {
+      "type": "none"
+     },
+     "lod_keep": false,
+     "note": "eyes glow gold (#FFE08A Neon) at Ready"
+    },
+    {
+     "name": "EyeShine",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FFFFFF",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_EyeShine",
+     "pivot_roblox": [
+      0.002789,
+      -0.545642,
+      0.570469
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "blink",
+      "interval_s": 3.6,
+      "dur_s": 0.12
+     },
+     "hit": {
+      "type": "none"
+     },
+     "lod_keep": false,
+     "note": "blinks with Eyes"
+    },
+    {
+     "name": "Cheeks",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FF8FB0",
+     "transparency": 0.35,
+     "effect_only": false
+    },
+    {
+     "name": "Mouth",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#1B2440",
+     "transparency": 0,
+     "effect_only": false
+    },
+    {
+     "name": "Ear_L",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FFC96B",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Ear_L",
+     "pivot_roblox": [
+      -0.4,
+      -0.34,
+      0.02
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 10,
+      "period_s": 3.2,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 18,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": true,
+     "note": "ears swivel (idle) and flick back on a hit"
+    },
+    {
+     "name": "Ear_R",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FFC96B",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Ear_R",
+     "pivot_roblox": [
+      0.4,
+      -0.34,
+      0.02
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 10,
+      "period_s": 3.2,
+      "phase": 0.8
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 18,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "ears swivel (idle) and flick back on a hit"
+    },
+    {
+     "name": "ChestPlates",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#EAF6FF",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_ChestPlates",
+     "pivot_roblox": [
+      0.0,
+      -1.66,
+      0.6
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "pulse",
+      "amp": 0.03,
+      "period_s": 3.0,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "flash",
+      "dur_s": 0.25
+     },
+     "lod_keep": true,
+     "note": "breathing chest; at Ready the plates fold across the chest as the crystal guard and light up"
+    },
+    {
+     "name": "Claws",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#EAF6FF",
+     "transparency": 0.28,
+     "effect_only": false
+    },
+    {
+     "name": "HangRing",
+     "role": "Detail",
+     "material": "Metal",
+     "color": "#FFE08A",
+     "transparency": 0,
+     "effect_only": false
+    },
+    {
+     "name": "BrowGem",
+     "role": "Detail",
+     "material": "Neon",
+     "color": "#FFE08A",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_BrowGem",
+     "pivot_roblox": [
+      0.0,
+      -0.3,
+      0.495726
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "pulse",
+      "amp": 0.1,
+      "period_s": 3.0,
+      "phase": 0.5
+     },
+     "hit": {
+      "type": "flash",
+      "dur_s": 0.3
+     },
+     "lod_keep": false
+    },
+    {
+     "name": "Sparkles",
+     "role": "Detail",
+     "material": "Neon",
+     "color": "#FFF6D6",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Sparkles",
+     "pivot_roblox": [
+      0.0,
+      -1.7,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "spin",
+      "deg_per_s": 12
+     },
+     "hit": {
+      "type": "spin_boost",
+      "deg_per_s": 160,
+      "dur_s": 0.8
+     },
+     "lod_keep": false
+    }
+   ]
   }
  }
 }

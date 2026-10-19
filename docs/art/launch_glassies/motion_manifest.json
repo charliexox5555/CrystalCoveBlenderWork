@@ -1,0 +1,809 @@
+{
+ "schema": "launch_glassies_v1/1 (glassy_revamp_v3/1 plus `follows` and the `drip` idle type)",
+ "coordinates": "Roblox model space: roblox = (x, z, -y) of Blender; studs at GlassyScale 1; origin = hang point",
+ "idle_types": {
+  "sway": "rotate about axis amp_deg*sin(2*pi*t/period_s+phase)",
+  "spin": "rotate about axis at deg_per_s",
+  "bob": "translate along axis amp_studs*sin(...)",
+  "pulse": "scale about pivot 1+amp*sin(...); Neon parts also brighten",
+  "slosh": "rotate about axis by -gain*swing angular velocity (deg/s), clamp max_deg, spring freq_hz/damping",
+  "flicker": "random scale jitter amp at rate_hz",
+  "blink": "scale along axis to 0.1 for dur_s every interval_s (+-40%)",
+  "drip": "loop every period_s: scale 0->1 over grow_s at the pivot, then slide fall_studs along the axis while fading, reset",
+  "static": "no idle motion"
+ },
+ "hit_types": {
+  "kick": "rotate deg about axis (sign from hit side), spring back",
+  "flare": "rotate deg outward, spring back",
+  "hop": "translate studs along axis, spring back",
+  "squash": "scale factor along axis, spring back",
+  "flash": "Neon/brighten for dur_s",
+  "spin_boost": "add deg_per_s decaying over dur_s",
+  "none": "no reaction"
+ },
+ "follows": "A part with `follows` rides the named part: apply the parent's motion first, then its own idle/hit in the parent's frame (fish tail on the fish, eye shine on the eyes, chips on their cookie). Parts with the same motion as the parent repeat it.",
+ "body_motion": "Glass Top's Body has a cosmetic spin about the hang axis; its stripes, ring, knob and tip follow it.",
+ "lod": "Low-detail mode: animate only parts with lod_keep=true (plus client-driven kit names).",
+ "glassies": {
+  "cookie_jar": {
+   "name": "Cookie Jar",
+   "rarity": "Common",
+   "tint": "#E8B77A",
+   "version": "v1",
+   "bundle": "assets/blender/glassies/cookie_jar/v1/cookie_jar_bundle.fbx",
+   "icon": "assets/blender/glassies/cookie_jar/v1/cookie_jar_icon.png",
+   "intact_triangles": 1492,
+   "shard_count": 16,
+   "release_geometry": {
+    "Radius": 0.88,
+    "Center": 1.44
+   },
+   "radius_target": 0.88,
+   "body_dimensions_roblox": [
+    1.7599999904632568,
+    1.3600000143051147,
+    1.7599999904632568
+   ],
+   "fbx_roundtrip": true,
+   "animated_parts": 10,
+   "parts": [
+    {
+     "name": "Body",
+     "role": "Body",
+     "material": "Glass",
+     "color": "#E8B77A",
+     "transparency": 0.38,
+     "effect_only": false
+    },
+    {
+     "name": "Lid",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#F2CC98",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Lid",
+     "pivot_roblox": [
+      0.0,
+      -0.76,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "hop",
+      "studs": 0.07,
+      "freq_hz": 6.0,
+      "damping": 0.25
+     },
+     "lod_keep": true,
+     "note": "lid rattle: client hops it once per Charge and on hits"
+    },
+    {
+     "name": "LidCookie",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#E89A4A",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_LidCookie",
+     "pivot_roblox": [
+      0.0,
+      -0.76,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "hop",
+      "studs": 0.07,
+      "freq_hz": 6.0,
+      "damping": 0.25
+     },
+     "lod_keep": false,
+     "note": "the knob cookie is the hang point; it rides the lid rattle",
+     "follows": "Lid"
+    },
+    {
+     "name": "LidChips",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#5A3420",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_LidChips",
+     "pivot_roblox": [
+      0.0,
+      -0.76,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "hop",
+      "studs": 0.07,
+      "freq_hz": 6.0,
+      "damping": 0.25
+     },
+     "lod_keep": false,
+     "follows": "Lid"
+    },
+    {
+     "name": "Cookie_1",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#E89A4A",
+     "transparency": 0.15,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Cookie_1",
+     "pivot_roblox": [
+      0.1,
+      -1.95,
+      -0.12
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "hop",
+      "studs": 0.05,
+      "freq_hz": 4.5,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "shuffle: client hops/turns each cookie on Charge (staggered)"
+    },
+    {
+     "name": "CookieChips_1",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#5A3420",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_CookieChips_1",
+     "pivot_roblox": [
+      0.1,
+      -1.95,
+      -0.12
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "hop",
+      "studs": 0.05,
+      "freq_hz": 4.5,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "follows": "Cookie_1"
+    },
+    {
+     "name": "Cookie_2",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#E89A4A",
+     "transparency": 0.15,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Cookie_2",
+     "pivot_roblox": [
+      -0.12,
+      -1.76,
+      -0.05
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "hop",
+      "studs": 0.065,
+      "freq_hz": 4.1,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "shuffle: client hops/turns each cookie on Charge (staggered)"
+    },
+    {
+     "name": "CookieChips_2",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#5A3420",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_CookieChips_2",
+     "pivot_roblox": [
+      -0.12,
+      -1.76,
+      -0.05
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "hop",
+      "studs": 0.065,
+      "freq_hz": 4.1,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "follows": "Cookie_2"
+    },
+    {
+     "name": "Cookie_3",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#E89A4A",
+     "transparency": 0.15,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Cookie_3",
+     "pivot_roblox": [
+      0.2,
+      -1.56,
+      0.26
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "hop",
+      "studs": 0.08,
+      "freq_hz": 3.7,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "shuffle: client hops/turns each cookie on Charge (staggered)"
+    },
+    {
+     "name": "CookieChips_3",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#5A3420",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_CookieChips_3",
+     "pivot_roblox": [
+      0.2,
+      -1.56,
+      0.26
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "hop",
+      "studs": 0.08,
+      "freq_hz": 3.7,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "follows": "Cookie_3"
+    },
+    {
+     "name": "Ribbon",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#E8525F",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Ribbon",
+     "pivot_roblox": [
+      0.0,
+      -0.885,
+      0.66
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 8,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false
+    }
+   ]
+  },
+  "fishbowl": {
+   "name": "Fishbowl",
+   "rarity": "Common",
+   "tint": "#5BC8FF",
+   "version": "v1",
+   "bundle": "assets/blender/glassies/fishbowl/v1/fishbowl_bundle.fbx",
+   "icon": "assets/blender/glassies/fishbowl/v1/fishbowl_icon.png",
+   "intact_triangles": 1494,
+   "shard_count": 16,
+   "release_geometry": {
+    "Radius": 0.89507,
+    "Center": 1.42472
+   },
+   "radius_target": 0.9,
+   "body_dimensions_roblox": [
+    1.7901394367218018,
+    1.709439992904663,
+    1.7770873308181763
+   ],
+   "fbx_roundtrip": true,
+   "animated_parts": 7,
+   "parts": [
+    {
+     "name": "Body",
+     "role": "Body",
+     "material": "Glass",
+     "color": "#5BC8FF",
+     "transparency": 0.38,
+     "effect_only": false
+    },
+    {
+     "name": "Handle",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#D6F4FF",
+     "transparency": 0.28,
+     "effect_only": false
+    },
+    {
+     "name": "WaterSurface",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#D6F4FF",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_WaterSurface",
+     "pivot_roblox": [
+      0.0,
+      -0.79,
+      -0.0
+     ],
+     "axis_roblox": [
+      1.0,
+      0.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "slosh",
+      "max_deg": 12,
+      "gain": 0.3,
+      "freq_hz": 1.6,
+      "damping": 0.35
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 6,
+      "freq_hz": 3.5,
+      "damping": 0.25
+     },
+     "lod_keep": true,
+     "idle_layers": [
+      {
+       "type": "sway",
+       "amp_deg": 3,
+       "period_s": 1.7,
+       "phase": 0.0
+      }
+     ],
+     "note": "the water surface disc: stays level as the bowl swings and wobbles"
+    },
+    {
+     "name": "Fish",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FF7A1F",
+     "transparency": 0.15,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Fish",
+     "pivot_roblox": [
+      0.0,
+      -1.37944,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "spin",
+      "deg_per_s": 24
+     },
+     "hit": {
+      "type": "hop",
+      "studs": 0.06,
+      "freq_hz": 4.0,
+      "damping": 0.3
+     },
+     "lod_keep": true,
+     "idle_layers": [
+      {
+       "type": "bob",
+       "amp_studs": 0.05,
+       "period_s": 2.2,
+       "phase": 0.0
+      }
+     ],
+     "note": "swims a slow loop around the bowl axis; anticipation: turns to face out. Stays whole on shatter and drops with the shards"
+    },
+    {
+     "name": "FishEyes",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#1B2440",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_FishEyes",
+     "pivot_roblox": [
+      0.04,
+      -1.37944,
+      0.36
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "blink",
+      "interval_s": 4.5,
+      "dur_s": 0.12
+     },
+     "hit": {
+      "type": "none"
+     },
+     "lod_keep": false,
+     "follows": "Fish"
+    },
+    {
+     "name": "FishEyeShine",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FFFFFF",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_FishEyeShine",
+     "pivot_roblox": [
+      0.04,
+      -1.37944,
+      0.36
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "blink",
+      "interval_s": 4.5,
+      "dur_s": 0.12
+     },
+     "hit": {
+      "type": "none"
+     },
+     "lod_keep": false,
+     "note": "blinks with FishEyes",
+     "follows": "Fish"
+    },
+    {
+     "name": "FishFins",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FFB067",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_FishFins",
+     "pivot_roblox": [
+      0.04,
+      -1.37944,
+      0.36
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 6,
+      "period_s": 0.9,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "none"
+     },
+     "lod_keep": false,
+     "follows": "Fish"
+    },
+    {
+     "name": "FishTail",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FFB067",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_FishTail",
+     "pivot_roblox": [
+      -0.228058,
+      -1.37944,
+      0.327678
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 18,
+      "period_s": 0.55,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 25,
+      "freq_hz": 5.0,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "tail wag about its root, in the fish's frame",
+     "follows": "Fish"
+    },
+    {
+     "name": "Bubble_1",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#EAFBFF",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Bubble_1",
+     "pivot_roblox": [
+      0.36,
+      -1.07944,
+      0.32
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "bob",
+      "amp_studs": 0.07,
+      "period_s": 1.2,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "none"
+     },
+     "lod_keep": false
+    }
+   ]
+  },
+  "glass_top": {
+   "name": "Glass Top",
+   "rarity": "Uncommon",
+   "tint": "#FF6FB1",
+   "version": "v1",
+   "bundle": "assets/blender/glassies/glass_top/v1/glass_top_bundle.fbx",
+   "icon": "assets/blender/glassies/glass_top/v1/glass_top_icon.png",
+   "intact_triangles": 1492,
+   "shard_count": 16,
+   "release_geometry": {
+    "Radius": 0.652909,
+    "Center": 1.08
+   },
+   "radius_target": 0.65,
+   "body_dimensions_roblox": [
+    1.3058186769485474,
+    1.159999966621399,
+    1.3058186769485474
+   ],
+   "fbx_roundtrip": true,
+   "animated_parts": 5,
+   "parts": [
+    {
+     "name": "Body",
+     "role": "Body",
+     "material": "Glass",
+     "color": "#FF6FB1",
+     "transparency": 0.38,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Body",
+     "pivot_roblox": [
+      0.0,
+      0.0,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "spin",
+      "deg_per_s": 40
+     },
+     "hit": {
+      "type": "spin_boost",
+      "deg_per_s": 260,
+      "dur_s": 1.0
+     },
+     "lod_keep": true,
+     "note": "cosmetic spin about the hang axis (keeps the hang point); speeds up through windup"
+    },
+    {
+     "name": "HandleKnob",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FFFFFF",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_HandleKnob",
+     "pivot_roblox": [
+      0.0,
+      0.0,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "spin",
+      "deg_per_s": 40
+     },
+     "hit": {
+      "type": "spin_boost",
+      "deg_per_s": 260,
+      "dur_s": 1.0
+     },
+     "lod_keep": false,
+     "follows": "Body"
+    },
+    {
+     "name": "CandyStripes",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FFF4FA",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_CandyStripes",
+     "pivot_roblox": [
+      0.0,
+      0.0,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "spin",
+      "deg_per_s": 40
+     },
+     "hit": {
+      "type": "spin_boost",
+      "deg_per_s": 260,
+      "dur_s": 1.0
+     },
+     "lod_keep": false,
+     "note": "rides the Body spin",
+     "follows": "Body"
+    },
+    {
+     "name": "EquatorRing",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FFFFFF",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_EquatorRing",
+     "pivot_roblox": [
+      0.0,
+      0.0,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "spin",
+      "deg_per_s": 40
+     },
+     "hit": {
+      "type": "spin_boost",
+      "deg_per_s": 260,
+      "dur_s": 1.0
+     },
+     "lod_keep": false,
+     "follows": "Body"
+    },
+    {
+     "name": "Tip",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FFFFFF",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Tip",
+     "pivot_roblox": [
+      0.0,
+      0.0,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "spin",
+      "deg_per_s": 40
+     },
+     "hit": {
+      "type": "spin_boost",
+      "deg_per_s": 260,
+      "dur_s": 1.0
+     },
+     "lod_keep": false,
+     "follows": "Body"
+    }
+   ]
+  }
+ }
+}

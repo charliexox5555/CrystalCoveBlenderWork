@@ -151,7 +151,8 @@ EFFECTS.cloud_cushion = function(P, A)
 	emitter(A.Wisps, "CloudWisps", {
 		Texture = TEX.puff,
 		Color = ColorSequence.new(Color3.fromHex("#F4F6FF")),
-		LightEmission = 0.15,
+		LightEmission = 0,
+		Brightness = 1.3,
 		Size = nseq({ { 0, 0.7 }, { 1, 1.7 } }),
 		Transparency = nseq({ { 0, 1 }, { 0.25, 0.55 }, { 1, 1 } }),
 		Lifetime = NumberRange.new(1.4, 2.2),
@@ -193,13 +194,15 @@ end
 EFFECTS.rocket_skiff = function(P, A)
 	for _, side in { "L", "R" } do
 		local ex = A["Exhaust_" .. side]
+		-- Fully additive fire vanishes against the bright sky and clouds; mostly alpha-blended reads.
 		emitter(ex, "FlameCore", {
 			Texture = TEX.fire,
 			Color = seq({ { 0, "#FFF6D0" }, { 0.4, "#FFC46B" }, { 1, "#FF7A45" } }),
-			LightEmission = 1,
-			Size = nseq({ { 0, 0.55 }, { 1, 0.1 } }),
-			Transparency = nseq({ { 0, 0.15 }, { 1, 1 } }),
-			Lifetime = NumberRange.new(0.16, 0.26),
+			LightEmission = 0.35,
+			Brightness = 4,
+			Size = nseq({ { 0, 0.75 }, { 0.5, 0.5 }, { 1, 0.12 } }),
+			Transparency = nseq({ { 0, 0.05 }, { 0.6, 0.35 }, { 1, 1 } }),
+			Lifetime = NumberRange.new(0.2, 0.3),
 			Rate = 36,
 			Speed = NumberRange.new(8, 11),
 			EmissionDirection = Enum.NormalId.Back,
@@ -210,9 +213,10 @@ EFFECTS.rocket_skiff = function(P, A)
 		emitter(ex, "Smoke", {
 			Texture = TEX.puff,
 			Color = ColorSequence.new(Color3.fromHex("#F6EDE6")),
-			LightEmission = 0.1,
-			Size = nseq({ { 0, 0.5 }, { 1, 1.7 } }),
-			Transparency = nseq({ { 0, 0.65 }, { 1, 1 } }),
+			LightEmission = 0,
+			Brightness = 1.2,
+			Size = nseq({ { 0, 0.6 }, { 1, 2 } }),
+			Transparency = nseq({ { 0, 0.4 }, { 1, 1 } }),
 			Lifetime = NumberRange.new(0.8, 1.2),
 			Rate = 6,
 			Speed = NumberRange.new(4, 6),

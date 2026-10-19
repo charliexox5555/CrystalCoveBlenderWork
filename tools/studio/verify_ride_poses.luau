@@ -30,6 +30,9 @@ local ok, problem = pcall(function()
 		local animate = rig:FindFirstChild("Animate")
 		local disabled = animate and animate.Disabled
 		for id, clip in Clips do
+			if id == "Motion" then
+				continue -- flyer motion profiles (RideMotion), not a pose clip
+			end
 			active = Pose.new(rig, id)
 			active.Connection:Disconnect() -- deterministic frame sampling in this fixture
 			check(#active.Joints >= 6, "Both legacy and modern joint formats supported")

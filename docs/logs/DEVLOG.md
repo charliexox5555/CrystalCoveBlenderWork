@@ -42,6 +42,17 @@ Next:
 Problems / questions for the user:
 - The Studio MCP can't switch Device Emulator presets, so the phone check used a downscaled capture.
 
+## 2026-10-19 — Claude — Flyers v3 (workstream H)
+Done:
+- Research and design for premium flyers (`docs/art/FLYERS_V3.md`). Headless Blender builder `tools/blender/build_flyers_v3.py` → `assets/blender/round_cosmetics/flyers_v3/`: Skyboard 5.2k tris, Cloud Cushion 5.0k, Rocket Skiff 7.0k, Prism Ray 4.1k. Glass shells over cores, pearl/gold trim, Neon accents, separate moving parts with pivots, contact-point origins, manifests, previews with an R15-sized stand-in. FBX round-trip passes for all four.
+- New `Presentation/RideMotion` replaces the duplicated bob code in RideController and ShowcaseController: two-wave float, drift, bank/pitch from turns and slides, launch with overshoot and bursts, new Puff/Tail/Fin kinds, axis spins, a quiet loop sound per flyer (ProSoundEffects), riders lean with the bank (`RidePose:Lean`). Per-flyer profiles in `Config/RideAnimations.Motion`. The carriage keeps its legacy motion; RideMotion calls workstream I's `CarriageFX` through a `RideFX`/`CarriageFX` attribute.
+- Shared effect builders `tools/studio/flyer_effects.luau`, already installed on the current meshes (`flyers_v2_effects.luau`, backups in `ServerStorage.FlyersBeforeV3`). v3 uploader and installer are ready.
+- Studio Play: 5 matches and the lobby display; effects/sounds distance-gated, 4–16 µs per ride per frame, no stray sounds after the matches. The rocket flame was invisible when additive, so it is now mostly alpha-blended. [Report](../testing/flyers_v3/REPORT.md).
+Next:
+- Upload the v3 FBX once the Open Cloud key has asset permission, install with `install_flyers_v3.luau`, fit the rider poses to the new geometry, creator feel/phone review.
+Problems / questions for the user:
+- Open Cloud asset upload returns 403 (key needs the asset permission). Save the place to keep the new effects on the flyers.
+
 ## 2026-10-19 — Claude — Combat feel pass (workstream B)
 Done:
 - New `Config/CombatFeel` + `Presentation/CombatFeel`. Hits are tiered Glance/Solid/Smash/Crit/Block, each with its own pooled impact (rewritten `ImpactBeat.tier`), layered sound with pitch jitter, client hitstop (45-105 ms, proportional catch-up, never a jump), camera kick/trauma shake/FOV punch over the orbit pose (capped at 0.3 studs / -6°), glass wobble/jolt/white flash/crack glint on the struck glassy and recoil on the striker.

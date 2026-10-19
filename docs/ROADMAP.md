@@ -3,6 +3,8 @@
 Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DESIGN v0.3](GAME_DESIGN.md).
 **Current milestone: F5 — integration polish.** Wave1 imports, fitted fences and the native multiplayer/security pass are complete. Real-phone checks, final UI artwork and publishing remain with the creator; Marble packs, gamepasses and Marble Kiln purchases stay disabled; creator-approved match selection spends are implemented.
 
+- [ ] **CL:** flyers v3 (workstream H, decision 93): four premium Blender flyers built and FBX-validated, shared `RideMotion` (float, drift, bank, launch, loop sound) live, trails/particles/lights on the current meshes. **Remaining:** Open Cloud upload (key needs asset permission), `install_flyers_v3.luau`, rider-pose fit on the new geometry, creator feel/phone review. [Report](testing/flyers_v3/REPORT.md)
+
 - [x] **CL:** combat feel pass (workstream B): tiered hits with pooled impacts, layered sound, client hitstop with smooth catch-up, capped camera kick/shake/FOV punch, glass wobble/crack glint, Perfect/power land-miss/block/comeback/tension/KO-hold/victory beats and the manual-cast hook; reduced motion and mobile budget. [Report](testing/combat_feel/README.md). Phone preset check and creator real-speed tuning remain.
 
 - [x] **C:** creator selection/finish notes: longer preparation, one-tap reroll/Pick Any with inline odds and future-store hook, cleaner animated reels/selection, ghost-preview/detail cleanup, visible avatar impact and reset/zoom/return camera. 100 logic, 154 UI, 179 finish, 75 server and 4 power-number checks pass; [report](testing/combat_release/SELECTION_FINISH_POLISH.md), [24 powers/brainstorm](design/POWER_BRAINSTORM_24.md). Creator reviews feel and saves/publishes the place.

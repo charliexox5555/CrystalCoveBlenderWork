@@ -18,10 +18,14 @@ assert(not game:GetService("RunService"):IsRunning(), "Install in Edit mode (sto
 assert(type(DATA) == "table" and type(OPTIONS) == "table", "Run through glassy_install_chunk.py (DATA/OPTIONS missing)")
 local RS = game:GetService("ReplicatedStorage")
 local SS = game:GetService("ServerStorage")
+local HttpService = game:GetService("HttpService")
 local MODE = OPTIONS.Mode or "dry"
 assert(MODE == "dry" or MODE == "install" or MODE == "verify", "Mode must be dry, install or verify")
 local VERSION = OPTIONS.Version or "v4"
 local TOL = OPTIONS.Tolerance or 0.003
+-- GlassyMotion (workstream E) only animates models carrying MotionVersion, so v2 models that share
+-- detail names (Wing, Cap) are never driven with the new pivots. "v4" -> 4, "v3" -> 3.
+local MOTION_VERSION = OPTIONS.MotionVersion or tonumber(string.match(VERSION, "%d+")) or 4
 local okGeometry, Geometry = pcall(require, RS.Shared.Config.ReleaseGeometry)
 if not okGeometry then
 	Geometry = {}
@@ -182,6 +186,17 @@ local function build(id, entry)
 		part:SetAttribute("AnimationPivot", v3(p.Pivot))
 		if p.Motion then
 			part:SetAttribute("MotionJson", p.Motion)
+			-- The FBX carries meshes only (no Blender Pivot_ empties), so the explicit runtime pivot is made
+			-- here: Attachment "Pivot_<Detail>" at the manifest pivot_roblox, its primary Axis = the motion axis.
+			local motion = HttpService:JSONDecode(p.Motion)
+			local at, axis = v3(motion.pivot_roblox), v3(motion.axis_roblox).Unit
+			local helper = if math.abs(axis.Y) < 0.9 then Vector3.yAxis else Vector3.xAxis
+			local secondary = axis:Cross(helper).Unit
+			local pivot = Instance.new("Attachment")
+			pivot.Name = "Pivot_" .. p.Source
+			pivot.CFrame = part.CFrame:ToObjectSpace(CFrame.fromMatrix(at, axis, secondary))
+			pivot:SetAttribute("MotionAxis", axis)
+			pivot.Parent = part
 		end
 		local lo, hi = aabb(part)
 		local half = v3(p.Size) / 2
@@ -233,6 +248,7 @@ local function build(id, entry)
 	end
 	model:SetAttribute("MeasuredRadius", measured.Radius)
 	model:SetAttribute("MeasuredCenter", measured.Center)
+	model:SetAttribute("MotionVersion", MOTION_VERSION)
 	raw:Destroy()
 	return model,
 		{
@@ -256,6 +272,9 @@ local function verify(id, entry)
 	if m:GetAttribute("ArtVersion") ~= VERSION then
 		table.insert(problems, "ArtVersion " .. tostring(m:GetAttribute("ArtVersion")))
 	end
+	if m:GetAttribute("MotionVersion") ~= MOTION_VERSION then
+		table.insert(problems, "MotionVersion " .. tostring(m:GetAttribute("MotionVersion")))
+	end
 	if m:GetAttribute("ReleaseVersion") ~= 2 then
 		table.insert(problems, "ReleaseVersion must stay 2")
 	end
@@ -275,6 +294,15 @@ local function verify(id, entry)
 		maxBounds = math.max(maxBounds, (lo - (v3(p.Center) - half)).Magnitude, (hi - (v3(p.Center) + half)).Magnitude)
 		if part:GetAttribute("AssetRole") ~= p.Role or part:GetAttribute("AnimationPivot") == nil then
 			table.insert(problems, "attributes " .. p.Source)
+		end
+		if p.Motion then
+			local pivot = part:FindFirstChild("Pivot_" .. p.Source)
+			local want = v3(HttpService:JSONDecode(p.Motion).pivot_roblox)
+			if not (pivot and pivot:IsA("Attachment")) then
+				table.insert(problems, "no Pivot_" .. p.Source)
+			elseif (pivot.WorldPosition - want).Magnitude > 0.002 then
+				table.insert(problems, "Pivot_" .. p.Source .. " misplaced")
+			end
 		end
 	end
 	if maxBounds > TOL + 0.01 then

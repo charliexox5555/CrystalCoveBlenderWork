@@ -122,7 +122,7 @@ Studio must be in **Edit** (not Play), with Rojo connected. Then:
    python3 tools/studio/glassy_install_chunk.py --split --mode verify --set revamp --out /tmp/gc_vr.luau
    ```
 
-   Then the same with `--set launch`. Expected: every glassy has `Ok = true` and `Problems = {}`.
+   Then the same with `--set launch`. Expected: every glassy has `Ok = true` and `Problems = {}`. The check covers `MotionVersion` and every `Pivot_<Detail>` attachment.
 5. Release the lock:
 
    ```bash
@@ -139,6 +139,11 @@ What the installer builds, at the same path the game already reads (`ReplicatedS
   - `ReleaseVersion = 2` (kept on purpose: it switches FightScene to the release crack paths)
   - `ArtVersion = "v4"`, `SourceAsset`, `IconAsset`
   - `MeasuredRadius` and `MeasuredCenter`
+  - **`MotionVersion = 4`** (3 for a v3 install). GlassyMotion (workstream E) only animates models that carry it, so old v2 models that share detail names (`Wing`, `Cap`) are never driven with the new pivots.
+- **Explicit pivots:** every animated part gets an Attachment **`Pivot_<Detail>`**.
+  - It sits at the manifest's `pivot_roblox`, and its primary `Axis` is the manifest's `axis_roblox`; the `MotionAxis` attribute holds the same vector.
+  - It's created by the installer because the FBX files carry meshes only: the Blender `Pivot_` empties never come through the import.
+  - Verify mode checks that each one exists and sits within 0.002 studs of its manifest position.
 
 Checked on Oct 19, through the same installer in Studio:
 - Pop's raw release_v2 FBX import (ServerStorage.CombatReleaseBackups) fitted at scale 0.01 with the 180° yaw, bounds error 5e-7, Radius/Center 0.65/1.375 (equal to ReleaseGeometry).

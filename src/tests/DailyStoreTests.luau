@@ -111,7 +111,11 @@ return function(t, d)
 				t.ok(d.Glassies.isRelease(id) and d.Glassies.get(id).Rarity ~= "Starter", id)
 			end
 		end
-		t.ok(not table.find(catalog.Rideables.Common or {}, "skyboard"), "free starter flyer is not sold")
+		for category, buckets in { Finishers = catalog.Finishers, Rideables = catalog.Rideables } do
+			for rarity in buckets do
+				t.ok(D.RobuxProducts[category][rarity] ~= nil, category .. "/" .. rarity .. " is only sold once priced")
+			end
+		end
 	end)
 
 	t.test("offers are stable per player/day and differ between players and days", function()

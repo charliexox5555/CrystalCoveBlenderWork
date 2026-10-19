@@ -153,8 +153,12 @@ function Stage.start(entry)
 		else
 			character = bot(folder, "Bot" .. side, pose, side)
 		end
-		local id = entry.Cosmetics and entry.Cosmetics.Rideables[side] or "skyboard"
-		local source = require(script.Parent.AssetCatalog).cosmetic("Rideables", id) or RS.Assets.Rideables.skyboard
+		local id = entry.Cosmetics and entry.Cosmetics.Rideables[side] or ""
+		local source = id ~= "" and require(script.Parent.AssetCatalog).cosmetic("Rideables", id)
+		if not source then
+			-- No flyer equipped (or not installed): the avatar stands on its pad.
+			continue
+		end
 		local ride = source:Clone()
 		ride.Name = "Ride" .. side
 		local top = entry.Arena.Pads[side].Position + Vector3.yAxis * Tuning.RideLift

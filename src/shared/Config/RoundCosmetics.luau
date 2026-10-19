@@ -1,10 +1,11 @@
 -- Original cosmetic collection. Match milestones are free; no combat stats or purchases.
+-- Equipped "" = none: no flyer, and the basic finisher (the winner's glass breaks, no show).
 local C = {}
 C.Rideables = {
 	{
 		Id = "skyboard",
 		Name = "Skyboard",
-		Matches = 0,
+		-- No free starter flyer (decision 95): a Common crate item.
 		Color = "#61D4DF",
 		Accent = "#F5D99A",
 		Description = "A carved skyboard with glowing lift fins.",
@@ -38,7 +39,7 @@ C.Finishers = {
 	{
 		Id = "glass_burst",
 		Name = "Prism Pop",
-		Matches = 0,
+		-- Not a free starter any more (decision 95): a Common crate item. Default = plain glass break.
 		Color = "#7EDFF2",
 		Accent = "#FFFFFF",
 		-- Camera during the show (FinisherCamera): hold after impact, push-in scale, drift (radians).
@@ -137,8 +138,9 @@ function C.catalog(category)
 	end
 	return out
 end
+-- Nothing equipped by default (decision 95): no flyer, and the basic finisher is the plain glass break.
 function C.default(category)
-	return C[category] and C[category][1] and C[category][1].Id or ""
+	return ""
 end
 local rarities = {
 	skyboard = "Common",

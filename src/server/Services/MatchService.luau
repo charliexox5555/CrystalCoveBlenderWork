@@ -126,8 +126,9 @@ function Service:StartMatch(arena, players, now, spectate)
 	for side = 1, 2 do
 		local data = players[side] and self.Services.DataService and self.Services.DataService:Get(players[side])
 		local cosmetics = data and CosmeticRules.loadout(data)
-		entry.Cosmetics.Rideables[side] = cosmetics and cosmetics.Rideables or "skyboard"
-		entry.Cosmetics.Finishers[side] = cosmetics and cosmetics.Finishers or "glass_burst"
+		-- "" = nothing equipped: no ride, basic glass-break finisher (decision 95).
+		entry.Cosmetics.Rideables[side] = cosmetics and cosmetics.Rideables or ""
+		entry.Cosmetics.Finishers[side] = cosmetics and cosmetics.Finishers or ""
 		if not players[side] then
 			-- Visual variety without consuming or changing the gameplay RNG stream.
 			entry.Cosmetics.Rideables[side] = CosmeticConfig.Rideables[(seed + side) % #CosmeticConfig.Rideables + 1].Id

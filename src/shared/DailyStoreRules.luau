@@ -82,7 +82,10 @@ function Rules.catalog(installed)
 	for _, category in { "Finishers", "Rideables" } do
 		out[category] = {}
 		for _, def in C[category] do
-			if def.Matches ~= 0 and def.Rarity then -- free starter cosmetics are never sold
+			-- Free starter cosmetics are never sold, and a rarity with no Robux product yet (e.g. the new
+			-- Mythic cosmetics, priced by the creator) stays out of the daily store until it has one.
+			local priced = D.RobuxProducts[category] and D.RobuxProducts[category][def.Rarity]
+			if def.Matches ~= 0 and def.Rarity and priced then
 				add(category, def)
 			end
 		end

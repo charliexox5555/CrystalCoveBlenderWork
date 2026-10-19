@@ -21,13 +21,14 @@ function R.odds(category, currency, available, glassyOdds)
 	end
 	local list = if category == "Glassies" then glassyOdds or {} else C[category]
 	local buckets, weights = {}, {}
+	local configured = if currency == "Marbles" then B.Crates.MarbleWeights else B.Crates.CoinWeights
 	for _, def in list do
-		if not available or available[def.Id] then
+		-- A rarity with no weight in this currency (Mythic in Coin crates) isn't listed at 0%.
+		if (not available or available[def.Id]) and (configured[def.Rarity] or 0) > 0 then
 			buckets[def.Rarity] = buckets[def.Rarity] or {}
 			table.insert(buckets[def.Rarity], def.Id)
 		end
 	end
-	local configured = if currency == "Marbles" then B.Crates.MarbleWeights else B.Crates.CoinWeights
 	local total = 0
 	for rarity, ids in buckets do
 		weights[rarity] = configured[rarity] or 0

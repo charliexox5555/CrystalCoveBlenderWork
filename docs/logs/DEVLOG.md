@@ -37,6 +37,18 @@ Next:
 Problems / questions for the user:
 - The Studio MCP can't switch Device Emulator presets, so the phone preset check is still open.
 
+## 2026-10-19 (night) — Claude — A: retune done, launch power rules, CAST verified live
+Done:
+- Real-swing retune (bot casting, 6 rounds/pair): **24/25 glassies in 45–55%**, spread 44.4–54.9% (was 29–81%). Passes 1–4 in Balance.CombatRelease.Kits.
+- Launch power rules (zone, drain_contact, Cycle, Riposte, PierceGuard, AimImpulse, horizontal sweep, stored ReadyAt, Rebirth/Then/SelfHeal) plus 12 launch definitions and kits (outside ReleaseRoster until imported); LaunchKitTests; 155 tests pass.
+- CAST verified in a live Studio bot match; fixed Space being eaten by jump (ContextActionService binding while lit).
+Next:
+- Timed-CAST edge is too high on some kits (smart vs auto mirror, n=24: avg ~64%, Dragon 87%, Water Jug 83%; target 55–62%). Shorten AutoSeconds or make the auto cast smarter, then re-measure.
+- 5-star edge ~62% average (some kits 75–79%); consider StatPerStar 0.005.
+- Resume G (finishers), I (Hollowlight) and F (launch glassies), which hit the usage limit.
+Problems / questions for the user:
+- Open Cloud asset uploads return 403 for ROBLOX_ASSETS_KEY (dev products still work): re-add Assets read/write to the key. Until then new finisher meshes use fallbacks.
+
 ## 2026-10-19 — Claude — Release overhaul A: cast system, rarity curve, balance tooling
 Done:
 - Audit + research (`docs/research/COMBAT_OVERHAUL_RESEARCH.md`), plan and workstreams (`docs/design/RELEASE_OVERHAUL_PLAN.md`), creator decisions 85–87. Parallel sessions started: combat feel (B), glassy model revamp in Blender (C), roster design to 50 (D).

@@ -8,10 +8,10 @@ local RS = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
 local Debris = game:GetService("Debris")
 local S = require(RS.Shared.Config.Showcase)
-local T = require(RS.Shared.Config.Balance).CosmeticPresentation
 local Cosmetics = require(RS.Shared.Config.RoundCosmetics)
 local Presentation = script.Parent.Parent.Presentation
 local RidePose = require(Presentation.RidePose)
+local RideMotion = require(Presentation.RideMotion)
 local FinisherFX = require(Presentation.FinisherFX)
 local FinisherAudio = require(Presentation.FinisherAudio)
 local Controller = {}
@@ -20,10 +20,6 @@ local D = S.Demo
 local CYCLE = D.IdleSeconds + D.RiseSeconds + D.FlySeconds + D.AfterSeconds
 local TAU = math.pi * 2
 local random = Random.new()
-
-local function isEffect(obj)
-	return obj:IsA("ParticleEmitter") or obj:IsA("Trail") or obj:IsA("Beam") or obj:IsA("Light")
-end
 
 local function still(model)
 	for _, p in model:GetDescendants() do
@@ -61,11 +57,11 @@ local function bezier(a, b, c, t)
 end
 
 -- A display ride, optionally carrying a copy of the player's avatar in the ride's pose.
--- Motion mirrors RideController (bob, nod, bank and RideMotion parts) so it matches matches.
+-- Motion is the shared Presentation/RideMotion, so displays match matches.
 local Ride = {}
 Ride.__index = Ride
 
-function Ride.new(parent, id, base, avatar)
+function Ride.new(parent, id, base, avatar, launch)
 	local source = rideSource(id)
 	if not source then
 		return nil
@@ -73,18 +69,10 @@ function Ride.new(parent, id, base, avatar)
 	local model = still(source:Clone())
 	model.Name = "Showcase_" .. id
 	model:PivotTo(base)
-	local self = setmetatable({ Model = model, Parts = {}, Effects = {}, Lights = {} }, Ride)
-	for _, obj in model:GetDescendants() do
-		if obj:IsA("BasePart") and obj:GetAttribute("RideMotion") then
-			self.Parts[obj] =
-				{ Pose = base:ToObjectSpace(obj.CFrame), Size = obj.Size, Transparency = obj.Transparency }
-		elseif obj:GetAttribute("RideEmitter") and isEffect(obj) then
-			obj.Enabled = false
-			table.insert(self.Effects, obj)
-			if obj:IsA("Light") then
-				self.Lights[obj] = obj:GetAttribute("BaseBrightness") or obj.Brightness
-			end
-		end
+	local self = setmetatable({ Model = model }, Ride)
+	self.Motion = RideMotion.new(model, base, { Id = id, Seed = base.Position.X + base.Position.Z })
+	if launch then
+		self.Motion:Launch(launch, false)
 	end
 	model.Parent = parent
 	if avatar then
@@ -96,56 +84,12 @@ function Ride.new(parent, id, base, avatar)
 end
 
 function Ride:Step(time, base, near)
-	local phase = time * T.RideBobHz * TAU + base.Position.X
-	local wave = math.sin(phase)
-	local pose = base
-		* CFrame.new(0, wave * T.RideBob, 0)
-		* CFrame.Angles(math.cos(phase) * T.RideNod, 0, wave * T.RideBank)
-	if self.EffectsOn ~= near then
-		self.EffectsOn = near
-		for _, effect in self.Effects do
-			effect.Enabled = near
-		end
-	end
-	if near then
-		for light, brightness in self.Lights do
-			light.Brightness = brightness
-				* (1 - (T.RideLightFlicker or 0) * (0.5 + 0.5 * math.noise(time * 6, light.Range)))
-		end
-	end
-	self.Model:PivotTo(pose)
+	local pose = self.Motion:Step(time, base, near)
 	if self.Pose and self.Npc.Parent then
+		self.Pose:Lean(self.Motion.Bank, self.Motion.Pitch)
 		local rootPose = pose * CFrame.new(0, self.Pose.Height or 0, 0)
 		self.Npc:PivotTo(rootPose)
 		self.Pose:PlaceAnchored(rootPose)
-	end
-	for part, rest in self.Parts do
-		local kind = part:GetAttribute("RideMotion")
-		if kind == "Wing" then
-			local pivot = part:GetAttribute("WingPivot") or Vector3.zero
-			local flap = wave + T.RideFlapSharpness * 0.35 * math.sin(phase * 2)
-			part.CFrame = pose
-				* rest.Pose
-				* CFrame.new(pivot)
-				* CFrame.Angles(0, 0, flap * T.RideWingAngle * (part:GetAttribute("WingSide") or 1))
-				* CFrame.new(-pivot)
-		elseif kind == "Swing" then
-			local pivot = part:GetAttribute("SwingPivot") or Vector3.zero
-			local swing = math.sin(phase - T.RideSwingLag) * T.RideSwingAngle
-			part.CFrame = pose
-				* rest.Pose
-				* CFrame.new(pivot)
-				* CFrame.Angles(swing, 0, -swing * 0.5)
-				* CFrame.new(-pivot)
-		elseif kind == "Spin" then
-			part.CFrame = pose * rest.Pose * CFrame.Angles(0, 0, time * (T.RideSpinSpeed or 1.2))
-		elseif kind == "Pulse" then
-			local breathe = math.sin(time * (T.RidePulseHz or 0.9) * TAU)
-			part.Size = rest.Size * (1 + (T.RidePulseScale or 0.08) * breathe)
-			part.Transparency = rest.Transparency + (T.RidePulseFade or 0.25) * (0.5 + 0.5 * breathe)
-		else
-			part.Size = rest.Size * Vector3.new(1, 1, 0.8 + math.sin(time * T.RideExhaustSpeed) * 0.2)
-		end
 	end
 end
 
@@ -156,6 +100,7 @@ function Ride:Destroy()
 	if self.Npc then
 		self.Npc:Destroy()
 	end
+	self.Motion:Destroy()
 	self.Model:Destroy()
 end
 
@@ -575,7 +520,7 @@ function Controller:FlyersSection(root)
 				slot.Leaving, slot.LeftAt = slot.Ride, now
 				slot.Index = slot.Index % #ids + 1
 				slot.Ride, slot.Born, slot.Next =
-					Ride.new(section.Folder, ids[slot.Index], slot.Spot, self.Avatar), now, now + R.Seconds
+					Ride.new(section.Folder, ids[slot.Index], slot.Spot, self.Avatar, now), now, now + R.Seconds
 				if near then
 					flash(slot)
 				end

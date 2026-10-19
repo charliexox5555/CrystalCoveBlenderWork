@@ -1,22 +1,30 @@
--- Local cosmetic motion for replicated, anchored match rides and riders.
+-- Local cosmetic motion for replicated, anchored match rides and riders (motion in Presentation/RideMotion).
 local RunService = game:GetService("RunService")
 local T = require(game.ReplicatedStorage.Shared.Config.Balance).CosmeticPresentation
 local Controller = {}
 local RidePose = require(script.Parent.Parent.Presentation.RidePose)
+local RideMotion = require(script.Parent.Parent.Presentation.RideMotion)
+-- A ride first seen this soon after its stage appeared launches in; later sightings (streaming, late
+-- joiners) start in place.
+local LAUNCH_WINDOW = 2
 function Controller:Init()
-	self.Rides, self.Connections, self.Stages = {}, {}, {}
+	self.Rides, self.Connections, self.Stages, self.StageSeen = {}, {}, {}, {}
+end
+function Controller:Drop(ride, entry)
+	if entry.Pose then
+		entry.Pose:Destroy()
+	end
+	entry.Motion:Destroy()
+	self.Rides[ride] = nil
 end
 function Controller:Detach(folder)
 	for _, connection in self.Stages[folder] or {} do
 		connection:Disconnect()
 	end
-	self.Stages[folder] = nil
+	self.Stages[folder], self.StageSeen[folder] = nil, nil
 	for ride, entry in self.Rides do
 		if entry.Stage == folder then
-			if entry.Pose then
-				entry.Pose:Destroy()
-			end
-			self.Rides[ride] = nil
+			self:Drop(ride, entry)
 		end
 	end
 end
@@ -24,7 +32,9 @@ function Controller:Attach(folder)
 	if not folder.Name:match("^MatchStage_") or not folder:IsDescendantOf(workspace) then
 		return
 	end
+	local now = workspace:GetServerTimeNow()
 	if not self.Stages[folder] then
+		self.StageSeen[folder] = now
 		-- Streaming may deliver the stage before its rides, or a ride before all its parts.
 		self.Stages[folder] = {
 			folder.DescendantAdded:Connect(function()
@@ -47,71 +57,39 @@ function Controller:Attach(folder)
 			continue
 		end
 		local entry = self.Rides[ride]
-		if not entry then
-			local base, rootPose = ride:GetAttribute("BasePose"), ride:GetAttribute("RootPose")
-			if typeof(base) ~= "CFrame" or typeof(rootPose) ~= "CFrame" then
-				continue
-			end
-			entry = {
-				Model = ride,
-				Stage = folder,
-				Base = base,
-				RootPose = rootPose,
-				Parts = {},
-			}
-			entry.RootLocal = entry.Base:ToObjectSpace(entry.RootPose)
-			self.Rides[ride] = entry
+		if entry then
+			entry.Motion:Collect()
+			continue
 		end
-		for _, p in ride:GetDescendants() do
-			if p:IsA("BasePart") and p:GetAttribute("RideMotion") and not entry.Parts[p] then
-				entry.Parts[p] =
-					{ Pose = entry.Base:ToObjectSpace(p.CFrame), Size = p.Size, Transparency = p.Transparency }
-			end
+		local base, rootPose = ride:GetAttribute("BasePose"), ride:GetAttribute("RootPose")
+		if typeof(base) ~= "CFrame" or typeof(rootPose) ~= "CFrame" then
+			continue
 		end
+		local fresh = now - (self.StageSeen[folder] or now) <= LAUNCH_WINDOW
+		entry = {
+			Model = ride,
+			Stage = folder,
+			Base = base,
+			RootPose = rootPose,
+			Motion = RideMotion.new(ride, base, { Launch = fresh and now or nil }),
+		}
+		entry.RootLocal = entry.Base:ToObjectSpace(entry.RootPose)
+		self.Rides[ride] = entry
 	end
 end
 function Controller:Step(time)
 	local camera = workspace.CurrentCamera
 	for model, entry in self.Rides do
 		if not model:IsDescendantOf(workspace) then
-			if entry.Pose then
-				entry.Pose:Destroy()
-			end
-			self.Rides[model] = nil
+			self:Drop(model, entry)
 			continue
 		end
-		if (camera.CFrame.Position - entry.Base.Position).Magnitude > T.RideDistance then
+		local distance = (camera.CFrame.Position - entry.Base.Position).Magnitude
+		if distance > T.RideDistance then
 			continue
 		end
-		local phase = time * T.RideBobHz * math.pi * 2 + entry.Base.Position.X
-		local wave = math.sin(phase)
-		local motion = CFrame.new(0, wave * T.RideBob, 0)
-			* CFrame.Angles(math.cos(phase) * T.RideNod, 0, wave * T.RideBank)
-		local near = (camera.CFrame.Position - entry.Base.Position).Magnitude <= T.RideEmitterDistance
-		if entry.EmittersOn ~= near then
-			-- Particles, trails, beams and lights tagged RideEmitter only run near the camera.
-			entry.EmittersOn, entry.Lights = near, {}
-			for _, effect in model:GetDescendants() do
-				if
-					effect:GetAttribute("RideEmitter")
-					and (
-						effect:IsA("ParticleEmitter")
-						or effect:IsA("Trail")
-						or effect:IsA("Beam")
-						or effect:IsA("Light")
-					)
-				then
-					effect.Enabled = near
-					if effect:IsA("Light") then
-						entry.Lights[effect] = effect:GetAttribute("BaseBrightness") or effect.Brightness
-					end
-				end
-			end
-		end
-		for light, brightness in entry.Lights do
-			light.Brightness = brightness * (1 - T.RideLightFlicker * (0.5 + 0.5 * math.noise(time * 6, light.Range)))
-		end
-		model:PivotTo(entry.Base * motion)
+		-- Particles, trails, beams, lights and the loop sound only run near the camera.
+		local pose = entry.Motion:Step(time, entry.Base, distance <= T.RideEmitterDistance)
 		local rider = model:FindFirstChild("Rider")
 		local character = rider and rider.Value
 		local root = character and character:FindFirstChild("HumanoidRootPart")
@@ -123,50 +101,15 @@ function Controller:Step(time)
 				entry.Character, entry.Pose =
 					character, RidePose.new(character, model:GetAttribute("PoseId") or model:GetAttribute("RideId"))
 			end
+			entry.Pose:Lean(entry.Motion.Bank, entry.Motion.Pitch)
 			local height = entry.Pose.Height
 			local localPose = entry.RootLocal
 			if height then
 				localPose = CFrame.new(0, height, 0) * entry.RootLocal.Rotation
 			end
-			local rootPose = entry.Base * motion * localPose
+			local rootPose = pose * localPose
 			character:PivotTo(rootPose)
 			entry.Pose:PlaceAnchored(rootPose)
-		end
-		for part, rest in entry.Parts do
-			if not part:IsDescendantOf(model) then
-				entry.Parts[part] = nil
-				continue
-			end
-			local kind = part:GetAttribute("RideMotion")
-			if kind == "Wing" then
-				local pivot = part:GetAttribute("WingPivot") or Vector3.zero
-				-- Quick down-stroke, slower recovery reads as a real wingbeat.
-				local flap = wave + T.RideFlapSharpness * 0.35 * math.sin(phase * 2)
-				part.CFrame = entry.Base
-					* motion
-					* rest.Pose
-					* CFrame.new(pivot)
-					* CFrame.Angles(0, 0, flap * T.RideWingAngle * part:GetAttribute("WingSide"))
-					* CFrame.new(-pivot)
-			elseif kind == "Swing" then
-				-- The hanging lantern trails the bob and bank like a pendulum.
-				local pivot = part:GetAttribute("SwingPivot") or Vector3.zero
-				local swing = math.sin(phase - T.RideSwingLag) * T.RideSwingAngle
-				part.CFrame = entry.Base
-					* motion
-					* rest.Pose
-					* CFrame.new(pivot)
-					* CFrame.Angles(swing, 0, -swing * 0.5)
-					* CFrame.new(-pivot)
-			elseif kind == "Spin" then
-				part.CFrame = entry.Base * motion * rest.Pose * CFrame.Angles(0, 0, time * T.RideSpinSpeed)
-			elseif kind == "Pulse" then
-				local breathe = math.sin(time * T.RidePulseHz * math.pi * 2)
-				part.Size = rest.Size * (1 + T.RidePulseScale * breathe)
-				part.Transparency = (rest.Transparency or 0) + T.RidePulseFade * (0.5 + 0.5 * breathe)
-			else
-				part.Size = rest.Size * Vector3.new(1, 1, 0.8 + math.sin(time * T.RideExhaustSpeed) * 0.2)
-			end
 		end
 	end
 end

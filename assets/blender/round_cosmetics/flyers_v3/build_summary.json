@@ -1,0 +1,79 @@
+{
+ "skyboard": {
+  "Tris": 5574,
+  "Budget": 5000,
+  "Extents": [
+   2.88365,
+   1.21816,
+   7.80499
+  ],
+  "Parts": 17,
+  "RoundTrip": {
+   "objects": 17,
+   "missing": [],
+   "tri_mismatch": [],
+   "max_bounds_error": 0.0,
+   "ok": true
+  },
+  "Problems": {}
+ },
+ "cloud_cushion": {
+  "Tris": 5280,
+  "Budget": 5000,
+  "Extents": [
+   3.62166,
+   3.54458,
+   6.66682
+  ],
+  "Parts": 11,
+  "RoundTrip": {
+   "objects": 11,
+   "missing": [],
+   "tri_mismatch": [],
+   "max_bounds_error": 9.99999999995449e-06,
+   "ok": true
+  },
+  "Problems": {}
+ },
+ "rocket_skiff": {
+  "Tris": 7036,
+  "Budget": 7500,
+  "Extents": [
+   6.144,
+   4.15628,
+   11.52
+  ],
+  "Parts": 26,
+  "RoundTrip": {
+   "objects": 26,
+   "missing": [],
+   "tri_mismatch": [],
+   "max_bounds_error": 0.0,
+   "ok": true
+  },
+  "Problems": {}
+ },
+ "prism_ray": {
+  "Tris": 4200,
+  "Budget": 7500,
+  "Extents": [
+   10.6,
+   1.39973,
+   10.10033
+  ],
+  "Parts": 16,
+  "RoundTrip": {
+   "objects": 16,
+   "missing": [],
+   "tri_mismatch": [],
+   "max_bounds_error": 1.0000000000010001e-05,
+   "ok": true
+  },
+  "Problems": {
+   "BrowGem": [
+    0,
+    12
+   ]
+  }
+ }
+}

@@ -1,0 +1,506 @@
+{
+ "Id": "skyboard",
+ "Name": "Skyboard",
+ "Contact": "Feet",
+ "Tris": 5574,
+ "Budget": 5000,
+ "Extents": [
+  2.88365,
+  1.21816,
+  7.80499
+ ],
+ "Parts": {
+  "Deck": {
+   "Tris": 1296,
+   "Centre": [
+    0.0,
+    0.04149,
+    -0.2
+   ],
+   "Size": [
+    2.70174,
+    0.89703,
+    7.6
+   ],
+   "Color": "#61D4DF",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "DeckCore": {
+   "Tris": 312,
+   "Centre": [
+    0.0,
+    0.00832,
+    -0.2
+   ],
+   "Size": [
+    2.1614,
+    0.50391,
+    6.40492
+   ],
+   "Color": "#2C9DB5",
+   "Material": "Glass",
+   "Transparency": 0.08,
+   "Reflectance": 0.05,
+   "Kind": "Core",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Rail": {
+   "Tris": 744,
+   "Centre": [
+    0.00342,
+    0.12936,
+    -0.20241
+   ],
+   "Size": [
+    2.88365,
+    0.77837,
+    7.80499
+   ],
+   "Color": "#F4F1EA",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.08,
+   "Kind": "Pearl",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Grip": {
+   "Tris": 416,
+   "Centre": [
+    0.0,
+    -0.01792,
+    0.028
+   ],
+   "Size": [
+    1.94896,
+    0.09416,
+    3.8
+   ],
+   "Color": "#2A3554",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Matte",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Treads": {
+   "Tris": 180,
+   "Centre": [
+    0.0,
+    0.00717,
+    0.05201
+   ],
+   "Size": [
+    1.23946,
+    0.04487,
+    3.37802
+   ],
+   "Color": "#F4F1EA",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.08,
+   "Kind": "Pearl",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Chevrons": {
+   "Tris": 90,
+   "Centre": [
+    0.0,
+    -0.05846,
+    0.0617
+   ],
+   "Size": [
+    1.25604,
+    0.12498,
+    5.17341
+   ],
+   "Color": "#9BF6F2",
+   "Material": "Neon",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Stringer": {
+   "Tris": 252,
+   "Centre": [
+    0.0,
+    0.10658,
+    -0.124
+   ],
+   "Size": [
+    0.17,
+    0.36149,
+    6.536
+   ],
+   "Color": "#F5D99A",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.18,
+   "Kind": "Gold",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "NoseGem": {
+   "Tris": 64,
+   "Centre": [
+    0.0,
+    0.24866,
+    -3.088
+   ],
+   "Size": [
+    0.34,
+    0.2,
+    0.34
+   ],
+   "Color": "#9BF6F2",
+   "Material": "Neon",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "LiftGlow_R": {
+   "Tris": 252,
+   "Centre": [
+    0.92341,
+    -0.24781,
+    -0.04874
+   ],
+   "Size": [
+    0.56406,
+    0.32914,
+    5.47961
+   ],
+   "Color": "#9BF6F2",
+   "Material": "Neon",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "LiftGlow_L": {
+   "Tris": 252,
+   "Centre": [
+    -0.92341,
+    -0.24781,
+    -0.04874
+   ],
+   "Size": [
+    0.56406,
+    0.32914,
+    5.47961
+   ],
+   "Color": "#9BF6F2",
+   "Material": "Neon",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "HoverPod_F": {
+   "Tris": 288,
+   "Centre": [
+    0.0,
+    -0.45407,
+    -1.45
+   ],
+   "Size": [
+    1.28,
+    0.34,
+    1.28
+   ],
+   "Color": "#61D4DF",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "HoverRing_F": {
+   "Tris": 360,
+   "Centre": [
+    0.0,
+    -0.56407,
+    -1.45
+   ],
+   "Size": [
+    1.22514,
+    0.11259,
+    1.23788
+   ],
+   "Color": "#9BF6F2",
+   "Material": "Neon",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {
+    "RideMotion": "Spin",
+    "SpinAxis": "Y",
+    "SpinSpeed": 2.6
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "HoverPod_B": {
+   "Tris": 288,
+   "Centre": [
+    0.0,
+    -0.46777,
+    1.75
+   ],
+   "Size": [
+    1.28,
+    0.34,
+    1.28
+   ],
+   "Color": "#61D4DF",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "HoverRing_B": {
+   "Tris": 360,
+   "Centre": [
+    0.0,
+    -0.57777,
+    1.75
+   ],
+   "Size": [
+    1.22514,
+    0.11259,
+    1.23788
+   ],
+   "Color": "#9BF6F2",
+   "Material": "Neon",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {
+    "RideMotion": "Spin",
+    "SpinAxis": "Y",
+    "SpinSpeed": -2.6
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "TailFin_C": {
+   "Tris": 140,
+   "Centre": [
+    0.0,
+    -0.42461,
+    2.95
+   ],
+   "Size": [
+    0.0856,
+    0.55,
+    1.08
+   ],
+   "Color": "#61D4DF",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "TailFin_L": {
+   "Tris": 140,
+   "Centre": [
+    -0.76388,
+    -0.41125,
+    2.55
+   ],
+   "Size": [
+    0.16954,
+    0.3977,
+    1.08
+   ],
+   "Color": "#61D4DF",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "TailFin_R": {
+   "Tris": 140,
+   "Centre": [
+    0.76388,
+    -0.41125,
+    2.55
+   ],
+   "Size": [
+    0.16954,
+    0.3977,
+    1.08
+   ],
+   "Color": "#61D4DF",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  }
+ },
+ "Attachments": {
+  "RiderFeet": {
+   "Part": "Grip",
+   "World": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "Offset": [
+    0.0,
+    0.01792,
+    -0.028
+   ]
+  },
+  "TrailR0": {
+   "Part": "Rail",
+   "World": [
+    1.0,
+    0.01187,
+    3.1
+   ],
+   "Offset": [
+    0.99658,
+    -0.1175,
+    3.30241
+   ]
+  },
+  "TrailR1": {
+   "Part": "Rail",
+   "World": [
+    1.0,
+    -0.12813,
+    3.1
+   ],
+   "Offset": [
+    0.99658,
+    -0.2575,
+    3.30241
+   ]
+  },
+  "TrailL0": {
+   "Part": "Rail",
+   "World": [
+    -1.0,
+    0.01187,
+    3.1
+   ],
+   "Offset": [
+    -1.00342,
+    -0.1175,
+    3.30241
+   ]
+  },
+  "TrailL1": {
+   "Part": "Rail",
+   "World": [
+    -1.0,
+    -0.12813,
+    3.1
+   ],
+   "Offset": [
+    -1.00342,
+    -0.2575,
+    3.30241
+   ]
+  },
+  "PodF": {
+   "Part": "HoverPod_F",
+   "World": [
+    0.0,
+    -0.61407,
+    -1.45
+   ],
+   "Offset": [
+    0.0,
+    -0.16,
+    -0.0
+   ]
+  },
+  "PodB": {
+   "Part": "HoverPod_B",
+   "World": [
+    0.0,
+    -0.62777,
+    1.75
+   ],
+   "Offset": [
+    0.0,
+    -0.16,
+    -0.0
+   ]
+  },
+  "Wake": {
+   "Part": "Deck",
+   "World": [
+    0.0,
+    0.1,
+    -3.6
+   ],
+   "Offset": [
+    0.0,
+    0.05851,
+    -3.4
+   ]
+  },
+  "Launch": {
+   "Part": "Deck",
+   "World": [
+    0.0,
+    -0.60589,
+    -0.0
+   ],
+   "Offset": [
+    0.0,
+    -0.64737,
+    0.2
+   ]
+  }
+ },
+ "Axes": "Roblox (x, y, z) = Blender (x, z, -y); model pivot = origin = rider contact point",
+ "FbxRoundTrip": {
+  "objects": 17,
+  "missing": [],
+  "tri_mismatch": [],
+  "max_bounds_error": 0.0,
+  "ok": true
+ }
+}

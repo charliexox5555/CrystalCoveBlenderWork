@@ -1,0 +1,767 @@
+{
+ "Id": "rocket_skiff",
+ "Name": "Rocket Skiff",
+ "Contact": "Feet",
+ "Tris": 7036,
+ "Budget": 7500,
+ "Extents": [
+  6.144,
+  4.15628,
+  11.52
+ ],
+ "Parts": {
+  "Hull": {
+   "Tris": 1392,
+   "Centre": [
+    0.0,
+    -0.73967,
+    -0.72
+   ],
+   "Size": [
+    2.83654,
+    1.28491,
+    9.84
+   ],
+   "Color": "#EF8268",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "HullCore": {
+   "Tris": 364,
+   "Centre": [
+    0.0,
+    -0.77168,
+    -0.6216
+   ],
+   "Size": [
+    2.2122,
+    0.75337,
+    8.1124
+   ],
+   "Color": "#B6493A",
+   "Material": "Glass",
+   "Transparency": 0.08,
+   "Reflectance": 0.05,
+   "Kind": "Core",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Stripe": {
+   "Tris": 460,
+   "Centre": [
+    0.0,
+    -0.2127,
+    -0.6708
+   ],
+   "Size": [
+    0.528,
+    0.28907,
+    9.348
+   ],
+   "Color": "#FFFFFF",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.08,
+   "Kind": "Pearl",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "DeckPlate": {
+   "Tris": 416,
+   "Centre": [
+    0.0,
+    -0.066,
+    0.42
+   ],
+   "Size": [
+    2.016,
+    0.132,
+    4.44
+   ],
+   "Color": "#2A3554",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Matte",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Column": {
+   "Tris": 256,
+   "Centre": [
+    0.0,
+    1.11354,
+    -2.368
+   ],
+   "Size": [
+    1.008,
+    2.77908,
+    1.432
+   ],
+   "Color": "#F4F1EA",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.08,
+   "Kind": "Pearl",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Handlebar": {
+   "Tris": 300,
+   "Centre": [
+    -2e-05,
+    2.57962,
+    -1.57437
+   ],
+   "Size": [
+    2.33571,
+    0.23184,
+    0.37924
+   ],
+   "Color": "#FFE39A",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.18,
+   "Kind": "Gold",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Grips": {
+   "Tris": 96,
+   "Centre": [
+    0.0,
+    2.595,
+    -1.542
+   ],
+   "Size": [
+    2.531,
+    0.31588,
+    0.39566
+   ],
+   "Color": "#2A3554",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Matte",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "DashGem": {
+   "Tris": 48,
+   "Centre": [
+    0.0,
+    2.65114,
+    -1.704
+   ],
+   "Size": [
+    0.312,
+    0.24601,
+    0.28968
+   ],
+   "Color": "#7CE7D5",
+   "Material": "Neon",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Nacelle_L": {
+   "Tris": 440,
+   "Centre": [
+    -2.376,
+    -0.624,
+    1.248
+   ],
+   "Size": [
+    1.392,
+    1.392,
+    6.024
+   ],
+   "Color": "#EF8268",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "NacelleCore_L": {
+   "Tris": 120,
+   "Centre": [
+    -2.376,
+    -0.624,
+    1.14
+   ],
+   "Size": [
+    0.768,
+    0.768,
+    4.68
+   ],
+   "Color": "#FFC46B",
+   "Material": "Neon",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "IntakeRing_L": {
+   "Tris": 320,
+   "Centre": [
+    -2.37652,
+    -0.624,
+    -1.704
+   ],
+   "Size": [
+    1.27097,
+    1.272,
+    0.168
+   ],
+   "Color": "#FFE39A",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.18,
+   "Kind": "Gold",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Fan_L": {
+   "Tris": 320,
+   "Centre": [
+    -2.35134,
+    -0.624,
+    -1.572
+   ],
+   "Size": [
+    0.86268,
+    0.90708,
+    0.168
+   ],
+   "Color": "#F4F1EA",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.08,
+   "Kind": "Pearl",
+   "Motion": {
+    "RideMotion": "Spin",
+    "SpinAxis": "Z",
+    "SpinSpeed": -9.0
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Nozzle_L": {
+   "Tris": 192,
+   "Centre": [
+    -2.376,
+    -0.624,
+    4.368
+   ],
+   "Size": [
+    0.96,
+    0.96,
+    0.528
+   ],
+   "Color": "#2A3554",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Matte",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Flame_L": {
+   "Tris": 120,
+   "Centre": [
+    -2.376,
+    -0.624,
+    5.208
+   ],
+   "Size": [
+    0.6,
+    0.6,
+    1.344
+   ],
+   "Color": "#FFF1B8",
+   "Material": "Neon",
+   "Transparency": 0.15,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {
+    "RideMotion": "Flame",
+    "FlamePhase": 0.0
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Pylon_L": {
+   "Tris": 100,
+   "Centre": [
+    -1.65,
+    -0.6,
+    0.75
+   ],
+   "Size": [
+    1.02,
+    0.2085,
+    1.98
+   ],
+   "Color": "#EF8268",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Nacelle_R": {
+   "Tris": 440,
+   "Centre": [
+    2.376,
+    -0.624,
+    1.248
+   ],
+   "Size": [
+    1.392,
+    1.392,
+    6.024
+   ],
+   "Color": "#EF8268",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "NacelleCore_R": {
+   "Tris": 120,
+   "Centre": [
+    2.376,
+    -0.624,
+    1.14
+   ],
+   "Size": [
+    0.768,
+    0.768,
+    4.68
+   ],
+   "Color": "#FFC46B",
+   "Material": "Neon",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "IntakeRing_R": {
+   "Tris": 320,
+   "Centre": [
+    2.37548,
+    -0.624,
+    -1.704
+   ],
+   "Size": [
+    1.27097,
+    1.272,
+    0.168
+   ],
+   "Color": "#FFE39A",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.18,
+   "Kind": "Gold",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Fan_R": {
+   "Tris": 320,
+   "Centre": [
+    2.40066,
+    -0.624,
+    -1.572
+   ],
+   "Size": [
+    0.86268,
+    0.90708,
+    0.168
+   ],
+   "Color": "#F4F1EA",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.08,
+   "Kind": "Pearl",
+   "Motion": {
+    "RideMotion": "Spin",
+    "SpinAxis": "Z",
+    "SpinSpeed": 9.0
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Nozzle_R": {
+   "Tris": 192,
+   "Centre": [
+    2.376,
+    -0.624,
+    4.368
+   ],
+   "Size": [
+    0.96,
+    0.96,
+    0.528
+   ],
+   "Color": "#2A3554",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Matte",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Flame_R": {
+   "Tris": 120,
+   "Centre": [
+    2.376,
+    -0.624,
+    5.208
+   ],
+   "Size": [
+    0.6,
+    0.6,
+    1.344
+   ],
+   "Color": "#FFF1B8",
+   "Material": "Neon",
+   "Transparency": 0.15,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {
+    "RideMotion": "Flame",
+    "FlamePhase": 1.7
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Pylon_R": {
+   "Tris": 100,
+   "Centre": [
+    1.65,
+    -0.6,
+    0.75
+   ],
+   "Size": [
+    1.02,
+    0.2085,
+    1.98
+   ],
+   "Color": "#EF8268",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "TailFin_L": {
+   "Tris": 140,
+   "Centre": [
+    -0.99368,
+    0.49972,
+    3.162
+   ],
+   "Size": [
+    0.69549,
+    1.4913,
+    2.556
+   ],
+   "Color": "#EF8268",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Fin",
+    "MotionPivot": [
+     0.27368,
+     -0.71572,
+     -0.102
+    ],
+    "FinAxis": "Z",
+    "FinAngle": 0.05,
+    "FinBank": 0.5
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "FinTip_L": {
+   "Tris": 100,
+   "Centre": [
+    -1.34035,
+    1.31942,
+    4.26
+   ],
+   "Size": [
+    0.19174,
+    0.2016,
+    0.5472
+   ],
+   "Color": "#FFE39A",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.18,
+   "Kind": "Gold",
+   "Motion": {
+    "RideMotion": "Fin",
+    "MotionPivot": [
+     0.62035,
+     -1.53542,
+     -1.2
+    ],
+    "FinAxis": "Z",
+    "FinAngle": 0.05,
+    "FinBank": 0.5
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "TailFin_R": {
+   "Tris": 140,
+   "Centre": [
+    0.99368,
+    0.49972,
+    3.162
+   ],
+   "Size": [
+    0.69549,
+    1.4913,
+    2.556
+   ],
+   "Color": "#EF8268",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Fin",
+    "MotionPivot": [
+     -0.27368,
+     -0.71572,
+     -0.102
+    ],
+    "FinAxis": "Z",
+    "FinAngle": 0.05,
+    "FinBank": 0.5
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "FinTip_R": {
+   "Tris": 100,
+   "Centre": [
+    1.34035,
+    1.31942,
+    4.26
+   ],
+   "Size": [
+    0.19174,
+    0.2016,
+    0.5472
+   ],
+   "Color": "#FFE39A",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.18,
+   "Kind": "Gold",
+   "Motion": {
+    "RideMotion": "Fin",
+    "MotionPivot": [
+     -0.62035,
+     -1.53542,
+     -1.2
+    ],
+    "FinAxis": "Z",
+    "FinAngle": 0.05,
+    "FinBank": 0.5
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  }
+ },
+ "Attachments": {
+  "RiderFeet": {
+   "Part": "DeckPlate",
+   "World": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "Offset": [
+    0.0,
+    0.066,
+    -0.42
+   ]
+  },
+  "HandL": {
+   "Part": "Handlebar",
+   "World": [
+    -0.96,
+    2.58,
+    -1.56
+   ],
+   "Offset": [
+    -0.95998,
+    0.00038,
+    0.01437
+   ]
+  },
+  "HandR": {
+   "Part": "Handlebar",
+   "World": [
+    0.96,
+    2.58,
+    -1.56
+   ],
+   "Offset": [
+    0.96002,
+    0.00038,
+    0.01437
+   ]
+  },
+  "Exhaust_L": {
+   "Part": "Nozzle_L",
+   "World": [
+    -2.376,
+    -0.624,
+    4.68
+   ],
+   "Offset": [
+    0.0,
+    -0.0,
+    0.312
+   ]
+  },
+  "Exhaust_R": {
+   "Part": "Nozzle_R",
+   "World": [
+    2.376,
+    -0.624,
+    4.68
+   ],
+   "Offset": [
+    0.0,
+    -0.0,
+    0.312
+   ]
+  },
+  "FinTrailL0": {
+   "Part": "TailFin_L",
+   "World": [
+    -1.344,
+    1.296,
+    4.26
+   ],
+   "Offset": [
+    -0.35032,
+    0.79628,
+    1.098
+   ]
+  },
+  "FinTrailL1": {
+   "Part": "TailFin_L",
+   "World": [
+    -1.2,
+    0.96,
+    4.08
+   ],
+   "Offset": [
+    -0.20632,
+    0.46028,
+    0.918
+   ]
+  },
+  "FinTrailR0": {
+   "Part": "TailFin_R",
+   "World": [
+    1.344,
+    1.296,
+    4.26
+   ],
+   "Offset": [
+    0.35032,
+    0.79628,
+    1.098
+   ]
+  },
+  "FinTrailR1": {
+   "Part": "TailFin_R",
+   "World": [
+    1.2,
+    0.96,
+    4.08
+   ],
+   "Offset": [
+    0.20632,
+    0.46028,
+    0.918
+   ]
+  },
+  "Wake": {
+   "Part": "Hull",
+   "World": [
+    0.0,
+    -0.48,
+    -5.28
+   ],
+   "Offset": [
+    0.0,
+    0.25967,
+    -4.56
+   ]
+  },
+  "Launch": {
+   "Part": "Hull",
+   "World": [
+    0.0,
+    -1.44,
+    0.6
+   ],
+   "Offset": [
+    0.0,
+    -0.70033,
+    1.32
+   ]
+  }
+ },
+ "Axes": "Roblox (x, y, z) = Blender (x, z, -y); model pivot = origin = rider contact point",
+ "FbxRoundTrip": {
+  "objects": 26,
+  "missing": [],
+  "tri_mismatch": [],
+  "max_bounds_error": 0.0,
+  "ok": true
+ }
+}

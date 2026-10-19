@@ -23,7 +23,10 @@ local names = {
 	RightElbow = "RightElbow",
 }
 function Pose.new(character, id)
-	local self = setmetatable({ Character = character, Clip = Clips[id] or Clips.skyboard, Joints = {} }, Pose)
+	local self = setmetatable(
+		{ Character = character, Clip = Clips[id] or Clips.skyboard, Joints = {}, LeanRoll = 0, LeanPitch = 0 },
+		Pose
+	)
 	self.Root = character:FindFirstChild("HumanoidRootPart")
 	-- Capture before stopping tracks: stopping an Animator can reset its transforms.
 	for _, motor in character:GetDescendants() do
@@ -80,9 +83,10 @@ function Pose:Step(time)
 		if angles then
 			local x, y, z = unpack(angles)
 			if joint.Channel == "Spine" then
-				x += pitch
+				-- The rider leans into the flyer's bank and pitch (Lean, radians -> degrees, scaled down).
+				x += pitch - self.LeanPitch
 				y += yaw
-				z += roll
+				z += roll + self.LeanRoll
 			elseif joint.Channel == "LeftArm" then
 				z -= roll
 			elseif joint.Channel == "RightArm" then
@@ -129,6 +133,11 @@ function Pose:Step(time)
 	self.LocalParts = poses
 	self.Height = if lowest < math.huge then -lowest else nil
 	return self.Height
+end
+-- Bank/pitch of the flyer in radians; the rider's spine follows a share of it (Clip.Lean, default 0.8).
+function Pose:Lean(bank, pitch)
+	local share = self.Clip.Lean or 0.8
+	self.LeanRoll, self.LeanPitch = math.deg(bank or 0) * share, math.deg(pitch or 0) * share * 0.5
 end
 function Pose:PlaceAnchored(rootPose)
 	for part, pose in self.LocalParts or {} do

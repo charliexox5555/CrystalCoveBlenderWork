@@ -94,7 +94,7 @@ Crit chance = `CritBase + CritPerSwing × Swing` (max 30%), plus Lucky. All in `
 Every glassy has **one signature power** with its own trigger (contacts, swing turnarounds, a timer, low HP, hits taken). When the trigger fires, the power becomes **Ready** and a big **CAST** button lights up (DECISIONS 85, revising 33):
 
 - **Tap CAST** to fire it now. The button glows gold and says NOW! at a good moment (the glassies closing in, or a smash about to land), so timing is learnable.
-- **Ignore it** and it fires by itself after `Cast.AutoSeconds` (2.5 s). Young players can just watch.
+- **Ignore it** and it fires by itself after `Cast.AutoSeconds` (1.6 s). Young players can just watch; pressing as soon as it lights up is never worse than waiting (real swing: 52% vs auto).
 - **Contact powers** (Pop, Pickle Jar, Ketchup, Briar Flask, Mason Jar) **arm** instead: the next contact within `Cast.ArmedSeconds` (3 s) pays off. Arm right before a smash; an arm with no contact fades.
 - Bots press CAST with a reaction delay and moment-reading that scale with their skill.
 - Target: a quick player who times casts beats an auto-only player 55–62% with the same glassy. Skill matters, never decides alone.
@@ -177,7 +177,7 @@ Rarity buys **flair, size, more complex powers and bigger presentation**, not nu
 
 ### 4.3 Stars and Rainbow
 
-- **Duplicates** from the Kiln add a **star** (+1% HP each, max 5, so +5% at most). Past 5 stars a duplicate gives `DuplicateCoinsAtMaxStars` coins.
+- **Duplicates** from the Kiln add a **star** (+0.6% HP each, max 5, so +3% at most; 5 stars beat 0 about 55%). Past 5 stars a duplicate gives `DuplicateCoinsAtMaxStars` coins.
 - **Rainbow** variant: 1 in 500 Kiln pulls, +2% HP and an iridescent shimmer. (Later: fuse duplicates into Rainbow like Ball VS Ball's Shiny/Rainbow, but in our own way, e.g. "re-melt" 5 stars into Rainbow in the Kiln.)
 
 ### 4.4 The roster (31)

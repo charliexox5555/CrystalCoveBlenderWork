@@ -136,6 +136,10 @@ for name, x in { GripL = -0.62, GripR = 0.62 } do
 	g.Name, g.Parent = name, bar
 	g.WorldCFrame = pivot0.Rotation + pivot0:PointToWorldSpace(Vector3.new(x, 1.46, -1.74))
 end
+-- Footrest moved back to where a default R15 HandleSit leg reaches (soles at about z -1.7, y 0.5; workstream H).
+local foot = new:FindFirstChild("Footrest", true)
+foot.CFrame = pivot0 * CFrame.new(0, 0.35, -1.75) * (pivot0:Inverse() * foot.CFrame).Rotation
+foot:SetAttribute("MovedForHandleSit", true)
 new:SetAttribute("Version", 5)
 new:SetAttribute("SourceAssetId", "85604557082927")
 new.Name = "moonlantern_carriage"

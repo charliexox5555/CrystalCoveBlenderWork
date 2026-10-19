@@ -83,6 +83,7 @@ local function hold(state, side, emit, overrides, arm)
 		Shape = shape,
 		Arm = arm == true,
 		Brew = overrides and overrides.Brew,
+		Next = overrides and overrides.Brew,
 	})
 	return true
 end
@@ -144,6 +145,7 @@ local function begin(state, side, emit, overrides, release)
 		Held = release ~= nil,
 		Brew = kit.Brew,
 		Rebirth = kit.IsRebirth,
+		Riposte = kit.IsRiposte,
 	})
 	if kit.Brew then
 		s.CycleCount += 1
@@ -447,7 +449,7 @@ function Signatures.mitigate(state, target, amount, kind, emit)
 		if s.Kit.Riposte then
 			-- Grizzly Guardian roars back the moment its guard blocks a clash.
 			local o = table.clone(s.Kit.Riposte)
-			o.Instant = true
+			o.Instant, o.IsRiposte = true, true
 			begin(state, target.Side, emit, o)
 		end
 		return amount * (1 - s.Kit.Mitigation)
@@ -530,21 +532,18 @@ function Signatures.tick(state, emit)
 		end
 		if cast.Shape == "guard" then
 			f.Signature.GuardUntil = state.Time + cast.Params.Duration
-			event(
-				state,
-				emit,
-				cast.Side,
-				"CastRelease",
-				{ CastId = cast.Id, Shape = cast.Shape, Duration = cast.Params.Duration }
-			)
+			event(state, emit, cast.Side, "CastRelease", {
+				CastId = cast.Id,
+				Shape = cast.Shape,
+				Duration = cast.Params.Duration,
+			})
 		elseif Traits.selfRelease(state, cast, emit) then
-			event(
-				state,
-				emit,
-				cast.Side,
-				"CastRelease",
-				{ CastId = cast.Id, Shape = cast.Shape, Duration = cast.Params.Duration }
-			)
+			event(state, emit, cast.Side, "CastRelease", {
+				CastId = cast.Id,
+				Shape = cast.Shape,
+				Duration = cast.Params.Duration,
+				PierceGuard = cast.Params.PierceGuard, -- Glass Unicorn's dash
+			})
 		else
 			state.AbilityResults[cast.Id] = cast
 			table.insert(state.CastRequests, cast)

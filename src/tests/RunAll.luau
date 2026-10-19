@@ -19,6 +19,7 @@ local order = {
 	"PendulumTests",
 	"SignatureTests",
 	"CastTests",
+	"LaunchKitTests",
 	"ReleaseKitTests",
 	"HollowlightTests",
 	"SnapshotCodecTests",

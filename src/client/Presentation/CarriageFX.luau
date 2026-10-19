@@ -81,7 +81,9 @@ function CarriageFX.attach(model, options)
 		Stopped = false,
 		Quiet = opts.Quiet == true,
 	}, CarriageFX)
-	self.Body = model:FindFirstChild("Hull", true) or model.PrimaryPart or model:FindFirstChildWhichIsA("BasePart", true)
+	self.Body = model:FindFirstChild("Hull", true)
+		or model.PrimaryPart
+		or model:FindFirstChildWhichIsA("BasePart", true)
 	for _, p in model:GetDescendants() do
 		if not p:IsA("BasePart") then
 			continue

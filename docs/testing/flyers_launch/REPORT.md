@@ -11,6 +11,8 @@
 | Honey Hover | Uncommon | Surf | 90127873036573 | 0.0001 | hex trails, honey drops, orbiting bees |
 | Dragonfly | Rare | HandleSit | 71158262594750 | 0.0000 | 4 wing shimmer trails, dew sparkles |
 | Carousel | Epic | HandleSit | 77529806457590 | 0.0000 | pony `Bob` + `RiderMount = Pony`, spinning canopy, music twinkles; kept out of the Daily Store Robux rotation (no Epic Standard flyer product yet, A to decide) |
+| Sunwing | Legendary | Kneel | 95984254159798 | exact | feather-glass wings, sun-ray trails; out of the Daily Store rotation (no product for that band) |
+| Starwhale | Mythic | Sit | 118738400073939 | exact | inner galaxy; Body 0.30 → 0.45 and BodyCore 0.35 → 0.65 transparency so the stars read (installer override); whale-song loop is the licensed APM library track 1841333389; out of the Daily Store rotation |
 | (no flyer) | — | Stand | `Assets.RideStand` | — | faint glass hover pad with shimmer; Stand family uploaded (10 assets) |
 
 Catalog entries in `Config/RoundCosmetics` (G committed the "No Flyer" catalog entry).
@@ -24,7 +26,11 @@ Catalog entries in `Config/RoundCosmetics` (G committed the "No Flyer" catalog e
   and FallingDown on the local humanoid while staged and restores them on exit (checked: state Running during
   the round, Freefall re-enabled and root unanchored after).
 - **Moonlantern Carriage** rides HandleSit with IK on I's `GripL`/`GripR`. HandleSit was retuned (arms inward,
-  legs forward-up) and re-uploaded. The v5 footrest is beyond a default R15 leg's reach (asked I to move it).
+  legs forward-up) and re-uploaded. Workstream I moved the footrest to (0, 0.35, -1.75).
+- **Ride models stream atomically** (`MatchStage`: `ModelStreamingMode = Atomic`). With streaming on, the
+  carriage's parts arrived over several frames while the client was already posing the take-off, so 14 parts
+  (Hull, Footrest, Handlebar, Backrest, engines...) stayed 2.2–2.6 studs above where they belong and the rider
+  sat under the crescent. Now every non-animated part matches the template on the client.
 
 ## Checks (Studio Play)
 
@@ -35,12 +41,16 @@ Catalog entries in `Config/RoundCosmetics` (G committed the "No Flyer" catalog e
   Idle; R15 hands IK-locked on Dragonfly and Carousel grips (0.35 studs hand centre to grip)
   (`02_lineup_dragonfly_honey_bubble.jpg`, `03_carousel_and_stand_r15_r6.jpg`).
 - Carousel mount: rider-to-saddle height varies 0.003 studs while the pony bobs 0.87 studs on the pole.
-- Carriage round: HandleSit tracks + 2 IKs (`ride_animations/08_carriage_handlesit_round.jpg`).
+- Carriage round: HandleSit tracks + 2 IKs (`ride_animations/08_carriage_handlesit_round.jpg`). After the
+  atomic-streaming fix: all 23 static parts within 0.05 of the template (only CarriageFX's bending wing tips
+  differ), hands 0.24/0.30 studs from GripL/GripR, soles at Y 6.19 against the footrest top at 6.46, so the feet
+  sit on the bar, sunk about a quarter stud (`07_carriage_round_atomic.jpg`).
+- Sunwing and Starwhale lineup, R15 and R6, Tracks mode (`04_sunwing_starwhale_r15_r6.jpg`,
+  `05_sunwing_closeup.jpg`, `06_starwhale_stars_visible.jpg`).
 - Lune 164/164.
 
 ## Not covered
 
-- Sunwing and Starwhale (built by F, not uploaded yet).
 - Phone presets (Studio MCP can't switch Device Emulator).
-- Lobby Flyers display and shop portraits of the five new flyers were not captured this pass (both clone the
+- Lobby Flyers display and shop portraits of the seven new flyers were not captured this pass (both clone the
   same templates as the verified four).

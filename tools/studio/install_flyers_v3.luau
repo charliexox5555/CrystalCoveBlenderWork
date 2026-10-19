@@ -27,6 +27,9 @@ local MAIN = {
 }
 -- Flyers whose rider sits on a moving part (RideMotion follows it; see RideMotion:RiderPose).
 local MOUNT = { carousel = "Pony" }
+-- Studio-side look fixes over the manifest (checked in Play): the Starwhale's inner stars only read through a
+-- clearer body.
+local TRANSPARENCY = { starwhale = { Body = 0.45, BodyCore = 0.65 } }
 
 local function folder(parent, name)
 	local f = parent:FindFirstChild(name)
@@ -135,6 +138,9 @@ for id, entry in input do
 		part.Color = Color3.fromHex(p.Color)
 		part.Material = Enum.Material[p.Material]
 		part.Transparency, part.Reflectance = p.Transparency, p.Reflectance
+		if TRANSPARENCY[id] and TRANSPARENCY[id][name] then
+			part.Transparency = TRANSPARENCY[id][name]
+		end
 		part.Anchored, part.CanCollide, part.CanTouch, part.CanQuery, part.Massless = true, false, false, false, true
 		part.CastShadow = p.Material ~= "Neon"
 		part:SetAttribute("Triangles", p.Tris)

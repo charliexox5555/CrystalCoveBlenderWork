@@ -14,6 +14,16 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — Sunwing, Starwhale, carriage streaming fix (workstream H)
+Done:
+- Installed F's Sunwing (Kneel) and Starwhale (Sit): exact fit, effects, motion, sounds (whale song = licensed APM track), catalog entries; both kept out of the Daily Store rotation like Carousel. Starwhale body made clearer (0.45 / core 0.65) so its inner stars read; the installer applies it too.
+- Fixed riders on big flyers sitting in the wrong place: ride models now stream atomically (`MatchStage`). The carriage's parts used to arrive mid take-off and stay ~2.4 studs high on the client. After the fix, the carriage rider sits in the crescent with hands on the grips (0.24/0.30) and feet on I's moved footrest.
+- Report updated: `docs/testing/flyers_launch/REPORT.md`.
+Next:
+- Save the place (all flyers, RideStand, Starwhale tweak live only in the open Edit session). Creator prices for Epic/Legendary/Mythic flyer products so Carousel, Sunwing and Starwhale can join the Daily Store.
+Problems / questions for the user:
+- None blocking.
+
 ## 2026-10-19 — Claude — Launch flyers installed, no-flyer stand, riders higher (workstream H)
 Done:
 - Installed F's Paper Jet, Bubble Pod, Honey Hover, Dragonfly and Carousel (exact fit, effects, families, motion profiles, sounds, catalog entries). New `Bob` motion kind + `RiderMount` so the Carousel rider follows the pony.

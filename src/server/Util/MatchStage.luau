@@ -166,6 +166,9 @@ function Stage.start(entry)
 		end
 		local ride = source:Clone()
 		ride.Name = "Ride" .. side
+		-- Stream the ride in one piece: the client poses it every frame, so parts that streamed in late would
+		-- keep the offset from wherever the take-off had moved it (the carriage arrived about 2.4 studs off).
+		ride.ModelStreamingMode = Enum.ModelStreamingMode.Atomic
 		local top = entry.Arena.Pads[side].Position + Vector3.yAxis * Tuning.RideLift
 		local ridePose = CFrame.lookAt(top, Vector3.new(center.X, top.Y, center.Z))
 		ride:PivotTo(ridePose)

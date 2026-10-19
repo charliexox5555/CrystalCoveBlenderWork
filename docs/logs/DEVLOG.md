@@ -24,6 +24,15 @@ Problems / questions for the user:
 - Save the place (the rebuilt screen exists only in the open Edit session). Settings also uses an aqua banner; swap `TitleBanner` if they should differ more.
 - No Node here, so the generator is Python and rasterises through headless Chrome (one pass, ~4 s).
 
+## 2026-10-19 — Claude — DailyRewardsScreen design (top bar menus)
+Done:
+- Designed `StarterGui.DailyRewardsScreen`: an Inventory-size Stained Glass window with an amber banner. A segmented progress bar sits under the title (7 slanted glass segments on a leaded track, a Day 7 gem at the end, an "x/7" plaque). Below it is a 4×2 grid: Days 1–6 are six equal cells, and Day 7 is one tall cell spanning both rows (every-colour mosaic, gold rim, leaded sunburst, glow burst, sparkles, "BIG PRIZE!" ribbon). Each cell has claimed (spent emerald glass, check diamond, faded reward), today (amber glass, halo, green CLAIM! gem) and locked (plain slate) looks. A "Next reward in …" timer plaque is at the bottom. Rebuild: `tools/studio/build_daily_rewards_screen.luau` (set `SCENARIO = "Day7"` to preview the weekly claim).
+- New art from `tools/ui/daily_rewards_art.py` → `assets/ui/screens/daily_rewards`: 16 pieces (cells, glows, check, track, segments, gems, sparkle, timer plaque, clock), uploaded as Decals to group 11116787. The keys are in `UIAssets` (`screens/daily_rewards/*`). Captures and the element map are in `docs/ui/screens/DailyRewardsScreen.md`.
+Next:
+- Wire it later: a controller sets each `DayN` state, `Progress` segments and gem, `Count` and `Timer`, and fires the claim from `DayN.ClaimButton`. Then animations and the phone/tablet scaling pass. The real reward table is still to be decided (the icons and amounts are placeholders).
+Problems / questions for the user:
+- Save the place (the rebuilt screen exists only in the open Edit session). There is no Node on this Mac, so the art is rendered with headless Chrome (same approach as Playtime Rewards). A `brew install node` attempt was cancelled partway; Homebrew left the `icu4c@78` and `simdutf` packages installed.
+
 ## 2026-10-19 — Claude — SettingsScreen design (top bar menus)
 Done:
 - Designed `StarterGui.SettingsScreen`: a compact one-page Stained Glass window (0.54 of screen width vs Inventory's 0.7, no scrolling), aqua accent. Left column SOUND: Master, Music, SFX sliders (track, aqua fill, gem knob, % readout on a milk plaque). Right column GAMEPLAY (Bot Play, Auto-Cast Powers) and GRAPHICS & COMFORT (Large Effects, Reduced Motion, Hide Others' Cosmetics) with one reusable emerald/slate ON/OFF toggle. Each row has an icon and a one-line helper. Rebuild: `tools/studio/build_settings_screen.luau`.

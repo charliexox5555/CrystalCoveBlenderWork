@@ -1,0 +1,117 @@
+{
+ "Record": "assets/ui/screens/daily_rewards/roblox_assets.json",
+ "Items": [
+  {
+   "Key": "cell_locked",
+   "Path": "assets/ui/screens/daily_rewards/png/cell_locked.png",
+   "Type": "Decal",
+   "Name": "UI Daily Day cell locked",
+   "Description": "Glass Clash Daily Rewards screen art (stained glass)."
+  },
+  {
+   "Key": "cell_claimed",
+   "Path": "assets/ui/screens/daily_rewards/png/cell_claimed.png",
+   "Type": "Decal",
+   "Name": "UI Daily Day cell claimed",
+   "Description": "Glass Clash Daily Rewards screen art (stained glass)."
+  },
+  {
+   "Key": "cell_today",
+   "Path": "assets/ui/screens/daily_rewards/png/cell_today.png",
+   "Type": "Decal",
+   "Name": "UI Daily Day cell today",
+   "Description": "Glass Clash Daily Rewards screen art (stained glass)."
+  },
+  {
+   "Key": "cell_day7",
+   "Path": "assets/ui/screens/daily_rewards/png/cell_day7.png",
+   "Type": "Decal",
+   "Name": "UI Daily Day 7 cell",
+   "Description": "Glass Clash Daily Rewards screen art (stained glass)."
+  },
+  {
+   "Key": "glow_today",
+   "Path": "assets/ui/screens/daily_rewards/png/glow_today.png",
+   "Type": "Decal",
+   "Name": "UI Daily Day glow",
+   "Description": "Glass Clash Daily Rewards screen art (stained glass)."
+  },
+  {
+   "Key": "glow_burst",
+   "Path": "assets/ui/screens/daily_rewards/png/glow_burst.png",
+   "Type": "Decal",
+   "Name": "UI Daily Day 7 burst",
+   "Description": "Glass Clash Daily Rewards screen art (stained glass)."
+  },
+  {
+   "Key": "check_badge",
+   "Path": "assets/ui/screens/daily_rewards/png/check_badge.png",
+   "Type": "Decal",
+   "Name": "UI Daily Claimed check",
+   "Description": "Glass Clash Daily Rewards screen art (stained glass)."
+  },
+  {
+   "Key": "progress_track",
+   "Path": "assets/ui/screens/daily_rewards/png/progress_track.png",
+   "Type": "Decal",
+   "Name": "UI Daily Progress track",
+   "Description": "Glass Clash Daily Rewards screen art (stained glass)."
+  },
+  {
+   "Key": "seg_off",
+   "Path": "assets/ui/screens/daily_rewards/png/seg_off.png",
+   "Type": "Decal",
+   "Name": "UI Daily Progress seg off",
+   "Description": "Glass Clash Daily Rewards screen art (stained glass)."
+  },
+  {
+   "Key": "seg_lit",
+   "Path": "assets/ui/screens/daily_rewards/png/seg_lit.png",
+   "Type": "Decal",
+   "Name": "UI Daily Progress seg lit",
+   "Description": "Glass Clash Daily Rewards screen art (stained glass)."
+  },
+  {
+   "Key": "seg_today",
+   "Path": "assets/ui/screens/daily_rewards/png/seg_today.png",
+   "Type": "Decal",
+   "Name": "UI Daily Progress seg today",
+   "Description": "Glass Clash Daily Rewards screen art (stained glass)."
+  },
+  {
+   "Key": "gem_off",
+   "Path": "assets/ui/screens/daily_rewards/png/gem_off.png",
+   "Type": "Decal",
+   "Name": "UI Daily Progress gem off",
+   "Description": "Glass Clash Daily Rewards screen art (stained glass)."
+  },
+  {
+   "Key": "gem_lit",
+   "Path": "assets/ui/screens/daily_rewards/png/gem_lit.png",
+   "Type": "Decal",
+   "Name": "UI Daily Progress gem lit",
+   "Description": "Glass Clash Daily Rewards screen art (stained glass)."
+  },
+  {
+   "Key": "sparkle",
+   "Path": "assets/ui/screens/daily_rewards/png/sparkle.png",
+   "Type": "Decal",
+   "Name": "UI Daily Sparkle",
+   "Description": "Glass Clash Daily Rewards screen art (stained glass)."
+  },
+  {
+   "Key": "timer_plaque",
+   "Path": "assets/ui/screens/daily_rewards/png/timer_plaque.png",
+   "Type": "Decal",
+   "Name": "UI Daily Timer plaque",
+   "Description": "Glass Clash Daily Rewards screen art (stained glass)."
+  },
+  {
+   "Key": "icon_clock",
+   "Path": "assets/ui/screens/daily_rewards/png/icon_clock.png",
+   "Type": "Decal",
+   "Name": "UI Daily Clock icon",
+   "Description": "Glass Clash Daily Rewards screen art (stained glass)."
+  }
+ ]
+}

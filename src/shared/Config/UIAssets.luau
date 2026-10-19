@@ -131,5 +131,22 @@ local UIAssets = {
 	["screens/playtime_rewards/icon_lock"] = "rbxassetid://103789030449627",
 	["screens/playtime_rewards/time_tag"] = "rbxassetid://75404031875632",
 	["screens/playtime_rewards/window"] = "rbxassetid://100521988636466",
+	-- DailyRewardsScreen (tools/ui/daily_rewards_art.py; docs/ui/screens/DailyRewardsScreen.md)
+	["screens/daily_rewards/cell_locked"] = "rbxassetid://112424900545322",
+	["screens/daily_rewards/cell_claimed"] = "rbxassetid://123062189542207",
+	["screens/daily_rewards/cell_today"] = "rbxassetid://89477285281517",
+	["screens/daily_rewards/cell_day7"] = "rbxassetid://120953856890626",
+	["screens/daily_rewards/glow_today"] = "rbxassetid://71166976377615",
+	["screens/daily_rewards/glow_burst"] = "rbxassetid://77624391348245",
+	["screens/daily_rewards/check_badge"] = "rbxassetid://89983929075705",
+	["screens/daily_rewards/progress_track"] = "rbxassetid://103459116303156",
+	["screens/daily_rewards/seg_off"] = "rbxassetid://83486640438740",
+	["screens/daily_rewards/seg_lit"] = "rbxassetid://108615290612409",
+	["screens/daily_rewards/seg_today"] = "rbxassetid://134509086525244",
+	["screens/daily_rewards/gem_off"] = "rbxassetid://101814573321454",
+	["screens/daily_rewards/gem_lit"] = "rbxassetid://85620972073701",
+	["screens/daily_rewards/sparkle"] = "rbxassetid://117952041961855",
+	["screens/daily_rewards/timer_plaque"] = "rbxassetid://136293032496465",
+	["screens/daily_rewards/icon_clock"] = "rbxassetid://95614830605707",
 }
 return UIAssets

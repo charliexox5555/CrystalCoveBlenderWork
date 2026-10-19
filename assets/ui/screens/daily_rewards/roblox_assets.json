@@ -1,0 +1,117 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "cell_locked": {
+   "AssetId": "112787130497723",
+   "Path": "assets/ui/screens/daily_rewards/png/cell_locked.png",
+   "Sha256": "b6ea1197ca4eba37a16ec9c86147275815479fc1a8425e167da7b3798a2e4eb9",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:28:03"
+  },
+  "cell_claimed": {
+   "AssetId": "123596332261851",
+   "Path": "assets/ui/screens/daily_rewards/png/cell_claimed.png",
+   "Sha256": "91f37dcbb66be60c2d4fa9e06cfeb382d6488257611c41a12eb6d9bd623909a3",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:28:06"
+  },
+  "cell_today": {
+   "AssetId": "93323905340653",
+   "Path": "assets/ui/screens/daily_rewards/png/cell_today.png",
+   "Sha256": "9f939596ee6fc384ff2e2ba2b5f6aa835d5f586b0e73f017f6c425fa07e60142",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:28:10"
+  },
+  "cell_day7": {
+   "AssetId": "72193649497002",
+   "Path": "assets/ui/screens/daily_rewards/png/cell_day7.png",
+   "Sha256": "30c614f6e7980bc666b77a712ccfbcf4bc6c11ab7337c25ae865f91ce5387534",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:28:16"
+  },
+  "glow_today": {
+   "AssetId": "87150558302843",
+   "Path": "assets/ui/screens/daily_rewards/png/glow_today.png",
+   "Sha256": "35e23c83f007b81a813328379c7d3305cb7b8ee34e66f69aaf9823e9355f97cc",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:28:19"
+  },
+  "glow_burst": {
+   "AssetId": "76536494088778",
+   "Path": "assets/ui/screens/daily_rewards/png/glow_burst.png",
+   "Sha256": "b16faa1bbe597fbadb74dcea4c50da4499862bdbbb8c819b0c743135a24111bc",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:28:25"
+  },
+  "check_badge": {
+   "AssetId": "98754341133551",
+   "Path": "assets/ui/screens/daily_rewards/png/check_badge.png",
+   "Sha256": "4fb4334fdaeed1fb6a1bf827859c66c9fefa6c9837bfe352bda09d3ea7e7d999",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:28:28"
+  },
+  "progress_track": {
+   "AssetId": "91498645560289",
+   "Path": "assets/ui/screens/daily_rewards/png/progress_track.png",
+   "Sha256": "06f1431f9941c41e4b03fc99792ee1be9fa3515b57218aa0c7c3151e3626c503",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:28:31"
+  },
+  "seg_off": {
+   "AssetId": "92429415079956",
+   "Path": "assets/ui/screens/daily_rewards/png/seg_off.png",
+   "Sha256": "3d9a2d7c0521fad752758d0a66915b9409b315343b158df9ff6bca5fce9439c8",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:28:34"
+  },
+  "seg_lit": {
+   "AssetId": "90438674965093",
+   "Path": "assets/ui/screens/daily_rewards/png/seg_lit.png",
+   "Sha256": "ce0ac40de66cff234edf6f06909e0b45000d08707489511b984a7191f6580432",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:28:38"
+  },
+  "seg_today": {
+   "AssetId": "129105907744603",
+   "Path": "assets/ui/screens/daily_rewards/png/seg_today.png",
+   "Sha256": "8723bad328036ed16f10e5c651645284ab9530beda5e3eaef53163b143360236",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:28:42"
+  },
+  "gem_off": {
+   "AssetId": "110601954075765",
+   "Path": "assets/ui/screens/daily_rewards/png/gem_off.png",
+   "Sha256": "c9e5df4c6d881d012125289991905374a3a1dd91d44bf461134e78c9cc5bc9aa",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:28:47"
+  },
+  "gem_lit": {
+   "AssetId": "85041706487960",
+   "Path": "assets/ui/screens/daily_rewards/png/gem_lit.png",
+   "Sha256": "fe002c54db544479df5b18a9c0defa520e8a3098f80f5cdb5726e1c72345e41d",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:28:50"
+  },
+  "sparkle": {
+   "AssetId": "73585919241434",
+   "Path": "assets/ui/screens/daily_rewards/png/sparkle.png",
+   "Sha256": "50658a2deab690fe3d877a63a76149e41bebdfac18f5fe7553a283243082683a",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:28:53"
+  },
+  "timer_plaque": {
+   "AssetId": "138231779694813",
+   "Path": "assets/ui/screens/daily_rewards/png/timer_plaque.png",
+   "Sha256": "46122ac917b5b8276e245a178ebc698c0482ad7caa97548d12a9cc14449c476c",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:28:56"
+  },
+  "icon_clock": {
+   "AssetId": "95290108454766",
+   "Path": "assets/ui/screens/daily_rewards/png/icon_clock.png",
+   "Sha256": "197b826dfb8ceffbf8804c89534126a58bc74cbf418749c522759e223fb899d9",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:30:55"
+  }
+ }
+}

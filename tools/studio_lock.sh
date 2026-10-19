@@ -9,6 +9,8 @@
 LOCK=/private/tmp/glassclash_studio_lock
 QUEUE=/private/tmp/glassclash_studio_queue
 STALE=1200
+FREE=/private/tmp/glassclash_studio_free_since
+SKIP=240 # a queue head that doesn't take a free lock within this many seconds loses its turn
 cmd=$1; who=$2
 now=$(date +%s)
 holder() { [[ -f $LOCK/owner ]] && cat $LOCK/owner; }
@@ -25,6 +27,14 @@ queue)
 acquire)
 	[[ -z $who ]] && { echo "usage: acquire <name>"; exit 2; }
 	first=$( [[ -s $QUEUE ]] && head -1 $QUEUE )
+	if [[ -n $first && $first != $who && ! -d $LOCK ]]; then
+		[[ -f $FREE ]] || echo $now > $FREE
+		if (( now - $(cat $FREE) > SKIP )); then
+			echo "$first missed its turn; moving it to the back"
+			sed -i '' "1d" $QUEUE; echo "$first" >> $QUEUE; echo $now > $FREE
+			first=$(head -1 $QUEUE)
+		fi
+	fi
 	if [[ -n $first && $first != $who ]]; then echo "busy: $first is first in the queue"; exit 1; fi
 	if [[ -d $LOCK && $(age) -gt $STALE ]]; then echo "taking stale lock from $(holder)"; rm -rf $LOCK; fi
 	if mkdir $LOCK 2>/dev/null; then
@@ -37,7 +47,7 @@ acquire)
 	fi
 	;;
 release)
-	if [[ $(holder) == $who ]]; then rm -rf $LOCK; echo "released"; else echo "not held by $who ($(holder))"; fi
+	if [[ $(holder) == $who ]]; then rm -rf $LOCK; echo $now > $FREE; echo "released"; else echo "not held by $who ($(holder))"; fi
 	;;
 *) echo "usage: status | acquire <name> | release <name> | queue <name>"; exit 2 ;;
 esac

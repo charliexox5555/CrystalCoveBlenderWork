@@ -1,0 +1,11 @@
+{
+ "Record": "assets/blender/seasonal/hollowlight_v5/roblox_assets.json",
+ "Items": [
+  {
+   "Key": "moonlantern_carriage_v5",
+   "Path": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Moonlantern Carriage v5"
+  }
+ ]
+}

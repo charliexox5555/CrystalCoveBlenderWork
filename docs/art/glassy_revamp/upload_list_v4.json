@@ -1,0 +1,293 @@
+{
+ "Record": "docs/art/glassy_revamp/roblox_assets.json",
+ "Items": [
+  {
+   "Key": "pop_bundle",
+   "Path": "assets/blender/glassies/pop/v4/pop_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Pop v4"
+  },
+  {
+   "Key": "pop_icon",
+   "Path": "assets/blender/glassies/pop/v4/pop_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Pop icon v4"
+  },
+  {
+   "Key": "jam_bundle",
+   "Path": "assets/blender/glassies/jam/v4/jam_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Jam v4"
+  },
+  {
+   "Key": "jam_icon",
+   "Path": "assets/blender/glassies/jam/v4/jam_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Jam icon v4"
+  },
+  {
+   "Key": "prism_bundle",
+   "Path": "assets/blender/glassies/prism/v4/prism_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Prism v4"
+  },
+  {
+   "Key": "prism_icon",
+   "Path": "assets/blender/glassies/prism/v4/prism_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Prism icon v4"
+  },
+  {
+   "Key": "milk_bottle_bundle",
+   "Path": "assets/blender/glassies/milk_bottle/v4/milk_bottle_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Milk Bottle v4"
+  },
+  {
+   "Key": "milk_bottle_icon",
+   "Path": "assets/blender/glassies/milk_bottle/v4/milk_bottle_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Milk Bottle icon v4"
+  },
+  {
+   "Key": "pickle_jar_bundle",
+   "Path": "assets/blender/glassies/pickle_jar/v4/pickle_jar_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Pickle Jar v4"
+  },
+  {
+   "Key": "pickle_jar_icon",
+   "Path": "assets/blender/glassies/pickle_jar/v4/pickle_jar_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Pickle Jar icon v4"
+  },
+  {
+   "Key": "ketchup_bottle_bundle",
+   "Path": "assets/blender/glassies/ketchup_bottle/v4/ketchup_bottle_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Ketchup Bottle v4"
+  },
+  {
+   "Key": "ketchup_bottle_icon",
+   "Path": "assets/blender/glassies/ketchup_bottle/v4/ketchup_bottle_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Ketchup Bottle icon v4"
+  },
+  {
+   "Key": "glass_cup_bundle",
+   "Path": "assets/blender/glassies/glass_cup/v4/glass_cup_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Glass Cup v4"
+  },
+  {
+   "Key": "glass_cup_icon",
+   "Path": "assets/blender/glassies/glass_cup/v4/glass_cup_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Glass Cup icon v4"
+  },
+  {
+   "Key": "water_jug_bundle",
+   "Path": "assets/blender/glassies/water_jug/v4/water_jug_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Water Jug v4"
+  },
+  {
+   "Key": "water_jug_icon",
+   "Path": "assets/blender/glassies/water_jug/v4/water_jug_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Water Jug icon v4"
+  },
+  {
+   "Key": "lemonade_bottle_bundle",
+   "Path": "assets/blender/glassies/lemonade_bottle/v4/lemonade_bottle_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Lemonade Bottle v4"
+  },
+  {
+   "Key": "lemonade_bottle_icon",
+   "Path": "assets/blender/glassies/lemonade_bottle/v4/lemonade_bottle_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Lemonade Bottle icon v4"
+  },
+  {
+   "Key": "mason_jar_bundle",
+   "Path": "assets/blender/glassies/mason_jar/v4/mason_jar_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Mason Jar v4"
+  },
+  {
+   "Key": "mason_jar_icon",
+   "Path": "assets/blender/glassies/mason_jar/v4/mason_jar_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Mason Jar icon v4"
+  },
+  {
+   "Key": "hot_sauce_bundle",
+   "Path": "assets/blender/glassies/hot_sauce/v4/hot_sauce_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Hot Sauce v4"
+  },
+  {
+   "Key": "hot_sauce_icon",
+   "Path": "assets/blender/glassies/hot_sauce/v4/hot_sauce_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Hot Sauce icon v4"
+  },
+  {
+   "Key": "crystal_tumbler_bundle",
+   "Path": "assets/blender/glassies/crystal_tumbler/v4/crystal_tumbler_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Crystal Tumbler v4"
+  },
+  {
+   "Key": "crystal_tumbler_icon",
+   "Path": "assets/blender/glassies/crystal_tumbler/v4/crystal_tumbler_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Crystal Tumbler icon v4"
+  },
+  {
+   "Key": "chime_bundle",
+   "Path": "assets/blender/glassies/chime/v4/chime_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Chime v4"
+  },
+  {
+   "Key": "chime_icon",
+   "Path": "assets/blender/glassies/chime/v4/chime_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Chime icon v4"
+  },
+  {
+   "Key": "crescent_axe_bundle",
+   "Path": "assets/blender/glassies/crescent_axe/v4/crescent_axe_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Crescent Axe v4"
+  },
+  {
+   "Key": "crescent_axe_icon",
+   "Path": "assets/blender/glassies/crescent_axe/v4/crescent_axe_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Crescent Axe icon v4"
+  },
+  {
+   "Key": "briar_flask_bundle",
+   "Path": "assets/blender/glassies/briar_flask/v4/briar_flask_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Briar Flask v4"
+  },
+  {
+   "Key": "briar_flask_icon",
+   "Path": "assets/blender/glassies/briar_flask/v4/briar_flask_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Briar Flask icon v4"
+  },
+  {
+   "Key": "arc_coil_bundle",
+   "Path": "assets/blender/glassies/arc_coil/v4/arc_coil_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Arc Coil v4"
+  },
+  {
+   "Key": "arc_coil_icon",
+   "Path": "assets/blender/glassies/arc_coil/v4/arc_coil_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Arc Coil icon v4"
+  },
+  {
+   "Key": "hourglass_bundle",
+   "Path": "assets/blender/glassies/hourglass/v4/hourglass_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Hourglass v4"
+  },
+  {
+   "Key": "hourglass_icon",
+   "Path": "assets/blender/glassies/hourglass/v4/hourglass_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Hourglass icon v4"
+  },
+  {
+   "Key": "frostglobe_bundle",
+   "Path": "assets/blender/glassies/frostglobe/v4/frostglobe_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Frostglobe v4"
+  },
+  {
+   "Key": "frostglobe_icon",
+   "Path": "assets/blender/glassies/frostglobe/v4/frostglobe_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Frostglobe icon v4"
+  },
+  {
+   "Key": "rocket_pop_bundle",
+   "Path": "assets/blender/glassies/rocket_pop/v4/rocket_pop_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Rocket Pop v4"
+  },
+  {
+   "Key": "rocket_pop_icon",
+   "Path": "assets/blender/glassies/rocket_pop/v4/rocket_pop_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Rocket Pop icon v4"
+  },
+  {
+   "Key": "prism_blade_bundle",
+   "Path": "assets/blender/glassies/prism_blade/v4/prism_blade_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Prism Blade v4"
+  },
+  {
+   "Key": "prism_blade_icon",
+   "Path": "assets/blender/glassies/prism_blade/v4/prism_blade_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Prism Blade icon v4"
+  },
+  {
+   "Key": "glass_duck_bundle",
+   "Path": "assets/blender/glassies/glass_duck/v4/glass_duck_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Glass Duck v4"
+  },
+  {
+   "Key": "glass_duck_icon",
+   "Path": "assets/blender/glassies/glass_duck/v4/glass_duck_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Glass Duck icon v4"
+  },
+  {
+   "Key": "comet_bundle",
+   "Path": "assets/blender/glassies/comet/v4/comet_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Comet v4"
+  },
+  {
+   "Key": "comet_icon",
+   "Path": "assets/blender/glassies/comet/v4/comet_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Comet icon v4"
+  },
+  {
+   "Key": "glass_dragon_bundle",
+   "Path": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Glass Dragon v4"
+  },
+  {
+   "Key": "glass_dragon_icon",
+   "Path": "assets/blender/glassies/glass_dragon/v4/glass_dragon_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Glass Dragon icon v4"
+  },
+  {
+   "Key": "galaxy_orb_bundle",
+   "Path": "assets/blender/glassies/galaxy_orb/v4/galaxy_orb_bundle.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Galaxy Orb v4"
+  },
+  {
+   "Key": "galaxy_orb_icon",
+   "Path": "assets/blender/glassies/galaxy_orb/v4/galaxy_orb_icon.png",
+   "Type": "Decal",
+   "Name": "GlassClash Galaxy Orb icon v4"
+  }
+ ]
+}

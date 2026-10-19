@@ -1,0 +1,11 @@
+{
+ "Record": "assets/blender/round_cosmetics/finishers_v3/roblox_assets.json",
+ "Items": [
+  {
+   "Key": "finishers_v3",
+   "Path": "assets/blender/round_cosmetics/finishers_v3/finishers_v3.fbx",
+   "Type": "Model",
+   "Name": "GlassClash Finishers v3"
+  }
+ ]
+}

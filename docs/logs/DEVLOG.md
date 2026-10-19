@@ -14,6 +14,16 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — PlaytimeRewardsScreen design (top bar menus)
+Done:
+- Designed `StarterGui.PlaytimeRewardsScreen`: a wide Stained Glass window (aspect 2.4, one page) with six reward cells at 10–60 min under a progress bar whose milestone gems sit over each cell's centre (lit aqua when reached, star gem for 60), an aqua fill split into panes by lead cames, a clock start cap and a "23 MIN" readout tag riding above the fill's head. Cells show all four states in the sample build (10 claimed, 20 ready with green CLAIM gem and glow, 30 next with outline and 6:48 countdown, 40–60 locked with padlock); the 60 cell has a rainbow border and star badge. Aqua accent (Daily is amber). Rebuild: `tools/studio/build_playtime_rewards_screen.luau`.
+- New art `tools/ui/playtime_rewards_art.py` → `assets/ui/screens/playtime_rewards` (window, 4 cell frames + dim/outline, bar track/fill, 4 gems, glow, check/lock/clock icons, time tag), 18 Decals uploaded to group 11116787; keys in `UIAssets` (`screens/playtime_rewards/*`). Element map, states, wiring notes and captures: `docs/ui/screens/PlaytimeRewardsScreen.md`.
+Next:
+- Wire it (playtime tracking, claim remote, fill/tag tween, gem light-up); decide the rewards; phone/tablet scaling pass.
+Problems / questions for the user:
+- Save the place (the rebuilt screen exists only in the open Edit session). Settings also uses an aqua banner; swap `TitleBanner` if they should differ more.
+- No Node here, so the generator is Python and rasterises through headless Chrome (one pass, ~4 s).
+
 ## 2026-10-19 — Claude — SettingsScreen design (top bar menus)
 Done:
 - Designed `StarterGui.SettingsScreen`: a compact one-page Stained Glass window (0.54 of screen width vs Inventory's 0.7, no scrolling), aqua accent. Left column SOUND: Master, Music, SFX sliders (track, aqua fill, gem knob, % readout on a milk plaque). Right column GAMEPLAY (Bot Play, Auto-Cast Powers) and GRAPHICS & COMFORT (Large Effects, Reduced Motion, Hide Others' Cosmetics) with one reusable emerald/slate ON/OFF toggle. Each row has an icon and a one-line helper. Rebuild: `tools/studio/build_settings_screen.luau`.

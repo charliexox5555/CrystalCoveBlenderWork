@@ -1,0 +1,131 @@
+{
+ "Record": "assets/ui/screens/playtime_rewards/roblox_assets.json",
+ "Items": [
+  {
+   "Key": "playtime_bar_fill",
+   "Path": "assets/ui/screens/playtime_rewards/png/bar_fill.png",
+   "Type": "Decal",
+   "Name": "Playtime bar fill",
+   "Description": "Glass Clash Playtime Rewards screen art (Stained Glass)."
+  },
+  {
+   "Key": "playtime_bar_track",
+   "Path": "assets/ui/screens/playtime_rewards/png/bar_track.png",
+   "Type": "Decal",
+   "Name": "Playtime bar track",
+   "Description": "Glass Clash Playtime Rewards screen art (Stained Glass)."
+  },
+  {
+   "Key": "playtime_cell_best",
+   "Path": "assets/ui/screens/playtime_rewards/png/cell_best.png",
+   "Type": "Decal",
+   "Name": "Playtime cell best",
+   "Description": "Glass Clash Playtime Rewards screen art (Stained Glass)."
+  },
+  {
+   "Key": "playtime_cell_dim",
+   "Path": "assets/ui/screens/playtime_rewards/png/cell_dim.png",
+   "Type": "Decal",
+   "Name": "Playtime cell dim",
+   "Description": "Glass Clash Playtime Rewards screen art (Stained Glass)."
+  },
+  {
+   "Key": "playtime_cell_locked",
+   "Path": "assets/ui/screens/playtime_rewards/png/cell_locked.png",
+   "Type": "Decal",
+   "Name": "Playtime cell locked",
+   "Description": "Glass Clash Playtime Rewards screen art (Stained Glass)."
+  },
+  {
+   "Key": "playtime_cell_open",
+   "Path": "assets/ui/screens/playtime_rewards/png/cell_open.png",
+   "Type": "Decal",
+   "Name": "Playtime cell open",
+   "Description": "Glass Clash Playtime Rewards screen art (Stained Glass)."
+  },
+  {
+   "Key": "playtime_cell_outline",
+   "Path": "assets/ui/screens/playtime_rewards/png/cell_outline.png",
+   "Type": "Decal",
+   "Name": "Playtime cell outline",
+   "Description": "Glass Clash Playtime Rewards screen art (Stained Glass)."
+  },
+  {
+   "Key": "playtime_cell_ready",
+   "Path": "assets/ui/screens/playtime_rewards/png/cell_ready.png",
+   "Type": "Decal",
+   "Name": "Playtime cell ready",
+   "Description": "Glass Clash Playtime Rewards screen art (Stained Glass)."
+  },
+  {
+   "Key": "playtime_gem_best_off",
+   "Path": "assets/ui/screens/playtime_rewards/png/gem_best_off.png",
+   "Type": "Decal",
+   "Name": "Playtime gem best off",
+   "Description": "Glass Clash Playtime Rewards screen art (Stained Glass)."
+  },
+  {
+   "Key": "playtime_gem_best_on",
+   "Path": "assets/ui/screens/playtime_rewards/png/gem_best_on.png",
+   "Type": "Decal",
+   "Name": "Playtime gem best on",
+   "Description": "Glass Clash Playtime Rewards screen art (Stained Glass)."
+  },
+  {
+   "Key": "playtime_gem_off",
+   "Path": "assets/ui/screens/playtime_rewards/png/gem_off.png",
+   "Type": "Decal",
+   "Name": "Playtime gem off",
+   "Description": "Glass Clash Playtime Rewards screen art (Stained Glass)."
+  },
+  {
+   "Key": "playtime_gem_on",
+   "Path": "assets/ui/screens/playtime_rewards/png/gem_on.png",
+   "Type": "Decal",
+   "Name": "Playtime gem on",
+   "Description": "Glass Clash Playtime Rewards screen art (Stained Glass)."
+  },
+  {
+   "Key": "playtime_glow",
+   "Path": "assets/ui/screens/playtime_rewards/png/glow.png",
+   "Type": "Decal",
+   "Name": "Playtime glow",
+   "Description": "Glass Clash Playtime Rewards screen art (Stained Glass)."
+  },
+  {
+   "Key": "playtime_icon_check",
+   "Path": "assets/ui/screens/playtime_rewards/png/icon_check.png",
+   "Type": "Decal",
+   "Name": "Playtime icon check",
+   "Description": "Glass Clash Playtime Rewards screen art (Stained Glass)."
+  },
+  {
+   "Key": "playtime_icon_clock",
+   "Path": "assets/ui/screens/playtime_rewards/png/icon_clock.png",
+   "Type": "Decal",
+   "Name": "Playtime icon clock",
+   "Description": "Glass Clash Playtime Rewards screen art (Stained Glass)."
+  },
+  {
+   "Key": "playtime_icon_lock",
+   "Path": "assets/ui/screens/playtime_rewards/png/icon_lock.png",
+   "Type": "Decal",
+   "Name": "Playtime icon lock",
+   "Description": "Glass Clash Playtime Rewards screen art (Stained Glass)."
+  },
+  {
+   "Key": "playtime_time_tag",
+   "Path": "assets/ui/screens/playtime_rewards/png/time_tag.png",
+   "Type": "Decal",
+   "Name": "Playtime time tag",
+   "Description": "Glass Clash Playtime Rewards screen art (Stained Glass)."
+  },
+  {
+   "Key": "playtime_window",
+   "Path": "assets/ui/screens/playtime_rewards/png/window.png",
+   "Type": "Decal",
+   "Name": "Playtime window",
+   "Description": "Glass Clash Playtime Rewards screen art (Stained Glass)."
+  }
+ ]
+}

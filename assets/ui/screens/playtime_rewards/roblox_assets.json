@@ -1,0 +1,131 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "playtime_bar_fill": {
+   "AssetId": "81555105475564",
+   "Path": "assets/ui/screens/playtime_rewards/png/bar_fill.png",
+   "Sha256": "9fb7248bf1d6b2bfd5e749000554e929bb5afae0b17c668479c213b8d3082729",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:25:19"
+  },
+  "playtime_bar_track": {
+   "AssetId": "107766879726676",
+   "Path": "assets/ui/screens/playtime_rewards/png/bar_track.png",
+   "Sha256": "fb1143a5c8ae0a6b918f45c245d8c0fa0c08b5241407993393c505e89c7c0d22",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:25:24"
+  },
+  "playtime_cell_best": {
+   "AssetId": "136504429102525",
+   "Path": "assets/ui/screens/playtime_rewards/png/cell_best.png",
+   "Sha256": "8be4cf24a73a0ba9e4ba12e6bec951e0fa3e0d192a57579a2fd55d40b415d233",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:25:27"
+  },
+  "playtime_cell_dim": {
+   "AssetId": "82048366010397",
+   "Path": "assets/ui/screens/playtime_rewards/png/cell_dim.png",
+   "Sha256": "15fb9c87e33589da9fdc887fbe42c783224317d556b79eded29207112cc2197c",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:25:30"
+  },
+  "playtime_cell_locked": {
+   "AssetId": "117425286963282",
+   "Path": "assets/ui/screens/playtime_rewards/png/cell_locked.png",
+   "Sha256": "6b2d0ca85bd57f953aa24349cca66741b3e72d606a22e3e4527a1de729ef4e66",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:25:34"
+  },
+  "playtime_cell_open": {
+   "AssetId": "113954142347514",
+   "Path": "assets/ui/screens/playtime_rewards/png/cell_open.png",
+   "Sha256": "9dbbcdefa378bd75b2ff2cddb8a30060598873191cab0eaadf0240d3b3d255f9",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:25:38"
+  },
+  "playtime_cell_outline": {
+   "AssetId": "133618103977731",
+   "Path": "assets/ui/screens/playtime_rewards/png/cell_outline.png",
+   "Sha256": "0f887c58f6abb4cb11af383f8fc8297122e0e956f03d63d9a0d8c419d4657916",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:25:41"
+  },
+  "playtime_cell_ready": {
+   "AssetId": "124739632696378",
+   "Path": "assets/ui/screens/playtime_rewards/png/cell_ready.png",
+   "Sha256": "0149d4e655747a9e6bc14af60c68df67f8f633368665a07e652e3ba23a763486",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:25:45"
+  },
+  "playtime_gem_best_off": {
+   "AssetId": "99567109935181",
+   "Path": "assets/ui/screens/playtime_rewards/png/gem_best_off.png",
+   "Sha256": "0a9339a4f728dcc78dc440f77b563981f9fae5c030044029cf3833d6dc52e6e4",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:25:48"
+  },
+  "playtime_gem_best_on": {
+   "AssetId": "97764530498037",
+   "Path": "assets/ui/screens/playtime_rewards/png/gem_best_on.png",
+   "Sha256": "ce083b5cba9217add1070df669b7cfc3eb8754f47a46dff96a406fdb40b646b0",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:25:53"
+  },
+  "playtime_gem_off": {
+   "AssetId": "121058919709767",
+   "Path": "assets/ui/screens/playtime_rewards/png/gem_off.png",
+   "Sha256": "6be063ea9a3d685d5ca64944e808538efb19dba4b0e92f3fa67ea5d1d4032143",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:25:57"
+  },
+  "playtime_gem_on": {
+   "AssetId": "94215792011414",
+   "Path": "assets/ui/screens/playtime_rewards/png/gem_on.png",
+   "Sha256": "f7aa674971c68f0e930845d55aa2620f80ed944732a1bb99958da2ff95eb824a",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:26:00"
+  },
+  "playtime_glow": {
+   "AssetId": "135203695254889",
+   "Path": "assets/ui/screens/playtime_rewards/png/glow.png",
+   "Sha256": "ecbd76fd3bed89e7ed919026be576d880505269e5a72468d8b7a2cf438d81652",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:26:05"
+  },
+  "playtime_icon_check": {
+   "AssetId": "125870698503076",
+   "Path": "assets/ui/screens/playtime_rewards/png/icon_check.png",
+   "Sha256": "7845797469838ec4add8c1dd0698628db85052d0c777f958c817256f41ec30df",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:26:09"
+  },
+  "playtime_icon_clock": {
+   "AssetId": "112889451006717",
+   "Path": "assets/ui/screens/playtime_rewards/png/icon_clock.png",
+   "Sha256": "e940e82638589ccc85b10585c32d29b5d088b8869fc5c659104446f7534c3a81",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:26:12"
+  },
+  "playtime_icon_lock": {
+   "AssetId": "88071117075872",
+   "Path": "assets/ui/screens/playtime_rewards/png/icon_lock.png",
+   "Sha256": "3bc79ca8bf1e470c8e7f24968fb30d26ca32c583d772263e462cca6e9bac8d18",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:26:15"
+  },
+  "playtime_time_tag": {
+   "AssetId": "118477836247752",
+   "Path": "assets/ui/screens/playtime_rewards/png/time_tag.png",
+   "Sha256": "2f64eb0724314341e4ce077298989639bbfe4ca1d1ed487e6f41458bfb931611",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:26:19"
+  },
+  "playtime_window": {
+   "AssetId": "126260622906559",
+   "Path": "assets/ui/screens/playtime_rewards/png/window.png",
+   "Sha256": "6721fcd136d050a1e3ad41ea55435159ac4f131473222605d6430d670ca6546e",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T19:26:22"
+  }
+ }
+}

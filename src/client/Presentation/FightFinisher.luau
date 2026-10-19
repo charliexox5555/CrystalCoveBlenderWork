@@ -63,16 +63,30 @@ function Finish:Cue(phase, emitter)
 	end
 end
 
-function Finish:Impact()
+-- Starts the finisher show at the impact point. Standard shows start FinisherFX.leadIn seconds before the
+-- winner lands so their gather plays during the flight and their peak lands on the impact.
+function Finish:StartShow()
+	if self.ShowStarted then
+		return
+	end
+	self.ShowStarted = true
 	local scene = self.Scene
 	local id = self:Id()
 	local anchor = Instance.new("Part")
 	anchor.Name, anchor.Size, anchor.Transparency = "FinisherAudio", Vector3.one * 0.1, 1
 	anchor.Anchored, anchor.CanCollide, anchor.CanTouch, anchor.CanQuery = true, false, false, false
 	anchor.Position, anchor.Parent = self.Target, scene.Root
-	Debris:AddItem(anchor, Feel.FinisherFallbackSeconds)
+	Debris:AddItem(anchor, math.max(Feel.FinisherFallbackSeconds, FinisherFX.duration(id) + 1.2))
 	self:Cue("Burst", anchor)
-	FinisherFX.emit(scene.Root, id, self.Target, not scene.Viewing)
+	FinisherFX.emit(scene.Root, id, self.Target, not scene.Viewing, nil, {
+		Post = scene.Viewing,
+		Feel = if scene.Viewing then scene.Feel else nil,
+	})
+end
+
+function Finish:Impact()
+	local scene = self.Scene
+	self:StartShow()
 	local color = self.Winner.Body.Color
 	self.Winner.Trail.Enabled = false
 	self.Winner.Pivot = self.Winner.Model:GetPivot()
@@ -129,6 +143,10 @@ function Finish:Step(now)
 	local rise = math.clamp(t / Feel.FinisherRiseSeconds, 0, 1)
 	local fly = math.clamp((t - Feel.FinisherRiseSeconds) / Feel.FinisherFlySeconds, 0, 1)
 	local pose = self.Start:Lerp(self.Lift, 1 - (1 - rise) ^ 3)
+	local landsIn = Feel.FinisherRiseSeconds + Feel.FinisherFlySeconds - t
+	if landsIn <= FinisherFX.leadIn(self:Id()) then
+		self:StartShow()
+	end
 	if fly > 0 then
 		if not self.FlyCued then
 			self.FlyCued = true

@@ -1,5 +1,7 @@
 -- Reset to the normal arena shot, follow the winner's destination, then return. Finishers may hold
--- longer (CameraHoldSeconds) and kick the camera on their release beat (KickAt, after impact).
+-- longer (CameraHoldSeconds), kick the camera on their release beat (KickAt, after impact), and during the hold
+-- slowly push in (CameraPush, a distance scale) and drift around the impact (CameraOrbit, radians; skipped with
+-- reduced motion).
 local RS = game:GetService("ReplicatedStorage")
 local Feel = require(RS.Shared.Config.Balance).Feel
 local Cosmetics = require(RS.Shared.Config.RoundCosmetics)
@@ -7,6 +9,18 @@ local Camera = {}
 local function ease(t)
 	local x = math.clamp(t, 0, 1)
 	return x * x * (3 - 2 * x)
+end
+local reducedAt, reduced = -math.huge, false
+local function reducedMotion()
+	local now = os.clock()
+	if now - reducedAt > 1 then
+		reducedAt = now
+		local ok, value = pcall(function()
+			return require(script.Parent.Parent.UI.Components.Motion).reduced()
+		end)
+		reduced = ok and value == true
+	end
+	return reduced
 end
 function Camera.pose(finisher, normal, from, now)
 	local age = math.max(0, now - finisher.At)
@@ -23,7 +37,16 @@ function Camera.pose(finisher, normal, from, now)
 	end
 	local focus = finisher.Target + Vector3.yAxis * Feel.FinisherCameraTargetHeight
 	local offset = normal.Position - finisher.Scene.CameraFocus
-	local close = CFrame.lookAt(focus + offset * Feel.FinisherCameraDistanceScale, focus)
+	local held = ease((age - impactAt) / math.max(0.1, hold))
+	local scale = Feel.FinisherCameraDistanceScale
+	if def.CameraPush then
+		scale += (def.CameraPush - scale) * held
+	end
+	offset *= scale
+	if def.CameraOrbit and not reducedMotion() then
+		offset = CFrame.fromAxisAngle(Vector3.yAxis, def.CameraOrbit * held):VectorToWorldSpace(offset)
+	end
+	local close = CFrame.lookAt(focus + offset, focus)
 	local pose = normal:Lerp(close, amount)
 	local kick = def.KickAt and (age - impactAt - def.KickAt) / Feel.FinisherKickSeconds
 	if kick and kick >= 0 and kick < 1 then

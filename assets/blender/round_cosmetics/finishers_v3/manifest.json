@@ -1,0 +1,221 @@
+{
+  "Version": 3,
+  "Meshes": {
+    "FV3_PrismFacet": {
+      "Tris": 18,
+      "RobloxSize": [
+        1.9021,
+        1.809,
+        0.44
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.0955,
+        0.15
+      ]
+    },
+    "FV3_PrismSliver": {
+      "Tris": 24,
+      "RobloxSize": [
+        2.0,
+        0.24,
+        0.2078
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.0,
+        -0.0
+      ]
+    },
+    "FV3_PinataPoint": {
+      "Tris": 44,
+      "RobloxSize": [
+        0.9315,
+        1.1471,
+        0.6375
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.5736,
+        -0.0
+      ]
+    },
+    "FV3_PinataCore": {
+      "Tris": 60,
+      "RobloxSize": [
+        1.4651,
+        1.3934,
+        1.18
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.0657,
+        -0.0
+      ]
+    },
+    "FV3_CandyGem": {
+      "Tris": 72,
+      "RobloxSize": [
+        2.0,
+        0.72,
+        0.72
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.0,
+        -0.0
+      ]
+    },
+    "FV3_FizzCrown": {
+      "Tris": 336,
+      "RobloxSize": [
+        2.306,
+        1.031,
+        2.2482
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.4962,
+        -0.0
+      ]
+    },
+    "FV3_FizzDrops": {
+      "Tris": 280,
+      "RobloxSize": [
+        2.481,
+        0.18,
+        2.4149
+      ],
+      "RobloxCentre": [
+        0.0,
+        1.12,
+        -0.0
+      ]
+    },
+    "FV3_ToyBlock": {
+      "Tris": 156,
+      "RobloxSize": [
+        0.9466,
+        0.9466,
+        0.9466
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.0,
+        -0.0
+      ]
+    },
+    "FV3_BlockLetterB": {
+      "Tris": 820,
+      "RobloxSize": [
+        0.4081,
+        0.5832,
+        0.144
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "FV3_BlockLetterO": {
+      "Tris": 576,
+      "RobloxSize": [
+        0.6259,
+        0.5988,
+        0.144
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.0,
+        -0.0
+      ]
+    },
+    "FV3_BlockLetterM": {
+      "Tris": 356,
+      "RobloxSize": [
+        0.5455,
+        0.5832,
+        0.144
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.0,
+        -0.0
+      ]
+    },
+    "FV3_BurstSign": {
+      "Tris": 188,
+      "RobloxSize": [
+        2.0519,
+        1.9735,
+        0.14
+      ],
+      "RobloxCentre": [
+        -0.0101,
+        -0.0099,
+        -0.0
+      ]
+    },
+    "FV3_StarCore": {
+      "Tris": 32,
+      "RobloxSize": [
+        2.0,
+        2.0,
+        1.4
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.0,
+        -0.0
+      ]
+    },
+    "FV3_StarHaloBand": {
+      "Tris": 384,
+      "RobloxSize": [
+        2.0,
+        2.0,
+        0.08
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.0,
+        -0.0
+      ]
+    },
+    "FV3_StarHaloGems": {
+      "Tris": 112,
+      "RobloxSize": [
+        2.26,
+        2.26,
+        0.15
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.0,
+        -0.025
+      ]
+    },
+    "FV3_NovaRay": {
+      "Tris": 8,
+      "RobloxSize": [
+        2.0,
+        0.32,
+        0.08
+      ],
+      "RobloxCentre": [
+        1.0,
+        0.0,
+        -0.0
+      ]
+    }
+  },
+  "TotalTris": 3466,
+  "Textures": [
+    "textures/StarGlint.png",
+    "textures/SoftGlow.png",
+    "textures/Streak.png",
+    "textures/Bubble.png",
+    "textures/Confetti4x4.png"
+  ]
+}

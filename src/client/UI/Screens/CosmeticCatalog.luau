@@ -120,7 +120,7 @@ function Catalog:PreviewSelected()
 		-- When the burst is over, put the still icon back instead of leaving an empty pane.
 		local id, token = self.Selected, {}
 		self.PreviewToken = token
-		task.delay(Tuning.FinisherSeconds + 0.5, function()
+		task.delay(FX.duration(id) + 0.4, function()
 			if self.PreviewToken == token and self.Selected == id and self.Previewing and self.Root.Parent then
 				self:Detail(id)
 			end

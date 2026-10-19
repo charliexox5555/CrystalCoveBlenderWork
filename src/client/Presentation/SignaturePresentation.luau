@@ -1,205 +1,59 @@
--- Shared native shapes with distinct timelines for traveling attacks and persistent statuses.
+-- Persistent statuses (mark, slow, brine) and glassy detail animation; the v2 power moments live in PowerFX.
 local RS = game:GetService("ReplicatedStorage")
 local Balance = require(RS.Shared.Config.Balance)
 local Visuals = require(RS.Shared.Config.CombatKitVisuals)
-local Path = require(RS.Shared.AttackPath)
+local PowerFX = require(script.Parent.PowerFX)
 local VFX, M = Balance.CombatVFX, Balance.Motion
 local Presentation = {}
 function Presentation.color(f)
+	local visual = Visuals[f.Id]
+	if visual and visual.Color then
+		return Color3.fromHex(visual.Color) -- v2: the power's own colour (the clamp below turned Milk pink)
+	end
 	local h, s, v = Color3.fromHex(f.Def.Tint):ToHSV()
 	return Color3.fromHSV(h, math.max(s, VFX.ColorSaturation), math.max(v, VFX.ColorValue))
 end
-local function vector(a)
-	return Vector3.new(a[1], a[2], a[3])
-end
-local function fan(direction, i, count, arc)
-	local right = direction:Cross(Vector3.yAxis)
-	if right.Magnitude < 0.0001 then
-		return direction
-	end
-	local angle = if count == 1 then 0 else ((i - 1) / (count - 1) - 0.5) * arc
-	return (direction * math.cos(angle) + right.Unit * math.sin(angle)).Unit
-end
-
+-- v2: PowerFX (Kits) draws every shape from the same events; this only keeps per-fighter state and tells
+-- CombatEffects which shapes are "handled" (so it plays the release sound and skips its ray/sweep branch).
+local HANDLED = {
+	heal = true,
+	boost = true,
+	mirror = true,
+	projectile = true,
+	volley = true,
+	cone = true,
+	breath = true,
+	pulse = true,
+	orbit = true,
+}
 function Presentation.release(self, cast, e, color)
 	local f = self.Scene.Fighters[e.Side]
-	local visual = Visuals[f.Id]
-	if table.find({ "heal", "boost", "mirror" }, e.Shape) then
-		cast.Follow = true
-		cast.Aura = self:Mesh(if e.Shape == "boost" then "HalfRing" else "Ring", cast.Root, color)
-		if e.Shape == "boost" and (f.Id == "rocket_pop" or f.Id == "hot_sauce") then
-			cast.Flames =
-				{ self:Mesh("Thorn", cast.Root, Color3.fromHex(VFX.FlameColor)), self:Mesh("Thorn", cast.Root, color) }
-		end
-		return true
-	end
-	if e.Shape == "projectile" or e.Shape == "volley" then
-		cast.Shots = {}
-		local count = if e.Shape == "volley" then e.Pulses or 1 else 1
-		for i = 1, count do
-			local p = self:Mesh(visual.MeshA, cast.Root, color)
-			p.Name, p.Material = "Shot" .. i, Enum.Material.Neon
-			p.Size *= e.Radius * 2 / math.max(p.Size.X, p.Size.Y, p.Size.Z)
-			local a, b = Instance.new("Attachment"), Instance.new("Attachment")
-			a.Position, b.Position = Vector3.xAxis * e.Radius, -Vector3.xAxis * e.Radius
-			a.Parent, b.Parent = p, p
-			local trail = Instance.new("Trail")
-			trail.Attachment0, trail.Attachment1 = a, b
-			trail.Color, trail.Lifetime, trail.LightEmission = ColorSequence.new(color), VFX.SwingTrailSeconds, 1
-			trail.Transparency = NumberSequence.new(0.2, 1)
-			trail.Parent = p
-			local halo = self:Mesh("HalfRing", cast.Root, color)
-			halo.Material = Enum.Material.Neon
-			halo.Name = "ShotHalo" .. i
-			halo.Size *= e.Radius * 2 * VFX.ShotHaloScale / math.max(halo.Size.X, halo.Size.Y, halo.Size.Z)
-			cast.Shots[i] = {
-				Mesh = p,
-				Halo = halo,
-				Direction = fan(cast.Direction, i, count, e.Arc or 0),
-				Trail = trail,
-				Done = e.Resolved and e.Resolved[if e.Path == "return" then 2 else i],
-			}
-		end
-		if f.Id == "comet" then
-			f.EchoUntil = -1
-		end
-		if f.Id == "hourglass" then
-			f.FlipAt = e.Time
-		end
-	elseif e.Shape == "cone" or e.Shape == "breath" then
-		cast.Motes = {}
-		for i = 1, (if f.LowDetail then 2 else VFX.ConeMotes) do
-			local p = self:Mesh(if f.Id == "water_jug" then "Droplet" else "CrystalChip", cast.Root, color)
-			p.Name = "ConeMote" .. i
-			p.Material = Enum.Material.Neon
-			p.Size *= VFX.ConeMoteSize / math.max(p.Size.X, p.Size.Y, p.Size.Z)
-			table.insert(cast.Motes, p)
-		end
-		cast.Sheets = {}
-		for i = 1, 2 do
-			local p = self:Mesh(if f.Id == "water_jug" then "SplashSheet" else "PuffSheet", cast.Root, color)
-			table.insert(cast.Sheets, p)
-		end
-	elseif e.Shape == "pulse" then
-		cast.PulseRings = {
-			self:Mesh("Ring", cast.Root, color),
-			self:Mesh("HalfRing", cast.Root, color),
-			self:Mesh("Ring", cast.Root, color),
-		}
-	elseif e.Shape == "orbit" then
-		cast.Satellites = {}
-		for i = 1, (if f.LowDetail then 2 else 4) do
-			local p = self:Mesh("CrystalChip", cast.Root, Color3.fromHex("#FFE8A9"))
-			p.Size *= VFX.AccentSize / math.max(p.Size.X, p.Size.Y, p.Size.Z)
-			table.insert(cast.Satellites, p)
-		end
-		cast.Orbit = {
-			self:Mesh("Ring", cast.Root, color),
-			self:Mesh("HalfRing", cast.Root, color),
-			self:Mesh("CrystalChip", cast.Root, Color3.fromHex("#FFE8A9")),
-		}
-	else
+	if not HANDLED[e.Shape] then
 		return false
 	end
+	cast.Follow = table.find({ "heal", "boost", "mirror" }, e.Shape) ~= nil
+	if f.Id == "comet" then
+		f.EchoUntil = -1
+	end
+	if f.Id == "hourglass" and (e.Shape == "projectile" or e.Shape == "volley") then
+		f.FlipAt = e.Time
+	end
+	local _ = color
 	return true
 end
 
 function Presentation.contact(cast, e)
-	if cast and cast.Event.Path == "return" and e.Pulse == 1 then
-		return
-	end
-	if cast and cast.Shots and cast.Shots[e.Pulse or 1] then
-		local shot = cast.Shots[e.Pulse or 1]
-		shot.Done, shot.Trail.Enabled, shot.Mesh.Transparency = true, false, 1
-		shot.Halo.Transparency = 1
-	elseif cast and cast.Event.Path == "return" and e.Pulse == 2 then
-		cast.Shots[1].Done = true
-	end
+	-- PowerFX tracks its own shots per CastId (Dispatch: CastContact).
+	local _ = cast
+	local _ = e
 end
 
 function Presentation.step(self, cast, age, alpha)
-	local e, f = cast.Event, self.Scene.Fighters[cast.Side]
-	local color = Presentation.color(f)
-	local progress = math.clamp(age / (e.Duration or 1), 0, 1)
-	if cast.Aura then
-		local y = if e.Shape == "heal" then f.Body.Size.Y * (0.5 - progress) else 0
-		cast.Aura.CFrame = CFrame.new(f.Body.Position + Vector3.yAxis * y)
-			* workspace.CurrentCamera.CFrame.Rotation
-			* CFrame.Angles(0, 0, age * VFX.OrbitSpeed)
-		cast.Aura.Size = self.Assets.Meshes.Ring.Size * f.Body.Size.X * VFX.StatusScale
-		cast.Aura.Transparency = VFX.StatusTransparency + alpha * (1 - VFX.StatusTransparency)
-	end
-	for i, p in cast.Flames or {} do
-		p.Size = self.Assets.Meshes.Thorn.Size
-			* VFX.FlameScale
-			* (1 + math.sin(age * VFX.OrbitSpeed * i) * VFX.DetailPulse)
-		p.CFrame = f.Body.CFrame
-			* CFrame.new((i - 1.5) * VFX.FlameScale, -f.Body.Size.Y / 2, 0)
-			* CFrame.Angles(math.pi, 0, 0)
-		p.Transparency = VFX.ChargeLit + alpha * (1 - VFX.ChargeLit)
-	end
-	for _, shot in cast.Shots or {} do
-		if shot.Done then
-			shot.Mesh.Transparency, shot.Trail.Enabled = 1, false
-			shot.Halo.Transparency = 1
-		else
-			local position = cast.Origin + shot.Direction * e.Range * Path.distance(progress, e.Path)
-			local pose = CFrame.lookAt(position, position + shot.Direction)
-			local facing = CFrame.new(position) * workspace.CurrentCamera.CFrame.Rotation
-			shot.Mesh.CFrame = (if f.Id == "prism_blade" then facing else pose)
-				* CFrame.Angles(0, 0, age * VFX.AccentSpin)
-			shot.Mesh.Transparency = VFX.ChargeLit + alpha * (1 - VFX.ChargeLit)
-			shot.Halo.CFrame = facing * CFrame.Angles(0, 0, -age * VFX.AccentSpin)
-			shot.Halo.Transparency = VFX.StatusTransparency + alpha * (1 - VFX.StatusTransparency)
-		end
-	end
-	for i, p in cast.Motes or {} do
-		local phase = (progress * (e.Pulses or 1) + (i - 1) / #cast.Motes) % 1
-		local distance = e.Range * phase
-		local radius = distance * math.tan(e.Arc / 2) * VFX.ConeSheetScale
-		local angle = i / #cast.Motes * math.pi * 2 + age * VFX.AccentSpin
-		p.CFrame = CFrame.lookAt(cast.Origin, cast.Origin + cast.Direction)
-			* CFrame.new(math.cos(angle) * radius, math.sin(angle) * radius, -distance)
-			* CFrame.Angles(angle, age, angle)
-		p.Transparency = math.clamp(VFX.ChargeLit + phase * VFX.StatusTransparency + alpha, 0, 1)
-	end
-	for i, p in cast.Sheets or {} do
-		local distance = e.Range * i / 2
-		local position = cast.Origin + cast.Direction * distance
-		local width = 2 * distance * math.tan(e.Arc / 2)
-		p.CFrame = CFrame.new(position) * workspace.CurrentCamera.CFrame.Rotation
-		p.Size = Vector3.new(width, width * VFX.ConeSheetScale, p.Size.Z)
-		local pulse = if e.Pulses then (age * e.Pulses / e.Duration) % 1 else progress
-		p.Transparency = math.clamp(VFX.ConeTransparency + pulse * (1 - VFX.ConeTransparency) + alpha, 0, 1)
-	end
-	for i, p in cast.PulseRings or {} do
-		local diameter = math.max(0.05, e.Range * 2 * progress)
-		p.Size = Vector3.new(diameter, diameter, self.Assets.Meshes.Ring.Size.Z)
-		p.CFrame = CFrame.new(cast.Origin)
-			* CFrame.Angles(if i == 2 then math.pi / 2 else 0, if i == 3 then math.pi / 2 else 0, 0)
-		p.Transparency = VFX.StatusTransparency + alpha * (1 - VFX.StatusTransparency)
-	end
-	for i, p in cast.Satellites or {} do
-		local angle = i / #cast.Satellites * math.pi * 2 + age * VFX.AccentSpin
-		local radius = e.Range * (1 - progress)
-		p.CFrame = CFrame.new(
-			cast.Origin
-				+ Vector3.new(
-					math.cos(angle) * radius,
-					math.sin(angle * 2) * radius * VFX.StatusScale,
-					math.sin(angle) * radius
-				)
-		) * CFrame.Angles(angle, age, angle)
-		p.Transparency = VFX.ChargeLit + alpha * (1 - VFX.ChargeLit)
-	end
-	for i, p in cast.Orbit or {} do
-		p.CFrame = CFrame.new(cast.Origin)
-			* workspace.CurrentCamera.CFrame.Rotation
-			* CFrame.Angles(0, 0, age * VFX.OrbitSpeed * (if i == 1 then 1 else -1))
-		local scale = if i == 3 then VFX.StatusScale else e.Range * (1 - progress * VFX.StatusScale)
-		p.Size = self.Assets.Meshes[p.Name].Size * scale
-		p.Transparency = VFX.ChargeLit + alpha * (1 - VFX.ChargeLit)
-	end
+	-- Every v2 shape is stepped by PowerFX from the fight clock.
+	local _ = self
+	local _ = cast
+	local _ = age
+	local _ = alpha
 end
 
 local function persistent(self, f, key, name, active, color)
@@ -225,35 +79,67 @@ local function persistent(self, f, key, name, active, color)
 end
 
 function Presentation.status(self, r, time)
+	-- v2 power moments, Ready / armed states and their cleanup step from the same clock.
+	local ok, err = pcall(function()
+		PowerFX.get(self):Update(r, time)
+	end)
+	if not ok then
+		warn("PowerFX update: " .. tostring(err))
+	end
+	local camera = workspace.CurrentCamera.CFrame
 	for side, f in self.Scene.Fighters do
 		local ef = r.Effect[side] or {}
 		local alive = not f.Broken and not f.Finishing and self.Scene.Viewing == true
-		local color = Presentation.color(f)
-		local mark = persistent(self, f, "Tomato", "Droplet", alive and (ef[4] or 0) > 0, Color3.fromHex("#FFA35B"))
-		if mark then
-			mark.Size = self.Assets.Meshes.Droplet.Size * VFX.StatusScale
-			mark.CFrame = CFrame.new(f.Body.Position + workspace.CurrentCamera.CFrame.ZVector * f.Body.Size.X / 2)
-			mark.Transparency = VFX.ChargeLit
+		local foe = self.Scene.Fighters[3 - side]
+		local foeColor = Presentation.color(foe)
+		local size = math.max(f.Body.Size.X, f.Body.Size.Y)
+		-- Marked (Ketchup): a glossy orange badge with a white ring bobs in front of the target.
+		local marked = alive and (ef[4] or 0) > 0
+		local badge = persistent(self, f, "Tomato", "Droplet", marked, foeColor)
+		local badgeRing = persistent(self, f, "TomatoRing", "Ring", marked, Color3.new(1, 1, 1))
+		if badge then
+			local at = f.Body.Position
+				- camera.LookVector * size * 0.55
+				+ Vector3.yAxis * (size * 0.45 + math.sin(time * 4) * 0.12)
+			badge.Material = Enum.Material.Neon
+			badge.Size = self.Assets.Meshes.Droplet.Size * 1.5 * (1 + math.sin(time * 8) * 0.06)
+			badge.CFrame = CFrame.new(at) * camera.Rotation * CFrame.Angles(0, 0, math.pi)
+			badge.Transparency = 0.02
+			badgeRing.Material = Enum.Material.Neon
+			badgeRing.Size = self.Assets.Meshes.Ring.Size * 0.75
+			badgeRing.CFrame = CFrame.new(at) * camera.Rotation * CFrame.Angles(0, 0, time * 3)
+			badgeRing.Transparency = 0.15
 		end
-		local frost = persistent(self, f, "Slow", "HalfRing", alive and (ef[2] or 0) > 0, Color3.fromHex("#B3F4FF"))
-		if frost then
-			frost.CFrame = CFrame.new(f.Body.Position)
-				* workspace.CurrentCamera.CFrame.Rotation
-				* CFrame.Angles(0, 0, time)
-			frost.Size = self.Assets.Meshes.HalfRing.Size * f.Body.Size.X
-			frost.Transparency = VFX.StatusTransparency
+		-- Slowed: a crown of crystal chips in the slowing kit's colour circles the target.
+		local slowed = alive and (ef[2] or 0) > 0
+		for i = 1, 5 do
+			local chip = persistent(self, f, "Slow" .. i, "CrystalChip", slowed, foeColor)
+			if chip then
+				local a = time * 1.6 + i / 5 * math.pi * 2
+				chip.Material = Enum.Material.Neon
+				chip.Size = self.Assets.Meshes.CrystalChip.Size * 0.9
+				chip.CFrame = CFrame.new(
+					f.Body.Position + Vector3.new(math.cos(a) * size * 0.7, size * 0.35, math.sin(a) * size * 0.7)
+				) * CFrame.Angles(0, -a, 0.4)
+				chip.Transparency = 0.1
+			end
 		end
-		if alive and (ef[2] or 0) > 0 and self.Scene.Fighters[3 - side].Id == "pickle_jar" then
+		if slowed and foe.Id == "pickle_jar" then
 			if not f.Brine or not f.Brine.Parent then
 				local source = Instance.new("Attachment")
 				local target = Instance.new("Attachment")
-				source.Parent, target.Parent = self.Scene.Fighters[3 - side].Body, f.Body
+				source.Parent, target.Parent = foe.Body, f.Body
 				local beam = self.Assets.Beams.BrineTether:Clone()
 				beam.Attachment0, beam.Attachment1, beam.Enabled = source, target, true
-				beam.Color = ColorSequence.new(Color3.fromHex(self.Scene.Fighters[3 - side].Def.Tint))
+				beam.Color = ColorSequence.new(foeColor, Color3.fromHex("#E8FFB0"))
+				beam.Width0, beam.Width1, beam.LightEmission, beam.Segments = 0.5, 0.35, 0.15, 16
+				beam.Texture, beam.Transparency = "", NumberSequence.new(0.1, 0.25)
 				beam.Parent, f.Brine = self.Root, beam
 				f.BrineAttachments = { source, target }
 			end
+			-- A sticky rope that sags and wobbles.
+			f.Brine.CurveSize0 = -1.2 + math.sin(time * 5) * 0.4
+			f.Brine.CurveSize1 = 1.2 + math.sin(time * 5 + 1) * 0.4
 		elseif f.Brine then
 			f.Brine:Destroy()
 			f.Brine = nil
@@ -261,20 +147,6 @@ function Presentation.status(self, r, time)
 				a:Destroy()
 			end
 			f.BrineAttachments = nil
-		end
-		local echo =
-			persistent(self, f, "Echo", "CrystalChip", alive and (f.EchoUntil or -1) > time, Color3.fromHex("#FFE8A9"))
-		if echo then
-			echo.CFrame = CFrame.new(f.EchoPoint) * CFrame.Angles(0, time * VFX.OrbitSpeed, 0)
-			echo.Size = self.Assets.Meshes.CrystalChip.Size * VFX.StatusScale
-		end
-		local mirror =
-			persistent(self, f, "Mirror", "GuardPlate", alive and f.Id == "crystal_tumbler" and (ef[1] or 0) > 0, color)
-		if mirror then
-			mirror.CFrame = CFrame.new(f.Body.Position + workspace.CurrentCamera.CFrame.ZVector * f.Body.Size.X / 2)
-				* workspace.CurrentCamera.CFrame.Rotation
-			mirror.Size = self.Assets.Meshes.GuardPlate.Size * M.GlassyScale * VFX.StatusScale
-			mirror.Transparency = VFX.StatusTransparency
 		end
 		-- Detail animations must never resurrect shattered meshes or snap a flying winner back.
 		if f.Broken or f.Finishing then

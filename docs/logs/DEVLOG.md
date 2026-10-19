@@ -14,6 +14,18 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — Power VFX v2 (workstream E)
+Done:
+- Audited all 24 release kits in Studio Play with a new preview harness (`Dev/PowerVFXPreview`, `tools/studio/preview_power_vfx.luau`) that stages each kit's real event sequence through CombatEffects. Every kit had the same thin rings and flat cards, no Ready state, no lights and no anticipation; the ray was about 7 px wide at the default camera; Lemonade pips were invisible; Milk was pink. Direction doc: `docs/vfx/POWER_VFX_V2.md`.
+- New `Presentation/PowerFX/` (engine, shapes, states, kits, dispatch, launch kit), `Config/PowerVFX`, and `Color`/`Accent` per kit in `CombatKitVisuals`. Effects step from the fight clock and use pooled meshes, particle sockets and lights. There is a low-detail branch, and cleanup runs at round end. HeroPowers routes every event through `Hero.state` (hook from B). SignaturePresentation keeps the statuses (mark badge, slow crown, thicker brine rope). SignatureAccent's generic accents are retired.
+- Ready aura on every kit, scaling with rarity: halo, outline, quickening pulse, a tighten before AutoAt, orbiters from Rare up, stars and a ground ring for Legendary/Mythic. Manual-cast flourish vs a plain auto ring. Armed bands until payoff, ArmedFade or timeout. Split with B: B owns the screen layer.
+- Per-kit moments by tier: two-stage anticipation for Epic and up; bloom, ground ring and hero meshes for Comet, Dragon and Galaxy. Launch kit (zone with ground ring and shadow, predicted strike, drain beam, brew, roar, rainbow dash, pierce, rebirth) is ready to wire once A ships the event fields.
+- Verified in Play: 27 after-captures; live AllBots matches with no PowerFX errors; 0 leftovers 2.5 s after each Shatter; PowerFX at most 0.17 ms per fight per frame on average (0.8 ms worst frame); the whole controller averages 1.4–1.7 ms with 7 arenas. Report: `docs/testing/power_vfx/README.md`. Lune 155/155.
+Next:
+- Creator feel review; a real phone Device Emulator pass; sounds for the `-- SFX:` cues (B); wire the launch kit when A's zone / drain / Cycle / Riposte / PierceGuard / Rebirth fields land.
+Problems / questions for the user:
+- The Studio MCP can't switch Device Emulator presets, so the phone check used a downscaled capture.
+
 ## 2026-10-19 — Claude — Combat feel pass (workstream B)
 Done:
 - New `Config/CombatFeel` + `Presentation/CombatFeel`. Hits are tiered Glance/Solid/Smash/Crit/Block, each with its own pooled impact (rewritten `ImpactBeat.tier`), layered sound with pitch jitter, client hitstop (45-105 ms, proportional catch-up, never a jump), camera kick/trauma shake/FOV punch over the orbit pose (capped at 0.3 studs / -6°), glass wobble/jolt/white flash/crack glint on the struck glassy and recoil on the striker.

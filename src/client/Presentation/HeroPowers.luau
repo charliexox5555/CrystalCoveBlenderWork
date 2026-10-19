@@ -1,7 +1,20 @@
 -- Physical hero props and motion stay cosmetic; server facts own their timing and outcomes.
 local B = require(game.ReplicatedStorage.Shared.Config.Balance)
+local PowerFX = require(script.Parent.PowerFX)
+local PV = require(game.ReplicatedStorage.Shared.Config.PowerVFX)
 local VFX, M = B.CombatVFX, B.Motion
 local Hero = {}
+
+-- Every fight event, before CombatEffects filters them (hook added by workstream B): Ready / armed / cancel state and
+-- the v2 per-kit moments (PowerFX, docs/vfx/POWER_VFX_V2.md).
+function Hero.state(self, e)
+	local ok, err = pcall(function()
+		PowerFX.get(self):Event(e)
+	end)
+	if not ok then
+		warn("PowerFX event " .. tostring(e.Type) .. ": " .. tostring(err))
+	end
+end
 local function size(p, diameter)
 	p.Size *= diameter / math.max(p.Size.X, p.Size.Y, p.Size.Z)
 end
@@ -44,6 +57,8 @@ function Hero.init(self, f)
 		if p.Name:find("Cap") or p.Name:find("LidRidge") then
 			local copy = p:Clone()
 			copy.Transparency, copy.Parent = 1, lid
+			-- v2: the raised lid reads as a bright gold shield, not a dull disc.
+			copy.Color = copy.Color:Lerp(Color3.fromHex("#FFD45A"), 0.45)
 			table.insert(f.LidParts, { Mesh = copy, Original = p, Rest = rest })
 			if p.Name:find("Cap") then
 				f.LidCenter = rest.Center
@@ -62,16 +77,27 @@ function Hero.ray(self, cast, color)
 	if f.Id == "prism" then
 		f.RayAim, f.RayAimUntil = cast.Direction, cast.Time + VFX.RayReadSeconds
 	end
-	cast.RayRings = {}
-	for i = 1, (if f.LowDetail then 1 else VFX.RayRingCount) do
-		local tint = if f.Id == "prism" then Color3.fromHSV((i - 1) / VFX.RayRingCount, 0.7, 1) else color
-		local p = self:Mesh("Ring", cast.Root, tint)
-		p.Name, p.Material = "RayRefraction", Enum.Material.Neon
-		size(p, VFX.RayRingSize)
-		table.insert(cast.RayRings, p)
+	-- PowerFX draws the ray (thick core + sheath that thins out); keep CombatEffects' locked beam as data only.
+	for _, beam in { cast.Beam, cast.Halo } do
+		if beam then
+			beam.Enabled = false
+		end
 	end
+	local _ = color
 end
 function Hero.guard(self, f, active)
+	-- Scene:EndRoundEffects (Shatter / HideBroken) lands here with active = false: end every power moment now,
+	-- even if the render clock has stopped at the final snapshot.
+	if not active and self.PowerFX then
+		local fighters = self.Scene.Fighters
+		if fighters[1].Broken or fighters[2].Broken or f.Finishing then
+			self.PowerFX:StopAll()
+		end
+	end
+	if f.Id == "glass_duck" then
+		f.SignatureGuard.Transparency = 1 -- PowerFX draws the bubble
+		return
+	end
 	if f.Id ~= "jam" or not f.HeroLid or not f.HeroLid.Parent then
 		return
 	end
@@ -101,6 +127,11 @@ function Hero.guard(self, f, active)
 end
 function Hero.start(self, cast, e, color)
 	local f = self.Scene.Fighters[e.Side]
+	-- The v2 kits replace the shared windup / pressure rings. Unparent rather than destroy: CombatEffects still
+	-- reads the ring's colour and steps its size.
+	if cast.Ring and f.Id ~= "hollowlight" then
+		cast.Ring.Parent = nil
+	end
 	if f.Id == "prism" and e.Type == "CastStart" then
 		f.RayAim = if e.Direction
 			then self.Scene.Frame:VectorToWorldSpace(Vector3.new(table.unpack(e.Direction))).Unit
@@ -113,21 +144,10 @@ function Hero.start(self, cast, e, color)
 			else self.Scene.Frame.RightVector * (if cast.Side == 1 then 1 else -1)
 		Hero.weapon(self, cast, color)
 	elseif f.Id == "hourglass" then
+		-- The rewinding clock face is PowerFX (Kits.hourglass); the body still spins through the windup.
 		if e.Type == "CastStart" then
 			f.HealSpinAt, f.HealSpinSeconds = e.Time, e.Windup
 		end
-		cast.Clock = {}
-		for i = 1, (if f.LowDetail then 4 else VFX.ClockTicks) do
-			local p = self:Mesh("CrystalChip", cast.Root, Color3.fromHex(VFX.HealColor))
-			p.Name, p.Material = "ClockTick", Enum.Material.Neon
-			size(p, 0.22)
-			table.insert(cast.Clock, p)
-		end
-		cast.ClockRing = self:Mesh("Ring", cast.Root, Color3.fromHex(VFX.HealColor))
-		cast.ClockRing.Name, cast.ClockRing.Material = "HealClock", Enum.Material.Neon
-		size(cast.ClockRing, VFX.ClockSize)
-		cast.ClockSize = cast.ClockRing.Size
-		cast.ClockRelease = e.Type == "CastRelease"
 	elseif e.Type == "SignatureContact" and f.Id == "pop" then
 		f.PopAt, f.PopCapUntil = e.Time, e.Time + VFX.HeroRecoilSeconds
 		cast.Caps = {}
@@ -138,19 +158,11 @@ function Hero.start(self, cast, e, color)
 				table.insert(cast.Caps, { Mesh = copy, Base = p.CFrame })
 			end
 		end
-		cast.Waves = { self:Mesh("Ring", cast.Root, color), self:Mesh("BubbleDome", cast.Root, color) }
 		cast.EndAt = e.Time + VFX.HeroRecoilSeconds + VFX.Tail
 	end
 end
 function Hero.step(self, cast, age, alpha)
 	local e, f = cast.Event, self.Scene.Fighters[cast.Side]
-	for i, p in cast.RayRings or {} do
-		local t = i / (#cast.RayRings + 1)
-		local point = cast.Origin:Lerp(cast.Endpoint.Position, t)
-		p.CFrame = CFrame.lookAt(point, point + cast.Direction + workspace.CurrentCamera.CFrame.ZVector * 0.35)
-			* CFrame.Angles(0, 0, age * 3 + i)
-		p.Transparency = 0.15 + alpha * 0.85
-	end
 	if cast.Weapon then
 		local progress = math.clamp(age / (if cast.Winding then e.Windup else e.Duration), 0, 1)
 		local arc = if cast.Winding then B.CombatRelease.Kits.crescent_axe.Arc else e.Arc
@@ -172,35 +184,12 @@ function Hero.step(self, cast, age, alpha)
 			end
 		end
 	end
-	if cast.Clock then
-		local progress = math.clamp(age / (if cast.ClockRelease then e.Duration else e.Windup), 0, 1)
-		local basis = CFrame.new(f.Body.Position) * workspace.CurrentCamera.CFrame.Rotation
-		local radius = VFX.ClockSize / 2 * (if cast.ClockRelease then 1 + progress * 0.4 else 1)
-		for i, p in cast.Clock do
-			local angle = i / #cast.Clock * math.pi * 2 + progress * math.pi * 2
-			p.CFrame = basis
-				* CFrame.new(math.cos(angle) * radius, math.sin(angle) * radius, 0)
-				* CFrame.Angles(0, 0, angle)
-			p.Transparency = if cast.ClockRelease then progress else 0.12
-		end
-		cast.ClockRing.CFrame = basis
-		cast.ClockRing.Size = cast.ClockSize * (if cast.ClockRelease then 1 + progress * 0.4 else 1)
-		cast.ClockRing.Transparency = if cast.ClockRelease then progress else 0.25
-	end
 	for _, entry in cast.Caps or {} do
 		local progress = math.clamp(age / VFX.HeroRecoilSeconds, 0, 1)
 		entry.Mesh.CFrame = entry.Base
-			* CFrame.new(0, math.sin(progress * math.pi) * VFX.PopCapLift, 0)
-			* CFrame.Angles(0, progress * math.pi * 2, 0)
+			* CFrame.new(0, math.sin(progress * math.pi) * PV.Motion.PopCapLift, 0)
+			* CFrame.Angles(progress * math.pi * 1.5, progress * math.pi * 4, 0)
 		entry.Mesh.Transparency = if progress > 0.8 then (progress - 0.8) / 0.2 else 0.1
-	end
-	for i, p in cast.Waves or {} do
-		local progress = math.clamp(age / VFX.HeroRecoilSeconds, 0, 1)
-		local spread = 1 - (1 - progress) ^ 3
-		local diameter = 0.3 + VFX.PopWaveSize * spread
-		p.Size = self.Assets.Meshes[if i == 1 then "Ring" else "BubbleDome"].Size * diameter / 2
-		p.Material, p.CFrame = Enum.Material.Neon, CFrame.new(cast.Origin) * workspace.CurrentCamera.CFrame.Rotation
-		p.Transparency = (if i == 1 then 0.15 else 0.8) + progress * (if i == 1 then 0.85 else 0.2)
 	end
 end
 function Hero.details(self, f)
@@ -244,6 +233,6 @@ function Hero.motion(f, time)
 			kick += math.sin(t * math.pi) * (1 - t) * VFX.HeroRecoilAngle * 0.6
 		end
 	end
-	return CFrame.Angles(0, twist, kick)
+	return CFrame.Angles(0, twist, kick) * PowerFX.motion(f, time)
 end
 return Hero

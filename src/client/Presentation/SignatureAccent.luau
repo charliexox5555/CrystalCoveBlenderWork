@@ -4,7 +4,8 @@ local Visuals = require(game.ReplicatedStorage.Shared.Config.CombatKitVisuals)
 local Accent = {}
 function Accent.create(self, cast, mode, color)
 	local f = self.Scene.Fighters[cast.Side]
-	if f.LowDetail then
+	-- v2: every kit's windup / release / impact accents come from PowerFX (Kits.gather, kit moments).
+	if f.LowDetail or Visuals[f.Id] then
 		return
 	end
 	cast.Accent = { Mode = mode, Chips = {}, Rings = {} }

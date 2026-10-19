@@ -12,7 +12,7 @@
 | Dragonfly | Rare | HandleSit | 71158262594750 | 0.0000 | 4 wing shimmer trails, dew sparkles |
 | Carousel | Epic | HandleSit | 77529806457590 | 0.0000 | pony `Bob` + `RiderMount = Pony`, spinning canopy, music twinkles; kept out of the Daily Store Robux rotation (no Epic Standard flyer product yet, A to decide) |
 | Sunwing | Legendary | Kneel | 95984254159798 | exact | feather-glass wings, sun-ray trails; out of the Daily Store rotation (no product for that band) |
-| Starwhale | Mythic | Sit | 118738400073939 | exact | inner galaxy; Body 0.30 → 0.45 and BodyCore 0.35 → 0.65 transparency so the stars read (installer override); whale-song loop is the licensed APM library track 1841333389; out of the Daily Store rotation |
+| Starwhale | Mythic | Sit | 118738400073939 | exact | inner galaxy; Body 0.30 → 0.45 and BodyCore 0.35 → 0.65 transparency so the stars read (in F's manifest since f4d47a7); whale-song loop is the licensed APM library track 1841333389; out of the Daily Store rotation |
 | (no flyer) | — | Stand | `Assets.RideStand` | — | faint glass hover pad with shimmer; Stand family uploaded (10 assets) |
 
 Catalog entries in `Config/RoundCosmetics` (G committed the "No Flyer" catalog entry).

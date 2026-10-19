@@ -75,7 +75,8 @@ DailyStore.RobuxProducts = {
 DailyStore.Excluded = {
 	Glassies = { hollowlight = true },
 	Finishers = { lantern_eclipse = true },
-	Rideables = { lantern_skiff = true },
+	-- carousel: first Epic Standard-band flyer; no Robux product for that band yet (A/creator to decide).
+	Rideables = { lantern_skiff = true, carousel = true },
 }
 
 -- Limited bundles. The first entry with Featured = true headlines the Featured page; others are

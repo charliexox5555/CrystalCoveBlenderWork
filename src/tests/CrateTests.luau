@@ -9,26 +9,40 @@ local Schema = if script
 	then require(game.ServerScriptService.Server.Data.ProfileSchema)
 	else require("../server/Data/ProfileSchema")
 return function(t)
-	t.test("both cosmetic currencies expose identical complete pools with normalized exact odds", function()
+	t.test("Marble crates hold every cosmetic; Coin crates every rarity with a Coin weight (decision 95)", function()
+		local B = require(if script then game.ReplicatedStorage.Shared.Config.Balance else "../shared/Config/Balance")
 		for _, category in { "Finishers", "Rideables" } do
 			local coins, marbles = R.odds(category, "Coins"), R.odds(category, "Marbles")
-			t.eq(#coins, #C[category])
-			t.eq(#marbles, #coins)
-			local a, b = 0, 0
-			for i, entry in coins do
-				t.eq(entry.Id, marbles[i].Id)
-				t.ok(entry.Chance > 0 and marbles[i].Chance > 0)
+			t.eq(#marbles, #C[category], category .. " Marble pool is complete")
+			local inMarbles, a, b, expected = {}, 0, 0, 0
+			for _, entry in marbles do
+				t.ok(entry.Chance > 0)
+				inMarbles[entry.Id] = true
+				b += entry.Chance
+			end
+			for _, def in C[category] do
+				if (B.Crates.CoinWeights[def.Rarity] or 0) > 0 then
+					expected += 1
+				end
+			end
+			t.eq(#coins, expected, category .. " Coin pool = items whose rarity has a Coin weight")
+			for _, entry in coins do
+				t.ok(entry.Chance > 0 and inMarbles[entry.Id], entry.Id)
 				a += entry.Chance
-				b += marbles[i].Chance
 			end
 			t.ok(math.abs(a - 1) < 0.000001 and math.abs(b - 1) < 0.000001)
-			for first = 2, #coins do
-				local ca, ma = 0, 0
-				for i = first, #coins do
-					ca += coins[i].Chance
-					ma += marbles[i].Chance
+			-- Marbles improve every high-rarity tail: P(rarity >= r) is higher for each r above Common.
+			for _, r in { "Uncommon", "Rare", "Epic", "Legendary" } do
+				local floor, ca, ma = B.Rarities[r].Order, 0, 0
+				for _, e in coins do
+					ca += if B.Rarities[e.Rarity].Order >= floor then e.Chance else 0
 				end
-				t.ok(ma > ca, "Marbles improve high-rarity tails")
+				for _, e in marbles do
+					ma += if B.Rarities[e.Rarity].Order >= floor then e.Chance else 0
+				end
+				if ma > 0 then
+					t.ok(ma > ca, category .. " Marbles improve the " .. r .. "+ tail")
+				end
 			end
 		end
 	end)

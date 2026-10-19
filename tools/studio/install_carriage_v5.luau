@@ -129,6 +129,13 @@ end
 local chain = new:FindFirstChild("LanternChain", true)
 chain:SetAttribute("RideMotion", "Swing")
 chain:SetAttribute("SwingPivot", chain.CFrame:PointToObjectSpace(hinge))
+-- Hand grips for the HandleSit ride animation (workstream H IK): top tube corners of the handlebar.
+local bar = new:FindFirstChild("Handlebar", true)
+for name, x in { GripL = -0.62, GripR = 0.62 } do
+	local g = Instance.new("Attachment")
+	g.Name, g.Parent = name, bar
+	g.WorldCFrame = pivot0.Rotation + pivot0:PointToWorldSpace(Vector3.new(x, 1.46, -1.74))
+end
 new:SetAttribute("Version", 5)
 new:SetAttribute("SourceAssetId", "85604557082927")
 new.Name = "moonlantern_carriage"

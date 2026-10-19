@@ -212,7 +212,7 @@ return function(t, d)
 		R.tick(s, 0.84)
 		t.near(f.Hp, before, 1e-6, "no premature heal")
 		R.tick(s, 0.02)
-		t.near(f.Hp - before, f.MaxHp * 0.07, 1e-6)
+		t.near(f.Hp - before, f.MaxHp * d.Balance.CombatRelease.Kits.hourglass.Heal, 1e-6)
 		t.eq(#R.drainCasts(s), 0, "heal replaces ranged sand attack")
 		R.tick(s, 1)
 		for _ = 1, 6 do

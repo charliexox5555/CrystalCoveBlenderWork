@@ -20,6 +20,22 @@ function Controller:Init(controllers)
 	self.Controllers, self.Player = controllers, Players.LocalPlayer
 end
 
+-- The lobby HUD (currency, shop, PLAY and its hint) hides in a match, the queue, results and while watching.
+-- A fight HUD on screen also hides it, whatever the attributes say: its camera hint sits right where the
+-- PLAY hint does, so the two must never show together.
+local function fightHudShown(pg)
+	local fight = pg:FindFirstChild("FightHud")
+	return fight ~= nil and fight:IsA("ScreenGui") and fight.Enabled
+end
+
+local function hudHidden(pg)
+	return pg:GetAttribute("InMatch")
+		or pg:GetAttribute("Queued")
+		or pg:GetAttribute("ResultsOpen")
+		or pg:GetAttribute("Watching")
+		or fightHudShown(pg)
+end
+
 function Controller:Close()
 	if self.Screen then
 		self.Screen:Destroy()
@@ -30,10 +46,7 @@ function Controller:Close()
 		self.PanelOpen = false
 	end
 	if self.Gui then
-		self.Gui.Enabled = not self.Player.PlayerGui:GetAttribute("InMatch")
-			and not self.Player.PlayerGui:GetAttribute("Queued")
-			and not self.Player.PlayerGui:GetAttribute("ResultsOpen")
-			and not self.Player.PlayerGui:GetAttribute("Watching")
+		self.Gui.Enabled = not hudHidden(self.Player.PlayerGui)
 	end
 end
 
@@ -116,11 +129,10 @@ function Controller:Start()
 	self.Marbles = hud.Marbles
 	local function inMatch()
 		-- Queued players see only the queue panel: the lobby HUD (currency, shop, PLAY...) is hidden until they leave.
-		self.Gui.Enabled = not pg:GetAttribute("InMatch")
-			and not pg:GetAttribute("Queued")
-			and not pg:GetAttribute("ResultsOpen")
-			and not pg:GetAttribute("Watching")
-		if not self.Gui.Enabled then
+		local hidden = hudHidden(pg)
+		-- An open panel keeps the HUD tucked away (PanelOpened) until it closes.
+		self.Gui.Enabled = not hidden and not self.PanelOpen
+		if hidden then
 			self:Close()
 		else
 			-- Coming back from a match/queue/results: any gains waiting while the HUD was hidden play now.
@@ -137,6 +149,29 @@ function Controller:Start()
 	pg:GetAttributeChangedSignal("Queued"):Connect(inMatch)
 	pg:GetAttributeChangedSignal("ResultsOpen"):Connect(inMatch)
 	pg:GetAttributeChangedSignal("Watching"):Connect(inMatch)
+	-- Only react when a fight HUD actually appears or goes away, so an open panel isn't disturbed.
+	local fightShown = fightHudShown(pg)
+	local function fightChanged()
+		if fightHudShown(pg) ~= fightShown then
+			fightShown = not fightShown
+			inMatch()
+		end
+	end
+	local function track(child)
+		if child.Name == "FightHud" and child:IsA("ScreenGui") then
+			child:GetPropertyChangedSignal("Enabled"):Connect(fightChanged)
+			fightChanged()
+		end
+	end
+	for _, child in pg:GetChildren() do
+		track(child)
+	end
+	pg.ChildAdded:Connect(track)
+	pg.ChildRemoved:Connect(function(child)
+		if child.Name == "FightHud" then
+			fightChanged()
+		end
+	end)
 	inMatch()
 	Remotes.ProfileSnapshot.OnClientEvent:Connect(function(profile)
 		local changed = false

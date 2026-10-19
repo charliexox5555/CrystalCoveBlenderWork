@@ -14,6 +14,13 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — Decision 95 client side: Basic Shatter, No Flyer; Emberwing in the catalog (workstream G)
+Done:
+- Fights treat "" as the basic finisher: the winner flies in and breaks, with no show, no finisher sounds and the default camera.
+- Inventory lists "Basic Shatter" (always owned, equips "") with a short preview show and still, and "No Flyer" for H.
+- Emberwing moved into the catalog after A's crate-test update.
+- Studio: a nothing-equipped real round plus 13 inventory checks pass. Report: `docs/testing/finishers_v3_launch/README.md`. Lune 164/164.
+
 ## 2026-10-19 — Claude — UI text fit (workstream J)
 Done:
 - Every UI text now stays inside its button, label or panel (decision 97, Proposed).
@@ -29,6 +36,7 @@ Done:
   - Kiln 10-pull reveal: "OWNED ×N".
   - Roll message line now shrinks to fit.
   - Shop card names: the bottoms of g and y are no longer cut.
+  - Lobby HUD now hides whenever a fight HUD is on screen, so the PLAY hint ("joins the nearest free arena") and the fight camera hint ("Drag or Q / E to rotate the camera") can't overlap at bottom-centre (reported by A). Checked in Play, including with a panel open.
 - StarterGui templates: `tools/studio/fit_ui_templates.luau` raised 96 minimums of 1–8 px to 10 px. It is reversible: `restore` mode, with backups in the `TextFitBackup` attribute.
 - Audit:
   - Scanner (`tools/studio/ui_text_fit_scan.luau`) and fixture (`ui_text_fit_fixture.luau`) cover 19 screen states, with phone and tablet estimates and a +40% string stress test.

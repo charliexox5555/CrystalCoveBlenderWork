@@ -1,0 +1,40 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "pop_bundle": {
+   "AssetId": "100335419925716",
+   "Path": "assets/blender/glassies/pop/v4/pop_bundle.fbx",
+   "Sha256": "1361f8f5830233c4d0a16da958d263abb0e6550df78886d68da2e36fc81ba619",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:28:41"
+  },
+  "pop_icon": {
+   "AssetId": "102157459551932",
+   "Path": "assets/blender/glassies/pop/v4/pop_icon.png",
+   "Sha256": "fea5956d64038b403dd079aed8a25f4768fa270cdcdde113c2034c4c2c79933d",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:28:44"
+  },
+  "jam_bundle": {
+   "AssetId": "121752845775561",
+   "Path": "assets/blender/glassies/jam/v4/jam_bundle.fbx",
+   "Sha256": "ea09a0b4e1eff135b7c330e8f9368968ae40cc027259c7434fb3b708b732f266",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:28:58"
+  },
+  "jam_icon": {
+   "AssetId": "97917357929982",
+   "Path": "assets/blender/glassies/jam/v4/jam_icon.png",
+   "Sha256": "aad9787e3b09f84e552e6cde7c5fcd7372dfb86122ea3842c752eaae11aab33d",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:29:05"
+  },
+  "prism_bundle": {
+   "AssetId": "88028786091300",
+   "Path": "assets/blender/glassies/prism/v4/prism_bundle.fbx",
+   "Sha256": "c7a4e0b797448d58289836c3bdf9d7f988fc5e56653bae461dae7b2b1228ba99",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:29:20"
+  }
+ }
+}

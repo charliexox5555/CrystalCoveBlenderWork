@@ -85,6 +85,7 @@ def main():
         sys.exit(0 if check(key) else 1)
     spec = json.load(open(sys.argv[1]))
     only = set(sys.argv[2:])
+    failed = []
     record_path = os.path.join(REPO, spec["Record"])
     record = json.load(open(record_path)) if os.path.exists(record_path) else {"Group": GROUP, "Assets": {}}
     for item in spec["Items"]:
@@ -95,7 +96,20 @@ def main():
         if prev and prev.get("Sha256") == sha:
             print(item["Key"], "unchanged", prev["AssetId"])
             continue
-        asset, sha, moderation = upload(item, key)
+        asset = None
+        for attempt in range(4):
+            try:
+                asset, sha, moderation = upload(item, key)
+                break
+            except (urllib.error.URLError, ConnectionError, TimeoutError, OSError) as err:
+                # Slow or flaky connections drop large FBX uploads; back off and retry.
+                wait = 15 * (attempt + 1)
+                print(item["Key"], "retry", attempt + 1, "after", type(err).__name__, "- waiting", wait, "s", flush=True)
+                time.sleep(wait)
+        if asset is None:
+            print(item["Key"], "FAILED after retries (run the same command again later)", flush=True)
+            failed.append(item["Key"])
+            continue
         record["Assets"][item["Key"]] = {
             "AssetId": asset,
             "Path": item["Path"],
@@ -103,10 +117,12 @@ def main():
             "Moderation": moderation,
             "Uploaded": time.strftime("%Y-%m-%dT%H:%M:%S"),
         }
-        print(item["Key"], asset, moderation)
+        print(item["Key"], asset, moderation, flush=True)
         os.makedirs(os.path.dirname(record_path), exist_ok=True)
         with open(record_path, "w") as fh:
             json.dump(record, fh, indent=1)
+    if failed:
+        sys.exit("failed: " + " ".join(failed))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,29 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "skyboard": {
+   "AssetId": "139742118431979",
+   "Sha256": "fa6fef7d01fc03f60a49edec31c03fc277089e68eabb75ec98543435a0cb8468",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:30:52"
+  },
+  "cloud_cushion": {
+   "AssetId": "80173522623643",
+   "Sha256": "6037af8dd6186e90f035e15460ee7a758e58541fe22d3323b1c0bec630663a03",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:31:10"
+  },
+  "rocket_skiff": {
+   "AssetId": "101000283449232",
+   "Sha256": "28e9a0de7e1a85a31fee4fa0fa7f6d78a95fb5b322e7cadc3103ca2ada7cdd1d",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:31:22"
+  },
+  "prism_ray": {
+   "AssetId": "88678420214260",
+   "Sha256": "d391d571c9b3019cf153eaaa45ddf73e7ce1900a767a5e7f203d939d68eea63c",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:31:36"
+  }
+ }
+}

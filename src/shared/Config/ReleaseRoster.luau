@@ -1,5 +1,5 @@
 --!strict
--- Fixed creator-approved release manifest. Dormant definitions and ownership are preserved.
+-- Creator-approved release manifest (24 + 12 launch glassies, decisions 58 and 88). Dormant definitions and ownership are preserved.
 local ids = {
 	"pop",
 	"jam",
@@ -25,6 +25,19 @@ local ids = {
 	"comet",
 	"glass_dragon",
 	"galaxy_orb",
+	-- Roster V2 launch glassies (decision 88), installed at v4 on Oct 19.
+	"fishbowl",
+	"cookie_jar",
+	"glass_top",
+	"bubble_wand",
+	"piggy_bank",
+	"light_bulb",
+	"potion_flask",
+	"honey_bear",
+	"crystal_ball",
+	"grizzly_guardian",
+	"glass_unicorn",
+	"glass_phoenix",
 }
 local byId: { [string]: boolean } = {}
 for _, id in ids do

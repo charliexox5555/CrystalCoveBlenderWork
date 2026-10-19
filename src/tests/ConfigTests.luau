@@ -73,7 +73,20 @@ return function(t, deps)
 	end)
 
 	t.test("no alcohol in names or descriptions", function()
-		local banned = { "beer", "wine", "champagne", "vodka", "whisk", "rum ", "liquor", "sake", "cocktail", "booze", "tequila", "gin " }
+		local banned = {
+			"beer",
+			"wine",
+			"champagne",
+			"vodka",
+			"whisk",
+			"rum ",
+			"liquor",
+			"sake",
+			"cocktail",
+			"booze",
+			"tequila",
+			"gin ",
+		}
 		local function check(id: string, text: string)
 			text = string.lower(text .. " ")
 			for _, word in banned do
@@ -81,7 +94,18 @@ return function(t, deps)
 			end
 		end
 		for _, g in Glassies.List do
-			check(g.Id, g.Id .. " " .. g.Name .. " " .. g.Description .. " " .. (g.PassiveName or "") .. " " .. (g.SpecialName or ""))
+			check(
+				g.Id,
+				g.Id
+					.. " "
+					.. g.Name
+					.. " "
+					.. g.Description
+					.. " "
+					.. (g.PassiveName or "")
+					.. " "
+					.. (g.SpecialName or "")
+			)
 		end
 		for _, list in { Powers.Passives, Powers.Specials } do
 			for id, def in list do
@@ -127,7 +151,10 @@ return function(t, deps)
 	t.test("marble packs get better value as they grow", function()
 		local packs = Balance.Economy.MarblePacks
 		for i = 2, #packs do
-			t.ok(packs[i].Marbles / packs[i].Robux >= packs[i - 1].Marbles / packs[i - 1].Robux, "pack " .. i .. " value")
+			t.ok(
+				packs[i].Marbles / packs[i].Robux >= packs[i - 1].Marbles / packs[i - 1].Robux,
+				"pack " .. i .. " value"
+			)
 		end
 	end)
 end

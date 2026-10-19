@@ -46,7 +46,7 @@ return function(t, deps)
 			local s = fight(id, "pop")
 			t.ok(s.Fighters[1].Signature ~= nil, id .. " kit")
 			t.ok(s.Fighters[1].Radius > 0, id .. " geometry")
-			t.ok(not deps.Glassies.isRelease(id), id .. " stays out of the live roster until imported")
+			t.ok(deps.Glassies.isRelease(id), id .. " is in the live roster (installed at v4)")
 		end
 	end)
 

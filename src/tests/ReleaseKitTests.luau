@@ -36,7 +36,7 @@ return function(t, d)
 			t.ok(s.Fighters[1].Radius > 0 and s.Fighters[1].BodyCenter > 0)
 			count += 1
 		end
-		t.eq(count, 24)
+		t.eq(count, 36)
 	end)
 	t.test("milk repairs once per threshold, cannot revive and low-health duck guards only one body hit", function()
 		local s = fight("milk_bottle", "pop")

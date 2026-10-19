@@ -74,7 +74,10 @@ return function(t, deps)
 		end
 		local order = Formula.crateOdds()
 		for i = 2, #order do
-			t.ok(byRarity[order[i].Rarity] < byRarity[order[i - 1].Rarity], order[i].Rarity .. " glassies are rarer than " .. order[i - 1].Rarity)
+			t.ok(
+				byRarity[order[i].Rarity] < byRarity[order[i - 1].Rarity],
+				order[i].Rarity .. " glassies are rarer than " .. order[i - 1].Rarity
+			)
 		end
 	end)
 end

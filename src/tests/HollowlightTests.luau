@@ -22,7 +22,7 @@ return function(t, d)
 		local def = G.get("hollowlight")
 		t.ok(G.isSeasonal("hollowlight") and not G.isRelease("hollowlight"))
 		t.eq(def.Rarity, "Epic")
-		t.eq(#G.ReleaseList, 24)
+		t.eq(#G.ReleaseList, 36)
 		for _, other in G.ReleaseList do
 			t.ok(other.Id ~= "hollowlight")
 		end

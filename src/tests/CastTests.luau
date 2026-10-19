@@ -2,9 +2,7 @@
 local Pendulum = if script
 	then require(game.ServerScriptService.Server.Simulation.Pendulum)
 	else require("../server/Simulation/Pendulum")
-local CastTiming = if script
-	then require(game.ReplicatedStorage.Shared.CastTiming)
-	else require("../shared/CastTiming")
+local CastTiming = if script then require(game.ReplicatedStorage.Shared.CastTiming) else require("../shared/CastTiming")
 
 return function(t, deps)
 	local Rules, Balance = deps.FightRules, deps.Balance

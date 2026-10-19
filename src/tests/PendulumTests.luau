@@ -4,15 +4,12 @@ local Pendulum = if script
 
 return function(t, d)
 	local function new(seed)
-		return Pendulum.new(
-			{
-				A = { Id = "pop", Aim = 0.9, AimYaw = 0.4 },
-				B = { Id = "prism", Aim = 0.9, AimYaw = -0.3 },
-				Rng = d.Rng.new(seed),
-				SweetSpot = 0.9,
-			},
-			seed
-		)
+		return Pendulum.new({
+			A = { Id = "pop", Aim = 0.9, AimYaw = 0.4 },
+			B = { Id = "prism", Aim = 0.9, AimYaw = -0.3 },
+			Rng = d.Rng.new(seed),
+			SweetSpot = 0.9,
+		}, seed)
 	end
 	t.test("strings stay fixed, velocity tangent, bodies below the bar and contacts separated", function()
 		local sim = new(101)

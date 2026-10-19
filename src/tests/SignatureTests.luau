@@ -158,20 +158,20 @@ return function(t, deps)
 		end
 		t.ok(releases > 0 and contacts > 0, "real geometry processed casts")
 	end)
-	t.test("release pools contain 24 identities and preserve owned dormant data", function()
-		t.eq(#deps.Glassies.ReleaseList, 24)
+	t.test("release pools contain 36 identities and preserve owned dormant data", function()
+		t.eq(#deps.Glassies.ReleaseList, 36, "24 + 12 launch glassies")
 		t.eq(
 			#deps.Glassies.List,
 			43 + #deps.Glassies.SeasonalIds,
 			"24 release + 13 dormant + 6 new launch definitions + seasonal"
 		)
 		local odds = deps.Formula.kilnOdds()
-		t.eq(#odds, 21)
+		t.eq(#odds, 33, "21 + 12 launch glassies in the Kiln")
 		for _, e in odds do
 			t.ok(deps.Glassies.isRelease(e.Id))
 		end
 		local owned = { perfume = { Count = 1, Stars = 3 } }
-		t.eq(#deps.Glassies.visible(owned), 25)
+		t.eq(#deps.Glassies.visible(owned), 37, "36 release + owned legacy perfume")
 		t.eq(owned.perfume.Stars, 3)
 		t.ok(table.find(deps.MatchLogic.ownedIds(owned), "perfume") ~= nil, "legacy ownership not excluded")
 	end)

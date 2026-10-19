@@ -230,7 +230,7 @@ def spline(ctrl, samples=16):
     return out
 
 
-def slab_bm(bm, points, depth, bevel=0.03, segments=2, matrix=None):
+def slab_bm(bm, points, depth, bevel=0.03, segments=2, matrix=None, clamp=False):
     """Extruded 2D outline (u, v) in the local XZ plane, depth along local Y, bevelled."""
     tmp = bmesh.new()
     n = len(points)
@@ -242,7 +242,7 @@ def slab_bm(bm, points, depth, bevel=0.03, segments=2, matrix=None):
         tmp.faces.new((vs[i], vs[j], vs[j + n], vs[i + n]))
     bmesh.ops.recalc_face_normals(tmp, faces=tmp.faces)
     if bevel:
-        bmesh.ops.bevel(tmp, geom=list(tmp.edges), offset=bevel, segments=segments, affect="EDGES", profile=0.5)
+        bmesh.ops.bevel(tmp, geom=list(tmp.edges), offset=bevel, segments=segments, affect="EDGES", profile=0.5, clamp_overlap=clamp)
     bmesh.ops.triangulate(tmp, faces=[f for f in tmp.faces if len(f.verts) > 4])
     bmesh.ops.recalc_face_normals(tmp, faces=tmp.faces)
     if matrix is not None:
@@ -251,9 +251,9 @@ def slab_bm(bm, points, depth, bevel=0.03, segments=2, matrix=None):
     return bm
 
 
-def slab(name, points, depth, matrix=None, bevel=0.03, segments=2, sharp_deg=50):
+def slab(name, points, depth, matrix=None, bevel=0.03, segments=2, sharp_deg=50, clamp=False):
     bm = bmesh.new()
-    slab_bm(bm, points, depth, bevel, segments, matrix)
+    slab_bm(bm, points, depth, bevel, segments, matrix, clamp)
     return _obj(name, bm, sharp_deg=sharp_deg)
 
 
@@ -1068,3 +1068,212 @@ def before_after(gids, out, title):
             os.path.join(v3_folder(g), g + "_icon.png"),
             repo_path("docs", "art", "glassy_revamp", "previews", g + "_v3_34.png")]))
     return labeled_sheet(entries, out, title)
+
+
+# ------------------------------------------------------------------------------------------
+# Batch 2: starters and first Rares
+# ------------------------------------------------------------------------------------------
+
+def inset(profile, d, z_lo, z_hi):
+    """Liquid/fill profile: the body profile pulled in by d, clipped to [z_lo, z_hi], closed on the axis."""
+    pts = [(max(r - d, 0.02), z) for r, z in profile if z_lo <= z <= z_hi and r > d]
+    if not pts:
+        raise ValueError("empty inset")
+    return [(0, pts[0][1])] + pts + [(0, pts[-1][1])]
+
+
+def crimp(obj, lobes, amount, below_z):
+    for v in obj.data.vertices:
+        if v.co.z < below_z and math.hypot(v.co.x, v.co.y) > 0.05:
+            k = 1 + amount * math.cos(lobes * math.atan2(v.co.y, v.co.x))
+            v.co.x *= k
+            v.co.y *= k
+    return obj
+
+
+@builder("pop")
+def b_pop(gid):
+    h = 2.55
+    ctrl = [(0, 0), (0.44, 0), (0.58, 0.06), (0.65, 0.2), (0.65, 0.4), (0.58, 0.56), (0.56, 0.68), (0.61, 0.8), (0.62, 1.3),
+            (0.57, 1.5), (0.44, 1.7), (0.3, 1.88), (0.245, 2.02), (0.245, 2.22), (0.3, 2.26), (0.3, 2.35), (0, 2.35)]
+    prof = chaikin(ctrl, fixed=(1, 12, 13, 14, 15), iterations=1)
+    body = paint(lathe3("Body", prof, h, 18), "#8FE3FF", role="Body")
+    cap = lathe3("Cap", [(0, 2.35), (0.3, 2.35), (0.34, 2.39), (0.34, 2.47), (0.3, 2.53), (0.2, 2.55), (0, 2.55)], h, 12)
+    paint(crimp(cap, 6, 0.06, -0.06), "#ED5367", "SmoothPlastic")
+    anim(cap, (0, 0, -0.2), (0, 0, 1), None, hop(0.08), lod_keep=True)
+    fill = paint(lathe3("SodaFill", inset(prof, 0.07, 0.06, 1.42), h, 10, sharp_deg=None), "#45C3F5", alpha=0.55)
+    anim(fill, (0, 0, 1.42 - h), (1, 0, 0), slosh(12))
+    ds = [cap, fill]
+    for i, (x, z, r) in enumerate(((-0.22, 0.66, 0.17), (0.2, 1.02, 0.2), (-0.1, 1.36, 0.16))):
+        b = paint(blob(f"ChargeBubble_{i + 1}", (x, -0.42, z - h), (r, 0.12, r), 8, 5), "#EAFBFF")
+        ds.append(b)
+    return body, ds
+
+
+@builder("jam")
+def b_jam(gid):
+    h = 2.05
+    ctrl = [(0, 0), (0.67, 0), (0.85, 0.08), (0.94, 0.24), (0.95, 0.42), (0.95, 1.26), (0.91, 1.46), (0.79, 1.6), (0.79, 1.69), (0.9, 1.72), (0.9, 1.8), (0, 1.8)]
+    prof = chaikin(ctrl, fixed=(1, 7, 8, 9, 10), iterations=1)
+    body = paint(lathe3("Body", prof, h, 20), "#FF6B8B", role="Body")
+    cap = paint(lathe3("Cap", [(0, 1.8), (0.93, 1.8), (0.98, 1.84), (0.98, 1.98), (0.92, 2.05), (0, 2.05)], h, 20), "#F5C860", "Metal")
+    cloth = lathe3("ClothCover", [(0, 2.08), (0.7, 2.08), (0.96, 2.04), (1.04, 1.96), (1.07, 1.8), (1.06, 1.68), (1.0, 1.68), (1.0, 1.8), (0.97, 1.92), (0.9, 2.0), (0.6, 2.03), (0, 2.03)], h, 16, sharp_deg=None)
+    for v in cloth.data.vertices:
+        a = math.atan2(v.co.y, v.co.x)
+        if v.co.z < -0.18:
+            v.co.z += 0.06 * (1 + math.cos(8 * a))
+            k = 1 + 0.03 * math.cos(8 * a)
+            v.co.x *= k
+            v.co.y *= k
+    paint(cloth, "#FF9DB8", "SmoothPlastic")
+    anim(cloth, (0, 0, 0), (1, 0, 0), sway(3, 2.4), hop(0.06), lod_keep=True)
+    tb = bmesh.new()
+    torus_bm(tb, (0, 0, 1.79 - h), 1.035, 0.035, 16, 4)
+    tie = paint(_obj("TieBand", tb), "#FFFFFF", "SmoothPlastic")
+    anim(tie, (0, 0, 0), (1, 0, 0), sway(3, 2.4), hop(0.06), note="moves with ClothCover")
+    jam = paint(lathe3("JamInsert", inset(prof, 0.08, 0.06, 1.18), h, 12, sharp_deg=None), "#E0325A", alpha=0.7)
+    anim(jam, (0, 0, 1.18 - h), (1, 0, 0), slosh(10, 0.25))
+    berries = paint(blobs("Berries", [((0.32, -0.45, 0.62 - h), (0.17, 0.15, 0.2)), ((-0.36, -0.38, 0.42 - h), (0.15, 0.13, 0.17))], 6, 4), "#FF4D6D", "SmoothPlastic")
+    anim(berries, (0, 0, 1.18 - h), (1, 0, 0), slosh(10, 0.25), note="moves with JamInsert")
+    return body, [cap, cloth, tie, jam, berries]
+
+
+@builder("prism")
+def b_prism(gid):
+    h = 2.60
+    prof = [(0, 0), (0.48, 0), (0.62, 0.06), (0.74, 0.2), (0.81, 0.42), (0.81, 1.16), (0.74, 1.3), (0.44, 1.56), (0.26, 1.72), (0.24, 1.9), (0.31, 1.93), (0.31, 1.96), (0, 1.96)]
+    body = paint(lathe3("Body", prof, h, 8, flat=True), "#C9A8FF", role="Body")
+    stopper = lathe3("GemStopper", [(0, 1.94), (0.18, 1.94), (0.4, 2.12), (0.44, 2.22), (0.3, 2.42), (0.1, 2.56), (0, 2.6)], h, 8, flat=True)
+    paint(stopper, "#E2CCFF")
+    anim(stopper, (0, 0, 1.95 - h), (1, 0, 0), sway(3, 2.2), kick(12), lod_keep=True)
+    lens = paint(blob("RayLens", (0, -0.79, 0.86 - h), (0.27, 0.06, 0.29), 12, 6), "#B9F4FF")
+    sp = paint(slab("Sparkle", star_points(4, 0.13, 0.035), 0.04, Matrix.Translation((0.5, -0.2, 2.25 - h)), bevel=0.012, segments=1), "#FFFFFF", "Neon")
+    anim(sp, (0, 0, 2.25 - h), (0, 0, 1), spin(70), spin_boost(300))
+    core = paint(lathe3("FacetCore", [(0, 0.3), (0.32, 0.42), (0.4, 0.8), (0.32, 1.18), (0, 1.3)], h, 8, flat=True), "#F3E6FF", alpha=0.5)
+    return body, [stopper, lens, sp, core]
+
+
+@builder("crescent_axe")
+def b_crescent_axe(gid):
+    h = 2.40
+    ctrl = [(0, 0), (0.52, 0), (0.77, 0.13), (0.89, 0.43), (0.85, 1.08), (0.65, 1.39), (0.3, 1.61), (0.27, 1.9), (0.36, 1.93), (0.36, 1.96), (0, 1.96)]
+    prof = chaikin(ctrl, fixed=(1, 6, 7, 8, 9), iterations=1)
+    body = paint(lathe3("Body", prof, h, 22), "#B69BFF", role="Body")
+
+    def crescent(R, w, n=7, tip_deg=60):
+        """Simple crescent outline opening to +x: outer arc of radius R, inner arc through both tips."""
+        t = math.radians(tip_deg)
+        p1 = (R * math.cos(t), R * math.sin(t))
+        a = -R + w
+        k = a - p1[0]
+        rho = -(k * k + p1[1] ** 2) / (2 * k)
+        cx = a + rho
+        outer = [(R * math.cos(t + (math.tau - 2 * t) * i / n), R * math.sin(t + (math.tau - 2 * t) * i / n)) for i in range(n + 1)]
+        f1 = math.atan2(p1[1], p1[0] - cx)
+        inner = [(cx + rho * math.cos(-f1 - (math.tau - 2 * f1) * i / n), rho * math.sin(-f1 - (math.tau - 2 * f1) * i / n)) for i in range(1, n)]
+        return outer + inner
+    sb = bmesh.new()
+    lathe_tmp = lathe3("_plug", [(0, 1.84), (0.24, 1.84), (0.26, 2.02), (0.2, 2.06), (0, 2.06)], h, 12)
+    sb.from_mesh(lathe_tmp.data)
+    bpy.data.objects.remove(lathe_tmp, do_unlink=True)
+    pts = crescent(0.28, 0.12, 7, 70)
+    slab_bm(sb, pts, 0.14, 0.03, 1, Matrix.Translation((-0.06, 0, 2.27 - h)), clamp=True)
+    stopper = paint(_obj("CrescentStopper", sb, sharp_deg=50), "#E2DBFF")
+    anim(stopper, (0, 0, 1.9 - h), (0, 1, 0), sway(5, 2.0), kick(15), lod_keep=True)
+    tb = bmesh.new()
+    torus_bm(tb, (0, 0, 1.45 - h), 0.62, 0.06, 20, 4)
+    band = paint(_obj("ShoulderBand", tb), "#C9DDF2", "Metal")
+    em_pts = [(u * 1.0, v) for u, v in crescent(0.24, 0.09, 6, 70)]
+    emblem = paint(slab("CrescentEmblem", em_pts, 0.05, Matrix.Translation((0, -0.83, 0.82 - h)) @ Matrix.Rotation(-0.3, 4, "Y"), bevel=0.015, segments=1, clamp=True), "#F1E8FF", "Neon")
+    anim(emblem, (0, -0.83, 0.82 - h), (0, 1, 0), pulse(0.06, 1.8), flash(0.2))
+    handle = paint(tube("AxeHandle", [(0.96, 0, -1.9), (0.97, 0, -1.3), (0.96, 0, -0.62)], [0.07, 0.065, 0.06], 8), "#9BCDEB")
+    head_pts = [(-u, v) for u, v in crescent(0.44, 0.17, 8, 62)]
+    head = paint(slab("AxeHead", head_pts, 0.14, Matrix.Translation((1.27, 0, -0.84)), bevel=0.04, segments=1, clamp=True), "#D2CBFF")
+    for o in (handle, head):
+        o["effect_only"] = True
+        anim(o, (0.96, 0, -1.7), (0, 1, 0), None, None, note="effect-only; the Crescent Sweep kit swings it about this pivot")
+    return body, [stopper, band, emblem, handle, head]
+
+
+@builder("briar_flask")
+def b_briar_flask(gid):
+    h = 2.65
+    ctrl = [(0, 0), (0.35, 0.03), (0.6, 0.21), (0.79, 0.56), (0.8, 0.82), (0.69, 1.2), (0.48, 1.56), (0.24, 1.91), (0.21, 2.12), (0.28, 2.16), (0.28, 2.23), (0, 2.23)]
+    prof = chaikin(ctrl, fixed=(8, 9, 10), iterations=1)
+    body = paint(lathe3("Body", prof, h, 18), "#35CB97", role="Body")
+    ds = []
+    plug = bmesh.new()
+    tmp = lathe3("_plug", [(0, 2.1), (0.2, 2.1), (0.22, 2.28), (0, 2.3)], h, 10)
+    plug.from_mesh(tmp.data)
+    bpy.data.objects.remove(tmp, do_unlink=True)
+    leaf = [(0.0, 0.0), (-0.16, 0.12), (-0.2, 0.3), (-0.08, 0.46), (0.06, 0.5), (0.14, 0.34), (0.12, 0.14)]
+    slab_bm(plug, leaf, 0.07, 0.025, 1, Matrix.Translation((0, 0, 2.24 - h)) @ Matrix.Rotation(-0.35, 4, "Y"))
+    stopper = paint(_obj("LeafStopper", plug, sharp_deg=55), "#8EEDB2")
+    anim(stopper, (0, 0, 2.2 - h), (0, 1, 0), sway(4, 2.2), kick(12))
+    for i in range(3):
+        rot = Matrix.Rotation(i * math.tau / 3, 3, "Z")
+        path = [rot @ Vector(p) for p in spline([(0.66, 0, -1.6), (0.9, 0, -1.5), (1.05, 0, -1.36), (1.12, 0, -1.2)], 6)]
+        tb = bmesh.new()
+        tube_bm(tb, path, [0.13 * (1 - k / (len(path) - 1)) + 0.012 for k in range(len(path))], 7)
+        thorn = paint(_obj(f"Thorn_{i + 1}", tb), "#A0F7CC")
+        anim(thorn, rot @ Vector((0.64, 0, -1.5)), rot @ Vector((0, 1, 0)), None, kick(10), note="client grows it from AnimationPivot by charge")
+        ds.append(thorn)
+    vine = []
+    for k in range(18):
+        t = k / 17
+        z = 0.35 + t * 1.25
+        r = max(rr for rr, zz in prof if abs(zz - z) < 0.12) + 0.035 if any(abs(zz - z) < 0.12 for rr, zz in prof) else 0.6
+        a = t * math.tau * 1.15 + 0.4
+        vine.append((r * math.cos(a), r * math.sin(a), z - h))
+    vb = bmesh.new()
+    tube_bm(vb, vine, 0.04, 4)
+    vine_o = paint(_obj("Vine", vb), "#2FA86A", "SmoothPlastic")
+    leaf_pts = [(0.0, 0.0), (0.1, 0.07), (0.2, 0.06), (0.28, 0.0), (0.2, -0.06), (0.1, -0.07)]
+    for i, k in enumerate((6, 13)):
+        p = Vector(vine[k])
+        a = math.atan2(p.y, p.x)
+        m = Matrix.Translation(p) @ Matrix.Rotation(a, 4, "Z") @ Matrix.Rotation(0.5 if i else -0.4, 4, "Y")
+        lf = paint(slab(f"Leaf_{i + 1}", leaf_pts, 0.035, m, bevel=0.012, segments=1), "#5FD38E")
+        anim(lf, p, Matrix.Rotation(a, 3, "Z") @ Vector((0, 1, 0)), sway(6, 1.7, i * 1.3), kick(14))
+        ds.append(lf)
+    bud = bmesh.new()
+    for j in range(4):
+        a = j * math.tau / 4 + 0.4
+        ellipsoid_bm(bud, (0.09 * math.cos(a), -0.1 + 0.09 * math.sin(a), 0.72 - h), (0.12, 0.1, 0.16), 6, 4)
+    ellipsoid_bm(bud, (0, -0.1, 0.78 - h), (0.1, 0.1, 0.14), 6, 4)
+    rose = paint(_obj("RoseSeed", bud), "#FF7AB6", "Neon")
+    anim(rose, (0, -0.1, 0.72 - h), (0, 0, 1), pulse(0.07, 1.6), flash(0.2), lod_keep=True)
+    return body, [stopper] + ds[:3] + [vine_o] + ds[3:] + [rose]
+
+
+@builder("arc_coil")
+def b_arc_coil(gid):
+    h = 2.30
+    ctrl = [(0, 0), (0.49, 0), (0.7, 0.13), (0.87, 0.43), (0.91, 0.78), (0.83, 1.12), (0.61, 1.41), (0.33, 1.57), (0.3, 1.88), (0, 1.88)]
+    prof = chaikin(ctrl, fixed=(1, 7, 8), iterations=1)
+    body = paint(lathe3("Body", prof, h, 20), "#6BE9FF", role="Body")
+    cap = paint(lathe3("Cap", [(0, 1.84), (0.36, 1.84), (0.39, 1.9), (0.39, 2.06), (0.3, 2.12), (0.12, 2.14), (0.1, 2.2), (0, 2.2)], h, 12), "#D99561", "Metal")
+    term = paint(blob("Terminal", (0, 0, 2.24 - h), (0.16, 0.16, 0.15), 10, 7), "#EAFBFF")
+    anim(term, (0, 0, 2.24 - h), (0, 0, 1), pulse(0.06, 0.8), flash(0.15))
+    ds = [cap, term]
+    for i in range(3):
+        z0, r = 0.72 + i * 0.27, 0.95 - i * 0.07
+        pts = []
+        for k in range(17):
+            a = k / 16 * 5.4
+            pts.append((r * math.cos(a), r * math.sin(a), z0 - h + 0.1 * k / 16))
+        cb = bmesh.new()
+        tube_bm(cb, pts, 0.06, 4)
+        ds.append(paint(_obj(f"CoilSegment_{i + 1}", cb), "#BBFAFF"))
+    for i in range(2):
+        a0 = i * math.pi + 0.5
+        zig = []
+        for k in range(5):
+            rr = 0.22 + k * 0.11
+            zig.append((rr * math.cos(a0), rr * math.sin(a0), 2.18 - h + (0.06 if k % 2 else -0.06) - k * 0.04))
+        sb = bmesh.new()
+        tube_bm(sb, zig, [0.035, 0.03, 0.025, 0.02, 0.012], 5)
+        spark = paint(_obj(f"Spark_{i + 1}", sb, smooth=False), "#9FF3FF", "Neon")
+        anim(spark, (0, 0, 2.24 - h), (0, 0, 1), spin(140 if i == 0 else -110), flash(0.12), extra_idle=[flicker(0.25, 12)], lod_keep=(i == 0))
+        ds.append(spark)
+    return body, ds

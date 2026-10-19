@@ -197,13 +197,30 @@ function Pendulum.centerVelocity(sim, side)
 	return sim.Bodies[side].V * (1 + center * M.GlassyScale / M.StringLength)
 end
 
+-- Where `side`'s body centre will be after `seconds` of free swinging (gravity on the string only;
+-- no drive, wander or collisions). Curves with the pendulum instead of extrapolating a straight line.
+function Pendulum.predictCenter(sim, side, seconds)
+	local body = sim.Bodies[side]
+	local p, v = body.P, body.V
+	local steps = math.max(1, math.ceil(seconds * 60))
+	local dt = seconds / steps
+	for _ = 1, steps do
+		local n = p.Unit
+		v += tangent(V.new(0, -M.Gravity, 0), n) * dt
+		p = (p + v * dt).Unit * M.StringLength
+		v = tangent(v, p.Unit)
+	end
+	local center = sim.Fight.Fighters[side].BodyCenter or M.BodyCenter
+	return sim.Hooks[side] + p * (1 + center * M.GlassyScale / M.StringLength)
+end
+
 -- Where a zone hazard sits (Bubble Wand, Honey Bear, Crystal Ball). Fixed once placed.
 local function zoneCenter(sim, cast)
 	local p = cast.Params
 	if p.At == "foe_predicted" then
-		return Pendulum.center(sim, 3 - cast.Side) + Pendulum.centerVelocity(sim, 3 - cast.Side) * (p.Lead or 0)
+		return Pendulum.predictCenter(sim, 3 - cast.Side, p.Lead or 0)
 	elseif p.At == "self_lead" then
-		return Pendulum.center(sim, cast.Side) + Pendulum.centerVelocity(sim, cast.Side) * (p.Lead or 0)
+		return Pendulum.predictCenter(sim, cast.Side, p.Lead or 0)
 	end
 	return Pendulum.center(sim, cast.Side)
 end

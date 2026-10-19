@@ -305,6 +305,10 @@ def finish_v4(body, details):
                     _set_input(next(n for n in o.data.materials[0].node_tree.nodes if n.type == "BSDF_PRINCIPLED"), "Base Color", (*hex_to_rgb(color), 1))
             else:
                 glass4(o, color, o.get("glass_layer", "detail"))
+        if o.get("plain_normals"):  # decimated organic meshes: face-area weighting shows as crumples under v4 gloss
+            for m in [m for m in o.modifiers if m.type == "WEIGHTED_NORMAL"]:
+                o.modifiers.remove(m)
+            continue
         if not any(m.type == "WEIGHTED_NORMAL" for m in o.modifiers):
             mod = o.modifiers.new("WeightedNormal", "WEIGHTED_NORMAL")
             mod.mode, mod.weight, mod.keep_sharp = "FACE_AREA", 50, True
@@ -1103,38 +1107,43 @@ def b_honey_bear(gid):
     tint, honey, cream, dark = "#FFB92E", "#E87A00", "#FFE2A8", "#5A3214"
     head_c = Vector((0, -0.04, -0.74))
     torso_c = Vector((0, 0.02, -1.48))
-    lo, hi = Vector((-0.8, -0.66, -2.14)), Vector((0.8, 0.62, -0.31))
+    # Body = the big blobs only (head, neck, round tummy) so it remeshes smooth; paws and feet are a Paws detail.
+    lo, hi = Vector((-0.8, -0.7, -2.08)), Vector((0.8, 0.66, -0.31))
 
     def shape(bm):
         ellipsoid_bm(bm, head_c, (0.5, 0.46, 0.43), 18, 12)
-        ellipsoid_bm(bm, torso_c, (0.66, 0.6, 0.6), 20, 12)
+        ellipsoid_bm(bm, torso_c + Vector((0, 0, -0.04)), (0.66, 0.6, 0.62), 20, 12)
         ellipsoid_bm(bm, (0, -0.02, -1.08), (0.36, 0.34, 0.2), 12, 8)                     # neck fill
-        for s in (-1, 1):
-            ellipsoid_bm(bm, (s * 0.56, -0.26, -1.36), (0.2, 0.2, 0.3), 10, 8, Quaternion((0, 1, 0), s * 0.5))  # paws
-            ellipsoid_bm(bm, (s * 0.36, -0.3, -1.98), (0.22, 0.26, 0.16), 10, 6)           # feet
-    body = remesh_union("Body", shape, voxel=0.03, target_tris=400, fit=(lo, hi))
+    body = organic("Body", shape, 240, fit=(lo, hi), voxel=0.026, max_tris=480) if HAS_V4 else remesh_union("Body", shape, voxel=0.03, target_tris=400, fit=(lo, hi))
     paint(body, tint, role="Body", alpha=0.8, transmission=0.55)
     body["full_tint"] = True  # creature: tinted amber shell (like the v4 Duck); HoneyFill is the inner layer
+    body["plain_normals"] = True
     surf = Surface(body)
+    pw = bmesh.new()
+    for s_ in (-1, 1):
+        ellipsoid_bm(pw, (s_ * 0.66, -0.3, -1.4), (0.2, 0.2, 0.29), 9, 5, Quaternion((0, 1, 0), s_ * 0.55))
+        ellipsoid_bm(pw, (s_ * 0.36, -0.36, -1.98), (0.23, 0.27, 0.16), 8, 4)
+    paws = paint(_obj("Paws", pw), tint)
+    anim(paws, torso_c, (1, 0, 0), None, kick(5), note="paws hug the tummy; squeeze in with the Body squash at windup")
     ds = face(surf, head_c, 0.19, head_c.z + 0.08, eye=(0.075, 0.095, 0.045), cheek_dx=0.3, cheek_dz=-0.14,
-              seg=(8, 5), shine_seg=((5, 3), (4, 3)), cheek_seg=(6, 3))
+              seg=(7, 5), shine_seg=((4, 3), (4, 3)), cheek_seg=(5, 3))
     mp, mn = surf.hit(head_c + Vector((0, -5, -0.13)), (0, 1, 0))
     muzzle = paint(blob("Muzzle", mp + mn * 0.02, (0.2, 0.12, 0.14), 8, 5), cream)
-    nose = paint(blob("Nose", mp + mn * 0.13 + Vector((0, 0, 0.06)), (0.07, 0.045, 0.05), 6, 4), dark, "SmoothPlastic")
+    nose = paint(blob("Nose", mp + mn * 0.13 + Vector((0, 0, 0.06)), (0.07, 0.045, 0.05), 5, 3), dark, "SmoothPlastic")
     smb = bmesh.new()
     msurf = Surface(muzzle)
-    smile_bm(smb, msurf, mp, 0.12, mp.z - 0.035, curve=0.035, steps=4, r=0.014)
+    smile_bm(smb, msurf, mp, 0.12, mp.z - 0.035, curve=0.035, steps=3, r=0.014)
     smile = paint(_obj("Smile", smb), dark, "SmoothPlastic")
-    ds += [muzzle, nose, smile]
+    ds += [paws, muzzle, nose, smile]
     for side, label in ((-1, "L"), (1, "R")):
         root = head_c + Vector((side * 0.33, 0.02, 0.32))
         eb = bmesh.new()
         lathe_into(eb, [(0, -0.05), (0.13, -0.05), (0.16, 0.0), (0.13, 0.05), (0, 0.05)],
-                   Matrix.Translation(root) @ Matrix.Rotation(math.pi / 2, 4, "X") @ Matrix.Rotation(side * -0.3, 4, "Y"), 10)
+                   Matrix.Translation(root) @ Matrix.Rotation(math.pi / 2, 4, "X") @ Matrix.Rotation(side * -0.3, 4, "Y"), 9)
         ear = paint(_obj("Ear_" + label, eb), tint)
         anim(ear, root + Vector((0, 0, -0.08)), (0, 1, 0), sway(6, 1.8, side * 0.7), flare(18), lod_keep=(side < 0), note="ear wiggle")
         ds.append(ear)
-    cap = lathe3("Cap", [(0, -0.4), (0.25, -0.4), (0.27, -0.36), (0.27, -0.3), (0.2, -0.26), (0.11, -0.2), (0.06, -0.15), (0.05, -0.04), (0.03, 0.0), (0, 0.0)], 0.0, 12, sharp_deg=40)
+    cap = lathe3("Cap", [(0, -0.4), (0.25, -0.4), (0.27, -0.36), (0.27, -0.3), (0.2, -0.26), (0.11, -0.2), (0.06, -0.15), (0.05, -0.04), (0.03, 0.0), (0, 0.0)], 0.0, 8, sharp_deg=40)
     paint(cap, "#FF7A3D", "SmoothPlastic")
     anim(cap, (0, 0, -0.35), (1, 0, 0), None, kick(6))
     dp = Vector((0.13, -0.1, -0.33))
@@ -1145,23 +1154,23 @@ def b_honey_bear(gid):
          note="a drop swells at the cap rim, slides down the head and resets")
     ds += [cap, drop]
     fill = bmesh.new()
-    ellipsoid_bm(fill, torso_c + Vector((0, 0, -0.02)), (0.56, 0.5, 0.52), 14, 9)
+    ellipsoid_bm(fill, torso_c + Vector((0, 0, -0.02)), (0.56, 0.5, 0.52), 10, 7)
     fill = rcut(fill, torso_c + Vector((0, 0, 0.16)), Vector((0, 0, 1)), True)
     honey_fill = as_inner(paint(_obj("HoneyFill", fill), honey, alpha=0.65, transmission=0.6))
     anim(honey_fill, torso_c + Vector((0, 0, 0.16)), (1, 0, 0), slosh(10, 0.25), squash(0.9, 4.0, 0.35),
          note="amber honey inside (second glass layer)")
     hb = bmesh.new()
     hc = torso_c + Vector((0, -0.4, -0.04))
-    for dx, dz in ((0, 0), (-0.13, -0.075), (0.13, -0.075)):
-        slab_bm(hb, hex_points(0.072, math.pi / 6), 0.04, 0, 1, Matrix.Translation(hc + Vector((dx, 0, dz))) @ Matrix.Rotation(math.pi / 2, 4, "X"))
+    for dx, dz in ((0, 0),):
+        slab_bm(hb, hex_points(0.12, math.pi / 6), 0.05, 0, 1, Matrix.Translation(hc + Vector((dx, 0, dz))) @ Matrix.Rotation(math.pi / 2, 4, "X"))
     comb = paint(_obj("HoneycombCore", hb, smooth=False), "#FFC23A", "Neon")
     anim(comb, hc, (0, 1, 0), pulse(0.08, 1.4), flash(0.25), note="Epic core: glows brighter at Ready")
     ds += [honey_fill, comb]
     bow_c = surf.hit(Vector((0, -5, -1.09)), (0, 1, 0))[0] + Vector((0, -0.03, 0))
     bw = bmesh.new()
     for s in (-1, 1):
-        slab_bm(bw, [(0, 0), (s * 0.14, 0.1), (s * 0.24, 0.02), (s * 0.13, -0.09)][::s], 0.06, 0.025, 1, Matrix.Translation(bow_c))
-    ellipsoid_bm(bw, bow_c + Vector((0, -0.02, 0)), (0.06, 0.045, 0.06), 6, 4)
+        slab_bm(bw, [(0, 0), (s * 0.14, 0.1), (s * 0.24, 0.02), (s * 0.13, -0.09)][::s], 0.06, 0, 1, Matrix.Translation(bow_c))
+    ellipsoid_bm(bw, bow_c + Vector((0, -0.02, 0)), (0.06, 0.045, 0.06), 5, 3)
     bow = paint(_obj("Bow", bw), "#FF9DB8", "SmoothPlastic")
     anim(bow, bow_c, (0, 1, 0), sway(4, 2.2), kick(14), note="Jam family cue (pink gingham bow)")
     ds.append(bow)
@@ -1204,7 +1213,7 @@ def b_potion_flask(gid):
     surface = paint(_obj("BrewSurface", sb), "#C6FFD9", alpha=0.6)
     anim(surface, lpivot, (0, 1, 0), sway(3, 1.3), None)
     follow(surface, "BrewLiquid", "tints with the brew (lighter)")
-    glow = paint(blob("BrewGlow", (0, 0, cz - 0.08 - h), (0.24, 0.24, 0.22), 8, 5), "#B8FFD0", "Neon")
+    glow = paint(blob("BrewGlow", (0, 0, cz - 0.08 - h), (0.24, 0.24, 0.22), 10, 7), "#B8FFD0", "Neon")
     anim(glow, (0, 0, cz - 0.08 - h), (0, 0, 1), pulse(0.12, 1.5), flash(0.3), note="Rare emissive accent; tints with the brew")
     ds += [liquid, surface, glow]
     for i, (x, y, z, r) in enumerate(((0.28, -0.32, 0.5, 0.07), (-0.24, -0.36, 0.72, 0.055), (0.08, -0.42, 0.9, 0.045))):

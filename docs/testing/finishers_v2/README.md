@@ -121,8 +121,9 @@ Previews (ViewportFrame, same as the inventory) all ended on time (1.72/1.96/2.1
 
 Textures: right after upload, Roblox reported "Asset content representation is being generated" and thumbnails
 showed Pending, so the first Play used blank particles for those emitters. Kit now preloads the uploaded textures
-once and switches any emitter whose image fails to load back to its combat-bank texture. Once Roblox finishes
-processing, the new textures appear with no further change.
+once and switches any emitter whose image fails to load back to its combat-bank texture. Roblox finished processing all five
+images at 15:49 (thumbnail state Completed), so the new textures load from the next session with no further
+change.
 
 ## Meshes (history: waiting for upload before the key fix)
 

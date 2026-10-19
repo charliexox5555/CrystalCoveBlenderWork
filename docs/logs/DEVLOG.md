@@ -20,7 +20,7 @@ Done:
 - Fixed inward-wound flat pieces/glyphs (DoubleSided, and Kit no longer forces it off) and mirrored BOOM glyphs (turned 180°). Kit falls back to the bank texture if an uploaded image fails to load.
 - Studio Play: all five finishers played in real bot rounds using the new meshes, with no errors, nothing left behind, and Supernova's softened grade peaking at 0.06; previews and stills checked. Report: `docs/testing/finishers_v2/README.md`.
 Next:
-- Save the place (keeps `Assets.VFX.FinishersV3` and the archive). Confirm the new textures once Roblox finishes processing them (Pending at 15:47). Creator feel/listening review, real-phone check.
+- Save the place (keeps `Assets.VFX.FinishersV3` and the archive). The new textures finished processing at 15:49. Creator feel/listening review, real-phone check.
 
 ## 2026-10-19 — Claude — Living glassies: GlassyMotion (workstream E)
 Done:

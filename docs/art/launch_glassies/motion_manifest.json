@@ -3560,11 +3560,11 @@
    "version": "v4",
    "bundle": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
    "icon": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_icon.png",
-   "intact_triangles": 2920,
+   "intact_triangles": 2950,
    "shard_count": 20,
    "release_geometry": {
     "Radius": 0.85,
-    "Center": 0.475999
+    "Center": 1.075999
    },
    "radius_target": 0.85,
    "body_dimensions_roblox": [
@@ -3601,7 +3601,7 @@
      "pivot_empty": "Pivot_EmberCore",
      "pivot_roblox": [
       -0.145425,
-      -0.585095,
+      -1.185095,
       0.207689
      ],
      "axis_roblox": [
@@ -3639,7 +3639,7 @@
      "pivot_empty": "Pivot_Embers",
      "pivot_roblox": [
       0.027967,
-      -0.565591,
+      -1.165591,
       -0.03994
      ],
      "axis_roblox": [
@@ -3668,7 +3668,7 @@
      "pivot_empty": "Pivot_Beak",
      "pivot_roblox": [
       -0.492208,
-      -0.234038,
+      -0.834038,
       0.702946
      ],
      "axis_roblox": [
@@ -3697,7 +3697,7 @@
      "pivot_empty": "Pivot_Crest_1",
      "pivot_roblox": [
       -0.469818,
-      -0.029255,
+      -0.629255,
       0.551961
      ],
      "axis_roblox": [
@@ -3729,7 +3729,7 @@
      "pivot_empty": "Pivot_Crest_2",
      "pivot_roblox": [
       -0.413903,
-      -0.029255,
+      -0.629255,
       0.591114
      ],
      "axis_roblox": [
@@ -3761,7 +3761,7 @@
      "pivot_empty": "Pivot_Crest_3",
      "pivot_roblox": [
       -0.357986,
-      -0.029255,
+      -0.629255,
       0.630267
      ],
      "axis_roblox": [
@@ -3793,7 +3793,7 @@
      "pivot_empty": "Pivot_Wing_L",
      "pivot_roblox": [
       -0.308367,
-      -0.351057,
+      -0.951057,
       -0.001641
      ],
      "axis_roblox": [
@@ -3826,7 +3826,7 @@
      "pivot_empty": "Pivot_WingGold_L",
      "pivot_roblox": [
       -0.308367,
-      -0.351057,
+      -0.951057,
       -0.001641
      ],
      "axis_roblox": [
@@ -3859,7 +3859,7 @@
      "pivot_empty": "Pivot_WingQuills_L",
      "pivot_roblox": [
       -0.308367,
-      -0.351057,
+      -0.951057,
       -0.001641
      ],
      "axis_roblox": [
@@ -3892,7 +3892,7 @@
      "pivot_empty": "Pivot_Wing_R",
      "pivot_roblox": [
       0.10701,
-      -0.351057,
+      -0.951057,
       0.289209
      ],
      "axis_roblox": [
@@ -3925,7 +3925,7 @@
      "pivot_empty": "Pivot_WingGold_R",
      "pivot_roblox": [
       0.10701,
-      -0.351057,
+      -0.951057,
       0.289209
      ],
      "axis_roblox": [
@@ -3958,7 +3958,7 @@
      "pivot_empty": "Pivot_WingQuills_R",
      "pivot_roblox": [
       0.10701,
-      -0.351057,
+      -0.951057,
       0.289209
      ],
      "axis_roblox": [
@@ -3991,7 +3991,7 @@
      "pivot_empty": "Pivot_TailFeather_1",
      "pivot_roblox": [
       0.458649,
-      -0.604598,
+      -1.204598,
       -0.655018
      ],
      "axis_roblox": [
@@ -4023,7 +4023,7 @@
      "pivot_empty": "Pivot_TailFeather_2",
      "pivot_roblox": [
       0.458649,
-      -0.604598,
+      -1.204598,
       -0.655018
      ],
      "axis_roblox": [
@@ -4055,7 +4055,7 @@
      "pivot_empty": "Pivot_TailFeather_3",
      "pivot_roblox": [
       0.458649,
-      -0.604598,
+      -1.204598,
       -0.655018
      ],
      "axis_roblox": [
@@ -4087,7 +4087,7 @@
      "pivot_empty": "Pivot_TailGlow",
      "pivot_roblox": [
       0.458649,
-      -0.604598,
+      -1.204598,
       -0.655018
      ],
      "axis_roblox": [
@@ -4126,7 +4126,7 @@
      "pivot_empty": "Pivot_Talons",
      "pivot_roblox": [
       -0.067119,
-      -0.936151,
+      -1.536151,
       0.095856
      ],
      "axis_roblox": [
@@ -4154,6 +4154,14 @@
      "effect_only": false
     },
     {
+     "name": "HangChain",
+     "role": "Detail",
+     "material": "Metal",
+     "color": "#FFD34E",
+     "transparency": 0,
+     "effect_only": false
+    },
+    {
      "name": "Eyes",
      "role": "Detail",
      "material": "SmoothPlastic",
@@ -4163,8 +4171,8 @@
      "pivot_empty": "Pivot_Eyes",
      "pivot_roblox": [
       -0.478387,
-      -0.156382,
-      0.803784
+      -0.756382,
+      0.803783
      ],
      "axis_roblox": [
       0.0,
@@ -4191,8 +4199,8 @@
      "pivot_empty": "Pivot_EyeShine",
      "pivot_roblox": [
       -0.478387,
-      -0.156382,
-      0.803784
+      -0.756382,
+      0.803783
      ],
      "axis_roblox": [
       0.0,

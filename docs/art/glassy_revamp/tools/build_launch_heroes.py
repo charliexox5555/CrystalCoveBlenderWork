@@ -453,8 +453,17 @@ def h_glass_phoenix(gid):
     k = 0.85 / max(-lo.x, hi.x, -lo.y, hi.y)
     world = Matrix.Diagonal((k, k, k, 1))
     transform_all([body, *ds], world)
+    # Hang the bird 0.6 below the hang point on a short chain, so its collision sphere (Center/Radius)
+    # sits below the hook like every other glassy instead of poking above the string.
+    drop = Matrix.Translation((0, 0, -0.6))
+    transform_all([body, *ds], drop)
     bpy.context.view_layer.update()
-    world = world @ turn
+    world = drop @ world @ turn
+    loop_top = world @ Vector((0, 0.1, -0.0))
+    cb = bmesh.new()
+    tube_bm(cb, [(0, 0, -0.02), (loop_top.x * 0.5, loop_top.y * 0.5, loop_top.z * 0.5), loop_top], 0.022, 5)
+    chain = paint(smooth_normals(_obj("HangChain", cb)), gold, "Metal")
+    ds.append(chain)
     e1, e2 = (world @ Vector(p) for p in ((-0.12, -0.86, -0.16), (0.12, -0.86, -0.16)))
     ds += face4(body, [(e1.x, e1.z), (e2.x, e2.z)], (0.06, 0.085), cheeks=True, eye_segs=(8, 5))
     return body, ds

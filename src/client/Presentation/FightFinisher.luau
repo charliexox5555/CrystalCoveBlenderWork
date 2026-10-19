@@ -7,6 +7,7 @@ local Feel = require(RS.Shared.Config.Balance).Feel
 local Finish = {}
 local FinisherFX = require(script.Parent.FinisherFX)
 local Cosmetics = require(RS.Shared.Config.RoundCosmetics)
+local Shows = require(RS.Shared.Config.FinisherShows)
 local FinisherAudio = require(script.Parent.FinisherAudio)
 Finish.__index = Finish
 
@@ -49,9 +50,17 @@ end
 
 function Finish:Id()
 	local finishers = self.Scene.Data.Finishers
-	local def = Cosmetics.ByCategory.Finishers[finishers and finishers[3 - self.Loser] or "glass_burst"]
-		or Cosmetics.Finishers[1]
-	return def.Id
+	local id = finishers and finishers[3 - self.Loser]
+	-- Catalog finishers, plus built shows still waiting to join the catalog (RoundCosmetics.PendingFinishers),
+	-- which the server only ever sends from Studio QA.
+	if id and (Cosmetics.ByCategory.Finishers[id] or Shows.Shows[id]) then
+		return id
+	end
+	-- "" = nothing equipped (decision 95): the winner still flies in and breaks, with no show.
+	if id == "" then
+		return ""
+	end
+	return Cosmetics.Finishers[1].Id
 end
 
 -- Rise/Fly cues follow the winner; the burst cue sits at the impact point. Off-screen arenas keep
@@ -77,8 +86,11 @@ function Finish:StartShow()
 	anchor.Anchored, anchor.CanCollide, anchor.CanTouch, anchor.CanQuery = true, false, false, false
 	anchor.Position, anchor.Parent = self.Target, scene.Root
 	Debris:AddItem(anchor, math.max(Feel.FinisherFallbackSeconds, FinisherFX.duration(id) + 1.2))
+	if id == "" then
+		return
+	end
 	self:Cue("Burst", anchor)
-	FinisherFX.emit(scene.Root, id, self.Target, not scene.Viewing, nil, {
+	self.ShowRoot = FinisherFX.emit(scene.Root, id, self.Target, not scene.Viewing, nil, {
 		Post = scene.Viewing,
 		Feel = if scene.Viewing then scene.Feel else nil,
 	})
@@ -90,7 +102,18 @@ function Finish:Impact()
 	local color = self.Winner.Body.Color
 	self.Winner.Trail.Enabled = false
 	self.Winner.Pivot = self.Winner.Model:GetPivot()
+	local before = {}
+	for _, shard in scene.Shatter.Shards or {} do
+		before[shard] = true
+	end
 	scene.Shatter:Break(self.Winner, scene.Root)
+	local fresh = {}
+	for _, shard in scene.Shatter.Shards or {} do
+		if not before[shard] then
+			table.insert(fresh, shard)
+		end
+	end
+	FinisherFX.attachShards(self.ShowRoot, fresh)
 	local avatar = scene.Viewing and self:Avatar()
 	if avatar then
 		local flash = Instance.new("Highlight")

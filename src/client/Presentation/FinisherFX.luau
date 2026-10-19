@@ -51,12 +51,15 @@ end
 -- Seconds from the show start to its impact beat. FightFinisher starts the show this early so the peak lands
 -- on the winner's impact. Lantern Eclipse (and anything unknown) starts at the impact.
 function FX.leadIn(id)
-	local show = Shows.Shows[id]
+	local show = id and Shows.Shows[id]
 	return if show then show.PeakAt else 0
 end
 
 -- Full length of a show including its tail, for previews that wait for it to finish.
 function FX.duration(id)
+	if id == "" then
+		return 0
+	end
 	if id == "lantern_eclipse" then
 		return Balance.CosmeticPresentation.Eclipse.Duration + 0.6
 	end
@@ -86,7 +89,10 @@ end
 
 local function frame(rig, show, t)
 	rig:BeginFrame()
-	local ok, err = pcall(module(show.Module).step, rig, t, show)
+	local ok, err = pcall(function()
+		module(show.Module).step(rig, t, show)
+		rig:StepModules(t)
+	end)
 	if not ok then
 		-- A broken frame ends the show quietly instead of erroring every Heartbeat.
 		warnOnce(show.Module .. ":step", tostring(err))
@@ -114,6 +120,7 @@ end
 
 -- Pool --------------------------------------------------------------------------------------------------------
 local pools = {}
+local live = setmetatable({}, { __mode = "k" }) -- show root -> rig, while it plays
 
 local function build(id, show, lowDetail)
 	local rig = Kit.rig(id, lowDetail, false)
@@ -197,7 +204,11 @@ function FX.emit(parent, id, origin, lowDetail, orientation, options)
 	rig.Socket.CFrame = CFrame.new(origin)
 	rig.Root.Parent = parent
 	rig.World = rig.Root:FindFirstAncestorWhichIsA("WorldRoot")
-	local feel, peaked = opts.Feel, false
+	live[rig.Root] = rig
+	local feel = opts.Feel
+	-- Camera beats: the peak by default; Mythic shows add more (`Beats`, e.g. the second peak).
+	local beats = show.Beats or { { At = show.PeakAt, Shake = show.Shake, Punch = show.Punch } }
+	local fired = {}
 	local start = os.clock()
 	frame(rig, show, 0)
 	rig.Connection = RunService.Heartbeat:Connect(function()
@@ -211,19 +222,29 @@ function FX.emit(parent, id, origin, lowDetail, orientation, options)
 			return
 		end
 		frame(rig, show, t)
-		if not peaked and t >= show.PeakAt then
-			peaked = true
-			if feel then
-				if (show.Shake or 0) > 0 then
-					feel:Shake(show.Shake)
-				end
-				if (show.Punch or 0) ~= 0 then
-					feel:Punch(show.Punch)
+		for i, beat in beats do
+			if not fired[i] and t >= beat.At then
+				fired[i] = true
+				if feel then
+					if (beat.Shake or 0) > 0 then
+						feel:Shake(beat.Shake)
+					end
+					if (beat.Punch or 0) ~= 0 then
+						feel:Punch(beat.Punch)
+					end
 				end
 			end
 		end
 	end)
 	return rig.Root
+end
+
+-- Hands a playing show the shards of the winner's glassy (Emberwing lights them up at its second peak).
+function FX.attachShards(root, shards)
+	local rig = root and live[root]
+	if rig then
+		rig.ExternalShards = shards
+	end
 end
 
 -- Builds a frozen frame of the show into `world` (a WorldModel/Model) for icons and portraits, facing the

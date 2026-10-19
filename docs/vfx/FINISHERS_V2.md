@@ -197,3 +197,34 @@ Colours are hex. Times are from show start; **P** marks the peak.
 Run each finisher in a real bot round and in the Inventory preview, check a phone viewport (844×390), confirm no
 leftover instances after each show and after the match, and record frame cost. Results:
 `docs/testing/finishers_v2/README.md`.
+
+## 6. The module kit and the seven launch finishers (Cosmetics V2)
+
+Design: `docs/design/COSMETICS_V2.md` §4. Every standard finisher now runs on one kit:
+
+- `Finishers/Kit`: the rig, pooled actors, emitters, trails, beams, light and grade, plus `GlassyHero`/`PlaceHero`.
+  Set items reuse their installed glassy model as the hero (Glass Unicorn for Starmane, Glass Phoenix for
+  Emberwing, Potion Flask for Hocus Pop), so they match the glassy exactly.
+- `Finishers/Modules`: shared, parameterised building blocks that register their own per-frame step:
+  - peaks: `Flash`, `Shockwave` (ring/crown, view or ground plane, doubles, offset);
+  - `ShardBurst`: pieces with pre-computed floor bounces, drag, trails and timed pops;
+  - `BeamColumn`, the Epic+ light column;
+  - `ParticleField`: burst, rain, rise, swirl or orbit;
+  - `Light`, a PointLight curve;
+  - `reveal()`: MeshReveal arrival curves (drop, assemble, grow, swoop, orbit, rise).
+- Camera beats: `Config/FinisherShows.<id>.Beats` (Mythic shows have two). Prism Pop's flash and ring now come
+  from the modules, as the regression check.
+
+| Finisher | Rarity | Length | Hero | Signature |
+|---|---|---|---|---|
+| Frost Pop | Common | 1.7 s | 6 ice slabs (`FV4_IceSlab`), glass snowflakes | cube assembles, cracks flash, snowflakes spin out |
+| Gumball | Uncommon | 1.9 s | machine base, lid, crank (`FV4_Gumball*`) | crank turns, lid pops, 14 gumballs bounce twice and pop in turn |
+| Honeyburst | Uncommon | 1.9 s | honeycomb cells, glass bees | comb dome, orbiting bees, honey crown, looping bee trails |
+| Hocus Pop | Rare | 2.1 s | Potion Flask glassy, crowned frog | three-colour smoke swirl, frog hop + ribbit, chain of puffs |
+| Petalstorm | Rare | 2.1 s | glass stems, buds, blooms | six flowers bloom at once, petal vortex, chime chain |
+| Starmane | Epic | 2.3 s | Glass Unicorn glassy, rainbow arcs | gallop down a rainbow, rear, rainbow column, heart/star rain, bow |
+| Emberwing | Mythic | 2.9 s | Glass Phoenix glassy, sun feathers, rune ring | orbit, climb under a sunset grade, dive (P2) into a sunfire column, feathers, glowing shards |
+
+New meshes: `tools/blender/build_finishers_v4.py` → `assets/blender/round_cosmetics/finishers_v4` (17 meshes, 4,698
+tris). New textures: Snow, Petal, Ember, Feather, Heart, Hex. Emberwing waits in `RoundCosmetics.PendingFinishers`
+until crates have a Coin Mythic weight and the Daily Store a Mythic finisher tier.

@@ -14,6 +14,20 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — Seven launch finishers on one module kit (workstream G)
+Done:
+- Module kit: `Presentation/Finishers/Modules` (Flash, Shockwave, ShardBurst with bounces/pops, BeamColumn, ParticleField, Light, MeshReveal curves). Kit adds glassy heroes; FinisherFX adds camera Beats and attachShards. Prism Pop re-expressed with the modules.
+- Seven launch finishers from COSMETICS_V2 §4.2: Frost Pop, Gumball, Honeyburst, Hocus Pop, Petalstorm, Starmane, Emberwing.
+  - Starmane, Emberwing and Hocus Pop use the Glass Unicorn, Glass Phoenix and Potion Flask glassies as heroes.
+  - 17 new Blender meshes (`tools/blender/build_finishers_v4.py`, asset 120805864098504) and 6 textures, installed in `Assets.VFX.FinishersV4`.
+  - Seven cue sets plus 5 ProSoundEffects sounds.
+- Six new entries in RoundCosmetics, with `RoundFinishers` portrait models installed so they pass the crate gate. Emberwing waits in `PendingFinishers` for A's Coin Mythic weight and Mythic store tier (tests require both).
+- Studio: all seven played in real bot rounds and previews, no errors and nothing left behind. Report: `docs/testing/finishers_v3_launch/README.md`. Lune 164/164.
+Next:
+- Save the place. AudioAnalyzer level pass on the 5 new sounds; creator listening, feel and phone review; move Emberwing into the catalog once A decides.
+Problems / questions for the user:
+- TextFit.luau (ui-text-fit, uncommitted) briefly lacked its `return` and broke every Play client. Fixed within minutes after a heads-up.
+
 ## 2026-10-19 — Claude — v4 glassies installed in Studio (workstream C)
 Done:
 - All 36 v4 glassies are installed at ReplicatedStorage.Assets.Glassies.<id> with tools/studio/install_glassies_v4.luau: the 24 revamped and the 12 Roster V2 launch glassies, from the Approved Open Cloud uploads (Records in docs/art/glassy_revamp/ and docs/art/launch_glassies/roblox_assets.json).

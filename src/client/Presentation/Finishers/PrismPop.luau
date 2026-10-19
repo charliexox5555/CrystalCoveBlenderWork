@@ -1,6 +1,7 @@
 -- Prism Pop (glass_burst, Common): a dodecahedron shell of prism facets snaps shut around the foe, glows white,
 -- and pops into rainbow glass with prism slivers and falling glitter. Timeline in Config/FinisherShows.
 local Kit = require(script.Parent.Kit)
+local Modules = require(script.Parent.Modules)
 local Show = {}
 
 local ICE, WHITE = Color3.fromHex("#7EDFF2"), Color3.new(1, 1, 1)
@@ -66,8 +67,8 @@ function Show.build(rig, s)
 			})
 		)
 	end
-	rig.Flash = rig:Actor("PrismFlash", { Shape = Enum.PartType.Ball, Size = 1, Color = WHITE })
-	rig.Ring = rig:Actor("PrismRing", { Mesh = { "ShockCrown", "Ring" }, Size = 2, Color = ICE, Transparency = 0.1 })
+	Modules.Flash(rig, { At = s.PeakAt, Size = s.FlashSize, Seconds = 0.14 })
+	Modules.Shockwave(rig, { At = s.PeakAt, Radius = s.RingRadius, Seconds = 0.5, Color = ICE })
 	rig:Emitter("Glints", {
 		Texture = "StarGlint",
 		Color = { WHITE, ICE, Color3.fromHex("#C9B8FF") },
@@ -158,24 +159,6 @@ function Show.step(rig, t, s)
 		local length = s.SliverLength * grow
 		local center = origin + dir * (0.8 + length / 2 + after * 2)
 		rig:Stretch(sliver, center, dir, length, 2.6, Kit.smooth((after - 0.25) / 0.25))
-	end
-	-- Flash and ring at the pop.
-	local flashT = after / 0.14
-	if released and flashT < 1 then
-		rig:Place(
-			rig.Flash,
-			CFrame.new(origin),
-			0.5 + s.FlashSize * Kit.easeOut(flashT),
-			0.15 + 0.85 * math.sqrt(flashT)
-		)
-	else
-		rig:Hide(rig.Flash)
-	end
-	if released and after < 0.5 then
-		local ringT = Kit.easeOut(after / 0.5)
-		rig:Disc(rig.Ring, rig.Facing, 1 + s.RingRadius * ringT, ringT)
-	else
-		rig:Hide(rig.Ring)
 	end
 end
 

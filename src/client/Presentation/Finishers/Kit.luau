@@ -55,6 +55,12 @@ local Fallback = {
 	Confetti = { Texture = "rbxassetid://119749428254490" },
 	Dust = { Texture = "rbxassetid://101019590487297", Flipbook = Enum.ParticleFlipbookLayout.Grid4x4 },
 	Puff = { Texture = "rbxassetid://130955555778708", Flipbook = Enum.ParticleFlipbookLayout.Grid4x4 },
+	Snow = { Texture = "rbxassetid://118014953401567" },
+	Petal = { Texture = "rbxassetid://119749428254490" },
+	Ember = { Texture = "rbxassetid://101019590487297", Flipbook = Enum.ParticleFlipbookLayout.Grid4x4 },
+	Feather = { Texture = "rbxassetid://119749428254490" },
+	Heart = { Texture = "rbxassetid://118014953401567" },
+	Hex = { Texture = "rbxassetid://118014953401567" },
 }
 local Flipbooks = { Confetti = Enum.ParticleFlipbookLayout.Grid4x4 }
 
@@ -100,22 +106,29 @@ local function libraries()
 	end
 	local combat = vfx:FindFirstChild("Combat")
 	return {
+		vfx:FindFirstChild("FinishersV4"),
 		vfx:FindFirstChild("FinishersV3"),
 		vfx:FindFirstChild("RoundHeroV2"),
 		combat and combat:FindFirstChild("Meshes"),
 	}
 end
 
--- First template found for `names` (a name or list of names) in FinishersV3, RoundHeroV2, then Combat.Meshes.
+-- First template found for `names` (a name or list of names) in FinishersV4, FinishersV3, RoundHeroV2, then
+-- Combat.Meshes. Blender exports are prefixed FV3_/FV4_.
 function Kit.template(names)
 	if type(names) == "string" then
 		names = { names }
 	end
 	local libs = libraries()
 	for _, name in names do
-		for i = 1, 3 do
+		for i = 1, 4 do
 			local lib = libs[i]
-			local found = lib and (lib:FindFirstChild(name) or lib:FindFirstChild("FV3_" .. name))
+			local found = lib
+				and (
+					lib:FindFirstChild(name)
+					or lib:FindFirstChild("FV3_" .. name)
+					or lib:FindFirstChild("FV4_" .. name)
+				)
 			if found and found:IsA("BasePart") then
 				return found
 			end
@@ -145,6 +158,8 @@ function Kit.rig(id, lowDetail, still)
 		Schedule = {},
 		Lights = {},
 		Highlights = {},
+		Steps = {},
+		ResetHooks = {},
 		ParticleScale = 1,
 	}, Rig)
 	self.Socket = self:SocketPart("Socket", Vector3.one * 0.2)
@@ -173,7 +188,7 @@ end
 	Parent     optional container (e.g. a Model for a Highlight)
 ]]
 function Rig:Actor(name, opts)
-	local source = opts.Mesh and Kit.template(opts.Mesh)
+	local source = opts.Source or (opts.Mesh and Kit.template(opts.Mesh))
 	local p = if source then source:Clone() else Instance.new("Part")
 	still(p)
 	p.Name = name
@@ -188,9 +203,27 @@ function Rig:Actor(name, opts)
 		base = raw / math.max(raw.X, raw.Y, raw.Z) * (opts.Size or 1)
 	end
 	p.Size = base
-	p.Color = opts.Color or Color3.new(1, 1, 1)
-	p.Material = opts.Material or Enum.Material.Neon
-	p.Reflectance = opts.Reflectance or 0
+	local rest = opts.Transparency or 0
+	if opts.Keep and source then
+		-- Keep the template's own look (glassy heroes): colour, material, transparency. Drop anything that
+		-- would run on its own (emitters, lights, scripts) so the show stays the only clock.
+		rest = source.Transparency
+		for _, d in p:GetDescendants() do
+			if
+				d:IsA("ParticleEmitter")
+				or d:IsA("Trail")
+				or d:IsA("Beam")
+				or d:IsA("Light")
+				or d:IsA("LuaSourceContainer")
+			then
+				d:Destroy()
+			end
+		end
+	else
+		p.Color = opts.Color or Color3.new(1, 1, 1)
+		p.Material = opts.Material or Enum.Material.Neon
+		p.Reflectance = opts.Reflectance or 0
+	end
 	p.Transparency = 1
 	p.Parent = opts.Parent or self.Root
 	-- Longest local axis, so Stretch() can lay elongated pieces along a direction whatever the template.
@@ -198,7 +231,7 @@ function Rig:Actor(name, opts)
 	local actor = {
 		Part = p,
 		Base = base,
-		Rest = opts.Transparency or 0,
+		Rest = rest,
 		Axis = axis,
 		Fallback = source == nil,
 		Template = source and source.Name,
@@ -262,6 +295,56 @@ end
 function Rig:Disc(actor, cf, radius, alpha, thickness)
 	local k = radius / (math.max(actor.Base.X, actor.Base.Y) / 2)
 	self:Place(actor, cf, Vector3.new(k, k, thickness or 1), alpha)
+end
+
+-- A hero built from an installed glassy (Assets.Glassies.<id>: Body + Details, no shards or hang chain), so
+-- set items (Starmane's unicorn, Emberwing's phoenix, Hocus Pop's flask) match their glassy exactly.
+-- `height` is the hero's size in studs along its tallest axis. Returns nil if the glassy isn't installed.
+function Rig:GlassyHero(id, height)
+	local glassies = RS:FindFirstChild("Assets") and RS.Assets:FindFirstChild("Glassies")
+	local model = glassies and glassies:FindFirstChild(id)
+	local body = model and model:FindFirstChild("Body")
+	if not body then
+		return nil
+	end
+	local sources = { body }
+	local details = model:FindFirstChild("Details")
+	for _, d in details and details:GetDescendants() or {} do
+		if d:IsA("BasePart") and not d.Name:match("^Hang") then
+			table.insert(sources, d)
+		end
+	end
+	local _, extent = model:GetBoundingBox()
+	local scale = height / math.max(extent.X, extent.Y, extent.Z)
+	local hero = { Parts = {}, Scale = scale, Group = self:Group("Hero_" .. id) }
+	for _, src in sources do
+		local actor = self:Actor(src.Name, { Source = src, Keep = true, Size = src.Size * scale, Parent = hero.Group })
+		table.insert(hero.Parts, { Actor = actor, Name = src.Name, Offset = body.CFrame:ToObjectSpace(src.CFrame) })
+	end
+	return hero
+end
+
+-- Places a glassy hero. `pose` (optional) maps a part name pattern to an extra local rotation (wing flap, fold).
+function Rig:PlaceHero(hero, cf, scale, alpha, pose)
+	local k = hero.Scale * (scale or 1)
+	for _, p in hero.Parts do
+		local extra = CFrame.identity
+		if pose then
+			for pattern, rot in pose do
+				if p.Name:match(pattern) then
+					extra = rot
+				end
+			end
+		end
+		local local_ = CFrame.new(p.Offset.Position * k) * extra * p.Offset.Rotation
+		self:Place(p.Actor, cf * local_, scale or 1, alpha)
+	end
+end
+
+function Rig:HideHero(hero)
+	for _, p in hero.Parts do
+		p.Actor.Part.Transparency = 1
+	end
 end
 
 -- World position from view-space offsets: x = screen right, y = up, z = toward the camera.
@@ -500,6 +583,24 @@ function Rig:Reset()
 	end
 	self:DropGrade()
 	self.TrailsLive = false
+	for _, hook in self.ResetHooks do
+		hook()
+	end
+end
+
+-- Shared modules (Finishers/Modules) register a per-frame step here; FinisherFX runs them after the show's own
+-- step. `reset` (optional) clears any per-play state when a pooled rig is reused.
+function Rig:AddStep(step, reset)
+	table.insert(self.Steps, step)
+	if reset then
+		table.insert(self.ResetHooks, reset)
+	end
+end
+
+function Rig:StepModules(t)
+	for _, step in self.Steps do
+		step(t)
+	end
 end
 
 function Rig:DropGrade()

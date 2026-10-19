@@ -1,0 +1,54 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "finishers_v4": {
+   "AssetId": "120805864098504",
+   "Path": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",
+   "Sha256": "c7dbf10a158cd2e25799d9f4b34f3518ef7bb84aacc50034f34e36cd41a7ebb7",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:24:01"
+  },
+  "tex_Snow": {
+   "AssetId": "86729256648467",
+   "Path": "assets/blender/round_cosmetics/finishers_v4/textures/Snow.png",
+   "Sha256": "8b292e799b8ddf4131c64e35cb284794b903dc6428a2394538ff783efedb040a",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:24:05"
+  },
+  "tex_Petal": {
+   "AssetId": "89881978562324",
+   "Path": "assets/blender/round_cosmetics/finishers_v4/textures/Petal.png",
+   "Sha256": "e99e545b151c0a8a1f2c5843f233e0cf44da1369e079486eddaf06fc43f7dd80",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:24:12"
+  },
+  "tex_Ember": {
+   "AssetId": "111718672601067",
+   "Path": "assets/blender/round_cosmetics/finishers_v4/textures/Ember.png",
+   "Sha256": "ccba8d36e36ec37876081a8befe6e5622b497e2a663ad64d1c2f8b4363b31828",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:24:16"
+  },
+  "tex_Feather": {
+   "AssetId": "79748678383270",
+   "Path": "assets/blender/round_cosmetics/finishers_v4/textures/Feather.png",
+   "Sha256": "03d9ae5ed2ec673e9b0a9863839ba18bd8a7f65fb9567f4e204fcdad8a417b43",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:24:20"
+  },
+  "tex_Heart": {
+   "AssetId": "140455465309274",
+   "Path": "assets/blender/round_cosmetics/finishers_v4/textures/Heart.png",
+   "Sha256": "a1d01e723a429b86848f77b23885e99c4fd67fc09491899443cad2b6581461a6",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:24:24"
+  },
+  "tex_Hex": {
+   "AssetId": "136299597964686",
+   "Path": "assets/blender/round_cosmetics/finishers_v4/textures/Hex.png",
+   "Sha256": "5863b3ebbb017c53c5fd484651d970e72b3c25899f3be84d6c27c33e0bb04d45",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:24:29"
+  }
+ }
+}

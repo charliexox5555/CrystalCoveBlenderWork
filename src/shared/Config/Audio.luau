@@ -52,6 +52,11 @@ return {
 	FN_GlowSwell = "rbxassetid://9116393976",
 	FN_PunchyPoof = "rbxassetid://9125640290",
 	FN_GlassPing = "rbxassetid://9126073644",
+	FN_IceCrackle = "rbxassetid://9125611419",
+	FN_BeeBuzz = "rbxassetid://9113414107",
+	FN_Ribbit = "rbxassetid://9113858131",
+	FN_WindSwirl = "rbxassetid://9114374052",
+	FN_SunChime = "rbxassetid://9126072453",
 	-- UI sounds (ProSoundEffects, creator-approved 2026-10-17); levels live in Config/UiMotion.
 	UiClick = "rbxassetid://9119717523",
 	UiHover = "rbxassetid://9119717529",

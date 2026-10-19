@@ -1,0 +1,235 @@
+{
+  "Version": 4,
+  "Meshes": {
+    "FV4_IceSlab": {
+      "Tris": 88,
+      "RobloxSize": [
+        1.0,
+        1.0,
+        0.29
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.0,
+        -0.015
+      ]
+    },
+    "FV4_GlassSnowflake": {
+      "Tris": 294,
+      "RobloxSize": [
+        2.14,
+        1.8721,
+        0.0866
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.0,
+        -0.0
+      ]
+    },
+    "FV4_GumballBase": {
+      "Tris": 348,
+      "RobloxSize": [
+        1.32,
+        0.7,
+        1.32
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.35,
+        -0.0
+      ]
+    },
+    "FV4_GumballLid": {
+      "Tris": 24,
+      "RobloxSize": [
+        0.26,
+        0.18,
+        0.085
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.0,
+        -0.0125
+      ]
+    },
+    "FV4_GumballCrank": {
+      "Tris": 132,
+      "RobloxSize": [
+        0.54,
+        0.32,
+        0.25
+      ],
+      "RobloxCentre": [
+        0.11,
+        0.0,
+        -0.075
+      ]
+    },
+    "FV4_HoneyHex": {
+      "Tris": 140,
+      "RobloxSize": [
+        0.985,
+        0.866,
+        0.4
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.0,
+        -0.0
+      ]
+    },
+    "FV4_BeeBody": {
+      "Tris": 296,
+      "RobloxSize": [
+        1.02,
+        0.6,
+        0.585
+      ],
+      "RobloxCentre": [
+        0.09,
+        0.0,
+        -0.0
+      ]
+    },
+    "FV4_BeeStripes": {
+      "Tris": 64,
+      "RobloxSize": [
+        0.34,
+        0.61,
+        0.61
+      ],
+      "RobloxCentre": [
+        -0.06,
+        0.0,
+        -0.0
+      ]
+    },
+    "FV4_BeeWings": {
+      "Tris": 16,
+      "RobloxSize": [
+        0.3043,
+        0.52,
+        0.36
+      ],
+      "RobloxCentre": [
+        0.05,
+        0.52,
+        -0.0
+      ]
+    },
+    "FV4_FrogBody": {
+      "Tris": 888,
+      "RobloxSize": [
+        1.48,
+        0.94,
+        0.9363
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.05,
+        0.0181
+      ]
+    },
+    "FV4_FrogCrown": {
+      "Tris": 360,
+      "RobloxSize": [
+        0.486,
+        0.31,
+        0.4825
+      ],
+      "RobloxCentre": [
+        0.013,
+        0.155,
+        -0.0
+      ]
+    },
+    "FV4_FlowerStem": {
+      "Tris": 134,
+      "RobloxSize": [
+        0.42,
+        1.6,
+        0.1
+      ],
+      "RobloxCentre": [
+        0.16,
+        0.8,
+        -0.0
+      ]
+    },
+    "FV4_FlowerBud": {
+      "Tris": 96,
+      "RobloxSize": [
+        0.44,
+        0.44,
+        0.44
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.3,
+        -0.0
+      ]
+    },
+    "FV4_FlowerBloom": {
+      "Tris": 936,
+      "RobloxSize": [
+        1.2,
+        1.0592,
+        0.1764
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.0,
+        -0.0482
+      ]
+    },
+    "FV4_RainbowArc": {
+      "Tris": 260,
+      "RobloxSize": [
+        2.0,
+        1.0,
+        0.08
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.5,
+        -0.0
+      ]
+    },
+    "FV4_SunFeatherPlate": {
+      "Tris": 94,
+      "RobloxSize": [
+        0.374,
+        1.2,
+        0.07
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.0,
+        -0.015
+      ]
+    },
+    "FV4_RuneRing": {
+      "Tris": 528,
+      "RobloxSize": [
+        2.0,
+        2.0,
+        0.125
+      ],
+      "RobloxCentre": [
+        0.0,
+        0.0,
+        -0.0225
+      ]
+    }
+  },
+  "TotalTris": 4698,
+  "Textures": [
+    "textures/Snow.png",
+    "textures/Petal.png",
+    "textures/Ember.png",
+    "textures/Feather.png",
+    "textures/Heart.png",
+    "textures/Hex.png"
+  ]
+}

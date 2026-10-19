@@ -44,4 +44,9 @@ return {
 	["rbxassetid://9116393976"] = { Start = 0, Seconds = 1.4, Fade = 0.3, Volume = 0.35, Pitch = 1 },
 	["rbxassetid://9125640290"] = { Start = 0, Seconds = 1.0, Fade = 0.25, Volume = 0.75, Pitch = 1 },
 	["rbxassetid://9126073644"] = { Start = 0, Seconds = 0.6, Fade = 0.2, Volume = 0.3, Pitch = 1 },
+	["rbxassetid://9125611419"] = { Start = 0, Seconds = 1.2, Fade = 0.35, Volume = 0.35, Pitch = 1 },
+	["rbxassetid://9113414107"] = { Start = 0, Seconds = 1.2, Fade = 0.35, Volume = 0.3, Pitch = 1 },
+	["rbxassetid://9113858131"] = { Start = 0, Seconds = 0.9, Fade = 0.2, Volume = 0.35, Pitch = 1 },
+	["rbxassetid://9114374052"] = { Start = 0, Seconds = 1.6, Fade = 0.4, Volume = 0.3, Pitch = 1 },
+	["rbxassetid://9126072453"] = { Start = 0, Seconds = 1.2, Fade = 0.35, Volume = 0.35, Pitch = 1 },
 }

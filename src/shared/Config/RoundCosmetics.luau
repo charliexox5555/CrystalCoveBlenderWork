@@ -94,6 +94,88 @@ C.Finishers = {
 		CameraOrbit = 0.16,
 		Description = "Stars spiral into a glass star core, everything goes quiet, then it explodes into a rainbow supernova.",
 	},
+	-- Launch finishers (docs/design/COSMETICS_V2.md §4.2): crate/store only (no Matches field). Each joins the
+	-- crate pools only once Assets.RoundFinishers.<id> is installed (KilnService's `available` gate).
+	{
+		Id = "frost_pop",
+		Name = "Frost Pop",
+		Rarity = "Common",
+		Color = "#BFEFFF",
+		Accent = "#7FB8FF",
+		CameraHoldSeconds = 0.9,
+		CameraPush = 0.76,
+		Description = "An ice cube freezes around your foe, cracks, and bursts into spinning glass snowflakes.",
+	},
+	{
+		Id = "gumball",
+		Name = "Gumball",
+		Rarity = "Uncommon",
+		Color = "#FF5A4E",
+		Accent = "#FFD34E",
+		CameraHoldSeconds = 1.1,
+		CameraPush = 0.74,
+		Description = "A gumball machine drops over your foe, the crank turns, and glass gumballs bounce everywhere.",
+	},
+	{
+		Id = "honeyburst",
+		Name = "Honeyburst",
+		Rarity = "Uncommon",
+		Color = "#FFB92E",
+		Accent = "#FFF1C9",
+		CameraHoldSeconds = 1.1,
+		CameraPush = 0.74,
+		Description = "Golden honeycomb builds around your foe, glass bees buzz in, and it all pops into honey sparkles.",
+	},
+	{
+		Id = "hocus_pop",
+		Name = "Hocus Pop",
+		Rarity = "Rare",
+		Color = "#6CFF9A",
+		Accent = "#FF7AC8",
+		CameraHoldSeconds = 1.4,
+		CameraPush = 0.72,
+		CameraOrbit = 0.1,
+		Description = "A potion tips over your foe, magic smoke swirls, and a crowned glass frog hops out.",
+	},
+	{
+		Id = "petalstorm",
+		Name = "Petalstorm",
+		Rarity = "Rare",
+		Color = "#FF8FB8",
+		Accent = "#FFD84D",
+		CameraHoldSeconds = 1.4,
+		CameraPush = 0.7,
+		CameraOrbit = 0.12,
+		Description = "Glass flowers sprout around your foe, bloom all at once, and spin into a petal storm.",
+	},
+	{
+		Id = "starmane",
+		Name = "Starmane",
+		Rarity = "Epic",
+		Color = "#FFD6F5",
+		Accent = "#FFE07A",
+		CameraHoldSeconds = 1.6,
+		CameraPush = 0.8,
+		CameraOrbit = -0.1,
+		Description = "A glass unicorn gallops in on a rainbow, rears up, and its horn fires a column that rains stars and hearts.",
+	},
+}
+-- Built and verified but not yet in the catalog: the first Mythic finisher joins C.Finishers once crates have a
+-- Coin Mythic weight and the Daily Store a Mythic finisher tier (creator/A decisions; CrateTests and
+-- DailyStoreTests require both). FinisherFX can already play it.
+C.PendingFinishers = {
+	{
+		Id = "emberwing",
+		Name = "Emberwing",
+		Rarity = "Mythic",
+		Color = "#FF7A2E",
+		Accent = "#FFD34E",
+		CameraHoldSeconds = 2.3,
+		CameraPush = 0.68,
+		CameraOrbit = 0.2,
+		KickAt = 0.7, -- the dive (second peak), seconds after impact
+		Description = "A sunfire phoenix circles your foe, dives, and a column of sunfire glass erupts as feathers of light fall.",
+	},
 }
 -- Seasonal entries are inspectable/equippable but never members of the ordinary crate pools above.
 -- The Hollowlight pumpkin is a standalone seasonal glassy (Config/Glassies), not a skin.

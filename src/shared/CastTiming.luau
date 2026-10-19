@@ -7,6 +7,8 @@ local C = Balance.CombatRelease.Cast
 local CastTiming = {}
 
 local BRACE = { guard = true, mirror = true }
+-- Shapes fired along the glassy's twisted facing: a fast-twisting string throws them off target.
+local TWIST_AIMED = { ray = true, cone = true, breath = true, sweep = true }
 local BOOST = { boost = true }
 local SELF = { heal = true }
 
@@ -24,9 +26,23 @@ function CastTiming.kind(shape: string?, arm: boolean?): string
 	return "strike"
 end
 
+-- Aim error (radians) of a twist-aimed shape at release, from the string's twist and spin.
+function CastTiming.aimError(twist: number, spin: number, params: any): number
+	local windup = (params and params.Windup or 0) + (params and params.Hold or 0)
+	return math.abs((twist + spin * windup) * Balance.CombatRelease.TwistInfluence)
+end
+
 -- distance: centre-to-centre studs; closing: approach speed (studs/s, > 0 = coming together);
--- contact: centre distance at which the glassies touch; params: the kit (Windup, Range).
-function CastTiming.good(kind: string, distance: number, closing: number, contact: number, params: any): boolean
+-- contact: centre distance at which the glassies touch; params: the kit (Windup, Range, Shape);
+-- aimError: from CastTiming.aimError (only used for twist-aimed shapes).
+function CastTiming.good(
+	kind: string,
+	distance: number,
+	closing: number,
+	contact: number,
+	params: any,
+	aimError: number?
+): boolean
 	local windup = (params and params.Windup or 0) + (params and params.Hold or 0)
 	if kind == "self" then
 		return true
@@ -42,7 +58,16 @@ function CastTiming.good(kind: string, distance: number, closing: number, contac
 	end
 	local range = (params and params.Range or 6) * C.StrikeRangeSlack + contact * 0.5
 	local predicted = distance - math.max(0, closing) * windup
-	return predicted <= range
+	if predicted > range then
+		return false
+	end
+	if aimError and params and TWIST_AIMED[params.Shape] then
+		-- The target's angular size from here: wait while the string spins the shot off it.
+		local tolerance =
+			math.asin(math.clamp((contact * 0.5 + (params.Radius or 0.15)) / math.max(predicted, 0.5), 0, 1))
+		return aimError <= tolerance * C.AimTolerance
+	end
+	return true
 end
 
 return CastTiming

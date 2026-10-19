@@ -63,7 +63,9 @@ function CastBrain.step(sim, center)
 			end
 		end
 		local distance, closing, contact = CastBrain.read(sim, center, side)
-		if CastTiming.good(CastTiming.kind(r.Shape, r.Arm), distance, closing, contact, params) then
+		local body = sim.Bodies[side]
+		local aim = CastTiming.aimError(body.Twist, body.Spin, params)
+		if CastTiming.good(CastTiming.kind(r.Shape, r.Arm), distance, closing, contact, params, aim) then
 			Rules.requestCast(fight, side)
 		end
 	end

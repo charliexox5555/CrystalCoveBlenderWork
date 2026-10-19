@@ -132,6 +132,8 @@ local function centers(view, snapshot)
 			C = hook + Vector3.new(b[1], b[2], b[3]) * k,
 			V = Vector3.new(b[4], b[5], b[6]) * k,
 			R = geometry and geometry.Radius or (def and def.Radius) or 0.7,
+			Twist = b[7] or 0,
+			Spin = b[8] or 0,
 		}
 	end
 	return out
@@ -153,7 +155,8 @@ function Cast:Update(view)
 		local normal = if distance > 0.0001 then delta / distance else Vector3.xAxis
 		local closing = (mine.V - other.V):Dot(normal)
 		local kit = Balance.CombatRelease.Kits[self.KitId]
-		good = CastTiming.good(self.Kind, distance, closing, (mine.R + other.R) * M.GlassyScale, kit)
+		local aim = CastTiming.aimError(mine.Twist, mine.Spin, kit)
+		good = CastTiming.good(self.Kind, distance, closing, (mine.R + other.R) * M.GlassyScale, kit, aim)
 	end
 	if good ~= self.Good then
 		self.Good = good

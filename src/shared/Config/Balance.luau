@@ -33,6 +33,7 @@ Balance.CombatRelease = {
 		ArmLead = 1.6, -- arming: contact due within this
 		StrikeRangeSlack = 1.15, -- aimed: predicted distance at release within Range x this
 		MinClosingSpeed = 0.8, -- studs/s; slower approaches don't count as "coming in"
+		AimTolerance = 0.45, -- twist-aimed shots: allowed aim error as a share of the target's angular size
 		-- Bots: reaction delay and how often they read the moment (by Skill 0..1).
 		BotReactionMax = 0.75,
 		BotReactionMin = 0.22,

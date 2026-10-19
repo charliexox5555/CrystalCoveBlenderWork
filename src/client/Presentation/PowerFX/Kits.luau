@@ -341,7 +341,7 @@ Kits.pop = {
 		)
 		fx:Glints(side, at, accent, 6)
 		fx:Glints(side, at, WHITE, 10)
-		-- SFX: fizzy pop layer.
+		fx:Cue(side, "pop_payoff")
 	end,
 }
 
@@ -390,7 +390,7 @@ Kits.jam = {
 		fx:Ring(side, at, color, 1, 6, 0.32, { Kind = "ShockCrown", Spin = 4 })
 		fx:Spokes(side, at, color, 8, 2, 0.25, { Alternate = WHITE, Width = 0.36 })
 		fx:Move(side, "recoil", 0.35, 1)
-		-- SFX: lid "bonk".
+		fx:Cue(side, "jam_bonk")
 	end,
 }
 
@@ -426,7 +426,7 @@ Kits.prism = {
 			end,
 		})
 		fx:Ring(side, lens, WHITE, 2.6, 0.5, windup, { Ease = "in", Alpha = 0.3 })
-		-- SFX: rising glass hum.
+		fx:Cue(side, "prism_gather")
 	end,
 	Release = function(fx, side, e, ctx)
 		ray(fx, side, e, ctx, { Width = 0.45, Rainbow = true, Sheath = hex("#9C6CFF"), Seconds = 0.5 })
@@ -529,7 +529,7 @@ Kits.comet = {
 		fx:Flash(side, ctx.Origin, accent, 2.2, 0.16)
 		fx:Ring(side, ctx.Origin, color, 0.6, 4, 0.3, { Kind = "ShockCrown", Spin = 3 })
 		fx:Light(side, ctx.Origin, accent, 0.35)
-		-- SFX: comet launch whoosh + star chime.
+		fx:Cue(side, "comet_launch")
 	end,
 	Hit = function(fx, side, _, at)
 		local color, accent = fx:Colors(side)
@@ -541,6 +541,7 @@ Kits.comet = {
 		fx:GroundRing(side, at, color, 4, 0.55)
 		fx:Light(side, at, accent, 0.4, 5)
 		fx:HeroBloom(side, 1)
+		fx:Cue(side, "comet_hit")
 	end,
 	Miss = function(fx, side, _, ctx)
 		local _, accent = fx:Colors(side)
@@ -596,7 +597,7 @@ Kits.glass_dragon = {
 			{ Delay = windup * 0.7, Ease = "in", Alpha = 0.05, Spin = 8 }
 		)
 		fx:GroundRing(side, (fx:Body(side)), color, 3, windup + 0.4, { Alpha = 0.3 })
-		-- SFX: dragon inhale.
+		fx:Cue(side, "dragon_inhale")
 	end,
 	Release = function(fx, side, e, ctx)
 		local color, accent = fx:Colors(side)
@@ -627,7 +628,7 @@ Kits.glass_dragon = {
 		end, color, (e.Duration or 0.5) + 0.25, 6, 16)
 		fx:HeroBloom(side, 1)
 		fx:GroundRing(side, ctx.Origin + ctx.Direction * 3, color, 5, 0.6)
-		-- SFX: crystal breath roar.
+		fx:Cue(side, "dragon_breath")
 	end,
 	Hit = function(fx, side, e, at)
 		local color, accent = fx:Colors(side)
@@ -711,7 +712,7 @@ Kits.galaxy_orb = {
 		fx:Light(side, ctx.Origin, color, duration, 5, 14)
 		fx:GroundRing(side, ctx.Origin, color, range, duration, { Alpha = 0.2, Spin = 2 })
 		fx:HeroBloom(side, 0.8)
-		-- SFX: vortex whoosh.
+		fx:Cue(side, "galaxy_vortex")
 	end,
 	Hit = function(fx, side, _, at)
 		local color, accent = fx:Colors(side)
@@ -805,7 +806,7 @@ Kits.rocket_pop = {
 		end
 		fx:Flash(side, (fx:Body(side)), WHITE, 2.2, 0.14)
 		fx:Ring(side, (fx:Body(side)), color, 1, 6, 0.32, { Kind = "ShockCrown", Spin = 3 })
-		-- SFX: rocket ignition.
+		fx:Cue(side, "rocket_ignite")
 	end,
 }
 
@@ -943,7 +944,7 @@ Kits.glass_duck = {
 		fx:Glints(side, at, color, 10)
 		fx:Move(side, "recoil", 0.35, 1)
 		local _ = e
-		-- SFX: bubble pop.
+		fx:Cue(side, "duck_pop")
 	end,
 }
 
@@ -1133,7 +1134,7 @@ Kits.arc_coil = {
 				end
 			end,
 		})
-		-- SFX: crackle loop.
+		fx:Cue(side, "arc_crackle")
 	end,
 	Release = function(fx, side, e, ctx)
 		local color = fx:Colors(side)
@@ -1143,6 +1144,7 @@ Kits.arc_coil = {
 			return ctx.End or (ctx.Origin + ctx.Direction * (e.Range or 12))
 		end, color, 0.32, 0.45)
 		fx:Flash(side, ctx.Origin, color, 1.8, 0.12)
+		fx:Cue(side, "arc_bolt")
 		local l = fx:Light(side, ctx.Origin, color, 0.45, 5)
 		if l then
 			l.Rise = 0.05
@@ -1559,6 +1561,7 @@ Kits.hot_sauce = {
 		if l then
 			l.Rise = 0.05
 		end
+		fx:Cue(side, "hot_sauce")
 		fx:Flash(side, (fx:Body(side)), accent, 2, 0.14)
 	end,
 }
@@ -1626,7 +1629,7 @@ Kits.chime = {
 		pulseRings(fx, side, e, ctx, { Rings = 3, Kind = "Ring" })
 		local _, accent = fx:Colors(side)
 		fx:Glints(side, ctx.Origin, accent, 10, { Speed = NumberRange.new(3, 6) })
-		-- SFX: chime ring.
+		fx:Cue(side, "chime_ring")
 	end,
 }
 

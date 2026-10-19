@@ -67,3 +67,22 @@ Creator picked these three APM Music cues from Roblox's licensed music library. 
 | Calm | [1836139113](https://create.roblox.com/store/asset/1836139113) | Positive Pre School Program | 20.0 s | Results screen, and Kiln / Glassies / Rewards panels | APM cue; vibe judged from its title, no store description |
 
 How it plays (`Config/Music.luau`, `Controllers/MusicController.luau`): one looped Sound per track in a `MusicMaster` SoundGroup so music never competes with the effects bank (track gains 0.28-0.32, player volume 0.7 by default). Tracks crossfade (1.6 s in, 1.2 s out, 0.6 s settle delay). Music ducks to 35% for about 2.4 s when the fight HUD stamps `LastShatter`. A round button at the top right mutes/unmutes; the choice is saved per player by `MusicPrefsService` (DataStore `GlassClashMusicPrefs_v1`, falls back to defaults if the store fails). Listening and mix review on a real phone are still pending.
+
+## Power sounds (workstream E, 2026-10-20)
+
+Ten free ProSoundEffects Creator Store sounds (Roblox's licensed library) for the v2 signature powers, chosen under the overnight delegation (decision 89). Ids, trims and per-power cues live in `src/shared/Config/PowerAudio.luau`, not in Config/Audio. The cues also reuse approved bank keys (ChimeCluster, LanternBell, SoftBoom, MagicRiser, CosmicRiser, RisingWhoosh, FallingShimmer, Bubbles, BubblePop). Cap: 6 power voices per client. Fights you aren't watching play only the first layer, at 0.6x volume. Load and length checks: `docs/testing/power_vfx/README.md`.
+
+| Key | Asset ID | Source name | Used by |
+|---|---|---|---|
+| PW_FizzPop | [9117848644](https://create.roblox.com/store/asset/9117848644) | Pops Mouth Popping Multiple Versions 7 | Pop payoff, zone pop |
+| PW_LidBonk | [9113911944](https://create.roblox.com/store/asset/9113911944) | Cooking Pot 26 (stainless lid) | Jam block |
+| PW_MagicSwirl | [9116408879](https://create.roblox.com/store/asset/9116408879) | Magic Swirling Tone 1 | Prism gather, Galaxy vortex |
+| PW_StarExit | [9125635285](https://create.roblox.com/store/asset/9125635285) | Magical Exit Sparkling Pass Bys Clinking Chimes 3 | Comet launch, Unicorn dash |
+| PW_Crackle | [9114246605](https://create.roblox.com/store/asset/9114246605) | Electricity Static 7 | Arc Coil windup and bolt, Light Bulb drain |
+| PW_AirRush | [9114374049](https://create.roblox.com/store/asset/9114374049) | Fast Pass By Airy Whooshes Windy 8 | Dragon inhale and breath |
+| PW_Roar | [9117733732](https://create.roblox.com/store/asset/9117733732) | Polar Bear 1 (first roar, pitched up 1.25) | Grizzly riposte (under SoftBoom) |
+| PW_FireBurst | [9114444008](https://create.roblox.com/store/asset/9114444008) | Fire Whoosh 3 | Rocket ignition, Phoenix rebirth |
+| PW_FireLick | [9114446852](https://create.roblox.com/store/asset/9114446852) | Fire Whoosh 15 | Hot Sauce |
+| PW_SlideUp | [9119198150](https://create.roblox.com/store/asset/9119198150) | Slide Whistle 6 | Glass Top spin |
+
+Creator listening review pending. Watch the roar in particular (kid-friendly level).

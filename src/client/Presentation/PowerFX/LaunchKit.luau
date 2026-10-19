@@ -127,7 +127,7 @@ function Launch.zone(fx, side, spec)
 			Up = 2,
 		})
 		fx:Glints(side, p, WHITE, 10)
-		-- SFX: zone pop.
+		fx:Cue(side, "zone_pop")
 	end
 	function handle:End()
 		fx:StopKey(key)
@@ -207,7 +207,7 @@ function Launch.drain(fx, toSide, spec)
 	fx:Flash(toSide, b, color, 2.4, 0.18, { Delay = seconds * 0.7 })
 	fx:Light(toSide, b, color, seconds + 0.2, 5)
 	fx:Ring(fromSide, a, foeColor, 2.6, 0.4, 0.3, { Ease = "in", Alpha = 0.3 })
-	-- SFX: drain zap.
+	fx:Cue(toSide, "drain_zap")
 end
 
 -- Brew swirl: two coloured bands spiral around the flask for `seconds` (shows the next Cycle brew).
@@ -257,7 +257,7 @@ function Launch.roar(fx, side, spec)
 	fx:GroundRing(side, pos, color, range, 0.5, { Delay = 0.06 })
 	fx:Light(side, pos, color, 0.45, 6)
 	fx:HeroBloom(side, 0.7)
-	-- SFX: low-glass ROAR.
+	fx:Cue(side, "roar")
 end
 
 -- Aimed rainbow dash: a rainbow trail on the dashing body for `seconds`, hoof-spark stars behind it.
@@ -290,7 +290,7 @@ function Launch.dash(fx, side, seconds, spec)
 		end,
 	})
 	fx:Flash(side, (fx:Body(side)), WHITE, 2.2, 0.14)
-	-- SFX: chime-whinny on launch.
+	fx:Cue(side, "dash")
 end
 
 -- A guard shattered by a piercing hit: glass plate shards fly, a white X flash.
@@ -388,6 +388,7 @@ function Launch.rebirth(fx, side, spec)
 		Seconds = 0.01,
 		Step = function()
 			fx:HeroBloom(side, 1.2)
+			fx:Cue(side, "rebirth_flare")
 			fx:Glints(
 				side,
 				(fx:Body(side)),
@@ -398,7 +399,7 @@ function Launch.rebirth(fx, side, spec)
 			return false
 		end,
 	})
-	-- SFX: rebirth flare (whoomph + rising chime).
+	fx:Cue(side, "rebirth_gather")
 end
 
 -- A short brew swirl in the colour of the coming brew (Cycle kits: Charge.Next).
@@ -439,7 +440,7 @@ function Launch.spin(fx, side, spec)
 		end,
 	})
 	fx:Glints(side, (fx:Body(side)), accent, 10, { Speed = NumberRange.new(4, 8), Spread = Vector2.new(90, 10) })
-	-- SFX: rising whistle.
+	fx:Cue(side, "spin")
 end
 
 -- Event wiring for A's fields (ROSTER_V2 §3, commit 5e4f930). Returns true when a launch builder handled the moment.

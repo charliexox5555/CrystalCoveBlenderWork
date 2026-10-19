@@ -142,19 +142,13 @@ Event fields needed from A (requested): zone `CastRelease { Point, Range, Delay,
 - **Budgets:** about 60 live particles per kit moment (mobile caps emitters at 100/s), at most 24 mesh actors per effect, and one hero bloom at a time.
 - **Cleanup:** effects stop when their side breaks or finishes, when the scene stops being viewed, on `ReadyCancel` and on round end. `Effects:Destroy()` removes the pool. Leftover checks are in `docs/testing/power_vfx/README.md`.
 
-## 7. Sound cues for workstream B
+## 7. Power sounds
 
-Moments where a dedicated sound layer would help:
-- Ready loop start (soft shimmer) and the last-0.6 s tighten (rising tick).
-- The manual flourish (B already plays it).
-- Prism gather (rising glass hum).
-- Arc Coil crackle loop.
-- Dragon inhale, then the breath roar.
-- Galaxy vortex whoosh.
-- Comet launch and its star chime.
-- Rocket ignition.
-- Duck bubble pop.
-- Jam lid bonk.
-- The launch kit: zone pop, drain zap, roar, rainbow dash and rebirth flare.
-
-In code these are marked `-- SFX:` next to the beat.
+Implemented on Oct 19:
+- **Config:** `src/shared/Config/PowerAudio.luau`, with 10 new free ProSoundEffects sounds plus reused bank keys (ids and source names are in `docs/audio/SOUND_LIST.md`, "Power sounds").
+- **Playback:** `FX:Cue(side, name)` → `Scene:Sound` (Muted handling, 20–70 rolloff). Sounds join `Effects.Sounds`, so round-end cleanup stops them.
+- **Limits:** 6 power voices per client. Fights you aren't watching play only the first layer.
+- **Contact mix:** contact cues stay at or below 0.35 volume and drop their tails when one of B's Smash/Crit hits lands within 80 ms.
+- **Cues:** Pop fizz, Jam lid bonk, Prism gather, Comet launch and hit, Dragon inhale and breath, Galaxy vortex, Rocket ignition, Hot Sauce flame, Duck pop, Arc Coil crackle and bolt, Chime ring, and for the launch kit: zone pop, drain zap, roar, dash, rebirth gather and flare, and Glass Top whistle.
+- **Not covered:** the manual-cast moment stays B's.
+- **Still needed:** a creator listening review, especially the roar's level.

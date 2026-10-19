@@ -14,6 +14,17 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — Power sounds and verification pass 2 (workstream E)
+Done:
+- The 17 `-- SFX:` markers are now real cues: `Config/PowerAudio`, 10 new free ProSoundEffects sounds (ids in `docs/audio/SOUND_LIST.md`) plus reused bank keys, played through `Scene:Sound` and cleaned up with `Effects.Sounds`.
+- Mixing: 6-voice cap; unwatched fights play only the first layer. B's rules: contact cues stay at or below 0.35 volume and drop their tails near a Smash/Crit. Audio/AudioCues are untouched.
+- Launch kit wired to A's final fields in bd27ff2. This pass verified it: zones, the falling rune star, drain, roar, dash, rebirth and the horizontal spin.
+- Studio slot (lock): all 10 sounds load; 22 kits plus 6 launch kits played with sound and no PowerFX errors (one `ipairs` bug fixed). At most 1 power voice at once. 0 leftovers in 8 live rounds. PowerFX costs 0.03–0.48 ms per fight. Report: `docs/testing/power_vfx/README.md`.
+Next:
+- Creator listening and feel review. A manual Device Emulator phone pass. Re-profile the whole client when the Mac isn't overloaded.
+Problems / questions for the user:
+- The Mac's load average was about 100 during the slot (Studio at 0.6–1.4 fps), so whole-client frame numbers from this run aren't valid; the earlier pass measured 1.4–1.7 ms.
+
 ## 2026-10-19 — Claude — Hollowlight premium pass (workstream I)
 Done:
 - Plan with short research: `docs/vfx/HOLLOWLIGHT_PREMIUM.md`.

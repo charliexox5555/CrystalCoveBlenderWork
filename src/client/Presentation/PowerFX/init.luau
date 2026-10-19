@@ -7,6 +7,8 @@ local Lighting = game:GetService("Lighting")
 local UIS = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local C = require(RS.Shared.Config.PowerVFX)
+local PowerAudio = require(RS.Shared.Config.PowerAudio)
+local Audio = require(RS.Shared.Config.Audio)
 local Visuals = require(RS.Shared.Config.CombatKitVisuals)
 local Motion = require(script.Parent.Parent.UI.Components.Motion)
 
@@ -631,6 +633,109 @@ function FX.motion(f, time)
 		end
 	end
 	return CFrame.Angles(pitch, yaw, roll)
+end
+
+-- Sound cues (Config/PowerAudio) -------------------------------------------------------------------------------------
+local voices = {} -- client-wide: power sounds alive right now
+local preloaded = false
+
+local function preload()
+	if preloaded then
+		return
+	end
+	preloaded = true
+	task.spawn(function()
+		local cache = Instance.new("Folder")
+		cache.Name = "PowerAudioCache"
+		cache.Parent = game:GetService("SoundService")
+		local list = {}
+		for _, def in PowerAudio.Sounds do
+			local sound = Instance.new("Sound")
+			sound.SoundId, sound.Parent = def.Id, cache
+			table.insert(list, sound)
+		end
+		pcall(function()
+			game:GetService("ContentProvider"):PreloadAsync(list)
+		end)
+	end)
+end
+
+-- Plays a cue's layers on the fighter's body (3D, Scene:Sound rolloff). Unwatched fights get only the first layer.
+-- Sounds join Effects.Sounds, so ClearTransient (round end, stop viewing) stops them.
+function FX:Cue(side, name)
+	local layers = PowerAudio.Cues[name]
+	local f = self:Fighter(side)
+	if not layers or not f or self.Scene.Muted then
+		return
+	end
+	preload()
+	local watched = self.Scene.Viewing == true
+	local bigHit = layers.Contact and self.BigHitAt and math.abs(self:Time() - self.BigHitAt) <= PowerAudio.BigHitWindow
+	for i, layer in ipairs(layers) do -- ipairs: cues also carry a Contact flag
+		if (not watched or bigHit) and i > 1 then
+			break
+		end
+		local def = PowerAudio.Sounds[layer.Key]
+		local id = if def then def.Id else Audio[layer.Key]
+		if not id then
+			continue
+		end
+		local function play()
+			if f.Broken or not f.Body.Parent or not self.Root.Parent or self.Scene.Muted then
+				return
+			end
+			for j = #voices, 1, -1 do
+				if not voices[j].Parent then
+					table.remove(voices, j)
+				end
+			end
+			if #voices >= PowerAudio.VoiceCap then
+				return
+			end
+			local jitter = 1 + (math.random() * 2 - 1) * (layer.Jitter or 0)
+			local volume = (layer.Volume or 0.35) * (if watched then 1 else PowerAudio.UnwatchedScale)
+			if layers.Contact then
+				volume = math.min(volume, PowerAudio.ContactMaxVolume)
+			end
+			local seconds = layer.Seconds or (def and def.Seconds)
+			local sound = self.Scene:Sound(id, f.Body, (layer.Pitch or 1) * jitter, volume, seconds)
+			if sound then
+				table.insert(voices, sound)
+				table.insert(self.Effects.Sounds, sound)
+				if layers.Contact and i > 1 then
+					self.Tails = self.Tails or {}
+					table.insert(self.Tails, { Sound = sound, At = self:Time() })
+				end
+			end
+		end
+		if layer.Delay and layer.Delay > 0 then
+			task.delay(layer.Delay, play)
+		else
+			play()
+		end
+	end
+end
+
+-- B's hit tiers: a Smash/Crit hit near a power contact keeps the mix clean (see PowerAudio.BigHitWindow).
+function FX:HitTier(e)
+	local feel = self.Scene.Feel
+	local ok, name = pcall(function()
+		return feel and feel:Classify(e)
+	end)
+	if not ok or (name ~= "Smash" and name ~= "Crit") then
+		return
+	end
+	local at = e.Time or self:Time()
+	self.BigHitAt = at
+	for i = #(self.Tails or {}), 1, -1 do
+		local tail = self.Tails[i]
+		if math.abs(tail.At - at) <= PowerAudio.BigHitWindow and tail.Sound.Parent then
+			tail.Sound:Destroy()
+		end
+		if not tail.Sound.Parent or at - tail.At > 1 then
+			table.remove(self.Tails, i)
+		end
+	end
 end
 
 require(script.Shapes)(FX)

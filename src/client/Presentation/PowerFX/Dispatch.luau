@@ -45,6 +45,10 @@ return function(FX)
 	end
 
 	function FX:Event(e)
+		if e.Type == "Hit" then
+			self:HitTier(e)
+			return
+		end
 		if not TYPES[e.Type] or not e.Side then
 			return
 		end

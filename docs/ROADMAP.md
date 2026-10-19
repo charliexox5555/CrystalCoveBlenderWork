@@ -12,6 +12,9 @@ Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DES
 - [x] **CL/U:** Open Cloud key fixed; uploaded + installed 24 v4 glassies, 12 launch glassies (now in ReleaseRoster and the Kiln), flyers v3, finisher meshes, Hollowlight v5.
 - [x] **B/E/G/H/I:** combat feel, power VFX + sounds, premium finishers, flyers v3, Hollowlight premium: verified in Studio, reports in docs/testing/.
 - [x] **CL/D/F/G/H:** Cosmetics V2 (decision 94): 7 launch finishers + 7 launch flyers installed; 60 riding Animation assets (6 families × 5 clips × R15/R6); no starter cosmetics (decision 95); UI text fit pass (J).
+- [x] **CL:** top bar buttons (decision 98): TopbarPlus Settings gear and Rewards gift with a Daily Rewards / Playtime Rewards / Codes / Quests dropdown, each opening its own placeholder ScreenGui in StarterGui. Verified with real clicks in Studio Play. [Docs](ui/topbar/README.md)
+- [ ] **CL/U:** design the Settings, Daily Rewards, Playtime Rewards, Codes and Quests screens; wire them to the retention remotes and retire the combined RewardsScreen.
+- [ ] **CL:** turn the code-built screens (RollScreen, FightHud, Results/QueuePanel/RoundEnd, CastButton, PickAnyConfirm, BundlePreview, music button) into editable StarterGui templates.
 - [ ] **U:** creator sets Robux prices for Epic Standard / Legendary / Mythic flyers and Mythic finishers (until then they're crate-only).
 - [ ] **U:** real-phone checks (no device emulation through MCP), listening pass on new sounds.
 - [ ] **U:** save the place again (flyer installs after the last save), then publish.

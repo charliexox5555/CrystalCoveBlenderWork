@@ -33,10 +33,18 @@ local function room(label)
 	return h
 end
 
+-- TopbarPlus (TopbarStandard/Centered and their Clipped copies) sizes its own labels from TextBounds; scaling them
+-- would fight its layout.
+local function inTopbar(label)
+	local gui = label:FindFirstAncestorOfClass("ScreenGui")
+	return gui ~= nil and string.sub(gui.Name, 1, 6) == "Topbar"
+end
+
 local function eligible(label)
 	return (label:IsA("TextLabel") or label:IsA("TextButton") or label:IsA("TextBox"))
 		and label:GetAttribute("TextFit") ~= false
 		and label.AutomaticSize == Enum.AutomaticSize.None
+		and not inTopbar(label)
 end
 
 local states = setmetatable({}, { __mode = "k" })

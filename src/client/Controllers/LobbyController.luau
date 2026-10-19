@@ -66,6 +66,11 @@ function Controller:Open(kind)
 	then
 		return
 	end
+	-- One menu at a time: a top bar screen (Settings, rewards placeholders) closes first.
+	local topbar = self.Controllers.TopbarController
+	if topbar then
+		topbar:CloseMenu()
+	end
 	self:Close()
 	if kind == "Kiln" then
 		Remotes.RequestKiln:FireServer()

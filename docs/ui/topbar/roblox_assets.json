@@ -1,0 +1,47 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "topbar_settings": {
+   "AssetId": "95467054739355",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/Main/Settings/256px/Settings 1 1st Outline 256px.png",
+   "Sha256": "e502f336335f1cc6e6aa3eeee949916bad9b01cb96edcc809b4a5cb7c01387a7",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T18:30:41"
+  },
+  "topbar_gift": {
+   "AssetId": "102317660678269",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/Item/Gift/256px/Red Gift 1st Outline 256px.png",
+   "Sha256": "03227c307412cc5a00aa9a65bc24be0237fbb1f9a30d83a2c237f4163758933d",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T18:30:51"
+  },
+  "topbar_daily": {
+   "AssetId": "124101145455396",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/Item/Calendar/256px/Calendar 1st Outline 256px.png",
+   "Sha256": "6ee3b4e08ebefd95dc59d9df56f7061ee4d6dfdfd1492083b125b40769b36d5c",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T18:34:13"
+  },
+  "topbar_playtime": {
+   "AssetId": "71245817743435",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/Item/Clock/256px/Clock 1st Outline 256px.png",
+   "Sha256": "905677710c9aa51dd9ab56c46e608af5a785a21db724530bc039512c39ee6057",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T18:34:22"
+  },
+  "topbar_codes": {
+   "AssetId": "81788574345358",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/Main/Codes/256px/Codes 1st Outline 256px.png",
+   "Sha256": "04c2645a90cf20df05fa36587abc039c94e2747d91e66ed87354b7b26191924f",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T18:34:26"
+  },
+  "topbar_quests": {
+   "AssetId": "102601502905812",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/Item/Scroll/256px/Scroll 1st Outline 256px.png",
+   "Sha256": "46df7b301bf8769ac096aefaa93189e3de36d8d7c1c4bf747053d803ab62747f",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T18:34:30"
+  }
+ }
+}

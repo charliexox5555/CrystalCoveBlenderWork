@@ -14,6 +14,18 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — Top bar buttons (decision 98)
+Done:
+- TopbarPlus v3.5.0 vendored at `src/shared/Vendor/Icon` (source read: no require(id), loadstring, HTTP; StyLua ignores it).
+- Settings gear and Rewards gift in the top bar (left, after chat). The gift's dropdown has Daily Rewards, Playtime Rewards, Codes, Quests with pack icons (6 uploaded to group 11116787).
+- Five placeholder Stained Glass ScreenGuis created in StarterGui (`tools/studio/build_topbar_screens.luau`): SettingsScreen, DailyRewardsScreen, PlaytimeRewardsScreen, CodesScreen, QuestsScreen. One menu at a time with the lobby windows; the gift hides in matches.
+- TextFit skips TopbarPlus's ScreenGuis. Real-click Play test passed. Lune 164/164.
+Next:
+- Design the five screens and wire them to the retention remotes; then convert the code-built screens into StarterGui templates.
+Problems / questions for the user:
+- **Save the place**: the five new StarterGui screens exist only in the open Edit session.
+- TopbarPlus prints a credit line in live servers (licence condition), and in Studio a harmless "v3.5.0 -> v3.4.0" version notice (upstream's version place is behind).
+
 ## 2026-10-19 — Claude — Sunwing, Starwhale, carriage streaming fix (workstream H)
 Done:
 - Installed F's Sunwing (Kneel) and Starwhale (Sit): exact fit, effects, motion, sounds (whale song = licensed APM track), catalog entries; both kept out of the Daily Store rotation like Carousel. Starwhale body made clearer (0.45 / core 0.65) so its inner stars read; the installer applies it too.

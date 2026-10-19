@@ -41,6 +41,13 @@ local UIAssets = {
 	["icon/inventory"] = "rbxassetid://125282322841576",
 	["icon/marble"] = "rbxassetid://126376968177419",
 	["icon/shop"] = "rbxassetid://129775144345051",
+	-- Top bar icons: gvesster Free Icon Pack v3.1 "1st Outline" set, uploaded via docs/ui/topbar/upload_list.json.
+	["topbar/codes"] = "rbxassetid://104059116086282",
+	["topbar/daily"] = "rbxassetid://109511006465398",
+	["topbar/gift"] = "rbxassetid://110617634126354",
+	["topbar/playtime"] = "rbxassetid://124806461609711",
+	["topbar/quests"] = "rbxassetid://76906669013402",
+	["topbar/settings"] = "rbxassetid://91094338327415",
 	["kiln/glow"] = "rbxassetid://102633056133157",
 	["kiln/hero_window"] = "rbxassetid://138848895962910",
 	["panel/odds_row_common"] = "rbxassetid://127750137320552",

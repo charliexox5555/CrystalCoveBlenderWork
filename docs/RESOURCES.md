@@ -53,7 +53,7 @@ Swap in the object (glass rocket, crystal crown, glass unicorn, pumpkin lantern.
 | Need | Use | Why |
 |---|---|---|
 | Saving player data | [ProfileStore](https://devforum.roblox.com/t/profilestore/3190543) (loleris) | Session locking and safe saves. It replaces ProfileService. |
-| Top-bar buttons | TopbarPlus v3 ([docs](https://1foreverhd.github.io/TopbarPlus/)) | Standard for icons in Roblox's top bar. |
+| Top-bar buttons | TopbarPlus v3 ([docs](https://1foreverhd.github.io/TopbarPlus/)), vendored at `src/shared/Vendor/Icon` | Standard for icons in Roblox's top bar. In use since decision 98 ([docs/ui/topbar](ui/topbar/README.md)). |
 | UI code | Plain Instances plus the `Theme` module and components (GAME_DESIGN §12.5) | Simplest for Codex working through MCP, with no build step or package manager. If you want a framework later, [Vide](https://github.com/littensy/vide) (Luau-native, type-checked) or Fusion fit Roblox better than React-lua for a small team. **Pick one and never mix them.** |
 | UI animation | `TweenService`, plus a small spring module if you want springy motion | Keep panel motion short (§12.1). |
 | Networking | Plain `RemoteEvent`s with server-side validation and rate limits | Already specified in §13.1. Don't trust the client. |

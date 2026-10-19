@@ -1,0 +1,47 @@
+{
+ "Record": "docs/ui/topbar/roblox_assets.json",
+ "Items": [
+  {
+   "Key": "topbar_settings",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/Main/Settings/256px/Settings 1 1st Outline 256px.png",
+   "Type": "Decal",
+   "Name": "Topbar Settings",
+   "Description": "Glass Clash top bar icon (gvesster Free Icon Pack v3.1)."
+  },
+  {
+   "Key": "topbar_gift",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/Item/Gift/256px/Red Gift 1st Outline 256px.png",
+   "Type": "Decal",
+   "Name": "Topbar Gift",
+   "Description": "Glass Clash top bar icon (gvesster Free Icon Pack v3.1)."
+  },
+  {
+   "Key": "topbar_daily",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/Item/Calendar/256px/Calendar 1st Outline 256px.png",
+   "Type": "Decal",
+   "Name": "Topbar Daily Rewards",
+   "Description": "Glass Clash top bar icon (gvesster Free Icon Pack v3.1)."
+  },
+  {
+   "Key": "topbar_playtime",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/Item/Clock/256px/Clock 1st Outline 256px.png",
+   "Type": "Decal",
+   "Name": "Topbar Playtime Rewards",
+   "Description": "Glass Clash top bar icon (gvesster Free Icon Pack v3.1)."
+  },
+  {
+   "Key": "topbar_codes",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/Main/Codes/256px/Codes 1st Outline 256px.png",
+   "Type": "Decal",
+   "Name": "Topbar Codes",
+   "Description": "Glass Clash top bar icon (gvesster Free Icon Pack v3.1)."
+  },
+  {
+   "Key": "topbar_quests",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/Item/Scroll/256px/Scroll 1st Outline 256px.png",
+   "Type": "Decal",
+   "Name": "Topbar Quests",
+   "Description": "Glass Clash top bar icon (gvesster Free Icon Pack v3.1)."
+  }
+ ]
+}

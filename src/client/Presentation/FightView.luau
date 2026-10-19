@@ -437,7 +437,12 @@ function Controller:Event(e)
 		elseif e.Id == "beam" or e.Id == "freeze" then
 			feel:PowerLand(e.Side and 3 - e.Side, now)
 		end
-	elseif e.Type == "SignatureReady" or e.Type == "ReadyCancel" or e.Type == "CastStart" then
+	elseif
+		e.Type == "SignatureReady"
+		or e.Type == "ReadyCancel"
+		or e.Type == "CastStart"
+		or e.Type == "SignatureArmed"
+	then
 		feel:Cast(e, now)
 	elseif e.Type == "Shatter" then
 		self.Phase = "RoundEnd"

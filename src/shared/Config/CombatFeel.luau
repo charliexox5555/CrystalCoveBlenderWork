@@ -209,6 +209,7 @@ return {
 
 	-- A power or signature reached its target vs went wide.
 	PowerLand = {
+		MinGap = 0.3, -- multi-pulse kits: later pulses inside this many seconds only wobble/glint
 		Trauma = 0.42,
 		Kick = 0.18,
 		Fov = -2,

@@ -43,7 +43,7 @@ During a hold the render clock runs at 4% speed (a near-freeze). Afterwards the 
 ### Beats
 
 - **Perfect Release:** gold burst on the glassy, chime. Own side only: −1.5° FOV.
-- **Power landed** (CastContact / SignatureContact / beam or freeze): 65 ms hold, shake, kick, wobble and crack glint on the target.
+- **Power landed** (CastContact / SignatureContact / beam or freeze): 65 ms hold, shake, kick, wobble and crack glint on the target. For multi-pulse kits, only the first pulse in 0.3 s gets the hold, shake and FOV; later pulses just wobble and glint.
 - **Power missed:** small wobble on the caster and a soft falling whoosh, with no shake.
 - **Block** (SignatureBlock / blocked CastContact): the attacker bounces off the guard.
 - **Comeback:** the HP-fraction leader swaps after the old lead reached at least 12%. Shows a green burst, a "COMEBACK!" popup and a chime, with a 3 s cooldown.
@@ -54,6 +54,8 @@ During a hold the render clock runs at 4% speed (a near-freeze). Afterwards the 
   - `SignatureReady` for your side gives a soft ping and glints.
   - `CastStart { Manual = true }` for your side gives a gold starburst, a 50 ms hold, a −3° FOV punch, a white flash, a "NICE CAST!" popup, a screen-edge tint and a riser + chime.
   - Someone else's manual cast gets a small ring only.
+  - Contact-payoff kits send `SignatureArmed { Manual = true }` instead of `CastStart`; that gets the same beat.
+  - The Ready ping plays once per `ReadyId`, even if Ready is sent again.
   - `ReadyCancel` clears the Ready state.
   - Duplicate `CastStart`s are ignored by CastId.
 
@@ -75,6 +77,7 @@ During a hold the render clock runs at 4% speed (a near-freeze). Afterwards the 
   | Milk Bottle vs Pickle Jar | 303 | Commons: 8 Solid / 8 Smash / 4 Crit, KO + Victory |
   | Prism vs Glass Dragon | 404 | run with reduced motion |
   | Jam vs Frostglobe | 505 | live Perfect Release screenshot |
+  | Pop vs Briar Flask | 606 | Glance tier seen; 11 power-contact beats, so the 0.3 s gap was added. Run twice, before and after the gap; 0 script errors |
 
   - During live fights the FOV dipped to 47.5–48° on crits and came back to 52°.
   - With `ReducedMotion` on, the FOV stayed at 52° the whole fight and holds were 39 ms.
@@ -97,5 +100,5 @@ These are staged with `CombatFeelPreview` at 50–70× slower so the frame can b
 - **Phone Device Emulator preset not run.** The Studio MCP can't switch emulator devices. The Play viewport was 1167×510, a phone-landscape aspect, and the touch-only particle cut was checked by reading the code only. A 2-minute check with an iPhone preset is still needed.
 - **Real-speed feel review by the creator.** Tier thresholds, hold lengths and the KO hold are first guesses from the research ranges; tune them in `Config/CombatFeel`.
 - **Comeback and tension beats were not seen in a live fight** (bot fights rarely swing). They are covered by the preview and code paths only.
-- **Manual cast is built against the contract but not exercised live**, because `SignatureReady`/`CastStart.Manual` don't exist on the server yet. Once workstream A lands them, run a player fight and press CAST.
+- **Manual cast is built against the contract but not exercised live.** Workstream A's CAST commit (`c147c3b`) emits `SignatureReady` / `CastStart.Manual` / `SignatureArmed.Manual` and the names were checked against it. Bot-vs-bot dev fights never cast manually, though, so a player fight with a CAST press is still needed.
 - **Sound mix:** the layers reuse the existing licensed bank. A dedicated glass "tail" sample would make tiers sound more distinct.

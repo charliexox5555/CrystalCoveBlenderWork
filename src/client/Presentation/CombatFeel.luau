@@ -399,10 +399,13 @@ function Feel:PowerLand(target, now)
 	local foe = scene.Fighters[3 - target]
 	local direction = f.Body.Position - foe.Body.Position
 	direction = if direction.Magnitude > 1e-3 then direction.Unit else scene.Frame.RightVector
-	self:Hold(Hold.PowerLand, now)
-	self:Shake(cfg.Trauma)
-	self:KickToward(direction, cfg.Kick)
-	self:Punch(cfg.Fov)
+	if now - (self.LastPowerLand or -math.huge) >= cfg.MinGap then
+		self.LastPowerLand = now
+		self:Hold(Hold.PowerLand, now)
+		self:Shake(cfg.Trauma)
+		self:KickToward(direction, cfg.Kick)
+		self:Punch(cfg.Fov)
+	end
 	self:React(target, cfg.Struck, direction)
 	self:Glint(target, cfg.CrackGlint)
 end
@@ -437,7 +440,7 @@ function Feel:Block(side, now)
 	self:React(3 - side, tier.Striker, -direction)
 end
 
--- Cast contract (workstream A): SignatureReady / ReadyCancel / CastStart { Manual }.
+-- Cast contract (workstream A): SignatureReady / ReadyCancel / CastStart { Manual } / SignatureArmed { Manual }.
 function Feel:Cast(e, now)
 	local view, scene = self.View, self.View.Scene
 	local f = scene and e.Side and scene.Fighters[e.Side]
@@ -446,19 +449,25 @@ function Feel:Cast(e, now)
 	end
 	self:Settings(now)
 	if e.Type == "SignatureReady" then
-		self.Ready[e.Side] = e.ReadyId or true
+		-- Ready can be re-sent (late join, state packets); ping once per ReadyId.
+		local id = e.ReadyId or e.Time
+		if self.Ready[e.Side] == id then
+			return
+		end
+		self.Ready[e.Side] = id
 		if e.Side == view.Side and view.Participant then
 			f.Glints:Emit(C.Cast.ReadyGlints)
 			self:Sounds(C.Cast.ReadySounds, f.Body)
 		end
 	elseif e.Type == "ReadyCancel" then
 		self.Ready[e.Side] = nil
-	elseif e.Type == "CastStart" then
+	elseif e.Type == "CastStart" or e.Type == "SignatureArmed" then
+		-- Contact-payoff kits arm (SignatureArmed) instead of starting a cast; both carry Manual.
 		self.Ready[e.Side] = nil
 		if e.Manual ~= true then
 			return
 		end
-		local key = tostring(e.CastId or e.Time) .. ":" .. e.Side
+		local key = e.Type .. ":" .. tostring(e.CastId or e.Time) .. ":" .. e.Side
 		if self.Manual[key] then
 			return
 		end

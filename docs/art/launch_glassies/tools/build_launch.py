@@ -282,7 +282,9 @@ def _clear_scene():
 
 
 def release_geometry(body):
-    lo, hi = _world_bounds([body])
+    vs = [body.matrix_world @ v.co for v in body.data.vertices]  # from the vertices: bound_box can be stale after bmesh edits
+    lo = Vector((min(v.x for v in vs), min(v.y for v in vs), min(v.z for v in vs)))
+    hi = Vector((max(v.x for v in vs), max(v.y for v in vs), max(v.z for v in vs)))
     return {"Radius": round(max(-lo.x, hi.x, -lo.y, hi.y), 6), "Center": round(-(lo.z + hi.z) / 2, 6)}
 
 
@@ -291,7 +293,7 @@ def finish_v4(body, details):
     normals on every smooth part. The Body keeps its full tint when nothing tinted sits inside it."""
     if not HAS_V4:
         return
-    has_inner = any(d.get("glass_layer") == "inner" for d in details)
+    has_inner = any(d.get("glass_layer") == "inner" for d in details) and not body.get("full_tint")
     for o in [body, *details]:
         if all(not p.use_smooth for p in o.data.polygons):
             continue
@@ -321,6 +323,9 @@ def _render(objs, icon, prev, samples):
 def build_objects(gid):
     _clear_scene()
     body, details = LAUNCH_BUILDERS[gid](gid)
+    for o in [body, *details]:
+        o.data.update()
+    bpy.context.view_layer.update()
     finish_v4(body, details)
     body["glassy_id"], body["asset_role"], body["source_name"] = gid, "Body", "Body"
     for d in details:
@@ -365,9 +370,11 @@ def build(gid, samples=96, force=False):
     geo = release_geometry(body)
     assert abs(geo["Radius"] - target) <= RADIUS_TOLERANCE, (gid, "radius", geo["Radius"], target)
     count = SHARDS[rarity]
-    for attempt in range(16):
+    body_volume = rclosed(body)["volume"]
+    for attempt in range(40):
         shards = make_shards(body, count, seed=4040 + sum(map(ord, gid)) + attempt * 7919, cut=rcut4 if HAS_V4 else rcut, min_volume_ratio=0.3 / count)
-        if len(shards) == count and all(rclosed(s)["nonmanifold_edges"] == 0 and rclosed(s)["boundary_edges"] == 0 and rclosed(s)["volume"] > 1e-7 for s in shards):
+        if len(shards) == count and all(rclosed(s)["nonmanifold_edges"] == 0 and rclosed(s)["boundary_edges"] == 0 and rclosed(s)["volume"] > 1e-7 for s in shards) \
+                and abs(sum(rclosed(s)["volume"] for s in shards) / body_volume - 1) < 0.001:
             break
         for s in shards:
             bpy.data.objects.remove(s, do_unlink=True)
@@ -814,23 +821,25 @@ def coin_stack_bm(bm, at, r, n, t=0.07, segments=10, tilt=None):
 def b_piggy_bank(gid):
     tint, snout_c, dark, gold = "#FF9CC2", "#FFC0DA", "#8A3A5E", "#FFE07A"
     zc = -0.95
-    lo, hi = Vector((-0.8, -0.85, zc - 0.82)), Vector((0.8, 0.85, zc + 0.7))
-
-    def shape(bm):
-        ellipsoid_bm(bm, (0, 0.02, zc), (0.8, 0.83, 0.7), 22, 14)
-        ellipsoid_bm(bm, (0, -0.35, zc + 0.08), (0.62, 0.48, 0.55), 16, 10)  # chubby cheeks / face
-        for x in (-0.42, 0.42):
-            for y in (-0.38, 0.4):
-                ellipsoid_bm(bm, (x, y, zc - 0.6), (0.17, 0.17, 0.22), 12, 8)
-    body = organic("Body", shape, 260, fit=(lo, hi), voxel=0.028, max_tris=490) if HAS_V4 else remesh_union("Body", shape, voxel=0.028, target_tris=520, fit=(lo, hi))
+    # Classic piggy-bank form: one smooth ellipsoid body (no facets) with separate stubby legs.
+    bb_ = bmesh.new()
+    ellipsoid_bm(bb_, (0, 0, zc), (0.8, 0.85, 0.7), 20, 14)
+    body = _obj("Body", bb_)
     paint(body, tint, role="Body", alpha=0.85, transmission=0.45)
+    body["full_tint"] = True  # creature: tinted shell (like the v4 Duck); the coins are its inner layer
     surf = Surface(body)
+    lg = bmesh.new()
+    for x in (-0.42, 0.42):
+        for y in (-0.36, 0.38):
+            lathe_into(lg, [(0, 0.0), (0.13, 0.0), (0.17, 0.05), (0.17, 0.26), (0, 0.26)], Matrix.Translation((x, y, zc - 0.74)), 7)
+    legs = paint(_obj("Legs", lg), tint)
+    anim(legs, (0, 0, zc - 0.5), (1, 0, 0), None, kick(5), note="stubby legs (part of the toy, not the collision body)")
     ds = face(surf, (0, 0, zc), 0.27, zc + 0.24, eye=(0.085, 0.105, 0.05), cheek_dx=0.44, cheek_dz=-0.2,
-              seg=(8, 5), shine_seg=((5, 3), (4, 3)), cheek_seg=(6, 3))
+              seg=(7, 5), shine_seg=((4, 3), (4, 3)), cheek_seg=(5, 3))
     sp, sn = surf.hit((0, -5, zc - 0.04), (0, 1, 0))
     sb = bmesh.new()
     lathe_into(sb, [(0, -0.02), (0.2, -0.02), (0.235, 0.03), (0.235, 0.1), (0.2, 0.15), (0, 0.15)],
-               Matrix.Translation(sp - Vector((0, 0.0, 0))) @ Matrix.Rotation(math.pi / 2, 4, "X") @ Matrix.Diagonal((1, 0.78, 1, 1)), 10)
+               Matrix.Translation(sp - Vector((0, 0.0, 0))) @ Matrix.Rotation(math.pi / 2, 4, "X") @ Matrix.Diagonal((1, 0.78, 1, 1)), 9)
     snout = paint(_obj("Snout", sb), snout_c)
     anim(snout, sp, (0, 1, 0), None, squash(0.85, 6.0, 0.3), note="snout squish on hits")
     nb = bmesh.new()
@@ -840,23 +849,16 @@ def b_piggy_bank(gid):
     anim(nostrils, sp, (0, 1, 0), None, squash(0.85, 6.0, 0.3))
     follow(nostrils, "Snout")
     smb = bmesh.new()
-    smile_bm(smb, surf, (0, 0, zc), 0.16, zc - 0.25, curve=0.04, steps=4, r=0.017)
+    smile_bm(smb, surf, (0, 0, zc), 0.16, zc - 0.25, curve=0.04, steps=3, r=0.017)
     smile = paint(_obj("Smile", smb), dark, "SmoothPlastic")
-    ds += [snout, nostrils, smile]
+    ds += [legs, snout, nostrils, smile]
     for side, label in ((-1, "L"), (1, "R")):
-        root = Vector((side * 0.42, -0.2, zc + 0.52))
-        q = Quaternion((0, 0, 1), side * -0.35) @ Quaternion((1, 0, 0), -0.55) @ Quaternion((0, 1, 0), side * -0.35)
+        root = Vector((side * 0.42, -0.18, zc + 0.5))
+        m = Matrix.Translation(root) @ Matrix.Rotation(side * -0.4, 4, "Y") @ Matrix.Rotation(-0.5, 4, "X") @ Matrix.Diagonal((1, 0.42, 1, 1))
         eb = bmesh.new()
-        ellipsoid_bm(eb, root + q @ Vector((0, 0, 0.13)), (0.15, 0.06, 0.17), 9, 6, q)
-        for v in eb.verts:  # pinch the top into a soft point and curl it forward
-            local = q.inverted() @ (v.co - root)
-            if local.z > 0.13:
-                k = 1 - 0.55 * (local.z - 0.13) / 0.17
-                local.x *= k
-                local.y -= 0.06 * ((local.z - 0.13) / 0.17) ** 2
-                v.co = root + q @ local
+        lathe_into(eb, [(0, 0.0), (0.15, 0.0), (0.135, 0.08), (0.085, 0.17), (0.03, 0.225), (0, 0.235)], m, 8)
         ear = paint(_obj("Ear_" + label, eb), "#FF8CB8")
-        anim(ear, root, q @ Vector((1, 0, 0)), sway(4, 2.6, 0.8 * side), flare(20), lod_keep=(side < 0), note="ear twitch")
+        anim(ear, root, m.to_3x3().normalized() @ Vector((1, 0, 0)), sway(4, 2.6, 0.8 * side), flare(20), lod_keep=(side < 0), note="ear twitch")
         ds.append(ear)
     slot_p, slot_n = surf.hit((0.003, 0.12, 2.0), (0, 0, -1))
     slb = bmesh.new()
@@ -868,12 +870,12 @@ def b_piggy_bank(gid):
     peek = paint(_obj("SlotCoin", cb), gold)
     anim(peek, slot_p, (0, 0, 1), None, hop(0.1, 5.0, 0.3), lod_keep=False, note="coins jingle up the slot (anticipation / Charge)")
     ds.append(peek)
-    for i, (x, y, k) in enumerate(((-0.24, 0.12, 2), (0.06, 0.24, 2), (0.3, 0.02, 1))):
+    for i, (x, y, k) in enumerate(((-0.22, 0.18, 2), (0.2, 0.22, 1))):
         sb = bmesh.new()
-        base = Vector((x, y, zc - 0.48))
+        base = Vector((x, y, zc - 0.58))
         coin_stack_bm(sb, base, 0.15, k, 0.075, 6, Matrix.Rotation(0.12 * (i - 1), 4, "X"))
         st = as_inner(paint(_obj(f"CoinStack_{i + 1}", sb), gold))
-        anim(st, base, (0, 0, 1), None, hop(0.04, 5.0, 0.35), note="savings stage %d: client shows stacks 1..3 as Stored rises" % (i + 1))
+        anim(st, base, (0, 0, 1), None, hop(0.04, 5.0, 0.35), note="savings stage %d: client shows the stacks (plus SlotCoin) as Stored rises" % (i + 1))
         ds.append(st)
     tp, tn = surf.hit((0.3, 5, zc + 0.3), (0, -1, 0))
     path = [tp + Vector((0, -0.02, 0))]
@@ -885,7 +887,7 @@ def b_piggy_bank(gid):
     tail = paint(_obj("Tail", tb), "#FF8CB8")
     anim(tail, tp, (0, 1, 0), sway(12, 1.3), kick(25, 4.5, 0.3), lod_keep=True)
     ds.append(tail)
-    loop = hang_loop("HangLoop", 0.0, 0.1, 0.035, "#FFC0DA", segments=8)
+    loop = hang_loop("HangLoop", 0.0, 0.1, 0.035, "#FFC0DA", segments=6)
     ds.append(loop)
     return body, ds
 
@@ -894,74 +896,112 @@ def b_piggy_bank(gid):
 # 5. Bubble Wand (Uncommon, Fizzy)
 # ------------------------------------------------------------------------------------------
 
+def heart_curve(n, w, top_z):
+    """Closed heart outline in the XZ plane (cusp at the top centre, point at the bottom), half-width w."""
+    raw = []
+    for k in range(n):
+        t = k / n * math.tau
+        raw.append((16 * math.sin(t) ** 3, 13 * math.cos(t) - 5 * math.cos(2 * t) - 2 * math.cos(3 * t) - math.cos(4 * t)))
+    xm = max(abs(x) for x, _ in raw)
+    zmax = max(z for _, z in raw)
+    k = w / xm
+    return [Vector((x * k, 0, top_z + (z - zmax) * k)) for x, z in raw]
+
+
+def closed_tube_bm(bm, pts, r, sides=8):
+    """Closed loop tube (torus-like) along a closed polyline in a plane with normal +Y."""
+    n = len(pts)
+    rings = []
+    for i in range(n):
+        t = (pts[(i + 1) % n] - pts[i - 1]).normalized()
+        out = t.cross(Vector((0, 1, 0))).normalized()
+        rings.append([bm.verts.new(pts[i] + (out * math.cos(a) + Vector((0, 1, 0)) * math.sin(a)) * r) for a in [j * math.tau / sides for j in range(sides)]])
+    for i in range(n):
+        r0, r1 = rings[i], rings[(i + 1) % n]
+        for j in range(sides):
+            bm.faces.new((r0[j], r0[(j + 1) % sides], r1[(j + 1) % sides], r1[j]))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    return bm
+
+
 @launch("bubble_wand")
 def b_bubble_wand(gid):
     tint = "#B9F3FF"
-    R, tr, bead = 0.47, 0.075, 0.105
+    W, tr = 0.6 - 0.085, 0.085
     neck_z = -0.98
-    rc = Vector((0, 0, neck_z - R - bead + 0.02))
-    lo, hi = Vector((-0.6, -0.12, rc.z - R - bead - 0.01)), Vector((0.6, 0.12, 0.0))
-    ring_m = Matrix.Translation(rc) @ Matrix.Rotation(math.pi / 2, 4, "X")   # ring plane = XZ, local +Z -> world -Y (front)
+    ring_top = neck_z - 0.02
+    loop = heart_curve(48, W, ring_top - 0.04)
+    hz = [p.z for p in loop]
+    lo, hi = Vector((-0.6, -0.11, min(hz) - tr)), Vector((0.6, 0.11, 0.0))
 
     def shape(bm):
-        torus_bm(bm, (0, 0, 0), R, tr, 40, 10, ring_m)
-        for k in range(8):                                                       # flower beads round the ring
-            a = math.pi / 2 + k * math.tau / 8
-            ellipsoid_bm(bm, rc + Vector((R * math.cos(a), 0, R * math.sin(a))), (bead, bead * 0.95, bead), 12, 8)
+        closed_tube_bm(bm, loop, tr, 10)
         ellipsoid_bm(bm, (0, 0, -0.1), (0.12, 0.12, 0.11), 12, 8)            # hang knob
         for k in range(3):                                                       # braided twisted handle
             pts = []
             for i in range(14):
                 t = i / 13
                 a = k * math.tau / 3 + t * math.tau * 1.25
-                pts.append((0.045 * math.cos(a), 0.045 * math.sin(a), -0.12 + t * (neck_z + 0.16)))
+                pts.append((0.045 * math.cos(a), 0.045 * math.sin(a), -0.12 + t * (neck_z + 0.1)))
             tube_bm(bm, pts, 0.05, 8)
-        ellipsoid_bm(bm, (0, 0, neck_z + 0.02), (0.11, 0.11, 0.09), 12, 8)       # collar into the ring
-    body = remesh_union("Body", shape, voxel=0.018, target_tris=640, fit=(lo, hi))
+        ellipsoid_bm(bm, (0, 0, neck_z), (0.11, 0.11, 0.1), 12, 8)              # collar into the heart's cusp
+    body = organic("Body", shape, 330, fit=(lo, hi), voxel=0.016, max_tris=660) if HAS_V4 else remesh_union("Body", shape, voxel=0.018, target_tris=640, fit=(lo, hi))
     paint(body, tint, role="Body")
     ds = []
-    Rf, dome = R - 0.02, 0.16
-
-    def dome_pt(rho, ang, lift=0.004):
-        z = dome * max(0.0, 1 - (rho / Rf) ** 2) + lift
-        return ring_m @ Vector((rho * math.cos(ang), rho * math.sin(ang), z))
-    fprof = [(0, -0.012), (Rf, -0.004)] + [(Rf * (1 - k / 5), dome * (1 - (1 - k / 5) ** 2) + 0.004) for k in range(0, 6)]
+    cx = sum((p for p in loop), Vector()) / len(loop)
+    fc = Vector((0, -0.02, cx.z - 0.03))
     fb = bmesh.new()
-    lathe_into(fb, fprof, ring_m, 18)
+    ellipsoid_bm(fb, fc, (W * 0.78, 0.11, W * 0.72), 14, 8)
+    for v in fb.verts:  # squeeze the lens toward the heart shape: narrower toward the bottom point
+        dz = (v.co.z - fc.z) / (W * 0.72)
+        if dz < 0:
+            v.co.x *= 1 + dz * 0.45
+        if v.co.y > fc.y:
+            v.co.y = fc.y + (v.co.y - fc.y) * 0.15                            # flat back, bulging front
     film = paint(_obj("Film", fb), "#F4E6FF", alpha=0.3, transmission=0.85)
-    anim(film, rc, (0, -1, 0), pulse(0.06, 2.2), squash(1.6, 3.0, 0.3), lod_keep=True,
-         note="soap film bulging out of the ring: idle = breathe along the axis; windup stretches it (1.6x)")
+    anim(film, fc, (0, -1, 0), pulse(0.06, 2.2), squash(1.6, 3.0, 0.3), lod_keep=True,
+         note="soap film bulging out of the heart: idle = breathe along the axis; windup stretches it (1.6x)")
     bands = []
-    for name, color, r0, a0, span in (("FilmRainbow_Pink", "#FF9CE0", 0.3, 2.3, 1.5), ("FilmRainbow_Cyan", "#8FF0FF", 0.22, 2.45, 1.25)):
+    for name, color, r0, a0, span in (("FilmRainbow_Pink", "#FF9CE0", 0.3, 2.3, 1.4), ("FilmRainbow_Cyan", "#8FF0FF", 0.22, 2.45, 1.2)):
         bb = bmesh.new()
-        pts = [dome_pt(r0, a0 + span * k / 6, 0.012) for k in range(7)]
+        pts = []
+        for k in range(7):
+            a_ = a0 + span * k / 6
+            u, w_ = r0 * math.cos(a_), r0 * math.sin(a_)
+            depth = 0.11 * max(0.0, 1 - (u / (W * 0.78)) ** 2 - (w_ / (W * 0.72)) ** 2) ** 0.5
+            pts.append(fc + Vector((u, -depth - 0.012, w_)))
         tube_bm(bb, pts, [0.01, 0.022, 0.03, 0.032, 0.03, 0.022, 0.01], 4)
         band = paint(_obj(name, bb), color, alpha=0.75)
-        anim(band, rc, (0, -1, 0), pulse(0.06, 2.2))
+        anim(band, fc, (0, -1, 0), pulse(0.06, 2.2))
         follow(band, "Film", "iridescent band on the film; client may hue-cycle it")
         bands.append(band)
     gb = bmesh.new()
-    tube_bm(gb, [dome_pt(0.3, -0.25 + 0.2 * k, 0.014) for k in range(5)], [0.012, 0.026, 0.03, 0.026, 0.012], 4)
-    ellipsoid_bm(gb, dome_pt(0.16, 0.55, 0.02), (0.035, 0.035, 0.02), 6, 4)
+    gpts = []
+    for k in range(5):
+        a_ = -0.3 + 0.18 * k
+        u, w_ = 0.3 * math.cos(a_), 0.3 * math.sin(a_) + 0.05
+        gpts.append(fc + Vector((u, -0.1 * max(0.0, 1 - (u / 0.4) ** 2 - (w_ / 0.37) ** 2) ** 0.5 - 0.02, w_)))
+    tube_bm(gb, gpts, [0.012, 0.026, 0.03, 0.026, 0.012], 4)
+    ellipsoid_bm(gb, fc + Vector((0.12, -0.12, 0.2)), (0.035, 0.02, 0.035), 6, 4)
     glint = paint(_obj("FilmGlint", gb), "#FFFFFF", "Neon")
-    anim(glint, rc, (0, -1, 0), pulse(0.06, 2.2))
+    anim(glint, fc, (0, -1, 0), pulse(0.06, 2.2))
     follow(glint, "Film", "rides the film bulge")
     ds += [film, *bands, glint]
-    for i, (p, r) in enumerate((((0.66, -0.06, rc.z + 0.5), 0.11), ((-0.72, -0.02, rc.z - 0.28), 0.075))):
+    for i, (p, r) in enumerate((((0.66, -0.06, cx.z + 0.42), 0.11), ((-0.7, -0.02, cx.z - 0.3), 0.075))):
         bb = bmesh.new()
         ellipsoid_bm(bb, p, (r, r, r), 8, 5)
         bub = paint(_obj(f"Bubble_{i + 1}", bb), "#F2FCFF", alpha=0.3, transmission=0.85)
         anim(bub, p, (0, 0, 1), bob(0.06, 1.6 + 0.35 * i, i * 1.9), hop(0.08, 3.0, 0.3))
         ds.append(bub)
     grip = paint(lathe3("HandleGrip", [(0, -0.82), (0.085, -0.82), (0.105, -0.78), (0.105, -0.7), (0.09, -0.66), (0.105, -0.62), (0.105, -0.5),
-                                        (0.09, -0.46), (0.105, -0.42), (0.105, -0.34), (0.085, -0.3), (0, -0.3)], 0.0, 8, sharp_deg=40), "#C9A8FF")
+                                        (0.09, -0.46), (0.105, -0.42), (0.105, -0.34), (0.085, -0.3), (0, -0.3)], 0.0, 10, sharp_deg=None), "#C9A8FF")
     ds.append(grip)
-    bow_c = Vector((0, -0.11, neck_z + 0.02))
+    bow_c = Vector((0, -0.11, neck_z + 0.04))
     bw = bmesh.new()
     for sgn in (-1, 1):
         slab_bm(bw, [(0, 0), (sgn * 0.13, 0.1), (sgn * 0.22, 0.0), (sgn * 0.11, -0.08)][::sgn], 0.05, 0.02, 1, Matrix.Translation(bow_c))
         slab_bm(bw, [(0, 0), (sgn * 0.09, -0.2), (sgn * 0.03, -0.17)][::sgn], 0.035, 0, 1, Matrix.Translation(bow_c + Vector((0, -0.01, -0.03))))
-    ellipsoid_bm(bw, bow_c + Vector((0, -0.015, 0)), (0.05, 0.04, 0.05), 6, 4)
+    ellipsoid_bm(bw, bow_c + Vector((0, -0.015, 0)), (0.05, 0.04, 0.05), 5, 3)
     bow = paint(_obj("Bow", bw), "#FF9CE0", "SmoothPlastic")
     anim(bow, bow_c, (0, 1, 0), sway(5, 1.9), kick(14))
     ds.append(bow)
@@ -983,7 +1023,7 @@ def b_crystal_ball(gid):
     ds = []
     cap = lathe3("HangCap", [(0, -0.3), (0.2, -0.3), (0.25, -0.26), (0.22, -0.18), (0.08, -0.14), (0, -0.14)], 0.0, 12, sharp_deg=40)
     paint(cap, gold, "Metal")
-    lp = hang_loop("HangLoop", 0.0, 0.08, 0.03, gold, "Metal")
+    lp = hang_loop("HangLoop", 0.0, 0.08, 0.03, gold, "Metal", segments=9)
     ds += [cap, lp]
     # Claw-foot stand under the ball.
     stb = bmesh.new()
@@ -1000,7 +1040,7 @@ def b_crystal_ball(gid):
             ang = math.radians(-118 + t * 62)
             rr = (R + 0.03) * math.cos(ang)
             pts.append((rr * math.cos(a), rr * math.sin(a), c.z + (R + 0.03) * math.sin(ang)))
-        tube_bm(stb, pts, [0.065, 0.06, 0.05, 0.04, 0.025], 5)
+        tube_bm(stb, pts, [0.065, 0.06, 0.05, 0.04, 0.025], 4)
     stand = paint(_obj("Stand", stb), gold, "Metal")
     anim(stand, (0, 0, c.z), (1, 0, 0), None, kick(4), note="the stand is part of the toy; small rattle on hits")
     rb = bmesh.new()
@@ -1010,37 +1050,31 @@ def b_crystal_ball(gid):
     runes = paint(_obj("RuneGems", rb, smooth=False), gold, "Neon")
     anim(runes, (0, 0, band_z), (0, 0, 1), pulse(0.06, 1.8), flash(0.25), note="gold rune lights; windup = rune circle glow")
     ds += [stand, runes]
-    shell = as_inner(paint(blob("MistShell", c, (0.68, 0.68, 0.68), 12, 7), mist, alpha=0.4, transmission=0.6))
+    shell = as_inner(paint(blob("MistShell", c, (0.68, 0.68, 0.68), 10, 7), mist, alpha=0.4, transmission=0.6))
     anim(shell, c, (0, 0, 1), spin(10), spin_boost(160, 1.2), note="inner mist layer (two-layer glass)")
     sw = bmesh.new()
-    tilt = Matrix.Translation(c) @ Matrix.Rotation(-0.35, 4, "X") @ Matrix.Rotation(0.25, 4, "Y")
-    for arm in range(2):
-        pts = []
-        for i in range(10):
-            t = i / 9
-            a = arm * math.tau / 2 + t * 3.4
-            rr = 0.1 + 0.46 * t
-            pts.append(tilt @ Vector((rr * math.cos(a), rr * math.sin(a), 0.05 * math.sin(t * 6))))
-        tube_bm(sw, pts, [0.11 * (1 - 0.7 * i / 9) + 0.02 for i in range(10)], 4)
-    inv = tilt.inverted()
-    for v in sw.verts:  # flatten the tubes into wispy ribbons lying in the swirl plane
-        local = inv @ v.co
-        local.z *= 0.3
-        v.co = tilt @ local
-    swirl = paint(_obj("NebulaSwirl", sw), "#F08CFF", "Neon")
-    anim(swirl, c, tilt.to_3x3() @ Vector((0, 0, 1)), spin(30), flash(0.2), lod_keep=True,
-         note="speeds up through windup (Foresight anticipation)")
+    wisps = [[(-0.5, -0.2), (-0.3, -0.36), (0.0, -0.3), (0.2, -0.12), (0.42, -0.2)],
+             [(0.46, 0.34), (0.22, 0.42), (-0.08, 0.38), (-0.3, 0.24)],
+             [(-0.42, 0.05), (-0.48, 0.28), (-0.34, 0.44)]]
+    for wi, pts2 in enumerate(wisps):
+        pts = spline([c + Vector((u, -0.5 + 0.08 * wi, v)) for u, v in pts2], 7)
+        tube_bm(sw, pts, [0.075 * math.sin(math.pi * (k + 0.5) / len(pts)) + 0.012 for k in range(len(pts))], 4)
+    for v in sw.verts:  # flatten into wispy ribbons facing the camera
+        v.co.y = c.y - 0.5 + (v.co.y - (c.y - 0.5)) * 0.35
+    swirl = paint(_obj("NebulaSwirl", sw), "#F2A6FF", "Neon")
+    anim(swirl, c, (0, -1, 0), spin(18), flash(0.2), lod_keep=True,
+         note="mist wisps drift round the ball's centre; speed up through windup (Foresight anticipation)")
     eb = bmesh.new()
-    eye_pts = [(-0.15, 0.01), (-0.08, 0.035), (0.0, 0.04), (0.08, 0.035), (0.15, 0.01), (0.08, -0.06), (0.0, -0.075), (-0.08, -0.06)]
-    for s in (-1, 1):
-        slab_bm(eb, eye_pts, 0.04, 0, 1, Matrix.Translation(c + Vector((s * 0.22, -0.56, 0.16))) @ Matrix.Rotation(-s * 0.12, 4, "Y"))
+    for s_ in (-1, 1):
+        arc = [c + Vector((s_ * 0.2 + 0.12 * math.cos(a_), -0.66, 0.1 + 0.08 * math.sin(a_))) for a_ in [math.radians(20 + 140 * k / 6) for k in range(7)]]
+        tube_bm(eb, arc, [0.022, 0.032, 0.036, 0.036, 0.036, 0.032, 0.022], 4)
     eyes = paint(_obj("MistEyes", eb), "#FFE9A0", "Neon")
-    anim(eyes, c + Vector((0, -0.5, 0.12)), (0, 0, 1), pulse(0.12, 2.6), flash(0.3), extra_idle=[blink(5.0, 0.18)], lod_keep=True,
-         note="smug half-lidded eyes in the mist; glow at Ready")
+    anim(eyes, c + Vector((0, -0.66, 0.12)), (0, 0, 1), pulse(0.12, 2.6), flash(0.3), extra_idle=[blink(5.0, 0.18)], lod_keep=True,
+         note="smug closed-arc eyes glowing in the mist; open wide (scale Z 1.6) at Ready")
     star = bmesh.new()
-    slab_bm(star, star_points(4, 0.09, 0.03), 0.04, 0, 1, Matrix.Translation(c + Vector((0, -0.2, -0.18))) @ Matrix.Rotation(math.pi / 2, 4, "X"))
+    slab_bm(star, star_points(4, 0.1, 0.035), 0.04, 0, 1, Matrix.Translation(c + Vector((0, -0.62, -0.16))))
     core = paint(_obj("StarSeed", star), "#FFFFFF", "Neon")
-    anim(core, c + Vector((0, -0.2, -0.18)), (0, 1, 0), spin(45), flash(0.25), extra_idle=[pulse(0.15, 1.3)])
+    anim(core, c + Vector((0, -0.62, -0.16)), (0, 1, 0), spin(45), flash(0.25), extra_idle=[pulse(0.15, 1.3)])
     ds += [shell, swirl, eyes, core]
     for i, (a, z, r) in enumerate(((-0.35, 0.42, 0.98), (3.5, -0.2, 1.0), (2.2, 0.62, 0.86))):
         p = c + Vector((r * math.cos(a), r * math.sin(a), z))
@@ -1080,6 +1114,7 @@ def b_honey_bear(gid):
             ellipsoid_bm(bm, (s * 0.36, -0.3, -1.98), (0.22, 0.26, 0.16), 10, 6)           # feet
     body = remesh_union("Body", shape, voxel=0.03, target_tris=400, fit=(lo, hi))
     paint(body, tint, role="Body", alpha=0.8, transmission=0.55)
+    body["full_tint"] = True  # creature: tinted amber shell (like the v4 Duck); HoneyFill is the inner layer
     surf = Surface(body)
     ds = face(surf, head_c, 0.19, head_c.z + 0.08, eye=(0.075, 0.095, 0.045), cheek_dx=0.3, cheek_dz=-0.14,
               seg=(8, 5), shine_seg=((5, 3), (4, 3)), cheek_seg=(6, 3))
@@ -1178,11 +1213,11 @@ def b_potion_flask(gid):
         ds.append(bub)
     tw = bmesh.new()
     torus_bm(tw, (0, 0, cz + R + 0.17 - h), neck_r + 0.03, 0.028, 10, 3)
-    tag_top = Vector((0.12, -0.12, cz + R + 0.15 - h))
-    tube_bm(tw, [tag_top, tag_top + Vector((0.08, -0.04, -0.12)), tag_top + Vector((0.14, -0.06, -0.24))], 0.014, 4)
+    tag_top = Vector((0.13, -0.09, cz + R + 0.17 - h))
+    tube_bm(tw, [tag_top, tag_top + Vector((0.1, -0.06, -0.02)), tag_top + Vector((0.2, -0.1, -0.06))], 0.014, 4)
     twine = paint(_obj("Twine", tw), "#9A6BE0", "SmoothPlastic")
     tg = bmesh.new()
-    tag_c = tag_top + Vector((0.17, -0.07, -0.36))
+    tag_c = tag_top + Vector((0.27, -0.13, -0.17))
     slab_bm(tg, [(-0.1, -0.13), (0.1, -0.13), (0.1, 0.08), (0.0, 0.14), (-0.1, 0.08)], 0.03, 0.012, 1,
             Matrix.Translation(tag_c) @ Matrix.Rotation(0.25, 4, "Y") @ Matrix.Rotation(-0.35, 4, "Z"))
     tag = paint(_obj("PotionTag", tg), "#FFF1D6", "SmoothPlastic")

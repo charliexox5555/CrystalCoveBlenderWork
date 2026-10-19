@@ -222,7 +222,7 @@ return function(t, d)
 		R.tick(s, 6.15)
 		R.turnaround(s, 1)
 		R.tick(s, 0.86)
-		t.near(f.Hp - before, f.MaxHp * 0.14, 1e-6, "round healing budget")
+		t.near(f.Hp - before, f.MaxHp * 2 * d.Balance.CombatRelease.Kits.hourglass.Heal, 1e-6, "round healing budget")
 		R.tick(s, 10)
 		for _ = 1, 12 do
 			R.turnaround(s, 1)

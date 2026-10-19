@@ -14,6 +14,14 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — Launch flyers installed, no-flyer stand, riders higher (workstream H)
+Done:
+- Installed F's Paper Jet, Bubble Pod, Honey Hover, Dragonfly and Carousel (exact fit, effects, families, motion profiles, sounds, catalog entries). New `Bob` motion kind + `RiderMount` so the Carousel rider follows the pony.
+- Decision 95 follow-up: with no flyer the avatar stands in the air on `Assets.RideStand` with the new Stand family (uploaded R15/R6) and no freefall; riders lifted (`RideLift` 4.0). Moonlantern Carriage on HandleSit (retuned, re-uploaded).
+- Carousel kept out of the Daily Store Robux rotation until an Epic Standard flyer product exists (DailyStoreTests). Report: `docs/testing/flyers_launch/REPORT.md`. Lune 164/164.
+Next:
+- Sunwing and Starwhale when F uploads them; carriage footrest position (I); creator review; save the place.
+
 ## 2026-10-19 — Claude — Decision 95 client side: Basic Shatter, No Flyer; Emberwing in the catalog (workstream G)
 Done:
 - Fights treat "" as the basic finisher: the winner flies in and breaks, with no show, no finisher sounds and the default camera.

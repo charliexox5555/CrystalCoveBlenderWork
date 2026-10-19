@@ -92,7 +92,7 @@ end
 local function begin(state, side, emit, overrides, release)
 	local f = state.Fighters[side]
 	local s, kit = f.Signature, f.Signature.Kit
-	if not release and s.Policy and s.Ready then
+	if not release and s.Policy and s.Ready and not (overrides and (overrides.Instant or overrides.Reflection)) then
 		return false
 	end
 	if overrides then

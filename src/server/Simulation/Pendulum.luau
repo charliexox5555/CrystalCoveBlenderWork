@@ -436,7 +436,9 @@ function Pendulum.presentation(sim)
 				Time = s.Ready.Since,
 				ReadyId = s.Ready.Id,
 				AutoAt = s.Ready.AutoAt,
-				Seconds = s.Ready.AutoAt - s.Ready.Since,
+				-- Late joiners get the time left, and whether CAST was already pressed.
+				Seconds = math.max(0, s.Ready.AutoAt - sim.Fight.Time),
+				Requested = s.Ready.Requested == true,
 				Shape = s.Ready.Shape,
 				Arm = s.Ready.Arm,
 			})

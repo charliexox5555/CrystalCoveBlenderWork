@@ -55,12 +55,16 @@ function CastBrain.step(sim, center)
 			Rules.requestCast(fight, side)
 			continue
 		end
-		local params = s.Kit
-		if r.Overrides then
-			params = table.clone(s.Kit)
-			for key, value in r.Overrides do
-				params[key] = value
+		local params = r.Brain.Params
+		if not params then
+			params = s.Kit
+			if r.Overrides then
+				params = table.clone(s.Kit)
+				for key, value in r.Overrides do
+					params[key] = value
+				end
 			end
+			r.Brain.Params = params -- merged once per Ready, not every step
 		end
 		local distance, closing, contact = CastBrain.read(sim, center, side)
 		local body = sim.Bodies[side]

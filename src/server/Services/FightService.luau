@@ -184,6 +184,24 @@ function Service:BotVsBot(a, b, seed, spectate, prototype)
 	return true, id
 end
 
+-- A rules or swing error in one fight must not stall the others: end that round by HP share
+-- (like a timeout) so the match carries on, and log it.
+function Service:Fail(session, err)
+	warn("[GlassClash] fight " .. tostring(session.Id) .. " errored, ending the round: " .. tostring(err))
+	local fight = session.Sim.Fight
+	if fight.Over then
+		return
+	end
+	local a, b = fight.Fighters[1], fight.Fighters[2]
+	fight.Over, fight.Reason = true, "Error"
+	fight.Winner = if a.Hp / math.max(a.MaxHp, 1) >= b.Hp / math.max(b.MaxHp, 1) then 1 else 2
+	local ok, endErr = pcall(session.OnEnd, fight, session.Sim.Metrics)
+	if not ok then
+		warn("[GlassClash] fight end after error failed: " .. tostring(endErr))
+		self:Stop(session.Id)
+	end
+end
+
 -- CastPower (decision 85): the player's own side in a running fight casts its Ready power.
 function Service:Cast(player)
 	if not self.Guard:Allow(player, "Cast", Balance.Match.CastRateSeconds) then
@@ -216,7 +234,10 @@ function Service:Start()
 	RunService.Heartbeat:Connect(function(dt)
 		local now = workspace:GetServerTimeNow()
 		for _, session in self.Sessions do
-			self:Step(session, dt, now)
+			local ok, err = pcall(self.Step, self, session, dt, now)
+			if not ok then
+				self:Fail(session, err)
+			end
 		end
 	end)
 	Players.PlayerAdded:Connect(function(player)

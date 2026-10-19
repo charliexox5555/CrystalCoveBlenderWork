@@ -123,7 +123,11 @@ function Controller:CastEvents(view, events)
 			self.CastUi:Clear()
 		elseif e.Side == view.Side then
 			if e.Type == "SignatureReady" then
-				self.CastUi:Ready(e)
+				if e.Requested then
+					self.CastUi:Clear()
+				else
+					self.CastUi:Ready(e)
+				end
 			elseif CLEARS[e.Type] and (e.Type ~= "ReadyCancel" or e.ReadyId == self.CastUi.ReadyId) then
 				if e.Type ~= "CastStart" or e.Held then
 					self.CastUi:Clear()

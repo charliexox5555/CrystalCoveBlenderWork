@@ -29,6 +29,7 @@ local order = {
 	"CrateTests",
 	"RetentionTests",
 	"DailyStoreTests",
+	"GlassyMotionTests",
 }
 local suites = {}
 for _, name in order do

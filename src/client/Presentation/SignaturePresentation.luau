@@ -152,6 +152,16 @@ function Presentation.status(self, r, time)
 		if f.Broken or f.Finishing then
 			continue
 		end
+		if f.Motion then
+			-- v3/v4 models: GlassyMotion owns the Details (idle, reactions, Ready); the name-based v2 block is skipped.
+			-- Fights the viewer isn't watching stay at rest (cheap); watched fights animate every Details part.
+			if f.LowDetail then
+				f.Motion:Rest()
+			else
+				f.Motion:Step(time, f.MotionSkip)
+			end
+			continue
+		end
 		for p, rest in f.DetailStates do
 			if not p.Parent or not f.Pivot then
 				continue

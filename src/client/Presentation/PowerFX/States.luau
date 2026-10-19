@@ -27,6 +27,9 @@ function States.ready(fx, e)
 	end
 	fx:StopKey("ready:" .. side)
 	fx.Ready[side] = { Id = id, AutoAt = autoAt }
+	if f.Motion then
+		f.Motion:SetReady(true)
+	end
 	local color, accent = fx:Vivid(side), select(2, fx:Colors(side))
 	if color == accent then
 		accent = Color3.new(1, 1, 1)
@@ -114,6 +117,10 @@ end
 
 function States.clearReady(fx, side)
 	fx.Ready[side] = nil
+	local f = fx:Fighter(side)
+	if f and f.Motion then
+		f.Motion:SetReady(false)
+	end
 	fx:StopKey("ready:" .. side)
 end
 
@@ -121,6 +128,10 @@ end
 -- Manual: a kit-coloured starburst with light (the other side's at OtherScale). Auto: a plain thin ring.
 function States.flourish(fx, e)
 	local side = e.Side
+	local caster = fx:Fighter(side)
+	if caster and caster.Motion then
+		caster.Motion:Cast(e.Manual == true, e.Time)
+	end
 	local Cc = fx.C.Cast
 	local color, accent = fx:Vivid(side), select(2, fx:Colors(side))
 	local pos = fx:Body(side)

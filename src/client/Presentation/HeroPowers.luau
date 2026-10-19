@@ -1,6 +1,7 @@
 -- Physical hero props and motion stay cosmetic; server facts own their timing and outcomes.
 local B = require(game.ReplicatedStorage.Shared.Config.Balance)
 local PowerFX = require(script.Parent.PowerFX)
+local GlassyMotion = require(script.Parent.GlassyMotion)
 local PV = require(game.ReplicatedStorage.Shared.Config.PowerVFX)
 local VFX, M = B.CombatVFX, B.Motion
 local Hero = {}
@@ -51,6 +52,15 @@ function Hero.weapon(self, cast, color)
 	trail.Parent = weapon.AxeHead
 end
 function Hero.init(self, f)
+	-- Living glassies: v3/v4 imports animate their Details from Config/GlassyMotion (no-op for v2 models).
+	local RS = game:GetService("ReplicatedStorage")
+	local library = if self.Scene.Data.ReleasePrototype
+		then RS.Assets.CombatReleasePreview.Glassies
+		else RS.Assets.Glassies
+	local source = library:FindFirstChild(f.RenderId or f.Id)
+	if (f.RenderId or f.Id) == f.Id and GlassyMotion.enabled(source) then
+		f.Motion = GlassyMotion.attach(f.Model, f.Id, { Scale = M.GlassyScale, Type = f.Def.Type, HitScale = 0.6 })
+	end
 	if f.Id ~= "jam" then
 		return
 	end
@@ -206,7 +216,9 @@ function Hero.details(self, f)
 	elseif f.Id == "prism" then
 		for p, rest in f.DetailStates do
 			if p.Name == "RayLens" then
-				if f.RayAim and self.Time < (f.RayAimUntil or -1) then
+				local aiming = f.RayAim and self.Time < (f.RayAimUntil or -1)
+				f.MotionSkip = if aiming then { RayLens = true } else nil
+				if aiming then
 					local point = f.Body.Position + f.RayAim * f.Body.Size.X * 0.5
 					p.CFrame = CFrame.lookAt(point, point + f.RayAim)
 					p.Material, p.Transparency = Enum.Material.Neon, 0.08
@@ -237,6 +249,7 @@ function Hero.motion(f, time)
 			kick += math.sin(t * math.pi) * (1 - t) * VFX.HeroRecoilAngle * 0.6
 		end
 	end
-	return CFrame.Angles(0, twist, kick) * PowerFX.motion(f, time)
+	local body = if f.Motion and not f.LowDetail then f.Motion:Body(time) else CFrame.identity
+	return CFrame.Angles(0, twist, kick) * PowerFX.motion(f, time) * body
 end
 return Hero

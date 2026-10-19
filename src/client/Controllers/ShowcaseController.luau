@@ -222,6 +222,11 @@ local function buildDemo(folder, anchors)
 	local hook = anchors.DemoHook.CFrame
 	local hang = hook * CFrame.new(0, -D.StringLength, 0)
 	glassy:PivotTo(hang)
+	-- Living glassies: v3/v4 imports idle their Details (no-op otherwise); stops when the copy is destroyed.
+	local GlassyMotion = require(script.Parent.Parent.Presentation.GlassyMotion)
+	if GlassyMotion.enabled(source) then
+		GlassyMotion.autoplay(glassy, S.Featured.Glassy, { Scale = D.GlassyScale })
+	end
 	local body = glassy:FindFirstChild("Body")
 	local demo = {
 		Model = glassy,

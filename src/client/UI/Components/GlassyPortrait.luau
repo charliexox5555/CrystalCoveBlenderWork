@@ -59,6 +59,20 @@ function Portrait.new(parent, id, size, position, name)
 		part:PivotTo(CFrame.identity)
 		part.Parent = world
 	end
+	-- Living glassies: v3/v4 portraits idle (lid wobble, fish swim, orb rings…); no-op for v2 models.
+	local Motion = require(script.Parent.Parent.Parent.Presentation.GlassyMotion)
+	if source.Name == id and Motion.enabled(source) then
+		local screen = viewport:FindFirstAncestorOfClass("ScreenGui")
+		Motion.autoplay(world, id, {
+			Frame = function()
+				return CFrame.identity
+			end,
+			Type = def.Type,
+			Visible = function()
+				return viewport.Visible and viewport.AbsoluteSize.X > 0 and (screen == nil or screen.Enabled)
+			end,
+		})
+	end
 	return Portrait.fit(viewport)
 end
 

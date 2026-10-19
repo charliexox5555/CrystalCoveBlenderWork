@@ -717,12 +717,24 @@ function FX:Cue(side, name)
 end
 
 -- B's hit tiers: a Smash/Crit hit near a power contact keeps the mix clean (see PowerAudio.BigHitWindow).
+local HIT_STRENGTH = { Glance = 0.4, Solid = 0.7, Smash = 1, Crit = 1.3, Block = 0.5 }
+
 function FX:HitTier(e)
 	local feel = self.Scene.Feel
 	local ok, name = pcall(function()
 		return feel and feel:Classify(e)
 	end)
-	if not ok or (name ~= "Smash" and name ~= "Crit") then
+	name = if ok and name then name else "Solid"
+	-- Living glassies: every reacting detail part rings with the hit, scaled by B's tier.
+	local strength = HIT_STRENGTH[name] or 0.7
+	for side, f in self.Scene.Fighters do
+		if f.Motion and not f.Broken and not f.Finishing then
+			local dealt = e.Damage and e.Damage[side] or 0
+			local share = if dealt > 0 then 1 else 0.6
+			f.Motion:Hit(strength * share, if side == 1 then -1 else 1, e.Time)
+		end
+	end
+	if name ~= "Smash" and name ~= "Crit" then
 		return
 	end
 	local at = e.Time or self:Time()

@@ -316,6 +316,11 @@ function Stage:BuildDemo(glassyId)
 	local hook = o * CFrame.new(g.Hook)
 	local hang = hook * CFrame.new(0, -D.StringLength, 0)
 	glassy:PivotTo(hang)
+	-- Living glassies: v3/v4 imports idle their Details (no-op otherwise); stops when the copy is destroyed.
+	local GlassyMotion = require(script.Parent.GlassyMotion)
+	if GlassyMotion.enabled(source) then
+		GlassyMotion.autoplay(glassy, glassyId, { Scale = D.GlassyScale })
+	end
 	local body = glassy:FindFirstChild("Body")
 	if not body then
 		glassy:Destroy()

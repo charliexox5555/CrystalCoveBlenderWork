@@ -52,6 +52,12 @@ Next:
 Problems / questions for the user:
 - The Mac's load average was about 100 during the slot (Studio at 0.6–1.4 fps), so whole-client frame numbers from this run aren't valid; the earlier pass measured 1.4–1.7 ms.
 
+## 2026-10-19 — Claude — Hollowlight v5 carriage installed (workstream I)
+Done:
+- Installed the uploaded v5 carriage (asset 85604557082927) with `tools/studio/install_carriage_v5.luau` (backup `ServerStorage.HollowlightCarriageV4BeforeV5`). Verified in Play: a real round on the v5 carriage (wing tips flex), the bundle VIEW and the lobby showcase. All Lantern Seeds beats were seen live. A real Lantern Eclipse held 60 fps (avg 16.7 ms, worst 23.4 ms). Captures 09–13 in docs/testing/hollowlight_premium.
+Next:
+- Creator: save the place, then do the listening and feel review. Check phone presets by hand.
+
 ## 2026-10-19 — Claude — Hollowlight premium pass (workstream I)
 Done:
 - Plan with short research: `docs/vfx/HOLLOWLIGHT_PREMIUM.md`.

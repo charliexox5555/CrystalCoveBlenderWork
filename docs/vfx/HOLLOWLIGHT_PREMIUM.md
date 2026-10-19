@@ -128,11 +128,7 @@ Rejected: the Pocket Ghost stings (APM, no description, can't be confirmed kid-f
   - the lantern flame
   - the moon-dust and wisp stream
   - the take-off bursts
-- **Waiting for upload:** `assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx` (18,616 tris). Open Cloud currently returns 403 until the creator adds asset permission to the key. Once it's uploaded:
-  1. Install it in place of the v4 meshes (keep v4 in ServerStorage).
-  2. Set `CarriageMotion = "WingTip"` on `WingTip_L/R` and `WingTipRibs_L/R` and `WingTipEdge_L/R`, with `FollowPart = "Wing_L/R"`, `WingSide = ±1`, and `TipAxis0/TipAxis1` set to the wing-space wrist and split points (`anchors.json` `WingWrist_*`, `WingSplit_*`, after the import transform).
-  3. Set `CarriageMotion = "Glow"` on `HullGlow_L/R`, `"Twinkle"` on `HullStars`, and `RideMotion = "Swing"` on `LanternChain` with the lantern's hinge.
-  4. Re-run the extras installer.
+- **v5 mesh:** uploaded (asset 85604557082927) and installed with `tools/studio/install_carriage_v5.luau` on Oct 19. That covers wing tips, glows, twinkles and the chain; v4 is backed up in `ServerStorage.HollowlightCarriageV4BeforeV5`. The place still needs saving.
 
 ## 8. Verification
 

@@ -49,6 +49,35 @@ Still open:
 - **Readability:** the ghosts read pale against a bright sky. They're fine under the grade, but a little faint before the eclipse.
 - **Creator review:** listening to the new sounds, and overall feel.
 
+## v5 carriage install and second Play pass (Oct 19, afternoon)
+
+- **Install (Edit):** `tools/studio/install_carriage_v5.luau` with asset 85604557082927 (Approved).
+  - 17 v4 parts were swapped for v5 meshes, keeping their materials, attributes, emitters and lights. 14 new parts were added: hull glow, star studs, wing tips/ribs/edges, engine rings and the lantern chain.
+  - Backups: `ServerStorage.HollowlightCarriageV4BeforeV5` (v4 plus extras) and `HollowlightCarriageBeforeExtras` (v4).
+  - Positions, rotations and sizes of the shared parts match v4 (seat, hull, tail star, hook within 0.05 studs).
+- **Real round** (player on Hollowlight against Bubble Bot, carriage v5 staged):
+  - The wing tips flexed -4.3 to +5.4 degrees relative to the wing.
+  - Live seed beats, all caught this time: planted 2 → 3, Ready wisps, **star blossoms**, **homing ghosts** and the **ghost-puff cast** (18 parts).
+  - A real Lantern Eclipse played on a won round, with the grade on and then off. Nothing was left over after the match.
+- **Frame cost** (client at 60 fps this time):
+
+| Moment | Frames | Average | p95 | Worst |
+|---|---|---|---|---|
+| Real Lantern Eclipse (watched fight) | 225 | 16.7 ms | 17.8 ms | 23.4 ms |
+| Normal play | 3,000 | 16.8 ms | 17.6 ms | 218.6 ms (one hitch, outside the Eclipse) |
+
+  The Eclipse adds no measurable frame cost. The earlier 25–260 ms step spikes were caused by host load.
+
+| File | What it shows |
+|---|---|
+| `09_carriage_v4_vs_v5.jpg` | v5 (left) next to v4 (right), side view |
+| `10_carriage_v5_close.jpg` | v5 close-up: smooth glass hull, mint glow inlay, gold star studs, split wing tips with violet edges, engine rings, chain and lantern |
+| `11_round_riding_v5_carriage.jpg` | Riding the v5 carriage in a real round, with the moon-dust trail |
+| `12_bundle_view_v5_carriage.jpg` | Bundle VIEW stage with the v5 carriage and its rider |
+| `13_showcase_v5_carriage.jpg` | Lobby showcase running the v5 carriage |
+
+Still open: phone presets (the Device Emulator isn't reachable through the MCP), the creator's listening and feel review, and saving the place so the Studio installs stick.
+
 ## How to repeat
 
 - **Set up (Play, Server):**

@@ -7,6 +7,41 @@
    "Sha256": "efaa5e4f59770ba63cc9319700e9f8959bffb152dd96e9f0b49746fae0718e36",
    "Moderation": "Approved",
    "Uploaded": "2026-10-19T15:30:27"
+  },
+  "tex_StarGlint": {
+   "AssetId": "139579539577297",
+   "Path": "assets/blender/round_cosmetics/finishers_v3/textures/StarGlint.png",
+   "Sha256": "95f8738ec257c1957b00db6940d1fe8bc0da46d93bbf68a0f81d863bec2eebdf",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:33:35"
+  },
+  "tex_SoftGlow": {
+   "AssetId": "80352675328595",
+   "Path": "assets/blender/round_cosmetics/finishers_v3/textures/SoftGlow.png",
+   "Sha256": "7e69e4cb2c795077a4572a98989b512aa6de7376d90b13f1a8116011ffecba6a",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:33:39"
+  },
+  "tex_Streak": {
+   "AssetId": "125255282401568",
+   "Path": "assets/blender/round_cosmetics/finishers_v3/textures/Streak.png",
+   "Sha256": "fe90786728da8be8813ff1bd907dcfad4194bf74580fc1151f2345b33b9cc157",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:33:43"
+  },
+  "tex_Bubble": {
+   "AssetId": "90847992301906",
+   "Path": "assets/blender/round_cosmetics/finishers_v3/textures/Bubble.png",
+   "Sha256": "213f6bcca873444440abb5909c4f1b36313eb0f58ed7b83ed4b365e1c8add172",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:33:48"
+  },
+  "tex_Confetti4x4": {
+   "AssetId": "118322061883783",
+   "Path": "assets/blender/round_cosmetics/finishers_v3/textures/Confetti4x4.png",
+   "Sha256": "1ce8418313da0a0d0cc9cb11f5777b9dbaec4224d603c201164e1a45e1743447",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T15:33:58"
   }
  }
 }

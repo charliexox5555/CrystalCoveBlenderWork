@@ -58,6 +58,41 @@ local Fallback = {
 }
 local Flipbooks = { Confetti = Enum.ParticleFlipbookLayout.Grid4x4 }
 
+-- Uploaded textures are preloaded once; one that fails to load (still processing, moderated) switches every
+-- emitter using it back to its combat-bank fallback, so particles never turn invisible.
+local failed = {}
+local users = {} -- key -> weak set of emitters using the uploaded texture
+local function useFallback(e, key)
+	local fallback = Fallback[key] or Fallback.StarGlint
+	e.Texture = fallback.Texture
+	e.FlipbookLayout = fallback.Flipbook or Enum.ParticleFlipbookLayout.None
+end
+task.spawn(function()
+	local byId = {}
+	for key, id in Shows.Textures do
+		if id then
+			byId[id] = key
+		end
+	end
+	local ids = {}
+	for id in byId do
+		table.insert(ids, id)
+	end
+	pcall(function()
+		game:GetService("ContentProvider"):PreloadAsync(ids, function(id, status)
+			local key = byId[id]
+			if key and status ~= Enum.AssetFetchStatus.Success then
+				failed[key] = true
+				for e in users[key] or {} do
+					if e.Parent then
+						useFallback(e, key)
+					end
+				end
+			end
+		end)
+	end)
+end)
+
 local function libraries()
 	local vfx = RS:FindFirstChild("Assets") and RS.Assets:FindFirstChild("VFX")
 	if not vfx then
@@ -157,9 +192,6 @@ function Rig:Actor(name, opts)
 	p.Material = opts.Material or Enum.Material.Neon
 	p.Reflectance = opts.Reflectance or 0
 	p.Transparency = 1
-	if p:IsA("MeshPart") then
-		p.DoubleSided = false
-	end
 	p.Parent = opts.Parent or self.Root
 	-- Longest local axis, so Stretch() can lay elongated pieces along a direction whatever the template.
 	local axis = if base.X >= base.Y and base.X >= base.Z then "X" elseif base.Y >= base.Z then "Y" else "Z"
@@ -284,8 +316,12 @@ function Rig:Emitter(name, spec)
 	e.Name = name
 	e.Enabled, e.Rate = false, 0
 	local key = spec.Texture or "StarGlint"
-	local uploaded = Shows.Textures[key]
+	local uploaded = if failed[key] then nil else Shows.Textures[key]
 	local fallback = Fallback[key] or Fallback.StarGlint
+	if uploaded then
+		users[key] = users[key] or setmetatable({}, { __mode = "k" })
+		users[key][e] = true
+	end
 	e.Texture = uploaded or fallback.Texture
 	e.FlipbookLayout = if uploaded
 		then (Flipbooks[key] or Enum.ParticleFlipbookLayout.None)

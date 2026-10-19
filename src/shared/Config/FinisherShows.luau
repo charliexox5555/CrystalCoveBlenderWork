@@ -5,14 +5,14 @@
 -- own numbers in Balance.CosmeticPresentation.Eclipse.
 local S = {}
 
--- Particle textures rendered in Blender (assets/blender/round_cosmetics/finishers_v3/textures). nil falls back
--- to the combat bank texture named in Kit.
+-- Particle textures rendered in Blender (assets/blender/round_cosmetics/finishers_v3/textures; image ids resolved
+-- from the Decals in roblox_assets.json). nil falls back to the combat bank texture named in Kit.
 S.Textures = {
-	StarGlint = nil :: string?,
-	SoftGlow = nil :: string?,
-	Streak = nil :: string?,
-	Bubble = nil :: string?,
-	Confetti = nil :: string?, -- 4x4 flipbook
+	StarGlint = "rbxassetid://109321824300060" :: string?,
+	SoftGlow = "rbxassetid://124402520176934" :: string?,
+	Streak = "rbxassetid://135305766085480" :: string?,
+	Bubble = "rbxassetid://113666364408094" :: string?,
+	Confetti = "rbxassetid://133779300455052" :: string?, -- 4x4 flipbook
 }
 
 S.PoolPerFinisher = 2 -- parked rigs kept per finisher and detail level

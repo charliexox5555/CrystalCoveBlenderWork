@@ -9,6 +9,8 @@ local GLASS =
 	{ Color3.fromHex("#8FD3FF"), Color3.fromHex("#8FF0C8"), Color3.fromHex("#FFA8D2"), Color3.fromHex("#FFE27A") }
 local LETTERS = { "B", "O", "O", "M" }
 local HEADING = Font.new("rbxasset://fonts/families/DenkOne.json")
+-- The Blender glyphs import facing the block's back; turn them to read on its front face.
+local GLYPH_TURN = CFrame.Angles(0, math.pi, 0)
 
 local function label(parent, text, color, strokeThickness)
 	local gui = Instance.new("SurfaceGui")
@@ -255,7 +257,7 @@ function Show.step(rig, t, s)
 			end
 			rig:Place(letter.Block, cf, scale, alpha)
 			if letter.Glyph then
-				rig:Place(letter.Glyph, cf * CFrame.new(0, 0, -s.LetterSize * 0.5), scale, alpha)
+				rig:Place(letter.Glyph, cf * CFrame.new(0, 0, -s.LetterSize * 0.5) * GLYPH_TURN, scale, alpha)
 			end
 		end
 		local pop = rig.Pops[i]

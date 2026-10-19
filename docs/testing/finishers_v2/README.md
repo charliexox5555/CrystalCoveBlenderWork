@@ -88,10 +88,47 @@ arenas and the lobby showcase use the low-detail rig (about half the actors, 40%
 beams, lights, Highlights or grade), and the shows are world-space, so the HUD layout is untouched. Creator
 check on a real phone is still pending.
 
-## Meshes waiting for upload
+## Blender meshes and textures installed (2026-10-19, second lock slot)
 
-Open Cloud asset uploads return 403 "User not authenticated" for `ROBLOX_ASSETS_KEY` (universe and developer
-product calls still work). Until the creator restores the key's asset scope, every show uses its fallback mesh.
+The creator fixed the key, and A uploaded `finishers_v3.fbx` (Model 100127262224695, Approved). I uploaded the five
+textures as Decals (ids in `assets/blender/round_cosmetics/finishers_v3/roblox_assets.json`) and resolved them to
+image ids in `Config/FinisherShows.Textures`.
+
+`tools/studio/install_finishers_v3.luau` (Edit, lock held) did the install:
+- It loaded the model with retries and archived the raw insert in `ServerStorage.FinishersV3Import`.
+- It sized the 16 MeshParts from `manifest.json` (the import is 100× scale) and installed them in
+  `ReplicatedStorage.Assets.VFX.FinishersV3`. No earlier folder existed, so nothing needed a backup.
+- The fallback meshes in RoundHeroV2/Combat are untouched, and `Kit.template` prefers FinishersV3 by name.
+
+Fixes found on the first look (contact sheets `v3_*.jpg`):
+- **Inward-wound faces.** The BurstSign plate and the B/M glyphs rendered as nothing. The flat pieces and glyphs are
+  now `DoubleSided` (set by the installer), and Kit no longer forces `DoubleSided = false` on clones.
+- **Mirrored glyphs.** They import facing the block's back, so KaBlock turns them 180° (`GLYPH_TURN`). BOOM now
+  reads correctly (`v3_kablock_boom.jpg`).
+
+Real bot rounds with the meshes installed (client log counts parts using a FinishersV3 mesh):
+
+| Finisher | Round | FV3 mesh parts in the rig | Result |
+|---|---|---|---|
+| Prism Pop | match 1 round 1 | 18 (12 facets, 6 slivers) | played, no errors |
+| Piñata Pop | match 1 round 2 | 16 (core, 5 points, 10 candy gems) | played, no errors |
+| Fizz Bloom | match 1 round 3 | 2 (crown, drops) | played, no errors |
+| Ka-Block | match 1 round 4 | 17 (blocks, letters, sign) | played, no errors |
+| Supernova | match 2 round 1 | 11 (core, halo, gems, rays) | played, no errors; the grade peaked at brightness 0.06 and was removed; 0 rigs left |
+
+Previews (ViewportFrame, same as the inventory) all ended on time (1.72/1.96/2.16/2.03/2.48 s for
+1.7/1.9/2.1/2.0/2.4 s shows). Every still uses the new meshes.
+
+Textures: right after upload, Roblox reported "Asset content representation is being generated" and thumbnails
+showed Pending, so the first Play used blank particles for those emitters. Kit now preloads the uploaded textures
+once and switches any emitter whose image fails to load back to its combat-bank texture. Once Roblox finishes
+processing, the new textures appear with no further change.
+
+## Meshes (history: waiting for upload before the key fix)
+
+
+Before the key fix, Open Cloud asset uploads returned 403 and each show used the fallback mesh listed here. These
+fallbacks still apply if `Assets.VFX.FinishersV3` is ever missing.
 
 | Mesh (FV3_*) | Tris | Used by | Fallback today |
 |---|---|---|---|

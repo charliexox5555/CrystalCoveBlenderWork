@@ -14,6 +14,14 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — Finishers V2: Blender meshes installed (workstream G)
+Done:
+- Installed the 16 finishers_v3 meshes (Model 100127262224695) in `Assets.VFX.FinishersV3`. Raw insert archived in `ServerStorage.FinishersV3Import`; sizes from the manifest; installer `tools/studio/install_finishers_v3.luau`. Uploaded the 5 particle textures (Decals, ids in `roblox_assets.json`) and wired their image ids into `Config/FinisherShows.Textures`.
+- Fixed inward-wound flat pieces/glyphs (DoubleSided, and Kit no longer forces it off) and mirrored BOOM glyphs (turned 180°). Kit falls back to the bank texture if an uploaded image fails to load.
+- Studio Play: all five finishers played in real bot rounds using the new meshes, with no errors, nothing left behind, and Supernova's softened grade peaking at 0.06; previews and stills checked. Report: `docs/testing/finishers_v2/README.md`.
+Next:
+- Save the place (keeps `Assets.VFX.FinishersV3` and the archive). Confirm the new textures once Roblox finishes processing them (Pending at 15:47). Creator feel/listening review, real-phone check.
+
 ## 2026-10-19 — Claude — Living glassies: GlassyMotion (workstream E)
 Done:
 - `tools/gen_glassy_motion.luau` converts both Blender motion manifests (v3 release + v4 launch) into `Config/GlassyMotion` (36 glassies, 207 moving parts), through a pure converter (`GlassyMotionConvert`) with `GlassyMotionTests`. Lune 159/159.

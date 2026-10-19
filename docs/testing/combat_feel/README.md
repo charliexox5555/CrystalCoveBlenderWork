@@ -52,8 +52,8 @@ During a hold the render clock runs at 4% speed (a near-freeze). Afterwards the 
 - **Round win:** gold rings and glints on the survivor as the finisher starts. A local win plays the success chime.
 - **Manual cast** (contract from workstream A, built ahead of the events):
   - `SignatureReady` for your side gives a soft ping and glints.
-  - `CastStart { Manual = true }` for your side gives a gold starburst, a 50 ms hold, a −3° FOV punch, a white flash, a "NICE CAST!" popup, a screen-edge tint and a riser + chime.
-  - Someone else's manual cast gets a small ring only.
+  - `CastStart { Manual = true }` for your side gives a 50 ms hold, a −3° FOV punch, a white flash, a "NICE CAST!" popup, a screen-edge tint and a riser + chime.
+  - Since Oct 19 the world flourish on the glassy (and the Ready aura and armed look) belongs to workstream E in HeroPowers, through the `Hero.state(self, e)` hook in CombatEffects. The gold starburst in `05_manual_cast.jpg` was the pre-split version.
   - Contact-payoff kits send `SignatureArmed { Manual = true }` instead of `CastStart`; that gets the same beat.
   - The Ready ping plays once per `ReadyId`, even if Ready is sent again.
   - `ReadyCancel` clears the Ready state.
@@ -84,7 +84,7 @@ During a hold the render clock runs at 4% speed (a near-freeze). Afterwards the 
   - With `ReducedMotion` on, the FOV stayed at 52° the whole fight and holds were 39 ms.
 - **Live cast check (player vs bot, A's commit `c147c3b`):**
   - The event log showed `SignatureReady` for both sides, the bot's `CastStart { Manual = true }`, and after my press `SignatureArmed { Manual = true }` on my side (Pop is a contact-armed kit).
-  - My press fired the player beat (`FeelManualCastMine`): 50 ms hold, burst, and the "NICE CAST!" popup appeared in PlayerGui. The bot's cast got the small ring.
+  - My press fired the player beat (`FeelManualCastMine`): 50 ms hold, burst, and the "NICE CAST!" popup appeared in PlayerGui. The bot's cast got the small ring (since moved to E's flourish).
   - When nobody pressed, Ready was followed by an auto `SignatureArmed { Manual = false }` and no beat, as intended.
   - Three matches, 0 script errors.
 - **Leftovers after the match:** no `LocalFight_*` folder, no `FightFeelGrade` or `FightShatterFlash` in Lighting, camera back to Custom at FOV 70. During a fight the pool peaked at 23 children.

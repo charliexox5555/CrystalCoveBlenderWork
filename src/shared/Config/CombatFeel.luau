@@ -298,21 +298,6 @@ return {
 			Hitstop = 0.05,
 			Trauma = 0.25,
 			Fov = -3,
-			OtherScale = 0.5, -- glints/rings for someone else's manual cast (bots, the opponent)
-			Burst = {
-				Spokes = 10,
-				SpokeLength = 1.6,
-				SpokeWidth = 0.18,
-				Spread = 3.2,
-				Rings = 2,
-				RingEnd = 3.8,
-				Flash = 1.6,
-				Chips = 0,
-				Glints = 14,
-				Light = 4,
-				Seconds = 0.5,
-				Color = "#FFC21F",
-			},
 			Sounds = {
 				{ Key = "RisingWhoosh", Volume = 0.22, Pitch = 1.3, Jitter = 0.02, Short = 0.45 },
 				{ Key = "ChimeCluster", Volume = 0.22, Pitch = 1.4, Jitter = 0.02, Delay = 0.05, Short = 0.6 },

@@ -478,15 +478,8 @@ function Feel:Cast(e, now)
 		if not self:Viewing() then
 			return
 		end
+		-- The world flourish on the glassy belongs to HeroPowers (workstream E); this is the screen layer only.
 		local color = Color3.fromHex(cfg.Color)
-		if mine then
-			self:Burst(cfg.Burst, f.Body.Position)
-		else
-			local small = table.clone(cfg.Burst)
-			small.Spokes, small.Glints = 0, math.floor(small.Glints * cfg.OtherScale)
-			small.RingEnd, small.Rings, small.Light = small.RingEnd * cfg.OtherScale * 1.4, 1, 0
-			self:Burst(small, f.Body.Position)
-		end
 		if mine then
 			self:Note("FeelManualCastMine")
 			self:Hold(cfg.Hitstop, now)

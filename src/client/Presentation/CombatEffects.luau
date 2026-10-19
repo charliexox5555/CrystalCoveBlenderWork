@@ -153,6 +153,10 @@ function Effects:Event(e)
 		self:CancelSide(e.Side)
 		return false
 	end
+	-- Ready / armed / cancel state for per-power world VFX (workstream E); the screen beats live in CombatFeel.
+	if Hero.state then
+		Hero.state(self, e)
+	end
 	if
 		not table.find({
 			"Charge",
@@ -182,6 +186,9 @@ function Effects:Event(e)
 	end
 	local origin = if e.Origin then self.Scene.Frame:PointToWorldSpace(vector(e.Origin)) else f.Body.Position
 	if e.Type == "SignatureStatus" then
+		if e.Kind == "ArmedFade" then
+			return true -- HeroPowers draws the fade
+		end
 		if e.Kind == "Echo" then
 			f.EchoPoint, f.EchoUntil = self.Scene.Frame:PointToWorldSpace(vector(e.Point)), e.Time + e.Seconds
 		end

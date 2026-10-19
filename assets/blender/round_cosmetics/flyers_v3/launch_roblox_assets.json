@@ -35,6 +35,20 @@
    "Sha256": "fd5609451c9e2683b82cb3ea63675e537b8ff4e116b7c85a084fa7f73478828c",
    "Moderation": "Approved",
    "Uploaded": "2026-10-19T17:11:21"
+  },
+  "sunwing": {
+   "AssetId": "95984254159798",
+   "Path": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+   "Sha256": "88d6793ec336e1e9f6e2651cc23d078365ab81b0c587624f7077856dcbb32e42",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T17:28:43"
+  },
+  "starwhale": {
+   "AssetId": "118738400073939",
+   "Path": "assets/blender/round_cosmetics/flyers_v3/starwhale/starwhale.fbx",
+   "Sha256": "44a87af8741f1dcc57c2e381f98613dc30302c8d12a7dcf1b759be81057f0e22",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T17:29:01"
   }
  }
 }

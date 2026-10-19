@@ -1,0 +1,732 @@
+{
+ "Id": "sunwing",
+ "Name": "Sunwing",
+ "Contact": "Feet",
+ "Tris": 6606,
+ "Budget": 8000,
+ "Extents": [
+  11.65968,
+  6.02249,
+  14.24233
+ ],
+ "Parts": {
+  "Body": {
+   "Tris": 1698,
+   "Centre": [
+    -0.0,
+    0.03108,
+    -1.11015
+   ],
+   "Size": [
+    2.72074,
+    4.66015,
+    8.14249
+   ],
+   "Color": "#FF7A2E",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "BodyCore": {
+   "Tris": 260,
+   "Centre": [
+    0.00563,
+    -1.26468,
+    -0.13037
+   ],
+   "Size": [
+    2.07497,
+    1.60591,
+    3.77705
+   ],
+   "Color": "#B8321A",
+   "Material": "Glass",
+   "Transparency": 0.08,
+   "Reflectance": 0.05,
+   "Kind": "Core",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Beak": {
+   "Tris": 120,
+   "Centre": [
+    0.0,
+    1.5612,
+    -5.18584
+   ],
+   "Size": [
+    0.44,
+    0.44684,
+    0.59225
+   ],
+   "Color": "#FFD34E",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.18,
+   "Kind": "Gold",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Eyes": {
+   "Tris": 336,
+   "Centre": [
+    -0.00108,
+    1.82684,
+    -4.73832
+   ],
+   "Size": [
+    1.41973,
+    0.37694,
+    0.3005
+   ],
+   "Color": "#1B2440",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Matte",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "EyeShine": {
+   "Tris": 72,
+   "Centre": [
+    -0.00125,
+    1.90964,
+    -4.82576
+   ],
+   "Size": [
+    1.48775,
+    0.11066,
+    0.10272
+   ],
+   "Color": "#FFFFFF",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Matte",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Crest": {
+   "Tris": 288,
+   "Centre": [
+    0.0,
+    2.73946,
+    -3.84685
+   ],
+   "Size": [
+    0.73572,
+    1.33858,
+    1.14236
+   ],
+   "Color": "#FFB13D",
+   "Material": "Glass",
+   "Transparency": 0.15,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Flame",
+    "FlamePhase": 0.6
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Wing_L": {
+   "Tris": 224,
+   "Centre": [
+    -3.58292,
+    1.16136,
+    -0.94498
+   ],
+   "Size": [
+    4.49383,
+    5.12427,
+    1.17231
+   ],
+   "Color": "#FF7A2E",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Wing",
+    "WingSide": -1,
+    "MotionPivot": [
+     2.44292,
+     -1.82136,
+     0.52498
+    ],
+    "WingAngle": 0.32
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "WingCovert_L": {
+   "Tris": 92,
+   "Centre": [
+    -2.31851,
+    0.41464,
+    -0.59021
+   ],
+   "Size": [
+    1.91822,
+    2.72968,
+    0.58281
+   ],
+   "Color": "#FFD34E",
+   "Material": "Glass",
+   "Transparency": 0.2,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Wing",
+    "WingSide": -1,
+    "MotionPivot": [
+     1.17851,
+     -1.07464,
+     0.17021
+    ],
+    "WingAngle": 0.32
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "WingTips_L": {
+   "Tris": 336,
+   "Centre": [
+    -4.38376,
+    1.35397,
+    -1.04557
+   ],
+   "Size": [
+    2.84813,
+    4.22388,
+    0.83672
+   ],
+   "Color": "#FFD34E",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.18,
+   "Kind": "Gold",
+   "Motion": {
+    "RideMotion": "Wing",
+    "WingSide": -1,
+    "MotionPivot": [
+     3.24376,
+     -2.01397,
+     0.62557
+    ],
+    "WingAngle": 0.4
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "EmberVeins_L": {
+   "Tris": 144,
+   "Centre": [
+    -3.0158,
+    0.85719,
+    -0.92294
+   ],
+   "Size": [
+    3.17131,
+    2.88736,
+    0.77083
+   ],
+   "Color": "#FFE38A",
+   "Material": "Neon",
+   "Transparency": 0.1,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {
+    "RideMotion": "Wing",
+    "WingSide": -1,
+    "MotionPivot": [
+     1.8758,
+     -1.51719,
+     0.50294
+    ],
+    "WingAngle": 0.32
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Wing_R": {
+   "Tris": 224,
+   "Centre": [
+    3.58292,
+    1.16136,
+    -0.94498
+   ],
+   "Size": [
+    4.49383,
+    5.12427,
+    1.17231
+   ],
+   "Color": "#FF7A2E",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Wing",
+    "WingSide": 1,
+    "MotionPivot": [
+     -2.44292,
+     -1.82136,
+     0.52498
+    ],
+    "WingAngle": 0.32
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "WingCovert_R": {
+   "Tris": 92,
+   "Centre": [
+    2.31851,
+    0.41464,
+    -0.59021
+   ],
+   "Size": [
+    1.91822,
+    2.72968,
+    0.58281
+   ],
+   "Color": "#FFD34E",
+   "Material": "Glass",
+   "Transparency": 0.2,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Wing",
+    "WingSide": 1,
+    "MotionPivot": [
+     -1.17851,
+     -1.07464,
+     0.17021
+    ],
+    "WingAngle": 0.32
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "WingTips_R": {
+   "Tris": 336,
+   "Centre": [
+    4.38376,
+    1.35397,
+    -1.04557
+   ],
+   "Size": [
+    2.84813,
+    4.22388,
+    0.83672
+   ],
+   "Color": "#FFD34E",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.18,
+   "Kind": "Gold",
+   "Motion": {
+    "RideMotion": "Wing",
+    "WingSide": 1,
+    "MotionPivot": [
+     -3.24376,
+     -2.01397,
+     0.62557
+    ],
+    "WingAngle": 0.4
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "EmberVeins_R": {
+   "Tris": 144,
+   "Centre": [
+    3.0158,
+    0.85719,
+    -0.92294
+   ],
+   "Size": [
+    3.17131,
+    2.88736,
+    0.77083
+   ],
+   "Color": "#FFE38A",
+   "Material": "Neon",
+   "Transparency": 0.1,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {
+    "RideMotion": "Wing",
+    "WingSide": 1,
+    "MotionPivot": [
+     -1.8758,
+     -1.51719,
+     0.50294
+    ],
+    "WingAngle": 0.32
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "TailFeather_1": {
+   "Tris": 208,
+   "Centre": [
+    -0.67172,
+    -1.36776,
+    5.39654
+   ],
+   "Size": [
+    1.56082,
+    0.88777,
+    5.32578
+   ],
+   "Color": "#FF7A2E",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Tail",
+    "MotionPivot": [
+     0.43172,
+     0.40776,
+     -2.63654
+    ],
+    "TailAngle": 0.16,
+    "TailLag": 0.7
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "TailEye_1": {
+   "Tris": 120,
+   "Centre": [
+    -1.01188,
+    -1.67963,
+    7.3635
+   ],
+   "Size": [
+    0.864,
+    0.19008,
+    1.08
+   ],
+   "Color": "#FFD34E",
+   "Material": "Neon",
+   "Transparency": 0.1,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {
+    "RideMotion": "Tail",
+    "MotionPivot": [
+     0.77188,
+     0.71963,
+     -4.6035
+    ],
+    "TailAngle": 0.16,
+    "TailLag": 0.7
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "TailFeather_2": {
+   "Tris": 208,
+   "Centre": [
+    0.0,
+    -1.1993,
+    5.75825
+   ],
+   "Size": [
+    1.42774,
+    0.55211,
+    6.00422
+   ],
+   "Color": "#FFB13D",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Tail",
+    "MotionPivot": [
+     0.0,
+     0.2393,
+     -2.99825
+    ],
+    "TailAngle": 0.16,
+    "TailLag": 0.9
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "TailEye_2": {
+   "Tris": 120,
+   "Centre": [
+    0.0,
+    -1.32525,
+    7.99125
+   ],
+   "Size": [
+    0.864,
+    0.19008,
+    1.08
+   ],
+   "Color": "#FFD34E",
+   "Material": "Neon",
+   "Transparency": 0.1,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {
+    "RideMotion": "Tail",
+    "MotionPivot": [
+     0.0,
+     0.36525,
+     -5.23125
+    ],
+    "TailAngle": 0.16,
+    "TailLag": 0.9
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "TailFeather_3": {
+   "Tris": 208,
+   "Centre": [
+    0.67172,
+    -1.36776,
+    5.39654
+   ],
+   "Size": [
+    1.56082,
+    0.88777,
+    5.32578
+   ],
+   "Color": "#FF7A2E",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Tail",
+    "MotionPivot": [
+     -0.43172,
+     0.40776,
+     -2.63654
+    ],
+    "TailAngle": 0.16,
+    "TailLag": 1.1
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "TailEye_3": {
+   "Tris": 120,
+   "Centre": [
+    1.01188,
+    -1.67963,
+    7.3635
+   ],
+   "Size": [
+    0.864,
+    0.19008,
+    1.08
+   ],
+   "Color": "#FFD34E",
+   "Material": "Neon",
+   "Transparency": 0.1,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {
+    "RideMotion": "Tail",
+    "MotionPivot": [
+     -0.77188,
+     0.71963,
+     -4.6035
+    ],
+    "TailAngle": 0.16,
+    "TailLag": 1.1
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Saddle": {
+   "Tris": 352,
+   "Centre": [
+    0.0,
+    -0.11,
+    0.2
+   ],
+   "Size": [
+    1.7,
+    0.22,
+    2.3
+   ],
+   "Color": "#B8321A",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.08,
+   "Kind": "Pearl",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "SaddleTrim": {
+   "Tris": 648,
+   "Centre": [
+    -0.00808,
+    0.03,
+    0.06093
+   ],
+   "Size": [
+    2.27039,
+    0.41413,
+    2.83814
+   ],
+   "Color": "#F5D99A",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.18,
+   "Kind": "Gold",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "BodyVeins": {
+   "Tris": 256,
+   "Centre": [
+    -8e-05,
+    -0.83441,
+    0.23746
+   ],
+   "Size": [
+    2.8193,
+    0.67889,
+    4.35746
+   ],
+   "Color": "#FFE38A",
+   "Material": "Neon",
+   "Transparency": 0.1,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {
+    "RideMotion": "Pulse"
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  }
+ },
+ "Attachments": {
+  "RiderFeet": {
+   "Part": "Saddle",
+   "World": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "Offset": [
+    0.0,
+    0.11,
+    -0.2
+   ]
+  },
+  "WingTrail0": {
+   "Part": "WingTips_L",
+   "World": [
+    -6.36,
+    2.28,
+    -2.28
+   ],
+   "Offset": [
+    -1.97624,
+    0.92603,
+    -1.23443
+   ]
+  },
+  "WingTrail1": {
+   "Part": "WingTips_R",
+   "World": [
+    6.36,
+    2.28,
+    -2.28
+   ],
+   "Offset": [
+    1.97624,
+    0.92603,
+    -1.23443
+   ]
+  },
+  "Embers": {
+   "Part": "Body",
+   "World": [
+    0.0,
+    -2.28,
+    0.72
+   ],
+   "Offset": [
+    0.0,
+    -2.31108,
+    1.83015
+   ]
+  },
+  "Wake": {
+   "Part": "TailFeather_2",
+   "World": [
+    0.0,
+    -1.32,
+    8.64
+   ],
+   "Offset": [
+    0.0,
+    -0.1207,
+    2.88175
+   ]
+  },
+  "Launch": {
+   "Part": "Body",
+   "World": [
+    0.0,
+    -2.28,
+    -0.0
+   ],
+   "Offset": [
+    0.0,
+    -2.31108,
+    1.11015
+   ]
+  },
+  "Cry": {
+   "Part": "Beak",
+   "World": [
+    0.0,
+    1.44,
+    -5.4
+   ],
+   "Offset": [
+    0.0,
+    -0.1212,
+    -0.21416
+   ]
+  }
+ },
+ "Axes": "Roblox (x, y, z) = Blender (x, z, -y); model pivot = origin = rider contact point",
+ "FbxRoundTrip": {
+  "objects": 23,
+  "missing": [],
+  "tri_mismatch": [],
+  "max_bounds_error": 1.0000000000065512e-05,
+  "ok": true
+ },
+ "Family": "Kneel",
+ "Notes": "Wing beat = Wing (WingAngle 0.32); the gold tips use Wing with 0.4 so they over-bend like lagging feather tips. Crest = Flame, tail feathers and eye-spots = Tail (lag 0.7/0.9/1.1), BodyVeins = Pulse.",
+ "Source": "tools/blender/build_flyers_launch.py (on build_flyers_v3.py)"
+}

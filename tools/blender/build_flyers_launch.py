@@ -753,6 +753,291 @@ def build_carousel():
 
 
 # ---------------------------------------------------------------------------------------------
+# 6. Sunwing (Legendary, Kneel) - set: Glass Phoenix, Emberwing
+# ---------------------------------------------------------------------------------------------
+SUN = {"orange": "#FF7A2E", "gold": "#FFD34E", "core": "#B8321A", "trim": "#F5D99A", "ember": "#FFB13D", "flame": "#FFE38A"}
+
+
+@flyer("sunwing", 8000, "Kneel")
+def build_sunwing():
+    SW = 1.2  # bird scale about the saddle (origin); the saddle stays rider-sized
+    balls = [((0, 0.1, -1.0), 1.0, (1.15, 2.1, 0.92)), ((0, -1.6, -0.85), 0.8, (1.0, 1.1, 0.8)), ((0, 1.7, -0.75), 0.75, (0.95, 0.9, 0.9))]
+    for i in range(7):
+        t = i / 6
+        balls.append(((0, 2.2 + 1.3 * t, -0.5 + 1.75 * t ** 0.85), 0.5 - 0.17 * t, (1, 1, 1)))
+    balls.append(((0, 3.65, 1.42), 0.62, (0.95, 1.1, 0.9)))
+    balls = [(tuple(c * SW for c in cen), r * SW, sc) for cen, r, sc in balls]
+    body = H["voxel_union"]("Body", balls, voxel=0.08, smooth_iter=6, target_tris=1700)
+    add("Body", body, SUN["orange"], "Glass")
+    add("BodyCore", H["voxel_union"]("BodyCore", [((0, 0.1 * SW, -1.05 * SW), 0.8 * SW, (1.1, 2.0, 0.85))], voxel=0.1, smooth_iter=4, target_tris=260),
+        SUN["core"], "Core")
+    tree = H["bvh_of"](bpy.data.objects["Body"])
+    # Face: beak, eyes with shine.
+    head = Vector((0, 3.65, 1.42)) * SW
+    add("Beak", lathe([(0.001, -0.05), (0.22, 0.0), (0.18, 0.2), (0.08, 0.42), (0.001, 0.55)], head + Vector((0, 0.6, -0.12)), (0, 1, -0.45), segs=12),
+        SUN["gold"], "Gold")
+    eyes, shine = [], []
+    for sx in (-1, 1):
+        hit = tree.ray_cast(head + Vector((sx * 3, 0.35, 0.12)), Vector((-sx, 0, 0)))
+        if hit[0] is not None:
+            p, n = hit[0], hit[1]
+            eyes.append(sphere(p + n * 0.02, 0.15, 12, 8, (0.6, 1.0, 1.25)))
+            shine.append(sphere(p + n * 0.11 + Vector((0, 0.05, 0.07)), 0.05, 6, 4))
+    add("Eyes", merge(*eyes), EYE, "Matte")
+    add("EyeShine", merge(*shine), SHINE, "Matte")
+    crest = []
+    for i, (dx, lean, L) in enumerate(((-0.18, -0.35, 0.95), (0.0, -0.15, 1.25), (0.18, -0.35, 0.95))):
+        pts = [head + Vector((dx, -0.1, 0.45)), head + Vector((dx * 1.5, -0.35 + lean * 0.4, 0.45 + L * 0.55)), head + Vector((dx * 2.0, -0.75 + lean, 0.45 + L))]
+        crest.append(tube([catmull_pt(pts, t / 7) for t in range(8)], [0.17, 0.16, 0.14, 0.11, 0.08, 0.05, 0.025, 0.008], n=6))
+    add("Crest", merge(*crest), SUN["ember"], "Glass", studio={"Transparency": 0.15}, motion={"RideMotion": "Flame", "FlamePhase": 0.6})
+    # Wings: swept up, scalloped trailing edge, gold coverts, Neon ember veins, gold tips that over-bend on the beat.
+    wing_pts = [(0.0, -0.4), (0.4, 0.25), (1.1, 0.95), (2.0, 1.55), (3.0, 1.95), (4.1, 2.1), (4.9, 1.85), (4.6, 1.45), (4.85, 1.05), (4.3, 0.85),
+                (4.4, 0.4), (3.7, 0.35), (3.6, -0.15), (2.9, -0.05), (2.7, -0.55), (2.0, -0.4), (1.7, -0.85), (1.05, -0.6), (0.6, -0.95)]
+    covert = [(0.05, -0.3), (0.45, 0.25), (1.15, 0.85), (2.0, 1.35), (2.4, 0.95), (2.1, 0.45), (1.5, 0.0), (0.9, -0.4)]
+    tips = [((4.75, 1.45), 0.55), ((4.5, 0.95), 0.25), ((4.15, 0.45), 0.0), ((3.5, -0.05), -0.35), ((2.65, -0.42), -0.6), ((1.75, -0.7), -0.85)]
+    for side, tag in ((-1, "L"), (1, "R")):
+        hinge = Vector((side * 0.95, 0.35, -0.55)) * SW
+        m = Matrix.Translation(hinge) @ Matrix.Rotation(side * -0.42, 4, "Y") @ Matrix.Rotation(side * 0.18, 4, "Z") @ Matrix.Diagonal((side * SW, SW, SW, 1))
+        beat = {"RideMotion": "Wing", "WingSide": side, "MotionPivotWorld": hinge, "WingAngle": 0.32}
+        add("Wing_" + tag, flat_slab(wing_pts, 0.12, m, bevel=0.035, segs=1), SUN["orange"], "Glass", motion=dict(beat))
+        add("WingCovert_" + tag, flat_slab(covert, 0.08, m @ Matrix.Translation((0, -0.08, 0)), bevel=0.025, segs=1), SUN["gold"], "Glass",
+            studio={"Transparency": 0.2}, motion=dict(beat))
+        tb = []
+        for (u, v), ang in tips:
+            mm = m @ Matrix.Translation((u - 0.15 * math.cos(ang), -0.06, v - 0.15 * math.sin(ang))) @ Matrix.Rotation(-ang, 4, "Y")
+            tb.append(flat_slab([(-0.25, 0.0), (0.05, 0.16), (0.35, 0.07), (0.42, -0.04), (0.05, -0.16)], 0.08, mm, bevel=0.02, segs=1))
+        add("WingTips_" + tag, merge(*tb), SUN["gold"], "Gold", motion={"RideMotion": "Wing", "WingSide": side, "MotionPivotWorld": hinge, "WingAngle": 0.4})
+        veins = []
+        for (u, v), _ in tips:
+            veins.append(tube([m @ Vector((0.3, 0.07, 0.0)), m @ Vector((u * 0.5, 0.07, v * 0.42 + 0.08)), m @ Vector((u * 0.78, 0.07, v * 0.74))], [0.03, 0.026, 0.01], n=4))
+        add("EmberVeins_" + tag, merge(*veins), SUN["flame"], "Neon", studio={"Transparency": 0.1}, motion=dict(beat))
+    # Three tail feathers (5 long) sweeping back and down, each with a glowing eye-spot.
+    for i, (dx, droop, L, lag) in enumerate(((-0.5, 0.55, 4.4, 0.7), (0.0, 0.3, 5.0, 0.9), (0.5, 0.55, 4.4, 1.1))):
+        root = Vector((dx * 0.4, -2.3, -0.8)) * SW
+        L, droop = L * SW, droop * SW
+        pts = [root, root + Vector((dx * 0.6, -L * 0.35, -droop * 0.6)), root + Vector((dx * 1.3, -L * 0.7, -droop * 1.1)), root + Vector((dx * 1.7, -L, -droop * 1.2))]
+        cp = [catmull_pt(pts, t / 12) for t in range(13)]
+        feather = tube(cp, [(0.14 + 0.46 * math.sin(math.pi * min(1.0, t / 12 * 1.1)) ** 1.3) * SW for t in range(13)], n=8, flat=0.22, up_hint=Vector((0, 0, 1)))
+        tail_m = {"RideMotion": "Tail", "MotionPivotWorld": root, "TailAngle": 0.16, "TailLag": lag}
+        add("TailFeather_%d" % (i + 1), feather, SUN["orange"] if i != 1 else SUN["ember"], "Glass", motion=dict(tail_m))
+        spot = sphere(cp[10] + Vector((0, 0, 0.06)), 0.36 * SW, 12, 6, (1.0, 1.25, 0.22))
+        add("TailEye_%d" % (i + 1), spot, SUN["gold"], "Neon", studio={"Transparency": 0.1}, motion=dict(tail_m))
+    # Feathered kneeling saddle (origin = pad top) and body ember veins.
+    sad = []
+    for u in spaced(10, 0.7):
+        y = -1.35 + 2.3 * u
+        k = rrect(u, 3)
+        sad.append((Vector((0, y, -0.1)), X, Z, max(0.85 * k, 0.04), 0.1 * max(k, 0.3), 0.12 * max(k, 0.3), 3.0))
+    add("Saddle", loft(sad, n=16), SUN["core"], "Pearl")
+    rim = [Vector((0.9 * math.sin(a), -0.2 + 1.22 * math.cos(a), -0.12)) for a in [TAU * i / 24 for i in range(24)]]
+    plumes = [tube(rim, 0.06, n=5, cap=False, closed=True)]
+    for sx in (-1, 1):
+        for k in range(3):
+            y = 0.75 - 0.75 * k
+            mm = Matrix.Translation((sx * 0.92, y, -0.08)) @ Matrix.Rotation(sx * 0.5, 4, "Y") @ Matrix.Rotation(math.pi / 2, 4, "Z") @ Matrix.Rotation(-0.5, 4, "Y")
+            plumes.append(flat_slab([(0.0, -0.12), (0.35, -0.16), (0.62, -0.06), (0.7, 0.04), (0.35, 0.14), (0.0, 0.1)], 0.06, mm @ Matrix.Rotation(math.pi / 2, 4, "X"), bevel=0.02, segs=1))
+    add("SaddleTrim", merge(*plumes), SUN["trim"], "Gold")
+    bv = []
+    for sx in (-1, 1):
+        for zoff in (-0.45, -0.95):
+            pts = []
+            for t in range(8):
+                y = (1.6 - 3.6 * t / 7) * SW
+                hit = tree.ray_cast(Vector((sx * 5, y, zoff * SW)), Vector((-sx, 0, 0)))
+                if hit[0] is not None:
+                    pts.append(hit[0] + hit[1] * 0.02)
+            if len(pts) > 2:
+                bv.append(tube(pts, 0.03, n=4))
+    add("BodyVeins", merge(*bv), SUN["flame"], "Neon", studio={"Transparency": 0.1}, motion={"RideMotion": "Pulse"})
+    return {
+        "Id": "sunwing", "Name": "Sunwing", "Contact": "Feet",
+        "Attachments": {
+            "RiderFeet": ("Saddle", (0, 0, 0)),
+            "WingTrail0": ("WingTips_L", (-5.3 * SW, 1.9 * SW, 1.9 * SW)), "WingTrail1": ("WingTips_R", (5.3 * SW, 1.9 * SW, 1.9 * SW)),
+            "Embers": ("Body", (0, -0.6 * SW, -1.9 * SW)),
+            "Wake": ("TailFeather_2", (0, -7.2 * SW, -1.1 * SW)),
+            "Launch": ("Body", (0, 0, -1.9 * SW)),
+            "Cry": ("Beak", (0, 4.5 * SW, 1.2 * SW)),
+        },
+        "Notes": "Wing beat = Wing (WingAngle 0.32); the gold tips use Wing with 0.4 so they over-bend like lagging feather tips. "
+                 "Crest = Flame, tail feathers and eye-spots = Tail (lag 0.7/0.9/1.1), BodyVeins = Pulse.",
+    }
+
+
+# ---------------------------------------------------------------------------------------------
+# 7. Starwhale (Mythic, Sit)
+# ---------------------------------------------------------------------------------------------
+WHALE = {"indigo": "#2B2A7A", "violet": "#7A5CFF", "star": "#FFE9A8", "white": "#F4F1FF", "swirl": "#C9A8FF", "pink": "#FF9FE0"}
+
+
+@flyer("starwhale", 9000, "Sit")
+def build_starwhale():
+    zc = -2.15
+    Y0, Y1 = -6.2, 4.6
+    L = Y1 - Y0
+    hw = [(0, 0.12), (0.06, 0.32), (0.22, 0.95), (0.45, 1.75), (0.66, 2.0), (0.82, 1.92), (0.93, 1.6), (0.985, 1.05), (1.0, 0.25)]
+    ht = [(0, 0.12), (0.06, 0.3), (0.22, 0.85), (0.45, 1.5), (0.66, 1.9), (0.82, 1.85), (0.93, 1.55), (0.985, 1.0), (1.0, 0.25)]
+    hb = [(0, 0.12), (0.06, 0.3), (0.22, 0.8), (0.45, 1.55), (0.66, 1.8), (0.82, 1.7), (0.93, 1.4), (0.985, 0.95), (1.0, 0.22)]
+
+    def zof(u):
+        return zc + 0.55 * (1 - u) ** 3
+
+    def st(u, k=1.0):
+        return Vector((0, Y0 + L * u, zof(u))), catmull(hw, u) * k, catmull(ht, u) * k, catmull(hb, u) * k
+    frames = []
+    for u in spaced(30, 0.45):
+        c, a, bt, bb = st(u)
+        frames.append((c, X, Z, max(a, 0.03), max(bt, 0.03), max(bb, 0.03), 2.15))
+    add("Body", loft(frames, n=28), WHALE["indigo"], "Glass")
+    core = []
+    for u in spaced(16, 0.4)[1:-1]:
+        u = 0.15 + 0.78 * u
+        c, a, bt, bb = st(u, 0.72)
+        core.append((c + Vector((0, 0, -0.05)), X, Z, a, bt, bb, 2.1))
+    add("BodyCore", loft(core, n=16), WHALE["violet"], "Core", studio={"Transparency": 0.35})
+    # Inner galaxy: two-arm spiral (180-degree symmetric, so Spin turns it about its own centre) plus star points.
+    gc = Vector((0, Y0 + L * 0.66, zc + 0.05))
+    arms = []
+    for arm in range(2):
+        pts, rad = [], []
+        for i in range(14):
+            t = i / 13
+            a = arm * math.pi + t * 3.9
+            r = 0.15 + 1.35 * t
+            pts.append(gc + Vector((r * math.cos(a), r * math.sin(a) * 1.2, 0.05 * math.sin(t * 9))))
+            rad.append(0.3 * (1 - 0.75 * t) + 0.04)
+        arm_bm = tube(pts, rad, n=5)
+        for v in arm_bm.verts:
+            v.co.z = gc.z + (v.co.z - gc.z) * 0.3
+        arms.append(arm_bm)
+    arms.append(sphere(gc, 0.45, 14, 9, (1, 1, 0.6)))
+    add("GalaxySwirl", merge(*arms), "#F2B8FF", "Neon", studio={"Transparency": 0.1},
+        motion={"RideMotion": "Spin", "SpinAxis": "Y", "SpinSpeed": 0.3})
+    rng = random.Random(23)
+    stars, star_pts = [], []
+    while len(star_pts) < 20:
+        u = rng.uniform(0.12, 0.92)
+        c, a, bt, bb = st(u, 0.62)
+        p = c + Vector((rng.uniform(-1, 1) * a, 0, rng.uniform(-0.8, 1) * bt * 0.9))
+        if any((p - q).length < 0.75 for q in star_pts):
+            continue
+        star_pts.append(p)
+        s_ = rng.uniform(0.07, 0.13)
+        tmp = bmesh.new()
+        for ax in (X, Y, Z):
+            stars.append(lathe([(0.001, -s_ * 2.2), (s_ * 0.45, 0.0), (0.001, s_ * 2.2)], p, ax, segs=4))
+    add("StarPoints", merge(*stars), WHALE["star"], "Neon", motion={"RideMotion": "Pulse"})
+    # Constellation lines on the shell joining the stars near the top (Pulse draws/fades them).
+    lines = []
+    top_stars = sorted(star_pts, key=lambda q: -q.z)[:9]
+    chain = sorted(top_stars, key=lambda q: q.y)
+    tree = H["bvh_of"](bpy.data.objects["Body"])
+    for a_, b_ in zip(chain, chain[1:]):
+        seg = []
+        for t in range(6):
+            q = a_.lerp(b_, t / 5)
+            hit = tree.ray_cast(Vector((q.x, q.y, 6)), Vector((0, 0, -1)))
+            if hit[0] is not None:
+                seg.append(hit[0] + hit[1] * 0.03)
+        if len(seg) >= 2:
+            lines.append(tube(seg, 0.012, n=4))
+            lines.append(sphere(seg[0], 0.06, 6, 4))
+    add("ConstellationLines", merge(*lines), "#FFE07A", "Neon", studio={"Transparency": 0.35}, motion={"RideMotion": "Pulse"})
+    # Pearl belly with throat grooves.
+    belly = []
+    for u in spaced(16, 0.4):
+        u = 0.4 + 0.55 * u
+        c, a, bt, bb = st(u)
+        belly.append((c + Vector((0, 0, -bb * 0.86)), X, Z, a * 0.62, 0.1, bb * 0.17, 2.4))
+    grooves = []
+    for k in range(-2, 3):
+        x = k * 0.32
+        pts = []
+        for t in range(8):
+            u = 0.6 + 0.33 * t / 7
+            c, a, bt, bb = st(u)
+            pts.append(Vector((x * (1 - 0.3 * t / 7), c.y, c.z - bb * 1.0 - 0.02)))
+        grooves.append(tube(pts, 0.035, n=4))
+    add("Belly", merge(loft(belly, n=16), *grooves), WHALE["white"], "Pearl")
+    # Fluke (Swing about the tail stock) and pectoral fins (Fin paddle).
+    stock = Vector((0, Y0 + 0.25, zof(0.02) + 0.1))
+    fluke_pts = [(0.0, 0.25), (0.8, 0.5), (1.7, 0.75), (2.5, 0.65), (2.85, 0.25), (2.4, 0.05), (1.6, -0.05), (0.8, -0.25), (0.0, -0.4),
+                 (-0.8, -0.25), (-1.6, -0.05), (-2.4, 0.05), (-2.85, 0.25), (-2.5, 0.65), (-1.7, 0.75), (-0.8, 0.5)]
+    fm = Matrix.Translation(stock + Vector((0, -0.85, 0.1))) @ Matrix.Rotation(-math.pi / 2, 4, "X") @ Matrix.Rotation(math.pi, 4, "Z") @ Matrix.Diagonal((1.3, 1.3, 1.3, 1))
+    add("Fluke", merge(flat_slab(fluke_pts, 0.2, fm, bevel=0.06, segs=1), tube([stock + Vector((0, 0.3, 0)), stock + Vector((0, -0.8, 0.1))], [0.28, 0.2], n=12)),
+        WHALE["indigo"], "Glass", motion={"RideMotion": "Swing", "MotionPivotWorld": stock + Vector((0, 0.4, 0))})
+    for side, tag in ((-1, "L"), (1, "R")):
+        u = 0.7
+        c, a, bt, bb = st(u)
+        root = c + Vector((side * a * 0.88, 0, -bb * 0.45))
+        fin_pts = [(0.0, 0.3), (0.9, 0.35), (1.8, 0.1), (2.2, -0.2), (1.6, -0.35), (0.7, -0.3), (0.0, -0.3)]
+        mm = Matrix.Translation(root) @ Matrix.Rotation(side * -0.55, 4, "Y") @ Matrix.Rotation(side * 0.35, 4, "Z") @ Matrix.Diagonal((side, 1, 1, 1)) @ Matrix.Rotation(math.pi / 2, 4, "X")
+        add("Fin_" + tag, flat_slab(fin_pts, 0.16, mm, bevel=0.05, segs=1), WHALE["indigo"], "Glass",
+            motion={"RideMotion": "Fin", "MotionPivotWorld": root, "FinAxis": "Z", "FinAngle": 0.22 * side, "FinHz": 0.6, "FinPhase": 0 if side < 0 else 0.5})
+    # Face: eyes with shine and a soft smile; blowhole ring.
+    head_u = 0.9
+    eyes, shine = [], []
+    for sx in (-1, 1):
+        c, a, bt, bb = st(head_u)
+        hit = tree.ray_cast(Vector((sx * 6, c.y, c.z + 0.1)), Vector((-sx, 0, 0)))
+        if hit[0] is not None:
+            p, n = hit[0], hit[1]
+            eyes.append(sphere(p + n * 0.03, 0.24, 14, 9, (0.5, 0.9, 1.2)))
+            shine.append(sphere(p + n * 0.13 + Vector((0, 0.07, 0.11)), 0.075, 8, 5))
+            shine.append(sphere(p + n * 0.12 + Vector((0, -0.06, -0.09)), 0.035, 6, 4))
+    add("Eyes", merge(*eyes), EYE, "Matte")
+    add("EyeShine", merge(*shine), SHINE, "Matte")
+    smile = []
+    for sx in (-1, 1):
+        pts = []
+        for t in range(7):
+            y = Y0 + L * (0.955 - 0.13 * t / 6)
+            hit = tree.ray_cast(Vector((sx * 6, y, zof(0.95) - 0.45 - 0.12 * math.sin(math.pi * t / 6))), Vector((-sx, 0, 0)))
+            if hit[0] is not None:
+                pts.append(hit[0] + hit[1] * 0.02)
+        if len(pts) > 2:
+            smile.append(tube(pts, 0.04, n=4))
+    bh = Vector((0, Y0 + L * 0.82, 0))
+    hit = tree.ray_cast(Vector((0, bh.y, 6)), Vector((0, 0, -1)))
+    if hit[0] is not None:
+        ring = [hit[0] + Vector((0.16 * math.cos(a), 0.1 * math.sin(a), 0.02)) for a in [TAU * i / 12 for i in range(12)]]
+        smile.append(tube(ring, 0.04, n=4, cap=False, closed=True))
+        spout = hit[0]
+    else:
+        spout = Vector((0, bh.y, 0))
+    add("SmileBlowhole", merge(*smile), EYE, "Matte")
+    # Saddle (seat top = origin) on the back with a glass backrest and a pearl rim.
+    sad = []
+    for u in spaced(10, 0.7):
+        y = -0.85 + 1.6 * u
+        k = rrect(u, 3)
+        sad.append((Vector((0, y, -0.12 + 0.05 * (1 - k))), X, Z, max(0.78 * k, 0.04), 0.12 * max(k, 0.3), 0.3 * max(k, 0.3), 3.0))
+    add("Saddle", loft(sad, n=16), WHALE["violet"], "Pearl")
+    back = []
+    for u in spaced(8, 0.7):
+        z = -0.1 + 1.45 * u
+        k = rrect(u, 4)
+        back.append((Vector((0, -1.0 - 0.18 * u, z)), X, Y, max(0.75 * k, 0.04), 0.07, 0.07, 3.0))
+    add("Backrest", loft(back, n=14), "#C9DBFF", "Glass", studio={"Transparency": 0.35})
+    rim = [Vector((0.82 * math.sin(a), -0.05 + 0.86 * math.cos(a), -0.13)) for a in [TAU * i / 24 for i in range(24)]]
+    add("SaddleRim", tube(rim, 0.05, n=5, cap=False, closed=True), PEARL, "Pearl")
+    return {
+        "Id": "starwhale", "Name": "Starwhale", "Contact": "Seat",
+        "Attachments": {
+            "RiderSeat": ("Saddle", (0, 0, 0)),
+            "Spout": ("SmileBlowhole", tuple(spout)),
+            "Wake": ("Fluke", (0, Y0 - 1.6, zc + 0.6)),
+            "Trail0": ("Fin_L", (-3.6, Y0 + L * 0.7, zc - 0.9)), "Trail1": ("Fin_R", (3.6, Y0 + L * 0.7, zc - 0.9)),
+            "Launch": ("Body", (0, 0, zc - 2.0)),
+            "StarRing": ("Body", (0, Y1 + 2.0, zc)),
+        },
+        "Notes": "GalaxySwirl spins (Y) about its own centre (2-arm spiral, 180-degree symmetric). StarPoints and ConstellationLines Pulse. "
+                 "Fluke = Swing about the tail stock; Fin_L/R paddle (Fin about the nose axis, half a cycle apart). Spout = blowhole emitter; "
+                 "StarRing = where the Mythic launch ring of stars forms ahead of the nose.",
+    }
+
+
+# ---------------------------------------------------------------------------------------------
 # Build driver (H's build() with our builders registered), icon render, summary
 # ---------------------------------------------------------------------------------------------
 

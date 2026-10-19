@@ -88,5 +88,41 @@
    "max_bounds_error": 0.0,
    "ok": true
   }
+ },
+ "sunwing": {
+  "Tris": 6606,
+  "Budget": 8000,
+  "Family": "Kneel",
+  "Extents": [
+   11.65968,
+   6.02249,
+   14.24233
+  ],
+  "Parts": 23,
+  "RoundTrip": {
+   "objects": 23,
+   "missing": [],
+   "tri_mismatch": [],
+   "max_bounds_error": 1.0000000000065512e-05,
+   "ok": true
+  }
+ },
+ "starwhale": {
+  "Tris": 7792,
+  "Budget": 9000,
+  "Family": "Sit",
+  "Extents": [
+   7.30727,
+   5.34461,
+   11.90562
+  ],
+  "Parts": 15,
+  "RoundTrip": {
+   "objects": 15,
+   "missing": [],
+   "tri_mismatch": [],
+   "max_bounds_error": 0.0,
+   "ok": true
+  }
  }
 }

@@ -1,0 +1,470 @@
+{
+ "Id": "starwhale",
+ "Name": "Starwhale",
+ "Contact": "Seat",
+ "Tris": 7792,
+ "Budget": 9000,
+ "Extents": [
+  7.30727,
+  5.34461,
+  11.90562
+ ],
+ "Parts": {
+  "Body": {
+   "Tris": 1736,
+   "Centre": [
+    0.0,
+    -2.07455,
+    0.8
+   ],
+   "Size": [
+    4.01682,
+    3.72888,
+    10.8
+   ],
+   "Color": "#2B2A7A",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "BodyCore": {
+   "Tris": 480,
+   "Centre": [
+    0.0,
+    -2.14171,
+    0.368
+   ],
+   "Size": [
+    2.8892,
+    2.68229,
+    7.72746
+   ],
+   "Color": "#7A5CFF",
+   "Material": "Glass",
+   "Transparency": 0.35,
+   "Reflectance": 0.05,
+   "Kind": "Core",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "GalaxySwirl": {
+   "Tris": 504,
+   "Centre": [
+    0.0,
+    -2.1,
+    -0.928
+   ],
+   "Size": [
+    2.79782,
+    0.54,
+    2.54134
+   ],
+   "Color": "#F2B8FF",
+   "Material": "Neon",
+   "Transparency": 0.1,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {
+    "RideMotion": "Spin",
+    "SpinAxis": "Y",
+    "SpinSpeed": 0.3
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "StarPoints": {
+   "Tris": 1440,
+   "Centre": [
+    0.11731,
+    -1.92442,
+    0.6069
+   ],
+   "Size": [
+    2.53698,
+    2.03033,
+    8.58544
+   ],
+   "Color": "#FFE9A8",
+   "Material": "Neon",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {
+    "RideMotion": "Pulse"
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "ConstellationLines": {
+   "Tris": 672,
+   "Centre": [
+    0.32412,
+    -0.75807,
+    0.6272
+   ],
+   "Size": [
+    1.52259,
+    1.19611,
+    8.26024
+   ],
+   "Color": "#FFE07A",
+   "Material": "Neon",
+   "Transparency": 0.35,
+   "Reflectance": 0.0,
+   "Kind": "Neon",
+   "Motion": {
+    "RideMotion": "Pulse"
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Belly": {
+   "Tris": 864,
+   "Centre": [
+    0.0,
+    -3.56372,
+    -1.09
+   ],
+   "Size": [
+    2.48764,
+    0.86178,
+    5.94
+   ],
+   "Color": "#F4F1FF",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.08,
+   "Kind": "Pearl",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Fluke": {
+   "Tris": 236,
+   "Centre": [
+    0.0,
+    -1.52218,
+    6.46514
+   ],
+   "Size": [
+    7.30728,
+    0.57802,
+    1.68097
+   ],
+   "Color": "#2B2A7A",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Swing",
+    "MotionPivot": [
+     0.0,
+     -0.01016,
+     -0.91514
+    ]
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Fin_L": {
+   "Tris": 80,
+   "Centre": [
+    -2.57129,
+    -2.46097,
+    -1.69485
+   ],
+   "Size": [
+    1.78455,
+    1.14914,
+    1.20431
+   ],
+   "Color": "#2B2A7A",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Fin",
+    "MotionPivot": [
+     0.80352,
+     -0.48611,
+     0.33485
+    ],
+    "FinAxis": "Z",
+    "FinAngle": -0.22,
+    "FinHz": 0.6,
+    "FinPhase": 0
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Fin_R": {
+   "Tris": 80,
+   "Centre": [
+    2.57129,
+    -2.46097,
+    -1.69485
+   ],
+   "Size": [
+    1.78455,
+    1.14914,
+    1.20431
+   ],
+   "Color": "#2B2A7A",
+   "Material": "Glass",
+   "Transparency": 0.3,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {
+    "RideMotion": "Fin",
+    "MotionPivot": [
+     -0.80352,
+     -0.48611,
+     0.33485
+    ],
+    "FinAxis": "Z",
+    "FinAngle": 0.22,
+    "FinHz": 0.6,
+    "FinPhase": 0.5
+   },
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Eyes": {
+   "Tris": 448,
+   "Centre": [
+    0.0,
+    -2.04666,
+    -3.52864
+   ],
+   "Size": [
+    3.68584,
+    0.576,
+    0.42543
+   ],
+   "Color": "#1B2440",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Matte",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "EyeShine": {
+   "Tris": 200,
+   "Centre": [
+    0.0,
+    -2.00783,
+    -3.57915
+   ],
+   "Size": [
+    3.7887,
+    0.31093,
+    0.23921
+   ],
+   "Color": "#FFFFFF",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Matte",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "SmileBlowhole": {
+   "Tris": 208,
+   "Centre": [
+    0.0,
+    -1.50359,
+    -3.33354
+   ],
+   "Size": [
+    3.81052,
+    2.52587,
+    1.63508
+   ],
+   "Color": "#1B2440",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.0,
+   "Kind": "Matte",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Saddle": {
+   "Tris": 352,
+   "Centre": [
+    0.0,
+    -0.21,
+    0.05
+   ],
+   "Size": [
+    1.56,
+    0.42,
+    1.6
+   ],
+   "Color": "#7A5CFF",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.08,
+   "Kind": "Pearl",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "Backrest": {
+   "Tris": 252,
+   "Centre": [
+    0.0,
+    0.625,
+    1.09
+   ],
+   "Size": [
+    1.5,
+    1.45,
+    0.31765
+   ],
+   "Color": "#C9DBFF",
+   "Material": "Glass",
+   "Transparency": 0.35,
+   "Reflectance": 0.1,
+   "Kind": "Glass",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  },
+  "SaddleRim": {
+   "Tris": 240,
+   "Centre": [
+    0.0,
+    -0.13,
+    0.05023
+   ],
+   "Size": [
+    1.74,
+    0.0951,
+    1.81953
+   ],
+   "Color": "#F4F1EA",
+   "Material": "SmoothPlastic",
+   "Transparency": 0.0,
+   "Reflectance": 0.08,
+   "Kind": "Pearl",
+   "Motion": {},
+   "loose_verts": 0,
+   "degenerate_faces": 0
+  }
+ },
+ "Attachments": {
+  "RiderSeat": {
+   "Part": "Saddle",
+   "World": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "Offset": [
+    0.0,
+    0.21,
+    -0.05
+   ]
+  },
+  "Spout": {
+   "Part": "SmileBlowhole",
+   "World": [
+    0.0,
+    -0.30066,
+    -2.656
+   ],
+   "Offset": [
+    0.0,
+    1.20294,
+    0.67754
+   ]
+  },
+  "Wake": {
+   "Part": "Fluke",
+   "World": [
+    0.0,
+    -1.55,
+    7.8
+   ],
+   "Offset": [
+    0.0,
+    -0.02782,
+    1.33486
+   ]
+  },
+  "Trail0": {
+   "Part": "Fin_L",
+   "World": [
+    -3.6,
+    -3.05,
+    -1.36
+   ],
+   "Offset": [
+    -1.02871,
+    -0.58903,
+    0.33485
+   ]
+  },
+  "Trail1": {
+   "Part": "Fin_R",
+   "World": [
+    3.6,
+    -3.05,
+    -1.36
+   ],
+   "Offset": [
+    1.02871,
+    -0.58903,
+    0.33485
+   ]
+  },
+  "Launch": {
+   "Part": "Body",
+   "World": [
+    0.0,
+    -4.15,
+    -0.0
+   ],
+   "Offset": [
+    0.0,
+    -2.07545,
+    -0.8
+   ]
+  },
+  "StarRing": {
+   "Part": "Body",
+   "World": [
+    0.0,
+    -2.15,
+    -6.6
+   ],
+   "Offset": [
+    0.0,
+    -0.07545,
+    -7.4
+   ]
+  }
+ },
+ "Axes": "Roblox (x, y, z) = Blender (x, z, -y); model pivot = origin = rider contact point",
+ "FbxRoundTrip": {
+  "objects": 15,
+  "missing": [],
+  "tri_mismatch": [],
+  "max_bounds_error": 0.0,
+  "ok": true
+ },
+ "Family": "Sit",
+ "Notes": "GalaxySwirl spins (Y) about its own centre (2-arm spiral, 180-degree symmetric). StarPoints and ConstellationLines Pulse. Fluke = Swing about the tail stock; Fin_L/R paddle (Fin about the nose axis, half a cycle apart). Spout = blowhole emitter; StarRing = where the Mythic launch ring of stars forms ahead of the nose.",
+ "Source": "tools/blender/build_flyers_launch.py (on build_flyers_v3.py)"
+}

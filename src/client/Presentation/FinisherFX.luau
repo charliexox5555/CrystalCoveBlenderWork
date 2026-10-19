@@ -13,10 +13,27 @@ local Kit = require(script.Parent.Finishers.Kit)
 local FX = {}
 
 local modules = {}
+local warned = {}
+local function warnOnce(key, message)
+	if not warned[key] then
+		warned[key] = true
+		warn("[FinisherFX] " .. message)
+	end
+end
+-- A show module that is missing or fails to load falls back to Prism Pop, so Play stays clean.
 local function module(name)
 	local m = modules[name]
 	if not m then
-		m = require(script.Parent.Finishers[name])
+		local source = script.Parent:FindFirstChild("Finishers") and script.Parent.Finishers:FindFirstChild(name)
+		local ok, result = pcall(function()
+			return require(source)
+		end)
+		if ok and type(result) == "table" then
+			m = result
+		else
+			warnOnce(name, "show " .. name .. " unavailable: " .. tostring(result))
+			m = if name ~= "PrismPop" then module("PrismPop") else { build = function() end, step = function() end }
+		end
 		modules[name] = m
 	end
 	return m
@@ -69,7 +86,13 @@ end
 
 local function frame(rig, show, t)
 	rig:BeginFrame()
-	module(show.Module).step(rig, t, show)
+	local ok, err = pcall(module(show.Module).step, rig, t, show)
+	if not ok then
+		-- A broken frame ends the show quietly instead of erroring every Heartbeat.
+		warnOnce(show.Module .. ":step", tostring(err))
+		rig.Broken = true
+		return
+	end
 	local moving, cfs = rig.Moving, rig.MovingCF
 	if #moving > 0 then
 		local world = rig.World
@@ -98,7 +121,11 @@ local function build(id, show, lowDetail)
 	rig.Key = id .. (if lowDetail then ":low" else ":full")
 	-- Placeholder view until the first play sets the real one.
 	setView(rig, Vector3.zero, CFrame.identity)
-	module(show.Module).build(rig, show)
+	local ok, err = pcall(module(show.Module).build, rig, show)
+	if not ok then
+		warnOnce(show.Module .. ":build", tostring(err))
+		rig.Broken = true
+	end
 	rig.Root.Destroying:Once(function()
 		rig.Dead = true
 		if rig.Connection then
@@ -129,6 +156,10 @@ local function release(rig)
 	end
 	rig:Reset()
 	if rig.Dead then
+		return
+	end
+	if rig.Broken then
+		rig.Root:Destroy()
 		return
 	end
 	local list = pools[rig.Key]
@@ -175,7 +206,7 @@ function FX.emit(parent, id, origin, lowDetail, orientation, options)
 			return
 		end
 		local t = os.clock() - start
-		if t >= show.Duration then
+		if t >= show.Duration or rig.Broken then
 			release(rig)
 			return
 		end
@@ -204,7 +235,11 @@ function FX.still(world, id, orientation)
 	end
 	local rig = Kit.rig(id, false, true)
 	rig.Show = show
-	module(show.Module).build(rig, show)
+	local ok = pcall(module(show.Module).build, rig, show)
+	if not ok then
+		rig.Root:Destroy()
+		return false
+	end
 	setView(rig, Vector3.zero, orientation or CFrame.lookAt(Vector3.new(4, 2, 10), Vector3.zero))
 	rig.Socket.CFrame = CFrame.new()
 	rig:Freeze()

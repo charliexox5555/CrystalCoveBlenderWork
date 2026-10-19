@@ -45,7 +45,7 @@ local Topbar = {
 					Screen = "PlaytimeRewardsScreen",
 				},
 				{ Id = "Codes", Label = "Codes", Image = "topbar/codes", Screen = "CodesScreen" },
-				{ Id = "Quests", Label = "Quests", Image = "topbar/quests", Screen = "QuestsScreen" },
+				-- Quests (topbar/quests, QuestsScreen) is held back until its design is decided.
 			},
 		},
 	} :: { Button },

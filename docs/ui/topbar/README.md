@@ -6,7 +6,7 @@ Glass Clash's own buttons live in Roblox's top bar, left side after the chat but
 | Button | Icon | Opens |
 |---|---|---|
 | Settings (caption "Settings") | gear | `SettingsScreen`; the button stays highlighted while it is open, a second click closes it |
-| Gift (caption "Rewards") | red gift | a Roblox-style dropdown: **Daily Rewards** → `DailyRewardsScreen`, **Playtime Rewards** → `PlaytimeRewardsScreen`, **Codes** → `CodesScreen`, **Quests** → `QuestsScreen` |
+| Gift (caption "Rewards") | red gift | a Roblox-style dropdown: **Daily Rewards** → `DailyRewardsScreen`, **Playtime Rewards** → `PlaytimeRewardsScreen`, **Codes** → `CodesScreen` (the Quests row is held back until its design is decided; `QuestsScreen` stays in StarterGui) |
 
 - One menu at a time: a top bar screen closes the Shop/Inventory/Rewards windows and the reverse; the lobby HUD hides
   while one is open, like the other menus.

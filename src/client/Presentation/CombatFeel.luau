@@ -360,7 +360,7 @@ function Feel:Comeback(e, now)
 			local f = scene.Fighters[leader]
 			local color = Color3.fromHex(cfg.Color)
 			self:Burst(cfg.Burst, f.Body.Position)
-			if view.Hud and view.Hud.Popup then
+			if view.Hud and view.Hud.Popup and cfg.Text ~= "" then
 				view.Hud:Popup(cfg.Text, f.Body.Position + Vector3.yAxis * 2.6, color, 0, "Comeback")
 			end
 			self:Sounds(cfg.Sounds, f.Body)
@@ -492,7 +492,7 @@ function Feel:Cast(e, now)
 			self:Shake(cfg.Trauma)
 			self:Punch(cfg.Fov)
 			self:Flash(e.Side, 0.12)
-			if view.Hud and view.Hud.Popup then
+			if view.Hud and view.Hud.Popup and cfg.Text ~= "" then
 				view.Hud:Popup(cfg.Text, f.Body.Position + Vector3.yAxis * 2.4, color, 0, "ManualCast")
 			end
 			if view.Hud and view.Hud.Edge then

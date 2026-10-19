@@ -63,6 +63,20 @@ function Motion.new(model, base, options)
 	if options.Launch then
 		self:Launch(options.Launch, true)
 	end
+	-- Per-ride extras module (attribute RideFX = module name under Presentation, or CarriageFX = true):
+	-- attach(model, options) -> handle with Offset(time), Step(time, phase, near), Land(parent), Destroy().
+	local fxName = model:GetAttribute("RideFX") or (model:GetAttribute("CarriageFX") and "CarriageFX")
+	local fxModule = type(fxName) == "string" and script.Parent:FindFirstChild(fxName)
+	if fxModule then
+		local ok, fx = pcall(function()
+			return require(fxModule).attach(model, { Effects = options.Effects, TakeOff = options.Launch ~= nil })
+		end)
+		if ok then
+			self.FX = fx
+		else
+			warn("RideMotion: " .. fxName .. " attach failed: " .. tostring(fx))
+		end
+	end
 	return self
 end
 
@@ -150,6 +164,9 @@ function Motion:Step(time, base, near)
 	local pose = drifted
 		* CFrame.new(0, bob + lift, 0)
 		* CFrame.Angles(math.cos(phase) * p.Nod * calm + self.Pitch + launchPitch, 0, wave * p.Bank * calm + self.Bank)
+	if self.FX then
+		pose *= self.FX:Offset(time)
+	end
 	self.Pose = pose
 
 	if self.EffectsOn ~= near then
@@ -241,10 +258,22 @@ function Motion:Step(time, base, near)
 			part.CFrame = if spin then cf * axisAngle(part:GetAttribute("SpinAxis"), time * spin) else cf
 		end
 	end
+	if self.FX then
+		self.FX:Step(time, phase, near)
+	end
 	return pose
 end
 
-function Motion:Destroy()
+-- land: a parent for the ride's landing flourish (rides leaving while visible); nil = silent cleanup.
+function Motion:Destroy(land)
+	if self.FX then
+		if land then
+			self.FX:Land(land)
+		else
+			self.FX:Destroy()
+		end
+		self.FX = nil
+	end
 	if self.Sound then
 		self.Sound:Destroy()
 		self.Sound = nil

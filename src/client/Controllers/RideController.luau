@@ -14,7 +14,8 @@ function Controller:Drop(ride, entry)
 	if entry.Pose then
 		entry.Pose:Destroy()
 	end
-	entry.Motion:Destroy()
+	-- Rides that were on screen land (per-ride flourish, e.g. the carriage); far ones just clean up.
+	entry.Motion:Destroy(if entry.Motion.EffectsOn then workspace else nil)
 	self.Rides[ride] = nil
 end
 function Controller:Detach(folder)

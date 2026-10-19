@@ -307,7 +307,7 @@ def build_skyboard():
     for u in us:
         y, hw, zc, bt, bb = station(u)
         frames.append((Vector((0, y, zc)), X, Z, hw, bt, bb, 2.6))
-    deck = add("Deck", loft(frames, n=24), SKY["aqua"], "Glass")
+    deck = add("Deck", loft(frames, n=20), SKY["aqua"], "Glass")
 
     core = []
     for u in spaced(14, 0.5)[1:-1]:
@@ -318,7 +318,7 @@ def build_skyboard():
 
     # Pearl rail around the widest line of the deck.
     pts = []
-    for u in spaced(30, 0.6)[:-1]:
+    for u in spaced(24, 0.6)[:-1]:
         y, hw, zc, bt, bb = station(u)
         pts.append(Vector((hw + 0.01, y, zc)))
     loop = pts + [Vector((0, Y1 + 0.02, station(1.0)[2]))] + [Vector((-p.x, p.y, p.z)) for p in reversed(pts)]
@@ -469,7 +469,7 @@ def build_cloud_cushion():
         # footrest
         ((0, 1.62, -0.98), 0.46, one), ((0.42, 1.5, -1.02), 0.38, one), ((-0.42, 1.5, -1.02), 0.38, one),
     ]
-    add("CloudBody", voxel_union("CloudBody", balls, target_tris=2300), CLOUD["cloud"], "Frost")
+    add("CloudBody", voxel_union("CloudBody", balls, target_tris=2050), CLOUD["cloud"], "Frost")
 
     puffs = [("Puff_C", (0, -0.25, -1.82), 0.46, 0.0), ("Puff_L", (-0.82, -0.45, -1.6), 0.38, 1.3),
              ("Puff_R", (0.82, -0.45, -1.6), 0.38, 2.5), ("Puff_B", (0, -1.12, -1.62), 0.4, 3.6),
@@ -714,7 +714,7 @@ def build_prism_ray():
 
     # Cephalic fins: two little curled lobes at the front corners.
     for side, tag in ((-1, "L"), (1, "R")):
-        pts = [Vector((side * (1.0 - 0.42 * t ** 1.4), 2.45 + 0.62 * t, -0.36 - 0.26 * t ** 2)) for t in [i / 7 for i in range(8)]]
+        pts = [Vector((side * (1.05 - 0.38 * t ** 1.3), 2.5 + 0.55 * t, -0.34 - 0.12 * t ** 2)) for t in [i / 7 for i in range(8)]]
         r = [0.24 * (1 - 0.6 * i / 7) for i in range(8)]
         fr = [(p, u, v, a, bt * 0.4, bb * 0.4, 2.0) for (p, u, v, a, bt, bb) in frames_along(pts, [(x, x, x) for x in r], Vector((0, 0, 1)))]
         add("HeadFin_" + tag, loft(fr, n=8), RAY["lilac"], "Glass",
@@ -732,15 +732,16 @@ def build_prism_ray():
 
     # Saddle with a gold rim.
     sad = []
-    for u in spaced(10, 0.7):
+    for u in spaced(10, 0.8):
         y = -0.95 + 2.0 * u
-        k = math.sin(math.pi * u) ** 0.35
-        sad.append((Vector((0, y, -0.07)), X, Z, max(0.82 * k, 0.03), 0.07, 0.06, 3.0))
+        k = rrect(u, 3.5)
+        sad.append((Vector((0, y, -0.07)), X, Z, max(0.8 * k, 0.03), 0.07, 0.06, 3.4))
     add("Saddle", loft(sad, n=18), PEARL, "Pearl")
     rim = []
     for i in range(28):
         a = TAU * i / 28
-        rim.append(Vector((0.86 * math.cos(a), 0.05 + 1.04 * math.sin(a), -0.09)))
+        sx, sy = superellipse(a, 3.4)
+        rim.append(Vector((0.84 * sx, 0.05 + 1.03 * sy, -0.09)))
     add("SaddleRim", tube(rim, 0.045, n=6, cap=False, closed=True), GOLD, "Gold")
 
     # Face: eyes with shines, blush, brow gem; placed on the body's top surface.
@@ -757,7 +758,7 @@ def build_prism_ray():
     add("EyeShine", merge(*shines), WHITE, "Neon")
     add("Blush", merge(*blush), RAY["blush"], "Matte")
     gz = surface_z(body_obj, 0, 2.38) or -0.2
-    add("BrowGem", bevel_bm(lathe([(0.001, -0.04), (0.17, 0.02), (0.11, 0.12), (0.001, 0.16)], (0, 2.38, gz - 0.03), (0, 0.25, 1), segs=6), 0.015, 20),
+    add("BrowGem", lathe([(0.001, -0.04), (0.17, 0.02), (0.11, 0.12), (0.001, 0.16)], (0, 2.38, gz - 0.03), (0, 0.25, 1), segs=6),
         RAY["mint"], "Neon", sharp_deg=30)
 
     return {
@@ -780,7 +781,7 @@ BUILDERS = {
     "rocket_skiff": build_rocket_skiff,
     "prism_ray": build_prism_ray,
 }
-BUDGET = {"skyboard": 5000, "cloud_cushion": 5000, "rocket_skiff": 7500, "prism_ray": 7500}
+BUDGET = {"skyboard": 5500, "cloud_cushion": 5500, "rocket_skiff": 7500, "prism_ray": 7500}
 BUILD_SCALE = {"rocket_skiff": 1.2}
 
 

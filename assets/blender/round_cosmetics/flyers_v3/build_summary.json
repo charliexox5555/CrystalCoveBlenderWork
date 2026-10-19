@@ -1,11 +1,11 @@
 {
  "skyboard": {
-  "Tris": 5574,
+  "Tris": 5214,
   "Budget": 5000,
   "Extents": [
-   2.88365,
-   1.21816,
-   7.80499
+   2.88106,
+   1.21825,
+   7.80402
   ],
   "Parts": 17,
   "RoundTrip": {
@@ -18,12 +18,12 @@
   "Problems": {}
  },
  "cloud_cushion": {
-  "Tris": 5280,
+  "Tris": 5030,
   "Budget": 5000,
   "Extents": [
    3.62166,
-   3.54458,
-   6.66682
+   3.54531,
+   6.66311
   ],
   "Parts": 11,
   "RoundTrip": {
@@ -54,12 +54,12 @@
   "Problems": {}
  },
  "prism_ray": {
-  "Tris": 4200,
+  "Tris": 4104,
   "Budget": 7500,
   "Extents": [
    10.6,
    1.39973,
-   10.10033
+   10.08219
   ],
   "Parts": 16,
   "RoundTrip": {
@@ -69,11 +69,6 @@
    "max_bounds_error": 1.0000000000010001e-05,
    "ok": true
   },
-  "Problems": {
-   "BrowGem": [
-    0,
-    12
-   ]
-  }
+  "Problems": {}
  }
 }

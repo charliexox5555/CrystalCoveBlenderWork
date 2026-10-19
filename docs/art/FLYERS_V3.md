@@ -47,7 +47,7 @@ Bloxburg vehicles) and outside it (Fortnite gliders and hoverboards, Sky's capes
 - **Materials (set in Studio; Blender materials are previews):** hero shell `Glass`, transparency
   0.25–0.35, Reflectance 0.1; inner core `Glass`/`SmoothPlastic` darker tint; trim `SmoothPlastic`
   pearl or gold; lights `Neon`. Colours from `Config/RoundCosmetics`.
-- **Budgets:** Common and Uncommon ≤ 5,000 tris, Rare and Epic ≤ 7,500 (the Legendary carriage is
+- **Budgets:** Common and Uncommon ≤ 5,500 tris, Rare and Epic ≤ 7,500 (the Legendary carriage is
   7.9k). Each mesh stays far below Roblox's per-mesh limit. Each moving part is its own mesh with its pivot recorded in `manifest.json`.
 - **Effects** are tagged `RideEmitter` (on near the camera only). Launch bursts are tagged
   `RideLaunch` with an `EmitCount`. Each flyer has one `RideLoop` sound, 3D, volume ≤ 0.12, rolloff

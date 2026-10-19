@@ -9,9 +9,12 @@ Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DES
 - [x] **CL:** optional CAST on automatic powers (decision 85): Ready hold, CastPower remote, bot cast brain, CAST button with twist-aware good-moment hint, verified in a live Studio bot match.
 - [x] **CL:** rarity edge ≈ 55% (HP-only, Mythic +3%, +0.6%/star); real-swing balance matrix (`tools/release_matrix.sh`); 37 glassies (24 + Hollowlight + 12 launch) retuned on the real swing, 34/37 in 45–55%.
 - [x] **CL:** launch power rules: zones (pendulum-predicted), drain, brew cycle, riposte, pierce, aimed dash, horizontal sweep, stored timing, rebirth.
-- [ ] **CL/U:** creator adds Assets read/write to the Open Cloud key (uploads 403); then upload + install v4 glassies, 12 launch glassies, flyers v3, finisher meshes, Hollowlight v5; add the 12 to ReleaseRoster and the Kiln.
-- [ ] **B/E/G/H/I:** combat feel, power VFX + sounds, premium finishers, flyers v3, Hollowlight premium: Studio verification and reports (sessions in progress).
-- [ ] **U:** save/publish the place (overnight Studio installs live only in the open place).
+- [x] **CL/U:** Open Cloud key fixed; uploaded + installed 24 v4 glassies, 12 launch glassies (now in ReleaseRoster and the Kiln), flyers v3, finisher meshes, Hollowlight v5.
+- [x] **B/E/G/H/I:** combat feel, power VFX + sounds, premium finishers, flyers v3, Hollowlight premium: verified in Studio, reports in docs/testing/.
+- [x] **CL/D/F/G/H:** Cosmetics V2 (decision 94): 7 launch finishers + 7 launch flyers installed; 60 riding Animation assets (6 families × 5 clips × R15/R6); no starter cosmetics (decision 95); UI text fit pass (J).
+- [ ] **U:** creator sets Robux prices for Epic Standard / Legendary / Mythic flyers and Mythic finishers (until then they're crate-only).
+- [ ] **U:** real-phone checks (no device emulation through MCP), listening pass on new sounds.
+- [ ] **U:** save the place again (flyer installs after the last save), then publish.
 
 - [x] **CL:** flyers v3 (workstream H, decision 93): four premium Blender flyers built and FBX-validated, shared `RideMotion` (float, drift, bank, launch, loop sound) live, trails/particles/lights on the current meshes. Uploaded and installed (A's upload, H's installer), rider poses fitted, verified in rounds, lobby display and shop portraits. Creator feel/phone/sound review remains. [Report](testing/flyers_v3/REPORT.md)
 

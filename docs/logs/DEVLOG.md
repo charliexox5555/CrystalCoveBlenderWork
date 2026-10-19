@@ -214,6 +214,14 @@ Next:
 Problems / questions for the user:
 - The Studio MCP can't switch Device Emulator presets, so the phone preset check is still open.
 
+## 2026-10-19 (afternoon) — Claude — A: everything imported, launch content complete
+Done:
+- Open Cloud key fixed by the creator; all art uploaded (72 glassy items, flyers, finishers, Hollowlight v5, 60 riding animations) and installed; 12 launch glassies added to ReleaseRoster and the Kiln (36 + Hollowlight; Kiln pool 33); v4 crack paths.
+- Decision 94 (24 + 24 cosmetics, ~12 each at launch): Studio now has 12 standard finishers and 11 standard flyers + Moonlantern. Decision 95: no starter cosmetics, basic finisher = plain glass break, Mythic cosmetics Marble-only, unpriced rarities out of the daily store.
+- Play-server RunAll 164/164; launch powers verified live; UI text fit pass and lobby/fight hint overlap fixed.
+Next:
+- Creator: save + publish, prices for new top-rarity cosmetics, phone checks and a listening pass. Then the Saturday drops (W1 Oct 31).
+
 ## 2026-10-19 (morning) — Claude — A: balance finished, CAST hardened, coordination
 Done:
 - Real-swing balance for all 37 glassies (24 + Hollowlight + 12 launch): 37/37 at or inside 45–55% (report docs/testing/BALANCE_RELEASE.md). Timed CAST vs auto 59.5%, press-at-once vs auto 52.3%, 5 stars vs 0 54.8% (Cast.AutoSeconds 1.6, +0.6% HP per star).

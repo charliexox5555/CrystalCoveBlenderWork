@@ -1,0 +1,355 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "Surf_Idle_R15": {
+   "AssetId": "131974159115214",
+   "Path": "assets/animations/rider/Surf_Idle_R15.rbxm",
+   "Sha256": "a715ed8f98e47403d2240040af3c320fb5c5178cdb5d265b786e122941e5469d",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:18:54"
+  },
+  "HandleSit_Idle_R15": {
+   "AssetId": "116463534970302",
+   "Path": "assets/animations/rider/HandleSit_Idle_R15.rbxm",
+   "Sha256": "a33d3291824a55e4c588856420060ab574d3d92a51ac7dabfc366a0fc8fb40ef",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:19:02"
+  },
+  "HandleSit_Idle_R6": {
+   "AssetId": "81131432052355",
+   "Path": "assets/animations/rider/HandleSit_Idle_R6.rbxm",
+   "Sha256": "a413fae2fcc9b13a5370dad0f90995d23399950e9c93a956c134a0f27ce1f308",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:19:06"
+  },
+  "HandleSit_LeanLeft_R15": {
+   "AssetId": "75118647512728",
+   "Path": "assets/animations/rider/HandleSit_LeanLeft_R15.rbxm",
+   "Sha256": "32467f01a69853bd9cf14e2baf055e9ae81300fbbd2ba29734e2d7b0a1a65db1",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:19:10"
+  },
+  "HandleSit_LeanLeft_R6": {
+   "AssetId": "74415688345169",
+   "Path": "assets/animations/rider/HandleSit_LeanLeft_R6.rbxm",
+   "Sha256": "5626fa9d795e539a3f88f71fa5caa87c7479e438d7a5834961dfad23355af333",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:19:17"
+  },
+  "HandleSit_LeanRight_R15": {
+   "AssetId": "89581119501473",
+   "Path": "assets/animations/rider/HandleSit_LeanRight_R15.rbxm",
+   "Sha256": "4ff470fd1091c4b0a21e0213f3cdfd4afe419874fa0bfb4bb961c732c4f9b81d",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:19:21"
+  },
+  "HandleSit_LeanRight_R6": {
+   "AssetId": "132647811045146",
+   "Path": "assets/animations/rider/HandleSit_LeanRight_R6.rbxm",
+   "Sha256": "a78f6a1f49f8ffeee2198512295930e6233c8438f1cc8bed98d2d9000e9b857e",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:19:24"
+  },
+  "HandleSit_Launch_R15": {
+   "AssetId": "108307649271558",
+   "Path": "assets/animations/rider/HandleSit_Launch_R15.rbxm",
+   "Sha256": "25e087516598f6dc82faf15fcdfa39d7dfa3e34770caca1511b117ac09b2623d",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:19:27"
+  },
+  "HandleSit_Launch_R6": {
+   "AssetId": "127170852511337",
+   "Path": "assets/animations/rider/HandleSit_Launch_R6.rbxm",
+   "Sha256": "44334bd69f9464c8e92c339f14cf27789b63f40d5468115797a76af594fdddd7",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:19:33"
+  },
+  "HandleSit_Land_R15": {
+   "AssetId": "129236584753125",
+   "Path": "assets/animations/rider/HandleSit_Land_R15.rbxm",
+   "Sha256": "92d15a55f64e6932d93a17b1b0425a232be0883b6990e481b5344cd5bf21a303",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:19:38"
+  },
+  "HandleSit_Land_R6": {
+   "AssetId": "123605810418401",
+   "Path": "assets/animations/rider/HandleSit_Land_R6.rbxm",
+   "Sha256": "a363886a20cfbe909045bc16e634fca105ef224edca3f7d9360fbca851d6dc3c",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:19:46"
+  },
+  "HandleStand_Idle_R15": {
+   "AssetId": "75105075466978",
+   "Path": "assets/animations/rider/HandleStand_Idle_R15.rbxm",
+   "Sha256": "81dcbfba07dc8ec818df73d80f643f918f2a650012305bd0da3f62055590554d",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:19:50"
+  },
+  "HandleStand_Idle_R6": {
+   "AssetId": "102210952721526",
+   "Path": "assets/animations/rider/HandleStand_Idle_R6.rbxm",
+   "Sha256": "71de41583a50932c7dac657aaf4f90e03428953735f15aa9eccc2e6ef76b7939",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:19:53"
+  },
+  "HandleStand_LeanLeft_R15": {
+   "AssetId": "80179386074804",
+   "Path": "assets/animations/rider/HandleStand_LeanLeft_R15.rbxm",
+   "Sha256": "3061d44e176cb3cd7d62be7554d1157ebb4407cec7685d83ff89148444a29009",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:19:58"
+  },
+  "HandleStand_LeanLeft_R6": {
+   "AssetId": "123954039977166",
+   "Path": "assets/animations/rider/HandleStand_LeanLeft_R6.rbxm",
+   "Sha256": "aaf6cff71b14566fe1afdb7648e041188ca208045c43a2d8ab56c6097e183ff6",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:02"
+  },
+  "HandleStand_LeanRight_R15": {
+   "AssetId": "93849259711686",
+   "Path": "assets/animations/rider/HandleStand_LeanRight_R15.rbxm",
+   "Sha256": "deca1b0b34f793da909f13a9a714b6209eeea95024eb9c66904a98595d3e21ff",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:05"
+  },
+  "HandleStand_LeanRight_R6": {
+   "AssetId": "97596113308347",
+   "Path": "assets/animations/rider/HandleStand_LeanRight_R6.rbxm",
+   "Sha256": "a101641022acc72d7004a7349f9084179881f906ba0a3b43483a4279018d7122",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:08"
+  },
+  "HandleStand_Launch_R15": {
+   "AssetId": "103692296156844",
+   "Path": "assets/animations/rider/HandleStand_Launch_R15.rbxm",
+   "Sha256": "c90a791eb4af21f6b54a102765db3776ec2ea1eaeecc2e4c536f0415b0cf5173",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:11"
+  },
+  "HandleStand_Launch_R6": {
+   "AssetId": "88334503541283",
+   "Path": "assets/animations/rider/HandleStand_Launch_R6.rbxm",
+   "Sha256": "a9aa0ea59fa852f4140b7a66c1dd775b8eeb07bd3a18498f180b80fefa03b4f8",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:14"
+  },
+  "HandleStand_Land_R15": {
+   "AssetId": "74608047871821",
+   "Path": "assets/animations/rider/HandleStand_Land_R15.rbxm",
+   "Sha256": "4b420ae2cd8d04e1e1ea5879e6498c81f65243a6fe3bf42950f0b7fc28786a7a",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:17"
+  },
+  "HandleStand_Land_R6": {
+   "AssetId": "92051064987024",
+   "Path": "assets/animations/rider/HandleStand_Land_R6.rbxm",
+   "Sha256": "c48b0a3111112fbf90fe9aa856f36494e25f54802e532dd3f45a323328fbb15e",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:20"
+  },
+  "Kneel_Idle_R15": {
+   "AssetId": "85200387933314",
+   "Path": "assets/animations/rider/Kneel_Idle_R15.rbxm",
+   "Sha256": "450d3b3cedd9ec65b05f10ded65e511365e941544a3fee704a506de5c56fcf52",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:23"
+  },
+  "Kneel_Idle_R6": {
+   "AssetId": "114212037688776",
+   "Path": "assets/animations/rider/Kneel_Idle_R6.rbxm",
+   "Sha256": "c34e9fab1134400b67ed5f103b7c65177f6e4d8589da9087c431ee89a50f0c5f",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:26"
+  },
+  "Kneel_LeanLeft_R15": {
+   "AssetId": "117498931769987",
+   "Path": "assets/animations/rider/Kneel_LeanLeft_R15.rbxm",
+   "Sha256": "1ecdf558caa5551038eb2fdc47aea4f67e6f8be255d05d387e3e262b866e9909",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:29"
+  },
+  "Kneel_LeanLeft_R6": {
+   "AssetId": "86215737382567",
+   "Path": "assets/animations/rider/Kneel_LeanLeft_R6.rbxm",
+   "Sha256": "686665019112ff6da1c515920e7c254e06f3edb174f82c9193be66888d36210b",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:32"
+  },
+  "Kneel_LeanRight_R15": {
+   "AssetId": "135348027464833",
+   "Path": "assets/animations/rider/Kneel_LeanRight_R15.rbxm",
+   "Sha256": "b2d58925d1871ce947058d7a9418f75a85eeb449f6bb63c54bd54ca01f420304",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:35"
+  },
+  "Kneel_LeanRight_R6": {
+   "AssetId": "106811376154903",
+   "Path": "assets/animations/rider/Kneel_LeanRight_R6.rbxm",
+   "Sha256": "49b2619114186da7851001bec10b0f693bef026e76c67b1b1f1d77d624f3c45a",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:39"
+  },
+  "Kneel_Launch_R15": {
+   "AssetId": "119151216002207",
+   "Path": "assets/animations/rider/Kneel_Launch_R15.rbxm",
+   "Sha256": "7abbbac8001685406de10423577f9f6fa7609191901b92eb40a28a0b7bae33de",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:42"
+  },
+  "Kneel_Launch_R6": {
+   "AssetId": "98654346617546",
+   "Path": "assets/animations/rider/Kneel_Launch_R6.rbxm",
+   "Sha256": "9882027e1d59c22ed2606bf5ecdf4b2c5709c44a8a177b2a4030012b41b0ff68",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:45"
+  },
+  "Kneel_Land_R15": {
+   "AssetId": "96217824421455",
+   "Path": "assets/animations/rider/Kneel_Land_R15.rbxm",
+   "Sha256": "0c8ff107f548699cc6d98d2d40c29546a29174c1e5aeb53860875a21e8eccbf2",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:49"
+  },
+  "Kneel_Land_R6": {
+   "AssetId": "91800315979446",
+   "Path": "assets/animations/rider/Kneel_Land_R6.rbxm",
+   "Sha256": "ea206f6249ee8b8fb0755f125d7e22647004f426a6bc4f657c2e89adff235659",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:53"
+  },
+  "Sit_Idle_R15": {
+   "AssetId": "87975438939379",
+   "Path": "assets/animations/rider/Sit_Idle_R15.rbxm",
+   "Sha256": "54969da57cb0c94e7998cfdb0c713d933b654fb6fd8b176e5f2e7f6ba4b78741",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:56"
+  },
+  "Sit_Idle_R6": {
+   "AssetId": "130872617269161",
+   "Path": "assets/animations/rider/Sit_Idle_R6.rbxm",
+   "Sha256": "98866b210836676c73a7db860f996a0e0ce835ccea721e9b213067751c2555ab",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:20:59"
+  },
+  "Sit_LeanLeft_R15": {
+   "AssetId": "104505947950474",
+   "Path": "assets/animations/rider/Sit_LeanLeft_R15.rbxm",
+   "Sha256": "9fe0bd9c8bd903c8126282bfa7f1ca67e99e6d1f4576b9411dc85396141513ee",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:21:03"
+  },
+  "Sit_LeanLeft_R6": {
+   "AssetId": "91027322347019",
+   "Path": "assets/animations/rider/Sit_LeanLeft_R6.rbxm",
+   "Sha256": "7f8c522447bfc23c6302d79f97f1dafded3f6827cf2392bf081086eb544acb57",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:21:06"
+  },
+  "Sit_LeanRight_R15": {
+   "AssetId": "138163421499357",
+   "Path": "assets/animations/rider/Sit_LeanRight_R15.rbxm",
+   "Sha256": "32ffd4fb6ebddfaeb34cee5e6e4ecf297a3ecf27f8a96dc85feaeb96e86f0bc2",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:21:09"
+  },
+  "Sit_LeanRight_R6": {
+   "AssetId": "76405921719794",
+   "Path": "assets/animations/rider/Sit_LeanRight_R6.rbxm",
+   "Sha256": "f1ac25be49720d2932802b6854e854055b90d08dbdabc3bd097dfa06ea7942a1",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:21:12"
+  },
+  "Sit_Launch_R15": {
+   "AssetId": "131946276035619",
+   "Path": "assets/animations/rider/Sit_Launch_R15.rbxm",
+   "Sha256": "76cb6cb8ddc4eabb6803c8ff37438605c0002b1e1a0ef23e96e6c776079a3088",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:21:15"
+  },
+  "Sit_Launch_R6": {
+   "AssetId": "131473690975463",
+   "Path": "assets/animations/rider/Sit_Launch_R6.rbxm",
+   "Sha256": "55ab701b2b9fd96b0863aaef27addd20fff0a8f093f21d3e3f7a806bcac03c5a",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:21:18"
+  },
+  "Sit_Land_R15": {
+   "AssetId": "135332403647717",
+   "Path": "assets/animations/rider/Sit_Land_R15.rbxm",
+   "Sha256": "378a17a2ff4dca7d100523bd6c8df0e1cba5e9dd15c8b918c8a910b7ebb15654",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:21:22"
+  },
+  "Sit_Land_R6": {
+   "AssetId": "92643804232249",
+   "Path": "assets/animations/rider/Sit_Land_R6.rbxm",
+   "Sha256": "46df35c0ef1c9ca9e1167d454921473e52cafd77093646cd8c7426f76072044f",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:21:25"
+  },
+  "Surf_Idle_R6": {
+   "AssetId": "99567348879394",
+   "Path": "assets/animations/rider/Surf_Idle_R6.rbxm",
+   "Sha256": "1a33bcf7f4ec80adc7f3b5a471c38806a7916bc380e713ed6bc9791327d88b16",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:21:28"
+  },
+  "Surf_LeanLeft_R15": {
+   "AssetId": "138646521851380",
+   "Path": "assets/animations/rider/Surf_LeanLeft_R15.rbxm",
+   "Sha256": "ecf1a7e926aa92fc38ecd81c9b5044900c52fd28a9933829c35b9c1cd34621a8",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:21:31"
+  },
+  "Surf_LeanLeft_R6": {
+   "AssetId": "134571322506689",
+   "Path": "assets/animations/rider/Surf_LeanLeft_R6.rbxm",
+   "Sha256": "dfbd88b2da474d8b5e64588b531a59b1138d9eac7e41b5b24920a7702f156390",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:21:36"
+  },
+  "Surf_LeanRight_R15": {
+   "AssetId": "88695921499825",
+   "Path": "assets/animations/rider/Surf_LeanRight_R15.rbxm",
+   "Sha256": "08c0ddcee3a1329e9ebdfe20addb1a3d01ea22f3316eac92f6e1b0510ac9d9a7",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:21:39"
+  },
+  "Surf_LeanRight_R6": {
+   "AssetId": "85031785797787",
+   "Path": "assets/animations/rider/Surf_LeanRight_R6.rbxm",
+   "Sha256": "7403ed8d0b3e792decd6ed5c88582d90fcaf04c68e31a937bf9539dd114149ca",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:21:43"
+  },
+  "Surf_Launch_R15": {
+   "AssetId": "85862772762265",
+   "Path": "assets/animations/rider/Surf_Launch_R15.rbxm",
+   "Sha256": "c3be9452ebbd56ca5fc541ceaedc3ff1ed3adcdda522bcf3d7cfeb40d49392e7",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:21:46"
+  },
+  "Surf_Launch_R6": {
+   "AssetId": "132674781013604",
+   "Path": "assets/animations/rider/Surf_Launch_R6.rbxm",
+   "Sha256": "abcf6207ff76b3f0919c4522f329d055fcd64a62d9eecc83cabb003e324f2c60",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:21:50"
+  },
+  "Surf_Land_R15": {
+   "AssetId": "118170947487501",
+   "Path": "assets/animations/rider/Surf_Land_R15.rbxm",
+   "Sha256": "481865daafbd86151c3485b61616668f6dec3ec1429bcf0bb786e1eed8eda5fc",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:21:53"
+  },
+  "Surf_Land_R6": {
+   "AssetId": "138807592292271",
+   "Path": "assets/animations/rider/Surf_Land_R6.rbxm",
+   "Sha256": "b9ff64009c96b512534a3d723afd3be40fc349ce080c0ee43bad7c9042d88e54",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T16:21:58"
+  }
+ }
+}

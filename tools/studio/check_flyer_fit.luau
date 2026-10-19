@@ -52,7 +52,7 @@ for _, id in { "skyboard", "cloud_cushion", "rocket_skiff", "prism_ray" } do
 	if model then
 		local targets = {}
 		for _, a in model:GetDescendants() do
-			if a:IsA("Attachment") and (a.Name:match("^Hand") or a.Name:match("^Rider")) then
+			if a:IsA("Attachment") and (a.Name:match("^Grip") or a.Name:match("^Rider")) then
 				local w = model:GetPivot():PointToObjectSpace(a.WorldPosition)
 				table.insert(targets, ("%s=(%.2f, %.2f, %.2f)"):format(a.Name, w.X, w.Y, w.Z))
 			end

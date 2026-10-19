@@ -14,6 +14,14 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — Rider animation families (workstream H)
+Done:
+- Creator request: real, uploadable riding animations in reusable families. `Config/RideFamilies` (Surf, Sit, Kneel, HandleStand, HandleSit; Idle, LeanLeft/Right, Launch, Land) sampled by the new pure `RideKeyframes`; `lune run tools/build_ride_animations` writes 50 KeyframeSequence .rbxm (R15 + R6), uploaded through Open Cloud (`upload_assets.py` now takes .rbxm Animations) to group 11116787, all Approved; ids in `RideFamilies.AnimationIds`.
+- `RidePose` plays the tracks through the Animator (leans weighted by bank, one-shots on launch/land), locks handle hands onto `GripL`/`GripR` with IK, shows other players' replicated tracks, and falls back to the same keyframes in code for bots and failed loads. Rocket grips renamed to the convention. FLYERS_V3.md documents families and "Adding a flyer".
+- Verified in Studio Play: R15 and R6 on all four flyers, real round with grip IK, lobby display, clean dismount, fallback. Report: `docs/testing/ride_animations/REPORT.md`. Lune 164/164 (new RideFamiliesTests).
+Next:
+- Workstream I: GripL/GripR on the Moonlantern Carriage and map it to HandleSit. Creator feel review of the families.
+
 ## 2026-10-19 — Claude — Seven launch finishers on one module kit (workstream G)
 Done:
 - Module kit: `Presentation/Finishers/Modules` (Flash, Shockwave, ShardBurst with bounces/pops, BeamColumn, ParticleField, Light, MeshReveal curves). Kit adds glassy heroes; FinisherFX adds camera Beats and attachShards. Prism Pop re-expressed with the modules.

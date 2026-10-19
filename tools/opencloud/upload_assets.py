@@ -4,7 +4,7 @@
     zsh -i -c 'python3 tools/opencloud/upload_assets.py <list.json> [key ...]'
 
 The key is read from ROBLOX_ASSETS_KEY (only loaded by an interactive zsh) and is never printed.
-<list.json> is {"Record": "<repo-relative json>", "Items": [{"Key", "Path", "Type": "Model"|"Decal", "Name"}]}.
+<list.json> is {"Record": "<repo-relative json>", "Items": [{"Key", "Path", "Type": "Model"|"Decal"|"Animation", "Name"}]}.
 Results (asset id, SHA256, moderation) go to the Record file; a file whose hash is unchanged is skipped.
 --check tests whether the key can read assets (403 means the key needs Assets read/write in Creator Hub).
 """
@@ -20,7 +20,14 @@ import uuid
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 GROUP = "11116787"
 API = "https://apis.roblox.com/assets/v1"
-MIME = {".fbx": "model/fbx", ".png": "image/png", ".jpg": "image/jpeg", ".ogg": "audio/ogg", ".mp3": "audio/mpeg"}
+MIME = {
+    ".fbx": "model/fbx",
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".ogg": "audio/ogg",
+    ".mp3": "audio/mpeg",
+    ".rbxm": "model/x-rbxm",  # Animation: a Studio-serialized KeyframeSequence
+}
 
 
 def request(method, url, key, body=None, headers=None):
@@ -46,7 +53,7 @@ def upload(item, key):
     meta = {
         "assetType": item.get("Type", "Model"),
         "displayName": item.get("Name", item["Key"])[:50],
-        "description": "Glass Clash original art.",
+        "description": item.get("Description", "Glass Clash original art."),
         "creationContext": {"creator": {"groupId": GROUP}},
     }
     boundary = uuid.uuid4().hex

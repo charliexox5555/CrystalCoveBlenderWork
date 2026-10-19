@@ -100,8 +100,21 @@ function Controller:Step(time)
 					entry.Pose:Destroy()
 				end
 				entry.Character, entry.Pose =
-					character, RidePose.new(character, model:GetAttribute("PoseId") or model:GetAttribute("RideId"))
+					character,
+					RidePose.new(
+						character,
+						model:GetAttribute("PoseId") or model:GetAttribute("RideId"),
+						{ Ride = model }
+					)
+				if entry.Motion.LaunchAt then
+					entry.Pose:OneShot("Launch")
+				end
 			end
+			-- The launch rise has just settled: the rider absorbs the landing.
+			if entry.Launching and not entry.Motion.LaunchAt then
+				entry.Pose:OneShot("Land")
+			end
+			entry.Launching = entry.Motion.LaunchAt ~= nil
 			entry.Pose:Lean(entry.Motion.Bank, entry.Motion.Pitch)
 			local height = entry.Pose.Height
 			local localPose = entry.RootLocal

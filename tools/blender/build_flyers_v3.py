@@ -640,8 +640,8 @@ def build_rocket_skiff():
         "Id": "rocket_skiff", "Name": "Rocket Skiff", "Contact": "Feet",
         "Attachments": {
             "RiderFeet": ("DeckPlate", (0, 0, 0)),
-            "HandL": ("Handlebar", (-0.8, 1.3, 2.15)),
-            "HandR": ("Handlebar", (0.8, 1.3, 2.15)),
+            "GripL": ("Handlebar", (-0.8, 1.3, 2.15)),
+            "GripR": ("Handlebar", (0.8, 1.3, 2.15)),
             "Exhaust_L": ("Nozzle_L", (-1.98, -3.9, -0.52)),
             "Exhaust_R": ("Nozzle_R", (1.98, -3.9, -0.52)),
             "FinTrailL0": ("TailFin_L", (-1.12, -3.55, 1.08)), "FinTrailL1": ("TailFin_L", (-1.0, -3.4, 0.8)),

@@ -123,3 +123,52 @@ Bloxburg vehicles) and outside it (Fortnite gliders and hoverboards, Sky's capes
 - **Sound:** `RideLoop` sounds play only while the ride is near the camera and fade in on launch.
 - **Cost:** everything is distance-gated (`RideDistance`, `RideEmitterDistance`); per-frame work is
   one PivotTo per ride plus moving parts, no allocations per frame.
+
+## 5. Rider animations (families)
+
+Riders play real Animation assets (owned by group 11116787, R15 and R6), organised in **families** so the planned
+~24 flyers share a few well-made sets instead of one-off poses (decision 96).
+
+| Family | Style | Contact | Flyers |
+|---|---|---|---|
+| Surf | standing balance crouch, arms out | feet | Skyboard, Prism Ray |
+| Sit | seated, legs forward, hands on the arm rests | seat | Cloud Cushion |
+| Kneel | one knee down, hands forward (low craft) | feet + shins | (for coming low flyers) |
+| HandleStand | standing, both hands on a handlebar | feet | Rocket Skiff |
+| HandleSit | seated, both hands on a handlebar | seat | Moonlantern Carriage (workstream I) |
+
+Every family has five clips: **Idle** (loop with breathing, weight shifts, head and arm follow-through),
+**LeanLeft / LeanRight** (loops, blended in by the flyer's bank; Right is the mirror of Left), **Launch** and
+**Land** (one-shots at take-off and when the launch rise settles, and when a lobby display flyer lands).
+
+- Source of truth: `src/shared/Config/RideFamilies.luau` (angles per channel: base pose, offsets, looping waves,
+  smoothed keys). `src/shared/RideKeyframes.luau` samples it.
+- Assets: `tools/studio/build_ride_animations.luau` turns every family/clip into KeyframeSequences for R15 and R6
+  (`ServerStorage.RideAnimations`), which are serialized and uploaded with `tools/opencloud/upload_assets.py`
+  (Type `Animation`). Ids go to `RideFamilies.AnimationIds[family][clip][rig]`.
+- Playback (`Presentation/RidePose`): the local player and lobby display avatars play the tracks through their
+  Animator (Idle at Action priority, leans at Action2 with bank weights, one-shots at Action3). Other players see
+  the owner's replicated tracks. Bots (anchored R6 presentation rigs) and any rig whose tracks are missing or fail
+  to load within 4 s play the **same keyframes in code**, so nothing ever T-poses. The rig is solved every frame so
+  feet or the seat stay on the deck.
+- Handle families lock the hands with IKControl onto the flyer's `GripL` / `GripR` attachments (R15 with tracks);
+  the authored hands already sit on the standard grip layout, so R6 and code fallback still look right.
+
+## 6. Adding a flyer
+
+1. **Pick a family** that matches how the rider stands or sits. Only add a new family when none fits; a new family
+   needs all five clips and its assets uploaded for R15 and R6.
+2. **Model** (Blender, `tools/blender/build_flyers_v3.py` as the pattern): origin = rider contact point (deck top
+   under the feet, or seat top under the hips), nose +Y in Blender (Roblox -Z), 1 BU = 1 stud.
+3. **Attachments** on the model (names are the contract):
+   - `RiderFeet` (standing families) or `RiderSeat` (seated families) at the origin.
+   - Handle flyers: `GripL` and `GripR` at the hand positions. Place them on the family's standard layout
+     (`RideFamilies.StandardGrips`): HandleStand at (-/+0.96, 2.58, -1.56), HandleSit at (-/+0.9, 1.45, -1.55)
+     in rider space. Grips can differ a little; IK covers R15 riders with tracks.
+   - Effect attachments as needed (`Trail*`, `Exhaust_*`, `Wake`, `Launch`).
+4. **Register** the flyer in `RideFamilies.Flyers` (`id = { Family = "..." }`) and give it a motion profile in
+   `RideAnimations.Motion` (float, drift, bank, launch, loop sound).
+5. **Install** in Studio with an installer like `tools/studio/install_flyers_v3.luau` and effects from
+   `tools/studio/flyer_effects.luau`. No new animation upload is needed when you reuse a family.
+6. **Check the fit** with `tools/studio/check_flyer_fit.luau` (feet/seat contact, hands on grips) and look at it in
+   a round, the lobby display and the shop portrait.

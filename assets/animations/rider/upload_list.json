@@ -1,0 +1,355 @@
+{
+  "Items": [
+    {
+      "Description": "Glass Clash rider animation (original, family HandleSit).",
+      "Key": "HandleSit_Idle_R15",
+      "Name": "GC Ride HandleSit_Idle_R15",
+      "Path": "assets/animations/rider/HandleSit_Idle_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleSit).",
+      "Key": "HandleSit_Idle_R6",
+      "Name": "GC Ride HandleSit_Idle_R6",
+      "Path": "assets/animations/rider/HandleSit_Idle_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleSit).",
+      "Key": "HandleSit_LeanLeft_R15",
+      "Name": "GC Ride HandleSit_LeanLeft_R15",
+      "Path": "assets/animations/rider/HandleSit_LeanLeft_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleSit).",
+      "Key": "HandleSit_LeanLeft_R6",
+      "Name": "GC Ride HandleSit_LeanLeft_R6",
+      "Path": "assets/animations/rider/HandleSit_LeanLeft_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleSit).",
+      "Key": "HandleSit_LeanRight_R15",
+      "Name": "GC Ride HandleSit_LeanRight_R15",
+      "Path": "assets/animations/rider/HandleSit_LeanRight_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleSit).",
+      "Key": "HandleSit_LeanRight_R6",
+      "Name": "GC Ride HandleSit_LeanRight_R6",
+      "Path": "assets/animations/rider/HandleSit_LeanRight_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleSit).",
+      "Key": "HandleSit_Launch_R15",
+      "Name": "GC Ride HandleSit_Launch_R15",
+      "Path": "assets/animations/rider/HandleSit_Launch_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleSit).",
+      "Key": "HandleSit_Launch_R6",
+      "Name": "GC Ride HandleSit_Launch_R6",
+      "Path": "assets/animations/rider/HandleSit_Launch_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleSit).",
+      "Key": "HandleSit_Land_R15",
+      "Name": "GC Ride HandleSit_Land_R15",
+      "Path": "assets/animations/rider/HandleSit_Land_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleSit).",
+      "Key": "HandleSit_Land_R6",
+      "Name": "GC Ride HandleSit_Land_R6",
+      "Path": "assets/animations/rider/HandleSit_Land_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleStand).",
+      "Key": "HandleStand_Idle_R15",
+      "Name": "GC Ride HandleStand_Idle_R15",
+      "Path": "assets/animations/rider/HandleStand_Idle_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleStand).",
+      "Key": "HandleStand_Idle_R6",
+      "Name": "GC Ride HandleStand_Idle_R6",
+      "Path": "assets/animations/rider/HandleStand_Idle_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleStand).",
+      "Key": "HandleStand_LeanLeft_R15",
+      "Name": "GC Ride HandleStand_LeanLeft_R15",
+      "Path": "assets/animations/rider/HandleStand_LeanLeft_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleStand).",
+      "Key": "HandleStand_LeanLeft_R6",
+      "Name": "GC Ride HandleStand_LeanLeft_R6",
+      "Path": "assets/animations/rider/HandleStand_LeanLeft_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleStand).",
+      "Key": "HandleStand_LeanRight_R15",
+      "Name": "GC Ride HandleStand_LeanRight_R15",
+      "Path": "assets/animations/rider/HandleStand_LeanRight_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleStand).",
+      "Key": "HandleStand_LeanRight_R6",
+      "Name": "GC Ride HandleStand_LeanRight_R6",
+      "Path": "assets/animations/rider/HandleStand_LeanRight_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleStand).",
+      "Key": "HandleStand_Launch_R15",
+      "Name": "GC Ride HandleStand_Launch_R15",
+      "Path": "assets/animations/rider/HandleStand_Launch_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleStand).",
+      "Key": "HandleStand_Launch_R6",
+      "Name": "GC Ride HandleStand_Launch_R6",
+      "Path": "assets/animations/rider/HandleStand_Launch_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleStand).",
+      "Key": "HandleStand_Land_R15",
+      "Name": "GC Ride HandleStand_Land_R15",
+      "Path": "assets/animations/rider/HandleStand_Land_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family HandleStand).",
+      "Key": "HandleStand_Land_R6",
+      "Name": "GC Ride HandleStand_Land_R6",
+      "Path": "assets/animations/rider/HandleStand_Land_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Kneel).",
+      "Key": "Kneel_Idle_R15",
+      "Name": "GC Ride Kneel_Idle_R15",
+      "Path": "assets/animations/rider/Kneel_Idle_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Kneel).",
+      "Key": "Kneel_Idle_R6",
+      "Name": "GC Ride Kneel_Idle_R6",
+      "Path": "assets/animations/rider/Kneel_Idle_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Kneel).",
+      "Key": "Kneel_LeanLeft_R15",
+      "Name": "GC Ride Kneel_LeanLeft_R15",
+      "Path": "assets/animations/rider/Kneel_LeanLeft_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Kneel).",
+      "Key": "Kneel_LeanLeft_R6",
+      "Name": "GC Ride Kneel_LeanLeft_R6",
+      "Path": "assets/animations/rider/Kneel_LeanLeft_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Kneel).",
+      "Key": "Kneel_LeanRight_R15",
+      "Name": "GC Ride Kneel_LeanRight_R15",
+      "Path": "assets/animations/rider/Kneel_LeanRight_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Kneel).",
+      "Key": "Kneel_LeanRight_R6",
+      "Name": "GC Ride Kneel_LeanRight_R6",
+      "Path": "assets/animations/rider/Kneel_LeanRight_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Kneel).",
+      "Key": "Kneel_Launch_R15",
+      "Name": "GC Ride Kneel_Launch_R15",
+      "Path": "assets/animations/rider/Kneel_Launch_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Kneel).",
+      "Key": "Kneel_Launch_R6",
+      "Name": "GC Ride Kneel_Launch_R6",
+      "Path": "assets/animations/rider/Kneel_Launch_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Kneel).",
+      "Key": "Kneel_Land_R15",
+      "Name": "GC Ride Kneel_Land_R15",
+      "Path": "assets/animations/rider/Kneel_Land_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Kneel).",
+      "Key": "Kneel_Land_R6",
+      "Name": "GC Ride Kneel_Land_R6",
+      "Path": "assets/animations/rider/Kneel_Land_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Sit).",
+      "Key": "Sit_Idle_R15",
+      "Name": "GC Ride Sit_Idle_R15",
+      "Path": "assets/animations/rider/Sit_Idle_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Sit).",
+      "Key": "Sit_Idle_R6",
+      "Name": "GC Ride Sit_Idle_R6",
+      "Path": "assets/animations/rider/Sit_Idle_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Sit).",
+      "Key": "Sit_LeanLeft_R15",
+      "Name": "GC Ride Sit_LeanLeft_R15",
+      "Path": "assets/animations/rider/Sit_LeanLeft_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Sit).",
+      "Key": "Sit_LeanLeft_R6",
+      "Name": "GC Ride Sit_LeanLeft_R6",
+      "Path": "assets/animations/rider/Sit_LeanLeft_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Sit).",
+      "Key": "Sit_LeanRight_R15",
+      "Name": "GC Ride Sit_LeanRight_R15",
+      "Path": "assets/animations/rider/Sit_LeanRight_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Sit).",
+      "Key": "Sit_LeanRight_R6",
+      "Name": "GC Ride Sit_LeanRight_R6",
+      "Path": "assets/animations/rider/Sit_LeanRight_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Sit).",
+      "Key": "Sit_Launch_R15",
+      "Name": "GC Ride Sit_Launch_R15",
+      "Path": "assets/animations/rider/Sit_Launch_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Sit).",
+      "Key": "Sit_Launch_R6",
+      "Name": "GC Ride Sit_Launch_R6",
+      "Path": "assets/animations/rider/Sit_Launch_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Sit).",
+      "Key": "Sit_Land_R15",
+      "Name": "GC Ride Sit_Land_R15",
+      "Path": "assets/animations/rider/Sit_Land_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Sit).",
+      "Key": "Sit_Land_R6",
+      "Name": "GC Ride Sit_Land_R6",
+      "Path": "assets/animations/rider/Sit_Land_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Surf).",
+      "Key": "Surf_Idle_R15",
+      "Name": "GC Ride Surf_Idle_R15",
+      "Path": "assets/animations/rider/Surf_Idle_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Surf).",
+      "Key": "Surf_Idle_R6",
+      "Name": "GC Ride Surf_Idle_R6",
+      "Path": "assets/animations/rider/Surf_Idle_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Surf).",
+      "Key": "Surf_LeanLeft_R15",
+      "Name": "GC Ride Surf_LeanLeft_R15",
+      "Path": "assets/animations/rider/Surf_LeanLeft_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Surf).",
+      "Key": "Surf_LeanLeft_R6",
+      "Name": "GC Ride Surf_LeanLeft_R6",
+      "Path": "assets/animations/rider/Surf_LeanLeft_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Surf).",
+      "Key": "Surf_LeanRight_R15",
+      "Name": "GC Ride Surf_LeanRight_R15",
+      "Path": "assets/animations/rider/Surf_LeanRight_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Surf).",
+      "Key": "Surf_LeanRight_R6",
+      "Name": "GC Ride Surf_LeanRight_R6",
+      "Path": "assets/animations/rider/Surf_LeanRight_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Surf).",
+      "Key": "Surf_Launch_R15",
+      "Name": "GC Ride Surf_Launch_R15",
+      "Path": "assets/animations/rider/Surf_Launch_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Surf).",
+      "Key": "Surf_Launch_R6",
+      "Name": "GC Ride Surf_Launch_R6",
+      "Path": "assets/animations/rider/Surf_Launch_R6.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Surf).",
+      "Key": "Surf_Land_R15",
+      "Name": "GC Ride Surf_Land_R15",
+      "Path": "assets/animations/rider/Surf_Land_R15.rbxm",
+      "Type": "Animation"
+    },
+    {
+      "Description": "Glass Clash rider animation (original, family Surf).",
+      "Key": "Surf_Land_R6",
+      "Name": "GC Ride Surf_Land_R6",
+      "Path": "assets/animations/rider/Surf_Land_R6.rbxm",
+      "Type": "Animation"
+    }
+  ],
+  "Record": "assets/animations/rider/roblox_assets.json"
+}

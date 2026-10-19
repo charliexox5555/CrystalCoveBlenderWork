@@ -78,13 +78,21 @@ function Ride.new(parent, id, base, avatar, launch)
 	if avatar then
 		self.Npc = avatar:Clone()
 		self.Npc.Parent = parent
-		self.Pose = RidePose.new(self.Npc, model:GetAttribute("PoseId") or id)
+		self.Pose = RidePose.new(self.Npc, model:GetAttribute("PoseId") or id, { Ride = model })
+		-- Arriving displays drop onto the pad: the rider lands as the drop settles.
+		self.LandAt = launch and launch + S.FlyerRotation.TransitionSeconds * 0.75
 	end
 	return self
 end
 
 function Ride:Step(time, base, near)
 	local pose = self.Motion:Step(time, base, near)
+	if self.LandAt and time >= self.LandAt then
+		self.LandAt = nil
+		if self.Pose then
+			self.Pose:OneShot("Land")
+		end
+	end
 	if self.Pose and self.Npc.Parent then
 		self.Pose:Lean(self.Motion.Bank, self.Motion.Pitch)
 		local rootPose = pose * CFrame.new(0, self.Pose.Height or 0, 0)

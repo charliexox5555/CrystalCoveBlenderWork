@@ -88,6 +88,18 @@ Next:
 Problems / questions for the user:
 - The Studio MCP can't switch Device Emulator presets, so the phone preset check is still open.
 
+## 2026-10-19 (morning) — Claude — A: balance finished, CAST hardened, coordination
+Done:
+- Real-swing balance for all 37 glassies (24 + Hollowlight + 12 launch): 37/37 at or inside 45–55% (report docs/testing/BALANCE_RELEASE.md). Timed CAST vs auto 59.5%, press-at-once vs auto 52.3%, 5 stars vs 0 54.8% (Cast.AutoSeconds 1.6, +0.6% HP per star).
+- Fixes found by the matrix: zones predict with pendulum motion (Crystal Ball 3% → 77% landing); the CAST hint reads string twist for ray/cone/breath/sweep (Arc Coil timed casts were missing).
+- Studio: CAST verified live (Space bound through ContextActionService); integration smoke round with all sessions' code: 0 errors.
+- Security audit of CastPower (no High issues); fixed fight error isolation (pcall per fight), Instant casts under Ready, rejoin Ready resend, CastBrain allocation.
+- Coordination: shared Studio lock + queue (tools/studio_lock.sh), display kept awake overnight so Studio renders, shared Open Cloud uploader (tools/opencloud/upload_assets.py) with --check.
+Next:
+- Once the creator adds Assets read/write to the Open Cloud key: run the import runbook (C), add the 12 launch glassies to ReleaseRoster and the Kiln, re-measure with the real geometry.
+Problems / questions for the user:
+- Open Cloud asset uploads 403; place save/publish needed for the overnight Studio installs; real-phone checks and a listening pass are creator-only.
+
 ## 2026-10-19 (night) — Claude — A: retune done, launch power rules, CAST verified live
 Done:
 - Real-swing retune (bot casting, 6 rounds/pair): **24/25 glassies in 45–55%**, spread 44.4–54.9% (was 29–81%). Passes 1–4 in Balance.CombatRelease.Kits.

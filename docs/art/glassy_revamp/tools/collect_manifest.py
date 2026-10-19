@@ -1,13 +1,18 @@
 """Collects every assets/blender/glassies/<id>/v3/manifest.json into two Studio-facing files.
 
-    python3 docs/art/glassy_revamp/tools/collect_manifest.py
+    python3 docs/art/glassy_revamp/tools/collect_manifest.py        # v3 -> motion_manifest.json, v3_import_data.json
+    python3 docs/art/glassy_revamp/tools/collect_manifest.py v4     # v4 -> motion_manifest_v4.json, v4_import_data.json
 
 - docs/art/glassy_revamp/motion_manifest.json: per glassy, every part with pivot, axis and motion.
 - docs/art/glassy_revamp/v3_import_data.json: {"assets": {id: {"meshes": [...]}}}, the same shape
   tools/studio/normalize_combat_release.luau reads for release_v2.
 """
 import json
+import sys
 from pathlib import Path
+
+VERSION = sys.argv[1] if len(sys.argv) > 1 else "v3"
+SUFFIX = "" if VERSION == "v3" else "_" + VERSION
 
 ROOT = Path(__file__).resolve().parents[4]
 OUT = ROOT / "docs/art/glassy_revamp"
@@ -18,7 +23,7 @@ ORDER = ["glass_dragon", "galaxy_orb", "comet", "prism_blade", "rocket_pop", "gl
 
 motion, imports = {}, {}
 for gid in ORDER:
-    path = ROOT / "assets/blender/glassies" / gid / "v3/manifest.json"
+    path = ROOT / "assets/blender/glassies" / gid / VERSION / "manifest.json"
     if not path.exists():
         continue
     m = json.loads(path.read_text())
@@ -38,7 +43,7 @@ for gid in ORDER:
     motion[gid] = {
         "rarity": m["rarity"], "version": m["version"], "bundle": m["files"]["bundle"], "icon": m["files"].get("icon"),
         "intact_triangles": m["intact_triangles"], "shard_count": m["shard_count"],
-        "body_dimensions_roblox": m["collision"]["body_dimensions_roblox_v3"],
+        "body_dimensions_roblox": m["collision"]["body_dimensions_roblox_" + VERSION],
         "body_dimension_change_pct": m["collision"]["max_dimension_change_pct"],
         "fbx_roundtrip": m.get("fbx_roundtrip", {}).get("passed", False),
         "animated_parts": sum(1 for p in parts if p.get("idle", {}).get("type", "static") != "static" or p.get("hit", {}).get("type", "none") != "none"),
@@ -49,6 +54,7 @@ for gid in ORDER:
 
 doc = {
     "schema": "glassy_revamp_v3/1",
+    "version": VERSION,
     "coordinates": "Roblox model space after the release_v2 normalisation: roblox = (x, z, -y) of Blender; studs at GlassyScale 1; origin = hang point",
     "idle_types": {"sway": "rotate about axis amp_deg*sin(2*pi*t/period_s+phase)", "spin": "rotate about axis at deg_per_s",
                    "bob": "translate along axis amp_studs*sin(...)", "pulse": "scale about pivot 1+amp*sin(...); Neon parts also brighten",
@@ -61,6 +67,6 @@ doc = {
     "lod": "Low-detail mode: animate only parts with lod_keep=true (plus client-driven kit names).",
     "glassies": motion,
 }
-(OUT / "motion_manifest.json").write_text(json.dumps(doc, indent=1) + "\n")
-(OUT / "v3_import_data.json").write_text(json.dumps({"assets": imports}, indent=1) + "\n")
-print(f"{len(motion)} glassies collected")
+(OUT / f"motion_manifest{SUFFIX}.json").write_text(json.dumps(doc, indent=1) + "\n")
+(OUT / f"{VERSION}_import_data.json").write_text(json.dumps({"assets": imports}, indent=1) + "\n")
+print(f"{len(motion)} {VERSION} glassies collected")

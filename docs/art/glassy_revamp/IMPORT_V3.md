@@ -1,4 +1,6 @@
-# Importing the v3 glassies into Studio
+# Importing the v3 / v4 glassies into Studio
+
+**Import v4** (`assets/blender/glassies/<id>/v4/`, data in [`v4_import_data.json`](v4_import_data.json) and [`motion_manifest_v4.json`](motion_manifest_v4.json)). Everything below applies unchanged to v4: same file names inside the folder, same manifest schema, same normalizer steps (use `GlassyV4Imports` / `GlassyV4Staged` / `ReleaseVersion` 4). v4 keeps every client-driven name listed below. v4-only names (Dragon `WingRibs_L/R`, `EarFin_L/R`, `Fangs`, `Arms`, `BellyPlates`, `Spines`, `Sparkles`, `Cheeks`; Rocket `BoosterFlameCore`, `PortholeGlass`, `RaceStripe`, `Fizz`; Duck `BeakLower`; every glassy's inner layer, such as `SodaFill`, `Brine`, `InnerGlow`) collide with none of the client patterns, except that `WingRibs_*` deliberately match `Wing` so they rock with the wings. Parts whose names contain `Bubble` are skipped as shatter pieces by the client, which is intended for the floating bubbles. Body transparency hint is 0.38 (clear shell) with inner layers at 0.15–0.65 in `transparency`; the release_v2 normalizer sets 0.28 for every Glass part, so use the manifest value if you want the two-layer look.
 
 All 24 v3 bundles are exported and FBX round-trip verified in Blender 5.2.2. Nothing has been imported into Studio yet. The steps follow the release_v2 path in [BATCH_IMPORT](../combat_release/BATCH_IMPORT.md), which worked.
 

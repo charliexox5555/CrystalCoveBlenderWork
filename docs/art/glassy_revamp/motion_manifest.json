@@ -1,5 +1,6 @@
 {
  "schema": "glassy_revamp_v3/1",
+ "version": "v3",
  "coordinates": "Roblox model space after the release_v2 normalisation: roblox = (x, z, -y) of Blender; studs at GlassyScale 1; origin = hang point",
  "idle_types": {
   "sway": "rotate about axis amp_deg*sin(2*pi*t/period_s+phase)",

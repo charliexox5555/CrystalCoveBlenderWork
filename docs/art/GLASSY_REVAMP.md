@@ -8,6 +8,51 @@ Revamp of the 24 release glassies in Blender: cleaner silhouettes, better glass,
 - **Import steps:** [glassy_revamp/IMPORT_V3.md](glassy_revamp/IMPORT_V3.md).
 - **Before/after sheets:** `docs/art/glassy_revamp/batch_<n>_before_after.png`.
 
+## v4: the higher quality bar (Oct 19, current)
+
+After reviewing v3 batch 1, the creator asked for "the best it can be". **v4 is the version to import.** All 24 are rebuilt in `assets/blender/glassies/<id>/v4/` (v3 and release_v2 untouched) with [build_glassy_v4.py](glassy_revamp/tools/build_glassy_v4.py), which loads the v3 builder unchanged and adds:
+
+- **Smooth glass, no flat facets:** weighted normals on every body (exported in the FBX), rims and caps rounded with real small radii (`round_profile`), organic bodies rebuilt as even Quadriflow quads instead of decimated voxel soup (`organic`), and faceted crystal parts (Prism, Prism Blade, Crystal Tumbler, Frostglobe crystal) bevelled so every facet edge catches a highlight.
+- **Depth inside the glass:** two-layer glass on every glassy: a clear Body shell plus a tinted inner volume or liquid (soda, jam, brine, sauce, milk, sand, mist, nebula, inner glow), and floating bubbles or sparkles. Epic and up get emissive cores (Dragon breath core, Comet star, Duck heart, Blade rainbow core, Rocket two-layer flame, Galaxy swirl and core halo).
+- **One face language** for every glassy with a face (Dragon, Duck and now Comet): tall dark eyes, a big upper-left plus small lower-right highlight, soft blush cheeks, optional small smile. `face()` ray-casts it onto any head, so new glassies match.
+- **Hero detail:** the Dragon has membrane wings with ribs, ridged horns, ear fins, back and tail spikes, belly plates, arms, fangs, an inner glow and sparkles in a chest-out pose. The Duck has feathered wings, a tail fan, an opening lower beak (quack on hit) and the face kit. Rocket Pop has a porthole with glass and bolts, a race stripe, a two-layer flame, a soda fill and fizz.
+- **Icon rig v4:** the same release camera and key/rim/fill plus a soft sky gradient and two reflection cards (invisible to the camera), so the glass shows proper gloss. All 24 v4 icons use it.
+
+| Glassy | Rarity | Tris v3 → v4 | Shards | Body change | Parts / animated | Face | Round-trip |
+|---|---|---:|---:|---:|---:|---|---|
+| Glass Dragon | Mythic | 2724 → 2992 | 20 | 0.00% | 21 / 14 | yes | Pass |
+| Galaxy Orb | Mythic | 2816 → 2898 | 20 | 0.04% | 10 / 9 | | Pass |
+| Comet | Legendary | 2304 → 2974 | 20 | 0.60% | 12 / 9 | yes | Pass |
+| Prism Blade | Epic | 864 → 1002 | 18 | 2.04% | 9 / 8 | | Pass |
+| Rocket Pop | Epic | 1472 → 1432 | 18 | 0.00% | 12 / 9 | | Pass |
+| Glass Duck | Epic | 1478 → 1482 | 18 | 0.00% | 12 / 10 | yes | Pass |
+| Pop | Starter | 1472 → 1408 | 16 | 1.52% | 6 / 3 | | Pass |
+| Jam | Starter | 1448 → 1476 | 16 | 0.00% | 6 / 5 | | Pass |
+| Prism | Starter | 516 → 1092 | 16 | 0.71% | 5 / 4 | | Pass |
+| Crescent Axe | Rare | 1344 → 1480 | 16 | 0.24% | 7 / 4 | | Pass |
+| Briar Flask | Rare | 1486 → 1496 | 16 | 1.66% | 9 / 8 | | Pass |
+| Arc Coil | Rare | 1292 → 1496 | 16 | 0.37% | 9 / 5 | | Pass |
+| Hourglass | Rare | 1372 → 1500 | 16 | 0.00% | 9 / 9 | | Pass |
+| Frostglobe | Rare | 1332 → 1476 | 16 | 1.02% | 6 / 3 | | Pass |
+| Mason Jar | Uncommon | 1360 → 1464 | 16 | 0.65% | 7 / 4 | | Pass |
+| Hot Sauce | Uncommon | 1088 → 1268 | 16 | 1.64% | 9 / 5 | | Pass |
+| Crystal Tumbler | Uncommon | 656 → 1296 | 16 | 0.59% | 5 / 3 | | Pass |
+| Chime | Uncommon | 1428 → 1492 | 16 | 2.27% | 6 / 3 | | Pass |
+| Milk Bottle | Common | 1220 → 1320 | 16 | 0.00% | 6 / 2 | | Pass |
+| Pickle Jar | Common | 1060 → 1240 | 16 | 1.02% | 5 / 4 | | Pass |
+| Ketchup Bottle | Common | 1016 → 1060 | 16 | 0.31% | 6 / 2 | | Pass |
+| Glass Cup | Common | 1024 → 1380 | 16 | 1.24% | 4 / 3 | | Pass |
+| Water Jug | Common | 1396 → 1460 | 16 | 1.28% | 3 / 2 | | Pass |
+| Lemonade Bottle | Common | 1248 → 1244 | 16 | 0.00% | 7 / 4 | | Pass |
+
+Budgets are unchanged (ART_BIBLE: 1,500, or 3,000 for Legendary/Mythic), and almost every glassy now sits right at its cap. **The budget is the main limit on further polish:** a higher cap would mostly go into smoother bodies (Duck and the 16–20-segment bottles still show a slightly polygonal outline up close). Body bounds stay within 2.3% of release_v2; `Radius` is unchanged.
+
+Sheets: [v4 batch 1](glassy_revamp/batch_1_v4_before_after.png) · [batch 2](glassy_revamp/batch_2_v4_before_after.png) · [batch 3](glassy_revamp/batch_3_v4_before_after.png) · [batch 4](glassy_revamp/batch_4_v4_before_after.png) · [all 24 v4 icons](glassy_revamp/roster_24_v4.png) (each row: v3 | v4 | v4 three-quarter). Manifest for Studio: [motion_manifest_v4.json](glassy_revamp/motion_manifest_v4.json), [v4_import_data.json](glassy_revamp/v4_import_data.json).
+
+Known limits: Quadriflow is not fully repeatable, so a rebuild of Dragon or Duck can land a few triangles differently; `organic(max_tris=…)` caps it and the shard search retries until volumes match. Preview colours are Cycles approximations; Studio colours come from the manifest.
+
+The sections below are the original audit, briefs and v3 results; the moving-part briefs still apply to v4.
+
 ## 1. Audit (release_v2, Oct 18)
 
 Ranked by how much work each needs. "Gap" compares the presentation to the rarity a player paid or pulled for.

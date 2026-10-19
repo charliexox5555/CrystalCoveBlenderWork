@@ -212,20 +212,6 @@ function Controller:Start()
 			self:CastEvents(view, packet.Events or {})
 		end
 	end)
-	local CAST_KEYS = {
-		[Enum.KeyCode.Space] = true,
-		[Enum.KeyCode.F] = true,
-		[Enum.KeyCode.ButtonA] = true,
-		[Enum.KeyCode.ButtonR2] = true,
-	}
-	UIS.InputBegan:Connect(function(input, processed)
-		if not processed and CAST_KEYS[input.KeyCode] then
-			local view = self:Active()
-			if view and view.Participant and view.Phase == "Fighting" then
-				self.CastUi:Press()
-			end
-		end
-	end)
 	UIS.InputBegan:Connect(function(input, processed)
 		local view = self:Active()
 		if processed or not view or not view.Participant or view.Phase ~= "Aiming" or view.Locked then

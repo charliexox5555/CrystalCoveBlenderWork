@@ -2,6 +2,7 @@
 -- to cast now, or let it cast by itself when the ring runs out. It glows gold at a good moment
 -- (CastTiming, read from the newest snapshot), which teaches timing without punishing kids who wait.
 local TweenService = game:GetService("TweenService")
+local ContextActionService = game:GetService("ContextActionService")
 local RS = game:GetService("ReplicatedStorage")
 local Balance = require(RS.Shared.Config.Balance)
 local Glassies = require(RS.Shared.Config.Glassies)
@@ -14,6 +15,9 @@ Cast.__index = Cast
 
 local M = Balance.Motion
 local GOLD = Color3.fromRGB(255, 214, 92)
+local ACTION = "GlassClashCast"
+-- Bound above the default controls only while CAST is lit, so Space/ButtonA don't also jump.
+local KEYS = { Enum.KeyCode.Space, Enum.KeyCode.F, Enum.KeyCode.ButtonA, Enum.KeyCode.ButtonR2 }
 
 function Cast.new(onPress)
 	local self = setmetatable({ OnPress = onPress }, Cast)
@@ -73,6 +77,12 @@ function Cast:Ready(event, serverNow)
 	self.Power.Text = def and def.SpecialName or "POWER"
 	Kit.enable(self.Button, true)
 	self.Root.Visible = true
+	ContextActionService:BindActionAtPriority(ACTION, function(_, state)
+		if state == Enum.UserInputState.Begin then
+			self:Press()
+		end
+		return Enum.ContextActionResult.Sink
+	end, false, Enum.ContextActionPriority.High.Value + 10, table.unpack(KEYS))
 	self.Scale.Scale = 0.6
 	TweenService:Create(self.Scale, TweenInfo.new(0.22, Enum.EasingStyle.Back), { Scale = 1 }):Play()
 end
@@ -82,6 +92,7 @@ function Cast:Press()
 		return
 	end
 	self.Pressed = true
+	ContextActionService:UnbindAction(ACTION)
 	self.OnPress()
 	Kit.enable(self.Button, false)
 	self.Scale.Scale = 1.18
@@ -95,6 +106,7 @@ end
 
 function Cast:Clear()
 	self.ReadyId = nil
+	ContextActionService:UnbindAction(ACTION)
 	if self.Root then
 		self.Root.Visible = false
 	end
@@ -156,6 +168,7 @@ function Cast:Update(view)
 end
 
 function Cast:Destroy()
+	ContextActionService:UnbindAction(ACTION)
 	self.Connection:Disconnect()
 	self.Gui:Destroy()
 	self.Root = nil

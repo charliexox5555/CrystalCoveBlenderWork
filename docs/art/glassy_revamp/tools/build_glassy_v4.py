@@ -534,7 +534,7 @@ def wing_bm(side, shoulder, sweep, lift, scale=1.0, membrane_depth=0.035):
     slab_bm(mem, pts, membrane_depth, 0.014, 1, m)
     ribs = bmesh.new()
     loc = lambda u, v: m @ Vector((side * u * scale, 0, v * scale))
-    tube_bm(ribs, [loc(0, 0), loc(0.27, 0.38), loc(*wrist)], [0.06, 0.05, 0.042], 6)
+    tube_bm(ribs, [loc(0, 0), loc(0.27, 0.38), loc(*wrist)], [0.065, 0.055, 0.045], 6)
     for t in tips:
         tube_bm(ribs, [loc(*wrist), loc((wrist[0] + t[0]) / 2, (wrist[1] + t[1]) / 2), loc(*t)], [0.036, 0.025, 0.01], 4)
     ellipsoid_bm(ribs, loc(*wrist), (0.05, 0.05, 0.05), 6, 4)
@@ -549,15 +549,15 @@ def v4_glass_dragon(gid):
     def shape(bm):
         ellipsoid_bm(bm, (0, -0.06, -0.6), (0.64, 0.6, 0.58), 24, 14)
         ellipsoid_bm(bm, (0, 0.02, -1.18), (0.36, 0.34, 0.3), 16, 10)
-        ellipsoid_bm(bm, (0, -0.1, -1.6), (0.52, 0.5, 0.44), 20, 12)
+        ellipsoid_bm(bm, (0, -0.17, -1.58), (0.54, 0.5, 0.46), 20, 12)
         ellipsoid_bm(bm, (0, 0.02, -2.12), (0.66, 0.62, 0.68), 24, 14)
         for x in (-0.4, 0.4):
             ellipsoid_bm(bm, (x, 0.1, -2.42), (0.3, 0.34, 0.32), 14, 8)
-            ellipsoid_bm(bm, (x * 0.85, -0.2, -2.84), (0.22, 0.28, 0.16), 12, 8)
-    body = organic("Body", shape, 360, fit=(lo, hi), max_tris=860)
+            ellipsoid_bm(bm, (x, -0.2, -2.84), (0.22, 0.28, 0.16), 12, 8)
+    body = organic("Body", shape, 470, fit=(lo, hi), max_tris=1040)
     glass4(body, tint, "shell", role="Body")
     ds = []
-    muzzle = blob("Muzzle", (0, -0.5, -0.8), (0.4, 0.3, 0.24), 12, 7, Quaternion((1, 0, 0), -0.12))
+    muzzle = blob("Muzzle", (0, -0.5, -0.8), (0.4, 0.3, 0.24), 10, 6, Quaternion((1, 0, 0), -0.12))
     glass4(smooth_normals(muzzle), "#93ECC6", "detail")
     nb = bmesh.new()
     for x in (-0.12, 0.12):
@@ -572,7 +572,7 @@ def v4_glass_dragon(gid):
     fangs = paint(_obj("Fangs", fb, smooth=False), "#FFFFFF", "SmoothPlastic")
     anim(fangs, (0, -0.24, -0.94), (1, 0, 0), sway(4, 2.6), kick(18, 4, 0.35), note="moves with Jaw")
     ds += [muzzle, nostrils, jaw, fangs]
-    ds += face(body, [(-0.26, -0.47), (0.26, -0.47)], (0.11, 0.15), cheeks=True, cheek_target=muzzle, eye_segs=(8, 6))
+    ds += face(body, [(-0.26, -0.47), (0.26, -0.47)], (0.11, 0.15), cheeks=True, cheek_target=muzzle, eye_segs=(8, 5))
     hb = bmesh.new()
     for s_ in (-1, 1):
         path = spline([(s_ * 0.3, 0.06, -0.24), (s_ * 0.4, 0.28, -0.08), (s_ * 0.46, 0.52, -0.05), (s_ * 0.47, 0.72, -0.16)], 10)
@@ -581,14 +581,14 @@ def v4_glass_dragon(gid):
         tube_bm(hb, path, rs, 4)
     horns = glass4(_obj("Horns", hb), "#FFF1C6", "detail")
     ds.append(horns)
-    for s_, label in ((-1, "L"), (1, "R")):
+    for s_, label in ():
         fin = glass4(slab("EarFin_" + label, [(0, -0.12), (s_ * 0.22, -0.02), (s_ * 0.3, 0.14), (s_ * 0.12, 0.08), (0, 0.12)][::s_], 0.03,
                           Matrix.Translation((s_ * 0.6, 0.08, -0.64)) @ Matrix.Rotation(s_ * -0.5, 4, "Z"), bevel=0.012, segments=1), wing_c, "detail")
         anim(fin, (s_ * 0.6, 0.08, -0.64), (0, 0, 1), sway(8, 1.7, 0.5 if s_ > 0 else 0), kick(18))
         ds.append(fin)
     for s_, label in ((-1, "L"), (1, "R")):
         shoulder = Vector((s_ * 0.3, 0.4, -1.5))
-        mem, ribs, axis = wing_bm(s_, shoulder, 0.3, 0.45, 1.08)
+        mem, ribs, axis = wing_bm(s_, shoulder, 0.25, -0.05, 1.42, membrane_depth=0.04)
         w = glass4(_obj("Wing_" + label, mem, sharp_deg=60), wing_c, "detail")
         anim(w, shoulder, axis, sway(14, 1.4), flare(28), lod_keep=True)
         r = glass4(_obj("WingRibs_" + label, ribs), rib_c, "detail")
@@ -631,7 +631,7 @@ def v4_glass_dragon(gid):
     spikes_bm(tb, tpts, tn, [0.12] * len(tpts), [0.045] * len(tpts), 4)
     end, d = path[-1], (path[-1] - path[-2]).normalized()
     m = Matrix.Translation(end + d * 0.06) @ d.to_track_quat("Z", "Y").to_matrix().to_4x4() @ Matrix.Rotation(math.pi / 2, 4, "X")
-    slab_bm(tb, [(0, -0.05), (0.18, 0.1), (0.0, 0.3), (-0.18, 0.1)], 0.06, 0.02, 1, m)
+    slab_bm(tb, [(0, -0.06), (0.26, 0.1), (0.2, 0.26), (0.0, 0.44), (-0.2, 0.26), (-0.26, 0.1)], 0.08, 0.03, 1, m)
     tail = glass4(_obj("Tail", tb, sharp_deg=70), "#74E6B9", "detail")
     anim(tail, (0, 0.42, -2.45), (0, 0, 1), sway(12, 1.9), kick(20))
     core = paint(blob("BreathCore", (0, -0.14, -1.6), (0.2, 0.2, 0.2), 10, 6), "#FFF2B3", "Neon")
@@ -751,7 +751,7 @@ def v4_prism_blade(gid):
     secs = [(-0.48, hexs(0.1, 0.07)), (-0.56, hexs(0.3, 0.13)), (-0.7, hexs(0.36, 0.15)), (-1.6, hexs(0.33, 0.145)),
             (-2.3, hexs(0.3, 0.13)), (-2.62, hexs(0.22, 0.1)), (-2.86, hexs(0.1, 0.05)), (-2.99, [(0, 0)])]
     body = loft("Body", secs)
-    bevel_edges(body, 0.018, 2, 20)
+    bevel_edges(body, 0.011, 2, 20)
     glass4(body, "#9BE7FF", "shell", role="Body")
     ds = []
     core = paint(loft("RainbowCore", [(-0.8, hexs(0.03, 0.02)), (-0.95, hexs(0.09, 0.04)), (-2.35, hexs(0.07, 0.035)), (-2.6, [(0, 0)])]), "#E6B8FF", "Neon")
@@ -770,9 +770,17 @@ def v4_prism_blade(gid):
              (0.15, 0.24), (0.16, 0.3), (0.13, 0.35), (0.06, 0.37), (0, 0.37)]
     hilt = glass4(smooth_normals(lathe3("Hilt", [(r_, z - 0.37) for r_, z in hprof], 0.0, 12, sharp_deg=None)), "#B9E4FA", "detail")
     pb = bmesh.new()
-    gem_bm(pb, (0, -0.15, -0.07), 0.055, 0.07, 6, Matrix.Rotation(math.pi / 2, 4, "X"))
-    pgem = paint(_obj("PommelGem", pb, smooth=False), "#8FE3FF", "Neon")
-    anim(pgem, (0, -0.15, -0.07), (0, 1, 0), None, flash(0.2))
+    gem_bm(pb, (0, -0.13, -0.13), 0.095, 0.13, 8, Matrix.Rotation(math.pi / 2, 4, "X"))
+    pgem = _obj("PommelGem", pb, smooth=False)
+    bevel_edges(pgem, 0.008, 1, 20)
+    paint(pgem, "#8FE3FF", "Neon")
+    anim(pgem, (0, -0.13, -0.13), (0, 1, 0), pulse(0.08, 1.7, 1.0), flash(0.2), lod_keep=True)
+    eb = bmesh.new()
+    for s_ in (-1, 1):
+        edge = [(s_ * w * 0.985, 0, z) for z, w in ((-0.62, 0.3), (-0.7, 0.355), (-1.6, 0.325), (-2.3, 0.295), (-2.62, 0.215), (-2.86, 0.095), (-2.97, 0.02))]
+        tube_bm(eb, edge, [0.012, 0.016, 0.016, 0.015, 0.013, 0.01, 0.005], 4)
+    edges = paint(_obj("EdgeGlow", eb), "#E8FBFF", "Neon")
+    anim(edges, (0, 0, -1.7), (0, 0, 1), pulse(0.15, 1.2), flash(0.15))
     for i, (ang, z) in enumerate(((0.3, -1.35), (math.pi + 0.3, -2.15), (math.pi / 2 + 0.3, -1.75))):
         sb = bmesh.new()
         p = Vector((0.55 * math.cos(ang), 0.55 * math.sin(ang), z))
@@ -782,7 +790,7 @@ def v4_prism_blade(gid):
         ds.append(shard)
     glint = bubbles("BladeGlints", (0, 0, -1.7), 0.3, 5, (0.025, 0.04), seed=9, color="#FFFFFF", neon=True, height=0.9)
     anim(glint, (0, 0, -1.7), (0, 0, 1), pulse(0.3, 0.9), flash(0.15))
-    ds = [guard, ggem, hilt, pgem, core, glint] + ds
+    ds = [guard, ggem, hilt, pgem, edges, core, glint] + ds
     return body, ds
 
 
@@ -825,28 +833,65 @@ def v4_rocket_pop(gid):
     return body, ds
 
 
+def union_body(name, parts, fit=None):
+    """Exact boolean union of smooth UV ellipsoids [(at, radii, u, v, rot)]: curvature-aligned
+    triangles (fewer, smoother than voxel/Quadriflow at the same count), crisp natural creases."""
+    objs = []
+    for k, (at, radii, u, v, rot) in enumerate(parts):
+        objs.append(blob(f"_u{k}", at, radii, u, v, rot))
+    base = objs[0]
+    for other in objs[1:]:
+        mod = base.modifiers.new("U", "BOOLEAN")
+        mod.operation, mod.solver, mod.object = "UNION", "EXACT", other
+        dg = bpy.context.evaluated_depsgraph_get()
+        mesh = bpy.data.meshes.new_from_object(base.evaluated_get(dg))
+        base.modifiers.clear()
+        old = base.data
+        base.data = mesh
+        bpy.data.meshes.remove(old)
+        bpy.data.objects.remove(other, do_unlink=True)
+    bm = _bm_from_object(base)
+    bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=1e-5)
+    bmesh.ops.dissolve_degenerate(bm, edges=bm.edges, dist=1e-5)
+    bmesh.ops.triangulate(bm, faces=bm.faces, quad_method="BEAUTY")
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    if fit:
+        lo, hi = Vector(fit[0]), Vector(fit[1])
+        xs = [v.co for v in bm.verts]
+        a = Vector((min(p.x for p in xs), min(p.y for p in xs), min(p.z for p in xs)))
+        b = Vector((max(p.x for p in xs), max(p.y for p in xs), max(p.z for p in xs)))
+        for v in bm.verts:
+            v.co = Vector(tuple(lo[k] + (v.co[k] - a[k]) * (hi[k] - lo[k]) / (b[k] - a[k]) for k in range(3)))
+    bad = [e for e in bm.edges if not e.is_manifold]
+    if bad:
+        raise AssertionError((name, "union body not closed", len(bad)))
+    bm.to_mesh(base.data)
+    bm.free()
+    base.name = name
+    base.data.name = name
+    base["source_name"] = name
+    return smooth_normals(base)
+
+
 @builder4("glass_duck")
 def v4_glass_duck(gid):
     lo, hi = v2_body_bounds(gid)
-
-    def shape(bm):
-        ellipsoid_bm(bm, (0, -0.14, -0.5), (0.5, 0.48, 0.5), 20, 12)
-        ellipsoid_bm(bm, (0, -0.06, -0.98), (0.34, 0.32, 0.3), 14, 8)
-        ellipsoid_bm(bm, (0, 0.12, -1.62), (0.86, 0.9, 0.68), 24, 14)
-        ellipsoid_bm(bm, (0, -0.4, -1.46), (0.6, 0.5, 0.56), 18, 10)
-        ellipsoid_bm(bm, (0, 0.74, -1.28), (0.34, 0.3, 0.32), 12, 8, Quaternion((1, 0, 0), -0.6))
-    body = organic("Body", shape, 300, fit=(lo, hi), max_tris=620)
+    body = union_body("Body", [
+        ((0, 0.1, -1.6), (0.88, 0.92, 0.7), 18, 11, None),                       # round body
+        ((0, -0.14, -0.52), (0.5, 0.48, 0.5), 14, 9, None),                      # head
+        ((0, -0.36, -1.42), (0.62, 0.52, 0.56), 10, 6, None),                    # breast
+        ((0, 0.72, -1.28), (0.3, 0.28, 0.3), 8, 5, Quaternion((1, 0, 0), -0.6)),  # tail nub
+    ], fit=(lo, hi))
     glass4(body, "#FFE45C", "shell", role="Body")
-    _set_input(next(n for n in body.data.materials[0].node_tree.nodes if n.type == "BSDF_PRINCIPLED"), "Base Color", (*hex_to_rgb("#FFE45C"), 1))
     ds = []
     upper = bmesh.new()
     ellipsoid_bm(upper, (0, -0.6, -0.62), (0.3, 0.27, 0.085), 10, 5)
     beak = paint(smooth_normals(_obj("Beak", upper)), "#FF9E3D", "SmoothPlastic")
     anim(beak, (0, -0.4, -0.66), (1, 0, 0), None, kick(6))
-    lower = paint(smooth_normals(blob("BeakLower", (0, -0.54, -0.72), (0.23, 0.2, 0.06), 8, 4)), "#F98A2B", "SmoothPlastic")
+    lower = paint(smooth_normals(blob("BeakLower", (0, -0.54, -0.72), (0.23, 0.2, 0.06), 6, 4)), "#F98A2B", "SmoothPlastic")
     anim(lower, (0, -0.38, -0.7), (1, 0, 0), sway(3, 2.4), kick(22, 5, 0.4), note="opens on hit: a quack")
     ds += [beak, lower]
-    ds += face(body, [(-0.2, -0.38), (0.2, -0.38)], (0.085, 0.115), cheeks=True, eye_segs=(8, 5))
+    ds += face(body, [(-0.2, -0.38), (0.2, -0.38)], (0.085, 0.115), cheeks=True, eye_segs=(8, 4))
     feather = [(0.0, 0.0), (0.16, 0.22), (0.42, 0.26), (0.62, 0.08), (0.54, -0.04), (0.58, -0.16), (0.4, -0.12), (0.34, -0.26), (0.14, -0.14)]
     for side, label in ((-1, "L"), (1, "R")):
         m = Matrix.Translation((side * 0.8, -0.32, -1.42)) @ Matrix.Rotation(side * -0.3, 4, "Z") @ Matrix.Rotation(math.pi / 2, 4, "Z") @ Matrix.Rotation(-0.3, 4, "Y")
@@ -862,15 +907,17 @@ def v4_glass_duck(gid):
     tail = glass4(smooth_normals(_obj("TailFeather", tb), 60), "#FFD23C", "detail")
     anim(tail, (0, 0.78, -1.28), (0, 0, 1), sway(10, 1.2), kick(14))
     tf = bmesh.new()
-    tube_bm(tf, spline([(0, -0.16, -0.06), (0, -0.2, 0.06), (0, -0.32, 0.12), (0, -0.4, 0.06), (0, -0.34, 0.0)], 10), [0.07, 0.06, 0.05, 0.04, 0.03, 0.025, 0.02, 0.016, 0.012, 0.01, 0.008], 5)
+    tube_bm(tf, spline([(0, -0.16, -0.06), (0, -0.2, 0.06), (0, -0.32, 0.12), (0, -0.4, 0.06), (0, -0.34, 0.0)], 10), [0.07, 0.06, 0.05, 0.04, 0.03, 0.025, 0.02, 0.016, 0.012, 0.01, 0.008], 4)
     tuft = glass4(_obj("HeadTuft", tf), "#FFD23C", "detail")
     anim(tuft, (0, -0.16, -0.06), (1, 0, 0), sway(3, 2.2), kick(25))
-    bubble = glass4(blob("CrownBubble", (0, 0.04, 0.0), (0.13, 0.13, 0.13), 6, 5), "#EAFBFF", "detail")
+    bubble = glass4(blob("CrownBubble", (0, 0.04, 0.0), (0.13, 0.13, 0.13), 6, 4), "#EAFBFF", "detail")
     anim(bubble, (0, 0.04, 0.0), (0, 0, 1), bob(0.05, 1.5), hop(0.08))
     heart = [(0.0, -0.22), (0.2, -0.02), (0.22, 0.1), (0.14, 0.18), (0.05, 0.16), (0.0, 0.1), (-0.05, 0.16), (-0.14, 0.18), (-0.22, 0.1), (-0.2, -0.02)]
     hc = paint(slab("HeartCore", heart, 0.1, Matrix.Translation((0, -0.1, -1.55)) @ Matrix.Diagonal((0.8, 1, 0.8, 1)), bevel=0, segments=1), "#FF7A9C", "Neon")
     anim(hc, (0, -0.1, -1.55), (0, 1, 0), pulse(0.1, 1.1), flash(0.2))
-    inner = glass4(blob("InnerGlow", (0, 0.05, -1.62), (0.5, 0.52, 0.38), 8, 5), "#FFD23C", "inner")
+    yolk = bmesh.new()
+    ellipsoid_bm(yolk, (0, 0.08, -1.6), (0.7, 0.74, 0.54), 8, 5)
+    inner = glass4(_obj("InnerGlow", yolk), "#FFC81E", "inner")
     ds += [tail, tuft, bubble, hc, inner]
     return body, ds
 

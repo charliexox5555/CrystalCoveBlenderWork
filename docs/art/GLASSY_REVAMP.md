@@ -20,12 +20,12 @@ After reviewing v3 batch 1, the creator asked for "the best it can be". **v4 is 
 
 | Glassy | Rarity | Tris v3 → v4 | Shards | Body change | Parts / animated | Face | Round-trip |
 |---|---|---:|---:|---:|---:|---|---|
-| Glass Dragon | Mythic | 2724 → 2992 | 20 | 0.00% | 21 / 14 | yes | Pass |
+| Glass Dragon | Mythic | 2724 → 2924 | 20 | 0.00% | 19 / 12 | yes | Pass |
 | Galaxy Orb | Mythic | 2816 → 2898 | 20 | 0.04% | 10 / 9 | | Pass |
 | Comet | Legendary | 2304 → 2974 | 20 | 0.60% | 12 / 9 | yes | Pass |
-| Prism Blade | Epic | 864 → 1002 | 18 | 2.04% | 9 / 8 | | Pass |
+| Prism Blade | Epic | 864 → 1194 | 18 | 1.16% | 10 / 9 |  | Pass |
 | Rocket Pop | Epic | 1472 → 1432 | 18 | 0.00% | 12 / 9 | | Pass |
-| Glass Duck | Epic | 1478 → 1482 | 18 | 0.00% | 12 / 10 | yes | Pass |
+| Glass Duck | Epic | 1478 → 1500 | 18 | 0.00% | 12 / 10 | yes | Pass |
 | Pop | Starter | 1472 → 1408 | 16 | 1.52% | 6 / 3 | | Pass |
 | Jam | Starter | 1448 → 1476 | 16 | 0.00% | 6 / 5 | | Pass |
 | Prism | Starter | 516 → 1092 | 16 | 0.71% | 5 / 4 | | Pass |
@@ -44,6 +44,8 @@ After reviewing v3 batch 1, the creator asked for "the best it can be". **v4 is 
 | Glass Cup | Common | 1024 → 1380 | 16 | 1.24% | 4 / 3 | | Pass |
 | Water Jug | Common | 1396 → 1460 | 16 | 1.28% | 3 / 2 | | Pass |
 | Lemonade Bottle | Common | 1248 → 1244 | 16 | 0.00% | 7 / 4 | | Pass |
+
+**Hero pass (after review):** the exported FBX normals were checked directly. Every body vertex has one smooth normal, so the remaining facets came from too few body triangles, not from split normals. The Glass Duck body is now an exact boolean union of smooth ellipsoids (712 body tris instead of a 620-tri capped Quadriflow mesh) with a clear glass shell around a yellow inner volume. The Dragon has a 1,000-tri body budget (the ear fins went to pay for it), 1.4× bigger membrane wings with thicker ribs spread out to the sides, a chest-out stance and a bigger spade tail tip. The Prism Blade has a large faceted Neon pommel gem, Neon edge lines and crisper 2-segment edge bevels.
 
 Budgets are unchanged (ART_BIBLE: 1,500, or 3,000 for Legendary/Mythic), and almost every glassy now sits right at its cap. **The budget is the main limit on further polish:** a higher cap would mostly go into smoother bodies (Duck and the 16–20-segment bottles still show a slightly polygonal outline up close). Body bounds stay within 2.3% of release_v2; `Radius` is unchanged.
 

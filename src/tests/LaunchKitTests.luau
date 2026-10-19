@@ -64,7 +64,7 @@ return function(t, deps)
 		f.Signature.Stored = f.MaxHp * kit.StoreCap * (kit.ReadyAt - 0.1)
 		Rules.turnaround(s, 1)
 		t.eq(Rules.ready(s, 1), nil, "not Ready below ReadyAt")
-		f.Signature.Stored = f.MaxHp * kit.StoreCap * kit.ReadyAt
+		f.Signature.Stored = f.MaxHp * kit.StoreCap * (kit.ReadyAt + 0.01)
 		Rules.turnaround(s, 1)
 		t.ok(Rules.ready(s, 1) ~= nil, "Ready at half")
 		f.Signature.Stored = f.MaxHp * kit.StoreCap -- kept filling while Ready

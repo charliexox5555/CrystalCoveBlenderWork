@@ -93,10 +93,10 @@ return function(t, deps)
 
 	t.test("Light Bulb's armed clash drains the foe's charge, but not a Ready foe", function()
 		local s = fight("light_bulb", "jam")
-		for _ = 1, 3 do
+		for _ = 1, Balance.CombatRelease.Kits.light_bulb.Every do
 			Rules.hit(s, 10, 0.5)
 		end
-		t.ok(s.Fighters[1].Signature.Armed ~= nil, "armed after three clashes")
+		t.ok(s.Fighters[1].Signature.Armed ~= nil, "armed once charged")
 		s.Fighters[2].Signature.Charge = 1
 		s.Fighters[2].Signature.BusyUntil = -1
 		Rules.hit(s, 10, 0.5)

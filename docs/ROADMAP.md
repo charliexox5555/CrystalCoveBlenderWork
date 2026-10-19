@@ -3,6 +3,16 @@
 Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DESIGN v0.3](GAME_DESIGN.md).
 **Current milestone: F5 — integration polish.** Wave1 imports, fitted fences and the native multiplayer/security pass are complete. Real-phone checks, final UI artwork and publishing remain with the creator; Marble packs, gamepasses and Marble Kiln purchases stay disabled; creator-approved match selection spends are implemented.
 
+### Release overhaul (Oct 18–23) — [plan](design/RELEASE_OVERHAUL_PLAN.md)
+
+- [x] **CL:** audit + research ([report](research/COMBAT_OVERHAUL_RESEARCH.md)); creator decisions 85–89.
+- [x] **CL:** optional CAST on automatic powers (decision 85): Ready hold, CastPower remote, bot cast brain, CAST button with twist-aware good-moment hint, verified in a live Studio bot match.
+- [x] **CL:** rarity edge ≈ 55% (HP-only, Mythic +3%, +0.6%/star); real-swing balance matrix (`tools/release_matrix.sh`); 37 glassies (24 + Hollowlight + 12 launch) retuned on the real swing, 34/37 in 45–55%.
+- [x] **CL:** launch power rules: zones (pendulum-predicted), drain, brew cycle, riposte, pierce, aimed dash, horizontal sweep, stored timing, rebirth.
+- [ ] **CL/U:** creator adds Assets read/write to the Open Cloud key (uploads 403); then upload + install v4 glassies, 12 launch glassies, flyers v3, finisher meshes, Hollowlight v5; add the 12 to ReleaseRoster and the Kiln.
+- [ ] **B/E/G/H/I:** combat feel, power VFX + sounds, premium finishers, flyers v3, Hollowlight premium: Studio verification and reports (sessions in progress).
+- [ ] **U:** save/publish the place (overnight Studio installs live only in the open place).
+
 - [ ] **CL:** flyers v3 (workstream H, decision 93): four premium Blender flyers built and FBX-validated, shared `RideMotion` (float, drift, bank, launch, loop sound) live, trails/particles/lights on the current meshes. **Remaining:** Open Cloud upload (key needs asset permission), `install_flyers_v3.luau`, rider-pose fit on the new geometry, creator feel/phone review. [Report](testing/flyers_v3/REPORT.md)
 
 - [x] **CL:** combat feel pass (workstream B): tiered hits with pooled impacts, layered sound, client hitstop with smooth catch-up, capped camera kick/shake/FOV punch, glass wobble/crack glint, Perfect/power land-miss/block/comeback/tension/KO-hold/victory beats and the manual-cast hook; reduced motion and mobile budget. [Report](testing/combat_feel/README.md). Phone preset check and creator real-speed tuning remain.

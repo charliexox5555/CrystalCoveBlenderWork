@@ -29,6 +29,16 @@ return {
 	["rbxassetid://9116418035"] = { Start = 0, Seconds = 1.6, Fade = 0.4, Volume = 0.35, Pitch = 1 },
 	["rbxassetid://9126073001"] = { Start = 0, Seconds = 1.15, Fade = 0.25, Volume = 0.35, Pitch = 1 },
 	["rbxassetid://9113080188"] = { Start = 0, Seconds = 1.3, Fade = 0.35, Volume = 0.35, Pitch = 1.1 },
+	-- Hollowlight set: levels matched to the approved bank's measured peak RMS (AudioAnalyzer, 2026-10-19).
+	["rbxassetid://1839909531"] = { Start = 0, Seconds = 1.6, Fade = 0.45, Volume = 0.22, Pitch = 1 },
+	["rbxassetid://9039578446"] = { Start = 0.15, Seconds = 0.75, Fade = 0.3, Volume = 0.16, Pitch = 1 },
+	["rbxassetid://9120697823"] = { Start = 0.3, Seconds = 0.9, Fade = 0.35, Volume = 0.22, Pitch = 1 },
+	["rbxassetid://9125401238"] = { Start = 0, Seconds = 1.3, Fade = 0.5, Volume = 0.34, Pitch = 1 },
+	["rbxassetid://9116418291"] = { Start = 0.6, Seconds = 1.15, Fade = 0.5, Volume = 0.5, Pitch = 1 },
+	["rbxassetid://9116395089"] = { Start = 0.05, Seconds = 0.5, Fade = 0.25, Volume = 1.1, Pitch = 1 },
+	["rbxassetid://9125442175"] = { Start = 0.45, Seconds = 1.0, Fade = 0.3, Volume = 0.26, Pitch = 1 },
+	["rbxassetid://9125986205"] = { Start = 0, Seconds = 18, Fade = 0.5, Volume = 0.16, Pitch = 1 },
+	["rbxassetid://9126203855"] = { Start = 0, Seconds = 4.7, Fade = 0.5, Volume = 0.2, Pitch = 1 },
 	-- Finishers V2 additions (workstream G): provisional trims, measured in Studio (docs/testing/finishers_v2).
 	["rbxassetid://9116385087"] = { Start = 0, Seconds = 2.2, Fade = 0.5, Volume = 0.4, Pitch = 1 },
 	["rbxassetid://9116393976"] = { Start = 0, Seconds = 1.0, Fade = 0.3, Volume = 0.35, Pitch = 1 },

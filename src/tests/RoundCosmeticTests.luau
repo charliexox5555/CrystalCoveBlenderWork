@@ -28,14 +28,17 @@ return function(t)
 		local C = if Config then require(Config.RoundCosmetics) else require("../shared/Config/RoundCosmetics")
 		local Audio = if Config then require(Config.Audio) else require("../shared/Config/Audio")
 		local Cues = if Config then require(Config.FinisherAudio) else require("../shared/Config/FinisherAudio")
+		local Balance = if Config then require(Config.Balance) else require("../shared/Config/Balance")
 		for _, def in C.catalog("Finishers") do
+			-- Lantern Eclipse is the longer premium show; its cues must still land before it ends.
+			local last = if def.Id == "lantern_eclipse" then Balance.CosmeticPresentation.Eclipse.Duration else 1.5
 			local cues = Cues.Finishers[def.Id]
 			t.ok(cues, def.Id .. " has cues")
 			local impacts, phases = 0, {}
 			for _, cue in cues do
 				t.ok(Audio[cue.Sound] ~= nil, def.Id .. " uses bank sound " .. cue.Sound)
 				t.ok(cue.Phase == "Rise" or cue.Phase == "Fly" or cue.Phase == "Burst", "known phase")
-				t.ok(cue.At >= 0 and cue.At <= 1.5, "cue lands inside the finisher")
+				t.ok(cue.At >= 0 and cue.At <= last, "cue lands inside the finisher")
 				t.ok((cue.Volume or 1) <= 1.5, "volume stays limited")
 				impacts += if cue.Priority == 1 then 1 else 0
 				phases[cue.Phase] = true

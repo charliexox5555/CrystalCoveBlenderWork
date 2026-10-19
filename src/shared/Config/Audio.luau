@@ -37,6 +37,16 @@ return {
 	FallingShimmer = "rbxassetid://9116418035",
 	LanternBell = "rbxassetid://9126073001",
 	GhostWhoo = "rbxassetid://9113080188",
+	-- Hollowlight set (workstream I, 2026-10-19; free licensed library, see docs/vfx/HOLLOWLIGHT_PREMIUM.md §6).
+	HL_SawRise = "rbxassetid://1839909531",
+	HL_Choir = "rbxassetid://9039578446",
+	HL_ShadowSweep = "rbxassetid://9120697823",
+	HL_EclipseBoom = "rbxassetid://9125401238",
+	HL_EmberFall = "rbxassetid://9116418291",
+	HL_Twinkle = "rbxassetid://9116395089",
+	HL_TakeOff = "rbxassetid://9125442175",
+	HL_RideSparkle = "rbxassetid://9125986205",
+	HL_RideHum = "rbxassetid://9126203855",
 	-- Finishers V2 additions (workstream G, 2026-10-19; ProSoundEffects, see docs/audio/SOUND_LIST.md).
 	FN_MagicBurst = "rbxassetid://9116385087",
 	FN_GlowSwell = "rbxassetid://9116393976",

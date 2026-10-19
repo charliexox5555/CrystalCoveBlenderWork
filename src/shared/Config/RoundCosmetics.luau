@@ -105,7 +105,7 @@ C.Seasonal = {
 			AssetBundle = "Hollowlight",
 			AssetName = "moonlantern_carriage",
 			Seasonal = true,
-			Description = "Ride a glass crescent moon with bat wings, wisp engines and a swinging pumpkin lantern.",
+			Description = "Ride a glass crescent moon with flexing bat wings, wisp engines, a trail of moon dust and a swinging pumpkin lantern.",
 		},
 	},
 	Finishers = {
@@ -119,9 +119,11 @@ C.Seasonal = {
 			AssetName = "lantern_eclipse",
 			Seasonal = true,
 			-- Longer show: the camera holds on it and kicks on the release beat (seconds after impact).
-			CameraHoldSeconds = 1.6,
-			KickAt = 0.85,
-			Description = "Ghosts gather round a pumpkin lantern, a glass moon eclipses it, and it bursts into glowing shards.",
+			CameraHoldSeconds = 2.6,
+			KickAt = 1.7,
+			CameraPush = 0.68, -- slow push in through the gather and eclipse
+			CameraOrbit = 0.3, -- and a gentle drift round the lantern (skipped with reduced motion)
+			Description = "A choir of ghosts gathers round a pumpkin lantern, a glass moon's shadow sweeps the arena, and the lantern bursts into glowing glass and falling embers.",
 		},
 	},
 }

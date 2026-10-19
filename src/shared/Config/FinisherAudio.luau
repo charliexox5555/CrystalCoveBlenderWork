@@ -83,18 +83,25 @@ return {
 			cue("ChimeCluster", "Burst", 1.15, 0.7, 1.4),
 			cue("FN_GlassPing", "Burst", 1.5, 0.7, 1.5),
 		},
-		-- Lantern Eclipse (Balance.CosmeticPresentation.Eclipse: eclipse 0.55 s, release 0.85 s):
-		-- lantern bell pops in, ghosts whoo as they swoop, rising shimmer under the moon, then a
-		-- release poof with the lantern's glass bursting and a glittering fade.
+		-- Lantern Eclipse v2 (Balance.CosmeticPresentation.Eclipse: gather 0.3, eclipse 1.0, hush 1.55, release 1.7 s).
+		-- The Hollowlight motif is LanternBell rung as a rising minor triad (x1, x1.19, x1.5): note 1 on ignite,
+		-- notes 2 and 3 as the ghosts arrive. Saw riser and choir under the eclipse, a hush, then a deep boom,
+		-- glass break and poof on release, and an ember shimmer tail. Every cue ends by 3.1 s (the anchor's life).
 		lantern_eclipse = {
-			cue("LanternBell", "Rise", 0, 0.7, 0.9),
+			cue("LanternBell", "Rise", 0, 0.55, 0.84),
 			cue("RisingWhoosh", "Fly", 0, 0.9, 0.85),
-			cue("LanternBell", "Burst", 0, 0.9, 1.05),
-			cue("GhostWhoo", "Burst", 0.05, 1, 1.2),
-			cue("MagicRiser", "Burst", 0.4, 0.8, 1.25),
-			cue("MagicPoof", "Burst", 0.85, 1.2, 0.9, 1),
-			cue("SafetyGlass", "Burst", 0.87, 0.7, 1.2),
-			cue("ChimeCluster", "Burst", 1.0, 0.8, 0.95),
+			cue("LanternBell", "Burst", 0, 0.9, 1),
+			cue("HL_SawRise", "Burst", 0.22, 1, 1),
+			cue("GhostWhoo", "Burst", 0.32, 0.8, 1.25),
+			cue("LanternBell", "Burst", 0.55, 0.8, 1.19),
+			cue("LanternBell", "Burst", 0.8, 0.85, 1.5),
+			cue("HL_Choir", "Burst", 0.85, 1, 0.85),
+			cue("HL_ShadowSweep", "Burst", 0.98, 1, 1.15),
+			cue("HL_EclipseBoom", "Burst", 1.7, 1, 0.8, 1),
+			cue("SafetyGlass", "Burst", 1.71, 0.75, 1.15),
+			cue("MagicPoof", "Burst", 1.72, 0.9, 0.85),
+			cue("HL_EmberFall", "Burst", 1.85, 1, 1),
+			cue("HL_Twinkle", "Burst", 2.55, 0.8, 1.1),
 		},
 	},
 }

@@ -11,6 +11,7 @@ local D = require(RS.Shared.Config.Showcase).Demo
 local T = require(RS.Shared.Config.Balance).CosmeticPresentation
 local Cosmetics = require(RS.Shared.Config.RoundCosmetics)
 local RidePose = require(script.Parent.RidePose)
+local CarriageFX = require(script.Parent.CarriageFX)
 local FinisherFX = require(script.Parent.FinisherFX)
 local FinisherAudio = require(script.Parent.FinisherAudio)
 local Stage = {}
@@ -232,6 +233,8 @@ function Stage:BuildRide(id)
 		end
 	end
 	model.Parent = self.Root
+	-- Carriage extras: take-off, wing-tip flex, lantern flame, glows and the ride loop (workstream I).
+	ride.FX = CarriageFX.attach(model, { Effects = self.Root })
 	local avatar = copyAvatar()
 	if avatar then
 		avatar.Parent = self.Root
@@ -258,6 +261,9 @@ function Stage:StepRide(time)
 	local pose = base
 		* CFrame.new(0, wave * T.RideBob, 0)
 		* CFrame.Angles(math.cos(phase) * T.RideNod, 0, wave * T.RideBank)
+	if ride.FX then
+		pose *= ride.FX:Offset(time)
+	end
 	for light, brightness in ride.Lights do
 		light.Brightness = brightness
 			* (1 - (T.RideLightFlicker or 0) * (0.5 + 0.5 * math.noise(time * 6, light.Range)))
@@ -291,6 +297,9 @@ function Stage:StepRide(time)
 		else
 			p.Size = rest.Size * Vector3.new(1, 1, 0.8 + math.sin(time * T.RideExhaustSpeed) * 0.2)
 		end
+	end
+	if ride.FX then
+		ride.FX:Step(time, phase, self.Sound)
 	end
 end
 
@@ -581,6 +590,9 @@ function Stage:Destroy()
 	end
 	if self.Ride and self.Ride.Pose then
 		self.Ride.Pose:Destroy()
+	end
+	if self.Ride and self.Ride.FX then
+		self.Ride.FX:Destroy()
 	end
 	self.Root:Destroy() -- owners inside go with it, which stops the finisher sounds
 	self.Root, self.Ride, self.Demo = nil, nil, nil

@@ -157,6 +157,11 @@ function Effects:Event(e)
 	if Hero.state then
 		Hero.state(self, e)
 	end
+	-- Hollowlight's own Ready glow (LanternSeeds v2); Ready events skip the signature list below.
+	local seeded = e.Side and self.Scene.Fighters[e.Side]
+	if seeded and seeded.Seeds and (e.Type == "SignatureReady" or e.Type == "ReadyCancel") then
+		Seeds.state(self, seeded, e)
+	end
 	if
 		not table.find({
 			"Charge",

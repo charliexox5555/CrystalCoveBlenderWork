@@ -1,4 +1,4 @@
-"""Collects every assets/blender/glassies/<id>/v1/manifest.json of the Roster V2 launch glassies into the
+"""Collects every assets/blender/glassies/<id>/v4/manifest.json of the Roster V2 launch glassies into the
 Studio-facing files (same shapes as docs/art/glassy_revamp/tools/collect_manifest.py):
 
     python3 docs/art/launch_glassies/tools/collect_launch.py
@@ -18,7 +18,7 @@ ORDER = ["cookie_jar", "fishbowl", "glass_top", "piggy_bank", "bubble_wand", "cr
 
 motion, imports, geometry = {}, {}, {}
 for gid in ORDER:
-    path = ROOT / "assets/blender/glassies" / gid / "v1/manifest.json"
+    path = ROOT / "assets/blender/glassies" / gid / "v4/manifest.json"
     if not path.exists():
         continue
     m = json.loads(path.read_text())
@@ -49,7 +49,7 @@ for gid in ORDER:
     geometry[gid] = m["release_geometry"]
 
 doc = {
-    "schema": "launch_glassies_v1/1 (glassy_revamp_v3/1 plus `follows` and the `drip` idle type)",
+    "schema": "launch_glassies_v4/1 (glassy_revamp_v3/1 plus `follows` and the `drip` idle type)",
     "coordinates": "Roblox model space: roblox = (x, z, -y) of Blender; studs at GlassyScale 1; origin = hang point",
     "idle_types": {"sway": "rotate about axis amp_deg*sin(2*pi*t/period_s+phase)", "spin": "rotate about axis at deg_per_s",
                    "bob": "translate along axis amp_studs*sin(...)", "pulse": "scale about pivot 1+amp*sin(...); Neon parts also brighten",

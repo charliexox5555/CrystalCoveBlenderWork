@@ -10,7 +10,7 @@ Blender models for the 12 approved launch glassies ([ROSTER_V2](../../design/ROS
   - `$B -b --factory-startup --python $T -- validate <id>` for the FBX round-trip in a fresh process
   - `$B -b --factory-startup --python $T -- sheet "Title" out.png <id> ...` for a labelled sheet
   - `python3 docs/art/launch_glassies/tools/collect_launch.py` to rebuild the Studio-facing JSON
-- **Outputs per glassy:** `assets/blender/glassies/<id>/v1/` holds `<id>_body/details/shards/bundle.fbx`, `<id>.blend` (with `Pivot_<Detail>` empties), `<id>_icon.png` (512², shared rig), `cracks.json` and `manifest.json`. 3/4 previews are in `previews/`.
+- **Outputs per glassy:** `assets/blender/glassies/<id>/v4/` holds `<id>_body/details/shards/bundle.fbx`, `<id>.blend` (with `Pivot_<Detail>` empties), `<id>_icon.png` (512², shared rig), `cracks.json` and `manifest.json`. 3/4 previews are in `previews/`.
 - **For Studio:** [motion_manifest.json](motion_manifest.json) (parts, pivots, axes, idle/hit motion in Roblox coordinates; v3 schema plus `follows` and the `drip` idle) and [launch_import_data.json](launch_import_data.json) (`assets` in the `v3_import_data.json` shape, plus `release_geometry` {Radius, Center} measured from each Body for `Config/ReleaseGeometry.luau`).
 - **Rules held by the builder:** origin = hang point, 1 unit = 1 stud, front = -Y; intact tris ≤ 1,500 (3,000 Legendary/Mythic); shards 16 (Common–Rare), 18 (Epic), 20 (Legendary/Mythic), closed, volume ratio 1 ± 0.001; Body radius within 0.03 of the ROSTER_V2 target.
 

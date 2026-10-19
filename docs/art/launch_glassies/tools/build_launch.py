@@ -12,7 +12,9 @@ docs/art/glassy_revamp/tools/build_glassy_v3.py (which execs build_combat_releas
 geometry primitives, materials, motion tags (anim/sway/spin/...), render_views and shard cutting.
 If the revamp file is mid-edit and fails to load, its last committed version is used.
 
-Writes only assets/blender/glassies/<id>/v1/ and docs/art/launch_glassies/.
+Writes only assets/blender/glassies/<id>/v4/ and docs/art/launch_glassies/. build_v4() itself cannot run here: it
+needs bpy.context.window (absent with -b) and release_v2/v3 baselines new glassies do not have, so build() below
+mirrors it (same checks, rcut4 fracture, render_views4 icons, rig cards removed before saving, same manifest keys).
 Conventions match v3: origin = hang point, body hangs down -Z, front faces -Y, 1 unit = 1 stud,
 Pivot_<Detail> empties (local Z = motion axis), motion in Blender and Roblox (x, z, -y) coordinates.
 Additions to the v3 motion schema: `follows` (a part that rides another part's motion; its own
@@ -52,7 +54,7 @@ except Exception as _err:  # the revamp session may be mid-edit
         exec(compile(_src, _V3_REL + "@HEAD", "exec"))
         V3_SOURCE = "v3 HEAD"
 
-VERSION = "v1"
+VERSION = "v4"   # shares the v4 revamp bar, look and icon framing (folder name agreed with workstreams A/C)
 LAUNCH = {
     "cookie_jar": ("Cookie Jar", "Common", "#E8B77A", 0.88),
     "fishbowl": ("Fishbowl", "Common", "#5BC8FF", 0.90),
@@ -353,7 +355,7 @@ def build(gid, samples=96, force=False):
     folder = out_folder(gid)
     manifest_path = os.path.join(folder, "manifest.json")
     if os.path.exists(manifest_path) and not force:
-        return {"id": gid, "status": "existing v1 preserved (--force to rebuild)"}
+        return {"id": gid, "status": "existing v4 preserved (--force to rebuild)"}
     os.makedirs(folder, exist_ok=True)
     name, rarity, tint, target = LAUNCH[gid]
     body, details = build_objects(gid)
@@ -1548,8 +1550,8 @@ def b_glass_phoenix(gid):
         slab_bm(wb, wing_pts, 0.07, 0.025, 1, sweep)
         slab_bm(cb, covert, 0.05, 0.018, 1, sweep @ Matrix.Translation((0, -0.05, 0)))
         for (u, v), ang in tip_at:
-            m = sweep @ Matrix.Translation((u, -0.03, v)) @ Matrix.Rotation(-ang, 4, "Y")
-            slab_bm(tb, [(-0.09, 0.0), (0.0, 0.055), (0.11, 0.0), (0.0, -0.055)], 0.05, 0, 1, m)
+            m = sweep @ Matrix.Translation((u - 0.05 * math.cos(ang), -0.03, v - 0.05 * math.sin(ang))) @ Matrix.Rotation(-ang, 4, "Y")
+            slab_bm(tb, [(-0.12, 0.0), (0.02, 0.075), (0.15, 0.03), (0.17, -0.02), (0.02, -0.075)], 0.05, 0, 1, m)
         for bm_ in (wb, cb, tb):
             bmesh.ops.recalc_face_normals(bm_, faces=bm_.faces)
         axis = (sweep.to_3x3() @ Vector((0, 0, 1))).normalized() * -side
@@ -1565,21 +1567,24 @@ def b_glass_phoenix(gid):
     # Tail: three long feathers hanging behind, each with a glowing eye-spot.
     tail_root = Vector((0, 0.5, -1.6))
     gems = bmesh.new()
-    for i, (ang, L) in enumerate(((-32, 1.0), (0, 1.2), (32, 1.0))):
+    for i, (ang, L) in enumerate(((-38, 1.05), (0, 1.3), (38, 1.05))):
         rot = Matrix.Rotation(math.radians(ang), 4, "Y") @ Matrix.Rotation(math.radians(14), 4, "X") @ Matrix.Rotation(math.pi / 2, 4, "Y")
         m = Matrix.Translation(tail_root + Vector((math.sin(math.radians(ang)) * 0.1, 0.05 * abs(i - 1), 0))) @ rot
         fb = bmesh.new()
-        slab_bm(fb, feather_outline(L, 0.13, 0.82), 0.06, 0.022, 1, m)
+        slab_bm(fb, feather_outline(L, 0.2, 0.8), 0.06, 0.022, 1, m)
         bmesh.ops.recalc_face_normals(fb, faces=fb.faces)
         tf = paint(_obj(f"TailFeather_{i + 1}", fb, sharp_deg=55), flame if i != 1 else "#FF9440")
         anim(tf, tail_root, (0, 1, 0), sway(7, 1.8, i * 0.8), kick(16), lod_keep=(i == 1))
         ds.append(tf)
         tip = m @ Vector((L * 0.8, -0.04, 0))
-        ellipsoid_bm(gems, tip, (0.075, 0.03, 0.075), 6, 4, rot.to_quaternion())
+        ellipsoid_bm(gems, tip, (0.11, 0.035, 0.11), 8, 4, rot.to_quaternion())
     tg = paint(_obj("TailGems", gems), gold, "Neon")
     anim(tg, tail_root, (0, 1, 0), pulse(0.08, 1.8), flash(0.3), note="eye-spots on the tail feathers; ride them (client may parent per feather)")
     ds.append(tg)
-    shell = as_inner(paint(blob("FlameShell", body_c + Vector((0, -0.02, 0)), (0.6, 0.52, 0.55), 12, 8), gold, alpha=0.35, transmission=0.6))
+    fs = bmesh.new()
+    ellipsoid_bm(fs, body_c + Vector((0, -0.02, 0)), (0.6, 0.52, 0.55), 12, 8)
+    ellipsoid_bm(fs, head_c + Vector((0, 0.02, 0)), (0.36, 0.33, 0.33), 10, 7)
+    shell = as_inner(paint(_obj("FlameShell", fs), gold, alpha=0.35, transmission=0.6))
     anim(shell, body_c, (0, 0, 1), pulse(0.03, 2.2), None, note="inner sunfire glass layer; brighter in phase 2")
     core = paint(blob("EmberCore", body_c + Vector((0, -0.12, 0.02)), (0.22, 0.2, 0.24), 10, 6), ember, "Neon")
     anim(core, body_c, (0, 0, 1), pulse(0.12, 1.1), flash(0.35), lod_keep=False, extra_idle=[flicker(0.05, 8)],

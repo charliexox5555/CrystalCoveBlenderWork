@@ -1,7 +1,7 @@
 {
   "id": "cookie_jar",
   "name": "Cookie Jar",
-  "version": "v1",
+  "version": "v4",
   "rarity": "Common",
   "tint": "#E8B77A",
   "status": {
@@ -21,92 +21,92 @@
   "intact_triangles": 1492,
   "triangle_budget": 1500,
   "shard_count": 16,
-  "fracture_volume_ratio": 0.9999999994262634,
+  "fracture_volume_ratio": 1.0000000004905996,
   "checks": {
     "Body": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 2.7177777180691605
+      "volume": 2.717777718069161
     },
     "Shard_01": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.14457796231388811
+      "volume": 0.1445779631062851
     },
     "Shard_02": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.27440062600062853
+      "volume": 0.27440062592515324
     },
     "Shard_03": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.2734784261693236
+      "volume": 0.2734784314143875
     },
     "Shard_04": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.24009499313499638
+      "volume": 0.24009499723796288
     },
     "Shard_05": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.2233910475219527
+      "volume": 0.2233910493465323
     },
     "Shard_06": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.21123042357738264
+      "volume": 0.21123041998159606
     },
     "Shard_07": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.19148110152935632
+      "volume": 0.19148110150988118
     },
     "Shard_08": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.17616141102140395
+      "volume": 0.1761614068039451
     },
     "Shard_09": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.16891412363017377
+      "volume": 0.16891412699343306
     },
     "Shard_10": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.13122448118110555
+      "volume": 0.1312244832604085
     },
     "Shard_11": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.12801985632857057
+      "volume": 0.12801985595564977
     },
     "Shard_12": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.12634064185746766
+      "volume": 0.12634063800309087
     },
     "Shard_13": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.11127327026828086
+      "volume": 0.11127327017847002
     },
     "Shard_14": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.09515508414179893
+      "volume": 0.09515508473644517
     },
     "Shard_15": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.08887557269132858
+      "volume": 0.08887557018354378
     },
     "Shard_16": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.1331586951422135
+      "volume": 0.13315869476571704
     }
   },
   "crack_segments": 144,
@@ -871,11 +871,11 @@
       "name": "Shard_03",
       "source_name": "Shard_03",
       "role": "Shard",
-      "triangles": 222,
+      "triangles": 220,
       "bounds_blender": [
         [
           -0.3931678235530853,
-          0.056173235177993774,
+          0.05617323890328407,
           -2.0221071243286133
         ],
         [
@@ -1002,7 +1002,7 @@
       "triangles": 158,
       "bounds_blender": [
         [
-          -0.32131391763687134,
+          -0.3213139474391937,
           -0.5800734162330627,
           -1.5284578800201416
         ],
@@ -1067,7 +1067,7 @@
       "bounds_blender": [
         [
           -0.5778803825378418,
-          0.15375423431396484,
+          0.15375420451164246,
           -2.119999885559082
         ],
         [
@@ -1130,7 +1130,7 @@
       "triangles": 78,
       "bounds_blender": [
         [
-          -0.02348838746547699,
+          -0.02348838374018669,
           -0.860105037689209,
           -2.119999885559082
         ],
@@ -1159,7 +1159,7 @@
       "name": "Shard_12",
       "source_name": "Shard_12",
       "role": "Shard",
-      "triangles": 96,
+      "triangles": 94,
       "bounds_blender": [
         [
           0.20886969566345215,
@@ -1263,7 +1263,7 @@
           -1.6672635078430176
         ],
         [
-          0.4483211636543274,
+          0.448321133852005,
           -0.21098697185516357,
           -0.7599998712539673
         ]
@@ -1317,22 +1317,22 @@
     }
   ],
   "files": {
-    "body": "assets/blender/glassies/cookie_jar/v1/cookie_jar_body.fbx",
-    "details": "assets/blender/glassies/cookie_jar/v1/cookie_jar_details.fbx",
-    "shards": "assets/blender/glassies/cookie_jar/v1/cookie_jar_shards.fbx",
-    "bundle": "assets/blender/glassies/cookie_jar/v1/cookie_jar_bundle.fbx",
-    "icon": "assets/blender/glassies/cookie_jar/v1/cookie_jar_icon.png",
-    "blend": "assets/blender/glassies/cookie_jar/v1/cookie_jar.blend",
-    "cracks": "assets/blender/glassies/cookie_jar/v1/cracks.json"
+    "body": "assets/blender/glassies/cookie_jar/v4/cookie_jar_body.fbx",
+    "details": "assets/blender/glassies/cookie_jar/v4/cookie_jar_details.fbx",
+    "shards": "assets/blender/glassies/cookie_jar/v4/cookie_jar_shards.fbx",
+    "bundle": "assets/blender/glassies/cookie_jar/v4/cookie_jar_bundle.fbx",
+    "icon": "assets/blender/glassies/cookie_jar/v4/cookie_jar_icon.png",
+    "blend": "assets/blender/glassies/cookie_jar/v4/cookie_jar.blend",
+    "cracks": "assets/blender/glassies/cookie_jar/v4/cracks.json"
   },
   "hashes": {
-    "body": "1b25098d3cc7999085789d7336d703117cedc25ec00d3ac9b44531d2c5c27bb4",
-    "details": "31501cd9f0bae7c690b2082bb10aecf3c4e90c34565de396c270f3c7d13f2041",
-    "shards": "d811a00394be2f3b349b4b7c327cb08d3c5a16dff6d36fe7b2524eda9f17e23b",
-    "bundle": "802a3af11a789160157623700056b2b71bc05469e749976b7dc0614a5f7ff3f9",
-    "icon": "cb077f4744d2fc3527d5c6bcb86b2690f8141ae33ddcd80c78fec31a46678afe",
-    "blend": "e802e982335d738ac68c415f9fb26d9371a96e21493af6ade60eb43db260a3d8",
-    "cracks": "b44aca4815331540fb933b0fba12d851988a4b572c3880edd789d87edb6a4f15"
+    "body": "1e70d71d106aad0af88526a42285b20f20d90863d4ccf0b291819b69726bfe7c",
+    "details": "5c7b115d4f7b39608b5a80c8bc67116023ab09694f2d1ef93b49bbd25bc7023b",
+    "shards": "7dcee67efb23497bbb1ebf6c3d1edc18c305f126ee03b6882e1dddada82c550f",
+    "bundle": "ade82c7b6b479f85907c58287f97b6e6431b1582c194c9e598094ebc58cdf459",
+    "icon": "558efa71ab54b0b7a16dae521180306864f0450084acbce698c0ebaba4473e71",
+    "blend": "0498e7c997684075b29cbaf87a55a76fcffb245fcc6ae7c9f65dffcd9b7bffd3",
+    "cracks": "ed9df6c9ab24cc71dbd1d5c4e1725fbe96339e77014ef409d6e684587efb9476"
   },
   "release_geometry": {
     "Radius": 0.88,
@@ -1430,7 +1430,7 @@
       },
       {
         "name": "Shard_03",
-        "bounds_error": 1.564621925354004e-07,
+        "bounds_error": 1.5273690223693848e-07,
         "nonmanifold_edges": 0
       },
       {
@@ -1470,7 +1470,7 @@
       },
       {
         "name": "Shard_11",
-        "bounds_error": 1.7881393432617188e-07,
+        "bounds_error": 1.788236353398411e-07,
         "nonmanifold_edges": 0
       },
       {
@@ -1490,7 +1490,7 @@
       },
       {
         "name": "Shard_15",
-        "bounds_error": 1.3657139822709083e-07,
+        "bounds_error": 1.3328003749250113e-07,
         "nonmanifold_edges": 0
       },
       {

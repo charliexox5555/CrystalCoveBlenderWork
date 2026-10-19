@@ -1,5 +1,5 @@
 {
- "schema": "launch_glassies_v1/1 (glassy_revamp_v3/1 plus `follows` and the `drip` idle type)",
+ "schema": "launch_glassies_v4/1 (glassy_revamp_v3/1 plus `follows` and the `drip` idle type)",
  "coordinates": "Roblox model space: roblox = (x, z, -y) of Blender; studs at GlassyScale 1; origin = hang point",
  "idle_types": {
   "sway": "rotate about axis amp_deg*sin(2*pi*t/period_s+phase)",
@@ -29,9 +29,9 @@
    "name": "Cookie Jar",
    "rarity": "Common",
    "tint": "#E8B77A",
-   "version": "v1",
-   "bundle": "assets/blender/glassies/cookie_jar/v1/cookie_jar_bundle.fbx",
-   "icon": "assets/blender/glassies/cookie_jar/v1/cookie_jar_icon.png",
+   "version": "v4",
+   "bundle": "assets/blender/glassies/cookie_jar/v4/cookie_jar_bundle.fbx",
+   "icon": "assets/blender/glassies/cookie_jar/v4/cookie_jar_icon.png",
    "intact_triangles": 1492,
    "shard_count": 16,
    "release_geometry": {
@@ -361,9 +361,9 @@
    "name": "Fishbowl",
    "rarity": "Common",
    "tint": "#5BC8FF",
-   "version": "v1",
-   "bundle": "assets/blender/glassies/fishbowl/v1/fishbowl_bundle.fbx",
-   "icon": "assets/blender/glassies/fishbowl/v1/fishbowl_icon.png",
+   "version": "v4",
+   "bundle": "assets/blender/glassies/fishbowl/v4/fishbowl_bundle.fbx",
+   "icon": "assets/blender/glassies/fishbowl/v4/fishbowl_icon.png",
    "intact_triangles": 1494,
    "shard_count": 16,
    "release_geometry": {
@@ -634,9 +634,9 @@
    "name": "Glass Top",
    "rarity": "Uncommon",
    "tint": "#FF6FB1",
-   "version": "v1",
-   "bundle": "assets/blender/glassies/glass_top/v1/glass_top_bundle.fbx",
-   "icon": "assets/blender/glassies/glass_top/v1/glass_top_icon.png",
+   "version": "v4",
+   "bundle": "assets/blender/glassies/glass_top/v4/glass_top_bundle.fbx",
+   "icon": "assets/blender/glassies/glass_top/v4/glass_top_icon.png",
    "intact_triangles": 1492,
    "shard_count": 16,
    "release_geometry": {

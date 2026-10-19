@@ -1,7 +1,7 @@
 {
   "id": "glass_top",
   "name": "Glass Top",
-  "version": "v1",
+  "version": "v4",
   "rarity": "Uncommon",
   "tint": "#FF6FB1",
   "status": {
@@ -21,92 +21,92 @@
   "intact_triangles": 1492,
   "triangle_budget": 1500,
   "shard_count": 16,
-  "fracture_volume_ratio": 1.0000000028635543,
+  "fracture_volume_ratio": 1.0000000017694872,
   "checks": {
     "Body": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.7476310084665069
+      "volume": 0.7476310084665071
     },
     "Shard_01": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.0276454090093424
+      "volume": 0.02764540906629651
     },
     "Shard_02": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.07684134951309554
+      "volume": 0.07684133710099691
     },
     "Shard_03": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.06967440268312373
+      "volume": 0.06967443275427374
     },
     "Shard_04": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.05576034494265708
+      "volume": 0.05576034537017148
     },
     "Shard_05": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.05173496717941579
+      "volume": 0.0517349572006332
     },
     "Shard_06": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.050269633913105405
+      "volume": 0.050269633982546295
     },
     "Shard_07": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.048269425668751254
+      "volume": 0.048269428381542544
     },
     "Shard_08": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.046720768536358655
+      "volume": 0.0467207690499038
     },
     "Shard_09": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.04638752454389819
+      "volume": 0.04638752446740529
     },
     "Shard_10": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.04351682785039967
+      "volume": 0.043516812545092994
     },
     "Shard_11": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.0429905741702332
+      "volume": 0.04299057398767989
     },
     "Shard_12": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.04182668241909434
+      "volume": 0.041826682357645854
     },
     "Shard_13": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.03780057230123413
+      "volume": 0.03780057189439711
     },
     "Shard_14": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.031220724069274588
+      "volume": 0.031220728016839245
     },
     "Shard_15": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.02083419867259658
+      "volume": 0.020834198369348148
     },
     "Shard_16": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.05613760513480825
+      "volume": 0.05613760524465768
     }
   },
   "crack_segments": 132,
@@ -455,7 +455,7 @@
         ],
         [
           0.11227457970380783,
-          0.01554268691688776,
+          0.015542691573500633,
           -0.8757486939430237
         ]
       ],
@@ -483,7 +483,7 @@
         [
           -0.604049801826477,
           -0.1400136947631836,
-          -1.1852481365203857
+          -1.1852480173110962
         ],
         [
           0.30317139625549316,
@@ -513,14 +513,14 @@
       "triangles": 240,
       "bounds_blender": [
         [
-          -0.5548028945922852,
-          -0.16404613852500916,
+          -0.5548029541969299,
+          -0.16404616832733154,
           -1.4923279285430908
         ],
         [
           0.5217298269271851,
-          0.45219966769218445,
-          -0.6445345878601074
+          0.45219969749450684,
+          -0.6445344686508179
         ]
       ],
       "origin": [
@@ -577,8 +577,8 @@
       "triangles": 156,
       "bounds_blender": [
         [
-          -0.1187993735074997,
-          -0.02066810429096222,
+          -0.1187993511557579,
+          -0.02066808193922043,
           -1.1272201538085938
         ],
         [
@@ -646,7 +646,7 @@
           -1.0379858016967773
         ],
         [
-          0.4867073595523834,
+          0.48670732975006104,
           0.6403732895851135,
           -0.516109824180603
         ]
@@ -678,7 +678,7 @@
           -1.0705201625823975
         ],
         [
-          0.09224127978086472,
+          0.09224127233028412,
           0.11550192534923553,
           -0.5379732847213745
         ]
@@ -738,12 +738,12 @@
       "bounds_blender": [
         [
           -0.24194836616516113,
-          -0.17635047435760498,
-          -1.1944637298583984
+          -0.1763504445552826,
+          -1.1944636106491089
         ],
         [
-          0.6261857151985168,
-          0.5862458348274231,
+          0.6261856555938721,
+          0.5862458944320679,
           -0.5686588287353516
         ]
       ],
@@ -766,7 +766,7 @@
       "name": "Shard_11",
       "source_name": "Shard_11",
       "role": "Shard",
-      "triangles": 280,
+      "triangles": 282,
       "bounds_blender": [
         [
           -0.38401293754577637,
@@ -830,7 +830,7 @@
       "name": "Shard_13",
       "source_name": "Shard_13",
       "role": "Shard",
-      "triangles": 140,
+      "triangles": 142,
       "bounds_blender": [
         [
           -0.2457643449306488,
@@ -866,13 +866,13 @@
       "bounds_blender": [
         [
           0.029953407123684883,
-          -0.19510291516780853,
+          -0.19510290026664734,
           -1.4943023920059204
         ],
         [
           0.6529093384742737,
           0.25878244638442993,
-          -0.6342660784721375
+          -0.6342660188674927
         ]
       ],
       "origin": [
@@ -956,21 +956,21 @@
     }
   ],
   "files": {
-    "body": "assets/blender/glassies/glass_top/v1/glass_top_body.fbx",
-    "details": "assets/blender/glassies/glass_top/v1/glass_top_details.fbx",
-    "shards": "assets/blender/glassies/glass_top/v1/glass_top_shards.fbx",
-    "bundle": "assets/blender/glassies/glass_top/v1/glass_top_bundle.fbx",
-    "icon": "assets/blender/glassies/glass_top/v1/glass_top_icon.png",
-    "blend": "assets/blender/glassies/glass_top/v1/glass_top.blend",
-    "cracks": "assets/blender/glassies/glass_top/v1/cracks.json"
+    "body": "assets/blender/glassies/glass_top/v4/glass_top_body.fbx",
+    "details": "assets/blender/glassies/glass_top/v4/glass_top_details.fbx",
+    "shards": "assets/blender/glassies/glass_top/v4/glass_top_shards.fbx",
+    "bundle": "assets/blender/glassies/glass_top/v4/glass_top_bundle.fbx",
+    "icon": "assets/blender/glassies/glass_top/v4/glass_top_icon.png",
+    "blend": "assets/blender/glassies/glass_top/v4/glass_top.blend",
+    "cracks": "assets/blender/glassies/glass_top/v4/cracks.json"
   },
   "hashes": {
-    "body": "59173f0e7b2deda86392b672af5951e167e0241b55ff1ca0c350d531cf72d79d",
-    "details": "a41e907dc371f27dfc67afc48ac17582cbfa810ac6bd761148e3da6dfb4f80fb",
-    "shards": "acd7ca79e57652c58ba80963ec88c2bce21b1fded6446be6590c87395b224f54",
-    "bundle": "fb4bf29dfdb03263580a18945af11e99cfb8f2d4aff9f85ce31e48b571d7814f",
-    "icon": "0373365dbb0fc2320f3f8c630b912e850a6a6e448b748aa643fd9a99f958a891",
-    "blend": "44f1e99fa49fc24dacb92c5cef147f30a893f2b289b21773ba876117cf33e96e",
+    "body": "59e109cbdbf3f09c7d45a412627558bb7cdbe247a4f4c5fd8cd95cb2cea37c06",
+    "details": "6744ec93b70d2b3bba4f286501f758009586c74742cc4222686d4a1235dad5a2",
+    "shards": "cc761ab65bc3bade87d7574ee4aa8dcf593127962a929d077c2657a889b0021a",
+    "bundle": "ab81f0b5ddae4d69069feb7e21715cb38bce8362608786a766566907357cb475",
+    "icon": "bf80affb87f8041f1ae5fe8bc8a6869e3af67ecbff7cffd80c17d8d7d859ca0f",
+    "blend": "94512c0e291f9536dbe91e3d66f60c9fc112dd53e1dae23ffd388256bbc474b8",
     "cracks": "012d0f11fbd8499cfc64bafb3805174e86e067cc9b309c4cddd672c6349dd827"
   },
   "release_geometry": {
@@ -1074,7 +1074,7 @@
       },
       {
         "name": "Shard_10",
-        "bounds_error": 9.06402249678704e-08,
+        "bounds_error": 1.4136482746161726e-07,
         "nonmanifold_edges": 0
       },
       {

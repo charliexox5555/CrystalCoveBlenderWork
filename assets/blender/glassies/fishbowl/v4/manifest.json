@@ -1,7 +1,7 @@
 {
   "id": "fishbowl",
   "name": "Fishbowl",
-  "version": "v1",
+  "version": "v4",
   "rarity": "Common",
   "tint": "#5BC8FF",
   "status": {
@@ -21,7 +21,7 @@
   "intact_triangles": 1494,
   "triangle_budget": 1500,
   "shard_count": 16,
-  "fracture_volume_ratio": 1.0000000038192767,
+  "fracture_volume_ratio": 1.0000000037244496,
   "checks": {
     "Body": {
       "boundary_edges": 0,
@@ -31,67 +31,67 @@
     "Shard_01": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.1902177882413354
+      "volume": 0.19021778815582294
     },
     "Shard_02": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.27646793427195365
+      "volume": 0.27646793188821045
     },
     "Shard_03": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.248151788557009
+      "volume": 0.24815178856485767
     },
     "Shard_04": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.21963486568658863
+      "volume": 0.21963486527469753
     },
     "Shard_05": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.21848845722276805
+      "volume": 0.21848845872170644
     },
     "Shard_06": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.20814271637770365
+      "volume": 0.20814271627925787
     },
     "Shard_07": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.20123634552891598
+      "volume": 0.20123634552891592
     },
     "Shard_08": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.19735324740455348
+      "volume": 0.19735324740455343
     },
     "Shard_09": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.19697857405954974
+      "volume": 0.1969785750288609
     },
     "Shard_10": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.18844824486691375
+      "volume": 0.18844824449935033
     },
     "Shard_11": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.16515799331601697
+      "volume": 0.1651579932697194
     },
     "Shard_12": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.15446448234397947
+      "volume": 0.15446448147953035
     },
     "Shard_13": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.10058667205154664
+      "volume": 0.1005866741848798
     },
     "Shard_14": {
       "boundary_edges": 0,
@@ -101,12 +101,12 @@
     "Shard_15": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.06341163482110215
+      "volume": 0.06341163468767509
     },
     "Shard_16": {
       "boundary_edges": 0,
       "nonmanifold_edges": 0,
-      "volume": 0.1055621759331674
+      "volume": 0.10556217544683205
     }
   },
   "crack_segments": 144,
@@ -929,7 +929,7 @@
         ],
         [
           0.13050591945648193,
-          0.08559249341487885,
+          0.08559250086545944,
           -0.5699999332427979
         ]
       ],
@@ -1174,21 +1174,21 @@
     }
   ],
   "files": {
-    "body": "assets/blender/glassies/fishbowl/v1/fishbowl_body.fbx",
-    "details": "assets/blender/glassies/fishbowl/v1/fishbowl_details.fbx",
-    "shards": "assets/blender/glassies/fishbowl/v1/fishbowl_shards.fbx",
-    "bundle": "assets/blender/glassies/fishbowl/v1/fishbowl_bundle.fbx",
-    "icon": "assets/blender/glassies/fishbowl/v1/fishbowl_icon.png",
-    "blend": "assets/blender/glassies/fishbowl/v1/fishbowl.blend",
-    "cracks": "assets/blender/glassies/fishbowl/v1/cracks.json"
+    "body": "assets/blender/glassies/fishbowl/v4/fishbowl_body.fbx",
+    "details": "assets/blender/glassies/fishbowl/v4/fishbowl_details.fbx",
+    "shards": "assets/blender/glassies/fishbowl/v4/fishbowl_shards.fbx",
+    "bundle": "assets/blender/glassies/fishbowl/v4/fishbowl_bundle.fbx",
+    "icon": "assets/blender/glassies/fishbowl/v4/fishbowl_icon.png",
+    "blend": "assets/blender/glassies/fishbowl/v4/fishbowl.blend",
+    "cracks": "assets/blender/glassies/fishbowl/v4/cracks.json"
   },
   "hashes": {
-    "body": "f114f602a1f32f3db9118c4b3b205ca68a6928d44f94baddc9350dac9b93e6b4",
-    "details": "f098938e64ef09859ec5d115789b0a75a77b4fea33c6f8d341a8b20aefca9815",
-    "shards": "0945f33c7e92e202100b56403b5af91f543ed5b6a4ea5921f98505459806db01",
-    "bundle": "dcf8f67c4ea37aa48a1738cebc21514a0d8c554a47d891354d405cf41a3cdeef",
-    "icon": "8ecc5b54294a3c3cd95074127c17fce32be95ab8d03496bfa2a04599a5ceb4c7",
-    "blend": "350db9f19f5179378ca35097f0e26b1dc3c8267cecee07aa2be04defe1bc1225",
+    "body": "8b82278ae6813537dc8671ca6a4c35830e1a54cfa1468a0f6c489067d3838c46",
+    "details": "0d973987297869b03359af91969ae03596a91bdfb5bb5f515bdd0031161ad663",
+    "shards": "d64b26fae914e0db00055f5db69465e0251686e8048d5c69003a590753fe6558",
+    "bundle": "1343e428f14d561950edf12e237c26b34c80ebaa053dab5dcd5dcc7545e643ae",
+    "icon": "e0e1b3341ad7710ff475e8489baeb8b4bf136304a0d75f8b9be76ea780042aa6",
+    "blend": "f2e9de55924be2066f7231cb27d3483a5406b252dc3e96d4c1b003a5488499cd",
     "cracks": "531a6609a7246bff7573fca302ba2443f0f5629a1e46afff2b3ec312e1c084b0"
   },
   "release_geometry": {

@@ -576,6 +576,8 @@ F.Flyers = {
 	paper_jet = { Family = "Kneel" },
 	dragonfly = { Family = "HandleSit" },
 	carousel = { Family = "HandleSit" }, -- rider follows the bobbing pony (model attribute RiderMount = "Pony")
+	sunwing = { Family = "Kneel" },
+	starwhale = { Family = "Sit" },
 }
 
 -- Standard grip layout per handle family, in rider space (contact point at the origin, nose toward -Z). Handle

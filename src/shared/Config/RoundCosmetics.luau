@@ -75,6 +75,22 @@ C.Rideables = {
 		Accent = "#7CE7D5",
 		Description = "A merry-go-round pony that flew off the ride, canopy, lights and all.",
 	},
+	{
+		Id = "sunwing",
+		Name = "Sunwing",
+		Rarity = "Legendary",
+		Color = "#FF7A2E",
+		Accent = "#FFD34E",
+		Description = "A blazing glass phoenix with ember-veined wings and a sunfire trail.",
+	},
+	{
+		Id = "starwhale",
+		Name = "Starwhale",
+		Rarity = "Mythic",
+		Color = "#2B2A7A",
+		Accent = "#FFE9A8",
+		Description = "A galaxy whale swimming through the sky, spouting stars.",
+	},
 }
 C.Finishers = {
 	{

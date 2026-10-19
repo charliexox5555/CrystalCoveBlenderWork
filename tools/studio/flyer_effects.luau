@@ -532,6 +532,99 @@ EFFECTS.carousel = function(P, A)
 	launchBurst(A.Launch, "#FFF4FB")
 end
 
+EFFECTS.sunwing = function(P, A)
+	local sunfire = seq({ { 0, "#FFF1B8" }, { 0.4, "#FFD34E" }, { 1, "#FF7A2E" } })
+	for _, key in { "WingTrail0", "WingTrail1" } do
+		trail(A[key].Parent, "SunfireRibbon", A[key], pairBelow(A[key], 0.3), {
+			Color = sunfire,
+			Transparency = nseq({ { 0, 0.15 }, { 1, 1 } }),
+			Lifetime = 0.6,
+			LightEmission = 0.8,
+			MinLength = 0.03,
+			WidthScale = nseq({ { 0, 1 }, { 1, 0.2 } }),
+		})
+	end
+	emitter(A.Embers, "EmberFeathers", {
+		Texture = TEX.fleck,
+		Color = sunfire,
+		LightEmission = 1,
+		Size = nseq({ { 0, 0.3 }, { 1, 0.08 } }),
+		Lifetime = NumberRange.new(1, 1.6),
+		Rate = 5,
+		Speed = NumberRange.new(0.5, 1.2),
+		EmissionDirection = Enum.NormalId.Bottom,
+		SpreadAngle = Vector2.new(40, 40),
+		Rotation = NumberRange.new(0, 360),
+		RotSpeed = NumberRange.new(-60, 60),
+		Acceleration = Vector3.new(0, -1.5, 0),
+	})
+	light(A.Embers, "#FFB24D", 1.4, 10)
+	wake(A.Wake, "#FFE3B0")
+	launchBurst(A.Launch, "#FFE3B0")
+	emitter(A.Cry, "PhoenixCry", {
+		Burst = 28,
+		Texture = TEX.glint,
+		Color = sunfire,
+		LightEmission = 1,
+		Size = nseq({ { 0, 0.5 }, { 1, 0 } }),
+		Lifetime = NumberRange.new(0.5, 0.8),
+		Speed = NumberRange.new(9, 13),
+		SpreadAngle = Vector2.new(180, 0), -- a flat ring of embers
+		Drag = 3,
+	})
+end
+
+EFFECTS.starwhale = function(P, A)
+	local stars = seq({ { 0, "#FFE9A8" }, { 0.5, "#F2B8FF" }, { 1, "#8FC8FF" } })
+	for _, key in { "Trail0", "Trail1" } do
+		trail(A[key].Parent, "GalaxyWake", A[key], pairBelow(A[key], 0.35), {
+			Color = seq({ { 0, "#7A5CFF" }, { 1, "#2B2A7A" } }),
+			Transparency = nseq({ { 0, 0.35 }, { 1, 1 } }),
+			Lifetime = 0.9,
+			LightEmission = 0.6,
+			MinLength = 0.04,
+			WidthScale = nseq({ { 0, 1 }, { 1, 0.5 } }),
+		})
+	end
+	emitter(A.Spout, "StarSpout", {
+		Texture = TEX.sparkle,
+		Color = stars,
+		LightEmission = 1,
+		Size = nseq({ { 0, 0.4 }, { 1, 0 } }),
+		Lifetime = NumberRange.new(1, 1.5),
+		Rate = 3,
+		Speed = NumberRange.new(3, 5),
+		EmissionDirection = Enum.NormalId.Top,
+		SpreadAngle = Vector2.new(18, 18),
+		Acceleration = Vector3.new(0, -3, 0),
+	})
+	emitter(P.Body, "ConstellationSparks", {
+		Texture = TEX.glint,
+		Color = stars,
+		LightEmission = 1,
+		Size = nseq({ { 0, 0 }, { 0.3, 0.3 }, { 1, 0 } }),
+		Lifetime = NumberRange.new(0.6, 1),
+		Rate = 5,
+		Speed = NumberRange.new(0.3, 0.8),
+		Shape = Enum.ParticleEmitterShape.Box,
+		ShapeStyle = Enum.ParticleEmitterShapeStyle.Surface,
+	})
+	light(A.Spout, "#B9A0FF", 1, 10)
+	wake(A.Wake, "#E6DDFF")
+	launchBurst(A.Launch, "#E6DDFF")
+	emitter(A.StarRing, "StarRing", {
+		Burst = 30,
+		Texture = TEX.sparkle,
+		Color = stars,
+		LightEmission = 1,
+		Size = nseq({ { 0, 0.55 }, { 1, 0 } }),
+		Lifetime = NumberRange.new(0.7, 1),
+		Speed = NumberRange.new(6, 8),
+		SpreadAngle = Vector2.new(180, 0),
+		Drag = 2.5,
+	})
+end
+
 -- No flyer equipped (decision 95): the faint hover pad under a standing rider.
 EFFECTS.stand = function(P, A)
 	emitter(A.Shimmer, "HoverShimmer", {

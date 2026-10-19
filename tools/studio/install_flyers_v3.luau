@@ -22,6 +22,8 @@ local MAIN = {
 	paper_jet = "Keel",
 	dragonfly = "Thorax",
 	carousel = "Pole", -- the main part must not move (the pony bobs)
+	sunwing = "Body",
+	starwhale = "Body",
 }
 -- Flyers whose rider sits on a moving part (RideMotion follows it; see RideMotion:RiderPose).
 local MOUNT = { carousel = "Pony" }

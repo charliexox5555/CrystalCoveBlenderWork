@@ -36,6 +36,9 @@ function Portrait.new(parent, category, id, size, position, name)
 	world.Parent = viewport
 	local folder = RS.Assets:FindFirstChild(if category == "Rideables" then "Rideables" else "RoundFinishers")
 	local source = folder and folder:FindFirstChild(id)
+	if category == "Rideables" and id == "no_flyer" then
+		source = RS.Assets:FindFirstChild("RideStand") -- "No Flyer" shows the hover pad (decision 95)
+	end
 	local config = require(RS.Shared.Config.RoundCosmetics)
 	local def = config.ByCategory[category] and config.ByCategory[category][id]
 	if def and def.AssetBundle then

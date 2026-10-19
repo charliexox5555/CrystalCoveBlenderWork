@@ -2539,6 +2539,871 @@
      ]
     }
    ]
+  },
+  "hourglass": {
+   "rarity": "Rare",
+   "version": "v3",
+   "bundle": "assets/blender/glassies/hourglass/v3/hourglass_bundle.fbx",
+   "icon": "assets/blender/glassies/hourglass/v3/hourglass_icon.png",
+   "intact_triangles": 1372,
+   "shard_count": 16,
+   "body_dimensions_roblox": [
+    1.5,
+    2.3399999141693115,
+    1.5
+   ],
+   "body_dimension_change_pct": 0.0,
+   "fbx_roundtrip": true,
+   "animated_parts": 7,
+   "parts": [
+    {
+     "name": "Body",
+     "role": "Body",
+     "material": "Glass",
+     "color": "#F8C16B",
+     "transparency": 0.28,
+     "effect_only": false
+    },
+    {
+     "name": "FrameCap_Bottom",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#AD91DC",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_FrameCap_Bottom",
+     "pivot_roblox": [
+      0.0,
+      -1.32,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 4,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "client flips the whole frame about the body centre (Hourglass kit)"
+    },
+    {
+     "name": "FrameCap_Top",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#AD91DC",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_FrameCap_Top",
+     "pivot_roblox": [
+      0.0,
+      -1.32,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 4,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "client flips the whole frame about the body centre (Hourglass kit)"
+    },
+    {
+     "name": "FramePost_1",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#AD91DC",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_FramePost_1",
+     "pivot_roblox": [
+      0.0,
+      -1.32,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 4,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "flips with the frame"
+    },
+    {
+     "name": "FramePost_2",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#AD91DC",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_FramePost_2",
+     "pivot_roblox": [
+      0.0,
+      -1.32,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 4,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "flips with the frame"
+    },
+    {
+     "name": "SandInsert",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#F6D36E",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_SandInsert",
+     "pivot_roblox": [
+      0.0,
+      -2.41,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "squash",
+      "factor": 0.92,
+      "freq_hz": 5.0,
+      "damping": 0.35
+     },
+     "lod_keep": false,
+     "note": "client scales it by charge"
+    },
+    {
+     "name": "SandTop",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#F6D36E",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_SandTop",
+     "pivot_roblox": [
+      0.0,
+      -1.25,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "pulse",
+      "amp": 0.02,
+      "period_s": 2.0,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "none"
+     },
+     "lod_keep": false
+    },
+    {
+     "name": "SandStream",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#F6D36E",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_SandStream",
+     "pivot_roblox": [
+      0.0,
+      -1.15,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "flicker",
+      "amp": 0.15,
+      "rate_hz": 10
+     },
+     "hit": {
+      "type": "none"
+     },
+     "lod_keep": true
+    }
+   ]
+  },
+  "frostglobe": {
+   "rarity": "Rare",
+   "version": "v3",
+   "bundle": "assets/blender/glassies/frostglobe/v3/frostglobe_bundle.fbx",
+   "icon": "assets/blender/glassies/frostglobe/v3/frostglobe_icon.png",
+   "intact_triangles": 1332,
+   "shard_count": 16,
+   "body_dimensions_roblox": [
+    1.8799999952316284,
+    1.880000114440918,
+    1.8608644008636475
+   ],
+   "body_dimension_change_pct": 2.06,
+   "fbx_roundtrip": true,
+   "animated_parts": 3,
+   "parts": [
+    {
+     "name": "Body",
+     "role": "Body",
+     "material": "Glass",
+     "color": "#9ECFFF",
+     "transparency": 0.28,
+     "effect_only": false
+    },
+    {
+     "name": "SnowCollar",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#EAFBFF",
+     "transparency": 0,
+     "effect_only": false
+    },
+    {
+     "name": "SnowDrift",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FFFFFF",
+     "transparency": 0,
+     "effect_only": false
+    },
+    {
+     "name": "CrystalSprout",
+     "role": "Detail",
+     "material": "Neon",
+     "color": "#C8F7FF",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_CrystalSprout",
+     "pivot_roblox": [
+      0.0,
+      -1.9,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "pulse",
+      "amp": 0.05,
+      "period_s": 2.2,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "flash",
+      "dur_s": 0.2
+     },
+     "lod_keep": false
+    },
+    {
+     "name": "SnowSwirl",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FFFFFF",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_SnowSwirl",
+     "pivot_roblox": [
+      0.0,
+      -1.2,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "spin",
+      "deg_per_s": 30
+     },
+     "hit": {
+      "type": "spin_boost",
+      "deg_per_s": 220,
+      "dur_s": 0.8
+     },
+     "lod_keep": true
+    },
+    {
+     "name": "HangPearl",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#EAFBFF",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_HangPearl",
+     "pivot_roblox": [
+      0.0,
+      0.0,
+      -0.0
+     ],
+     "axis_roblox": [
+      1.0,
+      0.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 10,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false
+    }
+   ]
+  },
+  "mason_jar": {
+   "rarity": "Uncommon",
+   "version": "v3",
+   "bundle": "assets/blender/glassies/mason_jar/v3/mason_jar_bundle.fbx",
+   "icon": "assets/blender/glassies/mason_jar/v3/mason_jar_icon.png",
+   "intact_triangles": 1360,
+   "shard_count": 16,
+   "body_dimensions_roblox": [
+    1.8049999475479126,
+    1.9600000381469727,
+    1.8049999475479126
+   ],
+   "body_dimension_change_pct": 0.82,
+   "fbx_roundtrip": true,
+   "animated_parts": 3,
+   "parts": [
+    {
+     "name": "Body",
+     "role": "Body",
+     "material": "Glass",
+     "color": "#BFEFFF",
+     "transparency": 0.28,
+     "effect_only": false
+    },
+    {
+     "name": "Cap",
+     "role": "Detail",
+     "material": "Metal",
+     "color": "#F5C860",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Cap",
+     "pivot_roblox": [
+      0.0,
+      0.0,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 8,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "hit = a little quarter-turn twist"
+    },
+    {
+     "name": "Threads",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#D8F6FF",
+     "transparency": 0.28,
+     "effect_only": false
+    },
+    {
+     "name": "StressBand_1",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#C3F9ED",
+     "transparency": 0.28,
+     "effect_only": false
+    },
+    {
+     "name": "StressBand_2",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#C3F9ED",
+     "transparency": 0.28,
+     "effect_only": false
+    },
+    {
+     "name": "Firefly_1",
+     "role": "Detail",
+     "material": "Neon",
+     "color": "#FFF07A",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Firefly_1",
+     "pivot_roblox": [
+      0.0,
+      -1.35,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "spin",
+      "deg_per_s": 35
+     },
+     "hit": {
+      "type": "flash",
+      "dur_s": 0.2
+     },
+     "lod_keep": true,
+     "idle_layers": [
+      {
+       "type": "bob",
+       "amp_studs": 0.08,
+       "period_s": 1.7,
+       "phase": 0.0
+      },
+      {
+       "type": "pulse",
+       "amp": 0.25,
+       "period_s": 0.9,
+       "phase": 0
+      }
+     ]
+    },
+    {
+     "name": "Firefly_2",
+     "role": "Detail",
+     "material": "Neon",
+     "color": "#FFF07A",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Firefly_2",
+     "pivot_roblox": [
+      0.0,
+      -0.95,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "spin",
+      "deg_per_s": -28
+     },
+     "hit": {
+      "type": "flash",
+      "dur_s": 0.2
+     },
+     "lod_keep": false,
+     "idle_layers": [
+      {
+       "type": "bob",
+       "amp_studs": 0.08,
+       "period_s": 1.7,
+       "phase": 2.0
+      },
+      {
+       "type": "pulse",
+       "amp": 0.25,
+       "period_s": 0.9,
+       "phase": 1
+      }
+     ]
+    }
+   ]
+  },
+  "hot_sauce": {
+   "rarity": "Uncommon",
+   "version": "v3",
+   "bundle": "assets/blender/glassies/hot_sauce/v3/hot_sauce_bundle.fbx",
+   "icon": "assets/blender/glassies/hot_sauce/v3/hot_sauce_icon.png",
+   "intact_triangles": 1088,
+   "shard_count": 16,
+   "body_dimensions_roblox": [
+    1.0499999523162842,
+    2.3399999141693115,
+    1.034048080444336
+   ],
+   "body_dimension_change_pct": 2.45,
+   "fbx_roundtrip": true,
+   "animated_parts": 3,
+   "parts": [
+    {
+     "name": "Body",
+     "role": "Body",
+     "material": "Glass",
+     "color": "#FF5A4E",
+     "transparency": 0.28,
+     "effect_only": false
+    },
+    {
+     "name": "Cap",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#354865",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Cap",
+     "pivot_roblox": [
+      0.0,
+      -0.32,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "hop",
+      "studs": 0.06,
+      "freq_hz": 4.0,
+      "damping": 0.3
+     },
+     "lod_keep": false
+    },
+    {
+     "name": "FlameBand",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FFD36E",
+     "transparency": 0,
+     "effect_only": false
+    },
+    {
+     "name": "Ember_1",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FFBD62",
+     "transparency": 0,
+     "effect_only": false
+    },
+    {
+     "name": "Ember_2",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FFBD62",
+     "transparency": 0,
+     "effect_only": false
+    },
+    {
+     "name": "Ember_3",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FFBD62",
+     "transparency": 0,
+     "effect_only": false
+    },
+    {
+     "name": "ChiliCharm",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#E8242E",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_ChiliCharm",
+     "pivot_roblox": [
+      0.2,
+      -0.8,
+      0.12
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 10,
+      "period_s": 1.5,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 25,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": true
+    },
+    {
+     "name": "ChiliStem",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#3FAE4C",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_ChiliStem",
+     "pivot_roblox": [
+      0.2,
+      -0.8,
+      0.12
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 10,
+      "period_s": 1.5,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 25,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "moves with ChiliCharm"
+    }
+   ]
+  },
+  "crystal_tumbler": {
+   "rarity": "Uncommon",
+   "version": "v3",
+   "bundle": "assets/blender/glassies/crystal_tumbler/v3/crystal_tumbler_bundle.fbx",
+   "icon": "assets/blender/glassies/crystal_tumbler/v3/crystal_tumbler_icon.png",
+   "intact_triangles": 656,
+   "shard_count": 16,
+   "body_dimensions_roblox": [
+    1.5800000429153442,
+    2.049999952316284,
+    1.5800000429153442
+   ],
+   "body_dimension_change_pct": 0.0,
+   "fbx_roundtrip": true,
+   "animated_parts": 1,
+   "parts": [
+    {
+     "name": "Body",
+     "role": "Body",
+     "material": "Glass",
+     "color": "#D7E9FF",
+     "transparency": 0.28,
+     "effect_only": false
+    },
+    {
+     "name": "ThickRim",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#EAFBFF",
+     "transparency": 0.28,
+     "effect_only": false
+    },
+    {
+     "name": "MirrorFacet",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#C4E9FF",
+     "transparency": 0.28,
+     "effect_only": false
+    },
+    {
+     "name": "IceCube",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#BFE6FF",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_IceCube",
+     "pivot_roblox": [
+      0.06,
+      -0.97,
+      -0.02
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "spin",
+      "deg_per_s": 18
+     },
+     "hit": {
+      "type": "hop",
+      "studs": 0.1,
+      "freq_hz": 4.0,
+      "damping": 0.3
+     },
+     "lod_keep": true,
+     "idle_layers": [
+      {
+       "type": "bob",
+       "amp_studs": 0.05,
+       "period_s": 1.9,
+       "phase": 0.0
+      }
+     ]
+    }
+   ]
+  },
+  "chime": {
+   "rarity": "Uncommon",
+   "version": "v3",
+   "bundle": "assets/blender/glassies/chime/v3/chime_bundle.fbx",
+   "icon": "assets/blender/glassies/chime/v3/chime_icon.png",
+   "intact_triangles": 1428,
+   "shard_count": 16,
+   "body_dimensions_roblox": [
+    1.9550000429153442,
+    2.299999952316284,
+    1.93510103225708
+   ],
+   "body_dimension_change_pct": 2.27,
+   "fbx_roundtrip": true,
+   "animated_parts": 2,
+   "parts": [
+    {
+     "name": "Body",
+     "role": "Body",
+     "material": "Glass",
+     "color": "#80E7DE",
+     "transparency": 0.28,
+     "effect_only": false
+    },
+    {
+     "name": "Clapper",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#F8E6B0",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Clapper",
+     "pivot_roblox": [
+      0.0,
+      -1.88,
+      0.3
+     ],
+     "axis_roblox": [
+      1.0,
+      0.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 6,
+      "period_s": 1.3,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 30,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": true
+    },
+    {
+     "name": "BellRim",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#C5FFF5",
+     "transparency": 0.28,
+     "effect_only": false
+    },
+    {
+     "name": "Crown",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#C5FFF5",
+     "transparency": 0.28,
+     "effect_only": false
+    },
+    {
+     "name": "Ribbon",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FF8FB0",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Ribbon",
+     "pivot_roblox": [
+      0.0,
+      -0.38,
+      0.27
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 5,
+      "period_s": 1.6,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 12,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false
+    }
+   ]
   }
  }
 }

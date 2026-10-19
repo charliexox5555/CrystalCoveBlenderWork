@@ -1277,3 +1277,210 @@ def b_arc_coil(gid):
         anim(spark, (0, 0, 2.24 - h), (0, 0, 1), spin(140 if i == 0 else -110), flash(0.12), extra_idle=[flicker(0.25, 12)], lod_keep=(i == 0))
         ds.append(spark)
     return body, ds
+
+
+# ------------------------------------------------------------------------------------------
+# Batch 3: remaining Rares and Uncommons
+# ------------------------------------------------------------------------------------------
+
+def rounded_box(name, size, at, bevel=0.06, segments=2, rot=None):
+    bm = bmesh.new()
+    bmesh.ops.create_cube(bm, size=1.0)
+    bmesh.ops.scale(bm, vec=size, verts=bm.verts)
+    bmesh.ops.bevel(bm, geom=list(bm.edges), offset=bevel, segments=segments, affect="EDGES", profile=0.5)
+    m = Matrix.Translation(Vector(at)) @ (rot.to_matrix().to_4x4() if rot is not None else Matrix.Identity(4))
+    bmesh.ops.transform(bm, matrix=m, verts=bm.verts)
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    return _obj(name, bm, sharp_deg=None)
+
+
+def lathe_bm(bm, profile, h, segments):
+    tmp = lathe3("_tmp_lathe", profile, h, segments, sharp_deg=None)
+    bm.from_mesh(tmp.data)
+    mesh = tmp.data
+    bpy.data.objects.remove(tmp, do_unlink=True)
+    bpy.data.meshes.remove(mesh)
+    return bm
+
+
+@builder("hourglass")
+def b_hourglass(gid):
+    h = 2.65
+    ctrl = [(0, 0.15), (0.68, 0.15), (0.75, 0.29), (0.66, 0.62), (0.43, 0.92), (0.19, 1.22), (0.17, 1.36), (0.39, 1.68), (0.66, 2.05), (0.75, 2.34), (0.68, 2.49), (0, 2.49)]
+    prof = chaikin(ctrl, fixed=(1, 2, 9, 10), iterations=1)
+    body = paint(lathe3("Body", prof, h, 16), "#F8C16B", role="Body")
+    frame = "#AD91DC"
+    caps = []
+    for label, z, flip in (("Bottom", 0.02, False), ("Top", 2.49, True)):
+        p = [(0, 0), (0.7, 0), (0.8, 0.03), (0.84, 0.08), (0.8, 0.13), (0.72, 0.16), (0, 0.16)]
+        p = [(r, z + (0.16 - dz if flip else dz)) for r, dz in p]
+        if flip:
+            p = list(reversed(p))
+        cb = bmesh.new()
+        lathe_bm(cb, p, h, 12)
+        for k in range(3):
+            a = k * math.tau / 3 + math.pi / 6
+            ellipsoid_bm(cb, (0.6 * math.cos(a), 0.6 * math.sin(a), (z - 0.04 if not flip else z + 0.2) - h), (0.08, 0.08, 0.06), 6, 3)
+        cap = paint(_obj("FrameCap_" + label, cb), frame)
+        anim(cap, (0, 0, 1.33 - h), (0, 1, 0), None, kick(4), note="client flips the whole frame about the body centre (Hourglass kit)")
+        caps.append(cap)
+    posts = []
+    for i, x in enumerate((-0.76, 0.76)):
+        zs = [0.16 + k * (2.33 / 10) for k in range(11)]
+        rs = [0.07 + 0.03 * math.sin(k / 10 * math.pi * 3) ** 2 for k in range(11)]
+        pb = bmesh.new()
+        tube_bm(pb, [(x, 0.0, z - h) for z in zs], rs, 5)
+        post = paint(_obj(f"FramePost_{i + 1}", pb), frame)
+        anim(post, (0, 0, 1.33 - h), (0, 1, 0), None, kick(4), note="flips with the frame")
+        posts.append(post)
+    sand = paint(lathe3("SandInsert", chaikin([(0, 0.24), (0.6, 0.24), (0.62, 0.36), (0.42, 0.56), (0.12, 0.72), (0, 0.74)], iterations=1), h, 10, sharp_deg=None), "#F6D36E", "SmoothPlastic")
+    anim(sand, (0, 0, 0.24 - h), (0, 0, 1), None, squash(0.92), note="client scales it by charge")
+    top = paint(lathe3("SandTop", [(0, 1.5), (0.3, 1.74), (0.5, 1.92), (0.52, 1.98), (0, 1.98)], h, 12, sharp_deg=None), "#F6D36E", "SmoothPlastic")
+    anim(top, (0, 0, 1.4 - h), (0, 0, 1), pulse(0.02, 2.0))
+    stream = paint(tube("SandStream", [(0, 0, 1.5 - h), (0, 0, 0.72 - h)], 0.03, 6), "#F6D36E", "SmoothPlastic")
+    anim(stream, (0, 0, 1.5 - h), (0, 0, 1), flicker(0.15, 10), lod_keep=True)
+    return body, caps + posts + [sand, top, stream]
+
+
+@builder("frostglobe")
+def b_frostglobe(gid):
+    h = 2.40
+    ctrl = [(0, 0.25), (0.48, 0.25), (0.73, 0.42), (0.91, 0.75), (0.95, 1.1), (0.88, 1.49), (0.66, 1.82), (0.34, 2.05), (0, 2.13)]
+    prof = chaikin(ctrl, fixed=(1,), iterations=1)
+    body = paint(lathe3("Body", prof, h, 22), "#9ECFFF", role="Body")
+    collar = paint(lathe3("SnowCollar", chaikin([(0, 0), (0.72, 0), (0.82, 0.08), (0.84, 0.18), (0.76, 0.28), (0.6, 0.32), (0, 0.32)], fixed=(1,), iterations=1), h, 18, sharp_deg=None), "#EAFBFF", "SmoothPlastic")
+    drift = paint(blob("SnowDrift", (0, 0, 0.36 - h), (0.66, 0.66, 0.16), 12, 6), "#FFFFFF", "SmoothPlastic")
+    cb = bmesh.new()
+    for x, y, z, r, ht, tilt in ((0, 0, 0.98, 0.15, 0.95, 0.0), (-0.24, 0.05, 0.74, 0.1, 0.55, 0.35), (0.25, -0.04, 0.7, 0.09, 0.48, -0.4)):
+        gem_bm(cb, (x, y, z - h), r, ht, 6, Matrix.Rotation(tilt, 4, "Y"))
+    sprout = paint(_obj("CrystalSprout", cb, smooth=False), "#C8F7FF", "Neon")
+    anim(sprout, (0, 0, 0.5 - h), (0, 0, 1), pulse(0.05, 2.2), flash(0.2))
+    rng = random.Random(11)
+    fb = bmesh.new()
+    for k in range(9):
+        a = k * math.tau / 9 + rng.uniform(-0.2, 0.2)
+        rr = rng.uniform(0.42, 0.72)
+        z = rng.uniform(0.7, 1.75)
+        m = Matrix.Translation((rr * math.cos(a), rr * math.sin(a), z - h)) @ Matrix.Rotation(a, 4, "Z")
+        slab_bm(fb, star_points(3, 0.07, 0.025), 0.02, 0, 1, m)
+    flakes = paint(_obj("SnowSwirl", fb, smooth=False), "#FFFFFF", "SmoothPlastic")
+    anim(flakes, (0, 0, 1.2 - h), (0, 0, 1), spin(30), spin_boost(220), lod_keep=True)
+    pearl = paint(blob("HangPearl", (0, 0, -0.12), (0.13, 0.13, 0.12), 10, 6), "#EAFBFF")
+    anim(pearl, (0, 0, 0), (1, 0, 0), None, kick(10))
+    return body, [collar, drift, sprout, flakes, pearl]
+
+
+@builder("mason_jar")
+def b_mason_jar(gid):
+    h = 2.25
+    ctrl = [(0, 0), (0.62, 0), (0.83, 0.08), (0.91, 0.24), (0.88, 0.39), (0.85, 0.46), (0.85, 1.36), (0.89, 1.44), (0.85, 1.54), (0.76, 1.75), (0.76, 1.96), (0, 1.96)]
+    prof = chaikin(ctrl, fixed=(1, 5, 6, 9, 10), iterations=1)
+    body = paint(lathe3("Body", prof, h, 20), "#BFEFFF", role="Body")
+    cap = paint(lathe3("Cap", [(0, 1.96), (0.86, 1.96), (0.9, 2.0), (0.9, 2.18), (0.84, 2.25), (0, 2.25)], h, 18), "#F5C860", "Metal")
+    anim(cap, (0, 0, 0), (0, 0, 1), None, kick(8), note="hit = a little quarter-turn twist")
+    tpts = [(0.785 * math.cos(k / 24 * math.tau * 1.6), 0.785 * math.sin(k / 24 * math.tau * 1.6), 1.78 + 0.14 * k / 24 - h) for k in range(25)]
+    th = bmesh.new()
+    tube_bm(th, tpts, 0.03, 4)
+    threads = paint(_obj("Threads", th), "#D8F6FF")
+    ds = [cap, threads]
+    for i, z in enumerate((0.57, 1.19)):
+        sb = bmesh.new()
+        torus_bm(sb, (0, 0, z - h), 0.86, 0.035, 18, 4)
+        ds.append(paint(_obj(f"StressBand_{i + 1}", sb), "#C3F9ED"))
+    for i, (a, z) in enumerate(((0.8, 0.9), (3.6, 1.3))):
+        p = (0.42 * math.cos(a), 0.42 * math.sin(a), z - h)
+        fb = bmesh.new()
+        ellipsoid_bm(fb, p, (0.095, 0.095, 0.095), 8, 5)
+        ff = paint(_obj(f"Firefly_{i + 1}", fb), "#FFF07A", "Neon")
+        anim(ff, (0, 0, z - h), (0, 0, 1), spin(35 if i == 0 else -28), flash(0.2), extra_idle=[bob(0.08, 1.7, i * 2.0), pulse(0.25, 0.9, i)], lod_keep=(i == 0))
+        ds.append(ff)
+    return body, ds
+
+
+@builder("hot_sauce")
+def b_hot_sauce(gid):
+    h = 2.66
+    ctrl = [(0, 0), (0.33, 0), (0.47, 0.09), (0.53, 0.25), (0.51, 1.17), (0.45, 1.4), (0.28, 1.65), (0.19, 1.86), (0.19, 2.34), (0, 2.34)]
+    prof = chaikin(ctrl, fixed=(1, 7, 8), iterations=1)
+    body = paint(lathe3("Body", prof, h, 18), "#FF5A4E", role="Body")
+    cap = lathe3("Cap", [(0, 2.34), (0.22, 2.34), (0.25, 2.38), (0.25, 2.54), (0.2, 2.58), (0.12, 2.6), (0.1, 2.66), (0, 2.66)], h, 12)
+    paint(crimp(cap, 6, 0.05, -0.12), "#354865", "SmoothPlastic")
+    anim(cap, (0, 0, -0.32), (0, 0, 1), None, hop(0.06))
+    band = lathe3("FlameBand", [(0.535, 0.62), (0.545, 0.62), (0.545, 1.0), (0.535, 1.0)], h, 18, sharp_deg=None)
+    bm = _bm_from_object(band)
+    for v in bm.verts:
+        if v.co.z > 0.8 - h:
+            a = math.atan2(v.co.y, v.co.x)
+            v.co.z += 0.1 * max(0.0, math.cos(3 * a)) ** 2
+    bm2 = bmesh.new()
+    lathe_bm(bm2, [(0, 0.62), (0.535, 0.62), (0.555, 0.64), (0.555, 0.98), (0.535, 1.0), (0, 1.0)], h, 18)
+    bm.free()
+    bpy.data.objects.remove(band, do_unlink=True)
+    for v in bm2.verts:
+        if v.co.z > 0.9 - h and math.hypot(v.co.x, v.co.y) > 0.1:
+            a = math.atan2(v.co.y, v.co.x)
+            v.co.z += 0.14 * max(0.0, math.cos(3 * a + math.pi / 2)) ** 3
+    band = paint(_obj("FlameBand", bm2, sharp_deg=None), "#FFD36E", "SmoothPlastic")
+    ds = [cap, band]
+    for i, x in enumerate((-0.2, 0.0, 0.2)):
+        eb = bmesh.new()
+        slab_bm(eb, [(0, -0.09), (0.06, -0.03), (0.05, 0.04), (0.0, 0.11), (-0.05, 0.04), (-0.06, -0.03)], 0.04, 0.012, 1,
+                Matrix.Translation((x, -0.53, 1.42 - h + (0.04 if i == 1 else 0))))
+        ds.append(paint(_obj(f"Ember_{i + 1}", eb), "#FFBD62", "SmoothPlastic"))
+    ch = bmesh.new()
+    path = spline([(0.2, -0.12, 1.84 - h), (0.27, -0.2, 1.62 - h), (0.32, -0.26, 1.42 - h), (0.27, -0.27, 1.27 - h)], 8)
+    tube_bm(ch, path, [0.06, 0.085, 0.09, 0.085, 0.075, 0.06, 0.045, 0.03, 0.015], 7)
+    chili = paint(_obj("ChiliCharm", ch), "#E8242E", "SmoothPlastic")
+    anim(chili, (0.2, -0.12, 1.86 - h), (0, 1, 0), sway(10, 1.5), kick(25), lod_keep=True)
+    st = bmesh.new()
+    tube_bm(st, [(0.19, -0.11, 1.95 - h), (0.2, -0.12, 1.84 - h), (0.23, -0.15, 1.8 - h)], [0.03, 0.035, 0.025], 5)
+    stem = paint(_obj("ChiliStem", st), "#3FAE4C", "SmoothPlastic")
+    anim(stem, (0.2, -0.12, 1.86 - h), (0, 1, 0), sway(10, 1.5), kick(25), note="moves with ChiliCharm")
+    ds += [chili, stem]
+    return body, ds
+
+
+@builder("crystal_tumbler")
+def b_crystal_tumbler(gid):
+    h = 2.05
+    prof = [(0, 0), (0.56, 0), (0.74, 0.13), (0.77, 0.29), (0.69, 0.43), (0.7, 1.58), (0.79, 1.9), (0.79, 2.05), (0.66, 2.05), (0.6, 1.65), (0.56, 0.39), (0.48, 0.25), (0, 0.25)]
+    body = paint(lathe3("Body", prof, h, 12, flat=True), "#D7E9FF", role="Body")
+    rb = bmesh.new()
+    torus_bm(rb, (0, 0, -0.05), 0.72, 0.055, 24, 5)
+    rim = paint(_obj("ThickRim", rb), "#EAFBFF")
+    mirror = paint(slab("MirrorFacet", [(-0.27, -1.54), (0.27, -1.54), (0.32, -0.45), (-0.32, -0.45)], 0.04, Matrix.Translation((0, -0.665, 0)), bevel=0.015, segments=1), "#C4E9FF")
+    ice = paint(rounded_box("IceCube", (0.48, 0.48, 0.46), (0.06, -0.04, 1.1 - h), 0.09, 2, Quaternion((0.3, 0.2, 1), 0.5)), "#BFE6FF", transmission=0.35)
+    anim(ice, (0.06, 0.02, 1.08 - h), (0, 0, 1), spin(18), hop(0.1), extra_idle=[bob(0.05, 1.9)], lod_keep=True)
+    return body, [rim, mirror, ice]
+
+
+@builder("chime")
+def b_chime(gid):
+    h = 2.50
+    ctrl = [(0, 0), (0.91, 0), (0.99, 0.11), (0.94, 0.26), (0.73, 0.55), (0.61, 1.2), (0.49, 1.61), (0.29, 1.91), (0.25, 2.3), (0, 2.3)]
+    prof = chaikin(ctrl, fixed=(1, 8), iterations=1)
+    body = paint(lathe3("Body", prof, h, 22), "#80E7DE", role="Body")
+    clap = bmesh.new()
+    tube_bm(clap, [(0, -0.3, 0.62 - h), (0, -0.3, 0.3 - h)], 0.04, 5)
+    ellipsoid_bm(clap, (0, -0.3, 0.22 - h), (0.2, 0.2, 0.2), 10, 6)
+    clapper = paint(_obj("Clapper", clap), "#F8E6B0")
+    clapper["animation_pivot"] = [0, -0.3, 0.62 - h]
+    anim(clapper, (0, -0.3, 0.62 - h), (1, 0, 0), sway(6, 1.3), kick(30), lod_keep=True)
+    rb = bmesh.new()
+    torus_bm(rb, (0, 0, 0.12 - h), 0.95, 0.07, 24, 5)
+    rim = paint(_obj("BellRim", rb), "#C5FFF5")
+    cb = bmesh.new()
+    torus_bm(cb, (0, 0, 2.38 - h), 0.11, 0.045, 12, 5, Matrix.Rotation(math.pi / 2, 4, "X"))
+    lathe_bm(cb, [(0, 2.28), (0.24, 2.28), (0.27, 2.32), (0.18, 2.36), (0, 2.36)], h, 12)
+    crown = paint(_obj("Crown", cb), "#C5FFF5")
+    bow = bmesh.new()
+    for s in (-1, 1):
+        slab_bm(bow, [(0, 0), (s * 0.12, 0.1), (s * 0.24, 0.08), (s * 0.26, -0.04), (s * 0.14, -0.08)][::s], 0.05, 0.02, 1, Matrix.Translation((0, -0.27, 2.12 - h)))
+        slab_bm(bow, [(0, 0), (s * 0.08, -0.08), (s * 0.13, -0.3), (s * 0.05, -0.26), (s * 0.02, -0.08)][::s], 0.04, 0.015, 1, Matrix.Translation((0, -0.27, 2.12 - h)))
+    ellipsoid_bm(bow, (0, -0.28, 2.12 - h), (0.06, 0.04, 0.06), 6, 4)
+    centre = Vector((0, -0.27, 2.12 - h))
+    for v in bow.verts:
+        v.co = centre + (v.co - centre) * 1.7 + Vector((0, -0.05, 0))
+    ribbon = paint(_obj("Ribbon", bow), "#FF8FB0", "SmoothPlastic")
+    anim(ribbon, (0, -0.27, 2.12 - h), (0, 1, 0), sway(5, 1.6), kick(12))
+    return body, [clapper, rim, crown, ribbon]

@@ -14,6 +14,17 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — Combat feel pass (workstream B)
+Done:
+- New `Config/CombatFeel` + `Presentation/CombatFeel`. Hits are tiered Glance/Solid/Smash/Crit/Block, each with its own pooled impact (rewritten `ImpactBeat.tier`), layered sound with pitch jitter, client hitstop (45-105 ms, proportional catch-up, never a jump), camera kick/trauma shake/FOV punch over the orbit pose (capped at 0.3 studs / -6°), glass wobble/jolt/white flash/crack glint on the struck glassy and recoil on the striker.
+- Beats: Perfect Release, power landed vs missed, blocks, comeback (lead change), low-HP tension grade, a KO hold (0.18 s white wash, punch-in, grade) before the shatter/finisher, round-win rings, and the manual-cast "NICE CAST!" beat built against workstream A's SignatureReady/CastStart.Manual contract.
+- Reduced motion uses the existing `Motion.reduced()` (no shake/kick/FOV, softer wobble, shorter holds). Touch-only and low-quality devices get fewer particles; low quality also skips lights and white flashes.
+- Studio Play: five bot fights from the client view, no errors; reduced-motion run kept FOV fixed; nothing left behind after the match. Report and screenshots: `docs/testing/combat_feel/`. Lune 146/146; Studio RunAll 145/146 (the one failure is BalanceTests from A's in-progress rarity retune).
+Next:
+- Creator real-speed feel review and tuning in `Config/CombatFeel`; phone Device Emulator check; a live manual cast once A's events land.
+Problems / questions for the user:
+- The Studio MCP can't switch Device Emulator presets, so the phone preset check is still open.
+
 ## 2026-10-17 — Claude — Kiln prompts fixed
 Done:
 - Both world kiln prompts did nothing: KilnService only wired `Lobby.GlassClashProps.Kiln.OpenKiln`, but the creator's kilns now live at `Workspace.Kilns.{Kiln, MarbleKiln}`. KilnService now connects every `OpenKiln` prompt under `Workspace.Kilns` (and the old path), with a distance check that also works for attachments, and opens the shop on the Glassies page (`KilnOdds.Tab`, read by LobbyController). The Marble Kiln's prompt text is corrected at runtime to "Glassies • Marble pulls"; the creator's model is untouched.

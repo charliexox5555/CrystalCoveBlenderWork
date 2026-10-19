@@ -3,6 +3,8 @@
 Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DESIGN v0.3](GAME_DESIGN.md).
 **Current milestone: F5 — integration polish.** Wave1 imports, fitted fences and the native multiplayer/security pass are complete. Real-phone checks, final UI artwork and publishing remain with the creator; Marble packs, gamepasses and Marble Kiln purchases stay disabled; creator-approved match selection spends are implemented.
 
+- [x] **CL:** combat feel pass (workstream B): tiered hits with pooled impacts, layered sound, client hitstop with smooth catch-up, capped camera kick/shake/FOV punch, glass wobble/crack glint, Perfect/power land-miss/block/comeback/tension/KO-hold/victory beats and the manual-cast hook; reduced motion and mobile budget. [Report](testing/combat_feel/README.md). Phone preset check and creator real-speed tuning remain.
+
 - [x] **C:** creator selection/finish notes: longer preparation, one-tap reroll/Pick Any with inline odds and future-store hook, cleaner animated reels/selection, ghost-preview/detail cleanup, visible avatar impact and reset/zoom/return camera. 100 logic, 154 UI, 179 finish, 75 server and 4 power-number checks pass; [report](testing/combat_release/SELECTION_FINISH_POLISH.md), [24 powers/brainstorm](design/POWER_BRAINSTORM_24.md). Creator reviews feel and saves/publishes the place.
 
 - [x] **C:** stronger signature mesh/shot/cone/pulse/orbit effects, returning Prism Blade and retained stored charges; creator-requested full-circle horizontal fight camera. 99 logic, 32 camera and 264 native presentation checks pass; one live orbit/cleanup check and 48 deterministic swings. [Review/controls](testing/combat_release/SPECTACLE_ORBIT.md); creator tests feel and real touch/gamepad performance.

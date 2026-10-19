@@ -170,6 +170,7 @@ function Scene:Pose(side, p, twist, tilt)
 	f.Pivot = CFrame.fromMatrix(f.Hook.WorldPosition + self.Frame:VectorToWorldSpace(p), right, up, right:Cross(up))
 		* CFrame.Angles(tilt.X, twist, tilt.Z)
 		* Hero.motion(f, self.Combat and self.Combat.Time or 0)
+		* (f.React or CFrame.identity) -- CombatFeel wobble/jolt, presentation only
 	f.Model:PivotTo(f.Pivot)
 	f.Bubble.CFrame = f.Body.CFrame
 end
@@ -352,27 +353,30 @@ function Scene:Event(e, hud)
 		local a, b = self.Fighters[1], self.Fighters[2]
 		Health.bump(a)
 		Health.bump(b)
-		self.Shatter:HitBurst(a, b, {
-			CritA = e.Crit[1],
-			CritB = e.Crit[2],
-			Point = if e.Z then self.Frame:PointToWorldSpace(Vector3.new(e.X, e.Y, e.Z)) else nil,
-		}, self.Root)
-		local weight = math.clamp(e.Speed / Balance.Fight.RefSpeed, 0, 1)
-		local volume = Feel.ClinkVolumeMin + (Feel.ClinkVolumeMax - Feel.ClinkVolumeMin) * weight
-		self:Sound(
-			if weight > 0.75 then Audio.Heavy else Audio.Clink,
-			a.Body,
-			a.Def.ClinkPitch * (1.12 - weight * 0.2),
-			volume
-		)
-		self:Sound(Audio.ClinkAlt, b.Body, b.Def.ClinkPitch, volume * 0.45)
+		-- With a CombatFeel attached (every FightView), the tiered impact and layered sound come from there.
+		if not self.Feel then
+			self.Shatter:HitBurst(a, b, {
+				CritA = e.Crit[1],
+				CritB = e.Crit[2],
+				Point = if e.Z then self.Frame:PointToWorldSpace(Vector3.new(e.X, e.Y, e.Z)) else nil,
+			}, self.Root)
+			local weight = math.clamp(e.Speed / Balance.Fight.RefSpeed, 0, 1)
+			local volume = Feel.ClinkVolumeMin + (Feel.ClinkVolumeMax - Feel.ClinkVolumeMin) * weight
+			self:Sound(
+				if weight > 0.75 then Audio.Heavy else Audio.Clink,
+				a.Body,
+				a.Def.ClinkPitch * (1.12 - weight * 0.2),
+				volume
+			)
+			self:Sound(Audio.ClinkAlt, b.Body, b.Def.ClinkPitch, volume * 0.45)
+		end
 		if hud then
 			self.Shatter:Pulse()
 		end
 		if hud and (e.Crit[1] or e.Crit[2] or e.Speed >= Balance.Fight.RefSpeed * Feel.BigHitSpeed) then
 			hud:Popup(
 				if e.Crit[1] or e.Crit[2] then "CRIT!" else "SMASH!",
-				(a.Body.Position + b.Body.Position) / 2 + Vector3.yAxis * 2,
+				(a.Body.Position + b.Body.Position) / 2 + Vector3.yAxis * 3.2, -- above the BLOCKED/damage lanes
 				Color3.fromHex("#FFE45C"),
 				0,
 				"Impact"

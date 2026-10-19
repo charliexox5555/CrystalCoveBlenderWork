@@ -17,6 +17,7 @@ local Hud = require(script.Parent.Parent.UI.Screens.FightHud)
 local Orbit = require(script.Parent.FightOrbit)
 local FinisherCamera = require(script.Parent.FinisherCamera)
 local MatchCamera = require(script.Parent.MatchCamera)
+local CombatFeel = require(script.Parent.CombatFeel)
 local Theme = require(script.Parent.Parent.UI.Theme)
 local Audio = require(RS.Shared.Config.Audio)
 local M, Feel = Balance.Motion, Balance.Feel
@@ -135,14 +136,18 @@ function Controller:EndFight()
 		self.Player.PlayerGui:SetAttribute("Watching", false)
 	end
 	self:ExitView()
+	if self.Feel then
+		self.Feel:Destroy()
+		self.Feel = nil
+	end
 	if self.Scene then
 		self.Scene:Destroy()
 		self.Scene = nil
 	end
+	self.KOQueue = {}
 	self.Viewing, self.Watching = false, false
 	self.Data, self.Snapshots, self.Events, self.Drag, self.RenderTime = nil, {}, {}, nil, 0
-	self.FinalTime, self.FinalSide, self.SlowUntil, self.HoldUntil, self.ShakeUntil, self.LastSnapshotWall =
-		nil, nil, nil, nil, nil, nil
+	self.FinalTime, self.FinalSide, self.SlowUntil, self.LastSnapshotWall = nil, nil, nil, nil
 	self.Locked, self.Focus, self.LastCountdown = false, nil, nil
 	self.ShatterShown, self.PendingHearts, self.PendingAt, self.Settling = false, nil, nil, nil
 	if self.Post then
@@ -157,6 +162,8 @@ function Controller:Begin(data)
 	local maxima =
 		{ Formula.stats(Glassies.get(data.A.Id), data.A).HP, Formula.stats(Glassies.get(data.B.Id), data.B).HP }
 	self.Scene = Scene.new(data, maxima, self.Shatter)
+	self.Feel = CombatFeel.new(self)
+	self.Scene.Feel = self.Feel
 	for side, dead in data.DeadSides or {} do
 		if dead then
 			self.Scene:HideBroken(side)
@@ -376,7 +383,25 @@ function Controller:Queue(packet)
 	end
 end
 
+-- The final blow holds the frame for a beat (CombatFeel.KO) before the shatter and finisher play.
+function Controller:HoldKO(e)
+	if e.KOHeld or not self.Feel then
+		return false
+	end
+	e.KOHeld = true
+	local hold = self.Feel:KO(e, os.clock())
+	if hold <= 0 then
+		return false
+	end
+	self.KOQueue = self.KOQueue or {}
+	table.insert(self.KOQueue, { Event = e, At = os.clock() + hold })
+	return true
+end
+
 function Controller:Event(e)
+	if e.Type == "Shatter" and self:HoldKO(e) then
+		return
+	end
 	if self.Hud then
 		self.Hud.Gui:SetAttribute("LastEvent", e.Type)
 		self.Hud.Gui:SetAttribute("Last" .. e.Type, e.Time)
@@ -389,19 +414,31 @@ function Controller:Event(e)
 	end
 	self.Scene:Event(e, self.Hud)
 	local now = os.clock()
+	local feel = self.Feel
 	if e.Type == "Hit" then
-		self.ShakeUntil = now + Feel.ShakeSeconds
-		local damage =
-			math.max(e.Damage[1] / self.Scene.Fighters[1].Stats.MaxHP, e.Damage[2] / self.Scene.Fighters[2].Stats.MaxHP)
-		self.ShakePower = math.clamp(damage / 0.3, 0, 1) * Feel.ShakeMax
-		if e.Speed >= Balance.Fight.RefSpeed * Feel.BigHitSpeed and not self.FinalTime then
-			self.HoldUntil = now + Feel.HitstopSeconds
+		feel:Hit(e, now)
+	elseif e.Type == "PerfectRelease" then
+		feel:Perfect(e, now)
+	elseif e.Type == "CastContact" then
+		if e.Missed then
+			feel:PowerMiss(e.Side)
+		elseif e.Blocked then
+			feel:Block(e.Target or (e.Side and 3 - e.Side), now)
+		else
+			feel:PowerLand(e.Target or (e.Side and 3 - e.Side), now)
 		end
-	elseif (e.Type == "CastContact" and not e.Missed) or e.Type == "SignatureContact" or e.Type == "SignatureBlock" then
-		self.ShakeUntil, self.ShakePower = now + Feel.ShakeSeconds, Feel.ShakeMax * Feel.PowerImpactShake
-		if not self.FinalTime then
-			self.HoldUntil = now + Feel.PowerImpactHoldSeconds
+	elseif e.Type == "SignatureContact" then
+		feel:PowerLand(e.Target or (e.Side and 3 - e.Side), now)
+	elseif e.Type == "SignatureBlock" then
+		feel:Block(e.Side, now)
+	elseif e.Type == "Power" then
+		if e.Missed then
+			feel:PowerMiss(e.Side)
+		elseif e.Id == "beam" or e.Id == "freeze" then
+			feel:PowerLand(e.Side and 3 - e.Side, now)
 		end
+	elseif e.Type == "SignatureReady" or e.Type == "ReadyCancel" or e.Type == "CastStart" then
+		feel:Cast(e, now)
 	elseif e.Type == "Shatter" then
 		self.Phase = "RoundEnd"
 		self.FinisherCameraFrom = self.CameraPose
@@ -409,7 +446,8 @@ function Controller:Event(e)
 			self.Orbit.Yaw, self.Orbit.Target = 0, 0
 		end
 		self.Scene:StartFinisher(e.Side, now)
-		self.ShakeUntil, self.ShakePower = now + Feel.ShakeSeconds, Feel.ShakeMax
+		-- Round-win beat on the survivor as it rises (the finisher shatters it before ShowRoundResult).
+		feel:Victory(3 - e.Side, now)
 		if self.Viewing then
 			-- A double KO can emit two Shatters; keep one owned flash for cleanup.
 			self.Post = self.Post or Instance.new("ColorCorrectionEffect")
@@ -511,6 +549,9 @@ function Controller:Render(dt)
 	end
 	local time, now = workspace:GetServerTimeNow(), os.clock()
 	local data = self.Data
+	if self.Feel then
+		self.Feel:Step(dt, now)
+	end
 	if self.Phase == "Aiming" or self.Phase == "Countdown" then
 		for side, setup in { data.A, data.B } do
 			local aim = if side == self.Side
@@ -562,7 +603,8 @@ function Controller:Render(dt)
 		if self.FinalTime then
 			target = math.min(self.FinalTime, target + Feel.InterpolationDelay)
 		end
-		local rate = 1.25
+		-- Hitstop holds the render clock, then it catches up smoothly (never a jump; see CombatFeel:Rate).
+		local rate = self.Feel:Rate(now, target - self.RenderTime)
 		if self.FinalTime and self.RenderTime >= self.FinalTime - Feel.InterpolationDelay then
 			if not self.SlowUntil then
 				self.SlowUntil = now + Feel.SlowMotionSeconds
@@ -571,9 +613,7 @@ function Controller:Render(dt)
 				rate = Feel.SlowMotionRate
 			end
 		end
-		if not self.HoldUntil or now >= self.HoldUntil then
-			self.RenderTime = math.min(target, self.RenderTime + dt * rate)
-		end
+		self.RenderTime = math.min(target, self.RenderTime + dt * rate)
 		local left, right = buffer[1], latest
 		for i = 1, #buffer - 1 do
 			if buffer[i].T <= self.RenderTime and buffer[i + 1].T >= self.RenderTime then
@@ -615,6 +655,7 @@ function Controller:Render(dt)
 			self:Settle(latest, dt * rate)
 		end
 		self.Scene:Update(r, self.RenderTime)
+		self.Feel:Update(r, now)
 		if self.Hud then
 			self.Hud:Update(r)
 		end
@@ -627,6 +668,15 @@ function Controller:Render(dt)
 			end
 		end
 		self.Events = pending
+		local held = {}
+		for _, item in self.KOQueue or {} do
+			if now >= item.At then
+				self:Event(item.Event)
+			else
+				table.insert(held, item)
+			end
+		end
+		self.KOQueue = held
 		if self.Hud and self.Phase == "Fighting" and self.RenderTime < 0.8 then
 			if self.Hud.Headline.Text ~= "LET GO!" then
 				self.Hud:Beat()
@@ -674,12 +724,13 @@ function Controller:Camera(dt, now)
 		target = FinisherCamera.pose(self.Scene.Finisher, normal, self.FinisherCameraFrom or normal, now)
 	end
 	self.CameraPose = target
-	local shake = Vector3.zero
-	if self.ShakeUntil and now < self.ShakeUntil then
-		local magnitude = self.ShakePower * (self.ShakeUntil - now) / Feel.ShakeSeconds
-		shake = Vector3.new(math.sin(now * 93), math.cos(now * 111), 0) * magnitude
+	-- Kick, shake and FOV punch sit on top of the orbit/finisher pose; the pose itself is never changed.
+	local offset, fov = CFrame.identity, 0
+	if self.Feel then
+		offset, fov = self.Feel:Camera(now)
 	end
-	camera.CFrame = self.CameraPose * CFrame.new(shake)
+	camera.CFrame = self.CameraPose * offset
+	camera.FieldOfView = Feel.CameraFieldOfView + fov
 	for gui in self.HiddenGuis or {} do
 		if gui.Parent then
 			gui.Enabled = false

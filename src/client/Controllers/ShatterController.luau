@@ -120,6 +120,29 @@ function Shatter:SetCracks(fighter, hp, maxHP)
 	return true
 end
 
+-- A hit catches the light in the cracks: they flash bright for a moment, then return to dark lines.
+function Shatter:GlintCracks(fighter, seconds)
+	local cracks = fighter.Cracks
+	if not cracks or #cracks == 0 or fighter.Broken then
+		return
+	end
+	local serial = (fighter.CrackGlintSerial or 0) + 1
+	fighter.CrackGlintSerial = serial
+	for _, part in cracks do
+		part.Color, part.Material = Color3.fromHex("#F4FDFF"), Enum.Material.Neon
+	end
+	task.delay(seconds, function()
+		if fighter.CrackGlintSerial ~= serial then
+			return
+		end
+		for _, part in cracks do
+			if part.Parent then
+				part.Color, part.Material = Color3.fromHex("#17304A"), Enum.Material.SmoothPlastic
+			end
+		end
+	end)
+end
+
 function Shatter:Break(fighter, root)
 	if fighter.Broken then
 		return

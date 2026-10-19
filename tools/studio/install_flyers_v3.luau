@@ -20,7 +20,11 @@ local MAIN = {
 	honey_hover = "Deck",
 	bubble_pod = "Shell",
 	paper_jet = "Keel",
+	dragonfly = "Thorax",
+	carousel = "Pole", -- the main part must not move (the pony bobs)
 }
+-- Flyers whose rider sits on a moving part (RideMotion follows it; see RideMotion:RiderPose).
+local MOUNT = { carousel = "Pony" }
 
 local function folder(parent, name)
 	local f = parent:FindFirstChild(name)
@@ -178,6 +182,9 @@ for id, entry in input do
 	model:SetAttribute("Triangles", manifest.Tris)
 	model:SetAttribute("SourceAsset", entry.AssetId)
 	model:SetAttribute("AxisFixed", true)
+	if manifest.RiderMount or MOUNT[id] then
+		model:SetAttribute("RiderMount", manifest.RiderMount or MOUNT[id])
+	end
 	-- size check against the manifest
 	local _, size = model:GetBoundingBox()
 	local want = v3(manifest.Extents)

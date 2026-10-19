@@ -479,6 +479,59 @@ EFFECTS.paper_jet = function(P, A)
 	launchBurst(A.Launch, "#FFFFFF")
 end
 
+EFFECTS.dragonfly = function(P, A)
+	local veins = seq({ { 0, "#B9FFF0" }, { 0.5, "#FFE58A" }, { 1, "#FF9CE0" } })
+	for i = 0, 3 do
+		local key = "WingTrail" .. i
+		trail(A[key].Parent, "WingShimmer", A[key], pairBelow(A[key], 0.1), {
+			Color = veins,
+			Transparency = nseq({ { 0, 0.35 }, { 1, 1 } }),
+			Lifetime = 0.3,
+			LightEmission = 0.7,
+			MinLength = 0.03,
+		})
+	end
+	emitter(P.Thorax, "DewDrops", {
+		Texture = TEX.glint,
+		Color = ColorSequence.new(Color3.fromHex("#B9FFF0")),
+		LightEmission = 1,
+		Size = nseq({ { 0, 0 }, { 0.3, 0.2 }, { 1, 0 } }),
+		Lifetime = NumberRange.new(0.5, 0.8),
+		Rate = 4,
+		Speed = NumberRange.new(0.3, 0.8),
+		Shape = Enum.ParticleEmitterShape.Box,
+		ShapeStyle = Enum.ParticleEmitterShapeStyle.Surface,
+	})
+	wake(A.Wake, "#E8FFFB")
+	launchBurst(A.Launch, "#E8FFFB")
+end
+
+EFFECTS.carousel = function(P, A)
+	for _, key in { "Trail0", "Trail1" } do
+		trail(A[key].Parent, "TwinkleTrail", A[key], pairBelow(A[key], 0.16), {
+			Color = seq({ { 0, "#FFF4A8" }, { 1, "#FFD6F5" } }),
+			Transparency = nseq({ { 0, 0.3 }, { 1, 1 } }),
+			Lifetime = 0.5,
+			LightEmission = 0.8,
+			MinLength = 0.03,
+		})
+	end
+	emitter(A.Notes, "MusicTwinkles", {
+		Texture = TEX.sparkle,
+		Color = seq({ { 0, "#FFF4A8" }, { 0.5, "#FFD6F5" }, { 1, "#7CE7D5" } }),
+		LightEmission = 1,
+		Size = nseq({ { 0, 0 }, { 0.3, 0.35 }, { 1, 0 } }),
+		Lifetime = NumberRange.new(1, 1.5),
+		Rate = 3,
+		Speed = NumberRange.new(0.5, 1),
+		SpreadAngle = Vector2.new(60, 60),
+		Acceleration = Vector3.new(0, 0.6, 0),
+	})
+	light(A.Notes, "#FFF4A8", 0.8, 8)
+	wake(A.Wake, "#FFF4FB")
+	launchBurst(A.Launch, "#FFF4FB")
+end
+
 -- No flyer equipped (decision 95): the faint hover pad under a standing rider.
 EFFECTS.stand = function(P, A)
 	emitter(A.Shimmer, "HoverShimmer", {

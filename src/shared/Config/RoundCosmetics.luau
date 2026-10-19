@@ -59,6 +59,22 @@ C.Rideables = {
 		Accent = "#FFF1C9",
 		Description = "A floating glass honeycomb with two little glass bees on patrol.",
 	},
+	{
+		Id = "dragonfly",
+		Name = "Dragonfly",
+		Rarity = "Rare",
+		Color = "#2FD0B5",
+		Accent = "#F5D99A",
+		Description = "A glass dragonfly bike with four shimmering wings.",
+	},
+	{
+		Id = "carousel",
+		Name = "Carousel",
+		Rarity = "Epic",
+		Color = "#FFD6F5",
+		Accent = "#7CE7D5",
+		Description = "A merry-go-round pony that flew off the ride, canopy, lights and all.",
+	},
 }
 C.Finishers = {
 	{

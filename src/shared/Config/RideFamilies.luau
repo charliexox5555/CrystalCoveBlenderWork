@@ -574,6 +574,8 @@ F.Flyers = {
 	honey_hover = { Family = "Surf" },
 	bubble_pod = { Family = "Sit" },
 	paper_jet = { Family = "Kneel" },
+	dragonfly = { Family = "HandleSit" },
+	carousel = { Family = "HandleSit" }, -- rider follows the bobbing pony (model attribute RiderMount = "Pony")
 }
 
 -- Standard grip layout per handle family, in rider space (contact point at the origin, nose toward -Z). Handle

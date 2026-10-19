@@ -14,6 +14,15 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — CodesScreen design (top bar menus)
+Done:
+- Designed `StarterGui.CodesScreen`: a small, short, wide Stained Glass window (CODES amethyst banner, Close diamond, dark inset `CodeInput` TextBox with an aqua `FocusOutline`, green `RedeemButton`, hidden `Status` line, hint line). Rebuild: `tools/studio/build_codes_screen.luau`.
+- New art `tools/ui/codes_art.mjs` → `assets/ui/screens/codes` (window and two field images), uploaded to group 11116787; keys in `UIAssets` (`screens/codes/*`). Captures and element map: `docs/ui/screens/CodesScreen.md`.
+Next:
+- Wire it to a redeem remote later (controller reads `CodeInput.Text`, writes `Status`); phone/tablet scaling pass.
+Problems / questions for the user:
+- Save the place (the rebuilt screen exists only in the open Edit session). No Node on this Mac: the art was rasterised through a browser canvas, `node tools/ui/codes_art.mjs` gives the same shapes.
+
 ## 2026-10-19 — Claude — Top bar buttons (decision 98)
 Done:
 - TopbarPlus v3.5.0 vendored at `src/shared/Vendor/Icon` (source read: no require(id), loadstring, HTTP; StyLua ignores it).

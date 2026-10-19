@@ -1,0 +1,8 @@
+{
+ "Record": "assets/ui/screens/codes/roblox_assets.json",
+ "Items": [
+  {"Key": "window_codes", "Path": "assets/ui/screens/codes/png/window_codes.png", "Type": "Decal", "Name": "UI Codes window", "Description": "Glass Clash Codes window (stained glass)."},
+  {"Key": "field_inset", "Path": "assets/ui/screens/codes/png/field_inset.png", "Type": "Decal", "Name": "UI Codes field", "Description": "Glass Clash code entry field (stained glass)."},
+  {"Key": "field_focus", "Path": "assets/ui/screens/codes/png/field_focus.png", "Type": "Decal", "Name": "UI Codes field focused", "Description": "Glass Clash code entry field, focused (stained glass)."}
+ ]
+}

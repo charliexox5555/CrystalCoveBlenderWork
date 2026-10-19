@@ -90,5 +90,9 @@ local UIAssets = {
 	["tile/tile_mythic"] = "rbxassetid://108127077924736",
 	["tile/tile_rare"] = "rbxassetid://90952859472618",
 	["tile/tile_uncommon"] = "rbxassetid://77817979900089",
+	-- CodesScreen (tools/ui/codes_art.mjs; assets/ui/screens/codes)
+	["screens/codes/window_codes"] = "rbxassetid://130615538105152",
+	["screens/codes/field_inset"] = "rbxassetid://98997316553457",
+	["screens/codes/field_focus"] = "rbxassetid://99561576715408",
 }
 return UIAssets

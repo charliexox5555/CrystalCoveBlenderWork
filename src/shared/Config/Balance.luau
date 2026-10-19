@@ -25,7 +25,7 @@ Balance.CombatRelease = {
 	-- contact within ArmedSeconds pays off. Sides without a policy (old tests, FightModel) cast at once.
 	Cast = {
 		Enabled = true,
-		AutoSeconds = 2.5,
+		AutoSeconds = 1.6,
 		ArmedSeconds = 3,
 		-- "Good moment" read shared by bots, the simulators and the client hint (CastTiming).
 		BraceLead = 0.55, -- guard/mirror: cast when contact is due within windup + this
@@ -800,7 +800,7 @@ Balance.Rarities = {
 
 -- Stars from duplicates (GAME_DESIGN 4.3). Every duplicate from a crate adds a star.
 Balance.Growth = {
-	StatPerStar = 0.01, -- HP only; 5 stars = +5% HP (decision 86)
+	StatPerStar = 0.006, -- HP only; 5 stars = +3% HP (decision 86)
 	MaxStars = 5,
 	DuplicatesPerStar = 1,
 	DuplicateCoinsAtMaxStars = 50, -- duplicates past max stars turn into coins

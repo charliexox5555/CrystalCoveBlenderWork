@@ -163,9 +163,9 @@ function Impact.tier(root, assets, origin, tier, opts)
 	end
 end
 
--- Legacy call (signature contacts and guard blocks from CombatEffects).
-function Impact.emit(root, assets, origin, color, strong, lowDetail)
-	Impact.tier(root, assets, origin, FeelConfig.Tiers[if strong then "Smash" else "Solid"], {
+-- Signature contacts and guard blocks from CombatEffects: a small marker under the kit's own PowerFX hit.
+function Impact.emit(root, assets, origin, color, _strong, lowDetail)
+	Impact.tier(root, assets, origin, FeelConfig.Tiers.Contact, {
 		Color = color,
 		LowDetail = lowDetail,
 		Light = false,

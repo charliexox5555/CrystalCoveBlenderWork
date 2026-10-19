@@ -110,7 +110,13 @@ end
 -- Hitstop -----------------------------------------------------------------------------------------------------------
 
 function Feel:Hold(seconds, now)
-	if seconds <= 0 or not self:Viewing() or self.View.FinalTime then
+	if seconds <= 0 then
+		return
+	elseif not self:Viewing() then
+		self:Note("FeelHoldSkipView")
+		return
+	elseif self.View.FinalTime then
+		self:Note("FeelHoldSkipFinal")
 		return
 	end
 	seconds = math.min(seconds * self:Scale("Hitstop"), Hold.MaxSeconds)

@@ -127,6 +127,31 @@ return {
 				{ Key = "ChimeCluster", Volume = 0.2, Pitch = 1.35, Jitter = 0.04, Delay = 0.06, Short = 0.45 },
 			},
 		},
+		-- Generic signature contact/guard burst (CombatEffects via Impact.emit). Kept small: the kit's own PowerFX hit
+		-- (workstream E) is the star; this only marks the point.
+		Contact = {
+			Hitstop = 0,
+			Trauma = 0,
+			Kick = 0,
+			Fov = 0,
+			Spokes = 0,
+			SpokeLength = 0,
+			SpokeWidth = 0,
+			Spread = 0,
+			Rings = 1,
+			RingEnd = 2.2,
+			Flash = 0.9,
+			Chips = 4,
+			Glints = 4,
+			Light = 0,
+			Seconds = 0.3,
+			Color = "#FFFFFF",
+			Struck = { Jolt = 0, Wobble = 0 },
+			Striker = { Jolt = 0, Wobble = 0, Glints = 0 },
+			CrackGlint = 0,
+			ImpactFlash = 0,
+			Sounds = {},
+		},
 		-- Every hit point was absorbed (guards, shields): a dull, golden "tok" with no hitstop.
 		Block = {
 			Hitstop = 0.02,
@@ -266,7 +291,7 @@ return {
 		Brightness = 0.06,
 		GradeSeconds = 0.45,
 		ImpactFlash = 0.18,
-		Sounds = { { Key = "ClinkHeavy", Volume = 0.5, Pitch = 0.72, Jitter = 0.03, Short = 0.3 } },
+		Sounds = { { Key = "ClinkHeavy", Volume = 0.4, Pitch = 0.72, Jitter = 0.03, Short = 0.3 } },
 	},
 
 	Victory = {
@@ -284,8 +309,9 @@ return {
 			Seconds = 0.7,
 			Color = "#FFE45C",
 		},
-		LocalWinSounds = { { Key = "UiSuccess", Volume = 0.35, Pitch = 1.0, Jitter = 0, Short = 1.2 } },
-		Sounds = { { Key = "ChimeCluster", Volume = 0.2, Pitch = 1.1, Jitter = 0.02, Short = 0.9 } },
+		-- Silent on purpose: the finisher's own rise/burst cues start at the same moment (integrated check, Oct 19).
+		LocalWinSounds = {},
+		Sounds = {},
 	},
 
 	-- Workstream A's cast contract: SignatureReady, then CastStart { Manual = true } when the player tapped CAST.

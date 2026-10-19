@@ -21,7 +21,7 @@ Done:
 - Reduced motion uses the existing `Motion.reduced()` (no shake/kick/FOV, softer wobble, shorter holds). Touch-only and low-quality devices get fewer particles; low quality also skips lights and white flashes.
 - Studio Play: five bot fights from the client view, no errors; reduced-motion run kept FOV fixed; nothing left behind after the match. Report and screenshots: `docs/testing/combat_feel/`. Lune 146/146; Studio RunAll 145/146 (the one failure is BalanceTests from A's in-progress rarity retune).
 Next:
-- Creator real-speed feel review and tuning in `Config/CombatFeel`; phone Device Emulator check; a live manual cast once A's events land.
+- Creator real-speed feel review and tuning in `Config/CombatFeel`; phone Device Emulator check. (Manual cast verified live after A's CAST commit: a CAST press in a player-vs-bot match fired "NICE CAST!".)
 Problems / questions for the user:
 - The Studio MCP can't switch Device Emulator presets, so the phone preset check is still open.
 

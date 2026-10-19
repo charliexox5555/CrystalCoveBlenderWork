@@ -488,6 +488,7 @@ function Feel:Cast(e, now)
 			self:Burst(small, f.Body.Position)
 		end
 		if mine then
+			self:Note("FeelManualCastMine")
 			self:Hold(cfg.Hitstop, now)
 			self:Shake(cfg.Trauma)
 			self:Punch(cfg.Fov)

@@ -78,9 +78,15 @@ During a hold the render clock runs at 4% speed (a near-freeze). Afterwards the 
   | Prism vs Glass Dragon | 404 | run with reduced motion |
   | Jam vs Frostglobe | 505 | live Perfect Release screenshot |
   | Pop vs Briar Flask | 606 | Glance tier seen; 11 power-contact beats, so the 0.3 s gap was added. Run twice, before and after the gap; 0 script errors |
+  | Real player-vs-bot matches | — | Started with `MatchDev` "Start"; a client script picked, aimed and pressed CAST through the `CastPower` remote. See the cast check below. |
 
   - During live fights the FOV dipped to 47.5–48° on crits and came back to 52°.
   - With `ReducedMotion` on, the FOV stayed at 52° the whole fight and holds were 39 ms.
+- **Live cast check (player vs bot, A's commit `c147c3b`):**
+  - The event log showed `SignatureReady` for both sides, the bot's `CastStart { Manual = true }`, and after my press `SignatureArmed { Manual = true }` on my side (Pop is a contact-armed kit).
+  - My press fired the player beat (`FeelManualCastMine`): 50 ms hold, burst, and the "NICE CAST!" popup appeared in PlayerGui. The bot's cast got the small ring.
+  - When nobody pressed, Ready was followed by an auto `SignatureArmed { Manual = false }` and no beat, as intended.
+  - Three matches, 0 script errors.
 - **Leftovers after the match:** no `LocalFight_*` folder, no `FightFeelGrade` or `FightShatterFlash` in Lighting, camera back to Custom at FOV 70. During a fight the pool peaked at 23 children.
 - **Frame time:** 68 ms on average during a fight versus 67 ms idle. Studio was throttled to about 15 fps in the background in both cases, so these numbers only show that the pass adds no measurable cost here, not real phone performance.
 - **Tests:** Lune `tools/run_tests` 146 passed, 0 failed. Studio RunAll on the Play server: 145 passed, 1 failed. The failure is `BalanceTests` "Mythic vs Common", caused by workstream A's in-progress rarity retune (uncommitted `Balance`/`BalanceTests` edits), not by this client-only pass.
@@ -100,5 +106,4 @@ These are staged with `CombatFeelPreview` at 50–70× slower so the frame can b
 - **Phone Device Emulator preset not run.** The Studio MCP can't switch emulator devices. The Play viewport was 1167×510, a phone-landscape aspect, and the touch-only particle cut was checked by reading the code only. A 2-minute check with an iPhone preset is still needed.
 - **Real-speed feel review by the creator.** Tier thresholds, hold lengths and the KO hold are first guesses from the research ranges; tune them in `Config/CombatFeel`.
 - **Comeback and tension beats were not seen in a live fight** (bot fights rarely swing). They are covered by the preview and code paths only.
-- **Manual cast is built against the contract but not exercised live.** Workstream A's CAST commit (`c147c3b`) emits `SignatureReady` / `CastStart.Manual` / `SignatureArmed.Manual` and the names were checked against it. Bot-vs-bot dev fights never cast manually, though, so a player fight with a CAST press is still needed.
 - **Sound mix:** the layers reuse the existing licensed bank. A dedicated glass "tail" sample would make tiers sound more distinct.

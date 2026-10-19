@@ -36,7 +36,9 @@ PEARL, GOLD, NAVY, WHITE = H["PEARL"], H["GOLD"], H["NAVY"], H["WHITE"]
 X, Y, Z = Vector((1, 0, 0)), Vector((0, 1, 0)), Vector((0, 0, 1))
 
 # RideFamilies.StandardGrips (Roblox rider space) -> Blender (x, -z, y)
-GRIPS = {"HandleStand": ((-0.96, 1.56, 2.58), (0.96, 1.56, 2.58)), "HandleSit": ((-0.9, 1.55, 1.45), (0.9, 1.55, 1.45))}
+# HandleSit was (+-0.9, 1.45, -1.55) when Dragonfly and Carousel were built; H moved it to (+-0.62, 1.46, -1.74) (IK covers both).
+GRIPS = {"HandleStand": ((-0.96, 1.56, 2.58), (0.96, 1.56, 2.58)), "HandleSit": ((-0.62, 1.74, 1.46), (0.62, 1.74, 1.46))}
+GRIPS_BUILT = {"dragonfly": ((-0.9, 1.55, 1.45), (0.9, 1.55, 1.45)), "carousel": ((-0.9, 1.55, 1.45), (0.9, 1.55, 1.45))}
 LAUNCH = {}   # id -> (builder, budget, family)
 EYE, SHINE, BLUSH = "#1B2440", "#FFFFFF", "#FF9FC4"
 
@@ -470,6 +472,7 @@ def wing_outline(L, w, n=7):
 
 @flyer("dragonfly", 7500, "HandleSit")
 def build_dragonfly():
+    GRIPS["HandleSit"] = GRIPS_BUILT["dragonfly"]  # keep the shipped (uploaded) layout; rebuilding must not move the grips
     zc = -0.72
     # Thorax under the saddle.
     th = []
@@ -591,7 +594,7 @@ CAROUSEL = {"pink": "#FFD6F5", "rose": "#E58FC7", "gold": "#F5D99A", "mint": "#7
 
 @flyer("carousel", 7500, "HandleSit")
 def build_carousel():
-    gl, gr = GRIPS["HandleSit"]
+    gl, gr = GRIPS_BUILT["carousel"]  # shipped layout (see GRIPS)
     pole_y = gl[1]
     bob = {"RideMotion": "Bob", "BobAmp": 0.45, "BobHz": 0.45, "BobPhase": 0.0}
     # Pony: one smooth glass body (voxel union), prancing (front legs curled, hind legs reaching back).
@@ -1102,6 +1105,8 @@ def build(gid, render=False, samples=32):
     manifest["Family"] = family
     if meta_box.get("ModelAttributes"):
         manifest["ModelAttributes"] = meta_box["ModelAttributes"]   # set on the Model in Studio (e.g. RiderMount)
+        if "RiderMount" in meta_box["ModelAttributes"]:
+            manifest["RiderMount"] = meta_box["ModelAttributes"]["RiderMount"]   # top-level key read by H's installer
     if meta_box.get("Notes"):
         manifest["Notes"] = meta_box["Notes"]
     manifest["Source"] = "tools/blender/build_flyers_launch.py (on build_flyers_v3.py)"

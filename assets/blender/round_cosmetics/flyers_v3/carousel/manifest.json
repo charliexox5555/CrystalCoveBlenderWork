@@ -557,5 +557,6 @@
   "RiderMount": "Pony"
  },
  "Notes": "Bob (BobAmp 0.45, BobHz 0.45) on Pony, PonyCore, eyes, Horn, Saddle, SaddleTrim, ManeTail_n, Crossbar and Grips; RiderSeat, GripL and GripR sit on bobbing parts and RiderMount = Pony. Pole, canopy ring and bulbs stay fixed; CanopyWhite/CanopyMint Spin about the pole; Bulbs Pulse (chase blink if your Pulse supports a phase).",
- "Source": "tools/blender/build_flyers_launch.py (on build_flyers_v3.py)"
+ "Source": "tools/blender/build_flyers_launch.py (on build_flyers_v3.py)",
+ "RiderMount": "Pony"
 }

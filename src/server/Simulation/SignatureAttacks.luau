@@ -11,7 +11,7 @@ local function array(v)
 end
 
 function Attacks.add(sim, cast, origin, direction, target)
-	if not table.find({ "projectile", "volley", "cone", "breath", "pulse", "orbit", "bloom" }, cast.Shape) then
+	if not table.find({ "projectile", "volley", "cone", "breath", "pulse", "orbit", "bloom", "zone" }, cast.Shape) then
 		return false
 	end
 	sim.ReleaseAttacks = sim.ReleaseAttacks or {}
@@ -48,7 +48,8 @@ function Attacks.step(sim, dt, center)
 		end
 		local c, oldAge = a.Cast, a.Age
 		local p = c.Params
-		a.Age = math.min(p.Duration, a.Age + dt)
+		local life = p.Duration + (if c.Shape == "zone" then p.Delay or 0 else 0)
+		a.Age = math.min(life, a.Age + dt)
 		local target = center(sim, 3 - c.Side)
 		local radius = sim.Fight.Fighters[3 - c.Side].Radius * Balance.Motion.GlassyScale + p.Radius
 		local hit, point, done = false, target, false
@@ -82,6 +83,13 @@ function Attacks.step(sim, dt, center)
 			local after = (target - a.Origin).Magnitude - p.Range * a.Age / p.Duration
 			hit = math.min(before, after) <= radius and math.max(before, after) >= -radius
 			done = hit or a.Age >= p.Duration
+		elseif c.Shape == "zone" then
+			-- A fixed hazard bubble: live after Delay, hits the first time the foe swings into it.
+			if a.Age >= (p.Delay or 0) then
+				hit = Geometry.movingSphere(a.Origin, a.Origin, a.PreviousTarget, target, p.Range + radius)
+				point = target
+			end
+			done = hit or a.Age >= life
 		elseif c.Shape == "orbit" then
 			done = a.Age >= p.Duration
 			hit = done and (target - a.Origin).Magnitude <= p.Range + radius

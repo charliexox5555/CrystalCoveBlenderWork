@@ -124,6 +124,14 @@ local function integrate(sim, side, dt)
 		if signature.Kit.Impulse and b.V.Magnitude > 0.1 then
 			b.V += b.V.Unit * signature.Kit.Impulse
 		end
+		if signature.Kit.AimImpulse then
+			-- Glass Unicorn: the dash aims at the foe (horizontal part) when the boost starts.
+			local toward = Pendulum.center(sim, 3 - side) - Pendulum.center(sim, side)
+			toward = V.new(toward.X, 0, toward.Z)
+			if toward.Magnitude > 0.01 then
+				b.V += tangent(toward.Unit * signature.Kit.AimImpulse, b.P.Unit)
+			end
+		end
 	end
 	local previousVy = b.V.Y
 	if sim.Fight.Time >= b.NextWander then
@@ -183,12 +191,32 @@ local function sweepPoint(attack, age)
 	return attack.Origin + (attack.Direction * math.cos(angle) + attack.Up * math.sin(angle)) * attack.Cast.Params.Range
 end
 
+-- Velocity of a glassy's body centre (the string point scaled out to the body).
+function Pendulum.centerVelocity(sim, side)
+	local center = sim.Fight.Fighters[side].BodyCenter or M.BodyCenter
+	return sim.Bodies[side].V * (1 + center * M.GlassyScale / M.StringLength)
+end
+
+-- Where a zone hazard sits (Bubble Wand, Honey Bear, Crystal Ball). Fixed once placed.
+local function zoneCenter(sim, cast)
+	local p = cast.Params
+	if p.At == "foe_predicted" then
+		return Pendulum.center(sim, 3 - cast.Side) + Pendulum.centerVelocity(sim, 3 - cast.Side) * (p.Lead or 0)
+	elseif p.At == "self_lead" then
+		return Pendulum.center(sim, cast.Side) + Pendulum.centerVelocity(sim, cast.Side) * (p.Lead or 0)
+	end
+	return Pendulum.center(sim, cast.Side)
+end
+
 local function attacks(sim, dt)
 	for _, cast in Rules.drainCasts(sim.Fight) do
 		if sim.Fight.Over then
 			break
 		end
 		local origin, direction = Pendulum.center(sim, cast.Side), Pendulum.fireDirection(sim, cast.Side)
+		if cast.Shape == "zone" then
+			origin = zoneCenter(sim, cast)
+		end
 		if cast.Params.StoredOrigin then
 			origin = V.new(table.unpack(cast.Params.StoredOrigin))
 		end
@@ -215,6 +243,12 @@ local function attacks(sim, dt)
 		elseif cast.Shape == "sweep" then
 			local up = V.yAxis - direction * direction.Y
 			up = if up.Magnitude > 0.0001 then up.Unit else V.zAxis
+			if cast.Params.Plane == "horizontal" then
+				-- Glass Top: a flat ring that spins all the way round the owner.
+				local flat = V.new(direction.X, 0, direction.Z)
+				direction = if flat.Magnitude > 0.0001 then flat.Unit else V.xAxis
+				up = V.yAxis:Cross(direction).Unit
+			end
 			local attack =
 				{ Cast = cast, Origin = origin, Direction = direction, Up = up, Age = 0, PreviousTarget = target }
 			attack.PreviousPoint = sweepPoint(attack, 0)
@@ -368,6 +402,9 @@ function Pendulum.presentation(sim)
 				Pulses = p.Pulses,
 				Path = p.Path,
 				Duration = p.Duration,
+				Delay = p.Delay,
+				Plane = p.Plane,
+				Brew = p.Brew,
 				Resolved = table.clone(cast.Results or {}),
 			})
 		end

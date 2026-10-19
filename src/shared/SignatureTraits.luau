@@ -25,9 +25,16 @@ function Traits.damaged(state, target, amount, kind, emit, begin)
 		return
 	end
 	local kit = s.Kit
-	if kit.Trigger == "threshold" and not s.Used and target.Hp / target.MaxHp <= kit.Threshold then
-		s.Used = true
-		begin(state, target.Side, emit)
+	if kit.Trigger == "threshold" then
+		-- One or more HP thresholds (kit.Thresholds, else kit.Threshold); each fires once, in order.
+		local list = kit.Thresholds or { kit.Threshold }
+		local index = (s.ThresholdIndex or 0) + 1
+		if not s.Used and list[index] and target.Hp / target.MaxHp <= list[index] then
+			if begin(state, target.Side, emit) then
+				s.ThresholdIndex = index
+				s.Used = list[index + 1] == nil
+			end
+		end
 	elseif kit.Trigger == "heavy" and kind == "body" and amount >= target.MaxHp * kit.Threshold then
 		s.NextContactBonus, s.ArmExpiry = kit.ContactBonus, state.Time + kit.Duration
 		status(state, emit, target.Side, "Counter", { Seconds = kit.Duration })
@@ -54,10 +61,16 @@ function Traits.turnaround(state, side, emit, begin)
 	end
 	if kit.Trigger == "received" and s.Charge >= kit.Every then
 		begin(state, side, emit)
-	elseif kit.Trigger == "stored" and (s.Stored or 0) > 0 then
+	elseif
+		kit.Trigger == "stored"
+		and (s.Stored or 0) > 0
+		and s.Stored >= (kit.ReadyAt or 0) * f.MaxHp * kit.StoreCap
+	then
 		local stored = s.Stored
-		if begin(state, side, emit, { Damage = math.min(kit.Damage, stored / f.Power) }) then
-			s.Stored = 0
+		if begin(state, side, emit, { Damage = math.min(kit.Damage, stored / f.Power), FromStored = true }) then
+			if not s.Ready then
+				s.Stored = 0
+			end
 		end
 	elseif kit.Shape == "seed_contact" and (s.Seeds or 0) >= kit.MaxSeeds then
 		local seeds = s.Seeds
@@ -100,9 +113,9 @@ function Traits.beforeContact(state, emit, point)
 	end
 end
 
-function Traits.contact(state, side, point, emit)
+function Traits.contact(state, side, point, emit, kitOverride)
 	local f, target = state.Fighters[side], state.Fighters[3 - side]
-	local s, kit = f.Signature, f.Signature.Kit
+	local s, kit = f.Signature, kitOverride or f.Signature.Kit
 	if kit.Shape == "slow_contact" then
 		Traits.slow(state, f, target, kit, emit)
 	elseif kit.Shape == "mark_contact" then

@@ -582,6 +582,9 @@ function FightRules.releaseCast(state: State, cast, origin, direction): boolean
 		Duration = cast.Params.Duration,
 		Pulses = cast.Params.Pulses,
 		Path = cast.Params.Path,
+		Delay = cast.Params.Delay, -- zone: seconds before it goes live
+		Plane = cast.Params.Plane, -- sweep: "horizontal" spins round the owner
+		Brew = cast.Params.Brew, -- Cycle kits: which brew
 	})
 	return true
 end

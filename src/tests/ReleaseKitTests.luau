@@ -38,16 +38,27 @@ return function(t, d)
 		end
 		t.eq(count, 24)
 	end)
-	t.test("milk repairs once, cannot revive and low-health duck guards only one body hit", function()
+	t.test("milk repairs once per threshold, cannot revive and low-health duck guards only one body hit", function()
 		local s = fight("milk_bottle", "pop")
-		s.Fighters[1].Hp = s.Fighters[1].MaxHp * 0.51
+		local marks = s.Fighters[1].Signature.Kit.Thresholds
+		s.Fighters[1].Hp = s.Fighters[1].MaxHp * (marks[1] - 0.01)
 		R.hit(s, 10, 0.5)
-		t.ok(s.Fighters[1].Signature.Used)
+		t.eq(s.Fighters[1].Signature.ThresholdIndex, 1)
 		local before = s.Fighters[1].Hp
 		R.tick(s, 0.5)
 		t.ok(s.Fighters[1].Hp > before)
 		R.hit(s, 10, 0.5)
-		t.eq(#s.PendingCasts, 0, "one repair")
+		t.eq(#s.PendingCasts, 0, "no repeat above the next threshold")
+		for _ = 1, 60 do
+			R.tick(s, 0.1)
+		end
+		s.Fighters[1].Hp = s.Fighters[1].MaxHp * (marks[#marks] - 0.01)
+		R.hit(s, 10, 0.5)
+		t.ok(s.Fighters[1].Signature.Used, "last threshold used")
+		R.tick(s, 0.5)
+		s.Fighters[1].Hp = s.Fighters[1].MaxHp * 0.1
+		R.hit(s, 10, 0.5)
+		t.eq(#s.PendingCasts, 0, "no third repair")
 		local lethal = fight("milk_bottle", "pop")
 		lethal.Fighters[1].Hp = 1
 		R.hit(lethal, 20, 0.5)

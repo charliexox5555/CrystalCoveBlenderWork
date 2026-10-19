@@ -25,4 +25,17 @@ return {
 	comet = { Radius = 0.840000, Center = 1.175000 },
 	glass_dragon = { Radius = 0.690000, Center = 1.500000 },
 	galaxy_orb = { Radius = 0.960000, Center = 1.265000 },
+	-- Roster V2 launch glassies: provisional targets until the Blender v1 bodies are measured.
+	fishbowl = { Radius = 0.900000, Center = 1.300000 },
+	cookie_jar = { Radius = 0.880000, Center = 1.250000 },
+	glass_top = { Radius = 0.650000, Center = 1.200000 },
+	bubble_wand = { Radius = 0.600000, Center = 1.300000 },
+	piggy_bank = { Radius = 0.850000, Center = 1.200000 },
+	light_bulb = { Radius = 0.750000, Center = 1.400000 },
+	potion_flask = { Radius = 0.750000, Center = 1.350000 },
+	honey_bear = { Radius = 0.800000, Center = 1.400000 },
+	crystal_ball = { Radius = 0.800000, Center = 1.300000 },
+	grizzly_guardian = { Radius = 1.000000, Center = 1.400000 },
+	glass_unicorn = { Radius = 0.800000, Center = 1.400000 },
+	glass_phoenix = { Radius = 0.850000, Center = 1.400000 },
 }

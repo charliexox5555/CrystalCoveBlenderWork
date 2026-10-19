@@ -39,7 +39,7 @@ return function(t, deps)
 		local ordinary = lastHit(s).Damage[2]
 		Rules.hit(s, 10, 0.5)
 		local third = lastHit(s).Damage[2]
-		t.near(third, ordinary * 1.6, 1e-6)
+		t.near(third, ordinary * (1 + deps.Balance.CombatRelease.Kits.pop.ContactBonus), 1e-6)
 		t.eq(s.Fighters[1].Signature.Charge, 0)
 		Rules.hit(s, 10, 0.5)
 		t.near(lastHit(s).Damage[2], ordinary, 1e-6)
@@ -67,7 +67,7 @@ return function(t, deps)
 		local reduced = lastHit(s).Damage[1]
 		Rules.hit(s, 10, 0.5)
 		local normal = lastHit(s).Damage[1]
-		t.near(reduced, normal * 0.6, 1e-6)
+		t.near(reduced, normal * (1 - deps.Balance.CombatRelease.Kits.jam.Mitigation), 1e-6)
 	end)
 	t.test("Briar grows on turnarounds and spends its bonus only once", function()
 		local s = fight("briar_flask", "jam")
@@ -80,7 +80,7 @@ return function(t, deps)
 		t.eq(s.Fighters[1].Signature.Charge, 0)
 		Rules.hit(s, 10, 0.5)
 		local ordinary = lastHit(s).Damage[2]
-		t.near(bloom, ordinary * 1.8, 1e-6)
+		t.near(bloom, ordinary * (1 + deps.Balance.CombatRelease.Kits.briar_flask.ContactBonus), 1e-6)
 	end)
 	t.test("Arc shots cannot refill contact charge or resolve twice", function()
 		local s = fight("arc_coil", "jam")
@@ -160,7 +160,11 @@ return function(t, deps)
 	end)
 	t.test("release pools contain 24 identities and preserve owned dormant data", function()
 		t.eq(#deps.Glassies.ReleaseList, 24)
-		t.eq(#deps.Glassies.List, 37 + #deps.Glassies.SeasonalIds, "24 release + 13 dormant + seasonal")
+		t.eq(
+			#deps.Glassies.List,
+			43 + #deps.Glassies.SeasonalIds,
+			"24 release + 13 dormant + 6 new launch definitions + seasonal"
+		)
 		local odds = deps.Formula.kilnOdds()
 		t.eq(#odds, 21)
 		for _, e in odds do

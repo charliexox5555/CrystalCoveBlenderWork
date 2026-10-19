@@ -7,6 +7,7 @@ local Rng = if Shared then require(Shared.Rng) else require("../../shared/Rng")
 local Geometry = if script then require(script.Parent.AttackGeometry) else require("./AttackGeometry")
 local Turnaround = if script then require(script.Parent.Turnaround) else require("./Turnaround")
 local SignatureAttacks = if script then require(script.Parent.SignatureAttacks) else require("./SignatureAttacks")
+local CastBrain = if script then require(script.Parent.CastBrain) else require("./CastBrain")
 local V = if script then Vector3 else require("@lune/roblox").Vector3
 local M = Balance.Motion
 local Pendulum = {}
@@ -246,6 +247,7 @@ function Pendulum.step(sim, dt)
 	if sim.Fight.Over then
 		return
 	end
+	CastBrain.step(sim, Pendulum.center)
 	for _ = 1, M.Substeps do
 		local h = dt / M.Substeps
 		for side, body in sim.Bodies do
@@ -372,6 +374,19 @@ function Pendulum.presentation(sim)
 	end
 	for side, f in sim.Fight.Fighters do
 		local s = f.Signature
+		if s and s.Ready then
+			table.insert(events, {
+				Type = "SignatureReady",
+				Side = side,
+				Kit = f.Id,
+				Time = s.Ready.Since,
+				ReadyId = s.Ready.Id,
+				AutoAt = s.Ready.AutoAt,
+				Seconds = s.Ready.AutoAt - s.Ready.Since,
+				Shape = s.Ready.Shape,
+				Arm = s.Ready.Arm,
+			})
+		end
 		if s and s.EchoPoint then
 			table.insert(events, {
 				Type = "SignatureStatus",

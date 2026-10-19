@@ -33,6 +33,10 @@ export type FighterSetup = {
 	Rainbow: boolean?,
 	Aim: number?, -- pull-back angle in radians; clamped to Motion.AimMin..AimMax
 	AimYaw: number?, -- sideways aim in radians (3D swing); clamped to +-Motion.AimYawMax
+	-- Optional cast (decision 85): "player" (CastPower remote), "bot", or tool policies
+	-- "smart" / "auto" / "mash". nil = powers cast as soon as they trigger.
+	CastPolicy: string?,
+	CastSkill: number?, -- bots: 0..1
 }
 
 export type Setup = {
@@ -52,6 +56,8 @@ export type Event = { [string]: any }
 
 export type Fighter = {
 	BodyCenter: number?,
+	CastPolicy: string?,
+	CastSkill: number?,
 	Signature: any?,
 	Side: number,
 	Id: string,
@@ -187,6 +193,8 @@ local function newFighter(side: number, setup: FighterSetup, sweetSpot: number?,
 	local perfect = FightRules.isPerfect(aim, sweetSpot)
 	return {
 		Side = side,
+		CastPolicy = setup.CastPolicy,
+		CastSkill = setup.CastSkill,
 		Id = def.Id,
 		Name = def.Name,
 		Type = def.Type,
@@ -308,7 +316,7 @@ function FightRules.knockbackMultiplier(state: State, side: number, qualifies: b
 		signature
 		and qualifies ~= false
 		and signature.Kit.Shape == "contact"
-		and signature.Charge + 1 >= signature.Kit.Every
+		and (if signature.Policy then Signatures.armed(state, foe) else signature.Charge + 1 >= signature.Kit.Every)
 	then
 		return signature.Kit.Rebound
 	end
@@ -533,6 +541,20 @@ end
 -- Only the server swing calls this after its validated, debounced 3D turnaround detector.
 function FightRules.turnaround(state: State, side: number)
 	Signatures.turnaround(state, side, emit)
+end
+
+-- Optional cast (decision 85): cast `side`'s Ready power on the next tick. False if not Ready.
+function FightRules.requestCast(state: State, side: number): boolean
+	if side ~= 1 and side ~= 2 then
+		return false
+	end
+	return Signatures.requestCast(state, side)
+end
+
+-- The Ready power of `side`, if any: { Id, Shape, Arm, Since, AutoAt, Requested }.
+function FightRules.ready(state: State, side: number): any
+	local f = state.Fighters[side]
+	return f and Signatures.ready(f)
 end
 
 function FightRules.drainCasts(state: State): { any }

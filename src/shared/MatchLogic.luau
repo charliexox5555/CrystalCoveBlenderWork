@@ -289,6 +289,9 @@ function MatchLogic.fightSetup(match: Match): FightRules.Setup
 			Rainbow = owned.Rainbow,
 			Aim = side.Aim or MatchLogic.autoAim(match, i),
 			AimYaw = side.AimYaw or 0,
+			-- Players press CAST (or it fires by itself); bots press with their skill (decision 85).
+			CastPolicy = if side.IsBot then "bot" else "player",
+			CastSkill = side.Skill,
 		}
 	end
 	return { A = fighter(1), B = fighter(2), Rng = match.Rng, SweetSpot = match.SweetSpot }

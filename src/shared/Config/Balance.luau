@@ -19,6 +19,28 @@ Balance.CombatRelease = {
 	TrackingSeconds = 0.05,
 	TwistInfluence = 0.025,
 	ProjectileLeadSeconds = 0.18,
+	-- Optional cast (decision 85). For a side with a cast policy, a trigger makes the power Ready
+	-- instead of casting: the player taps CAST, or it casts by itself after AutoSeconds.
+	-- Contact-payoff kits (Pop, Pickle Jar, Ketchup, Briar Flask, Mason Jar) arm instead: the next
+	-- contact within ArmedSeconds pays off. Sides without a policy (old tests, FightModel) cast at once.
+	Cast = {
+		Enabled = true,
+		AutoSeconds = 2.5,
+		ArmedSeconds = 3,
+		-- "Good moment" read shared by bots, the simulators and the client hint (CastTiming).
+		BraceLead = 0.55, -- guard/mirror: cast when contact is due within windup + this
+		BoostLead = 1.2, -- boosts: contact due within windup + this
+		ArmLead = 1.6, -- arming: contact due within this
+		StrikeRangeSlack = 1.15, -- aimed: predicted distance at release within Range x this
+		MinClosingSpeed = 0.8, -- studs/s; slower approaches don't count as "coming in"
+		-- Bots: reaction delay and how often they read the moment (by Skill 0..1).
+		BotReactionMax = 0.75,
+		BotReactionMin = 0.22,
+		BotReadChanceMin = 0.35,
+		BotReadChanceMax = 0.9,
+		-- Simulated human for balance tools ("smart" policy).
+		SmartReaction = 0.28,
+	},
 	Kits = {
 		milk_bottle = {
 			Trigger = "threshold",
@@ -606,6 +628,7 @@ Balance.Match = {
 	BotSkillMax = 0.7,
 	-- Remote rate limits (seconds between accepted calls per player)
 	PickRateSeconds = 0.25,
+	CastRateSeconds = 0.15, -- CastPower (decision 85)
 	RerollRateSeconds = 0.5,
 	PickAnyRateSeconds = 0.5,
 	AimRateSeconds = 0.05,

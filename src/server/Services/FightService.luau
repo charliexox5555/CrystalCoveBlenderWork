@@ -184,7 +184,27 @@ function Service:BotVsBot(a, b, seed, spectate, prototype)
 	return true, id
 end
 
+-- CastPower (decision 85): the player's own side in a running fight casts its Ready power.
+function Service:Cast(player)
+	if not self.Guard:Allow(player, "Cast", Balance.Match.CastRateSeconds) then
+		return false
+	end
+	for _, session in self.Sessions do
+		local fight = session.Sim.Fight
+		if session.Data.Phase == "Fighting" and not fight.Over then
+			local side = table.find(session.Data.PlayerIds or {}, player.UserId)
+			if side and player.UserId ~= 0 then
+				return Rules.requestCast(fight, side)
+			end
+		end
+	end
+	return false
+end
+
 function Service:Start()
+	Remotes.CastPower.OnServerEvent:Connect(function(player)
+		self:Cast(player)
+	end)
 	Remotes.RequestFightState.OnServerEvent:Connect(function(player)
 		if self.Guard:Allow(player, "Sync", Balance.Data.RequestRateSeconds) then
 			self:Sync(player)

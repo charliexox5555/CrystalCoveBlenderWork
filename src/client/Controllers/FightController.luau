@@ -8,6 +8,7 @@ local Codec = require(RS.Shared.SnapshotCodec)
 local Rules = require(RS.Shared.FightRules)
 local Balance = require(RS.Shared.Config.Balance)
 local View = require(script.Parent.Parent.Presentation.FightView)
+local CastButton = require(script.Parent.Parent.UI.Screens.CastButton)
 local Controller = {}
 function Controller:Init(controllers)
 	self.Controllers, self.Views, self.SnapshotCount, self.Keys = controllers, {}, 0, {}
@@ -110,8 +111,37 @@ function Controller:Active()
 		end
 	end
 end
+-- CAST button (decision 85): follows our own side's Ready / cast events.
+local CLEARS = { ReadyCancel = true, CastStart = true, SignatureArmed = true, Shatter = true, End = true }
+
+function Controller:CastEvents(view, events)
+	if not view or not view.Participant or not view.Side then
+		return
+	end
+	for _, e in events do
+		if e.Type == "Shatter" or e.Type == "End" then
+			self.CastUi:Clear()
+		elseif e.Side == view.Side then
+			if e.Type == "SignatureReady" then
+				self.CastUi:Ready(e)
+			elseif CLEARS[e.Type] and (e.Type ~= "ReadyCancel" or e.ReadyId == self.CastUi.ReadyId) then
+				if e.Type ~= "CastStart" or e.Held then
+					self.CastUi:Clear()
+				end
+			end
+		end
+	end
+end
+
 function Controller:Start()
+	self.CastUi = CastButton.new(function()
+		Remotes.CastPower:FireServer()
+	end)
 	Remotes.MatchState.OnClientEvent:Connect(function(data)
+		local mine = self.Views[data.Id]
+		if data.Phase ~= "Fighting" and mine and mine.Participant then
+			self.CastUi:Clear()
+		end
 		if data.Phase == "Idle" then
 			local view = self.Views[data.Id]
 			if view then
@@ -140,6 +170,9 @@ function Controller:Start()
 				self.Views[data.Id] = view
 			end
 			view:State(data)
+			if data.Phase == "Fighting" and data.SignatureState then
+				self:CastEvents(view, data.SignatureState)
+			end
 			if
 				self.WatchArena == data.ArenaId
 				and self.WatchUntil
@@ -176,6 +209,21 @@ function Controller:Start()
 		local view = self.Views[packet.Id]
 		if view then
 			view:Queue(packet)
+			self:CastEvents(view, packet.Events or {})
+		end
+	end)
+	local CAST_KEYS = {
+		[Enum.KeyCode.Space] = true,
+		[Enum.KeyCode.F] = true,
+		[Enum.KeyCode.ButtonA] = true,
+		[Enum.KeyCode.ButtonR2] = true,
+	}
+	UIS.InputBegan:Connect(function(input, processed)
+		if not processed and CAST_KEYS[input.KeyCode] then
+			local view = self:Active()
+			if view and view.Participant and view.Phase == "Fighting" then
+				self.CastUi:Press()
+			end
 		end
 	end)
 	UIS.InputBegan:Connect(function(input, processed)
@@ -227,6 +275,7 @@ function Controller:Start()
 		end
 	end)
 	Players.LocalPlayer.CharacterRemoving:Connect(function()
+		self.CastUi:Clear()
 		for _, view in self.Views do
 			view:EndFight()
 		end
@@ -274,6 +323,9 @@ function Controller:Start()
 			else
 				view:Render(dt)
 			end
+		end
+		if active and active.Participant and active.Phase == "Fighting" then
+			self.CastUi:Update(active)
 		end
 		-- After rendering, so prompt bookkeeping can never stall the fights.
 		self:UpdatePrompts(dt)

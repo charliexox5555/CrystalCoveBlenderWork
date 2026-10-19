@@ -891,13 +891,13 @@ def build_starwhale():
     for u in spaced(30, 0.45):
         c, a, bt, bb = st(u)
         frames.append((c, X, Z, max(a, 0.03), max(bt, 0.03), max(bb, 0.03), 2.15))
-    add("Body", loft(frames, n=28), WHALE["indigo"], "Glass")
+    add("Body", loft(frames, n=28), WHALE["indigo"], "Glass", studio={"Transparency": 0.45})   # H: the galaxy only reads through a clearer body
     core = []
     for u in spaced(16, 0.4)[1:-1]:
         u = 0.15 + 0.78 * u
         c, a, bt, bb = st(u, 0.72)
         core.append((c + Vector((0, 0, -0.05)), X, Z, a, bt, bb, 2.1))
-    add("BodyCore", loft(core, n=16), WHALE["violet"], "Core", studio={"Transparency": 0.35})
+    add("BodyCore", loft(core, n=16), WHALE["violet"], "Core", studio={"Transparency": 0.65})
     # Inner galaxy: two-arm spiral (180-degree symmetric, so Spin turns it about its own centre) plus star points.
     gc = Vector((0, Y0 + L * 0.66, zc + 0.05))
     arms = []

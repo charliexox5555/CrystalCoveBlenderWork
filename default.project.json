@@ -2,6 +2,11 @@
   "name": "GlassClash",
   "tree": {
     "$className": "DataModel",
+    "ReplicatedFirst": {
+      "LoadingScreen": {
+        "$path": "src/first/LoadingScreen"
+      }
+    },
     "ReplicatedStorage": {
       "Shared": {
         "$path": "src/shared"

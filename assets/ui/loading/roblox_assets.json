@@ -1,0 +1,82 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "glassy_pop": {
+   "AssetId": "89042236057912",
+   "Path": "assets/ui/loading/png/glassy_pop.png",
+   "Sha256": "9e6999fe440f91746e6d01362261021bc41c1efb944be2244f76810f4c1ba160",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:12:54"
+  },
+  "glassy_jam": {
+   "AssetId": "92383888689524",
+   "Path": "assets/ui/loading/png/glassy_jam.png",
+   "Sha256": "c236aecafb32ebc51730e3d031f4cd3ae65c9442c80861ce64f461fea0fc0108",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:12:57"
+  },
+  "glassy_prism": {
+   "AssetId": "135270602573910",
+   "Path": "assets/ui/loading/png/glassy_prism.png",
+   "Sha256": "e3cd54c486a10645c90285228bf7420bbe219c16f0a5e3fe7f2f6424dbb89722",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:12:59"
+  },
+  "glassy_flask": {
+   "AssetId": "86285166551304",
+   "Path": "assets/ui/loading/png/glassy_flask.png",
+   "Sha256": "2fd4e24461f0466921effc3c48d0f9d476ee86786b57fc226be9575a46b0b635",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:13:02"
+  },
+  "shard_a": {
+   "AssetId": "81902059680364",
+   "Path": "assets/ui/loading/png/shard_a.png",
+   "Sha256": "239838c3eb277500bbb91474a3a4edc482c042ff3cbd4f4d306dd4ff2da33ba6",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:13:05"
+  },
+  "shard_b": {
+   "AssetId": "92732873802191",
+   "Path": "assets/ui/loading/png/shard_b.png",
+   "Sha256": "4029f6c173c8fcb8a4ec5f7480d6407b29f8df5a17cdd2b2d9f7a4ab00b8717c",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:13:07"
+  },
+  "shard_c": {
+   "AssetId": "75604432582570",
+   "Path": "assets/ui/loading/png/shard_c.png",
+   "Sha256": "8b0cca4ac031c9fd6f7425f7e8bf138b5000d97643d4997e2644d19e226866dc",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:13:10"
+  },
+  "burst": {
+   "AssetId": "110431429486577",
+   "Path": "assets/ui/loading/png/burst.png",
+   "Sha256": "726a26da6592771fd46d16c16e13306bd853a63fcda2f4204b18bbd76ee0e3e1",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:13:13"
+  },
+  "glow": {
+   "AssetId": "94864934768347",
+   "Path": "assets/ui/loading/png/glow.png",
+   "Sha256": "13c4446744554bfa1563d73a492dc342cea02a6480a9ec6965a9fa583aee3817",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:13:16"
+  },
+  "swing_frame": {
+   "AssetId": "86110264202385",
+   "Path": "assets/ui/loading/png/swing_frame.png",
+   "Sha256": "1edd587c7c66df67b515183b02fa95ebf06f3aa4bc71c2d26283a76a1527803d",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:13:18"
+  },
+  "backdrop": {
+   "AssetId": "72464528468719",
+   "Path": "assets/ui/loading/png/backdrop.png",
+   "Sha256": "613414113788617a2f03c03b25a13af76ed247e2a18c8cfd2d83931c8069f1a4",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:13:26"
+  }
+ }
+}

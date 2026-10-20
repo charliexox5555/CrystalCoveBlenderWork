@@ -54,6 +54,16 @@ Done:
 Next:
 - Creator eye check of the new swap at normal speed.
 
+## 2026-10-20 — Claude — Loading screen (creator request)
+Done:
+- ReplicatedFirst loading screen (`src/first/LoadingScreen`, doc `docs/ui/LOADING_SCREEN.md`): dim stained-glass rose window, GLASS CLASH title, the arena swing with two vector glassies (Pop, Jam, Prism, flask take turns) smashing together on a small pendulum sim: gold burst, CLASH!, shards, shake; every third strong hit one shatters and the next drops in; tap to swing again. Flat images only (`tools/ui/loading_art.py`, 11 uploads in `assets/ui/loading`).
+- Preloads every UIAssets image, StarterGui template, `ReplicatedStorage.Assets` model (except CombatReleasePreview) and the streamed lobby on four PreloadAsync workers with a real progress bar. Min 3.2 s, SKIP after 10 s, closes by itself at 30 s (loading continues). Sets local `ClientLoaded`; OnboardingController waits for it before the welcome card.
+- Studio Play: ~15 s first run, ~9 s cached, closes into the welcome card; captures in `docs/testing/loading_screen`. Lune 188/188.
+Next:
+- Restart `rojo serve` so it picks up the new `ReplicatedFirst` entry in default.project.json (this run installed an identical copy in Studio; Rojo takes it over on reconnect), then save the place.
+Problems / questions for the user:
+- Preloading surfaces meshes that are "not approved for the requester": 107144503993935, 89543800857593, 73989584659034 (and 203785492 has the wrong asset type).
+
 ## 2026-10-20 — Claude — Onboarding visual pass + tutorial funnel (decision 100)
 Done:
 - Creator feedback "kids don't read": no hint text anywhere. Pointers only on Daily CLAIM, PLAY (after 20 s) and the first CAST; no card pointer, no "YOUR ARENA" sign. Pointer stays on screen (clamped above the bottom edge, flips to the left of targets at the right edge).

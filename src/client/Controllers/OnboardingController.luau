@@ -338,8 +338,13 @@ function Controller:Start()
 			end)
 		end)
 	end)
-	-- Give the lobby a moment to load before the first card.
-	task.wait(2)
+	-- The first card waits for the loading screen (ReplicatedFirst LoadingScreen sets ClientLoaded when it is gone;
+	-- the cap covers a client without it), then gives the lobby a beat.
+	local waited = os.clock()
+	while not player:GetAttribute("ClientLoaded") and os.clock() - waited < 45 do
+		task.wait(0.1)
+	end
+	task.wait(0.6)
 	changed()
 end
 

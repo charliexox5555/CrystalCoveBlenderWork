@@ -1,0 +1,82 @@
+{
+ "Record": "assets/ui/loading/roblox_assets.json",
+ "Items": [
+  {
+   "Key": "glassy_pop",
+   "Path": "assets/ui/loading/png/glassy_pop.png",
+   "Type": "Decal",
+   "Name": "UI Loading glassy pop",
+   "Description": "Glass Clash loading screen art (glassy pop)."
+  },
+  {
+   "Key": "glassy_jam",
+   "Path": "assets/ui/loading/png/glassy_jam.png",
+   "Type": "Decal",
+   "Name": "UI Loading glassy jam",
+   "Description": "Glass Clash loading screen art (glassy jam)."
+  },
+  {
+   "Key": "glassy_prism",
+   "Path": "assets/ui/loading/png/glassy_prism.png",
+   "Type": "Decal",
+   "Name": "UI Loading glassy prism",
+   "Description": "Glass Clash loading screen art (glassy prism)."
+  },
+  {
+   "Key": "glassy_flask",
+   "Path": "assets/ui/loading/png/glassy_flask.png",
+   "Type": "Decal",
+   "Name": "UI Loading glassy flask",
+   "Description": "Glass Clash loading screen art (glassy flask)."
+  },
+  {
+   "Key": "shard_a",
+   "Path": "assets/ui/loading/png/shard_a.png",
+   "Type": "Decal",
+   "Name": "UI Loading shard a",
+   "Description": "Glass Clash loading screen art (shard a)."
+  },
+  {
+   "Key": "shard_b",
+   "Path": "assets/ui/loading/png/shard_b.png",
+   "Type": "Decal",
+   "Name": "UI Loading shard b",
+   "Description": "Glass Clash loading screen art (shard b)."
+  },
+  {
+   "Key": "shard_c",
+   "Path": "assets/ui/loading/png/shard_c.png",
+   "Type": "Decal",
+   "Name": "UI Loading shard c",
+   "Description": "Glass Clash loading screen art (shard c)."
+  },
+  {
+   "Key": "burst",
+   "Path": "assets/ui/loading/png/burst.png",
+   "Type": "Decal",
+   "Name": "UI Loading burst",
+   "Description": "Glass Clash loading screen art (burst)."
+  },
+  {
+   "Key": "glow",
+   "Path": "assets/ui/loading/png/glow.png",
+   "Type": "Decal",
+   "Name": "UI Loading glow",
+   "Description": "Glass Clash loading screen art (glow)."
+  },
+  {
+   "Key": "swing_frame",
+   "Path": "assets/ui/loading/png/swing_frame.png",
+   "Type": "Decal",
+   "Name": "UI Loading swing frame",
+   "Description": "Glass Clash loading screen art (swing frame)."
+  },
+  {
+   "Key": "backdrop",
+   "Path": "assets/ui/loading/png/backdrop.png",
+   "Type": "Decal",
+   "Name": "UI Loading backdrop",
+   "Description": "Glass Clash loading screen art (backdrop)."
+  }
+ ]
+}

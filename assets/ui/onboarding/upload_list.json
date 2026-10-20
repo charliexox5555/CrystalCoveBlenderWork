@@ -1,0 +1,6 @@
+{
+ "Record": "assets/ui/onboarding/roblox_assets.json",
+ "Items": [
+  {"Key": "guide_chevron", "Path": "assets/ui/onboarding/png/guide_chevron.png", "Type": "Decal", "Name": "UI Onboarding guide chevron", "Description": "Glass Clash guide beam chevron (white, tinted in game)."}
+ ]
+}

@@ -14,6 +14,21 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-20 — Claude — Onboarding visual pass + tutorial funnel (decision 100)
+Done:
+- Creator feedback "kids don't read": no hint text anywhere. Pointers only on Daily CLAIM, PLAY (after 20 s) and the first CAST; no card pointer, no "YOUR ARENA" sign. Pointer stays on screen (clamped above the bottom edge, flips to the left of targets at the right edge).
+- Welcome card rebuilt as a reward claim (`tools/studio/build_welcome_screen.luau`): "WELCOME!", the real Coin Kiln (KilnScreen's KilnPortrait, framed by `ItemPresentation.crate`), a big x3, OPEN, one odds line.
+- Win prize now uses the same claim card ("YOU WON!", Rare 70% · Epic 30%, OPEN): new step `Win`, picked and granted when they press OPEN. Fixed the card reopening invisible (close fade restored with `Motion.fadeSnapshot`).
+- Kiln reels: 2–4 opens stack as big reels 1, 2, 3 down the middle.
+- Guide beam: gold chevrons streaming to the pad (`assets/ui/onboarding`, `tools/ui/onboarding_art.py`, image rbxassetid://81270881784992).
+- Tutorial funnel: 12 server-side `LogOnboardingFunnelStepEvent` steps from Joined to Second Match Finished (`OnboardingRules.Funnel`, profile `Onboarding.Funnel`, MatchService hooks). Studio run printed all 12 in order. Studio-only `ServerStorage.OnboardingDev` ("Step", player, step) for testing.
+- Lune 180/180.
+Next:
+- Publish so the funnel shows in Creator Dashboard → Analytics → Funnels.
+Problems / questions for the user:
+- Save the place (rebuilt StarterGui.WelcomeScreen).
+- Seen in Studio output, not from this work: mesh 89543800857593 "not approved for the requester" and rbxassetid://203785492 "asset type does not match".
+
 ## 2026-10-20 — Claude — Onboarding (decision 100)
 Done:
 - Research (Roblox onboarding guide, bot first wins, win-margin study, beginner banners, odds policy) and the design in `docs/design/ONBOARDING.md`; creator picked: 3-1 first match, C/U/R welcome opens, Rare 70 / Epic 30 win open, auto-closing daily step.

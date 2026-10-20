@@ -16,7 +16,8 @@ Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DES
 - [x] **CL:** Settings, Daily Rewards, Playtime Rewards and Codes screens designed (creator-approved) and working (decision 99): 7-day calendar with a free Kiln pull on Day 7, 5 playtime gifts with a rotating free crate at 60 min, codes (RELEASE, HALLOWEEN) with every reward kind, saved settings (volumes, Bot Play, Auto-Cast, Large Effects, Reduced Motion, Hide Others' Cosmetics), notice counts on the gift. Verified with real clicks in Studio Play. [Plan](design/REWARDS_SETTINGS_PLAN.md)
 - [x] **CL:** UI polish from creator notes: menu open/close animations, claim celebrations, coin burst into the wallet with aura pulses, coin piles and 3D Kiln/crate viewports in reward cells, crate opening rarity moments (Legendary/Mythic build-up), Shop reopens on the same tab after an opening, Stained Glass arena boards that only show up close, roll screen overlap fixed.
 - [x] **CL:** onboarding (decision 100): welcome opens, daily step, reserved arena with guide beam, assisted 3-1 first match vs Rookie Bot, first-win Kiln open, funnel analytics. [Design](design/ONBOARDING.md)
-- [ ] **U/CL:** onboarding visual pass with Studio on screen; watch the onboarding funnel after launch.
+- [x] **U/CL:** onboarding visual pass with Studio on screen (no hint text, Kiln x3 claim card, win claim card, stacked reels, chevron beam) and a 12-step tutorial funnel through the second match.
+- [ ] **U:** watch the onboarding funnel in Creator Dashboard after launch.
 - [ ] **CL/U:** Quests redesign (screen and row held back); retire the old combined RewardsScreen once Quests have a home.
 - [ ] **U:** phone check of the four new screens and the top bar; listen to volume sliders.
 - [ ] **CL:** turn the code-built screens (RollScreen, FightHud, Results/QueuePanel/RoundEnd, CastButton, PickAnyConfirm, BundlePreview, music button) into editable StarterGui templates.

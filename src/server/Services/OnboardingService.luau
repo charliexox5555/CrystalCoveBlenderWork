@@ -1,11 +1,14 @@
 -- First session (decision 100, docs/design/ONBOARDING.md): Welcome (3 free Kiln opens) -> Daily (claim day 1) ->
--- Arena (a reserved arena with a bot waiting) -> Match (assisted first match, won 3-1) -> Done (a free Kiln open
--- for the win). The step lives in the profile; the client reads the Player attributes below.
+-- Arena (a reserved arena with a bot waiting) -> Match (assisted first match, won 3-1) -> Win (a claim card: OPEN
+-- picks and grants a free Kiln open) -> Done. The step lives in the profile; the client reads the Player attributes below.
 --   Player attributes: OnboardingStep (string), OnboardingPad (Vector3, the reserved pad while in Arena)
+-- Services report tutorial moments with Track(player, event); OnboardingRules.Funnel turns them into the analytics
+-- onboarding funnel (12 steps, joining to the end of the second match).
 -- Rules and picks are pure (Data/OnboardingRules); this service only sequences, grants and reserves.
 local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
 local AnalyticsService = game:GetService("AnalyticsService")
+local RunService = game:GetService("RunService")
 local Balance = require(RS.Shared.Config.Balance)
 local Remotes = require(RS.Shared.Remotes)
 local Rules = require(script.Parent.Parent.Data.OnboardingRules)
@@ -32,9 +35,21 @@ function Service:IsFirstMatch(player)
 	return step == "Arena" or step == "Match"
 end
 
-function Service:Funnel(player, step)
+-- Logs the funnel step `event` completes (once per player, in order; see OnboardingRules.Funnel). Funnel events only
+-- reach the dashboard from published servers; Studio prints them instead.
+function Service:Track(player, event)
+	local profile = data(self, player)
+	local index = profile and Rules.funnelStep(profile.Onboarding.Funnel, event)
+	if not index then
+		return
+	end
+	profile.Onboarding.Funnel = index
+	local name = Rules.Funnel[index].Name
+	if RunService:IsStudio() then
+		print(string.format("[Onboarding funnel] %d %s (%s)", index, name, player.Name))
+	end
 	pcall(function()
-		AnalyticsService:LogOnboardingFunnelStepEvent(player, Rules.index(step), step)
+		AnalyticsService:LogOnboardingFunnelStepEvent(player, index, name)
 	end)
 end
 
@@ -45,7 +60,6 @@ function Service:SetStep(player, step)
 	end
 	profile.Onboarding.Step = step
 	player:SetAttribute("OnboardingStep", step)
-	self:Funnel(player, step)
 	if step == "Arena" then
 		self:Reserve(player)
 	else
@@ -89,6 +103,7 @@ function Service:OpenWelcome(player)
 	end)
 	-- The old one-pull welcome after the first match is replaced by this flow.
 	profile.Flags.WelcomePullUsed = true
+	self:Track(player, "WelcomeOpened")
 	self:SetStep(player, "Daily")
 	self:Reveal(player, "Welcome", picks)
 end
@@ -96,39 +111,53 @@ end
 -- RetentionService: a Daily Rewards claim succeeded.
 function Service:DailyClaimed(player)
 	if self:Step(player) == "Daily" then
+		self:Track(player, "DailyClaimed")
 		self:SetStep(player, "Arena")
 	end
 end
 
--- MatchService: the first match started / finished.
-function Service:MatchStarted(player)
-	if self:Step(player) == "Arena" then
+-- MatchService: a match with `player` in it started / finished. `tutorial` = the assisted first match.
+function Service:MatchStarted(player, tutorial)
+	local step = self:Step(player)
+	if tutorial and step == "Arena" then
+		self:Track(player, "FirstMatchStarted")
 		self:SetStep(player, "Match")
+	elseif not tutorial and step == "Done" then
+		self:Track(player, "SecondMatchStarted")
 	end
 end
 
-function Service:MatchFinished(player, won)
+function Service:MatchFinished(player, won, tutorial)
+	if not tutorial then
+		if self:Step(player) == "Done" then
+			self:Track(player, "SecondMatchFinished")
+		end
+		return
+	end
 	if self:Step(player) ~= "Match" then
 		return
 	end
-	if not won then
-		self:SetStep(player, "Arena") -- left or forfeited: a fresh reserved arena waits
+	if won then
+		self:Track(player, "FirstMatchWon")
+	end
+	-- Lost, left or forfeited: a fresh reserved arena waits. Won: the claim card for the free Kiln open.
+	self:SetStep(player, if won then "Win" else "Arena")
+end
+
+-- The win claim's OPEN: pick (never owned), grant and play the opening.
+function Service:OpenWin(player)
+	local profile = data(self, player)
+	if not profile or profile.Onboarding.Step ~= "Win" then
 		return
 	end
-	local profile = data(self, player)
-	local available = self.Services.KilnService:Pool()
 	local rng = Random.new()
-	local pick = Rules.winPick(profile.Glassies, available, function()
+	local pick = Rules.winPick(profile.Glassies, self.Services.KilnService:Pool(), function()
 		return rng:NextNumber()
 	end)
+	self:Track(player, "WinOpened")
 	self:SetStep(player, "Done")
 	if pick then
-		-- After the results screen has had its moment.
-		task.delay(Balance.Match.RoundEndSeconds, function()
-			if player.Parent then
-				self:Reveal(player, "Win", { pick })
-			end
-		end)
+		self:Reveal(player, "Win", { pick })
 	end
 end
 
@@ -143,8 +172,8 @@ function Service:Loaded(player)
 	if step == "Arena" then
 		self:Reserve(player)
 	end
-	if step ~= "Done" then
-		self:Funnel(player, step)
+	if step == "Welcome" then
+		self:Track(player, "Joined")
 	end
 end
 
@@ -155,6 +184,14 @@ function Service:Start()
 		end
 		if action == "OpenWelcome" then
 			self:OpenWelcome(player)
+		elseif action == "OpenWin" then
+			self:OpenWin(player)
+		elseif action == "Collected" then
+			-- The client closed an onboarding opening (welcome or win). Only counts right after an open.
+			local funnel = data(self, player) and data(self, player).Onboarding.Funnel
+			if funnel == Rules.funnelStep(0, "WelcomeOpened") or funnel == Rules.funnelStep(0, "WinOpened") then
+				self:Track(player, "Collected")
+			end
 		end
 	end)
 	-- An expired reservation is renewed while the player is still on the Arena step and not in a queue.
@@ -172,6 +209,19 @@ function Service:Start()
 		self.Services.ArenaService:Unreserve(player)
 		self.Guard:Remove(player)
 	end)
+	if RunService:IsStudio() then
+		-- Studio testing: jump a player to a step, e.g. ("Step", player, "Win") to see the win claim card.
+		local dev = Instance.new("BindableFunction")
+		dev.Name = "OnboardingDev"
+		dev.OnInvoke = function(command, player, value)
+			if command == "Step" and table.find(Rules.Steps, value) then
+				self:SetStep(player, value)
+				return true
+			end
+			return false
+		end
+		dev.Parent = game.ServerStorage
+	end
 end
 
 return Service

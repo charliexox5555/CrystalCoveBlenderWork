@@ -4,6 +4,9 @@ local Rules = if script
 local Pendulum = if script
 	then require(game.ServerScriptService.Server.Simulation.Pendulum)
 	else require("../server/Simulation/Pendulum")
+local Schema = if script
+	then require(game.ServerScriptService.Server.Data.ProfileSchema)
+	else require("../server/Data/ProfileSchema")
 local Roster = if script
 	then require(game.ReplicatedStorage.Shared.Config.ReleaseRoster)
 	else require("../shared/Config/ReleaseRoster")
@@ -98,5 +101,50 @@ return function(t, d)
 				t.eq(assist.Winner, if round == d.Balance.Onboarding.BotRound then 2 else 1)
 			end
 		end
+	end)
+	t.test("tutorial funnel: 12 steps in order, from joining to the second match", function()
+		t.eq(#Rules.Funnel, 12)
+		local events = {
+			"Joined",
+			"WelcomeOpened",
+			"Collected",
+			"DailyClaimed",
+			"FirstMatchStarted",
+			"FirstFightStarted",
+			"FirstRoundFinished",
+			"FirstMatchWon",
+			"WinOpened",
+			"Collected",
+			"SecondMatchStarted",
+			"SecondMatchFinished",
+		}
+		local progress = 0
+		for index, event in events do
+			t.eq(Rules.funnelStep(progress, event), index)
+			progress = index
+		end
+		-- Everything after the last step is ignored, and repeats never log twice.
+		t.eq(Rules.funnelStep(progress, "SecondMatchStarted"), nil)
+		t.eq(Rules.funnelStep(5, "FirstMatchStarted"), nil)
+		-- "Collected" means the welcome opening before the daily step, the win opening after it.
+		t.eq(Rules.funnelStep(2, "Collected"), 3)
+		t.eq(Rules.funnelStep(9, "Collected"), 10)
+		-- A dropped client signal does not stall the funnel.
+		t.eq(Rules.funnelStep(2, "DailyClaimed"), 4)
+		t.eq(Rules.funnelStep(0, "Nonsense"), nil)
+		t.ok(table.find(Rules.Steps, "Win") == table.find(Rules.Steps, "Match") + 1, "Win claim follows the match")
+	end)
+	t.test("tutorial funnel: new profiles start at 0, finished players stay out", function()
+		t.eq(Schema.new(0).Onboarding.Funnel, 0)
+		local old = Schema.new(0)
+		old.Onboarding = { Step = "Done" } -- finished before the funnel existed
+		t.eq(Schema.reconcile(old, 0).Onboarding.Funnel, #Rules.Funnel)
+		local veteran = Schema.new(0)
+		veteran.Onboarding = nil
+		veteran.Stats.MatchWins = 3
+		t.eq(Schema.reconcile(veteran, 0).Onboarding.Funnel, #Rules.Funnel)
+		local midway = Schema.new(0)
+		midway.Onboarding = { Step = "Arena", Funnel = 4 }
+		t.eq(Schema.reconcile(midway, 0).Onboarding.Funnel, 4)
 	end)
 end

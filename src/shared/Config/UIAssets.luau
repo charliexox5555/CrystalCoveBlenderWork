@@ -53,6 +53,7 @@ local UIAssets = {
 	["reward/finisher_crate"] = "rbxassetid://80161543442554",
 	["reward/flyer_crate"] = "rbxassetid://77484684586902",
 	["onboarding/pointer"] = "rbxassetid://93894572861640", -- Golden Cursor (same pack), onboarding hints
+	["onboarding/guide_chevron"] = "rbxassetid://81270881784992", -- decal 106574551713953
 	["kiln/glow"] = "rbxassetid://102633056133157",
 	["kiln/hero_window"] = "rbxassetid://138848895962910",
 	["panel/odds_row_common"] = "rbxassetid://127750137320552",

@@ -162,8 +162,10 @@ function Service:StartMatch(arena, players, now, spectate)
 		self.ByPlayer[player] = { Entry = entry, Side = side }
 	end
 	Stage.start(entry)
-	if tutorial and onboarding then
-		onboarding:MatchStarted(tutorial.Player)
+	if onboarding then
+		for _, player in players do
+			onboarding:MatchStarted(player, tutorial ~= nil and tutorial.Player == player)
+		end
 	end
 	self:Dispatch(entry, now)
 	return true, entry.Id
@@ -222,8 +224,12 @@ function Service:Finish(entry)
 			Quests = self.Services.RetentionService and self.Services.RetentionService:View(player).Quests or {},
 			FirstMatch = entry.Tutorial ~= nil and entry.Tutorial.Player == player,
 		})
-		if entry.Tutorial and entry.Tutorial.Player == player and self.Services.OnboardingService then
-			self.Services.OnboardingService:MatchFinished(player, match.Winner == side and not entry.Forfeited[side])
+		if self.Services.OnboardingService then
+			self.Services.OnboardingService:MatchFinished(
+				player,
+				match.Winner == side and not entry.Forfeited[side],
+				entry.Tutorial ~= nil and entry.Tutorial.Player == player
+			)
 		end
 	end
 	self.Matches[entry.Arena.Id] = nil
@@ -260,6 +266,9 @@ function Service:Dispatch(entry, now)
 			local setup = Logic.fightSetup(match)
 			if entry.Tutorial then
 				setup.Assist = OnboardingRules.assist(match.Round, entry.Tutorial.Side)
+				if match.Round == 1 then
+					self.Services.OnboardingService:Track(entry.Tutorial.Player, "FirstFightStarted")
+				end
 			end
 			for side, state in match.Sides do
 				entry.Used[side][state.Pick] = true
@@ -295,6 +304,9 @@ function Service:Dispatch(entry, now)
 			meta.Id = entry.FightId
 			local setup = Logic.fightSetup(match)
 			meta.RoundWinner = match.History[#match.History].Winner
+			if entry.Tutorial and #match.History == 1 then
+				self.Services.OnboardingService:Track(entry.Tutorial.Player, "FirstRoundFinished")
+			end
 			Remotes.MatchState:FireAllClients(self.Services.FightService:Describe(entry.Arena, setup, meta))
 		elseif change.Phase == "MatchEnd" then
 			self:Finish(entry)

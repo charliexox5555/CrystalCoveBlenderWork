@@ -6,6 +6,7 @@ local Formula = if Shared then require(Shared.Formula) else require("../../share
 local Schema = {}
 local RoundCosmetics = if Shared then require(Shared.RoundCosmeticRules) else require("../../shared/RoundCosmeticRules")
 local DailyStore = if Shared then require(Shared.DailyStoreRules) else require("../../shared/DailyStoreRules")
+local Rules = if script then require(script.Parent.OnboardingRules) else require("./OnboardingRules")
 
 function Schema.copy(value)
 	if type(value) ~= "table" then
@@ -49,8 +50,9 @@ function Schema.new(now)
 		-- Daily Rewards calendar (decision 99): Index = days claimed in the current 7-day cycle, LastDay = UTC day of
 		-- the last claim. Free pull tickets per crate category, spent in the Shop with the odds shown.
 		Calendar = { Index = 0, LastDay = -1 },
-		-- First session (decision 100): Welcome -> Daily -> Arena -> Match -> Done (OnboardingRules).
-		Onboarding = { Step = "Welcome" },
+		-- First session (decision 100): Welcome -> Daily -> Arena -> Match -> Win -> Done (OnboardingRules); Funnel = the
+		-- last tutorial funnel step logged (0 = none).
+		Onboarding = { Step = "Welcome", Funnel = 0 },
 		FreePulls = { Glassies = 0, Finishers = 0, Rideables = 0 },
 		Flags = { WelcomePullUsed = false, GroupRewardClaimed = false },
 		CodesRedeemed = {},
@@ -96,6 +98,12 @@ function Schema.reconcile(data, now)
 			and (tonumber(data.Stats.MatchWins) or 0) + (tonumber(data.Stats.MatchLosses) or 0) > 0
 		local welcomed = type(data.Flags) == "table" and data.Flags.WelcomePullUsed == true
 		data.Onboarding = { Step = if played or welcomed then "Done" else "Welcome" }
+		-- Players who skip onboarding never enter the funnel.
+		data.Onboarding.Funnel = if played or welcomed then #Rules.Funnel else 0
+	end
+	-- Profiles from before the funnel: anyone already done stays out of it.
+	if data.Onboarding.Funnel == nil and data.Onboarding.Step == "Done" then
+		data.Onboarding.Funnel = #Rules.Funnel
 	end
 	if type(data.Glassies) == "table" then
 		for _, owned in data.Glassies do
@@ -128,6 +136,7 @@ function Schema.reconcile(data, now)
 		end
 	end
 	data.Flags.WelcomePullUsed = data.Flags.WelcomePullUsed == true
+	data.Onboarding.Funnel = math.min(#Rules.Funnel, integer(data.Onboarding.Funnel, 0))
 	for category in data.FreePulls do
 		data.FreePulls[category] = integer(data.FreePulls[category], 0)
 	end

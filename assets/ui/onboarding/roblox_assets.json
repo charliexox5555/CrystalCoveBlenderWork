@@ -1,0 +1,12 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "guide_chevron": {
+   "AssetId": "106574551713953",
+   "Path": "assets/ui/onboarding/png/guide_chevron.png",
+   "Sha256": "dd3a731ea11202894870f53d40b44e25e517c08db6fba29492e48784079bae53",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T23:42:32"
+  }
+ }
+}

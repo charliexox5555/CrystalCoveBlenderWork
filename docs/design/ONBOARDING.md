@@ -29,19 +29,19 @@ spawn to their first win in about 3 minutes, teaching by doing, with almost no t
 
 | Step | What the player sees | Notes |
 |---|---|---|
-| 1. Welcome | After the character spawns: a Stained Glass card "Welcome to Glass Clash! Here are **3 free Kiln opens**", the Welcome odds line, and an **OPEN** button | One button, no close. Resumes if they rejoin mid-flow |
-| 2. Three pulls | The normal Kiln opening with 3 cards (one shot, same reels/reveal) | 3 new glassies, no duplicates (**Q2**) |
-| 3. Daily reward | The Daily Rewards screen opens with a pointer on Day 1's CLAIM | After the claim celebration it closes by itself (**Q4**) |
-| 4. Go battle | "Your arena is ready!" A guide beam runs from the player to a **reserved arena** (the nearest free one), whose board reads "RESERVED FOR <name>". Stepping on the pad starts at once against a bot | After 20 s without arriving, the PLAY button pulses with "Press PLAY" (PLAY goes to the reserved arena) |
+| 1. Welcome | After the character spawns: a "WELCOME!" claim card showing **one Kiln with a big x3**, the small Welcome odds line and an **OPEN** button that pulses. No other text | One button, no close. Resumes if they rejoin mid-flow |
+| 2. Three pulls | The normal Kiln opening with 3 cards: three big reels stacked 1, 2, 3, then the reveal | 3 new glassies, no duplicates (**Q2**) |
+| 3. Daily reward | The Daily Rewards screen opens with a pointer (no text) on Day 1's CLAIM | After the claim celebration it closes by itself (**Q4**) |
+| 4. Go battle | A gold chevron beam streams from the player to a **reserved arena** (the nearest free one), whose board reads "RESERVED FOR <name>". Stepping on the pad starts at once against a bot | After 20 s without arriving, a pointer lands on PLAY (PLAY goes to the reserved arena) |
 | 5. First match | A normal match against **"Rookie Bot"**, with a few gentle hints (below) and an assisted outcome (**Q1**) | Their 6 glassies (3 starters + 3 new) form the hand as usual |
-| 6. Win | Normal results + coins, then "You won! **Free Kiln open**" → one more opening | New glassy, no duplicate (**Q3**) |
+| 6. Win | Normal results + coins, then the same claim card: "YOU WON!", one Kiln, its odds (Rare 70% · Epic 30%) and **OPEN** → one more opening | Picked and granted only when they press OPEN (step `Win`, survives a rejoin). New glassy, no duplicate (**Q3**) |
 | 7. Free play | Nothing else. The notice dots and the PLAY button carry them on | Onboarding marked done |
 
-**Hints in the first match only** (each shown once, small, near the thing they point at):
-- Pick: the selection timer is longer (40 s instead of 25 s) and a soft pulse sits on the cards: "Tap a glassy".
+**Hints in the first match only.** Kids skip reading, so guidance is pictures and motion, never text (creator,
+2026-10-20):
+- Pick: the selection timer is longer (40 s instead of 25 s). No pointer; the cards are the obvious thing to tap.
 - Aim: the existing "Drag to pull • aim for gold" line, plus a gentle pulse on the gold band.
-- CAST: the first time the button lights up, a pointer and "Tap CAST to fire your power!"; the auto-fire window is
-  longer that one time.
+- CAST: the first time the button lights up, a pointer for 4 s; the auto-fire window is longer that one time.
 - Nothing else is new. No text walls, no forced camera tour.
 
 **The assisted match (Q1):** the server plans the round outcomes and nudges the fight to land there without it looking
@@ -52,8 +52,34 @@ fake:
 - Pure presentation stays identical: same physics, hits, powers and finishers.
 
 **Who gets it:** new profiles only. Anyone with a finished match or an earlier welcome pull skips it. Rejoining
-resumes at the current step. Each step is logged with `AnalyticsService:LogOnboardingFunnelStepEvent` so the funnel
-shows where players drop off. The old one-pull welcome after the first match is replaced by this flow.
+resumes at the current step. Progress is logged as the tutorial funnel below. The old one-pull welcome after the first match is replaced by this flow.
+
+## Tutorial funnel (analytics)
+
+`AnalyticsService:LogOnboardingFunnelStepEvent`, following Roblox's funnel guidance: logged on the **server** (funnel
+events only count from published servers), **after** the player completes each step, **once per player** (repeats are
+ignored), with plain step names. Every step is one all new players pass through in order, so a drop between two steps
+means friction; optional actions (manual CAST, rerolls) are left out. The steps live in `OnboardingRules.Funnel`;
+services report events and the profile keeps the last step logged (`Onboarding.Funnel`), so nothing logs twice or out
+of order. A later step may skip a missed one (Roblox then counts it as done). Studio prints each step instead.
+
+| # | Step | Logged when |
+|---|---|---|
+| 1 | Joined | A new profile loads (step Welcome) |
+| 2 | Welcome Opened | OPEN on the welcome card |
+| 3 | Welcome Collected | The 3-card opening is closed (client signal, accepted only right after step 2) |
+| 4 | Daily Claimed | Day 1 claimed |
+| 5 | First Match Started | The assisted match starts |
+| 6 | First Fight Started | Round 1's swing starts (glassy picked, aimed, released) |
+| 7 | First Round Finished | Round 1 ends |
+| 8 | First Match Won | The assisted match is won |
+| 9 | Win Prize Opened | OPEN on the "YOU WON!" card |
+| 10 | Win Prize Collected | The win opening is closed (client signal, accepted only right after step 9) |
+| 11 | Second Match Started | Their next match starts |
+| 12 | Second Match Finished | That match ends (win, loss or leave) |
+
+Players who already played before onboarding existed never enter the funnel. Read it in Creator Dashboard →
+Analytics → Funnels (onboarding), and compare date ranges only within one version of the steps.
 
 ## Build outline
 
@@ -62,7 +88,7 @@ shows where players drop off. The old one-pull welcome after the first match is 
 - **Server:** `OnboardingService` drives the steps. Kiln: a welcome opening of 3 through the normal opening, with its
   odds shown. ArenaService: reserve an arena, show "RESERVED" on the board, start at once with "Rookie Bot".
   MatchRunner and FightRules: per-round `Assist` (damage scale and an HP floor), off for every other match.
-- **Client:** welcome card, guide beam and PLAY pulse, the three in-match hints, the 3-card opening layout.
+- **Client:** welcome card, chevron guide beam and PLAY pointer, the CAST pointer, the stacked 3-reel opening.
 - **Tests:** rules (no duplicates, pools, assist math), plus a full Studio run as a fresh profile.
 
 Sources: [Roblox onboarding guide](https://create.roblox.com/docs/production/game-design/onboarding),

@@ -29,6 +29,7 @@ function Reels.new(content, results, odds, category)
 	local self =
 		setmetatable({ Rows = {}, Content = content, Random = Random.new(), Category = category or "Glassies" }, Reels)
 	local multi = #results > 1
+	local few = multi and #results <= 4 -- stacked big reels instead of the 10-pull grid
 	local pool, total = {}, 0
 	for _, entry in odds or {} do
 		if entry.Chance > 0 then
@@ -48,7 +49,14 @@ function Reels.new(content, results, odds, category)
 	for i, result in results do
 		local frame = content.Templates.Reel:Clone()
 		frame.Name, frame.Visible = "Reel" .. i, true
-		if multi then
+		if few then
+			-- A few opens (the onboarding welcome): big reels stacked 1, 2, 3 down the middle.
+			local gap = 0.03
+			local height = math.min(0.28, (0.92 - gap * (#results - 1)) / #results)
+			local top = 0.5 - (#results * (height + gap) - gap) / 2
+			frame.Size = UDim2.fromScale(0.86, height)
+			frame.Position = UDim2.fromScale(0.07, top + (i - 1) * (height + gap))
+		elseif multi then
 			frame.Size = UDim2.fromScale(0.485, 0.181)
 			frame.Position = UDim2.fromScale((i - 1) % 2 * 0.515, math.floor((i - 1) / 2) * 0.204)
 		else
@@ -61,8 +69,8 @@ function Reels.new(content, results, odds, category)
 			row.Stream[n] = filler()
 		end
 		row.Stream[target] = result.Id
-		row.Stride = if multi then 0.32 else 0.22
-		row.Radius = if multi then 2 else 3
+		row.Stride = if multi and not few then 0.32 else 0.22
+		row.Radius = if multi and not few then 2 else 3
 		for n = 1, row.Radius * 2 + 1 do
 			local cell = content.Templates.ReelCell:Clone()
 			cell.Name, cell.Visible = "Cell" .. n, true

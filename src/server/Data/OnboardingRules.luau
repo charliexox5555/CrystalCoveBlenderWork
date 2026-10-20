@@ -7,8 +7,8 @@ local Rules = {}
 local O = Balance.Onboarding
 
 -- Welcome (3 free opens) -> Daily (claim day 1) -> Arena (reach the reserved arena) -> Match (assisted first match)
--- -> Done (the win open is granted on the way out).
-Rules.Steps = { "Welcome", "Daily", "Arena", "Match", "Done" }
+-- -> Win (a claim card with the free Kiln open; picked and granted when they press OPEN) -> Done.
+Rules.Steps = { "Welcome", "Daily", "Arena", "Match", "Win", "Done" }
 
 function Rules.index(step)
 	return table.find(Rules.Steps, step) or #Rules.Steps
@@ -101,14 +101,44 @@ function Rules.winPick(owned, available, rng)
 	return any[math.floor(rng() * #any) + 1]
 end
 
+-- The tutorial funnel (AnalyticsService onboarding funnel; logged on the server, once per player, in order) runs from
+-- joining to the end of the second match. Every step is one all new players pass through; optional actions (a manual
+-- CAST, rerolls) stay out so the drop-off between steps means friction. `Event` is what services report.
+Rules.Funnel = {
+	{ Name = "Joined", Event = "Joined" },
+	{ Name = "Welcome Opened", Event = "WelcomeOpened" },
+	{ Name = "Welcome Collected", Event = "Collected" },
+	{ Name = "Daily Claimed", Event = "DailyClaimed" },
+	{ Name = "First Match Started", Event = "FirstMatchStarted" },
+	{ Name = "First Fight Started", Event = "FirstFightStarted" },
+	{ Name = "First Round Finished", Event = "FirstRoundFinished" },
+	{ Name = "First Match Won", Event = "FirstMatchWon" },
+	{ Name = "Win Prize Opened", Event = "WinOpened" },
+	{ Name = "Win Prize Collected", Event = "Collected" },
+	{ Name = "Second Match Started", Event = "SecondMatchStarted" },
+	{ Name = "Second Match Finished", Event = "SecondMatchFinished" },
+}
+
+-- The funnel step `event` completes for a player whose last logged step is `progress` (0 = none): the first later step
+-- with that event, or nil (already logged, or not part of the funnel). A later step may skip a missed one (a dropped
+-- client signal); Roblox then counts the skipped steps as done.
+function Rules.funnelStep(progress, event)
+	for index = progress + 1, #Rules.Funnel do
+		if Rules.Funnel[index].Event == event then
+			return index
+		end
+	end
+	return nil
+end
+
 -- Odds shown before the opens (never the normal Kiln odds for a shaped pull).
 function Rules.welcomeOddsText()
-	return "1 COMMON · 1 UNCOMMON · 1 RARE (100%) · NEVER ONE YOU OWN"
+	return "1 COMMON · 1 UNCOMMON · 1 RARE (100%)"
 end
 
 function Rules.winOddsText()
 	return string.format(
-		"RARE %d%% · EPIC %d%% · NEVER ONE YOU OWN",
+		"RARE %d%% · EPIC %d%%",
 		math.round(O.WinPullOdds.Rare * 100),
 		math.round(O.WinPullOdds.Epic * 100)
 	)

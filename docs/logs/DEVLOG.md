@@ -36,6 +36,14 @@ Next:
 Problems / questions for the user:
 - Save the place (the boards live in the place, not Rojo).
 
+## 2026-10-20 — Claude — Lobby flyer showcase: calm fade swap (creator note)
+Done:
+- FlyersDisplay swap (`ShowcaseController` FlyersSection, `Config/Showcase` FlyerRotation): the zoom-up-and-away exit, 6-stud drop with spin, neon ring flash and launch burst are gone. Now the flyer and its rider fade out where they hover (0.6 s), a few soft sparkles glint on the pad (skipped with Reduced Motion or when far), then the next flyer fades in (0.8 s). Still silent; trails/lights dim and switch off with the fade.
+- The rider switches in a ~40 ms window at the flyer's halfway point instead of fading slowly: a half-transparent avatar head shows its dark inner mouth/beard geometry (checked in Studio; not the hair).
+- Studio Play: sampled the fade curve on 5 swaps and captured mid-fade frames. Lune 188/188.
+Next:
+- Creator eye check of the new swap at normal speed.
+
 ## 2026-10-20 — Claude — Onboarding visual pass + tutorial funnel (decision 100)
 Done:
 - Creator feedback "kids don't read": no hint text anywhere. Pointers only on Daily CLAIM, PLAY (after 20 s) and the first CAST; no card pointer, no "YOUR ARENA" sign. Pointer stays on screen (clamped above the bottom edge, flips to the left of targets at the right edge).

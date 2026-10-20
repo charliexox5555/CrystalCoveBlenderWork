@@ -50,13 +50,12 @@ Showcase.Carriage = { YawSway = 0.18, YawHz = 0.08 }
 Showcase.FlyerRotation = {
 	Slots = 2, -- RiderSpot1..N in FeaturedShowcase.FlyersDisplay
 	Seconds = 7, -- each flyer shows this long
-	TransitionSeconds = 0.7,
-	LeaveRise = 14, -- studs the outgoing flyer zooms up and away
-	LeaveForward = 6,
-	ArriveDrop = 6, -- studs the incoming flyer drops from
-	ArriveSpin = 3, -- radians it turns while landing
-	FlashSize = 7,
-	FlashColor = "#FF8EA0", -- ruby light
+	-- Swap (creator: the zoom-away/drop-in was too much): the flyer and its rider fade out in place, a soft glint, then
+	-- the next one fades in on the pad. No movement beyond the usual hover.
+	FadeOutSeconds = 0.6,
+	FadeInSeconds = 0.8,
+	GlintCount = 7, -- sparkles between the two (skipped with Reduced Motion or far away)
+	GlintColor = "#FFE9F0", -- soft ruby-white
 }
 Showcase.RiderYawSway = 0.12
 Showcase.RiderYawHz = 0.11

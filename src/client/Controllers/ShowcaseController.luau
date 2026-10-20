@@ -5,7 +5,6 @@
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local RS = game:GetService("ReplicatedStorage")
-local TweenService = game:GetService("TweenService")
 local Debris = game:GetService("Debris")
 local S = require(RS.Shared.Config.Showcase)
 local Cosmetics = require(RS.Shared.Config.RoundCosmetics)
@@ -13,6 +12,8 @@ local Presentation = script.Parent.Parent.Presentation
 local RidePose = require(Presentation.RidePose)
 local RideMotion = require(Presentation.RideMotion)
 local FinisherFX = require(Presentation.FinisherFX)
+local UIAssets = require(RS.Shared.Config.UIAssets)
+local UIMotion = require(script.Parent.Parent.UI.Components.Motion)
 local Controller = {}
 
 local D = S.Demo
@@ -80,7 +81,7 @@ function Ride.new(parent, id, base, avatar, launch)
 		self.Npc.Parent = parent
 		self.Pose = RidePose.new(self.Npc, model:GetAttribute("PoseId") or id, { Ride = model })
 		-- Arriving displays drop onto the pad: the rider lands as the drop settles.
-		self.LandAt = launch and launch + S.FlyerRotation.TransitionSeconds * 0.75
+		self.LandAt = launch and launch + 0.5
 	end
 	return self
 end
@@ -99,6 +100,59 @@ function Ride:Step(time, base, near)
 		self.Npc:PivotTo(rootPose)
 		self.Pose:PlaceAnchored(rootPose)
 	end
+end
+
+-- Fade the whole display (flyer, its effects and the rider) toward invisible: 0 = as authored, 1 = gone. Call after
+-- Step each frame (Step rewrites pulsing parts and light flicker). The first call records the authored look.
+-- The rider never lingers half see-through (a transparent avatar head shows its dark inner mouth/beard geometry): it
+-- switches over a tiny window as the flyer passes halfway (~40 ms), which reads as part of the fade.
+local RIDER_FROM, RIDER_SPAN = 0.45, 0.1
+local FADES = { BasePart = "Transparency", Decal = "Transparency", Texture = "Transparency" }
+function Ride:Fade(amount)
+	if amount <= 0 and self.FadeDone then
+		return -- fully shown: nothing to do until the next swap
+	end
+	self.FadeDone = amount <= 0
+	if not self.Faded then
+		self.Faded = {}
+		for _, root in { self.Model, self.Npc } do
+			for _, obj in root and root:GetDescendants() or {} do
+				for class, prop in FADES do
+					if obj:IsA(class) then
+						self.Faded[obj] = {
+							Prop = prop,
+							Rest = obj[prop],
+							Live = obj:GetAttribute("RideMotion") == "Pulse",
+							Rider = root == self.Npc,
+						}
+					end
+				end
+			end
+		end
+	end
+	local rider = math.clamp((amount - RIDER_FROM) / RIDER_SPAN, 0, 1)
+	for obj, entry in self.Faded do
+		-- Pulsing parts were just set by RideMotion this frame; everything else fades from its authored value.
+		local rest = if entry.Live then obj[entry.Prop] else entry.Rest
+		obj[entry.Prop] = rest + (1 - rest) * (if entry.Rider then rider else amount)
+	end
+	-- Trails, sparkles and lights follow: off while it is mostly hidden, dimmed on the way.
+	local hidden = amount > 0.35
+	for _, effect in self.Motion.Effects do
+		if effect:IsA("Light") then
+			effect.Brightness = (self.Motion.Lights[effect] or effect.Brightness) * (1 - amount)
+		elseif hidden then
+			effect.Enabled = false
+		end
+	end
+	if not hidden and self.Hidden then
+		for _, effect in self.Motion.Effects do
+			if not effect:IsA("Light") then
+				effect.Enabled = self.Motion.EffectsOn == true
+			end
+		end
+	end
+	self.Hidden = hidden
 end
 
 function Ride:Destroy()
@@ -472,22 +526,27 @@ function Controller:FlyersSection(root)
 			table.insert(ids, def.Id)
 		end
 	end
-	local function flash(slot)
-		local ring = invisible(
-			"SwapRing",
-			slot.Spot * CFrame.new(0, 0.4 - slot.Spot.Y, 0) * CFrame.Angles(0, 0, math.rad(90)),
-			section.Folder
-		)
-		ring.Shape, ring.Material, ring.Color, ring.Transparency =
-			Enum.PartType.Cylinder, Enum.Material.Neon, Color3.fromHex(R.FlashColor), 0.2
-		ring.Size = Vector3.new(0.12, 1, 1)
-		TweenService
-			:Create(ring, TweenInfo.new(R.TransitionSeconds, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-				Size = Vector3.new(0.12, R.FlashSize, R.FlashSize),
-				Transparency = 1,
-			})
-			:Play()
-		Debris:AddItem(ring, R.TransitionSeconds)
+	-- A soft glint between the two flyers: a few slow sparkles where the flyer sits.
+	local function glint(slot)
+		local holder = invisible("SwapGlint", slot.Spot * CFrame.new(0, 2, 0), section.Folder)
+		holder.Size = Vector3.new(3, 2.5, 3)
+		local sparkles = Instance.new("ParticleEmitter")
+		sparkles.Texture = UIAssets["screens/daily_rewards/sparkle"] or ""
+		sparkles.Color = ColorSequence.new(Color3.fromHex(R.GlintColor))
+		sparkles.LightEmission, sparkles.Brightness = 1, 2
+		sparkles.Size = NumberSequence.new({
+			NumberSequenceKeypoint.new(0, 0),
+			NumberSequenceKeypoint.new(0.3, 0.7),
+			NumberSequenceKeypoint.new(1, 0),
+		})
+		sparkles.Transparency = NumberSequence.new(0.15)
+		sparkles.Lifetime, sparkles.Speed = NumberRange.new(0.6, 0.9), NumberRange.new(0.3, 0.8)
+		sparkles.Rotation, sparkles.RotSpeed = NumberRange.new(0, 360), NumberRange.new(-60, 60)
+		sparkles.SpreadAngle, sparkles.Acceleration = Vector2.new(180, 180), Vector3.new(0, 0.6, 0)
+		sparkles.Enabled = false
+		sparkles.Parent = holder
+		sparkles:Emit(R.GlintCount)
+		Debris:AddItem(holder, 1.2)
 	end
 	function section.Build()
 		section.Active = true
@@ -523,38 +582,38 @@ function Controller:FlyersSection(root)
 		local near = distance <= S.EmitterDistance
 		for _, slot in section.Slots do
 			if now >= slot.Next and #ids > 0 then
-				-- Swap: the current flyer zooms up and away, the next one drops onto the pad.
+				-- Swap: the current flyer fades out where it hovers, a soft glint, then the next one fades in.
 				if slot.Leaving then
 					slot.Leaving:Destroy()
 				end
 				slot.Leaving, slot.LeftAt = slot.Ride, now
 				slot.Index = slot.Index % #ids + 1
 				slot.Ride, slot.Born, slot.Next =
-					Ride.new(section.Folder, ids[slot.Index], slot.Spot, self.Avatar, now), now, now + R.Seconds
-				if near then
-					flash(slot)
-				end
+					Ride.new(section.Folder, ids[slot.Index], slot.Spot, self.Avatar),
+					now + (if slot.Leaving then R.FadeOutSeconds else 0),
+					now + R.Seconds
+				slot.Glint = slot.Leaving ~= nil and near and not UIMotion.reduced()
 			end
 			local sway = CFrame.Angles(0, math.sin(now * S.RiderYawHz * TAU + slot.Phase) * S.RiderYawSway, 0)
+			local pose = slot.Spot * sway
 			if slot.Leaving then
-				local t = (now - slot.LeftAt) / R.TransitionSeconds
+				local t = (now - slot.LeftAt) / R.FadeOutSeconds
 				if t >= 1 then
 					slot.Leaving:Destroy()
 					slot.Leaving = nil
+					if slot.Glint then
+						slot.Glint = nil
+						glint(slot)
+					end
 				else
-					local lift = t * t
-					slot.Leaving:Step(
-						now,
-						slot.Spot * CFrame.new(0, lift * R.LeaveRise, -lift * R.LeaveForward) * sway,
-						near
-					)
+					slot.Leaving:Step(now, pose, near)
+					slot.Leaving:Fade(t * t * (3 - 2 * t))
 				end
 			end
 			if slot.Ride then
-				local arrive = ease((now - slot.Born) / R.TransitionSeconds)
-				local drop = CFrame.new(0, (1 - arrive) * R.ArriveDrop, 0)
-					* CFrame.Angles(0, (1 - arrive) * R.ArriveSpin, 0)
-				slot.Ride:Step(now, slot.Spot * drop * sway, near)
+				slot.Ride:Step(now, pose, near)
+				-- Fully hidden until the outgoing one is gone, then a gentle fade in.
+				slot.Ride:Fade(1 - ease((now - slot.Born) / R.FadeInSeconds))
 			end
 		end
 	end

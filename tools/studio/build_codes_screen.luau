@@ -10,8 +10,8 @@ local StarterGui = game:GetService("StarterGui")
 local ServerStorage = game:GetService("ServerStorage")
 
 local WINDOW = "rbxassetid://130439492899536" -- screens/codes/window_codes, 900x560 (aspect 1.607)
-local FIELD = "rbxassetid://98997316553457" -- screens/codes/field_inset, 520x80 (aspect 6.5)
-local FIELD_FOCUS = "rbxassetid://99561576715408" -- screens/codes/field_focus
+local FIELD = "rbxassetid://136336890541642" -- screens/codes/field_inset, 520x100 (aspect 5.2)
+local FIELD_FOCUS = "rbxassetid://79664857485058" -- screens/codes/field_focus
 local BANNER = "rbxassetid://81888106457155" -- panel/title_amethyst
 local GEM_EMERALD = "rbxassetid://108061531278853" -- button/gem_emerald, 600x172 (aspect 3.488)
 
@@ -120,8 +120,8 @@ content.Parent = panel
 -- Code field (top): dark inset glass; CodeInput is the TextBox, FocusOutline is the aqua ring for its focused state.
 local field = Instance.new("Frame")
 field.Name, field.BackgroundTransparency, field.ZIndex, field.AnchorPoint = "InputField", 1, 2, Vector2.new(0.5, 0.5)
-field.Position, field.Size = place(450, 160, 640, 98) -- the aspect sets the real height
-aspect(field, 6.5)
+field.Position, field.Size = place(450, 158, 640, 123) -- the aspect sets the real height
+aspect(field, 5.2)
 field.Parent = content
 image("Artwork", FIELD, field, 1)
 local focus = image("FocusOutline", FIELD_FOCUS, field, 2)
@@ -134,14 +134,14 @@ input.ClearTextOnFocus, input.MultiLine, input.TextEditable = false, false, true
 input.FontFace, input.TextColor3 = NUNITO, Color3.new(1, 1, 1)
 input.TextScaled, input.TextXAlignment = true, Enum.TextXAlignment.Center
 input:SetAttribute("TextFit", false) -- the guard must not fight typing
-sizeLimit(input, 34)
+sizeLimit(input, 40)
 input.Parent = field
 
 -- REDEEM (under the field): green gem (green = claim), same parts as every gem button (Artwork, Label, InteractionScale).
 local redeem = Instance.new("TextButton")
 redeem.Name, redeem.Text, redeem.BackgroundTransparency, redeem.AutoButtonColor = "RedeemButton", "", 1, false
 redeem.AnchorPoint, redeem.ZIndex = Vector2.new(0.5, 0.5), 2
-redeem.Position, redeem.Size = place(450, 292, 340, 97)
+redeem.Position, redeem.Size = place(450, 305, 340, 97)
 redeem:SetAttribute("StainedGlass", true)
 aspect(redeem, 600 / 172)
 local gem = image("Artwork", GEM_EMERALD, redeem, 1)
@@ -164,12 +164,12 @@ redeem.Parent = content
 
 -- Status slot: hidden and empty until a redeem attempt gives it a message (green-ish for success, pink for errors).
 local status = label("Status", "", NUNITO, Color3.fromHex("#86EDB8"), content)
-status.Position, status.Size = place(450, 395, 760, 50)
+status.Position, status.Size = place(450, 405, 760, 50)
 status.Visible = false
 sizeLimit(status, 30)
 
 local hint = label("Hint", "Find codes in our group and socials!", NUNITO, HINT, content)
-hint.Position, hint.Size = place(450, 462, 760, 36)
+hint.Position, hint.Size = place(450, 470, 760, 36)
 sizeLimit(hint, 20)
 
 gui.Parent = StarterGui

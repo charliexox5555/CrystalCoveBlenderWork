@@ -9,18 +9,18 @@
    "Uploaded": "2026-10-19T19:23:50"
   },
   "field_inset": {
-   "AssetId": "84567967482821",
+   "AssetId": "132711924841013",
    "Path": "assets/ui/screens/codes/png/field_inset.png",
-   "Sha256": "a39161ef0781a06bfdbc58ead5f04f14feb85189fc6530586d5461331c9b55fe",
+   "Sha256": "92ade24ea5d9ee38b28bbc1b5ad4bb56cef9a43afad20b268971fa3d987e4b11",
    "Moderation": "Approved",
-   "Uploaded": "2026-10-19T19:18:36"
+   "Uploaded": "2026-10-19T20:29:36"
   },
   "field_focus": {
-   "AssetId": "133279075090658",
+   "AssetId": "83473201194505",
    "Path": "assets/ui/screens/codes/png/field_focus.png",
-   "Sha256": "ab9c8348bc0751a1b561bd045851d1811368e0fcab321b664c1a1ce2cdf97a11",
+   "Sha256": "56c5fc65cf961c53706e94e3623436bad3d58a8af4abfd0b6c852493ad28511e",
    "Moderation": "Approved",
-   "Uploaded": "2026-10-19T19:18:43"
+   "Uploaded": "2026-10-19T20:29:39"
   }
  }
 }

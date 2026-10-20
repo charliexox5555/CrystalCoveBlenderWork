@@ -18,10 +18,10 @@ width (min 400×249, max 640×398 px), aspect 900:560. The REDEEM button sits **
 | `Panel.TitleBanner` / `Panel.Title` | ImageLabel / TextLabel | amethyst `panel/title_amethyst` banner, "CODES" (Denk One, cloned from the Inventory window) |
 | `Panel.Close` | TextButton | close diamond cloned from the other windows; TopbarController closes the screen on it |
 | `Panel.Content` | Frame | the dark inner pane; everything below lives here |
-| `Content.InputField` | Frame (aspect 6.5) | holds the field art |
+| `Content.InputField` | Frame (aspect 5.2) | holds the field art |
 | `InputField.Artwork` | ImageLabel | dark inset glass field (`field_inset`) |
 | `InputField.FocusOutline` | ImageLabel | aqua ring (`field_focus`), hidden; show it on `CodeInput.Focused`, hide on `FocusLost` |
-| `InputField.CodeInput` | **TextBox** | the code. `PlaceholderText = "Enter code…"`, `ClearTextOnFocus = false`, one line, centred, Nunito Heavy white, `TextScaled` with a max of 34. Attribute `TextFit = false` so TextFit never touches it. Read `.Text` on `FocusLost` or on redeem |
+| `InputField.CodeInput` | **TextBox** | the code. `PlaceholderText = "Enter code…"`, `ClearTextOnFocus = false`, one line, centred, Nunito Heavy white, `TextScaled` with a max of 40. Attribute `TextFit = false` so TextFit never touches it. Read `.Text` on `FocusLost` or on redeem |
 | `Content.RedeemButton` | TextButton | (under the field) green gem "REDEEM" (`button/gem_emerald`). Has the usual `Artwork`, `Label` (Denk One), `InteractionScale` parts |
 | `Content.Status` | TextLabel | one-line message slot. **Empty and `Visible = false`** by default |
 | `Content.Hint` | TextLabel | "Find codes in our group and socials!" (generic, no links) |
@@ -47,14 +47,14 @@ in `png`, uploads in `roblox_assets.json`. Decals were resolved to image ids wit
 | Key | Decal | Image id |
 |---|---|---|
 | `screens/codes/window_codes` (900×560, 2×) | 90013473722478 | 130439492899536 |
-| `screens/codes/field_inset` (520×80, 2×) | 84567967482821 | 98997316553457 |
-| `screens/codes/field_focus` | 133279075090658 | 99561576715408 |
+| `screens/codes/field_inset` (520×100, 2×) | see roblox_assets.json | 136336890541642 |
+| `screens/codes/field_focus` | see roblox_assets.json | 79664857485058 |
 
 Reused: `panel/title_amethyst`, `button/gem_emerald`, `button/close_diamond` + `icon/close_x` (through the cloned Close).
 
 ## Notes / not done
 
 - All positions and sizes are Scale; the Panel has a `UISizeConstraint` so it stays readable on small screens. The phone and
-  tablet scaling pass is still to do; at the 400 px minimum the field is about 284×44 px and the REDEEM gem about 151×43 px.
+  tablet scaling pass is still to do; at the 400 px minimum the field is about 284×55 px and the REDEEM gem about 151×43 px.
 - The window and field use Fit with their own aspect ratios (no 9-slice), so they need no `StainedAssetSpecs` entry.
 - The creator saves the place in Studio.

@@ -39,9 +39,9 @@ function windowSvg(w, h, o = {}) {
 }
 
 // Dark inset glass field: sunk below the window pane (darker fill, shadow along the top edge, a lit lip along the
-// bottom edge) and held by lead. 520x80 -> drawn Fit at aspect 6.5. `focus` swaps the inner ring for aqua.
+// bottom edge) and held by lead. 520x100 -> drawn Fit at aspect 5.2. `focus` swaps the inner ring for aqua.
 function fieldSvg(focus) {
-	const w = 520, h = 80, c = [14, 6, 14, 6], fill = "#15102A";
+	const w = 520, h = 100, c = [14, 6, 14, 6], fill = "#15102A";
 	let s = poly(chamfer(2, 2, w - 4, h - 4, c), P.lead);
 	s += poly(chamfer(7, 7, w - 14, h - 14, c.map((v) => v - 3)), fill, focus ? `stroke="${P.aqua[0]}" stroke-width="4" stroke-linejoin="round"` : 'stroke="#2E2450" stroke-width="2" stroke-linejoin="round"');
 	s += `<line x1="22" y1="13" x2="${w - 14}" y2="13" stroke="#0B0817" stroke-width="6" stroke-linecap="round" opacity="0.85"/>`;

@@ -92,8 +92,8 @@ local UIAssets = {
 	["tile/tile_uncommon"] = "rbxassetid://77817979900089",
 	-- CodesScreen (tools/ui/codes_art.mjs; assets/ui/screens/codes)
 	["screens/codes/window_codes"] = "rbxassetid://130439492899536",
-	["screens/codes/field_inset"] = "rbxassetid://98997316553457",
-	["screens/codes/field_focus"] = "rbxassetid://99561576715408",
+	["screens/codes/field_inset"] = "rbxassetid://136336890541642",
+	["screens/codes/field_focus"] = "rbxassetid://79664857485058",
 	-- SettingsScreen (tools/ui/settings_art.mjs; assets/ui/screens/settings)
 	["screens/settings/window_settings"] = "rbxassetid://80745807985337",
 	["screens/settings/row_plate"] = "rbxassetid://98724888006039",

@@ -14,6 +14,12 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-20 — Claude — Quieter lobby (creator note)
+Done:
+- The "ringing" in the lobby was a stack of looping hum/shimmer sounds on the display flyers and the showcase Moonlantern Carriage (its sparkle loop was the loudest), plus the looping Lantern Eclipse demo. Display flyers are now silent (`RideMotion` `Sound = false`, which also quiets CarriageFX); flyers someone rides keep their quiet loop.
+- Finisher sounds play only in your own fight: other arenas, spectated fights and the lobby showcase demo are silent. Shop/inventory/bundle previews keep their sound.
+- Studio check at spawn: only the lobby music plays. Lune 172/172.
+
 ## 2026-10-19 — Claude — UI polish pass (creator notes)
 Done:
 - Top bar screens open and close like the other menus (window pop, blur, cells pop in from their centres); art preloads in the background. Settings rows: the icon grows slightly from its centre on hover.

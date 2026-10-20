@@ -162,6 +162,9 @@ function Controller:Begin(data)
 	local maxima =
 		{ Formula.stats(Glassies.get(data.A.Id), data.A).HP, Formula.stats(Glassies.get(data.B.Id), data.B).HP }
 	self.Scene = Scene.new(data, maxima, self.Shatter)
+	-- Finisher sounds play only in your own fight (creator note); spectated and nearby fights stay silent.
+	self.Scene.OwnFight = table.find(data.PlayerIds or {}, self.Player.UserId) ~= nil
+		or data.UserId == self.Player.UserId
 	self.Feel = CombatFeel.new(self)
 	self.Scene.Feel = self.Feel
 	for side, dead in data.DeadSides or {} do

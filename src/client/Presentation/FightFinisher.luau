@@ -69,11 +69,11 @@ function Finish:Id()
 	return Cosmetics.Finishers[1].Id
 end
 
--- Rise/Fly cues follow the winner; the burst cue sits at the impact point. Off-screen arenas keep
--- only the impact so distant finishers stay quiet.
+-- Rise/Fly cues follow the winner; the burst cue sits at the impact point. Only your own fight plays them
+-- (creator note): finishers in other arenas, spectated fights and the lobby stay silent.
 function Finish:Cue(phase, emitter)
 	local scene = self.Scene
-	if not scene.Muted then
+	if not scene.Muted and scene.OwnFight then
 		FinisherAudio.phase(scene.Root, self:Id(), phase, emitter, { Quiet = not scene.Viewing })
 	end
 end

@@ -13,7 +13,6 @@ local Presentation = script.Parent.Parent.Presentation
 local RidePose = require(Presentation.RidePose)
 local RideMotion = require(Presentation.RideMotion)
 local FinisherFX = require(Presentation.FinisherFX)
-local FinisherAudio = require(Presentation.FinisherAudio)
 local Controller = {}
 
 local D = S.Demo
@@ -70,7 +69,8 @@ function Ride.new(parent, id, base, avatar, launch)
 	model.Name = "Showcase_" .. id
 	model:PivotTo(base)
 	local self = setmetatable({ Model = model }, Ride)
-	self.Motion = RideMotion.new(model, base, { Id = id, Seed = base.Position.X + base.Position.Z })
+	-- Display flyers are silent: a cluster of hum/shimmer loops by the path rang constantly (creator note).
+	self.Motion = RideMotion.new(model, base, { Id = id, Seed = base.Position.X + base.Position.Z, Sound = false })
 	if launch then
 		self.Motion:Launch(launch, false)
 	end
@@ -326,11 +326,8 @@ function Controller:Impact(demo, distance)
 	end
 	demo.ShardStart = os.clock()
 	local low = lowQuality() or distance > S.FullDetailDistance
+	-- The lobby demo is silent (creator note): finisher sounds belong to your own fight and the shop preview.
 	FinisherFX.emit(demo.Owner, S.Featured.Finisher, demo.Target, low)
-	local pg = self.Player:FindFirstChildOfClass("PlayerGui")
-	if distance <= S.AudioDistance and not (pg and pg:GetAttribute("InMatch")) then
-		FinisherAudio.phase(demo.Owner, S.Featured.Finisher, "Burst", demo.Emitter, { Quiet = true })
-	end
 end
 
 function Controller:StepDemo(demo, now, distance, folder)

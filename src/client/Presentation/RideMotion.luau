@@ -57,7 +57,10 @@ function Motion.new(model, base, options)
 	local fxModule = type(fxName) == "string" and script.Parent:FindFirstChild(fxName)
 	if fxModule then
 		local ok, fx = pcall(function()
-			return require(fxModule).attach(model, { Effects = options.Effects, TakeOff = options.Launch ~= nil })
+			return require(fxModule).attach(
+				model,
+				{ Effects = options.Effects, TakeOff = options.Launch ~= nil, Quiet = options.Sound == false }
+			)
 		end)
 		if ok then
 			self.FX = fx

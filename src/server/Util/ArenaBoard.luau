@@ -1,6 +1,7 @@
--- Stained-glass queue board that floats above each Clash Stand: two avatar portraits with VS,
--- "1 / 2 PLAYERS", "WIN 100" and a status line. Built and updated by the server so every
--- player sees the same thing; properties are only written when they change.
+-- Stained-glass queue board that floats above each Clash Stand: the arena name on a banner, two players in hex
+-- frames with VS, "1 / 2 PLAYERS", "WIN 100" and a status plaque. Built from the UI kit (pane, banner, hexes,
+-- plaque) so it matches the menus. Built and updated by the server so every player sees the same thing;
+-- properties are only written when they change.
 local RS = game:GetService("ReplicatedStorage")
 local Balance = require(RS.Shared.Config.Balance)
 local UIAssets = require(RS.Shared.Config.UIAssets)
@@ -20,19 +21,23 @@ local function make(class, parent, props)
 	return object
 end
 
-local function corner(parent, scale)
-	make("UICorner", parent, { CornerRadius = UDim.new(scale, 0) })
-end
-
-local function stroke(parent, color, thickness)
-	return make("UIStroke", parent, {
-		Color = color,
-		Thickness = thickness,
-		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+local function image(parent, name, key, size, position, props)
+	local img = make("ImageLabel", parent, {
+		Name = name,
+		Size = size,
+		Position = position,
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		BackgroundTransparency = 1,
+		Image = UIAssets[key] or "",
+		ScaleType = Enum.ScaleType.Fit,
 	})
+	for k, v in props or {} do
+		img[k] = v
+	end
+	return img
 end
 
-local function text(parent, name, value, size, position, font, color)
+local function text(parent, name, value, size, position, font, color, outline)
 	local label = make("TextLabel", parent, {
 		Name = name,
 		Text = value,
@@ -43,78 +48,37 @@ local function text(parent, name, value, size, position, font, color)
 		FontFace = font,
 		TextColor3 = color or Theme.Colors.Text,
 		TextScaled = true,
+		ZIndex = 4,
 	})
-	make("UIStroke", label, { Color = LEAD, Thickness = 2.5 })
+	if outline ~= false then
+		make("UIStroke", label, { Color = LEAD, Thickness = outline or 2.5, LineJoinMode = Enum.LineJoinMode.Round })
+	end
 	return label
 end
 
--- One coloured pane of glass with a soft diagonal sheen, framed by dark leading.
-local function pane(parent, name, color, size, position)
-	local frame = make("Frame", parent, {
-		Name = name,
-		Size = size,
-		Position = position,
-		BackgroundColor3 = Color3.new(1, 1, 1),
-		BackgroundTransparency = 0.12,
-		BorderSizePixel = 0,
-	})
-	corner(frame, 0.06)
-	stroke(frame, LEAD, 4)
-	make("UIGradient", frame, {
-		Rotation = 35,
-		Color = ColorSequence.new({
-			ColorSequenceKeypoint.new(0, color:Lerp(Color3.new(1, 1, 1), 0.25)),
-			ColorSequenceKeypoint.new(0.45, color),
-			ColorSequenceKeypoint.new(1, color:Lerp(LEAD, 0.45)),
-		}),
-	})
-	return frame
-end
-
+-- A player slot: a stained-glass hex (blue side A, amber side B, like the pads) with the headshot inside and the
+-- name on a small plaque under it.
+local HEX = { "hud/hex_sapphire", "hud/hex_amber" }
 local function portrait(parent, side)
-	local color = Theme.Sides[side]
-	local holder = make("Frame", parent, {
-		Name = "Side" .. side,
-		Size = UDim2.fromScale(0.3, 0.62),
-		Position = UDim2.fromScale(if side == 1 then 0.185 else 0.815, 0.4),
-		AnchorPoint = Vector2.new(0.5, 0.5),
-		BackgroundTransparency = 1,
+	local x = if side == 1 then 0.22 else 0.78
+	local hex = image(parent, "Side" .. side, HEX[side], UDim2.fromScale(0.3, 0.5), UDim2.fromScale(x, 0.47), {
+		ZIndex = 2,
 	})
-	local frame = make("Frame", holder, {
-		Name = "Frame",
-		Size = UDim2.fromScale(0.8, 0.8),
-		Position = UDim2.fromScale(0.5, 0),
-		AnchorPoint = Vector2.new(0.5, 0),
-		BackgroundColor3 = color:Lerp(LEAD, 0.55),
-		BorderSizePixel = 0,
-		SizeConstraint = Enum.SizeConstraint.RelativeYY,
-	})
-	corner(frame, 0.22)
-	stroke(frame, color, 4)
-	make("UIGradient", frame, {
-		Rotation = 90,
-		Color = ColorSequence.new(color:Lerp(Color3.new(1, 1, 1), 0.2), color:Lerp(LEAD, 0.6)),
-	})
-	local image = make("ImageLabel", frame, {
-		Name = "Avatar",
-		Size = UDim2.fromScale(0.92, 0.92),
-		Position = UDim2.fromScale(0.5, 0.5),
-		AnchorPoint = Vector2.new(0.5, 0.5),
-		BackgroundTransparency = 1,
-		Image = "",
-	})
-	corner(image, 0.2)
-	local empty = text(frame, "Empty", "?", UDim2.fromScale(0.6, 0.6), UDim2.fromScale(0.5, 0.5), Theme.Fonts.Heading)
+	make("UIAspectRatioConstraint", hex, { AspectRatio = 0.882 })
+	local avatar = image(hex, "Avatar", "", UDim2.fromScale(0.66, 0.58), UDim2.fromScale(0.5, 0.5), { ZIndex = 3 })
+	avatar.Image = ""
+	local empty = text(hex, "Empty", "?", UDim2.fromScale(0.5, 0.4), UDim2.fromScale(0.5, 0.5), Theme.Fonts.Heading)
 	local name = text(
-		holder,
+		parent,
 		"PlayerName",
 		"",
-		UDim2.fromScale(1.25, 0.2),
-		UDim2.fromScale(0.5, 0.92),
+		UDim2.fromScale(0.36, 0.1),
+		UDim2.fromScale(x, 0.79),
 		Theme.Fonts.Body,
-		Theme.Colors.Text
+		Theme.Colors.Text,
+		2
 	)
-	return { Image = image, Empty = empty, Name = name }
+	return { Image = avatar, Empty = empty, Name = name }
 end
 
 function Board.build(arena)
@@ -129,98 +93,88 @@ function Board.build(arena)
 	if existing then
 		existing:Destroy()
 	end
-	-- Sized in studs so it reads like a sign hanging over the stand and shrinks with distance.
+	-- Sized in studs so it reads like a sign hanging over the stand; only drawn when you are near enough to
+	-- join or watch (ArenaBoardMaxDistance), so the lobby skyline stays clean.
 	-- Named ArenaStatus: FightView hides billboards with this name while the fight camera runs.
 	local gui = make("BillboardGui", anchor, {
 		Name = "ArenaStatus",
-		Size = UDim2.fromScale(Feel.ArenaBoardWidth, Feel.ArenaBoardWidth * 0.62),
-		MaxDistance = Feel.SpectatorDistance,
+		Size = UDim2.fromScale(Feel.ArenaBoardWidth, Feel.ArenaBoardWidth * 0.66),
+		MaxDistance = Feel.ArenaBoardMaxDistance,
 		LightInfluence = 0,
 		AlwaysOnTop = false,
+		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
 	})
 	gui:SetAttribute("ArenaActive", true)
+	-- Dark cut-glass pane (Stained Glass kit), title banner riding its top edge.
 	local root = make("Frame", gui, {
 		Name = "Board",
-		Size = UDim2.fromScale(1, 1),
-		BackgroundColor3 = LEAD,
-		BackgroundTransparency = 0.05,
-		BorderSizePixel = 0,
-	})
-	corner(root, 0.07)
-	local edge = stroke(root, Color3.new(1, 1, 1), 5)
-	make("UIGradient", edge, { Rotation = 20, Color = ColorSequence.new(Theme.Colors.EdgeA, Theme.Colors.EdgeB) })
-
-	-- Window of panes: blue side A, violet centre, orange side B, amber footer.
-	local glass = make("Frame", root, {
-		Name = "Glass",
-		Size = UDim2.fromScale(0.94, 0.9),
-		Position = UDim2.fromScale(0.03, 0.05),
+		Size = UDim2.fromScale(1, 0.9),
+		Position = UDim2.fromScale(0, 0.1),
 		BackgroundTransparency = 1,
 	})
-	pane(glass, "PaneA", Theme.Sides[1], UDim2.fromScale(0.36, 0.68), UDim2.fromScale(0, 0))
-	pane(glass, "PaneVS", Theme.Colors.EdgeB, UDim2.fromScale(0.26, 0.68), UDim2.fromScale(0.37, 0))
-	pane(glass, "PaneB", Theme.Sides[2], UDim2.fromScale(0.36, 0.68), UDim2.fromScale(0.64, 0))
-	pane(glass, "PaneFooter", Theme.Colors.PanelTop, UDim2.fromScale(1, 0.3), UDim2.fromScale(0, 0.7))
-
+	image(root, "Pane", "panel/pane_dark", UDim2.fromScale(1, 1), UDim2.fromScale(0.5, 0.5), {
+		ScaleType = Enum.ScaleType.Stretch,
+		ImageTransparency = 0.04,
+		ZIndex = 1,
+	})
 	local view = { Gui = gui, Sides = {} }
-	view.Title = text(
-		glass,
-		"Title",
-		"",
-		UDim2.fromScale(0.24, 0.1),
-		UDim2.fromScale(0.5, 0.08),
-		Theme.Fonts.Caption,
-		Theme.Colors.TextMuted
-	)
-	view.VS = text(glass, "VS", "VS", UDim2.fromScale(0.24, 0.3), UDim2.fromScale(0.5, 0.36), Theme.Fonts.Heading)
-	make("UIGradient", view.VS, { Rotation = 90, Color = ColorSequence.new(Color3.new(1, 1, 1), GOLD) })
+	local banner =
+		image(gui, "TitleBanner", "panel/title_amethyst", UDim2.fromScale(0.62, 0.24), UDim2.fromScale(0.5, 0.11), {
+			ZIndex = 5,
+		})
+	view.Title = text(banner, "Title", "", UDim2.fromScale(0.78, 0.52), UDim2.fromScale(0.5, 0.48), Theme.Fonts.Heading)
+	view.Title.ZIndex = 6
 	for side = 1, 2 do
-		view.Sides[side] = portrait(glass, side)
+		view.Sides[side] = portrait(root, side)
 	end
+	view.VS = text(root, "VS", "VS", UDim2.fromScale(0.2, 0.22), UDim2.fromScale(0.5, 0.4), Theme.Fonts.Heading, nil, 3)
+	make("UIGradient", view.VS, { Rotation = 90, Color = ColorSequence.new(Color3.new(1, 1, 1), GOLD) })
 	view.Count = text(
-		glass,
+		root,
 		"Count",
 		"",
-		UDim2.fromScale(0.5, 0.15),
-		UDim2.fromScale(0.29, 0.79),
-		Theme.Fonts.Heading,
-		Theme.Colors.Text
+		UDim2.fromScale(0.22, 0.08),
+		UDim2.fromScale(0.5, 0.57),
+		Theme.Fonts.Caption,
+		Theme.Colors.TextMuted,
+		1.5
 	)
-	local reward = make("Frame", glass, {
+	-- Prize chip under the count: coin + amount.
+	local reward = make("Frame", root, {
 		Name = "Reward",
-		Size = UDim2.fromScale(0.38, 0.15),
-		Position = UDim2.fromScale(0.77, 0.79),
+		Size = UDim2.fromScale(0.22, 0.1),
+		Position = UDim2.fromScale(0.5, 0.69),
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		BackgroundTransparency = 1,
 	})
+	image(reward, "Coin", "icon/coin", UDim2.fromScale(0.34, 1), UDim2.fromScale(0.17, 0.5), { ZIndex = 4 })
 	view.Win = text(
 		reward,
 		"Win",
 		"WIN " .. Balance.Match.Rewards.MatchWinCoins,
-		UDim2.fromScale(0.74, 1),
-		UDim2.fromScale(0.37, 0.5),
+		UDim2.fromScale(0.66, 1),
+		UDim2.fromScale(0.67, 0.5),
 		Theme.Fonts.Heading,
-		GOLD
+		GOLD,
+		2
 	)
-	make("ImageLabel", reward, {
-		Name = "Coin",
-		Size = UDim2.fromScale(1, 1),
-		SizeConstraint = Enum.SizeConstraint.RelativeYY,
-		Position = UDim2.fromScale(0.8, 0.5),
-		AnchorPoint = Vector2.new(0, 0.5),
-		BackgroundTransparency = 1,
-		Image = UIAssets["icon/coin"] or "",
-		ScaleType = Enum.ScaleType.Fit,
-	})
+	-- Status on a milk plaque along the bottom edge.
+	local plaque =
+		image(root, "StatusPlaque", "hud/label_plaque", UDim2.fromScale(0.8, 0.15), UDim2.fromScale(0.5, 0.92), {
+			ScaleType = Enum.ScaleType.Stretch,
+			ZIndex = 4,
+		})
 	view.Status = text(
-		glass,
+		plaque,
 		"Status",
 		"",
-		UDim2.fromScale(0.9, 0.09),
-		UDim2.fromScale(0.5, 0.93),
-		Theme.Fonts.Caption,
-		Theme.Colors.TextMuted
+		UDim2.fromScale(0.86, 0.62),
+		UDim2.fromScale(0.5, 0.5),
+		Theme.Fonts.Body,
+		Theme.Colors.TextDark,
+		false
 	)
+	view.Status.ZIndex = 5
 	return view
 end
 

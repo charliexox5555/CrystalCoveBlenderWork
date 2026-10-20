@@ -17,6 +17,7 @@ local Cues = {
 	Tab = { Key = "UiTab" },
 	Success = { Key = "UiSuccess" },
 	Error = { Key = "UiError" },
+	Sparkle = { Key = "HL_Twinkle" }, -- last coin landing, reward claims
 }
 local sounds: { [string]: Sound } = {}
 local group: SoundGroup? = nil

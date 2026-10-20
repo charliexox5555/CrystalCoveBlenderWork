@@ -914,8 +914,9 @@ Balance.EconomyModel = {
 -- Presentation only (client). The fight itself uses Balance.Fight.
 Balance.Feel = {
 	SpectatorDistance = 120,
-	ArenaBoardHeight = 6.5, -- studs above the crossbar
-	ArenaBoardWidth = 15, -- studs
+	ArenaBoardHeight = 4.8, -- studs above the crossbar
+	ArenaBoardWidth = 11, -- studs
+	ArenaBoardMaxDistance = 75, -- boards only draw when you are about close enough to walk over and join
 	AimDragPixels = 170,
 	AimYawPixels = 180,
 	CameraDistance = 33,

@@ -27,7 +27,7 @@ function Screen.bind(gui, onClaim)
 		if button and button:IsA("GuiButton") then
 			button.Activated:Connect(function()
 				if cell:GetAttribute("State") == "Today" then
-					onClaim()
+					onClaim(cell)
 				end
 			end)
 		end
@@ -98,6 +98,7 @@ function Screen:Cell(i, state, reward, status)
 		label.Visible = status ~= nil and state ~= "Today"
 		label.TextColor3 = if state == "Claimed" then CLAIMED_TEXT else LOCKED_TEXT
 	end
+	Visuals.sync(cell)
 end
 
 function Screen:Render(view, now)

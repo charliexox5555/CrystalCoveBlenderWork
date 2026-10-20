@@ -36,7 +36,31 @@ local function hudHidden(pg)
 		or fightHudShown(pg)
 end
 
+-- Reward screens (top bar Daily / Playtime / Codes) keep only the coin and Marble counters on screen, so claimed
+-- currency has somewhere visible to fly to. Close() puts the rest of the HUD back.
+function Controller:ShowWallet()
+	local gui = self.Gui
+	if not gui or hudHidden(self.Player.PlayerGui) then
+		return
+	end
+	self.WalletOnly = self.WalletOnly or {}
+	for _, child in gui:GetChildren() do
+		if child:IsA("GuiObject") and child.Name ~= "Currency" and self.WalletOnly[child] == nil then
+			self.WalletOnly[child] = child.Visible
+			child.Visible = false
+		end
+	end
+	gui.Enabled = true
+	self:FlushGains()
+end
+
 function Controller:Close()
+	if self.WalletOnly then
+		for child, visible in self.WalletOnly do
+			child.Visible = visible
+		end
+		self.WalletOnly = nil
+	end
 	if self.Screen then
 		self.Screen:Destroy()
 		self.Screen = nil
@@ -119,9 +143,12 @@ function Controller:FlushGains()
 	for kind, amount in self.PendingGain do
 		self.PendingGain[kind] = nil
 		local label = if kind == "Coins" then self.Currency else self.Marbles
+		-- A reward claimed a moment ago bursts out of its cell (RewardsController sets GainOrigin).
+		local origin = self.GainOrigin
+		local from = if origin and os.clock() - origin.At < 4 then origin.Position else nil
 		CurrencyGain.play(kind, amount, label, function()
 			Motion.countTo(label, self.Shown[kind])
-		end)
+		end, from)
 	end
 end
 
@@ -217,14 +244,11 @@ function Controller:Start()
 			end
 			return
 		end
-		if data.Kind == "Code" then
-			return -- the Codes screen shows its own answer
+		if data.Kind == "Code" or data.Kind == "Daily" or data.Kind == "Gift" then
+			return -- those screens celebrate their own claims (ClaimFx, CurrencyGain); no toast over them
 		end
 		if data.Ok then
-			local pull = type(data.Reward) == "table" and data.Reward.Pull
-			self.Controllers.MatchController:Notice(
-				if pull then data.Message .. "! Open it in the Shop" else data.Message
-			)
+			self.Controllers.MatchController:Notice(data.Message)
 		end
 	end)
 	Remotes.KilnOdds.OnClientEvent:Connect(function(data)

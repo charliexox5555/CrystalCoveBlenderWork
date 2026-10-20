@@ -43,7 +43,8 @@ function Screen:OpeningHud(show)
 		if self.HudRestore == nil then
 			self.HudRestore = hud.Enabled
 			self.HudVisibility = {}
-			for _, name in { "PlayButton", "Hint" } do
+			-- A clean stage: only the wallet stays (Inventory returns when the cards fly into it).
+			for _, name in { "PlayButton", "Hint", "Navigation" } do
 				local object = hud:FindFirstChild(name)
 				if object then
 					self.HudVisibility[object] = object.Visible
@@ -62,7 +63,37 @@ function Screen:OpeningHud(show)
 		self.HudVisibility = nil
 	end
 end
+-- The reveal's card frames (one per rarity), fetched while the server answers so cards never land empty.
+local TILES = {
+	"tile/tile_common",
+	"tile/tile_uncommon",
+	"tile/tile_rare",
+	"tile/tile_epic",
+	"tile/tile_legendary",
+	"tile/tile_mythic",
+}
+local preloaded = false
+local function preloadTiles()
+	if preloaded then
+		return
+	end
+	preloaded = true
+	local assets = require(game.ReplicatedStorage.Shared.Config.UIAssets)
+	local ids = {}
+	for _, key in TILES do
+		if assets[key] then
+			table.insert(ids, assets[key])
+		end
+	end
+	task.spawn(function()
+		pcall(function()
+			game:GetService("ContentProvider"):PreloadAsync(ids)
+		end)
+	end)
+end
+
 function Screen:Pending(category)
+	preloadTiles()
 	local c = self:Page("KilnRevealScreen", "THE KILN")
 	self:OpeningHud(true)
 	self.Waiting = true
@@ -109,7 +140,14 @@ function Screen:Result(data)
 		self.Window,
 		data.Results,
 		data.Odds or self.SelectedPoolOdds or self.Data.Odds,
-		self.Close,
+		-- After COLLECT, reopen the Shop on the tab the player bought from, ready to open another.
+		function()
+			if self.Refresh then
+				self.Refresh()
+			else
+				self.Close()
+			end
+		end,
 		data.Category or self.PendingCategory or "Glassies",
 		data.Currency or self.PendingCurrency or "Coins"
 	)

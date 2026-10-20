@@ -16,5 +16,6 @@ return {
 		Tab = { Volume = 0.85, Pitch = 1.2 },
 		Success = { Volume = 0.8, Pitch = 1 },
 		Error = { Volume = 0.6, Pitch = 0.8 },
+		Sparkle = { Volume = 0.55, Pitch = 1.15 },
 	},
 }

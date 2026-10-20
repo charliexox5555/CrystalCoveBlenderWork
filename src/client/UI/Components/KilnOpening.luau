@@ -14,6 +14,9 @@ local Item = require(script.Parent.ItemPresentation)
 local titles = { Glassies = "THE KILN", Finishers = "BURST CAPSULE", Rideables = "SKY CAPSULE" }
 local MachineConfig = require(RS.Shared.Config.CrateMachines)
 local CrateMachine = require(script.Parent.Parent.Parent.Presentation.CrateMachine)
+local RevealFx = require(script.Parent.RevealFx)
+-- Extra build-up before a Legendary / Mythic reveal (RevealFx tiers 3 and 4).
+local HOLD = { [3] = 0.6, [4] = 1.0 }
 
 function Opening.new(window, results, odds, collected, category, currency)
 	local self = setmetatable({
@@ -30,6 +33,15 @@ function Opening.new(window, results, odds, collected, category, currency)
 		Category = category or "Glassies",
 		Currency = currency or "Coins",
 	}, Opening)
+	-- The best rarity in this opening sets the size of the reveal moment.
+	self.Best, self.Tier = nil, -1
+	for _, result in results do
+		local rarity = Item.definition(self.Category, result.Id).Rarity
+		if RevealFx.tier(rarity) > self.Tier then
+			self.Best, self.Tier = rarity, RevealFx.tier(rarity)
+		end
+	end
+	self.Hold = HOLD[self.Tier] or 0
 	self.TintDark = if self.Category == "Finishers"
 		then Theme.Palette.amethystDark
 		elseif self.Category == "Rideables" then Theme.Palette.aquaDark
@@ -100,6 +112,11 @@ function Opening:BeginFire()
 		else "BUILDING PRESSURE…"
 	self.FireFX = require(script.Parent.KilnFire).new(c.KilnStage, self.TintLight, self.Category)
 	self.Mouth = self.FireFX:InFrame(c.KilnStage)
+	-- Legendary / Mythic: the screen takes on the rarity colour while it builds.
+	self.Anticipation = RevealFx.anticipate(self.Window.Gui, self.Best, self.FireFX.Timing.FireSeconds + self.Hold)
+	if self.Anticipation then
+		c.Status.Text = if self.Tier == 4 then "SOMETHING INCREDIBLE…" else "SOMETHING SPECIAL…"
+	end
 end
 
 function Opening:ShowRewards(instant)
@@ -112,9 +129,11 @@ function Opening:ShowRewards(instant)
 	c.KilnStage.Visible = not instant
 	c.Status.Text = if #self.Results == 1 then "IT’S YOURS!" else "ALL " .. #self.Results .. " ITEMS ARE YOURS!"
 	c.Skip.Visible, c.Collect.Visible = not instant, instant
-	if not instant then
-		self.Sounds.Reveal:Play()
+	if self.Anticipation then
+		self.Anticipation.Flash()
+		self.Anticipation = nil
 	end
+	RevealFx.playTier(self.Tier, self.Sounds)
 	local centerY = (
 		self.Window.Gui.AbsolutePosition.Y
 		+ self.Window.Gui.AbsoluteSize.Y / 2
@@ -194,6 +213,10 @@ end
 function Opening:Finish()
 	self:SetPhase("Results")
 	local c = self.Content
+	if not self.Celebrated then
+		self.Celebrated = true
+		self:Celebrate()
+	end
 	c.KilnStage.Visible, c.Skip.Visible, c.Collect.Visible = false, false, true
 	for _, item in self.Cards do
 		item.Object.Visible, item.Object.RevealScale.Scale = true, 1
@@ -212,6 +235,35 @@ function Opening:Finish()
 	self.Window.Gui:SetAttribute("RevealedCount", #self.Cards)
 	for _, sound in self.Sounds:GetChildren() do
 		sound:Stop()
+	end
+end
+
+-- Rarity juice once the cards sit at their spots: glow, rays, sparkles behind each card, and an
+-- "EPIC!" / "LEGENDARY!" / "MYTHIC!" banner in place of the status line.
+function Opening:Celebrate()
+	local c = self.Content
+	local single = #self.Cards == 1
+	for _, item in self.Cards do
+		local card = item.Object
+		card.Position = UDim2.fromScale(item.Destination.X, item.Destination.Y)
+		local rarity = Item.definition(self.Category, card:GetAttribute("GlassyId")).Rarity
+		if single or RevealFx.tier(rarity) >= 1 then
+			RevealFx.behindCard(c.Rewards, card, rarity, single)
+		end
+	end
+	if self.Tier >= 2 then
+		local status = c.Status
+		local parent = status.Parent
+		local center = status.AbsolutePosition + status.AbsoluteSize / 2 - parent.AbsolutePosition
+		local banner = RevealFx.banner(parent, self.Best, 0)
+		if banner then
+			banner.Position = UDim2.fromScale(
+				center.X / math.max(1, parent.AbsoluteSize.X),
+				center.Y / math.max(1, parent.AbsoluteSize.Y)
+			)
+			banner.Size = UDim2.fromScale(0.5, status.Size.Y.Scale * 1.8)
+			status.Text = ""
+		end
 	end
 end
 
@@ -237,6 +289,11 @@ function Opening:Collect()
 		self:SetPhase("Collected")
 		self.OnCollected()
 		return
+	end
+	-- The opening hides the HUD buttons for a clean stage; Inventory comes back to catch the cards.
+	local navigation = hud:FindFirstChild("Navigation")
+	if navigation then
+		navigation.Visible = true
 	end
 	self.Target = button
 	self.TargetScale = button:FindFirstChild("InteractionScale")
@@ -322,7 +379,7 @@ function Opening:Step(dt)
 			self.Content.Status.Text = "HERE IT COMES!"
 			self.Sounds.Fire:Play()
 		end
-		if t >= timing.FireSeconds then
+		if t >= timing.FireSeconds + self.Hold then
 			self:ShowRewards(false)
 		end
 	elseif self.Phase == "Collect" then
@@ -344,6 +401,10 @@ function Opening:Destroy()
 		self.TargetScale.Scale = self.PreviousScale or 1
 	end
 	self.Reels:Destroy()
+	if self.Anticipation then
+		self.Anticipation.Destroy()
+		self.Anticipation = nil
+	end
 	if self.FireFX then
 		self.FireFX:Destroy()
 	end

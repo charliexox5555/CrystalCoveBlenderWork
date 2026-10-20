@@ -3,7 +3,27 @@ local Theme = require(script.Parent.Parent.Theme)
 local S = require(script.Parent.StainedGlass)
 local Reels = {}
 local Item = require(script.Parent.ItemPresentation)
+local TweenService = game:GetService("TweenService")
+local Assets = require(game.ReplicatedStorage.Shared.Config.UIAssets)
+local RevealFx = require(script.Parent.RevealFx)
 Reels.__index = Reels
+-- A soft glow in each tile's rarity colour, so rare items flash by as you watch the reel slow down.
+local GLOW_TRANSPARENCY = { [0] = 0.8, [1] = 0.6, [2] = 0.45, [3] = 0.3, [4] = 0.2 }
+local function rarityGlow(cell, rarity)
+	local glow = cell:FindFirstChild("RarityGlow")
+	if not glow then
+		glow = Instance.new("ImageLabel")
+		glow.Name, glow.BackgroundTransparency = "RarityGlow", 1
+		glow.Image = Assets["screens/playtime_rewards/glow"] or ""
+		glow.AnchorPoint, glow.Position = Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.42)
+		glow.Size = UDim2.fromScale(0.95, 0.75)
+		local portrait = cell:FindFirstChild("Portrait")
+		glow.ZIndex = if portrait then portrait.ZIndex - 1 else 1
+		glow.Parent = cell
+	end
+	glow.ImageColor3 = RevealFx.color(rarity)
+	glow.ImageTransparency = GLOW_TRANSPARENCY[RevealFx.tier(rarity)] or 0.8
+end
 
 function Reels.new(content, results, odds, category)
 	local self =
@@ -84,9 +104,42 @@ function Reels:Step(time)
 				Item.portrait(cell, self.Category, id)
 				cell.NameLabel.Text = def.Name
 				cell.RarityBand.BackgroundColor3 = Theme.Rarity[def.Rarity].Bottom
+				rarityGlow(cell, def.Rarity)
 			end
 		end
 		if t == 1 then
+			if not row.Landed then
+				-- The winning tile pops and glows; the others step back.
+				row.Landed = true
+				for _, cell in row.Cells do
+					local selected = cell:GetAttribute("GlassyId") == row.Result.Id
+						and math.abs(cell.Position.X.Scale - 0.5) < row.Stride / 2
+					if selected then
+						local scale = cell:FindFirstChildOfClass("UIScale") or Instance.new("UIScale")
+						scale.Parent, scale.Scale = cell, 1.18
+						TweenService
+							:Create(scale, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+								Scale = 1.08,
+							})
+							:Play()
+						local glow = cell:FindFirstChild("RarityGlow")
+						if glow then
+							glow.ImageTransparency = 0.05
+						end
+					else
+						cell.ZIndex = math.max(0, cell.ZIndex - 1)
+						for _, d in cell:GetDescendants() do
+							if d:IsA("ImageLabel") then
+								d.ImageTransparency = math.max(d.ImageTransparency, 0.55)
+							elseif d:IsA("TextLabel") then
+								d.TextTransparency = math.max(d.TextTransparency, 0.55)
+							elseif d:IsA("ViewportFrame") then
+								d.ImageTransparency = 0.55
+							end
+						end
+					end
+				end
+			end
 			row.Frame:SetAttribute("SelectedId", row.Stream[row.Target])
 			local def = Item.definition(self.Category, row.Result.Id)
 			row.Frame.Marker.BackgroundColor3 = Theme.Rarity[def.Rarity].Top

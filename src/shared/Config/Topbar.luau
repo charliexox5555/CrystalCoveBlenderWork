@@ -9,6 +9,7 @@ export type Item = {
 	Label: string,
 	Image: string,
 	Screen: string,
+	Wallet: boolean?, -- keep the HUD coin/Marble counters on screen (rewards fly into them)
 }
 
 export type Button = {
@@ -25,6 +26,8 @@ local Topbar = {
 	DropdownWidth = 230,
 	-- Above the menu windows (DisplayOrder 20) so the dropdown opens over an open menu; below toasts (30+).
 	DisplayOrder = 25,
+	-- Containers whose children pop in one after another when a screen opens (Motion.stagger).
+	Stagger = { "Days", "Rewards", "Rows" },
 	Buttons = {
 		{
 			Id = "Settings",
@@ -39,14 +42,21 @@ local Topbar = {
 			Image = "topbar/gift",
 			HideInMatch = true,
 			Items = {
-				{ Id = "Daily", Label = "Daily Rewards", Image = "topbar/daily", Screen = "DailyRewardsScreen" },
+				{
+					Id = "Daily",
+					Label = "Daily Rewards",
+					Image = "topbar/daily",
+					Screen = "DailyRewardsScreen",
+					Wallet = true,
+				},
 				{
 					Id = "Playtime",
 					Label = "Playtime Rewards",
 					Image = "topbar/playtime",
 					Screen = "PlaytimeRewardsScreen",
+					Wallet = true,
 				},
-				{ Id = "Codes", Label = "Codes", Image = "topbar/codes", Screen = "CodesScreen" },
+				{ Id = "Codes", Label = "Codes", Image = "topbar/codes", Screen = "CodesScreen", Wallet = true },
 				-- Quests (topbar/quests, QuestsScreen) is held back until its design is decided.
 			},
 		},

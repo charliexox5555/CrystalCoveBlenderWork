@@ -152,7 +152,7 @@ Theme.Motion = {
 
 -- Presentation timing only; the server has already awarded the opening before playback starts.
 Theme.Kiln = {
-	SpinSeconds = 5.2,
+	SpinSeconds = 4.2,
 	ReelStagger = 0.045,
 	ReelSteps = 36,
 	LandHold = 0.55,

@@ -316,6 +316,31 @@ local function fadeOut(panel, info)
 	end
 end
 
+-- Screens that are reused (StarterGui templates toggled by Enabled, e.g. the top bar menus) record their
+-- transparencies before the close fade and put them back once hidden. Returns the restore function.
+function Motion.fadeSnapshot(panel)
+	local saved = {}
+	for _, object in panel:GetDescendants() do
+		local props = FADE[object.ClassName]
+		if props then
+			local values = {}
+			for _, prop in props do
+				values[prop] = object[prop]
+			end
+			saved[object] = values
+		end
+	end
+	return function()
+		for object, values in saved do
+			if object.Parent then
+				for prop, value in values do
+					object[prop] = value
+				end
+			end
+		end
+	end
+end
+
 -- Window pop: quick scale-in with a light Back ease; closing scales down a touch while everything fades.
 -- No backdrop dim (Config.Dim = 0); the menu ambience (blur + FOV) is the only background change.
 function Motion.windowIn(gui, panel, instant)

@@ -10,6 +10,7 @@ local Remotes = require(RS.Shared.Remotes)
 local Settings = require(RS.Shared.Config.Settings)
 local AudioGroups = require(script.Parent.Parent.AudioGroups)
 local UiAudio = require(script.Parent.Parent.UI.Components.UiAudio)
+local Motion = require(script.Parent.Parent.UI.Components.Motion)
 local Controller = {}
 
 local SEND_EVERY = 0.25 -- while dragging a slider, at most one save request per this many seconds
@@ -200,10 +201,12 @@ local function hoverIcon(row, control)
 	if not icon then
 		return
 	end
+	-- Grow from the icon's centre (its authored anchor is a corner), and only a little so it stays in its slot.
+	Motion.center(icon)
 	local scale = icon:FindFirstChild("HoverScale") or Instance.new("UIScale")
 	scale.Name, scale.Parent = "HoverScale", icon
 	local function set(on)
-		TweenService:Create(scale, ICON_HOVER, { Scale = if on then 1.15 else 1 }):Play()
+		TweenService:Create(scale, ICON_HOVER, { Scale = if on then 1.07 else 1 }):Play()
 		TweenService
 			:Create(icon, ICON_HOVER, { ImageColor3 = if on then Color3.fromHex("#9BF3F8") else Color3.new(1, 1, 1) })
 			:Play()

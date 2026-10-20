@@ -14,6 +14,20 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — UI polish pass (creator notes)
+Done:
+- Top bar screens open and close like the other menus (window pop, blur, cells pop in from their centres); art preloads in the background. Settings rows: the icon grows slightly from its centre on hover.
+- Claims: the cell punches up, glows, throws sparkles, the check pops in; free pulls rise out with "FREE … !". Coins/Marbles burst out of the claimed cell, hang, fly into the wallet (kept on screen for reward menus) with an aura pulse per landing. No more toast over the screen.
+- Reward art: coin piles grow with the amount (1–6 coins); free pulls show the real Kiln / Burst Dome / Cloud Globe in a viewport.
+- Crate opening: clean stage (HUD buttons hidden until the cards fly to Inventory), faster spin, rarity glows on reel tiles and a winner pop, rarity moments (rays, sparkles, EPIC/LEGENDARY/MYTHIC banner, Legendary/Mythic build-up and flash, tiered sounds; rainbow and shockwaves for Mythic). After COLLECT the Shop reopens on the same tab.
+- Arena boards rebuilt from the Stained Glass kit (pane, title banner, hex portraits, plaque), smaller (11 studs), lower, only drawn within 75 studs.
+- Roll screen: the message and odds lines no longer sit under the bottom buttons.
+- Lune 172/172. Checked in Studio Play: Daily and Playtime claims, coin piles, Kiln viewport, a 10-pull with a Legendary, return to the Finishers tab, arena board close-up.
+Next:
+- Creator review of the feel; a single-pull Mythic reveal wasn't seen live (random); phone checks.
+Problems / questions for the user:
+- Studio was downloading slowly (content queue up to 216); art that hadn't loaded showed blank until it arrived. Preloading now covers the reward screens and card frames.
+
 ## 2026-10-19 — Claude — Rewards, codes and settings working (decision 99)
 Done:
 - Four screens designed in parallel sessions and approved (Settings, Daily Rewards, Playtime Rewards, Codes; revisions: 5 playtime stages, CLAIM inside cells, taller code field).

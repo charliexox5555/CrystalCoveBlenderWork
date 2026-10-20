@@ -8,7 +8,23 @@ local Config = require(RS.Shared.Config.Topbar)
 local UIAssets = require(RS.Shared.Config.UIAssets)
 local TouchGate = require(script.Parent.Parent.UI.TouchGate)
 local StainedGlass = require(script.Parent.Parent.UI.Components.StainedGlass)
+local Motion = require(script.Parent.Parent.UI.Components.Motion)
+local UiAudio = require(script.Parent.Parent.UI.Components.UiAudio)
 local Controller = {}
+
+-- Screens that keep the HUD wallet visible (Config/Topbar Wallet = true).
+local wallet = {}
+for _, spec in Config.Buttons do
+	for _, item in spec.Items or {} do
+		if item.Wallet then
+			wallet[item.Screen] = true
+		end
+	end
+end
+
+local function UiAudioClose()
+	UiAudio.play("Close")
+end
 
 function Controller:Init(controllers)
 	self.Controllers, self.Player = controllers, Players.LocalPlayer
@@ -61,12 +77,25 @@ function Controller:Wire(gui)
 end
 
 function Controller:CloseMenu()
-	local gui, icon = self.Open, self.OpenIcon
+	local gui, icon, anim = self.Open, self.OpenIcon, self.OpenAnim
 	if not gui then
 		return
 	end
-	self.Open, self.OpenIcon = nil, nil
-	gui.Enabled = false
+	self.Open, self.OpenIcon, self.OpenAnim = nil, nil, nil
+	local panel = gui:FindFirstChild("Panel")
+	if anim and panel then
+		-- Same close as the other windows (shrink + fade); the template's look comes back once it is hidden.
+		local restore = Motion.fadeSnapshot(panel)
+		anim.Close(function()
+			if self.Open ~= gui then
+				gui.Enabled = false
+			end
+			restore()
+		end)
+		UiAudioClose()
+	else
+		gui.Enabled = false
+	end
 	TouchGate.release(self)
 	local lobby = self.Controllers.LobbyController
 	if lobby and lobby.Gui then
@@ -97,7 +126,31 @@ function Controller:OpenMenu(name, icon)
 	self:Wire(gui)
 	self.Open, self.OpenIcon = gui, icon
 	TouchGate.acquire(self)
+	if lobby and lobby.ShowWallet and wallet[name] then
+		lobby:ShowWallet()
+	end
 	gui.Enabled = true
+	local panel = gui:FindFirstChild("Panel")
+	if panel then
+		self.OpenAnim = Motion.windowIn(gui, panel)
+		for _, container in Config.Stagger do
+			local holder = panel:FindFirstChild(container, true)
+			if holder then
+				local items = {}
+				for _, child in holder:GetChildren() do
+					if child:IsA("GuiObject") then
+						Motion.center(child) -- pop in from the middle, not a corner
+						table.insert(items, child)
+					end
+				end
+				table.sort(items, function(a, b)
+					return a.AbsolutePosition.X + a.AbsolutePosition.Y * 4
+						< b.AbsolutePosition.X + b.AbsolutePosition.Y * 4
+				end)
+				Motion.stagger(items)
+			end
+		end
+	end
 end
 
 function Controller:Build(Icon)
@@ -188,6 +241,28 @@ function Controller:Start()
 	end
 	Icon.setDisplayOrder(Config.DisplayOrder)
 	self:Build(Icon)
+	-- Fetch the screens' art in the background so a first open never shows empty frames on a slow connection.
+	task.spawn(function()
+		local pg = self.Player:WaitForChild("PlayerGui")
+		local images = {}
+		for _, spec in Config.Buttons do
+			local names = { spec.Screen }
+			for _, item in spec.Items or {} do
+				table.insert(names, item.Screen)
+			end
+			for _, name in names do
+				local gui = name and pg:WaitForChild(name, 30)
+				for _, object in gui and gui:GetDescendants() or {} do
+					if object:IsA("ImageLabel") or object:IsA("ImageButton") then
+						table.insert(images, object)
+					end
+				end
+			end
+		end
+		pcall(function()
+			game:GetService("ContentProvider"):PreloadAsync(images)
+		end)
+	end)
 	local pg = self.Player:WaitForChild("PlayerGui")
 	local function changed()
 		self:ApplyMatch()

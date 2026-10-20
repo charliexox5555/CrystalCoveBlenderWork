@@ -154,7 +154,8 @@ function Screen.new(data, pick, reroll, pickAny, onMarblesRequested)
 	for side = 1, 2 do
 		playerChip(panel, side, data)
 	end
-	local cards = Kit.frame(panel, "Cards", UDim2.fromScale(0.9, 0.62), UDim2.fromScale(0.05, 0.15))
+	-- Cards, message and odds line stack above the bottom button row (its gems start at y 0.85) with a gap.
+	local cards = Kit.frame(panel, "Cards", UDim2.fromScale(0.9, 0.6), UDim2.fromScale(0.05, 0.15))
 	local layout = Instance.new("UIListLayout")
 	layout.FillDirection, layout.Padding = Enum.FillDirection.Horizontal, UDim.new(0.03, 0)
 	layout.HorizontalAlignment, layout.VerticalAlignment =
@@ -166,13 +167,13 @@ function Screen.new(data, pick, reroll, pickAny, onMarblesRequested)
 		card.LayoutOrder, card.Visible = i, false
 	end
 	Kit.frame(panel, "ReelLayer", UDim2.fromScale(1, 1))
-	self.MessageLine = Kit.marbleLine(panel, "Message", UDim2.fromScale(0.8, 0.05), UDim2.fromScale(0.1, 0.785))
+	self.MessageLine = Kit.marbleLine(panel, "Message", UDim2.fromScale(0.8, 0.045), UDim2.fromScale(0.1, 0.756))
 	self.OddsNote = Kit.label(
 		panel,
 		"RerollOdds",
 		"",
-		UDim2.fromScale(0.8, 0.032),
-		UDim2.fromScale(0.1, 0.84),
+		UDim2.fromScale(0.8, 0.03),
+		UDim2.fromScale(0.1, 0.806),
 		{ Font = Theme.Fonts.Caption, Color = Theme.Palette.milkDark, MaxSize = 15, Outline = 1.5 }
 	)
 	-- Bottom row: Pick Any, our Marble wallet, Reroll, odds.

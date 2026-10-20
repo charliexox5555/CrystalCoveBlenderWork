@@ -44,7 +44,7 @@ function Screen:Bind(cell, index)
 	if button and button:IsA("GuiButton") then
 		button.Activated:Connect(function()
 			if cell:GetAttribute("State") == "Ready" then
-				self.OnClaim(index)
+				self.OnClaim(index, cell)
 			end
 		end)
 	end
@@ -108,6 +108,7 @@ function Screen:Render(gifts, seconds)
 		if plaque then
 			plaque.ImageColor3 = if locked then SLATE else WHITE
 		end
+		Visuals.sync(cell)
 	end
 	self:RenderBar(gifts, seconds)
 end

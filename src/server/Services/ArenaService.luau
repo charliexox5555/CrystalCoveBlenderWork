@@ -48,12 +48,20 @@ local function who(player)
 	return player and { UserId = player.UserId, Name = player.DisplayName } or nil
 end
 
+-- Bot Play setting (decision 99): a lone queued player who turned it off waits for a real opponent.
+function Service:BotsAllowed(arena)
+	local solo = arena.Queue[1] or arena.Queue[2]
+	local settings = self.Services.SettingsService
+	return solo == nil or settings == nil or settings:Get(solo).BotPlay ~= false
+end
+
 -- Queue board for an arena that is not fighting.
 function Service:QueueBoard(arena, now)
 	local a, b = arena.Queue[1], arena.Queue[2]
 	local count = (if a then 1 else 0) + (if b then 1 else 0)
 	local status = if count == 0
 		then "Walk up to a pad and press to join!"
+		elseif not self:BotsAllowed(arena) then "Waiting for a player…"
 		else "Bot joins in " .. math.max(
 			0,
 			math.ceil((arena.QueuedAt or now) + Balance.Match.QueueBotAfterSeconds - now)
@@ -191,7 +199,7 @@ function Service:Queue(player, arena, side, now)
 		Phase = "Queue",
 		ArenaId = arena.Id,
 		Side = side,
-		Deadline = arena.QueuedAt + Balance.Match.QueueBotAfterSeconds,
+		Deadline = if self:BotsAllowed(arena) then arena.QueuedAt + Balance.Match.QueueBotAfterSeconds else nil,
 		Locked = true,
 		CanLeave = true,
 		Spot = character:GetPivot(),
@@ -278,7 +286,7 @@ function Service:Step(now)
 		local a, b = arena.Queue[1], arena.Queue[2]
 		if not a and not b then
 			arena.QueuedAt = nil
-		elseif a and b or now - arena.QueuedAt >= Balance.Match.QueueBotAfterSeconds then
+		elseif a and b or (now - arena.QueuedAt >= Balance.Match.QueueBotAfterSeconds and self:BotsAllowed(arena)) then
 			self:StartArena(arena, now)
 			continue
 		end

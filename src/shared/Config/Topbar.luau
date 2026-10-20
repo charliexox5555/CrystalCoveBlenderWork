@@ -23,6 +23,8 @@ export type Button = {
 local Topbar = {
 	-- Width of the gift dropdown rows (pixels, before Roblox's own top bar scaling).
 	DropdownWidth = 230,
+	-- Above the menu windows (DisplayOrder 20) so the dropdown opens over an open menu; below toasts (30+).
+	DisplayOrder = 25,
 	Buttons = {
 		{
 			Id = "Settings",

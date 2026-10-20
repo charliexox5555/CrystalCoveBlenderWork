@@ -42,6 +42,27 @@
    "Type": "Decal",
    "Name": "Topbar Quests",
    "Description": "Glass Clash top bar icon (gvesster Free Icon Pack v3.1)."
+  },
+  {
+   "Key": "reward_kiln",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/Item/Lucky Block/256px/Lucky Block 1st Outline 256px.png",
+   "Type": "Decal",
+   "Name": "Reward Free Kiln Pull",
+   "Description": "Glass Clash reward icon (gvesster Free Icon Pack v3.1)."
+  },
+  {
+   "Key": "reward_finisher",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/Exclusive/Aura/256px/Aura 1st Outline 256px.png",
+   "Type": "Decal",
+   "Name": "Reward Free Finisher Crate",
+   "Description": "Glass Clash reward icon (gvesster Free Icon Pack v3.1)."
+  },
+  {
+   "Key": "reward_flyer",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/Main/Hoverboard/256px/Blue Hoverboard 1st Outline 256px.png",
+   "Type": "Decal",
+   "Name": "Reward Free Flyer Crate",
+   "Description": "Glass Clash reward icon (gvesster Free Icon Pack v3.1)."
   }
  ]
 }

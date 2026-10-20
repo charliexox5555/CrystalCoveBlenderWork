@@ -15,6 +15,13 @@ Glass Clash's own buttons live in Roblox's top bar, left side after the chat but
 - The old combined `RewardsScreen` (Quests / Gifts / Streak / Codes tabs) is untouched for now. The new screens are
   placeholders to design and wire to the existing retention remotes later.
 
+## Notices and layering
+
+- Claimable rewards show as red counts: `TopbarController:SetNotice(rowId, count)` on a dropdown row; TopbarPlus adds them up
+  on the gift. RewardsController sets Daily (1 when today's reward is unclaimed) and Playtime (gifts ready).
+- `Config/Topbar.DisplayOrder = 25` keeps the top bar and its dropdown above open menus (20).
+- `TopbarController:OpenScreen(name)` opens a top bar screen from elsewhere (the lobby rewards board uses it).
+
 ## Files
 
 | What | Where |

@@ -41,12 +41,19 @@ function Service:Request(player, kind, id)
 	if not data or type(kind) ~= "string" or #kind > 16 then
 		return
 	end
-	local ok, message = Rules.claim(data, kind, id, os.time())
+	local ok, message, reward, item = Rules.claim(data, kind, id, os.time())
 	if ok then
 		self.Services.DataService:Sync(player)
 		self.Services.DataService.Profiles[player].Profile:Save()
 	end
-	Remotes.RetentionResult:FireClient(player, { Ok = ok, Message = message })
+	Remotes.RetentionResult:FireClient(player, {
+		Ok = ok,
+		Message = message,
+		Kind = kind,
+		Id = id,
+		Reward = if type(reward) == "table" then reward else nil,
+		Item = item,
+	})
 end
 function Service:Start()
 	local props = workspace.Lobby:FindFirstChild("GlassClashProps")
@@ -80,12 +87,15 @@ function Service:Start()
 		if not data then
 			return
 		end
-		local ok, message = Rules.redeem(data, input, RunService:IsStudio())
+		local ok, message, reward, item = Rules.redeem(data, input, RunService:IsStudio(), os.time())
 		if ok then
 			self.Services.DataService:Sync(player)
 			self.Services.DataService.Profiles[player].Profile:Save()
 		end
-		Remotes.RetentionResult:FireClient(player, { Ok = ok, Message = message })
+		Remotes.RetentionResult:FireClient(
+			player,
+			{ Ok = ok, Message = message, Kind = "Code", Reward = reward, Item = item }
+		)
 	end)
 	Players.PlayerRemoving:Connect(function(player)
 		self.Clocks[player] = nil

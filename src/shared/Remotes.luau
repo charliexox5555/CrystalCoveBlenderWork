@@ -21,8 +21,8 @@
 --     BuyStoreOffer  (RemoteEvent)  slot: number, id: string, day: number (Coins buy now; Robux prompts)
 --     BuyStoreBundle (RemoteEvent)  bundleId: string (Robux prompt once a product ID is configured)
 --     BuyMarblePack  (RemoteEvent)  packId: string (Config/MarbleShop; Robux prompt)
---     RequestMusicPrefs (RemoteEvent) (no args) -> MusicPrefs { Muted, Volume }
---     SetMusicPrefs  (RemoteEvent)  muted: boolean, volume: number (0-1); saved by MusicPrefsService
+--     RequestSettings (RemoteEvent) (no args) -> Settings { Master, Music, SFX, BotPlay, AutoCast, ... } (Config/Settings)
+--     SetSetting     (RemoteEvent)  key: string, value: number (0-1) | boolean; saved by SettingsService (decision 99)
 --   Server -> client: StoreOffers (view, NextReset, ServerNow, Message), StoreResult (purchase outcome)
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -59,9 +59,9 @@ local reliable = {
 	"BuyStoreBundle",
 	"StoreResult",
 	"BuyMarblePack",
-	"RequestMusicPrefs",
-	"MusicPrefs",
-	"SetMusicPrefs",
+	"RequestSettings",
+	"Settings",
+	"SetSetting",
 }
 local unreliable = { "FightSnapshot" }
 

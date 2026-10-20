@@ -207,18 +207,24 @@ function Controller:Start()
 			self.Screen:Refresh(profile)
 		end
 	end)
+	-- The lobby rewards board's tabs now open the top bar screens (decision 99); Quests stay hidden for now.
+	local boardScreens = { Gifts = "PlaytimeRewardsScreen", Codes = "CodesScreen" }
 	Remotes.RetentionResult.OnClientEvent:Connect(function(data)
 		if data.Open then
-			self:Open("Rewards")
-			if self.Screen and self.Screen.Select then
-				self.Screen:Select(data.Open)
+			local topbar = self.Controllers.TopbarController
+			if topbar and topbar.OpenScreen then
+				topbar:OpenScreen(boardScreens[data.Open] or "DailyRewardsScreen")
 			end
 			return
 		end
-		if self.Screen and self.Screen.Selected then
-			self.Screen:Result(data)
-		elseif data.Ok then
-			self.Controllers.MatchController:Notice(data.Message)
+		if data.Kind == "Code" then
+			return -- the Codes screen shows its own answer
+		end
+		if data.Ok then
+			local pull = type(data.Reward) == "table" and data.Reward.Pull
+			self.Controllers.MatchController:Notice(
+				if pull then data.Message .. "! Open it in the Shop" else data.Message
+			)
 		end
 	end)
 	Remotes.KilnOdds.OnClientEvent:Connect(function(data)

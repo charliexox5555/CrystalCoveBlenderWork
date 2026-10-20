@@ -46,6 +46,10 @@ function Schema.new(now)
 			Day = 0,
 			PlaytimeSeconds = 0,
 		},
+		-- Daily Rewards calendar (decision 99): Index = days claimed in the current 7-day cycle, LastDay = UTC day of
+		-- the last claim. Free pull tickets per crate category, spent in the Shop with the odds shown.
+		Calendar = { Index = 0, LastDay = -1 },
+		FreePulls = { Glassies = 0, Finishers = 0, Rideables = 0 },
 		Flags = { WelcomePullUsed = false, GroupRewardClaimed = false },
 		CodesRedeemed = {},
 		ProcessedReceipts = {},
@@ -115,6 +119,11 @@ function Schema.reconcile(data, now)
 		end
 	end
 	data.Flags.WelcomePullUsed = data.Flags.WelcomePullUsed == true
+	for category in data.FreePulls do
+		data.FreePulls[category] = integer(data.FreePulls[category], 0)
+	end
+	data.Calendar.Index = math.min(7, integer(data.Calendar.Index, 0))
+	data.Calendar.LastDay = if type(data.Calendar.LastDay) == "number" then math.floor(data.Calendar.LastDay) else -1
 	RoundCosmetics.reconcile(data)
 	DailyStore.reconcile(data)
 	return data

@@ -79,6 +79,9 @@ function EconomySim.simulate(seed: number?)
 			local t, firstWin = 0, false
 			local gifts = 1
 			coins += econ.DailyQuestCoins * e.QuestsCompletedPerDay
+			-- Daily Rewards calendar (decision 99): claimed every day in the sim; a free Kiln pull counts as one pull's coins.
+			local calendar = econ.DailyRewards[(day - 1) % #econ.DailyRewards + 1]
+			coins += (calendar.Coins or 0) + (if calendar.Pull == "Glassies" then econ.KilnCoinCost else 0)
 			while t + matchSeconds <= e.SessionMinutes * 60 do
 				t += matchSeconds
 				local got, win = playMatch(rng)
@@ -90,6 +93,9 @@ function EconomySim.simulate(seed: number?)
 				local gift = econ.PlaytimeGifts[gifts]
 				while gift and t >= gift.Minutes * 60 do
 					coins += gift.Coins
+					if gift.RotatingPull and gift.RotatingPull[day % #gift.RotatingPull + 1] == "Glassies" then
+						coins += econ.KilnCoinCost
+					end
 					gifts += 1
 					gift = econ.PlaytimeGifts[gifts]
 				end

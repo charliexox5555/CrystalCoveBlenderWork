@@ -2,6 +2,7 @@
 local Shared = if script then game.ReplicatedStorage.Shared else nil
 local Balance = if Shared then require(Shared.Config.Balance) else require("../../shared/Config/Balance")
 local Content = if Shared then require(Shared.Config.Retention) else require("../../shared/Config/Retention")
+local Grant = if script then require(script.Parent.RewardGrant) else require("./RewardGrant")
 local Rules = {}
 local function natural(value)
 	return if type(value) == "number"
@@ -66,6 +67,45 @@ function Rules.match(data, match, side, observed, now)
 	end
 	return 0
 end
+-- A playtime gift's bundle on a UTC day: coins plus, for a RotatingPull gift, that day's free pull ticket.
+function Rules.giftReward(gift, day)
+	local reward = {}
+	if (gift.Coins or 0) > 0 then
+		reward.Coins = gift.Coins
+	end
+	if gift.RotatingPull then
+		reward.Pull = gift.RotatingPull[day % #gift.RotatingPull + 1]
+	end
+	return reward
+end
+
+-- Daily Rewards calendar (decision 99): one claim per UTC day; a missed day keeps your place. Index counts the days
+-- claimed in the current 7-day cycle; the claim after Day 7 starts a new cycle at Day 1.
+function Rules.calendar(data, now)
+	local day = Rules.day(now)
+	local cal = data.Calendar
+	local claimedToday = cal.LastDay == day
+	local count = if claimedToday or cal.Index < #Balance.Economy.DailyRewards then cal.Index else 0
+	return {
+		Count = count,
+		Next = if claimedToday then nil else count + 1,
+		ClaimedToday = claimedToday,
+		ResetAt = (day + 1) * Balance.Data.DaySeconds,
+		Rewards = Balance.Economy.DailyRewards,
+	}
+end
+
+function Rules.claimDaily(data, now)
+	local view = Rules.calendar(data, now)
+	if view.ClaimedToday then
+		return false, "Come back tomorrow for Day " .. (view.Count % #view.Rewards + 1)
+	end
+	local reward = view.Rewards[view.Next]
+	data.Calendar.Index, data.Calendar.LastDay = view.Next, Rules.day(now)
+	local item = Grant.apply(data, reward, now)
+	return true, "Day " .. view.Next .. ": " .. Grant.describe(reward), reward, item
+end
+
 function Rules.claim(data, kind, id, now)
 	local daily = Rules.ensure(data, now)
 	local amount
@@ -84,6 +124,8 @@ function Rules.claim(data, kind, id, now)
 				break
 			end
 		end
+	elseif kind == "Daily" then
+		return Rules.claimDaily(data, now)
 	elseif kind == "Gift" and type(id) == "number" and id % 1 == 0 then
 		local gift = Balance.Economy.PlaytimeGifts[id]
 		if gift then
@@ -95,7 +137,9 @@ function Rules.claim(data, kind, id, now)
 				return false, "This gift is not ready yet"
 			end
 			daily.PlaytimeClaimed[key] = true
-			amount = gift.Coins
+			local reward = Rules.giftReward(gift, daily.Day)
+			local item = Grant.apply(data, reward, now)
+			return true, "Playtime gift: " .. Grant.describe(reward), reward, item
 		end
 	end
 	if not amount then
@@ -104,7 +148,7 @@ function Rules.claim(data, kind, id, now)
 	data.Coins += amount
 	return true, "Claimed +" .. amount .. " coins", amount
 end
-function Rules.redeem(data, input, studio)
+function Rules.redeem(data, input, studio, now)
 	if type(input) ~= "string" or #input > 32 then
 		return false, "Enter a valid code"
 	end
@@ -113,16 +157,22 @@ function Rules.redeem(data, input, studio)
 		return false, "Enter a valid code"
 	end
 	local def = Content.Codes[code]
-	if not def or (def.StudioOnly and not studio) then
-		return false, "That code is not active"
+	if not def or (def.StudioOnly and not studio) or (def.Starts and (now or 0) < def.Starts) then
+		return false, "That code doesn't exist"
 	end
 	if data.CodesRedeemed[code] then
 		return false, "Already redeemed"
 	end
-	local amount = if def.Reward == "QuestCoins" then Balance.Economy.DailyQuestCoins else 0
+	if def.Expires and (now or 0) >= def.Expires then
+		return false, "That code has expired"
+	end
+	if not Grant.valid(def.Reward) then
+		return false, "That code doesn't exist"
+	end
 	data.CodesRedeemed[code] = true
-	data.Coins += amount
-	return true, "Code redeemed: +" .. amount .. " coins", amount
+	local item = Grant.apply(data, def.Reward, now or 0)
+	local got = Grant.describe(def.Reward)
+	return true, "Code redeemed! " .. string.upper(got:sub(1, 1)) .. got:sub(2), def.Reward, item
 end
 function Rules.view(data, now, studio)
 	local daily = Rules.ensure(data, now)
@@ -143,6 +193,7 @@ function Rules.view(data, now, studio)
 			Id = i,
 			Seconds = def.Minutes * 60,
 			Coins = def.Coins,
+			Reward = Rules.giftReward(def, daily.Day),
 			Claimed = daily.PlaytimeClaimed["gift_" .. i] == true,
 		})
 	end
@@ -154,6 +205,8 @@ function Rules.view(data, now, studio)
 		Day = daily.Day,
 		ResetAt = (daily.Day + 1) * Balance.Data.DaySeconds,
 		FirstWinClaimed = daily.FirstWinDay == daily.Day,
+		Calendar = Rules.calendar(data, now),
+		FreePulls = data.FreePulls,
 		FreeMarbles = false,
 		TestCodes = studio,
 		GroupConfigured = Content.GroupId > 0,

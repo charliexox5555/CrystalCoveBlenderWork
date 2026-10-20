@@ -9,6 +9,7 @@ local FinisherFX = require(script.Parent.FinisherFX)
 local Cosmetics = require(RS.Shared.Config.RoundCosmetics)
 local Shows = require(RS.Shared.Config.FinisherShows)
 local FinisherAudio = require(script.Parent.FinisherAudio)
+local LocalSettings = require(script.Parent.Parent.LocalSettings)
 Finish.__index = Finish
 
 function Finish.new(scene, loser, now)
@@ -49,7 +50,13 @@ function Finish:Avatar()
 end
 
 function Finish:Id()
-	local finishers = self.Scene.Data.Finishers
+	local data = self.Scene.Data
+	-- Hide Others' Cosmetics (decision 99): another player's win plays the basic glass break, no show.
+	local winnerId = data.PlayerIds and data.PlayerIds[3 - self.Loser]
+	if LocalSettings.hideOthers() and winnerId ~= Players.LocalPlayer.UserId then
+		return ""
+	end
+	local finishers = data.Finishers
 	local id = finishers and finishers[3 - self.Loser]
 	-- Catalog finishers, plus any id with a show (Studio QA can send shows that aren't in the catalog).
 	if id and (Cosmetics.ByCategory.Finishers[id] or Shows.Shows[id]) then

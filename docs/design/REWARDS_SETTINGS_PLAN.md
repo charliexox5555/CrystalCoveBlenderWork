@@ -1,6 +1,6 @@
 # Rewards, Codes and Settings: functionality plan
 
-October 19, 2026 · **status: Proposed, waiting on creator answers** (questions marked **Q**). This plan makes the four
+October 19, 2026 · **status: decided and built (decision 99).** The creator's answers are in §6; the questions below are kept for the record. This plan makes the four
 top bar screens work (decision 98; screen designs in `docs/ui/screens/`). Numbers are first-pass and get checked with
 `lune run tools/economy_sim` before they ship.
 
@@ -116,3 +116,22 @@ Sources: [Roblox Engagement Rewards package](https://create.roblox.com/docs/reso
 [DevForum: code system help](https://devforum.roblox.com/t/i-need-help-with-code-system/1268904),
 [DevForum: codes with DataStore2](https://devforum.roblox.com/t/codes-system-using-datastore2/345845),
 [DevForum: playtime gift rewards](https://devforum.roblox.com/t/help-with-playtime-gift-rewards/2644815).
+
+## 6. Decided and built (Oct 19)
+
+| Q | Answer | Built as |
+|---|---|---|
+| Q1 missed day | Keep your place | `Calendar { Index, LastDay }`, `RetentionRules.calendar/claimDaily` |
+| Q2 daily prizes | Coins + free Kiln pull on Day 7 | `Balance.Economy.DailyRewards` 50/75/100/125/150/200, Day 7 = 250 + Kiln pull |
+| Q3 timer | Adds up all day (UTC) | existing playtime clock |
+| Q4 playtime | Coins, special 60 min | 10/20/30/45/60 → 30/50/75/100 coins, 60 min rotates Kiln pull / Finisher crate / Flyer crate by day |
+| Q5 code storage | Game config | `Config/Retention.Codes` with `Starts`/`Expires`; RELEASE (300 coins), HALLOWEEN (Finisher crate, ends Nov 8 2026 UTC) |
+| Q6 code rewards | All kinds | coins, Marbles, free pulls, a specific item (`RewardGrant`); Studio-only TEST* codes cover each kind |
+| Q7 music button | Remove | removed; Music slider replaces it (old mute/volume migrate in) |
+| Q8 notice dots | (default) | red counts on the gift and its Daily / Playtime rows |
+
+Free pulls are **tickets** (`FreePulls`) spent in the normal Shop: the crate's OPEN 1 button reads FREE, odds shown as always.
+Settings: `Config/Settings`, `SettingsService` (own DataStore, failure-tolerant), `SettingsController`, `AudioGroups`
+(Master > Music/SFX SoundGroups), `LocalSettings` readers used by PowerFX, CombatFeel, FinisherFX, BundleStage, CastButton,
+RideController and FightFinisher. Bot Play is read by ArenaService (no bot fill when the lone queued player turned it off).
+Quests are hidden; the economy sim now counts 0 quests a day (89 Kiln pulls by day 30, was 92).

@@ -12,7 +12,7 @@ local Controller = {}
 
 function Controller:Init(controllers)
 	self.Controllers, self.Player = controllers, Players.LocalPlayer
-	self.Icons, self.Wired, self.Warned = {}, {}, {}
+	self.Icons, self.Rows, self.Wired, self.Warned = {}, {}, {}, {}
 end
 
 -- Same rule as the lobby HUD: hidden in a match, the queue, results, while watching or with a fight HUD up.
@@ -112,6 +112,7 @@ function Controller:Build(Icon)
 					icon:deselect()
 				end)
 				table.insert(rows, row)
+				self.Rows[item.Id] = { Icon = row, Count = 0 }
 			end
 			icon:modifyTheme({ "Dropdown", "MaxIcons", #rows })
 				:modifyChildTheme({ "Widget", "MinimumWidth", Config.DropdownWidth })
@@ -130,6 +131,25 @@ function Controller:Build(Icon)
 		end
 		self.Icons[spec.Id] = { Icon = icon, Spec = spec }
 	end
+end
+
+-- Red count on a dropdown row (and, summed by TopbarPlus, on its button): claimable rewards (decision 99).
+function Controller:SetNotice(id, count)
+	local entry = self.Rows[id]
+	if not entry or entry.Count == count then
+		return
+	end
+	entry.Count = count
+	entry.Clear = entry.Clear or Instance.new("BindableEvent")
+	entry.Clear:Fire() -- drops this row's notices and the copies it added to its parent button
+	for _ = 1, count do
+		entry.Icon:notify(entry.Clear.Event)
+	end
+end
+
+-- Opens a top bar screen from elsewhere (the lobby rewards board, a "claim" toast).
+function Controller:OpenScreen(name)
+	self:OpenMenu(name, nil)
 end
 
 function Controller:ApplyMatch()
@@ -166,6 +186,7 @@ function Controller:Start()
 		warn("[GlassClash] TopbarPlus unavailable: " .. tostring(Icon))
 		return
 	end
+	Icon.setDisplayOrder(Config.DisplayOrder)
 	self:Build(Icon)
 	local pg = self.Player:WaitForChild("PlayerGui")
 	local function changed()

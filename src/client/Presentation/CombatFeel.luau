@@ -11,6 +11,7 @@ local Audio = require(RS.Shared.Config.Audio)
 local C = require(RS.Shared.Config.CombatFeel)
 local Impact = require(script.Parent.ImpactBeat)
 local Motion = require(script.Parent.Parent.UI.Components.Motion)
+local LocalSettings = require(script.Parent.Parent.LocalSettings)
 local Cam, R, Hold = C.Camera, C.React, C.Hitstop
 local Feel = {}
 Feel.__index = Feel
@@ -55,7 +56,7 @@ function Feel:Settings(now)
 	local ok, level = pcall(function()
 		return UserSettings():GetService("UserGameSettings").SavedQualityLevel.Value
 	end)
-	if ok and level > 0 and level <= C.Budget.LowQualityLevel then
+	if (ok and level > 0 and level <= C.Budget.LowQualityLevel) or LocalSettings.lowEffects() then
 		scale = math.min(scale, C.Budget.LowParticles)
 		self.LowQuality = true
 	else

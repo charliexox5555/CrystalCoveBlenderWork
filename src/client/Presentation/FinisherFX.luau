@@ -10,6 +10,7 @@ local C = require(RS.Shared.Config.RoundCosmetics)
 local Shows = require(RS.Shared.Config.FinisherShows)
 local Balance = require(RS.Shared.Config.Balance)
 local Kit = require(script.Parent.Finishers.Kit)
+local LocalSettings = require(script.Parent.Parent.LocalSettings)
 local FX = {}
 
 local modules = {}
@@ -188,6 +189,7 @@ end
 	options.Post: allow the Legendary colour grade (fight view only).
 	options.Feel: the fight's CombatFeel, for the peak shake/FOV punch (reduced motion handled there).]]
 function FX.emit(parent, id, origin, lowDetail, orientation, options)
+	lowDetail = lowDetail or LocalSettings.lowEffects() -- Settings: Large Effects off (decision 99)
 	if id == "lantern_eclipse" then
 		return require(script.Parent.HollowlightFX).emit(parent, origin, lowDetail, orientation)
 	end

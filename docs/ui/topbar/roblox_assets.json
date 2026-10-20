@@ -42,6 +42,27 @@
    "Sha256": "46df7b301bf8769ac096aefaa93189e3de36d8d7c1c4bf747053d803ab62747f",
    "Moderation": "Approved",
    "Uploaded": "2026-10-19T18:34:30"
+  },
+  "reward_kiln": {
+   "AssetId": "72049196889540",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/Item/Lucky Block/256px/Lucky Block 1st Outline 256px.png",
+   "Sha256": "e674e676f6bbe7a1d9f0419cdbb9688bc8dd64c822ac5f75c172f6bb604f8cd9",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T21:15:51"
+  },
+  "reward_finisher": {
+   "AssetId": "87856332288422",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/Exclusive/Aura/256px/Aura 1st Outline 256px.png",
+   "Sha256": "3117f0ee2919d6c219154b325ac190aed56636db9da0f08a76320a9d0d5e69cb",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T21:15:54"
+  },
+  "reward_flyer": {
+   "AssetId": "89573123925308",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/Main/Hoverboard/256px/Blue Hoverboard 1st Outline 256px.png",
+   "Sha256": "cb594eebe5b3a1667061c9b0912659c093c506e5381d3c00210ab339e03abf2b",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T21:15:56"
   }
  }
 }

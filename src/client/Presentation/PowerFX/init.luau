@@ -160,6 +160,7 @@ function FX:Low(side)
 			return UserSettings():GetService("UserGameSettings").SavedQualityLevel.Value
 		end)
 		self.LowQuality = (ok and level > 0 and level <= C.Budget.LowQualityLevel)
+			or require(script.Parent.Parent.LocalSettings).lowEffects() -- Settings: Large Effects off
 			-- Studio check of the low-detail branch without touching the user's graphics setting.
 			or (game:GetService("RunService"):IsStudio() and workspace:GetAttribute("PowerFXLowDetail") == true)
 		self.Reduced = Motion.reduced()

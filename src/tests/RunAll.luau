@@ -28,6 +28,7 @@ local order = {
 	"RoundCosmeticTests",
 	"CrateTests",
 	"RetentionTests",
+	"SettingsTests",
 	"DailyStoreTests",
 	"GlassyMotionTests",
 	"RideFamiliesTests",

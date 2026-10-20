@@ -14,6 +14,20 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-19 — Claude — Rewards, codes and settings working (decision 99)
+Done:
+- Four screens designed in parallel sessions and approved (Settings, Daily Rewards, Playtime Rewards, Codes; revisions: 5 playtime stages, CLAIM inside cells, taller code field).
+- Rules (Lune-tested): 7-day calendar (missed day keeps your place; Day 7 = 250 coins + free Kiln pull), 5 playtime gifts (60 min rotates Kiln / Finisher / Flyer crate), codes with expiry and every reward kind (`RewardGrant`), free pull tickets spent in the Shop with odds shown. Codes: RELEASE, HALLOWEEN + Studio TEST* codes.
+- Settings: `SettingsService` (replaces MusicPrefsService; old mute migrates), `SettingsController` + `AudioGroups` (Master/Music/SFX), Bot Play in ArenaService, Large Effects / Auto-Cast / Reduced Motion / Hide Others' Cosmetics hooks; the top-right music button is removed. Settings rows no longer grow on hover; only the row icon reacts (creator note).
+- Top bar: notice counts on the gift rows; the top bar draws above open menus (display order 25); the lobby rewards board opens the new screens. Quests row hidden.
+- Studio Play with real clicks: claim Day 1, claim a playtime gift, six codes, FREE on the Finisher crate, Bot Play off waits / on brings a bot, Auto-Cast hides CAST, settings persist across sessions. Lune and Studio RunAll 172/172.
+Next:
+- Quests redesign; phone checks; consider a "claim" animation pass (glow pulse, fill tween) the designs left hooks for.
+Problems / questions for the user:
+- Save the place (the revised screens from the design sessions live in it).
+- Quest coins are gone while Quests are hidden; daily + playtime rewards roughly replace them (sim: 89 vs 92 pulls by day 30).
+Economy sim: 3 pulls day 1, 89 by day 30; first Rare 63 min, Epic 2.6 h, Legendary 10.4 h (74% in 30 days), Mythic 19% in 30 days.
+
 ## 2026-10-19 — Claude — PlaytimeRewardsScreen design (top bar menus)
 Done:
 - Designed `StarterGui.PlaytimeRewardsScreen`: a wide Stained Glass window (aspect 2.0, one page, 0.72 of screen width) with five reward cells at 10, 20, 30, 45 and 60 min under a progress bar whose milestone gems sit over each cell's centre (lit aqua when reached, star gem for 60), an aqua fill split into panes by lead cames, a clock start cap and a "23 MIN" readout tag riding above the fill's head. Cells show all four states in the sample build (10 claimed, 20 ready with green CLAIM gem and glow, 30 next with outline and 6:48 countdown, 45 and 60 locked with padlock); the 60 cell has a rainbow border and star badge. Aqua accent (Daily is amber). Rebuild: `tools/studio/build_playtime_rewards_screen.luau`.

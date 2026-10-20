@@ -270,6 +270,11 @@ end
 
 function Screens:Render(now)
 	if self.Gui.Name == "QueuePanel" then
+		if not self.Data.Deadline then -- Bot Play off (decision 99): no countdown
+			self.Timer.Text = "Waiting for a player…"
+			self.Fill.Size = UDim2.fromScale(0, 1)
+			return
+		end
 		local remaining = math.max(0, self.Data.Deadline - now)
 		self.Timer.Text = "A bot joins in " .. math.ceil(remaining) .. "s"
 		self.Fill.Size =

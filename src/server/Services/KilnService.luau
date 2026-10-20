@@ -84,6 +84,11 @@ function Service:Open(player, message, tab)
 		Coins = data.Coins,
 		Marbles = data.Marbles or 0,
 		Welcome = Schema.welcomePulls(data),
+		Free = {
+			Glassies = Schema.welcomePulls(data) + (data.FreePulls.Glassies or 0),
+			Finishers = data.FreePulls.Finishers or 0,
+			Rideables = data.FreePulls.Rideables or 0,
+		},
 		Cost = Balance.Economy.KilnCoinCost,
 		TenCost = Balance.Economy.KilnTenPullCost,
 	})
@@ -134,7 +139,9 @@ function Service:Pull(player, count, token, category, currency)
 		return
 	end
 	local welcome = category == "Glassies" and currency == "Coins" and count == 1 and Schema.welcomePulls(data) > 0
-	local cost = if welcome then 0 elseif count == 10 then offer.TenCost else offer.Cost
+	-- Free pull tickets from Daily Rewards, Playtime gifts and codes (decision 99): one Coin pull, odds shown as usual.
+	local ticket = not welcome and currency == "Coins" and count == 1 and (data.FreePulls[category] or 0) > 0
+	local cost = if welcome or ticket then 0 elseif count == 10 then offer.TenCost else offer.Cost
 	if data[currency] < cost then
 		self:Fail(player, "Not enough " .. string.lower(currency))
 		return
@@ -155,6 +162,8 @@ function Service:Pull(player, count, token, category, currency)
 	data[currency] -= cost
 	if welcome then
 		data.Flags.WelcomePullUsed = true
+	elseif ticket then
+		data.FreePulls[category] -= 1
 	end
 	local results = {}
 	for _, pull in pulls do

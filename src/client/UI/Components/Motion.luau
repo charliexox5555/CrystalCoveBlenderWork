@@ -113,7 +113,8 @@ end
 
 -- Hover grows with a little overshoot, press shrinks and darkens the glass, release springs back.
 function Motion.button(button)
-	if not button:IsA("GuiButton") then
+	-- NoHoverMotion: the screen animates its own hover (e.g. Settings rows light their icon instead).
+	if not button:IsA("GuiButton") or button:GetAttribute("NoHoverMotion") then
 		return
 	end
 	Motion.center(button)

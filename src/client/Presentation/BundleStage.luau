@@ -39,7 +39,7 @@ local function lowQuality()
 	local ok, level = pcall(function()
 		return UserSettings():GetService("UserGameSettings").SavedQualityLevel.Value
 	end)
-	return ok and level > 0 and level <= 3
+	return (ok and level > 0 and level <= 3) or require(script.Parent.Parent.LocalSettings).lowEffects()
 end
 
 local function ease(x)

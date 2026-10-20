@@ -76,7 +76,8 @@ function Cast:Ready(event, serverNow)
 	self.KitId = event.Kit
 	self.Power.Text = def and def.SpecialName or "POWER"
 	Kit.enable(self.Button, true)
-	self.Root.Visible = true
+	-- Settings: Auto-Cast Powers (decision 99) keeps the button hidden; the server casts at AutoAt.
+	self.Root.Visible = not require(script.Parent.Parent.Parent.LocalSettings).autoCast()
 	ContextActionService:BindActionAtPriority(ACTION, function(_, state)
 		if state == Enum.UserInputState.Begin then
 			self:Press()

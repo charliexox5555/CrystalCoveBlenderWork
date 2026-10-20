@@ -103,7 +103,8 @@ function Shop.bind(self, data)
 				self.Message.Text = "One moment…"
 				return
 			end
-			local free = category == "Glassies" and currency == "Coins" and count == 1 and (data.Welcome or 0) > 0
+			local frees = data.Free or { Glassies = data.Welcome }
+			local free = currency == "Coins" and count == 1 and (frees[category] or 0) > 0
 			local cost = if free then 0 elseif count == 10 then offer.TenCost else offer.Cost
 			if #offer.Odds == 0 then
 				self.Message.Text = "This crate is warming up"
@@ -169,7 +170,7 @@ function Shop.bind(self, data)
 				tostring(profile.Coins), tostring(profile.Marbles or 0)
 		end
 		for _, view in self.CrateViews or {} do
-			view:Wallet(self.Data, self.Data.Welcome)
+			view:Wallet(self.Data, self.Data.Free or { Glassies = self.Data.Welcome }, self.Data.Welcome)
 		end
 	end
 	self:UpdateProfile(self.Profile or data)

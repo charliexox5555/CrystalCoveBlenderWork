@@ -864,16 +864,29 @@ Balance.Economy = {
 	-- Free coin sources
 	DailyQuestCoins = 75, -- per quest, 3 quests a day
 	DailyQuests = 3,
+	-- Playtime gifts (decision 99): time adds up over the UTC day. A gift with RotatingPull gives one free pull
+	-- ticket, rotating by UTC day through the listed crate categories (spent in the Shop, odds shown first).
 	PlaytimeGifts = {
-		{ Minutes = 5, Coins = 40 },
-		{ Minutes = 15, Coins = 60 },
-		{ Minutes = 30, Coins = 100 },
-		{ Minutes = 60, Coins = 150 },
+		{ Minutes = 10, Coins = 30 },
+		{ Minutes = 20, Coins = 50 },
+		{ Minutes = 30, Coins = 75 },
+		{ Minutes = 45, Coins = 100 },
+		{ Minutes = 60, Coins = 0, RotatingPull = { "Glassies", "Finishers", "Rideables" } },
+	},
+	-- Daily Rewards calendar (decision 99): one claim per UTC day, a missed day keeps your place, then repeats.
+	-- Pull = a free pull ticket for that crate category.
+	DailyRewards = {
+		{ Coins = 50 },
+		{ Coins = 75 },
+		{ Coins = 100 },
+		{ Coins = 125 },
+		{ Coins = 150 },
+		{ Coins = 200 },
+		{ Coins = 250, Pull = "Glassies" },
 	},
 	FirstWinOfDayCoins = 100,
 	WelcomeKilnPulls = 1, -- free pull right after a new player's first match
 	GroupJoinMarbles = 20, -- one time, for joining the group
-	DailyStreakMarbles = { 0, 0, 5, 0, 0, 0, 15 }, -- day 1..7 of a login streak, then repeats
 	-- Marble packs (dev products). Robux prices are set on the Creator Dashboard; keep the
 	-- Marbles-per-Robux curve gently rising so small packs aren't a bad deal for kids.
 	MarblePacks = {
@@ -892,7 +905,7 @@ Balance.EconomyModel = {
 	BotMatchShare = 0.4, -- fraction of matches against bots (high at launch, lower later)
 	RoundSecondsEstimate = 27, -- average fight length; BalanceSim prints the real one
 	SecondsBetweenMatches = 25, -- results screen, walking to a pad, queue
-	QuestsCompletedPerDay = 2,
+	QuestsCompletedPerDay = 0, -- quests are hidden until their redesign (decision 99); was 2
 	LossChipPerRound = 0.8, -- average share of the winner's HP a loser chips off (FightModel ~0.82)
 	PerfectsPerMatch = 1,
 	Players = 2000,

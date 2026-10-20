@@ -48,6 +48,10 @@ local UIAssets = {
 	["topbar/playtime"] = "rbxassetid://124806461609711",
 	["topbar/quests"] = "rbxassetid://76906669013402",
 	["topbar/settings"] = "rbxassetid://91094338327415",
+	-- Free-pull reward icons (decision 99), same pack: Lucky Block, Aura, Blue Hoverboard.
+	["reward/kiln_pull"] = "rbxassetid://94652504328636",
+	["reward/finisher_crate"] = "rbxassetid://80161543442554",
+	["reward/flyer_crate"] = "rbxassetid://77484684586902",
 	["kiln/glow"] = "rbxassetid://102633056133157",
 	["kiln/hero_window"] = "rbxassetid://138848895962910",
 	["panel/odds_row_common"] = "rbxassetid://127750137320552",

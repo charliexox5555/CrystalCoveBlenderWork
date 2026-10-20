@@ -13,7 +13,9 @@ Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DES
 - [x] **B/E/G/H/I:** combat feel, power VFX + sounds, premium finishers, flyers v3, Hollowlight premium: verified in Studio, reports in docs/testing/.
 - [x] **CL/D/F/G/H:** Cosmetics V2 (decision 94): 7 launch finishers + 7 launch flyers installed; 60 riding Animation assets (6 families × 5 clips × R15/R6); no starter cosmetics (decision 95); UI text fit pass (J).
 - [x] **CL:** top bar buttons (decision 98): TopbarPlus Settings gear and Rewards gift with a Daily Rewards / Playtime Rewards / Codes / Quests dropdown, each opening its own placeholder ScreenGui in StarterGui. Verified with real clicks in Studio Play. [Docs](ui/topbar/README.md)
-- [ ] **CL/U:** design the Settings, Daily Rewards, Playtime Rewards, Codes and Quests screens; wire them to the retention remotes and retire the combined RewardsScreen.
+- [x] **CL:** Settings, Daily Rewards, Playtime Rewards and Codes screens designed (creator-approved) and working (decision 99): 7-day calendar with a free Kiln pull on Day 7, 5 playtime gifts with a rotating free crate at 60 min, codes (RELEASE, HALLOWEEN) with every reward kind, saved settings (volumes, Bot Play, Auto-Cast, Large Effects, Reduced Motion, Hide Others' Cosmetics), notice counts on the gift. Verified with real clicks in Studio Play. [Plan](design/REWARDS_SETTINGS_PLAN.md)
+- [ ] **CL/U:** Quests redesign (screen and row held back); retire the old combined RewardsScreen once Quests have a home.
+- [ ] **U:** phone check of the four new screens and the top bar; listen to volume sliders.
 - [ ] **CL:** turn the code-built screens (RollScreen, FightHud, Results/QueuePanel/RoundEnd, CastButton, PickAnyConfirm, BundlePreview, music button) into editable StarterGui templates.
 - [ ] **U:** creator sets Robux prices for Epic Standard / Legendary / Mythic flyers and Mythic finishers (until then they're crate-only).
 - [ ] **U:** real-phone checks (no device emulation through MCP), listening pass on new sounds.

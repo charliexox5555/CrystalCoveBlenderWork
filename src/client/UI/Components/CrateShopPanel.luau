@@ -170,14 +170,18 @@ function Panel.new(parent, category, offers, callbacks)
 	layout()
 	return self
 end
-function Panel:Wallet(data, welcome)
+-- frees: free single Coin pulls per category (welcome pull + reward tickets, decision 99).
+function Panel:Wallet(data, frees, welcome)
 	for currency, pane in self.Panels do
 		for count, button in pane.Buttons do
 			local offer = self.Offers[currency]
-			local free = self.Category == "Glassies" and currency == "Coins" and count == 1 and (welcome or 0) > 0
+			local free = currency == "Coins" and count == 1 and ((frees or {})[self.Category] or 0) > 0
 			local cost = if free then 0 elseif count == 1 then offer.Cost else offer.TenCost
 			local text = if free
+					and self.Category == "Glassies"
+					and (welcome or 0) > 0
 				then "WELCOME · FREE"
+				elseif free then "OPEN 1\nFREE"
 				else "OPEN " .. count .. "\n" .. cost .. " " .. string.upper(currency)
 			S.buttonText(button, text)
 			local label = button:FindFirstChild("Label") or button

@@ -4,6 +4,8 @@ local T = require(game.ReplicatedStorage.Shared.Config.Balance).CosmeticPresenta
 local Controller = {}
 local RidePose = require(script.Parent.Parent.Presentation.RidePose)
 local RideMotion = require(script.Parent.Parent.Presentation.RideMotion)
+local LocalSettings = require(script.Parent.Parent.LocalSettings)
+local Players = game:GetService("Players")
 -- A ride first seen this soon after its stage appeared launches in; later sightings (streaming, late
 -- joiners) start in place.
 local LAUNCH_WINDOW = 2
@@ -89,10 +91,12 @@ function Controller:Step(time)
 		if distance > T.RideDistance then
 			continue
 		end
-		-- Particles, trails, beams, lights and the loop sound only run near the camera.
-		local pose = entry.Motion:Step(time, entry.Base, distance <= T.RideEmitterDistance)
+		-- Particles, trails, beams, lights and the loop sound only run near the camera, and not on other
+		-- players' flyers when Hide Others' Cosmetics is on (decision 99; the flyer itself stays so riders don't float).
 		local rider = model:FindFirstChild("Rider")
 		local character = rider and rider.Value
+		local quiet = LocalSettings.hideOthers() and character ~= Players.LocalPlayer.Character
+		local pose = entry.Motion:Step(time, entry.Base, distance <= T.RideEmitterDistance and not quiet)
 		local root = character and character:FindFirstChild("HumanoidRootPart")
 		if root and root.Anchored then
 			if entry.Character ~= character then

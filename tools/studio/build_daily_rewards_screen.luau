@@ -1,6 +1,6 @@
 -- Edit mode (Studio MCP), with the Studio lock held. Builds StarterGui.DailyRewardsScreen: the Stained Glass Daily
 -- Rewards window opened from the top bar's Rewards dropdown (decision 98). Design only: no behaviour is wired; the
--- build shows a mid-week example (Days 1-2 claimed, Day 3 today, Days 4-7 locked, progress 3/7); set SCENARIO
+-- build shows a mid-week example (Days 1-2 claimed, Day 3 today, Days 4-7 locked, progress 2/7); set SCENARIO
 -- to "Day7" to preview the weekly prize's claim state.
 -- Layout and element names: docs/ui/screens/DailyRewardsScreen.md. Art: tools/ui/daily_rewards_art.py.
 -- Re-runnable: replaces only DailyRewardsScreen, after copying the previous one to ServerStorage.UIBackup_Topbar.
@@ -40,7 +40,8 @@ local A = {
 	},
 }
 local CELL_ART = { Claimed = A.cellClaimed, Today = A.cellToday, Locked = A.cellLocked }
-local SEG_ART = { Claimed = A.segLit, Today = A.segToday, Locked = A.segOff }
+-- The bar counts claimed days only: a segment lights when its day is claimed (today stays unlit until then).
+local SEG_ART = { Claimed = A.segLit, Today = A.segOff, Locked = A.segOff }
 
 local hex = Color3.fromHex
 local C = {
@@ -54,10 +55,11 @@ local C = {
 local HEADING = Font.new("rbxasset://fonts/families/DenkOne.json")
 local BODY = Font.new("rbxasset://fonts/families/Nunito.json", Enum.FontWeight.Heavy)
 
--- Which example the build shows: "MidWeek" (the saved design: Days 1-2 claimed, Day 3 today, 3/7) or "Day7"
--- (Days 1-6 claimed, Day 7 today, 7/7) to preview the weekly prize's claim state.
+-- Which example the build shows: "MidWeek" (the saved design: Days 1-2 claimed, Day 3 today, 2/7) or "Day7"
+-- (Days 1-6 claimed, Day 7 today, 6/7) to preview the weekly prize's claim state.
 local SCENARIO = "MidWeek"
-local STREAK = SCENARIO == "Day7" and 7 or 3 -- "x/7": today's place in the week
+local TODAY = SCENARIO == "Day7" and 7 or 3 -- today's place in the week
+local CLAIMED = TODAY - 1 -- "x/7" and the lit segments count claimed days only
 -- Rewards are placeholders until the reward table is decided.
 local DAYS = {
 	{ Icon = A.coin, Amount = "x50" },
@@ -69,11 +71,11 @@ local DAYS = {
 	{ Icon = A.marble, Amount = "x5" },
 }
 for n, day in DAYS do
-	day.State = n < STREAK and "Claimed" or n == STREAK and "Today" or "Locked"
-	if n == STREAK + 1 then
+	day.State = n <= CLAIMED and "Claimed" or n == TODAY and "Today" or "Locked"
+	if n == TODAY + 1 then
 		day.Status = "TOMORROW"
 	elseif n == 7 and day.State == "Locked" then
-		day.Status = (7 - STREAK) .. " DAYS TO GO"
+		day.Status = (7 - TODAY) .. " DAYS TO GO"
 	end
 end
 
@@ -175,7 +177,7 @@ local progress = make("Frame", panel, "Progress", {
 	Size = UDim2.fromScale(0.9, 0.095),
 	ZIndex = 2,
 })
-progress:SetAttribute("Streak", STREAK)
+progress:SetAttribute("Claimed", CLAIMED)
 image(progress, "Track", A.track, { AnchorPoint = Vector2.new(0, 0.5), Position = UDim2.fromScale(0, 0.5), Size = UDim2.fromScale(0.79, 0.58) }, 1)
 local segments = make("Frame", progress, "Segments", {
 	BackgroundTransparency = 1,
@@ -195,10 +197,10 @@ for i = 1, 7 do
 	}, 1)
 	seg:SetAttribute("State", state)
 end
-local gem = image(progress, "Gem", STREAK >= 7 and A.gemLit or A.gemOff, box(0.79, 0.5, 0.2, 1.05), 3, 1)
-gem:SetAttribute("Lit", STREAK >= 7)
+local gem = image(progress, "Gem", CLAIMED >= 7 and A.gemLit or A.gemOff, box(0.79, 0.5, 0.2, 1.05), 3, 1)
+gem:SetAttribute("Lit", CLAIMED >= 7)
 image(progress, "CountPlaque", A.labelPlaque, box(0.918, 0.5, 0.163, 0.8), 2, 300 / 88)
-local count = text(progress, "Count", STREAK .. "/7", box(0.918, 0.5, 0.11, 0.56), 3, { Font = BODY, Color = C.lead, Stroke = false, Max = 34 })
+local count = text(progress, "Count", CLAIMED .. "/7", box(0.918, 0.5, 0.11, 0.56), 3, { Font = BODY, Color = C.lead, Stroke = false, Max = 34 })
 count:SetAttribute("TextFit", false)
 
 -- Day cells: 4 columns x 2 rows; Days 1-6 in columns 1-3, Day 7 spans both rows of column 4 -------------
@@ -224,8 +226,10 @@ local function dayCell(n, spec, big)
 	cell:SetAttribute("State", spec.State)
 	local claimed, today = spec.State == "Claimed", spec.State == "Today"
 	-- y positions of the stack (fractions of the cell); Day 7 is taller, so its rows sit differently
-	local Y = big and { tag = 0.045, icon = 0.45, amount = 0.705, bottom = 0.865, mark = 0.56 }
-		or { tag = 0.075, icon = 0.405, amount = 0.66, bottom = 0.86, mark = 0.52 }
+	-- The CLAIM gem and status sit fully inside the inner pane (small cells: 0.07-0.93 tall, clear of today's gold line
+	-- at 0.90; Day 7: 0.075-0.925), never over the lead border.
+	local Y = big and { tag = 0.045, icon = 0.45, amount = 0.705, bottom = 0.84, mark = 0.56 }
+		or { tag = 0.075, icon = 0.375, amount = 0.625, bottom = 0.795, mark = 0.49 }
 
 	local glow = image(cell, "Glow", A.glowToday, box(0.5, 0.5, 1.26, 1.26), 0)
 	glow.Visible = today
@@ -251,10 +255,10 @@ local function dayCell(n, spec, big)
 		end
 	end
 
-	local iconW = big and 0.52 or 0.38 * 242 / 300
-	local icon = image(cell, "Icon", spec.Icon, box(0.5, Y.icon, iconW, big and iconW * 300 / 386 or 0.38), 3, 1)
+	local iconW = big and 0.52 or 0.36 * 242 / 300
+	local icon = image(cell, "Icon", spec.Icon, box(0.5, Y.icon, iconW, big and iconW * 300 / 386 or 0.36), 3, 1)
 	icon.ScaleType = Enum.ScaleType.Fit
-	local amount = text(cell, "Amount", spec.Amount, box(0.5, Y.amount, 0.8, big and 0.1 or 0.16), 4, { Max = big and 48 or 34, Stroke = 3 })
+	local amount = text(cell, "Amount", spec.Amount, box(0.5, Y.amount, 0.8, big and 0.1 or 0.14), 4, { Max = big and 48 or 34, Stroke = 3 })
 	if claimed then
 		icon.ImageTransparency = 0.45
 		amount.TextTransparency = 0.45
@@ -265,7 +269,7 @@ local function dayCell(n, spec, big)
 	local mark = image(cell, "ClaimedMark", A.check, box(big and 0.68 or 0.63, Y.mark, markW, big and markW * 300 / 386 or 0.26), 5, 1)
 	mark.Visible = claimed
 
-	local btnW = big and 0.7 or 0.62
+	local btnW = big and 0.6 or 0.54
 	local btnH = btnW * (big and 300 / 386 or 300 / 242) / (600 / 172)
 	local button = make("ImageButton", cell, "ClaimButton", {
 		Image = A.gemEmerald,
@@ -277,10 +281,10 @@ local function dayCell(n, spec, big)
 		Position = UDim2.fromScale(0.5, Y.bottom),
 		Size = UDim2.fromScale(btnW, btnH),
 	})
-	text(button, "Caption", "CLAIM!", box(0.5, 0.5, 0.62, 0.56), 6, { Max = 30, Stroke = 2.5 })
+	text(button, "Caption", "CLAIM!", box(0.5, 0.5, 0.66, 0.62), 6, { Max = 30, Stroke = 2.5 })
 
 	local statusText = claimed and "CLAIMED" or spec.Status or ""
-	local status = text(cell, "Status", statusText, box(0.5, Y.bottom, 0.8, big and 0.065 or 0.13), 4, {
+	local status = text(cell, "Status", statusText, box(0.5, Y.bottom, 0.8, big and 0.065 or 0.12), 4, {
 		Font = BODY,
 		Color = claimed and C.emeraldLight or C.slateLight,
 		Max = 22,

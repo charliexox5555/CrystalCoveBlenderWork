@@ -1,0 +1,8 @@
+{
+ "Record": "assets/blender/map/leaderboards_v3/roblox_assets.json",
+ "Items": [
+  {"Key": "WeeklySpend", "Path": "assets/blender/map/leaderboards_v3/WeeklySpend.fbx", "Type": "Model", "Name": "GlassClash Leaderboard v3 WeeklySpend", "Description": "Glass Clash lobby leaderboard (stained glass, original art)."},
+  {"Key": "Wins", "Path": "assets/blender/map/leaderboards_v3/Wins.fbx", "Type": "Model", "Name": "GlassClash Leaderboard v3 Wins", "Description": "Glass Clash lobby leaderboard (stained glass, original art)."},
+  {"Key": "AllTimeSpend", "Path": "assets/blender/map/leaderboards_v3/AllTimeSpend.fbx", "Type": "Model", "Name": "GlassClash Leaderboard v3 AllTimeSpend", "Description": "Glass Clash lobby leaderboard (stained glass, original art)."}
+ ]
+}

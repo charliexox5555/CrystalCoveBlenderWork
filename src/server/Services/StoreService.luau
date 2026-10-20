@@ -12,6 +12,7 @@ local Glassies = require(RS.Shared.Config.Glassies)
 local Guard = require(script.Parent.Parent.Util.RemoteGuard)
 local Assets = require(script.Parent.Parent.Util.AssetCatalog)
 local Schema = require(script.Parent.Parent.Data.ProfileSchema)
+local Spend = require(script.Parent.Parent.Data.LeaderboardRules)
 local Service = {}
 
 function Service:Init(services)
@@ -177,6 +178,11 @@ function Service:ProcessReceipt(receipt)
 		return Enum.ProductPurchaseDecision.NotProcessedYet
 	end
 	local status, applied = Rules.applyReceipt(data, receipt, os.time(), self:Grant(data))
+	if status == "Granted" then
+		-- Robux spent for the supporter boards (decision 101). "Granted" happens once per PurchaseId, and the total
+		-- is saved together with the processed receipt below.
+		Spend.recordSpend(data, Spend.receiptRobux(receipt), os.time())
+	end
 	if status == "NoIntent" then
 		warn("[GlassClash] receipt without a store intent: " .. tostring(receipt.ProductId))
 		return Enum.ProductPurchaseDecision.NotProcessedYet
@@ -215,6 +221,18 @@ function Service:Start()
 	MarketplaceService.ProcessReceipt = function(receipt)
 		return self:ProcessReceipt(receipt)
 	end
+	-- Game passes (none on sale yet): record the price once per pass for the supporter boards.
+	MarketplaceService.PromptGamePassPurchaseFinished:Connect(function(player, passId, purchased)
+		local data = purchased and self.Services.DataService:Get(player)
+		if not data or type(passId) ~= "number" then
+			return
+		end
+		local ok, info = pcall(MarketplaceService.GetProductInfo, MarketplaceService, passId, Enum.InfoType.GamePass)
+		local price = ok and type(info) == "table" and info.PriceInRobux
+		if price and Spend.recordPass(data, passId, price, os.time()) then
+			self.Services.DataService:Sync(player)
+		end
+	end)
 	MarketplaceService.PromptProductPurchaseFinished:Connect(function(userId, productId, purchased)
 		local player = Players:GetPlayerByUserId(userId)
 		local data = player and self.Services.DataService:Get(player)

@@ -1,0 +1,1513 @@
+{
+ "Units": "1 Blender unit = 1 stud",
+ "Coordinates": "Blender (x,y,z) -> Roblox (x,z,-y); front = -Y",
+ "Boards": {
+  "WeeklySpend": {
+   "Accent": "1FC2D3",
+   "Scale": 1.0,
+   "Triangles": 5338,
+   "Meshes": [
+    {
+     "Name": "LB3_WeeklySpend_Plinth",
+     "Center": [
+      0.0,
+      0.10000002384185791,
+      0.4000000059604645
+     ],
+     "Size": [
+      17.399999618530273,
+      3.299999952316284,
+      0.800000011920929
+     ],
+     "Color": "C8BC9C",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_WeeklySpend_PlinthTrim",
+     "Center": [
+      0.0,
+      0.0,
+      0.9699999988079071
+     ],
+     "Size": [
+      16.600000381469727,
+      2.700000047683716,
+      0.3399999737739563
+     ],
+     "Color": "B87E50",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_WeeklySpend_Towers",
+     "Center": [
+      0.0,
+      0.0,
+      7.649999916553497
+     ],
+     "Size": [
+      17.44544792175293,
+      1.899999976158142,
+      13.099999785423279
+     ],
+     "Color": "C8BC9C",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_WeeklySpend_TowerBands",
+     "Center": [
+      0.0,
+      0.0,
+      7.850000083446503
+     ],
+     "Size": [
+      17.826499938964844,
+      2.3399999141693115,
+      13.400000214576721
+     ],
+     "Color": "B87E50",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_WeeklySpend_Spires",
+     "Center": [
+      0.0,
+      0.0,
+      15.825000286102295
+     ],
+     "Size": [
+      17.363176345825195,
+      1.8049999475479126,
+      2.5500001907348633
+     ],
+     "Color": "1FC2D3",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_WeeklySpend_Backing",
+     "Center": [
+      0.0,
+      0.3000000063329935,
+      10.203835725784302
+     ],
+     "Size": [
+      12.100000381469727,
+      0.5000000111758709,
+      16.10767126083374
+     ],
+     "Color": "261D3B",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_WeeklySpend_Frame",
+     "Center": [
+      0.0,
+      0.0,
+      10.208486378192902
+     ],
+     "Size": [
+      12.800000190734863,
+      0.8999999761581421,
+      16.716972708702087
+     ],
+     "Color": "1F1830",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_WeeklySpend_FrameOuter",
+     "Center": [
+      0.0,
+      0.024999991059303284,
+      10.203363716602325
+     ],
+     "Size": [
+      14.220000267028809,
+      0.6500000059604645,
+      18.12672746181488
+     ],
+     "Color": "1F1830",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_WeeklySpend_Panes_Ruby",
+     "Center": [
+      0.0,
+      -0.3499999940395355,
+      9.945391654968262
+     ],
+     "Size": [
+      14.0,
+      0.13999998569488525,
+      17.390783309936523
+     ],
+     "Color": "E23A55",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_WeeklySpend_Panes_Amber",
+     "Center": [
+      0.0,
+      -0.3499999940395355,
+      10.154889106750488
+     ],
+     "Size": [
+      14.0,
+      0.13999998569488525,
+      17.809778213500977
+     ],
+     "Color": "F5A524",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_WeeklySpend_Panes_Emerald",
+     "Center": [
+      0.0,
+      -0.3499999940395355,
+      10.203320503234863
+     ],
+     "Size": [
+      14.0,
+      0.13999998569488525,
+      17.906641006469727
+     ],
+     "Color": "22B573",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_WeeklySpend_Panes_Sapphire",
+     "Center": [
+      0.0,
+      -0.3499999940395355,
+      10.203320503234863
+     ],
+     "Size": [
+      14.0,
+      0.13999998569488525,
+      17.906641006469727
+     ],
+     "Color": "2E6BE6",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_WeeklySpend_Panes_Amethyst",
+     "Center": [
+      0.0,
+      -0.3499999940395355,
+      10.198625564575195
+     ],
+     "Size": [
+      14.0,
+      0.13999998569488525,
+      17.89725112915039
+     ],
+     "Color": "8B4FE0",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_WeeklySpend_Panes_Aqua",
+     "Center": [
+      0.0,
+      -0.3499999940395355,
+      10.060948371887207
+     ],
+     "Size": [
+      14.0,
+      0.13999998569488525,
+      17.621896743774414
+     ],
+     "Color": "1FC2D3",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_WeeklySpend_RoseRing",
+     "Center": [
+      0.0,
+      -0.19999999925494194,
+      15.150000095367432
+     ],
+     "Size": [
+      4.002588748931885,
+      0.6000000014901161,
+      4.002589225769043
+     ],
+     "Color": "1F1830",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_WeeklySpend_Rose_Emerald",
+     "Center": [
+      0.846918510273099,
+      -0.2900000065565109,
+      14.872210502624512
+     ],
+     "Size": [
+      1.5996512435376644,
+      0.14000001549720764,
+      2.7379093170166016
+     ],
+     "Color": "22B573",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_WeeklySpend_Rose_Sapphire",
+     "Center": [
+      0.846918510273099,
+      -0.2900000065565109,
+      15.427789211273193
+     ],
+     "Size": [
+      1.5996512435376644,
+      0.14000001549720764,
+      2.737908363342285
+     ],
+     "Color": "2E6BE6",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_WeeklySpend_Rose_Amethyst",
+     "Center": [
+      -0.5691287387162447,
+      -0.2900000065565109,
+      16.254663467407227
+     ],
+     "Size": [
+      1.044071700423956,
+      0.14000001549720764,
+      1.0841598510742188
+     ],
+     "Color": "8B4FE0",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_WeeklySpend_Rose_Aqua",
+     "Center": [
+      -1.1046637296676636,
+      -0.2900000065565109,
+      15.719129085540771
+     ],
+     "Size": [
+      1.0841608047485352,
+      0.14000001549720764,
+      1.044072151184082
+     ],
+     "Color": "1FC2D3",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_WeeklySpend_Rose_Ruby",
+     "Center": [
+      -1.1046637296676636,
+      -0.2900000065565109,
+      14.580871105194092
+     ],
+     "Size": [
+      1.0841608047485352,
+      0.14000001549720764,
+      1.044072151184082
+     ],
+     "Color": "E23A55",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_WeeklySpend_Rose_Amber",
+     "Center": [
+      -0.5691287387162447,
+      -0.2900000065565109,
+      14.045336246490479
+     ],
+     "Size": [
+      1.044071700423956,
+      0.14000001549720764,
+      1.0841608047485352
+     ],
+     "Color": "F5A524",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_WeeklySpend_RoseHub",
+     "Center": [
+      0.0,
+      -0.3500000014901161,
+      15.150000095367432
+     ],
+     "Size": [
+      1.559999942779541,
+      0.29999999701976776,
+      1.5600004196166992
+     ],
+     "Color": "1F1830",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_WeeklySpend_EmblemFrame",
+     "Center": [
+      0.0,
+      -0.7499999981373549,
+      15.150000095367432
+     ],
+     "Size": [
+      1.8700000047683716,
+      1.6194675005972385,
+      2.7200002670288086
+     ],
+     "Color": "B87E50",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_WeeklySpend_Emblem",
+     "Center": [
+      0.0,
+      -0.7499999776482582,
+      15.149999618530273
+     ],
+     "Size": [
+      1.3600000143051147,
+      1.1777945011854172,
+      2.2099990844726562
+     ],
+     "Color": "1FC2D3",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_WeeklySpend_EmblemSand",
+     "Center": [
+      0.0,
+      -0.7499999701976776,
+      14.34250020980835
+     ],
+     "Size": [
+      0.8840000033378601,
+      0.7655664086341858,
+      0.5950002670288086
+     ],
+     "Color": "F5A524",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_WeeklySpend_BannerBack",
+     "Center": [
+      0.0,
+      -0.675000011920929,
+      12.450000286102295
+     ],
+     "Size": [
+      11.5,
+      0.3500000238418579,
+      1.609999656677246
+     ],
+     "Color": "1F1830",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_WeeklySpend_Banner",
+     "Center": [
+      0.0,
+      -0.8799999952316284,
+      12.449999809265137
+     ],
+     "Size": [
+      9.5,
+      0.12000000476837158,
+      1.4099998474121094
+     ],
+     "Color": "1FC2D3",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_WeeklySpend_ScreenFrame",
+     "Center": [
+      0.0,
+      -0.17999999597668648,
+      7.150000214576721
+     ],
+     "Size": [
+      11.5,
+      0.2199999913573265,
+      9.40000033378601
+     ],
+     "Color": "B87E50",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_WeeklySpend_Screen",
+     "Center": [
+      0.0,
+      -0.3400000035762787,
+      7.150000214576721
+     ],
+     "Size": [
+      11.0,
+      0.12000000476837158,
+      8.90000033378601
+     ],
+     "Color": "1B1528",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_WeeklySpend_Finial",
+     "Center": [
+      0.0,
+      0.0,
+      19.420000076293945
+     ],
+     "Size": [
+      1.0,
+      1.0,
+      1.5999984741210938
+     ],
+     "Color": "1FC2D3",
+     "Material": "Glass",
+     "Transparency": 0.12
+    }
+   ],
+   "Screen": {
+    "Center": [
+     0.0,
+     -0.42,
+     7.15
+    ],
+    "Size": [
+     11.0,
+     0.1,
+     8.9
+    ]
+   },
+   "Title": {
+    "Center": [
+     0.0,
+     -0.95,
+     12.45
+    ],
+    "Size": [
+     9.0,
+     0.1,
+     1.25
+    ]
+   },
+   "FBX": "WeeklySpend.fbx",
+   "Source": "WeeklySpend.blend"
+  },
+  "Wins": {
+   "Accent": "F5A524",
+   "Scale": 1.1,
+   "Triangles": 5326,
+   "Meshes": [
+    {
+     "Name": "LB3_Wins_Plinth",
+     "Center": [
+      0.0,
+      0.10999995470046997,
+      0.4399999976158142
+     ],
+     "Size": [
+      19.139999389648438,
+      3.6299999952316284,
+      0.8799999952316284
+     ],
+     "Color": "C8BC9C",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_Wins_PlinthTrim",
+     "Center": [
+      0.0,
+      0.0,
+      1.0669999718666077
+     ],
+     "Size": [
+      18.260000228881836,
+      2.9700000286102295,
+      0.3739999532699585
+     ],
+     "Color": "B87E50",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_Wins_Towers",
+     "Center": [
+      0.0,
+      0.0,
+      8.414999961853027
+     ],
+     "Size": [
+      19.189992904663086,
+      2.0899999141693115,
+      14.40999984741211
+     ],
+     "Color": "C8BC9C",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_Wins_TowerBands",
+     "Center": [
+      0.0,
+      0.0,
+      8.634999573230743
+     ],
+     "Size": [
+      19.609149932861328,
+      2.5739998817443848,
+      14.739999175071716
+     ],
+     "Color": "B87E50",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_Wins_Spires",
+     "Center": [
+      0.0,
+      0.0,
+      17.407499313354492
+     ],
+     "Size": [
+      19.0994930267334,
+      1.9854999780654907,
+      2.8050003051757812
+     ],
+     "Color": "F5A524",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_Wins_Backing",
+     "Center": [
+      0.0,
+      0.33000000938773155,
+      11.22421944141388
+     ],
+     "Size": [
+      13.3100004196167,
+      0.5500000193715096,
+      17.718438863754272
+     ],
+     "Color": "261D3B",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_Wins_Frame",
+     "Center": [
+      0.0,
+      0.0,
+      11.229334950447083
+     ],
+     "Size": [
+      14.079999923706055,
+      0.9900000095367432,
+      18.388669729232788
+     ],
+     "Color": "1F1830",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_Wins_FrameOuter",
+     "Center": [
+      0.0,
+      0.027499988675117493,
+      11.223700642585754
+     ],
+     "Size": [
+      15.642000198364258,
+      0.7150000035762787,
+      19.939401388168335
+     ],
+     "Color": "1F1830",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_Wins_Panes_Ruby",
+     "Center": [
+      0.0,
+      -0.38500000536441803,
+      10.93993091583252
+     ],
+     "Size": [
+      15.399999618530273,
+      0.15400001406669617,
+      19.12986183166504
+     ],
+     "Color": "E23A55",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_Wins_Panes_Amber",
+     "Center": [
+      0.0,
+      -0.38500000536441803,
+      11.170377731323242
+     ],
+     "Size": [
+      15.399999618530273,
+      0.15400001406669617,
+      19.590755462646484
+     ],
+     "Color": "F5A524",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_Wins_Panes_Emerald",
+     "Center": [
+      0.0,
+      -0.38500000536441803,
+      11.223652839660645
+     ],
+     "Size": [
+      15.399999618530273,
+      0.15400001406669617,
+      19.69730567932129
+     ],
+     "Color": "22B573",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_Wins_Panes_Sapphire",
+     "Center": [
+      0.0,
+      -0.38500000536441803,
+      11.223652839660645
+     ],
+     "Size": [
+      15.399999618530273,
+      0.15400001406669617,
+      19.69730567932129
+     ],
+     "Color": "2E6BE6",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_Wins_Panes_Amethyst",
+     "Center": [
+      0.0,
+      -0.38500000536441803,
+      11.218487739562988
+     ],
+     "Size": [
+      15.399999618530273,
+      0.15400001406669617,
+      19.686975479125977
+     ],
+     "Color": "8B4FE0",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_Wins_Panes_Aqua",
+     "Center": [
+      0.0,
+      -0.38500000536441803,
+      11.06704330444336
+     ],
+     "Size": [
+      15.399999618530273,
+      0.15400001406669617,
+      19.38408660888672
+     ],
+     "Color": "1FC2D3",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_Wins_RoseRing",
+     "Center": [
+      0.0,
+      -0.2200000062584877,
+      16.665000438690186
+     ],
+     "Size": [
+      4.402847766876221,
+      0.6600000113248825,
+      4.402848243713379
+     ],
+     "Color": "1F1830",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_Wins_Rose_Emerald",
+     "Center": [
+      0.9316103551536798,
+      -0.3189999982714653,
+      16.35943078994751
+     ],
+     "Size": [
+      1.759616356343031,
+      0.15399999916553497,
+      3.0116987228393555
+     ],
+     "Color": "22B573",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_Wins_Rose_Sapphire",
+     "Center": [
+      0.9316103551536798,
+      -0.3189999982714653,
+      16.970569133758545
+     ],
+     "Size": [
+      1.759616356343031,
+      0.15399999916553497,
+      3.0117006301879883
+     ],
+     "Color": "2E6BE6",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_Wins_Rose_Amethyst",
+     "Center": [
+      -0.6260416004806757,
+      -0.3189999982714653,
+      17.880130767822266
+     ],
+     "Size": [
+      1.1484788469970226,
+      0.15399999916553497,
+      1.1925773620605469
+     ],
+     "Color": "8B4FE0",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_Wins_Rose_Aqua",
+     "Center": [
+      -1.215130090713501,
+      -0.3189999982714653,
+      17.291041374206543
+     ],
+     "Size": [
+      1.1925768852233887,
+      0.15399999916553497,
+      1.148477554321289
+     ],
+     "Color": "1FC2D3",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_Wins_Rose_Ruby",
+     "Center": [
+      -1.215130090713501,
+      -0.3189999982714653,
+      16.038958072662354
+     ],
+     "Size": [
+      1.1925768852233887,
+      0.15399999916553497,
+      1.1484785079956055
+     ],
+     "Color": "E23A55",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_Wins_Rose_Amber",
+     "Center": [
+      -0.6260416004806757,
+      -0.3189999982714653,
+      15.449869632720947
+     ],
+     "Size": [
+      1.1484788469970226,
+      0.15399999916553497,
+      1.1925764083862305
+     ],
+     "Color": "F5A524",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_Wins_RoseHub",
+     "Center": [
+      0.0,
+      -0.38500000536441803,
+      16.665000438690186
+     ],
+     "Size": [
+      1.715999960899353,
+      0.33000001311302185,
+      1.7160005569458008
+     ],
+     "Color": "1F1830",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_Wins_Emblem",
+     "Center": [
+      0.0,
+      -0.8251946270465851,
+      16.83330011367798
+     ],
+     "Size": [
+      2.3195784091949463,
+      2.3191892504692078,
+      2.393599510192871
+     ],
+     "Color": "F2C14E",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_Wins_EmblemGem",
+     "Center": [
+      0.0,
+      -1.9843999147415161,
+      16.057250022888184
+     ],
+     "Size": [
+      0.6358000040054321,
+      0.5506188869476318,
+      0.4675006866455078
+     ],
+     "Color": "E23A55",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_Wins_BannerBack",
+     "Center": [
+      0.0,
+      -0.7425000071525574,
+      13.694999694824219
+     ],
+     "Size": [
+      12.649999618530273,
+      0.38499999046325684,
+      1.7709999084472656
+     ],
+     "Color": "1F1830",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_Wins_Banner",
+     "Center": [
+      0.0,
+      -0.9680000245571136,
+      13.695000171661377
+     ],
+     "Size": [
+      10.449999809265137,
+      0.13200002908706665,
+      1.550999641418457
+     ],
+     "Color": "F5A524",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_Wins_ScreenFrame",
+     "Center": [
+      0.0,
+      -0.1980000026524067,
+      7.864999890327454
+     ],
+     "Size": [
+      12.649999618530273,
+      0.2420000061392784,
+      10.339999914169312
+     ],
+     "Color": "B87E50",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_Wins_Screen",
+     "Center": [
+      0.0,
+      -0.3739999979734421,
+      7.865000128746033
+     ],
+     "Size": [
+      12.100000381469727,
+      0.13199999928474426,
+      9.790000200271606
+     ],
+     "Color": "1B1528",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_Wins_Finial",
+     "Center": [
+      0.0,
+      0.0,
+      21.362000465393066
+     ],
+     "Size": [
+      1.100000023841858,
+      1.100000023841858,
+      1.760000228881836
+     ],
+     "Color": "F5A524",
+     "Material": "Glass",
+     "Transparency": 0.12
+    }
+   ],
+   "Screen": {
+    "Center": [
+     0.0,
+     -0.462,
+     7.865000000000001
+    ],
+    "Size": [
+     12.100000000000001,
+     0.11000000000000001,
+     9.790000000000001
+    ]
+   },
+   "Title": {
+    "Center": [
+     0.0,
+     -1.045,
+     13.695
+    ],
+    "Size": [
+     9.9,
+     0.11000000000000001,
+     1.375
+    ]
+   },
+   "FBX": "Wins.fbx",
+   "Source": "Wins.blend"
+  },
+  "AllTimeSpend": {
+   "Accent": "8B4FE0",
+   "Scale": 1.0,
+   "Triangles": 5280,
+   "Meshes": [
+    {
+     "Name": "LB3_AllTimeSpend_Plinth",
+     "Center": [
+      0.0,
+      0.10000002384185791,
+      0.4000000059604645
+     ],
+     "Size": [
+      17.399999618530273,
+      3.299999952316284,
+      0.800000011920929
+     ],
+     "Color": "C8BC9C",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_AllTimeSpend_PlinthTrim",
+     "Center": [
+      0.0,
+      0.0,
+      0.9699999988079071
+     ],
+     "Size": [
+      16.600000381469727,
+      2.700000047683716,
+      0.3399999737739563
+     ],
+     "Color": "B87E50",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Towers",
+     "Center": [
+      0.0,
+      0.0,
+      7.649999916553497
+     ],
+     "Size": [
+      17.44544792175293,
+      1.899999976158142,
+      13.099999785423279
+     ],
+     "Color": "C8BC9C",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_AllTimeSpend_TowerBands",
+     "Center": [
+      0.0,
+      0.0,
+      7.850000083446503
+     ],
+     "Size": [
+      17.826499938964844,
+      2.3399999141693115,
+      13.400000214576721
+     ],
+     "Color": "B87E50",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Spires",
+     "Center": [
+      0.0,
+      0.0,
+      15.825000286102295
+     ],
+     "Size": [
+      17.363176345825195,
+      1.8049999475479126,
+      2.5500001907348633
+     ],
+     "Color": "8B4FE0",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Backing",
+     "Center": [
+      0.0,
+      0.3000000063329935,
+      10.203835725784302
+     ],
+     "Size": [
+      12.100000381469727,
+      0.5000000111758709,
+      16.10767126083374
+     ],
+     "Color": "261D3B",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Frame",
+     "Center": [
+      0.0,
+      0.0,
+      10.208486378192902
+     ],
+     "Size": [
+      12.800000190734863,
+      0.8999999761581421,
+      16.716972708702087
+     ],
+     "Color": "1F1830",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_AllTimeSpend_FrameOuter",
+     "Center": [
+      0.0,
+      0.024999991059303284,
+      10.203363716602325
+     ],
+     "Size": [
+      14.220000267028809,
+      0.6500000059604645,
+      18.12672746181488
+     ],
+     "Color": "1F1830",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Panes_Ruby",
+     "Center": [
+      0.0,
+      -0.3499999940395355,
+      9.945391654968262
+     ],
+     "Size": [
+      14.0,
+      0.13999998569488525,
+      17.390783309936523
+     ],
+     "Color": "E23A55",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Panes_Amber",
+     "Center": [
+      0.0,
+      -0.3499999940395355,
+      10.154889106750488
+     ],
+     "Size": [
+      14.0,
+      0.13999998569488525,
+      17.809778213500977
+     ],
+     "Color": "F5A524",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Panes_Emerald",
+     "Center": [
+      0.0,
+      -0.3499999940395355,
+      10.203320503234863
+     ],
+     "Size": [
+      14.0,
+      0.13999998569488525,
+      17.906641006469727
+     ],
+     "Color": "22B573",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Panes_Sapphire",
+     "Center": [
+      0.0,
+      -0.3499999940395355,
+      10.203320503234863
+     ],
+     "Size": [
+      14.0,
+      0.13999998569488525,
+      17.906641006469727
+     ],
+     "Color": "2E6BE6",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Panes_Amethyst",
+     "Center": [
+      0.0,
+      -0.3499999940395355,
+      10.198625564575195
+     ],
+     "Size": [
+      14.0,
+      0.13999998569488525,
+      17.89725112915039
+     ],
+     "Color": "8B4FE0",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Panes_Aqua",
+     "Center": [
+      0.0,
+      -0.3499999940395355,
+      10.060948371887207
+     ],
+     "Size": [
+      14.0,
+      0.13999998569488525,
+      17.621896743774414
+     ],
+     "Color": "1FC2D3",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_AllTimeSpend_RoseRing",
+     "Center": [
+      0.0,
+      -0.19999999925494194,
+      15.150000095367432
+     ],
+     "Size": [
+      4.002588748931885,
+      0.6000000014901161,
+      4.002589225769043
+     ],
+     "Color": "1F1830",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Rose_Emerald",
+     "Center": [
+      0.846918510273099,
+      -0.2900000065565109,
+      14.872210502624512
+     ],
+     "Size": [
+      1.5996512435376644,
+      0.14000001549720764,
+      2.7379093170166016
+     ],
+     "Color": "22B573",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Rose_Sapphire",
+     "Center": [
+      0.846918510273099,
+      -0.2900000065565109,
+      15.427789211273193
+     ],
+     "Size": [
+      1.5996512435376644,
+      0.14000001549720764,
+      2.737908363342285
+     ],
+     "Color": "2E6BE6",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Rose_Amethyst",
+     "Center": [
+      -0.5691287387162447,
+      -0.2900000065565109,
+      16.254663467407227
+     ],
+     "Size": [
+      1.044071700423956,
+      0.14000001549720764,
+      1.0841598510742188
+     ],
+     "Color": "8B4FE0",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Rose_Aqua",
+     "Center": [
+      -1.1046637296676636,
+      -0.2900000065565109,
+      15.719129085540771
+     ],
+     "Size": [
+      1.0841608047485352,
+      0.14000001549720764,
+      1.044072151184082
+     ],
+     "Color": "1FC2D3",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Rose_Ruby",
+     "Center": [
+      -1.1046637296676636,
+      -0.2900000065565109,
+      14.580871105194092
+     ],
+     "Size": [
+      1.0841608047485352,
+      0.14000001549720764,
+      1.044072151184082
+     ],
+     "Color": "E23A55",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Rose_Amber",
+     "Center": [
+      -0.5691287387162447,
+      -0.2900000065565109,
+      14.045336246490479
+     ],
+     "Size": [
+      1.044071700423956,
+      0.14000001549720764,
+      1.0841608047485352
+     ],
+     "Color": "F5A524",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_AllTimeSpend_RoseHub",
+     "Center": [
+      0.0,
+      -0.3500000014901161,
+      15.150000095367432
+     ],
+     "Size": [
+      1.559999942779541,
+      0.29999999701976776,
+      1.5600004196166992
+     ],
+     "Color": "1F1830",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Emblem",
+     "Center": [
+      0.0,
+      -0.7499999701976776,
+      14.57200002670288
+     ],
+     "Size": [
+      2.2616569995880127,
+      2.2616570591926575,
+      2.2440004348754883
+     ],
+     "Color": "8B4FE0",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_AllTimeSpend_EmblemShine",
+     "Center": [
+      -0.2549999952316284,
+      -0.9199999868869781,
+      15.728000164031982
+     ],
+     "Size": [
+      0.6119999885559082,
+      0.6119999289512634,
+      0.06799983978271484
+     ],
+     "Color": "EEE7D9",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_AllTimeSpend_BannerBack",
+     "Center": [
+      0.0,
+      -0.675000011920929,
+      12.450000286102295
+     ],
+     "Size": [
+      11.5,
+      0.3500000238418579,
+      1.609999656677246
+     ],
+     "Color": "1F1830",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Banner",
+     "Center": [
+      0.0,
+      -0.8799999952316284,
+      12.449999809265137
+     ],
+     "Size": [
+      9.5,
+      0.12000000476837158,
+      1.4099998474121094
+     ],
+     "Color": "8B4FE0",
+     "Material": "Glass",
+     "Transparency": 0.12
+    },
+    {
+     "Name": "LB3_AllTimeSpend_ScreenFrame",
+     "Center": [
+      0.0,
+      -0.17999999597668648,
+      7.150000214576721
+     ],
+     "Size": [
+      11.5,
+      0.2199999913573265,
+      9.40000033378601
+     ],
+     "Color": "B87E50",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Screen",
+     "Center": [
+      0.0,
+      -0.3400000035762787,
+      7.150000214576721
+     ],
+     "Size": [
+      11.0,
+      0.12000000476837158,
+      8.90000033378601
+     ],
+     "Color": "1B1528",
+     "Material": "SmoothPlastic",
+     "Transparency": 0
+    },
+    {
+     "Name": "LB3_AllTimeSpend_Finial",
+     "Center": [
+      0.0,
+      0.0,
+      19.420000076293945
+     ],
+     "Size": [
+      1.0,
+      1.0,
+      1.5999984741210938
+     ],
+     "Color": "8B4FE0",
+     "Material": "Glass",
+     "Transparency": 0.12
+    }
+   ],
+   "Screen": {
+    "Center": [
+     0.0,
+     -0.42,
+     7.15
+    ],
+    "Size": [
+     11.0,
+     0.1,
+     8.9
+    ]
+   },
+   "Title": {
+    "Center": [
+     0.0,
+     -0.95,
+     12.45
+    ],
+    "Size": [
+     9.0,
+     0.1,
+     1.25
+    ]
+   },
+   "FBX": "AllTimeSpend.fbx",
+   "Source": "AllTimeSpend.blend"
+  }
+ }
+}

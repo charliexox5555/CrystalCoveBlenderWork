@@ -7,6 +7,7 @@ local Schema = {}
 local RoundCosmetics = if Shared then require(Shared.RoundCosmeticRules) else require("../../shared/RoundCosmeticRules")
 local DailyStore = if Shared then require(Shared.DailyStoreRules) else require("../../shared/DailyStoreRules")
 local Rules = if script then require(script.Parent.OnboardingRules) else require("./OnboardingRules")
+local Boards = if script then require(script.Parent.LeaderboardRules) else require("./LeaderboardRules")
 
 function Schema.copy(value)
 	if type(value) ~= "table" then
@@ -57,6 +58,8 @@ function Schema.new(now)
 		Flags = { WelcomePullUsed = false, GroupRewardClaimed = false },
 		CodesRedeemed = {},
 		ProcessedReceipts = {},
+		-- Robux spent (decision 101): all time, this week (Week = LeaderboardRules.weekKey), game passes recorded.
+		Spend = Boards.newSpend(),
 		RecentMatches = {},
 		-- Daily Featured store: today's locked offers, open Robux intents, bundle purchases.
 		Store = { Version = 0, Day = -1, Offers = {}, Intents = {}, Bundles = {} },
@@ -142,6 +145,7 @@ function Schema.reconcile(data, now)
 	end
 	data.Calendar.Index = math.min(7, integer(data.Calendar.Index, 0))
 	data.Calendar.LastDay = if type(data.Calendar.LastDay) == "number" then math.floor(data.Calendar.LastDay) else -1
+	Boards.reconcile(data)
 	RoundCosmetics.reconcile(data)
 	DailyStore.reconcile(data)
 	return data

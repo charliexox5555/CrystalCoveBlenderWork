@@ -1,0 +1,26 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "WeeklySpend": {
+   "AssetId": "75146423913018",
+   "Path": "assets/blender/map/leaderboards_v3/WeeklySpend.fbx",
+   "Sha256": "b9e2fd0d9bff14adabc8ac82c86d655204a73414b275b10f21dec836e99007ef",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:18:36"
+  },
+  "Wins": {
+   "AssetId": "135528913828465",
+   "Path": "assets/blender/map/leaderboards_v3/Wins.fbx",
+   "Sha256": "c72b36128a084f91e315e4dff41e3c082834b217ae604f1025c91b3d475196ae",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:18:56"
+  },
+  "AllTimeSpend": {
+   "AssetId": "89593505453712",
+   "Path": "assets/blender/map/leaderboards_v3/AllTimeSpend.fbx",
+   "Sha256": "848704867b59a9c7b107e2a7152d0b27d99326d13b0c6db9a34ff2c53d8c0454",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:19:01"
+  }
+ }
+}

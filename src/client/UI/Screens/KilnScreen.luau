@@ -9,6 +9,25 @@ function Screen.new(data, close, pull, refresh, initialTab)
 	self:Odds(data)
 	return self
 end
+-- Plays a Kiln opening for glassies the server already granted (onboarding welcome / first-win opens, decision 100),
+-- without the Shop around it. `data` = { Results, Status? }. `close` runs after COLLECT (or the close button).
+function Screen.reveal(data, close)
+	local self =
+		setmetatable({ Data = { Odds = {} }, Close = close, Closed = false, Serial = 0, Tab = "Glassies" }, Screen)
+	-- Reel filler: every Kiln glassy, evenly. The landed result is pinned by the reels, so filler only decorates.
+	local odds = {}
+	for _, def in require(game.ReplicatedStorage.Shared.Config.Glassies).ReleaseList do
+		if def.Rarity ~= "Starter" then
+			table.insert(odds, { Id = def.Id, Chance = 1 })
+		end
+	end
+	self:Result({ Results = data.Results, Category = "Glassies", Currency = "Coins", Odds = odds })
+	if data.Status and self.Opening then
+		self.Opening.Content.Status.Text = data.Status
+	end
+	return self
+end
+
 function Screen:Page(name, title)
 	for _, view in self.CrateViews or {} do
 		view:Destroy()
@@ -120,7 +139,7 @@ function Screen:Result(data)
 		end
 		return
 	end
-	if type(data.Results) ~= "table" or (#data.Results ~= 1 and #data.Results ~= 10) then
+	if type(data.Results) ~= "table" or (#data.Results ~= 1 and #data.Results ~= 3 and #data.Results ~= 10) then
 		return
 	end
 	-- A duplicate delivery can neither restart the animation nor produce another grant.

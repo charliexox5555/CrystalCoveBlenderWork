@@ -14,6 +14,18 @@ Balance sim (if balance changed):
 - ...
 ```
 
+## 2026-10-20 — Claude — Onboarding (decision 100)
+Done:
+- Research (Roblox onboarding guide, bot first wins, win-margin study, beginner banners, odds policy) and the design in `docs/design/ONBOARDING.md`; creator picked: 3-1 first match, C/U/R welcome opens, Rare 70 / Epic 30 win open, auto-closing daily step.
+- Pure `OnboardingRules` (steps, never-owned picks, assist plan) + `OnboardingTests` (24 assisted real-swing rounds land as planned). FightRules `Assist` (damage-taken scale, 1 HP floor, timeout honours it; CAST window per side). Profile `Onboarding.Step` (players who already played skip).
+- `OnboardingService` (welcome opens, daily hook, arena reservation, first match, win open, `LogOnboardingFunnelStepEvent`); ArenaService reservations; MatchService Rookie Bot, 40 s picks, per-round assist.
+- Client: StarterGui `WelcomeScreen` (`tools/studio/build_welcome_screen.luau`), `OnboardingController` (card, 3-card opening, daily pointer, guide beam + "YOUR ARENA", PLAY pulse, card and CAST pointers, win opening), `Hint` pointer component.
+- Studio Play as a fresh profile: welcome → 3 opens (Lemonade C/Fizzy, Mason Jar U/Heavy, Crescent Axe R/Sharp) → daily claim → reserved arena + beam → PLAY → 3-1 win (rounds 1,2,1,1) → Briar Flask (Rare) win open → Done. Lune 177/177.
+Next:
+- Visual pass of the welcome card, 3-card opening, pointers and beam with Studio on screen (this run's client rendered at ~1 fps with the Studio window hidden, so only the logic was checked).
+Problems / questions for the user:
+- Save the place (new StarterGui.WelcomeScreen).
+
 ## 2026-10-20 — Claude — Quieter lobby (creator note)
 Done:
 - The "ringing" in the lobby was a stack of looping hum/shimmer sounds on the display flyers and the showcase Moonlantern Carriage (its sparkle loop was the loudest), plus the looping Lantern Eclipse demo. Display flyers are now silent (`RideMotion` `Sound = false`, which also quiets CarriageFX); flyers someone rides keep their quiet loop.

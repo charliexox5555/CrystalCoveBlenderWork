@@ -637,6 +637,26 @@ Balance.Retention = {
 	LeaderboardRows = 10,
 }
 
+-- First session (decision 100, docs/design/ONBOARDING.md). Presentation and one assisted match; nothing here
+-- changes normal matches.
+Balance.Onboarding = {
+	WelcomeRarities = { "Common", "Uncommon", "Rare" }, -- one each, one of each type when possible, never owned
+	WinPullOdds = { Rare = 0.7, Epic = 0.3 }, -- the free Kiln open for winning the first match, never owned
+	BotName = "Rookie Bot",
+	BotSkill = 0.1,
+	RollSeconds = 40, -- longer card pick in the first match
+	CastSeconds = 4, -- longer CAST window for the new player in the first match
+	BotRound = 2, -- the round the bot takes (the player wins the match 3-1)
+	-- Damage taken multipliers in the assisted match. The planned round winner can't drop below 1 HP, so every
+	-- round lands as planned; overtime still ends it.
+	WinnerTaken = 0.7,
+	LoserTaken = 1.35,
+	ReserveSeconds = 240, -- how long an arena stays reserved for the new player
+	PlayHintSeconds = 20, -- after this long without reaching the arena, PLAY pulses
+	DailyCloseSeconds = 1.6, -- the tutorial daily screen closes this long after the claim
+	ActionRateSeconds = 0.5,
+}
+
 Balance.Data = {
 	Version = 2,
 	StoreName = "GlassClash_v2",

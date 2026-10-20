@@ -21,6 +21,8 @@
 --     BuyStoreOffer  (RemoteEvent)  slot: number, id: string, day: number (Coins buy now; Robux prompts)
 --     BuyStoreBundle (RemoteEvent)  bundleId: string (Robux prompt once a product ID is configured)
 --     BuyMarblePack  (RemoteEvent)  packId: string (Config/MarbleShop; Robux prompt)
+--     OnboardingAction (RemoteEvent) action: "OpenWelcome" (decision 100; OnboardingService validates the step)
+--     Server -> client: OnboardingReveal { Results, Odds, Kind = "Welcome" | "Win" } plays a Kiln opening
 --     RequestSettings (RemoteEvent) (no args) -> Settings { Master, Music, SFX, BotPlay, AutoCast, ... } (Config/Settings)
 --     SetSetting     (RemoteEvent)  key: string, value: number (0-1) | boolean; saved by SettingsService (decision 99)
 --   Server -> client: StoreOffers (view, NextReset, ServerNow, Message), StoreResult (purchase outcome)
@@ -59,6 +61,8 @@ local reliable = {
 	"BuyStoreBundle",
 	"StoreResult",
 	"BuyMarblePack",
+	"OnboardingAction",
+	"OnboardingReveal",
 	"RequestSettings",
 	"Settings",
 	"SetSetting",

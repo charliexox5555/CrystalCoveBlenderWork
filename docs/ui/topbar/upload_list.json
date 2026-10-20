@@ -63,6 +63,13 @@
    "Type": "Decal",
    "Name": "Reward Free Flyer Crate",
    "Description": "Glass Clash reward icon (gvesster Free Icon Pack v3.1)."
+  },
+  {
+   "Key": "hint_pointer",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/UI/Cursor/256px/Golden Cursor 1st Outline 256px.png",
+   "Type": "Decal",
+   "Name": "Onboarding Hint Pointer",
+   "Description": "Glass Clash onboarding pointer (gvesster Free Icon Pack v3.1)."
   }
  ]
 }

@@ -147,10 +147,18 @@ function Opening:ShowRewards(instant)
 		card:SetAttribute("GlassyId", result.Id)
 		card:SetAttribute("Rainbow", result.Rainbow == true)
 		local multi = #self.Results > 1
-		local destination = if multi
-			then Vector2.new(0.14 + (i - 1) % 5 * 0.18, centerY - 0.255 + math.floor((i - 1) / 5) * 0.51)
+		local three = #self.Results == 3 -- onboarding welcome opens: one row of three
+		local destination = if three
+			then Vector2.new(0.2 + (i - 1) * 0.3, centerY)
+			elseif multi then Vector2.new(
+				0.14 + (i - 1) % 5 * 0.18,
+				centerY - 0.255 + math.floor((i - 1) / 5) * 0.51
+			)
 			else Vector2.new(0.5, centerY)
-		card.Size = if multi then UDim2.fromScale(0.18, 0.48) else UDim2.fromScale(0.43, 0.99)
+		card.Size = if three
+			then UDim2.fromScale(0.26, 0.72)
+			elseif multi then UDim2.fromScale(0.18, 0.48)
+			else UDim2.fromScale(0.43, 0.99)
 		card.Position = UDim2.fromScale(destination.X, destination.Y)
 		S.setAsset(card.Artwork, "tile/tile_" .. S.rarity(def.Rarity))
 		card.Rarity.Text, card.Rarity.TextColor3 = def.Rarity:upper(), Theme.Rarity[def.Rarity].Top
@@ -242,7 +250,7 @@ end
 -- "EPIC!" / "LEGENDARY!" / "MYTHIC!" banner in place of the status line.
 function Opening:Celebrate()
 	local c = self.Content
-	local single = #self.Cards == 1
+	local single = #self.Cards <= 3 -- 1 or the 3 welcome cards get the full-size effects
 	for _, item in self.Cards do
 		local card = item.Object
 		card.Position = UDim2.fromScale(item.Destination.X, item.Destination.Y)

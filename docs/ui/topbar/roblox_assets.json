@@ -63,6 +63,13 @@
    "Sha256": "cb594eebe5b3a1667061c9b0912659c093c506e5381d3c00210ab339e03abf2b",
    "Moderation": "Approved",
    "Uploaded": "2026-10-19T21:15:56"
+  },
+  "hint_pointer": {
+   "AssetId": "84031366280270",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/UI/Cursor/256px/Golden Cursor 1st Outline 256px.png",
+   "Sha256": "10c2c298e72a609be9a9452293315697db79f6ec0d2b0cec83be3551866285c6",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-19T23:07:35"
   }
  }
 }

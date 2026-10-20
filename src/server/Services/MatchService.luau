@@ -15,6 +15,7 @@ local Stage = require(script.Parent.Parent.Util.MatchStage)
 local CosmeticConfig = require(RS.Shared.Config.RoundCosmetics)
 local CosmeticRules = require(RS.Shared.RoundCosmeticRules)
 local PolicyService = game:GetService("PolicyService")
+local OnboardingRules = require(script.Parent.Parent.Data.OnboardingRules)
 local Service = {}
 
 function Service:Init(services)
@@ -98,12 +99,23 @@ function Service:StartMatch(arena, players, now, spectate)
 	local rng = Rng.new(seed)
 	local setups = {}
 	local humanCollection = self:Collection(players[1] or players[2])
+	-- Onboarding (decision 100): a new player's first match against a bot is assisted (OnboardingRules.assist).
+	local tutorial = nil
+	local onboarding = self.Services.OnboardingService
+	for side = 1, 2 do
+		local player = players[side]
+		if player and not players[3 - side] and onboarding and onboarding:IsFirstMatch(player) then
+			tutorial = { Side = side, Player = player }
+		end
+	end
 	for side = 1, 2 do
 		setups[side] = {
 			Collection = players[side] and self:Collection(players[side])
 				or Assets.collection(Logic.botCollection(humanCollection, rng)),
 			IsBot = players[side] == nil,
-			Skill = Balance.Match.BotSkillMin + rng() * (Balance.Match.BotSkillMax - Balance.Match.BotSkillMin),
+			Skill = if tutorial and side ~= tutorial.Side
+				then Balance.Onboarding.BotSkill
+				else Balance.Match.BotSkillMin + rng() * (Balance.Match.BotSkillMax - Balance.Match.BotSkillMin),
 		}
 	end
 	local entry = {
@@ -112,7 +124,13 @@ function Service:StartMatch(arena, players, now, spectate)
 		Players = players,
 		Seed = seed,
 		Spectate = spectate == true,
-		Runner = Runner.new(setups, rng, now),
+		Runner = Runner.new(
+			setups,
+			rng,
+			now,
+			if tutorial then { RollSeconds = Balance.Onboarding.RollSeconds } else nil
+		),
+		Tutorial = tutorial,
 		Perfects = { 0, 0 },
 		ActualWins = { 0, 0 },
 		HeavyShatters = { 0, 0 },
@@ -133,7 +151,9 @@ function Service:StartMatch(arena, players, now, spectate)
 			-- Visual variety without consuming or changing the gameplay RNG stream.
 			entry.Cosmetics.Rideables[side] = CosmeticConfig.Rideables[(seed + side) % #CosmeticConfig.Rideables + 1].Id
 			entry.Cosmetics.Finishers[side] = CosmeticConfig.Finishers[(seed + side) % #CosmeticConfig.Finishers + 1].Id
-			entry.BotNames[side] = Bots.Names[math.floor(rng() * #Bots.Names) + 1]
+			entry.BotNames[side] = if tutorial
+				then Balance.Onboarding.BotName
+				else Bots.Names[math.floor(rng() * #Bots.Names) + 1]
 		end
 	end
 	self.Matches[arena.Id] = entry
@@ -142,6 +162,9 @@ function Service:StartMatch(arena, players, now, spectate)
 		self.ByPlayer[player] = { Entry = entry, Side = side }
 	end
 	Stage.start(entry)
+	if tutorial and onboarding then
+		onboarding:MatchStarted(tutorial.Player)
+	end
 	self:Dispatch(entry, now)
 	return true, entry.Id
 end
@@ -197,7 +220,11 @@ function Service:Finish(entry)
 			ArenaId = entry.Arena.Id,
 			Names = names,
 			Quests = self.Services.RetentionService and self.Services.RetentionService:View(player).Quests or {},
+			FirstMatch = entry.Tutorial ~= nil and entry.Tutorial.Player == player,
 		})
+		if entry.Tutorial and entry.Tutorial.Player == player and self.Services.OnboardingService then
+			self.Services.OnboardingService:MatchFinished(player, match.Winner == side and not entry.Forfeited[side])
+		end
 	end
 	self.Matches[entry.Arena.Id] = nil
 	self.Services.ArenaService:Release(entry.Arena, entry.Players)
@@ -231,6 +258,9 @@ function Service:Dispatch(entry, now)
 			Remotes.MatchState:FireAllClients(self.Services.FightService:Describe(entry.Arena, setup, meta))
 		elseif change.Phase == "Fighting" then
 			local setup = Logic.fightSetup(match)
+			if entry.Tutorial then
+				setup.Assist = OnboardingRules.assist(match.Round, entry.Tutorial.Side)
+			end
 			for side, state in match.Sides do
 				entry.Used[side][state.Pick] = true
 			end

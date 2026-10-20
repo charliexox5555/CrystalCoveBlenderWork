@@ -74,6 +74,27 @@ function Controller:Close()
 	end
 end
 
+-- Onboarding opens (decision 100): play a Kiln opening for glassies the server already granted, then `done`.
+function Controller:Reveal(data, done)
+	local topbar = self.Controllers.TopbarController
+	if topbar then
+		topbar:CloseMenu()
+	end
+	self:Close()
+	local finished = false
+	self.Screen = Kiln.reveal(data, function()
+		self:Close()
+		if not finished then
+			finished = true
+			if done then
+				done()
+			end
+		end
+	end)
+	self.Screen.Profile = self.Profile
+	self:PanelOpened()
+end
+
 function Controller:PanelOpened()
 	self.PanelOpen = true
 	TouchGate.acquire(self)

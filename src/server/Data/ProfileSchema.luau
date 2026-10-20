@@ -49,6 +49,8 @@ function Schema.new(now)
 		-- Daily Rewards calendar (decision 99): Index = days claimed in the current 7-day cycle, LastDay = UTC day of
 		-- the last claim. Free pull tickets per crate category, spent in the Shop with the odds shown.
 		Calendar = { Index = 0, LastDay = -1 },
+		-- First session (decision 100): Welcome -> Daily -> Arena -> Match -> Done (OnboardingRules).
+		Onboarding = { Step = "Welcome" },
 		FreePulls = { Glassies = 0, Finishers = 0, Rideables = 0 },
 		Flags = { WelcomePullUsed = false, GroupRewardClaimed = false },
 		CodesRedeemed = {},
@@ -88,6 +90,13 @@ end
 
 function Schema.reconcile(data, now)
 	assert(type(data.Version) ~= "number" or data.Version <= Balance.Data.Version, "Profile belongs to a newer schema")
+	-- Profiles from before onboarding: players who already played skip it (the default would start it).
+	if type(data.Onboarding) ~= "table" then
+		local played = type(data.Stats) == "table"
+			and (tonumber(data.Stats.MatchWins) or 0) + (tonumber(data.Stats.MatchLosses) or 0) > 0
+		local welcomed = type(data.Flags) == "table" and data.Flags.WelcomePullUsed == true
+		data.Onboarding = { Step = if played or welcomed then "Done" else "Welcome" }
+	end
 	if type(data.Glassies) == "table" then
 		for _, owned in data.Glassies do
 			if type(owned) == "table" and owned.Count == nil then

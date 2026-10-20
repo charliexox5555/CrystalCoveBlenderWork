@@ -68,18 +68,21 @@ local function hold(state, side, emit, overrides, arm)
 	end
 	state.ReadySerial = (state.ReadySerial or 0) + 1
 	local shape = overrides and overrides.Shape or s.Kit.Shape
+	-- The onboarding first match gives the new player a longer CAST window (FightRules Assist.CastSeconds).
+	local assist = state.Assist
+	local seconds = assist and assist.CastSeconds and assist.CastSeconds[side] or Cast.AutoSeconds
 	s.Ready = {
 		Id = state.ReadySerial,
 		Overrides = overrides,
 		Arm = arm == true,
 		Shape = shape,
 		Since = state.Time,
-		AutoAt = state.Time + Cast.AutoSeconds,
+		AutoAt = state.Time + seconds,
 	}
 	event(state, emit, side, "SignatureReady", {
 		ReadyId = s.Ready.Id,
 		AutoAt = s.Ready.AutoAt,
-		Seconds = Cast.AutoSeconds,
+		Seconds = seconds,
 		Shape = shape,
 		Arm = arm == true,
 		Brew = overrides and overrides.Brew,

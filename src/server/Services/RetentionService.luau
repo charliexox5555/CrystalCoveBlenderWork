@@ -42,6 +42,9 @@ function Service:Request(player, kind, id)
 		return
 	end
 	local ok, message, reward, item = Rules.claim(data, kind, id, os.time())
+	if ok and kind == "Daily" and self.Services.OnboardingService then
+		self.Services.OnboardingService:DailyClaimed(player) -- onboarding step 2 -> 3 (decision 100)
+	end
 	if ok then
 		self.Services.DataService:Sync(player)
 		self.Services.DataService.Profiles[player].Profile:Save()

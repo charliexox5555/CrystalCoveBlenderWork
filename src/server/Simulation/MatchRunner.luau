@@ -18,11 +18,17 @@ function Runner:StartRound(now)
 			Logic.autoPick(self.Match, side)
 		end
 	end
-	self:PhaseTo("Rolling", now, Balance.Match.RollSeconds)
+	self:PhaseTo("Rolling", now, self.RollSeconds or Balance.Match.RollSeconds)
 end
 
-function Runner.new(sides, rng, now)
-	local self = setmetatable({ Match = Logic.new(sides, rng), Events = {}, Locked = {} }, Runner)
+-- options: { RollSeconds = n? } (the onboarding first match picks more slowly).
+function Runner.new(sides, rng, now, options)
+	local self = setmetatable({
+		Match = Logic.new(sides, rng),
+		Events = {},
+		Locked = {},
+		RollSeconds = options and options.RollSeconds,
+	}, Runner)
 	self:StartRound(now)
 	return self
 end

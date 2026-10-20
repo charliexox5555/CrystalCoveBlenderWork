@@ -50,7 +50,12 @@ export type Setup = {
 	-- Optional: does an aimed power fired by `side` reach the other glass right now? The swing
 	-- code answers from the 3D positions. Without it, Params.LandChance is rolled.
 	PowerLands: ((side: number, powerId: string) -> boolean)?,
+	-- Optional, the onboarding first match only (decision 100): `Taken[side]` scales damage that side takes and
+	-- `Protect` is the side that can't drop below 1 HP this round.
+	Assist: Assist?,
 }
+
+export type Assist = { Taken: { [number]: number }?, Protect: number?, CastSeconds: { [number]: number }? }
 
 export type Event = { [string]: any }
 
@@ -115,6 +120,7 @@ export type State = {
 	Hits: number,
 	InOvertime: boolean,
 	PowerLands: ((side: number, powerId: string) -> boolean)?,
+	Assist: Assist?,
 }
 
 local FightRules = {}
@@ -252,6 +258,7 @@ function FightRules.new(setup: Setup): State
 		Hits = 0,
 		InOvertime = false,
 		PowerLands = setup.PowerLands,
+		Assist = setup.Assist,
 	}
 	state.Fighters[1] = newFighter(1, setup.A, setup.SweetSpot, setup.Rng)
 	state.Fighters[2] = newFighter(2, setup.B, setup.SweetSpot, setup.Rng)
@@ -348,6 +355,13 @@ local function takeDamage(state: State, target: Fighter, amount: number, kind: s
 		amount *= target.PassiveParams.DamageTaken
 	end
 	amount = Signatures.mitigate(state, target, amount, kind or "ranged", emit)
+	local assist = state.Assist
+	if assist then
+		amount *= assist.Taken and assist.Taken[target.Side] or 1
+		if assist.Protect == target.Side then
+			amount = math.min(amount, math.max(0, target.Hp - 1))
+		end
+	end
 	target.Hp -= amount
 	Signatures.damaged(state, target, amount, kind or "ranged", emit)
 	return amount
@@ -755,6 +769,9 @@ local function tickFighter(state: State, f: Fighter, dt: number)
 		end
 		if state.Time >= f.ShieldUntil then
 			f.Hp -= total -- cracks ignore Sturdy; they're already in the glass
+			if state.Assist and state.Assist.Protect == f.Side then
+				f.Hp = math.max(f.Hp, math.min(1, f.MaxHp))
+			end
 		end
 	end
 	for i = #f.Sticky, 1, -1 do
@@ -775,7 +792,9 @@ local function timeout(state: State)
 	local a, b = state.Fighters[1], state.Fighters[2]
 	local fa, fb = a.Hp / a.MaxHp, b.Hp / b.MaxHp
 	local winner: number
-	if fa == fb then
+	if state.Assist and state.Assist.Protect then
+		winner = state.Assist.Protect -- the assisted first match still lands as planned on a timeout
+	elseif fa == fb then
 		winner = if state.Rng() < 0.5 then 1 else 2
 	else
 		winner = if fa > fb then 1 else 2

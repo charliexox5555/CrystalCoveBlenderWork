@@ -1,0 +1,10 @@
+{
+ "Record": "assets/blender/map/decor_kit/roblox_assets.json",
+ "Items": [
+  {"Key": "Decor_TreeRound", "Path": "assets/blender/map/decor_kit/Decor_TreeRound.fbx", "Type": "Model", "Name": "Decor TreeRound", "Description": "Glass Clash lobby decor: low-poly round tree."},
+  {"Key": "Decor_TreePine", "Path": "assets/blender/map/decor_kit/Decor_TreePine.fbx", "Type": "Model", "Name": "Decor TreePine", "Description": "Glass Clash lobby decor: low-poly pine."},
+  {"Key": "Decor_Bush", "Path": "assets/blender/map/decor_kit/Decor_Bush.fbx", "Type": "Model", "Name": "Decor Bush", "Description": "Glass Clash lobby decor: low-poly bush."},
+  {"Key": "Decor_Rock", "Path": "assets/blender/map/decor_kit/Decor_Rock.fbx", "Type": "Model", "Name": "Decor Rock", "Description": "Glass Clash lobby decor: low-poly rock."},
+  {"Key": "Decor_FlowerTuft", "Path": "assets/blender/map/decor_kit/Decor_FlowerTuft.fbx", "Type": "Model", "Name": "Decor FlowerTuft", "Description": "Glass Clash lobby decor: grass tuft with flowers."}
+ ]
+}

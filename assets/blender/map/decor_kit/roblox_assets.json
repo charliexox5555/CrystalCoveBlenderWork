@@ -1,0 +1,40 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "Decor_TreeRound": {
+   "AssetId": "112923572292891",
+   "Path": "assets/blender/map/decor_kit/Decor_TreeRound.fbx",
+   "Sha256": "7a7c60a1a206a5b267f046790cad36dd0f701289e7701e9ef441fe76c69e31a9",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:10:31"
+  },
+  "Decor_TreePine": {
+   "AssetId": "119942453672575",
+   "Path": "assets/blender/map/decor_kit/Decor_TreePine.fbx",
+   "Sha256": "272cef7bb0d70cb4c56e251f905be90c79cbaad256837ce5faa789c40342ccf6",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:10:38"
+  },
+  "Decor_Bush": {
+   "AssetId": "121358676796724",
+   "Path": "assets/blender/map/decor_kit/Decor_Bush.fbx",
+   "Sha256": "4a9df2dcc76f345d22825110e4d9d53d7318a73d1af2e1a70f332ff263002063",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:10:51"
+  },
+  "Decor_Rock": {
+   "AssetId": "108813216400441",
+   "Path": "assets/blender/map/decor_kit/Decor_Rock.fbx",
+   "Sha256": "223ce11b678fe024b7127a1328b32f937ffdaafa2c54dbf81c8c4b0211ead839",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:11:00"
+  },
+  "Decor_FlowerTuft": {
+   "AssetId": "127599498711858",
+   "Path": "assets/blender/map/decor_kit/Decor_FlowerTuft.fbx",
+   "Sha256": "0c604fffcd756855745ddb733663bafe3c9165dfb56e7349e940422040fef548",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T19:11:09"
+  }
+ }
+}

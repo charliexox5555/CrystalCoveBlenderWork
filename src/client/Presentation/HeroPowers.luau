@@ -19,6 +19,16 @@ end
 local function size(p, diameter)
 	p.Size *= diameter / math.max(p.Size.X, p.Size.Y, p.Size.Z)
 end
+-- Seamless powers (POWER_DIRECTION_AUDIT): aims and anchors follow the drawn bodies, not the CastStart snapshot
+-- (the glassies swing 30-110 degrees between windup and release). workspace PowerFXPinned = true is the old look.
+local function pinned()
+	return workspace:GetAttribute("PowerFXPinned") == true
+end
+local function toward(self, f)
+	local foe = self.Scene.Fighters[3 - f.Side]
+	local d = if foe then foe.Body.Position - f.Body.Position else Vector3.zero
+	return if d.Magnitude > 0.01 then d.Unit else nil
+end
 local function upFor(direction)
 	local up = Vector3.yAxis - direction * direction.Y
 	return if up.Magnitude > 0.001 then up.Unit else Vector3.zAxis
@@ -89,7 +99,7 @@ function Hero.ray(self, cast, color)
 	local f = self.Scene.Fighters[cast.Side]
 	f.RayAt = cast.Time
 	if f.Id == "prism" then
-		f.RayAim, f.RayAimUntil = cast.Direction, cast.Time + VFX.RayReadSeconds
+		f.RayAim, f.RayAimUntil, f.RayAimLive = cast.Direction, cast.Time + VFX.RayReadSeconds, false
 	end
 	-- PowerFX draws the ray (thick core + sheath that thins out); keep CombatEffects' locked beam as data only.
 	for _, beam in { cast.Beam, cast.Halo } do
@@ -150,7 +160,7 @@ function Hero.start(self, cast, e, color)
 		f.RayAim = if e.Direction
 			then self.Scene.Frame:VectorToWorldSpace(Vector3.new(table.unpack(e.Direction))).Unit
 			else self.Scene.Frame.RightVector * (if e.Side == 1 then 1 else -1)
-		f.RayAimUntil = e.Time + e.Windup
+		f.RayAimUntil, f.RayAimLive = e.Time + e.Windup, not pinned()
 	elseif f.Id == "crescent_axe" and e.Type == "CastStart" then
 		cast.Winding = true
 		cast.Direction = if e.Direction
@@ -181,10 +191,13 @@ function Hero.step(self, cast, age, alpha)
 		local progress = math.clamp(age / (if cast.Winding then e.Windup else e.Duration), 0, 1)
 		local arc = if cast.Winding then B.CombatRelease.Kits.crescent_axe.Arc else e.Arc
 		local angle = if cast.Winding then -0.5 * arc - progress * 0.25 else (-0.5 + progress) * arc
-		local direction = cast.Direction
-		local outward = direction * math.cos(angle) + cast.Up * math.sin(angle)
-		local up = cast.Up * math.cos(angle) - direction * math.sin(angle)
-		local origin = if cast.Winding then f.Body.Position else cast.Origin
+		-- Winding: the raised axe keeps facing the foe as both swing (the swing is aimed at it on release).
+		local direction = if cast.Winding and not pinned() then toward(self, f) or cast.Direction else cast.Direction
+		local castUp = if cast.Winding and not pinned() then upFor(direction) else cast.Up
+		local outward = direction * math.cos(angle) + castUp * math.sin(angle)
+		local up = castUp * math.cos(angle) - direction * math.sin(angle)
+		-- The swing happens round the axe as drawn, not round where it was at release.
+		local origin = if cast.Winding or not pinned() then f.Body.Position else cast.Origin
 		local reach = if cast.Winding then VFX.WeaponWindupRange else e.Range
 		local head = origin + outward * reach
 		-- Position is a separate argument; all three following arguments are basis vectors.
@@ -219,8 +232,10 @@ function Hero.details(self, f)
 				local aiming = f.RayAim and self.Time < (f.RayAimUntil or -1)
 				f.MotionSkip = if aiming then { RayLens = true } else nil
 				if aiming then
-					local point = f.Body.Position + f.RayAim * f.Body.Size.X * 0.5
-					p.CFrame = CFrame.lookAt(point, point + f.RayAim)
+					-- Through the windup the lens tracks the foe; once fired it holds the ray's line.
+					local aim = if f.RayAimLive then toward(self, f) or f.RayAim else f.RayAim
+					local point = f.Body.Position + aim * f.Body.Size.X * 0.5
+					p.CFrame = CFrame.lookAt(point, point + aim)
 					p.Material, p.Transparency = Enum.Material.Neon, 0.08
 				else
 					p.CFrame = f.Pivot * CFrame.new(rest.Center) * rest.Rotation

@@ -273,8 +273,8 @@ function Launch.dash(fx, side, seconds, spec)
 	})
 	local anchor = fx:Part("Anchor", WHITE)
 	local size = select(2, fx:Body(side))
-	fx:Trail(anchor, rainbow, 0.4, size * 0.9, NumberSequence.new(0.05, 1))
-	local nextStar = 0
+	local trail = fx:Trail(anchor, rainbow, 0.4, size * 0.9, NumberSequence.new(0.05, 1))
+	local nextStar, last = 0, nil
 	fx:Spawn({
 		Side = side,
 		Key = spec.Key or ("dash:" .. side),
@@ -283,7 +283,18 @@ function Launch.dash(fx, side, seconds, spec)
 		Step = function(_, age)
 			local pos = fx:Body(side)
 			anchor.CFrame = CFrame.lookAt(pos, pos + cam().LookVector)
-			if age >= nextStar then
+			-- The streak draws only the charge at the foe (POWER_DIRECTION_AUDIT): the dash starts at a turnaround,
+			-- and a trail through the reversal and the swing back read as a scribble in every direction.
+			local charging = true
+			if last and not fx:Pinned() then
+				local moved = pos - last
+				if moved.Magnitude > 0.01 then
+					charging = moved.Unit:Dot(fx:Toward(side)) > 0.15
+				end
+			end
+			last = pos
+			trail.Enabled = charging
+			if charging and age >= nextStar then
 				nextStar = age + 0.08
 				fx:Glints(side, pos, hex("#FFE45C"), 2, { Speed = NumberRange.new(0.5, 2) })
 			end

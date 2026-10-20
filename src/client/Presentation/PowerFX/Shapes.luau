@@ -24,7 +24,7 @@ return function(FX)
 		end
 		local outer = self:Part("Ball", color)
 		local core = self:Part("Ball", WHITE)
-		local where = at
+		local where = self:Followed(at)
 		return self:Spawn({
 			Side = side,
 			Start = start(self, opts),
@@ -46,6 +46,7 @@ return function(FX)
 	-- facing), Ground (lie flat), Spin (rad/s), Alpha (start transparency), Ease ("out" | "in"), Follow (function).
 	function FX:Ring(side, at, color, from, to, seconds, opts)
 		opts = opts or {}
+		at = self:Followed(at)
 		local p = self:Part(opts.Kind or "Ring", color)
 		local spin = opts.Spin or 0
 		return self:Spawn({
@@ -77,6 +78,7 @@ return function(FX)
 	-- Crystal spokes shooting out in the camera plane (star-burst).
 	function FX:Spokes(side, at, color, count, length, seconds, opts)
 		opts = opts or {}
+		at = self:Followed(at)
 		count = self:Count(side, count)
 		local parts, base = {}, rng:NextNumber(0, math.pi * 2)
 		for i = 1, count do
@@ -210,6 +212,7 @@ return function(FX)
 	-- A beam between two moving points (functions or Vector3). opts: Texture, Width1, Segments, Curve, Speed.
 	function FX:Beam(side, a, b, color, width, seconds, opts)
 		opts = opts or {}
+		a, b = self:Followed(a), self:Followed(b)
 		local p0, p1 = self:Part("Anchor", WHITE), self:Part("Anchor", WHITE)
 		local beam = p0:FindFirstChild("FXBeam")
 		if not beam then

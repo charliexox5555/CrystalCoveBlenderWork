@@ -122,7 +122,13 @@ local function shots(fx, side, e, ctx, opts)
 				if shot.Done then
 					return false
 				end
-				local pos = ctx.Origin + dir * (e.Range or 6) * Path.distance(k, e.Path)
+				-- World-fixed like the server's shot; a returning shot (Prism Blade, Fishbowl) is caught by the
+				-- glassy where it is now, not where it threw from.
+				local from = ctx.Origin
+				if e.Path == "return" and k > 0.5 and ctx.Here then
+					from = ctx.Origin:Lerp(ctx.Here(), fx.smooth((k - 0.5) / 0.5))
+				end
+				local pos = from + dir * (e.Range or 6) * Path.distance(k, e.Path)
 				-- Volleys fan in depth (true to the server); a small vertical stagger keeps them readable side-on.
 				pos += Vector3.yAxis * ((i - (count + 1) / 2) * 0.35 * math.min(1, k * 4))
 				shot.Position = pos
@@ -154,12 +160,14 @@ local function ray(fx, side, e, ctx, opts)
 	local color, accent = fx:Colors(side)
 	local seconds = opts.Seconds or 0.5
 	local width = opts.Width or 0.55
+	-- Both ends are live: the ray leaves the caster as drawn and stays on the glass it struck.
 	local finish = function()
-		return ctx.End or (ctx.Origin + ctx.Direction * (e.Range or 8))
+		if ctx.EndAt then
+			return ctx.EndAt()
+		end
+		return ctx.End or (ctx.Here() + ctx.Direction * (e.Range or 8))
 	end
-	local start = function()
-		return ctx.Origin
-	end
+	local start = opts.Start or ctx.Here
 	local shape = function(k)
 		return fx.pop(k / 0.12) * (1 - fx.smooth((k - 0.25) / 0.75))
 	end
@@ -189,8 +197,8 @@ local function ray(fx, side, e, ctx, opts)
 			Emission = 0,
 		})
 	end
-	fx:Flash(side, ctx.Origin, color, 1.6, 0.14)
-	fx:Ring(side, ctx.Origin, accent, 0.5, 2.6, 0.22, { Rotation = fx.tilted(ctx.Direction), Alpha = 0.1 })
+	fx:Flash(side, start, color, 1.6, 0.14)
+	fx:Ring(side, start, accent, 0.5, 2.6, 0.22, { Rotation = fx.tilted(ctx.Direction), Alpha = 0.1 })
 end
 Kits.ray = ray
 
@@ -201,7 +209,6 @@ local function cone(fx, side, e, ctx, opts)
 	local pulses = e.Pulses or 1
 	local duration = math.max(0.1, e.Duration or 0.3)
 	local range, arc = e.Range or 5.5, e.Arc or 0.9
-	local look = CFrame.lookAt(ctx.Origin, ctx.Origin + ctx.Direction)
 	for pulse = 1, pulses do
 		local delay = (pulse - 1) * duration / pulses
 		local sheets = fx:Count(side, opts.Sheets or 2)
@@ -218,19 +225,21 @@ local function cone(fx, side, e, ctx, opts)
 					local d = range * fx.easeOut(k) * 0.85
 					local w = math.max(0.6, 2 * d * math.tan(arc / 2)) * (opts.Width or 1)
 					local base = fx.Base[p:GetAttribute("PowerFXKind")]
+					-- The cone grows from the caster's mouth as it swings, toward the glass once a pulse landed.
+					local dir = ctx.Aim()
 					p.Size = Vector3.new(w * 1.25, w * base.Y / base.X * 1.25, base.Z)
-					p.CFrame = fx.along(fx.front(ctx.Origin + ctx.Direction * d, 0.6), ctx.Direction)
-						* CFrame.Angles(0, 0, roll * 0.15)
+					p.CFrame = fx.along(fx.front(ctx.Here() + dir * d, 0.6), dir) * CFrame.Angles(0, 0, roll * 0.15)
 					p.Transparency = 0.12 + 0.88 * fx.easeIn(k)
 				end,
 			})
 		end
-		local tip = ctx.Origin + ctx.Direction * range * 0.5
 		fx:Spawn({
 			Side = side,
 			Start = fx:Time() + delay,
 			Seconds = 0.01,
 			Step = function()
+				local origin, dir = ctx.Here(), ctx.Aim()
+				local look = CFrame.lookAt(origin, origin + dir)
 				fx:Emit(
 					side,
 					opts.Particle or "Sparkle",
@@ -245,9 +254,9 @@ local function cone(fx, side, e, ctx, opts)
 					}
 				)
 				if opts.Chips ~= 0 then
-					fx:Chips(side, ctx.Origin, color, opts.Chips or 4, range * 2.2, 0.4, {
+					fx:Chips(side, origin, color, opts.Chips or 4, range * 2.2, 0.4, {
 						Kind = opts.ChipKind or "CrystalChip",
-						Direction = ctx.Direction,
+						Direction = dir,
 						Cone = arc * 0.5,
 						Up = 0.5,
 						Gravity = opts.Gravity or 6,
@@ -257,9 +266,8 @@ local function cone(fx, side, e, ctx, opts)
 				return false
 			end,
 		})
-		local _ = tip
 	end
-	fx:Flash(side, ctx.Origin, color, 1.4, 0.14)
+	fx:Flash(side, ctx.Here, color, 1.4, 0.14)
 end
 Kits.cone = cone
 
@@ -270,14 +278,14 @@ local function pulseRings(fx, side, e, ctx, opts)
 	local range = e.Range or 6
 	local duration = math.max(0.2, e.Duration or 0.6)
 	for i = 1, fx:Count(side, opts.Rings or 3) do
-		fx:Ring(side, ctx.Origin, if i % 2 == 0 then accent else color, 0.8, range * 2, duration * 0.85, {
+		fx:Ring(side, ctx.Here, if i % 2 == 0 then accent else color, 0.8, range * 2, duration * 0.85, {
 			Kind = opts.Kind or "Ring",
 			Delay = (i - 1) * duration * 0.18,
 			Alpha = 0.12 + (i - 1) * 0.15,
 			Spin = (if i % 2 == 0 then -1 else 1) * 1.5,
 		})
 	end
-	fx:Flash(side, ctx.Origin, color, 2, 0.16)
+	fx:Flash(side, ctx.Here, color, 2, 0.16)
 end
 Kits.pulseRings = pulseRings
 
@@ -396,13 +404,12 @@ Kits.jam = {
 
 Kits.prism = {
 	Windup = function(fx, side, e)
-		local f = fx:Fighter(side)
 		local rainbow = { "#FF6B8B", "#FFB347", "#FFE45C", "#6CFF9A", "#5FB4FF", "#C9A8FF" }
 		local windup = math.max(0.1, e.Windup or 0.45)
 		local lens = function()
 			local pos, size = fx:Body(side)
-			local aim = f.RayAim or fx:Toward(side)
-			return pos + aim * size * 0.5
+			-- Aims at the foe live through the windup: the server fires along that line on release.
+			return pos + fx:Toward(side) * size * 0.5
 		end
 		local motes = {}
 		for i = 1, fx:Count(side, 6) do
@@ -429,7 +436,16 @@ Kits.prism = {
 		fx:Cue(side, "prism_gather")
 	end,
 	Release = function(fx, side, e, ctx)
-		ray(fx, side, e, ctx, { Width = 0.45, Rainbow = true, Sheath = hex("#9C6CFF"), Seconds = 0.5 })
+		-- The ray leaves from the lens (HeroPowers aims it along the ray), not from the body's centre.
+		local f = fx:Fighter(side)
+		local lens = function()
+			if fx:Pinned() then
+				return ctx.Origin
+			end
+			local aim = f.RayAim or ctx.Aim()
+			return f.Body.Position + aim * f.Body.Size.X * 0.5
+		end
+		ray(fx, side, e, ctx, { Width = 0.45, Rainbow = true, Sheath = hex("#9C6CFF"), Seconds = 0.5, Start = lens })
 	end,
 	Hit = function(fx, side, _, at)
 		fx:Flash(side, at, WHITE, 2, 0.14)
@@ -441,7 +457,7 @@ Kits.prism = {
 		fx:Glints(side, at, WHITE, 12)
 	end,
 	Miss = function(fx, side, _, ctx)
-		local at = ctx.Origin + ctx.Direction * 8
+		local at = ctx.Here() + ctx.Direction * 8
 		fx:Glints(side, at, hex("#C9A8FF"), 8, { Speed = NumberRange.new(2, 5) })
 		fx:Ring(side, at, WHITE, 0.4, 1.8, 0.25, { Alpha = 0.4 })
 	end,
@@ -526,9 +542,9 @@ Kits.comet = {
 				fx:Trail(p, tail, 0.45, 1.1)
 			end
 		end
-		fx:Flash(side, ctx.Origin, accent, 2.2, 0.16)
-		fx:Ring(side, ctx.Origin, color, 0.6, 4, 0.3, { Kind = "ShockCrown", Spin = 3 })
-		fx:Light(side, ctx.Origin, accent, 0.35)
+		fx:Flash(side, ctx.Here, accent, 2.2, 0.16)
+		fx:Ring(side, ctx.Here, color, 0.6, 4, 0.3, { Kind = "ShockCrown", Spin = 3 })
+		fx:Light(side, ctx.Here, accent, 0.35)
 		fx:Cue(side, "comet_launch")
 	end,
 	Hit = function(fx, side, _, at)
@@ -545,7 +561,7 @@ Kits.comet = {
 	end,
 	Miss = function(fx, side, _, ctx)
 		local _, accent = fx:Colors(side)
-		local at = ctx.Origin + ctx.Direction * 8
+		local at = ctx.Here() + ctx.Direction * 8
 		fx:Glints(side, at, accent, 10, { Speed = NumberRange.new(1, 3) })
 	end,
 }
@@ -615,19 +631,19 @@ Kits.glass_dragon = {
 		})
 		fx:Ring(
 			side,
-			ctx.Origin,
+			ctx.Here,
 			accent,
 			0.8,
 			5,
 			0.35,
 			{ Kind = "ShockCrown", Rotation = fx.tilted(ctx.Direction), Spin = 3 }
 		)
-		fx:Flash(side, ctx.Origin, WHITE, 2.4, 0.16)
+		fx:Flash(side, ctx.Here, WHITE, 2.4, 0.16)
 		fx:Light(side, function()
-			return ctx.Origin + ctx.Direction * 2.5
+			return ctx.Here() + ctx.Aim() * 2.5
 		end, color, (e.Duration or 0.5) + 0.25, 6, 16)
 		fx:HeroBloom(side, 1)
-		fx:GroundRing(side, ctx.Origin + ctx.Direction * 3, color, 5, 0.6)
+		fx:GroundRing(side, ctx.Here() + ctx.Direction * 3, color, 5, 0.6)
 		fx:Cue(side, "dragon_breath")
 	end,
 	Hit = function(fx, side, e, at)
@@ -854,7 +870,7 @@ Kits.prism_blade = {
 			TrailWidth = 1.4,
 			Core = false,
 		})
-		fx:Flash(side, ctx.Origin, color, 1.8, 0.14)
+		fx:Flash(side, ctx.Here, color, 1.8, 0.14)
 	end,
 	Hit = function(fx, side, _, at)
 		local color, accent = fx:Colors(side)
@@ -974,7 +990,7 @@ Kits.crescent_axe = {
 				local angle = (-0.5 + progress) * arc
 				local outward = ctx.Direction * math.cos(angle) + up * math.sin(angle)
 				local fade = fx.smooth((age - duration) / 0.18)
-				local head = ctx.Origin + outward * range * 0.75
+				local head = ctx.Here() + outward * range * 0.75
 				-- Camera-plane crescent: X along the swing tangent, Y (the bulge) outward.
 				local c = cam()
 				local tangent = -ctx.Direction * math.sin(angle) + up * math.cos(angle)
@@ -992,14 +1008,16 @@ Kits.crescent_axe = {
 		})
 		fx:Chips(
 			side,
-			ctx.Origin + ctx.Direction * range * 0.6,
+			ctx.Here() + ctx.Direction * range * 0.6,
 			accent,
 			5,
 			6,
 			0.5,
 			{ Kind = "CrystalChip", Direction = ctx.Direction, Cone = 0.8, Size = 0.35 }
 		)
-		fx:Light(side, ctx.Origin + ctx.Direction * range * 0.5, color, duration + 0.1)
+		fx:Light(side, function()
+			return ctx.Here() + ctx.Direction * range * 0.5
+		end, color, duration + 0.1)
 	end,
 	Hit = function(fx, side, _, at)
 		local color, accent = fx:Colors(side)
@@ -1138,14 +1156,15 @@ Kits.arc_coil = {
 	end,
 	Release = function(fx, side, e, ctx)
 		local color = fx:Colors(side)
-		bolt(fx, side, function()
-			return ctx.Origin
-		end, function()
-			return ctx.End or (ctx.Origin + ctx.Direction * (e.Range or 12))
+		bolt(fx, side, ctx.Here, function()
+			if ctx.EndAt then
+				return ctx.EndAt()
+			end
+			return ctx.End or (ctx.Here() + ctx.Direction * (e.Range or 12))
 		end, color, 0.32, 0.45)
-		fx:Flash(side, ctx.Origin, color, 1.8, 0.12)
+		fx:Flash(side, ctx.Here, color, 1.8, 0.12)
 		fx:Cue(side, "arc_bolt")
-		local l = fx:Light(side, ctx.Origin, color, 0.45, 5)
+		local l = fx:Light(side, ctx.Here, color, 0.45, 5)
 		if l then
 			l.Rise = 0.05
 		end
@@ -1160,7 +1179,7 @@ Kits.arc_coil = {
 	end,
 	Miss = function(fx, side, _, ctx)
 		local color = fx:Colors(side)
-		fx:Glints(side, ctx.Origin + ctx.Direction * 12, color, 6)
+		fx:Glints(side, ctx.Here() + ctx.Direction * 12, color, 6)
 	end,
 }
 
@@ -1260,7 +1279,9 @@ Kits.frostglobe = {
 			ChipKind = "CrystalShard",
 			ChipSize = 0.5,
 		})
-		fx:Light(side, ctx.Origin + ctx.Direction * 2, color, 0.4)
+		fx:Light(side, function()
+			return ctx.Here() + ctx.Aim() * 2
+		end, color, 0.4)
 	end,
 	Hit = function(fx, side, _, at)
 		local color, accent = fx:Colors(side)
@@ -1477,7 +1498,7 @@ Kits.lemonade_bottle = {
 			ctx,
 			{ Kind = "Droplet", Size = 0.95, Alternate = hex("#FFB21F"), Trail = 0.2, TrailWidth = 0.7 }
 		)
-		fx:Flash(side, ctx.Origin, color, 1.4, 0.12)
+		fx:Flash(side, ctx.Here, color, 1.4, 0.12)
 		local _ = accent
 	end,
 	Hit = function(fx, side, _, at)
@@ -1628,7 +1649,7 @@ Kits.chime = {
 	Release = function(fx, side, e, ctx)
 		pulseRings(fx, side, e, ctx, { Rings = 3, Kind = "Ring" })
 		local _, accent = fx:Colors(side)
-		fx:Glints(side, ctx.Origin, accent, 10, { Speed = NumberRange.new(3, 6) })
+		fx:Glints(side, ctx.Here(), accent, 10, { Speed = NumberRange.new(3, 6) })
 		fx:Cue(side, "chime_ring")
 	end,
 }
@@ -1648,7 +1669,7 @@ Kits.fishbowl = {
 				shot.Effect.Parts[1].Color = accent
 			end
 		end
-		fx:Chips(side, ctx.Origin, fx:Colors(side), 4, 4, 0.4, { Kind = "Droplet", Size = 0.35, Up = 2 })
+		fx:Chips(side, ctx.Here(), fx:Colors(side), 4, 4, 0.4, { Kind = "Droplet", Size = 0.35, Up = 2 })
 	end,
 	Hit = function(fx, side, e, at)
 		Kits.water_jug.Hit(fx, side, e, at)
@@ -1709,7 +1730,7 @@ Kits.glass_phoenix = {
 				end
 			end,
 		})
-		fx:Flash(side, ctx.Origin, accent, 1.6, 0.12)
+		fx:Flash(side, ctx.Here, accent, 1.6, 0.12)
 	end,
 }
 
@@ -1787,7 +1808,7 @@ Kits.default = {
 	Miss = function(fx, side, _, ctx)
 		local color = fx:Colors(side)
 		if ctx and ctx.Origin then
-			fx:Glints(side, ctx.Origin + ctx.Direction * 4, color, 4)
+			fx:Glints(side, (if ctx.Here then ctx.Here() else ctx.Origin) + ctx.Direction * 4, color, 4)
 		end
 	end,
 	Payoff = function(fx, side, _, at)

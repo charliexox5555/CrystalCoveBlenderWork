@@ -29,19 +29,53 @@ return function(FX)
 		return f and Kits[f.Id] or Kits.default
 	end
 
-	-- Calls kit[name] or the shape default.
-	function FX:Call(side, name, ...)
+	-- Calls kit[name] or the shape default. `follow` = { Point, Live }: during the call, primitives placed exactly at
+	-- Point ride along with Live (a struck glassy), so impacts stay on the glass they hit.
+	function FX:Call(side, name, follow, ...)
 		local kit = self:Kit(side)
 		if kit.Skip then
 			return
 		end
 		local fn = kit[name] or Kits.default[name]
 		if fn then
+			self.Following = follow
 			local ok, err = pcall(fn, self, side, ...)
+			self.Following = nil
 			if not ok then
 				warn("PowerFX " .. tostring(self:Fighter(side).Id) .. "." .. name .. ": " .. tostring(err))
 			end
 		end
+	end
+
+	-- Hit / Payoff points ride with the glassy they landed on.
+	function FX:Follow(target, point)
+		if self:Pinned() or not self:Fighter(target) then
+			return nil
+		end
+		return { Point = point, Live = self:Rider(target, point) }
+	end
+
+	-- Live points for a released cast (POWER_DIRECTION_AUDIT): ctx.Here() is the caster as drawn now (the release point
+	-- carried along by the swing); ctx.Aim() is the release direction, or the line to the struck glassy once it landed.
+	-- Effects attached to the caster use these; world-fixed shots keep ctx.Origin / ctx.Direction.
+	local function live(fx, side, ctx)
+		local rider = fx:Rider(side, ctx.Origin)
+		ctx.Here = if type(rider) == "function"
+			then rider
+			else function()
+				return ctx.Origin
+			end
+		ctx.Aim = function()
+			local target = ctx.Hit and not fx:Pinned() and fx:Fighter(ctx.Target)
+			if target then
+				local d = target.Body.Position - ctx.Here()
+				if d.Magnitude > 0.01 then
+					return d.Unit
+				end
+			end
+			return ctx.Direction
+		end
+		return ctx
 	end
 
 	function FX:Event(e)
@@ -117,7 +151,7 @@ return function(FX)
 		end
 		if e.Type == "CastStart" then
 			if not stale or now < e.Time + (e.Windup or 0) then
-				self:Call(side, "Windup", e)
+				self:Call(side, "Windup", nil, e)
 			end
 			return
 		end
@@ -130,6 +164,7 @@ return function(FX)
 					then self.Scene.Frame:VectorToWorldSpace(vector(e.Direction)).Unit
 					else self:Toward(side),
 			}
+			live(self, side, ctx)
 			self.Casts = self.Casts or {}
 			if e.CastId then
 				self.Casts[e.CastId] = ctx
@@ -143,7 +178,7 @@ return function(FX)
 				ctx.End = nil
 			end
 			if not Launch.event(self, e, ctx) then
-				self:Call(side, "Release", e, ctx)
+				self:Call(side, "Release", nil, e, ctx)
 			end
 			return
 		end
@@ -170,15 +205,17 @@ return function(FX)
 				return
 			end
 			if e.Missed then
-				self:Call(side, "Miss", e, ctx or {})
+				self:Call(side, "Miss", nil, e, ctx or {})
 			else
-				local at = if e.Point
-					then self.Scene.Frame:PointToWorldSpace(vector(e.Point))
-					else (self:Body(e.Target or (3 - side)))
+				local target = e.Target or (3 - side)
+				local at = if e.Point then self.Scene.Frame:PointToWorldSpace(vector(e.Point)) else (self:Body(target))
 				if ctx then
-					ctx.End = at
+					-- The contact rides with the struck glassy: rays and bolts stay connected to it.
+					ctx.Hit, ctx.Target, ctx.End = true, target, at
+					local rider = self:Rider(target, at)
+					ctx.EndAt = if type(rider) == "function" then rider else nil
 				end
-				self:Call(side, "Hit", e, at, ctx)
+				self:Call(side, "Hit", self:Follow(target, at), e, at, ctx)
 			end
 			return
 		end
@@ -188,13 +225,14 @@ return function(FX)
 			end
 			if not stale then
 				local at = if e.Point then self.Scene.Frame:PointToWorldSpace(vector(e.Point)) else (self:Body(side))
-				self:Call(side, "Payoff", e, at)
+				-- A contact payoff lands on the foe; a self payoff (no point) on the owner.
+				self:Call(side, "Payoff", self:Follow(if e.Point then (e.Target or (3 - side)) else side, at), e, at)
 			end
 			return
 		end
 		if e.Type == "SignatureBlock" then
 			if not stale then
-				self:Call(side, "Block", e)
+				self:Call(side, "Block", nil, e)
 			end
 			return
 		end
@@ -211,7 +249,7 @@ return function(FX)
 				self.BoostSeen[side] = e.Time
 			end
 			if not stale or e.Kind == "Echo" then
-				self:Call(side, "Status", e)
+				self:Call(side, "Status", nil, e)
 			end
 		end
 		local _ = ARMS

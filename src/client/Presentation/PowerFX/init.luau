@@ -508,6 +508,7 @@ function FX:Light(side, at, color, seconds, brightness, range)
 	if count >= C.Budget.Lights then
 		return
 	end
+	at = self:Followed(at)
 	local p = self:Part("Anchor", color)
 	local light = p:FindFirstChildOfClass("PointLight") or Instance.new("PointLight")
 	light.Color, light.Range, light.Brightness, light.Shadows = color, range or C.Light.Range, 0, false
@@ -599,6 +600,39 @@ function FX:Toward(side)
 	local a, b = self:Fighter(side).Body.Position, self:Fighter(3 - side).Body.Position
 	local d = b - a
 	return if d.Magnitude > 0.01 then d.Unit else self.Scene.Frame.RightVector * (if side == 1 then 1 else -1)
+end
+
+-- Seamless powers (docs/testing/combat_release/POWER_DIRECTION_AUDIT.md): the glassies swing at ~13 studs/s, so a
+-- moment pinned at its release or contact point is left behind within a few frames. Casts and hits ride with the
+-- drawn bodies instead. Studio A/B: workspace attribute PowerFXPinned = true restores the old pinned points.
+function FX:Pinned()
+	return workspace:GetAttribute("PowerFXPinned") == true
+end
+
+-- `point` riding with `side`'s body from now on (a function the primitives step), or `point` itself when pinned.
+function FX:Rider(side, point)
+	local f = self:Fighter(side)
+	if not f or self:Pinned() then
+		return point
+	end
+	local offset = point - f.Body.Position
+	return function()
+		return f.Body.Position + offset
+	end
+end
+
+-- A position that may be a function, as a Vector3 now (for one-shot emitters).
+function FX.now(at)
+	return if type(at) == "function" then at(0) else at
+end
+
+-- While a Hit / Payoff runs, primitives placed exactly at its point ride with the struck glassy (FX:Call).
+function FX:Followed(at)
+	local follow = self.Following
+	if follow and typeof(at) == "Vector3" and at == follow.Point then
+		return follow.Live
+	end
+	return at
 end
 
 -- Body motion layers read by Hero.motion (anticipation wiggle, rear-back, recoil).

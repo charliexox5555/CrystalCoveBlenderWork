@@ -3,6 +3,16 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-20 — Claude — Power direction audit (creator note)
+Done:
+- Audit of every directional power on the real swing (`tools/power_direction_audit.luau`): releases aim well (6-14° off the foe), but windups used the CastStart direction (30-110° off by release) and effects were pinned at release/contact points while the glassies swing ~6 studs away. Report with before/after captures: `docs/testing/combat_release/POWER_DIRECTION_AUDIT.md`.
+- Presentation-only fixes: live cast points (`ctx.Here` / `ctx.Aim`) and hit effects that ride with the struck glassy (PowerFX Dispatch/init/Shapes); rays and bolts end on the struck glass; Prism's lens tracks the foe and the ray leaves from it; cones/breath grow from the caster; Crescent Axe's weapon faces the foe while winding and sweeps round the axe as drawn; boomerangs return to the glassy; the Unicorn's rainbow streak only draws while it charges at the foe.
+- Studio: all directional kits staged hit/miss plus a live bot match, no PowerFX errors. Lune 188/188. No Balance, Powers or server changes.
+Next:
+- Creator feel check in a real match; `workspace:SetAttribute("PowerFXPinned", true)` shows the old look for comparison.
+Problems / questions for the user:
+- None.
+
 ## YYYY-MM-DD — <agent or person> — <milestone>
 Done:
 - ...

@@ -130,7 +130,7 @@ local UIAssets = {
 	["screens/playtime_rewards/icon_clock"] = "rbxassetid://109458855076082",
 	["screens/playtime_rewards/icon_lock"] = "rbxassetid://103789030449627",
 	["screens/playtime_rewards/time_tag"] = "rbxassetid://75404031875632",
-	["screens/playtime_rewards/window"] = "rbxassetid://100521988636466",
+	["screens/playtime_rewards/window"] = "rbxassetid://117328170402465",
 	-- DailyRewardsScreen (tools/ui/daily_rewards_art.py; docs/ui/screens/DailyRewardsScreen.md)
 	["screens/daily_rewards/cell_locked"] = "rbxassetid://112424900545322",
 	["screens/daily_rewards/cell_claimed"] = "rbxassetid://123062189542207",

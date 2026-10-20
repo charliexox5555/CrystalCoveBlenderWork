@@ -1,10 +1,11 @@
 -- Edit mode (Studio MCP), with the Studio lock held. Rebuilds StarterGui.PlaytimeRewardsScreen as a wide Stained Glass
--- window (design only; nothing is wired yet): a progress bar with milestone gems over six reward cells (10..60 min).
+-- window (design only; nothing is wired yet): a progress bar with milestone gems over five reward cells
+-- (10, 20, 30, 45, 60 min).
 -- Re-runnable: the previous PlaytimeRewardsScreen is copied to ServerStorage.UIBackup_Topbar first, then replaced.
 -- Only PlaytimeRewardsScreen is touched. Close diamond, title banner and title are cloned from
 -- StarterGui.CollectionScreen.Panel so they match Inventory.
 -- Element map, states and assets: docs/ui/screens/PlaytimeRewardsScreen.md. Art: tools/ui/playtime_rewards_art.py.
--- The build shows a sample of 23 minutes played: 10 claimed, 20 ready, 30 next (6:48 left), 40-60 locked.
+-- The build shows a sample of 23 minutes played: 10 claimed, 20 ready, 30 next (6:48 left), 45 and 60 locked.
 assert(not game:GetService("RunService"):IsRunning(), "Run in Edit")
 local StarterGui = game:GetService("StarterGui")
 local ServerStorage = game:GetService("ServerStorage")
@@ -12,7 +13,7 @@ local ServerStorage = game:GetService("ServerStorage")
 -- Image ids (Decal uploads resolved to textures). Keys match UIAssets "screens/playtime_rewards/<key>" unless a kit
 -- path is given; each image's AssetPath attribute names its UIAssets key.
 local IMG = {
-	window = "rbxassetid://100521988636466",
+	window = "rbxassetid://117328170402465",
 	cell_open = "rbxassetid://92846045397361",
 	cell_ready = "rbxassetid://109813909526428",
 	cell_locked = "rbxassetid://74505075426783",
@@ -52,36 +53,42 @@ local HEADING = Font.new("rbxasset://fonts/families/DenkOne.json")
 local BODY = Font.new("rbxasset://fonts/families/Nunito.json", Enum.FontWeight.ExtraBold)
 local NUMBER = Font.new("rbxasset://fonts/families/Nunito.json", Enum.FontWeight.Heavy)
 
--- Geometry (panel fractions). Cell centres and marker gems share COLUMN_X so each gem sits over its cell.
-local PANEL_ASPECT = 2.4 -- window art 1680x700
-local ROW_X, ROW_W = 0.04, 0.92 -- reward row
-local COLUMN_X = {}
-for i = 1, 6 do
-	COLUMN_X[i] = ROW_X + ROW_W * (i - 0.5) / 6
-end
-local BAR_X0, BAR_X1, BAR_Y, BAR_H = 0.045, 0.955, 0.33, 0.065 -- track; 0 min sits at BAR_X0 (under the clock)
-local CELL_ASPECT = 200 / 310
-
--- Sample state for the design build (game state later).
+-- Sample state for the design build (game state later). Stages are the creator's: 10, 20, 30, 45, 60 minutes.
 local PLAYED_MIN, NEXT_LEFT = 23, "6:48"
 local REWARDS = {
 	{ Min = 10, Icon = "icon/coin", Amount = "x50", State = "Claimed" },
 	{ Min = 20, Icon = "icon/coin", Amount = "x75", State = "Ready" },
 	{ Min = 30, Icon = "icon/coin", Amount = "x100", State = "Next" },
-	{ Min = 40, Icon = "icon/marble", Amount = "x1", State = "Locked" },
-	{ Min = 50, Icon = "icon/coin", Amount = "x150", State = "Locked" },
+	{ Min = 45, Icon = "icon/marble", Amount = "x1", State = "Locked" },
 	{ Min = 60, Icon = "icon/marble", Amount = "x3", State = "Locked", Best = true },
 }
+local COUNT = #REWARDS
 
--- Panel x of a play time: piecewise between marker centres, 0 min at the bar's start, full bar after 60.
+-- Geometry (panel fractions). Cell centres and marker gems share COLUMN_X so each gem sits over its cell.
+local PANEL_ASPECT = 2.0 -- window art 1400x700
+local ROW_X, ROW_W = 0.05, 0.92 -- reward row
+local COLUMN_X = {}
+for i = 1, COUNT do
+	COLUMN_X[i] = ROW_X + ROW_W * (i - 0.5) / COUNT
+end
+-- Track: 0 min sits at BAR_X0 (under the clock); it ends just past the last gem, which the fill reaches at 60.
+local BAR_X0, BAR_X1, BAR_Y, BAR_H = 0.058, COLUMN_X[COUNT] + 0.045, 0.33, 0.065
+local CELL_ASPECT = 200 / 310
+
+-- Panel x of a play time: piecewise between marker centres (stages are not evenly spaced in time, but their gems
+-- are), 0 min at the bar's start, the whole track once the last stage is reached.
 local function timeToX(minutes: number): number
-	if minutes <= 10 then
-		return BAR_X0 + (COLUMN_X[1] - BAR_X0) * minutes / 10
-	elseif minutes >= 60 then
-		return COLUMN_X[6] + (BAR_X1 - COLUMN_X[6]) * math.min(1, (minutes - 60) / 10)
+	if minutes >= REWARDS[COUNT].Min then
+		return BAR_X1
 	end
-	local i = math.floor(minutes / 10)
-	return COLUMN_X[i] + (COLUMN_X[i + 1] - COLUMN_X[i]) * (minutes - i * 10) / 10
+	local prevMin, prevX = 0, BAR_X0
+	for i, r in REWARDS do
+		if minutes <= r.Min then
+			return prevX + (COLUMN_X[i] - prevX) * (minutes - prevMin) / (r.Min - prevMin)
+		end
+		prevMin, prevX = r.Min, COLUMN_X[i]
+	end
+	return BAR_X1
 end
 
 local function new(class, props, parent)
@@ -170,32 +177,33 @@ local panel = new("Frame", {
 	Active = true,
 	AnchorPoint = Vector2.new(0.5, 0.5),
 	Position = UDim2.fromScale(0.5, 0.5),
-	Size = UDim2.fromScale(0.9, 0.9),
+	Size = UDim2.fromScale(0.72, 0.9),
 }, gui)
 panel:SetAttribute("StainedGlass", true)
 aspect(panel, PANEL_ASPECT)
 image("WindowArtwork", "window", { Size = UDim2.fromScale(1, 1), ZIndex = 0 }, panel)
 
--- Header: banner, title, close (Inventory's pixel size: ~0.3 / 0.052 of this wider window), note on the right.
+-- Header: banner, title, close (about Inventory's pixel size), note on the right.
 local banner = source.TitleBanner:Clone()
 banner.Image, banner.ZIndex = KIT["panel/title_aqua"], 3
 banner:SetAttribute("AssetPath", "panel/title_aqua")
-banner.Position, banner.Size = UDim2.fromScale(0.03, -0.065), UDim2.fromScale(0.3, 0.182)
+banner.Position, banner.Size = UDim2.fromScale(0.035, -0.065), UDim2.fromScale(0.36, 0.182)
 banner.Parent = panel
 local title = source.Title:Clone()
 for _, k in title:GetAttributes() do
 	title:SetAttribute(k, nil)
 end
 title.Text, title.ZIndex = "PLAYTIME REWARDS", 4
-title.Position, title.Size = UDim2.fromScale(0.05, -0.04), UDim2.fromScale(0.26, 0.13)
+title.Position, title.Size = UDim2.fromScale(0.059, -0.04), UDim2.fromScale(0.312, 0.13)
 title.Parent = panel
 local close = source.Close:Clone()
 close.ZIndex = 5
-close.Position, close.Size = UDim2.fromScale(0.982, 0.04), UDim2.fromScale(0.052, 0.125)
+close.Position, close.Size = UDim2.fromScale(0.978, 0.045), UDim2.fromScale(0.0625, 0.125)
 close.Parent = panel
-text("Note", "Keep playing to unlock rewards. The timer resets when you leave.", BODY, {
-	Position = UDim2.fromScale(0.42, 0.075),
-	Size = UDim2.fromScale(0.5, 0.06),
+-- Neutral sample text; the functionality pass sets the final wording.
+text("Note", "Keep playing to unlock rewards!", BODY, {
+	Position = UDim2.fromScale(0.45, 0.075),
+	Size = UDim2.fromScale(0.48, 0.06),
 	TextColor3 = C.milk,
 	TextTransparency = 0.15,
 	TextXAlignment = Enum.TextXAlignment.Right,
@@ -225,7 +233,7 @@ image("Fill", "bar_fill", {
 -- Lead cames halfway between milestones split the fill into glass panes.
 local leads = frame("Leads", UDim2.fromScale(0, 0), UDim2.fromScale(1, 1), track, 4)
 local mids = { (BAR_X0 + COLUMN_X[1]) / 2 }
-for i = 1, 5 do
+for i = 1, COUNT - 1 do
 	table.insert(mids, (COLUMN_X[i] + COLUMN_X[i + 1]) / 2)
 end
 for i, x in mids do
@@ -239,7 +247,7 @@ for i, x in mids do
 		ZIndex = 4,
 	}, leads)
 end
-aspect(centred(image("StartCap", "icon_clock", { ZIndex = 6 }, progress), BAR_X0, BAR_Y, 0.06, 0.15), 1)
+aspect(centred(image("StartCap", "icon_clock", { ZIndex = 6 }, progress), BAR_X0, BAR_Y, 0.075, 0.145), 1)
 
 local markers = frame("Markers", UDim2.fromScale(0, 0), UDim2.fromScale(1, 1), progress, 5)
 for i, r in REWARDS do
@@ -268,7 +276,7 @@ end
 local tag = image("Time", "time_tag", {
 	AnchorPoint = Vector2.new(0.5, 1),
 	Position = UDim2.fromScale(timeToX(PLAYED_MIN), BAR_Y - 0.085),
-	Size = UDim2.fromScale(0.115, 0.115),
+	Size = UDim2.fromScale(0.2, 0.115),
 	ZIndex = 8,
 }, progress)
 aspect(tag, 220 / 84)
@@ -295,7 +303,7 @@ local row = frame("Rewards", UDim2.fromScale(ROW_X, 0.445), UDim2.fromScale(ROW_
 for i, r in REWARDS do
 	local state = r.State
 	local cell = frame("R" .. r.Min, UDim2.new(), UDim2.new(), row, 2)
-	cell.AnchorPoint, cell.Position, cell.Size = Vector2.new(0.5, 0), UDim2.fromScale((i - 0.5) / 6, 0), UDim2.fromScale(0.141, 1)
+	cell.AnchorPoint, cell.Position, cell.Size = Vector2.new(0.5, 0), UDim2.fromScale((i - 0.5) / COUNT, 0), UDim2.fromScale(0.17, 1)
 	aspect(cell, CELL_ASPECT)
 	cell:SetAttribute("Minutes", r.Min)
 	cell:SetAttribute("State", state) -- Claimed | Ready | Next | Locked
@@ -349,8 +357,8 @@ for i, r in REWARDS do
 	check.Visible = state == "Claimed"
 	local status = text("Status", "CLAIMED", HEADING, {
 		AnchorPoint = Vector2.new(0.5, 0.5),
-		Position = UDim2.fromScale(0.5, 0.835),
-		Size = UDim2.fromScale(0.84, 0.1),
+		Position = UDim2.fromScale(0.5, 0.83),
+		Size = UDim2.fromScale(0.76, 0.1),
 		TextColor3 = C.emeraldLight,
 		Stroke = 2,
 		Max = 26,
@@ -358,15 +366,15 @@ for i, r in REWARDS do
 	}, cell)
 	status.Visible = state == "Claimed"
 
-	-- Ready: green CLAIM gem (green = claim everywhere) + glow behind the cell.
+	-- Ready: green CLAIM gem (green = claim everywhere) + glow behind the cell. The gem stays inside the inner pane.
 	local claim = new("TextButton", {
 		Name = "ClaimButton",
 		BackgroundTransparency = 1,
 		Text = "",
 		AutoButtonColor = false,
 		AnchorPoint = Vector2.new(0.5, 0.5),
-		Position = UDim2.fromScale(0.5, 0.835),
-		Size = UDim2.fromScale(0.94, 0.17),
+		Position = UDim2.fromScale(0.5, 0.83),
+		Size = UDim2.fromScale(0.74, 0.15),
 		ZIndex = 8,
 		Visible = state == "Ready",
 	}, cell)
@@ -383,13 +391,13 @@ for i, r in REWARDS do
 	new("UIScale", { Name = "InteractionScale" }, claim)
 
 	-- Next: aqua outline + countdown to unlock.
-	local cdTag = centred(image("CountdownTag", "tag/tag_aqua", { ZIndex = 8 }, cell), 0.5, 0.835, 0.86, 0.16)
+	local cdTag = centred(image("CountdownTag", "tag/tag_aqua", { ZIndex = 8 }, cell), 0.5, 0.83, 0.72, 0.14)
 	aspect(cdTag, 300 / 80)
 	cdTag.Visible = state == "Next"
 	local cd = text("Countdown", state == "Next" and NEXT_LEFT or "", HEADING, {
 		AnchorPoint = Vector2.new(0.5, 0.5),
-		Position = UDim2.fromScale(0.5, 0.835),
-		Size = UDim2.fromScale(0.6, 0.1),
+		Position = UDim2.fromScale(0.5, 0.83),
+		Size = UDim2.fromScale(0.5, 0.09),
 		Stroke = 2,
 		Max = 28,
 		ZIndex = 9,
@@ -397,7 +405,7 @@ for i, r in REWARDS do
 	cd.Visible = state == "Next"
 
 	-- Locked: padlock in the bottom slot, reward shown greyed so it still tempts.
-	local lock = centred(image("LockIcon", "icon_lock", { ZIndex = 8 }, cell), 0.5, 0.835, 0.3, 0.15)
+	local lock = centred(image("LockIcon", "icon_lock", { ZIndex = 8 }, cell), 0.5, 0.83, 0.3, 0.15)
 	aspect(lock, 80 / 96)
 	lock.Visible = locked
 

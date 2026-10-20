@@ -161,9 +161,9 @@ def plaque_pts(x0, y0, x1, y1):
 A = {}
 CELL_W, CELL_H, CELL_CUT = 200, 310, (24, 10, 26, 10)
 
-# Window: wide (aspect 2.4), aqua-led cool mosaic so it is the same family as the other menus but its own colour.
+# Window: aspect 2.0 for five cells, aqua-led cool mosaic so it is the same family as the other menus but its own colour.
 seed(23 * 7)
-A["window"] = window_svg(1680, 700, band=28, pieces=44,
+A["window"] = window_svg(1400, 700, band=28, pieces=40,
                          colors=("aqua", "aqua", "sapphire", "aqua", "amethyst", "emerald", "sapphire"))
 # Reward cells, one frame per state (claimed/next share cell_open; claimed adds cell_dim + check on top).
 seed(61); A["cell_open"] = window_svg(CELL_W, CELL_H, band=13, cut=CELL_CUT, colors=("aqua", "sapphire"), pieces=11, facets=2)

@@ -166,7 +166,7 @@ function Presentation.status(self, r, time)
 			if not p.Parent or not f.Pivot then
 				continue
 			end
-			local name = p:GetAttribute("SourceName") or p.Name
+			local name = rest.SourceName or p:GetAttribute("SourceName") or p.Name
 			local charge = r.Power[side] or 0
 			local active = charge >= VFX.ReadyGlowThreshold or (ef[3] or 0) > 0
 			if

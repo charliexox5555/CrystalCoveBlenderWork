@@ -135,6 +135,7 @@ local function build(id, show, lowDetail)
 		rig.Broken = true
 	end
 	rig.Root.Destroying:Once(function()
+		live[rig.Root] = nil
 		rig.Dead = true
 		if rig.Connection then
 			rig.Connection:Disconnect()
@@ -158,6 +159,8 @@ local function acquire(id, show, lowDetail)
 end
 
 local function release(rig)
+	-- Weak keys don't free a rig whose value points back at its root (Luau has no ephemerons).
+	live[rig.Root] = nil
 	if rig.Connection then
 		rig.Connection:Disconnect()
 		rig.Connection = nil

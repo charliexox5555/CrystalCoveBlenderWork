@@ -38,11 +38,21 @@ function Effects.new(scene)
 		f.DetailStates = {}
 		for _, p in f.Parts do
 			if p ~= f.Body then
+				-- Names are parsed once here; the per-frame loops (Update, SignaturePresentation) read them.
+				local name = p:GetAttribute("SourceName") or p.Name
 				f.DetailStates[p] = {
 					Size = p.Size,
 					Center = p.CFrame.Position,
 					Rotation = p.CFrame.Rotation,
 					Transparency = p.Transparency,
+					SourceName = name,
+					Index = tonumber(name:match("_(%d+)")) or 1,
+					Detail = if name:find("ChargeBubble") or name:find("CoilSegment")
+						then "Charge"
+						elseif name:find("Thorn_") then "Thorn"
+						elseif name == "RayLens" then "Lens"
+						elseif name:match("^Cap") then "Cap"
+						else false,
 				}
 			end
 		end
@@ -340,21 +350,20 @@ function Effects:Update(r, time)
 		end
 		local count = math.floor((r.Power[side] or 0) * (kit.Every or 3) + 0.01)
 		for p, rest in f.DetailStates do
-			local name = p:GetAttribute("SourceName") or p.Name
-			local index = tonumber(name:match("_(%d+)")) or 1
-			if name:find("ChargeBubble") or name:find("CoilSegment") then
+			local detail, index = rest.Detail, rest.Index
+			if detail == "Charge" then
 				local active = count >= index
 				p.Transparency = if active then VFX.ChargeLit else VFX.ChargeDim
 				p.Material = if active then Enum.Material.Neon else Enum.Material.Glass
-			elseif name:find("Thorn_") then
+			elseif detail == "Thorn" then
 				local growth = if count >= index then 1 else 0.15
 				local base = (p:GetAttribute("AnimationPivot") or Vector3.zero) * M.GlassyScale
 				p.Size = rest.Size * growth
 				p.CFrame = f.Pivot * CFrame.new(base + (rest.Center - base) * growth) * rest.Rotation
 				p.Transparency = if count >= index then VFX.ChargeLit else VFX.ChargeDim
-			elseif name == "RayLens" then
+			elseif detail == "Lens" then
 				p.Material = if r.Power[side] > 0.7 then Enum.Material.Neon else Enum.Material.Glass
-			elseif name:match("^Cap") and f.Id == "pop" then
+			elseif detail == "Cap" and f.Id == "pop" then
 				p.CFrame = f.Pivot
 					* CFrame.new(rest.Center + Vector3.yAxis * (if count == 2 then math.sin(time * 30) * 0.035 else 0))
 					* rest.Rotation

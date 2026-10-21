@@ -101,6 +101,8 @@ function Motion:Collect()
 				Size = obj.Size,
 				Transparency = obj.Transparency,
 				Kind = obj:GetAttribute("RideMotion"),
+				-- Authored tuning (WingAngle, FinHz, SpinSpeed...), read once: Step runs every frame per part.
+				A = obj:GetAttributes(),
 				Pivot = obj:GetAttribute("WingPivot") or obj:GetAttribute("SwingPivot") or obj:GetAttribute(
 					"MotionPivot"
 				) or Vector3.zero,
@@ -220,59 +222,54 @@ function Motion:Step(time, base, near)
 		if kind == "Wing" then
 			-- Quick down-stroke, slower recovery reads as a real wingbeat.
 			local flap = wave + T.RideFlapSharpness * 0.35 * math.sin(phase * 2)
-			local angle = part:GetAttribute("WingAngle") or p.WingAngle or T.RideWingAngle
+			local angle = rest.A.WingAngle or p.WingAngle or T.RideWingAngle
 			cf = pose
 				* rest.Pose
 				* CFrame.new(pivot)
-				* CFrame.Angles(0, 0, flap * angle * calm * (part:GetAttribute("WingSide") or 1))
+				* CFrame.Angles(0, 0, flap * angle * calm * (rest.A.WingSide or 1))
 				* CFrame.new(-pivot)
 		elseif kind == "Swing" then
 			-- The hanging lantern trails the bob and bank like a pendulum.
 			local swing = math.sin(phase - T.RideSwingLag) * T.RideSwingAngle
 			cf = pose * rest.Pose * CFrame.new(pivot) * CFrame.Angles(swing, 0, -swing * 0.5) * CFrame.new(-pivot)
 		elseif kind == "Spin" then
-			local speed = part:GetAttribute("SpinSpeed") or T.RideSpinSpeed
-			cf = pose * rest.Pose * axisAngle(part:GetAttribute("SpinAxis"), time * speed)
+			local speed = rest.A.SpinSpeed or T.RideSpinSpeed
+			cf = pose * rest.Pose * axisAngle(rest.A.SpinAxis, time * speed)
 		elseif kind == "Tail" then
 			-- Sways behind the body a beat late and swings out of a bank.
-			local lag = phase - (part:GetAttribute("TailLag") or 0.8)
-			local angle = (part:GetAttribute("TailAngle") or 0.15) * calm
+			local lag = phase - (rest.A.TailLag or 0.8)
+			local angle = (rest.A.TailAngle or 0.15) * calm
 			cf = pose
 				* rest.Pose
 				* CFrame.new(pivot)
 				* CFrame.Angles(math.cos(lag) * angle * 0.35, math.sin(lag) * angle - self.Bank * 0.8, 0)
 				* CFrame.new(-pivot)
 		elseif kind == "Fin" then
-			local hz = part:GetAttribute("FinHz") or p.BobHz
-			local flutter = math.sin(time * hz * TAU + (part:GetAttribute("FinPhase") or 0) * TAU)
-			local angle = flutter * (part:GetAttribute("FinAngle") or 0.1) * calm
-				+ self.Bank * (part:GetAttribute("FinBank") or 0)
-			cf = pose
-				* rest.Pose
-				* CFrame.new(pivot)
-				* axisAngle(part:GetAttribute("FinAxis") or "X", angle)
-				* CFrame.new(-pivot)
+			local hz = rest.A.FinHz or p.BobHz
+			local flutter = math.sin(time * hz * TAU + (rest.A.FinPhase or 0) * TAU)
+			local angle = flutter * (rest.A.FinAngle or 0.1) * calm + self.Bank * (rest.A.FinBank or 0)
+			cf = pose * rest.Pose * CFrame.new(pivot) * axisAngle(rest.A.FinAxis or "X", angle) * CFrame.new(-pivot)
 		elseif kind == "Pulse" then
 			local breathe = math.sin(time * T.RidePulseHz * TAU)
 			part.Size = rest.Size * (1 + T.RidePulseScale * breathe)
 			part.Transparency = rest.Transparency + T.RidePulseFade * (0.5 + 0.5 * breathe)
 		elseif kind == "Bob" then
 			-- Vertical slide (carousel pony on its pole); a RiderMount part carries the rider with it.
-			local bobHz = part:GetAttribute("BobHz") or p.BobHz
-			local up = math.sin(time * bobHz * TAU + (part:GetAttribute("BobPhase") or 0) * TAU)
-			cf = pose * rest.Pose * CFrame.new(0, up * (part:GetAttribute("BobAmp") or 0.3) * calm, 0)
+			local bobHz = rest.A.BobHz or p.BobHz
+			local up = math.sin(time * bobHz * TAU + (rest.A.BobPhase or 0) * TAU)
+			cf = pose * rest.Pose * CFrame.new(0, up * (rest.A.BobAmp or 0.3) * calm, 0)
 		elseif kind == "Puff" then
-			local breathe = math.sin(time * (p.PuffHz or 0.7) * TAU + (part:GetAttribute("PuffPhase") or 0))
+			local breathe = math.sin(time * (p.PuffHz or 0.7) * TAU + (rest.A.PuffPhase or 0))
 			part.Size = rest.Size * (1 + (p.PuffScale or 0.06) * breathe * calm)
 		else -- Flame
-			local f = math.sin(time * T.RideExhaustSpeed + (part:GetAttribute("FlamePhase") or 0))
+			local f = math.sin(time * T.RideExhaustSpeed + (rest.A.FlamePhase or 0))
 			local g = math.noise(time * 9, rest.Size.X * 7)
 			part.Size = rest.Size * Vector3.new(0.96 + 0.04 * g, 0.96 + 0.04 * g, 0.8 + f * 0.2)
 		end
 		if cf then
 			-- Any moving part can also turn on its own axis (the ray's tail prism).
-			local spin = kind ~= "Spin" and part:GetAttribute("SpinSpeed")
-			part.CFrame = if spin then cf * axisAngle(part:GetAttribute("SpinAxis"), time * spin) else cf
+			local spin = kind ~= "Spin" and rest.A.SpinSpeed
+			part.CFrame = if spin then cf * axisAngle(rest.A.SpinAxis, time * spin) else cf
 		end
 	end
 	if self.FX then
@@ -284,8 +281,15 @@ end
 -- Rider pose for a flyer with a moving mount (model attribute RiderMount = part name): the rider follows that
 -- part's motion relative to its rest pose. Without a mount this is just pose * localPose.
 function Motion:RiderPose(pose, localPose)
-	local mountName = self.Model:GetAttribute("RiderMount")
-	local mount = mountName and self.Model:FindFirstChild(mountName, true)
+	if self.MountName == nil then
+		self.MountName = self.Model:GetAttribute("RiderMount") or false
+	end
+	local mount = self.Mount
+	if self.MountName and not (mount and mount.Parent) then
+		-- The mount can stream in after the ride; look it up until it's there, then keep it.
+		mount = self.Model:FindFirstChild(self.MountName, true)
+		self.Mount = mount
+	end
 	local rest = mount and self.Parts[mount]
 	if not rest then
 		return pose * localPose

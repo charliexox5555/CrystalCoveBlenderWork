@@ -1022,6 +1022,11 @@ Balance.Feel = {
 	WatchPromptDistance = 18, -- studs from a pen's centre to offer "Watch"
 	WatchRejoinSeconds = 60, -- safety only: a watch gives up if the next round hasn't started this long after the last
 	WatchHidesSelf = true, -- while watching, your own avatar is hidden too (only the two fighters stay in the shot)
+	-- Bystander fights (not yours, not watched) update less often when far or off screen; the time they skip is
+	-- carried into the next update, so motion and events stay on time. Presentation only.
+	BystanderHalfRateDistance = 55, -- studs from the camera beyond which an on-screen bystander fight renders every 2nd frame
+	BystanderOffscreenEvery = 4, -- an off-screen bystander fight renders every Nth frame
+	BystanderCullRadius = 14, -- studs around a stand that must be off screen to count as off screen
 	PadRootHeight = 3,
 	FinisherPause = 0.55,
 	FinisherRiseSeconds = 0.55,
@@ -1048,6 +1053,8 @@ Balance.CosmeticPresentation = {
 	RideExhaustSpeed = 22,
 	RideDistance = 120,
 	RideEmitterDistance = 70, -- exhaust particles only run for rides this close to the camera
+	RideCullRadius = 9, -- studs around a ride (flyer + rider) that must be off screen before its frame is skipped
+	RideHalfRateDistance = 45, -- rides farther than this from the camera animate every 2nd frame
 	RideNod = 0.03, -- nose pitch (radians) following the bob
 	RideFlapSharpness = 0.6, -- 0 = sine flap, 1 = quick down-stroke, slow recovery
 	RideSwingAngle = 0.22, -- lantern pendulum swing (radians)

@@ -165,7 +165,8 @@ function Pose.new(character, id, options)
 	self:Step(workspace:GetServerTimeNow())
 	-- Animator evaluates before PreSimulation, for both modern constraints and Motor6Ds.
 	self.Connection = RunService.PreSimulation:Connect(function()
-		if self.Root.Parent then
+		-- Culled: the ride that owns this rider is off screen this frame (RideController / showcase).
+		if self.Root.Parent and not self.Culled then
 			self:Step(workspace:GetServerTimeNow())
 		end
 	end)
@@ -362,10 +363,11 @@ function Pose:Solve()
 	local lowest = math.huge
 	for part, pose in poses do
 		if contact[part.Name] then
-			for _, x in { -1, 1 } do
-				for _, y in { -1, 1 } do
-					for _, z in { -1, 1 } do
-						lowest = math.min(lowest, pose:PointToWorldSpace(part.Size * Vector3.new(x, y, z) / 2).Y)
+			local half = part.Size / 2
+			for x = -1, 1, 2 do
+				for y = -1, 1, 2 do
+					for z = -1, 1, 2 do
+						lowest = math.min(lowest, pose:PointToWorldSpace(half * Vector3.new(x, y, z)).Y)
 					end
 				end
 			end

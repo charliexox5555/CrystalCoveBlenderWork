@@ -11,6 +11,8 @@ local Rules = require(RS.Shared.FightRules)
 local Balance = require(RS.Shared.Config.Balance)
 local View = require(script.Parent.Parent.Presentation.FightView)
 local Isolation = require(script.Parent.Parent.Presentation.StageIsolation)
+local ViewCull = require(script.Parent.Parent.Presentation.ViewCull)
+local bystanderEvery
 local CastButton = require(script.Parent.Parent.UI.Screens.CastButton)
 local Controller = {}
 function Controller:Init(controllers)
@@ -309,6 +311,18 @@ function Controller:CastEvents(view, events)
 	end
 end
 
+local Feel = Balance.Feel
+function bystanderEvery(view, camera): number
+	if view.Viewing or view.Participant or not view.Scene or not camera or ViewCull.off() then
+		return 1
+	end
+	local position = view.Scene.Frame.Position
+	if not ViewCull.visible(camera, position, Feel.BystanderCullRadius) then
+		return Feel.BystanderOffscreenEvery
+	end
+	return if (camera.CFrame.Position - position).Magnitude > Feel.BystanderHalfRateDistance then 2 else 1
+end
+
 function Controller:Start()
 	self.CastUi = CastButton.new(function()
 		Remotes.CastPower:FireServer()
@@ -477,11 +491,21 @@ function Controller:Start()
 			self:UpdateIsolation()
 		end)
 	end
-	RunService:BindToRenderStep("GlassClashFight", Enum.RenderPriority.Camera.Value + 1, function(dt)
+	RunService:BindToRenderStep("GlassClashFight", Enum.RenderPriority.Camera.Value + 1, function(frameDt)
 		local profile = self.Profile
 		local started = profile and os.clock()
 		local active = self:Active()
+		local camera = workspace.CurrentCamera
 		for _, view in self.Views do
+			-- Bystander fights render less often when far or off screen; the skipped time is handed to the next
+			-- render, so the swing, events and finishers stay on time. Yours and watched fights render every frame.
+			view.PendingDt = (view.PendingDt or 0) + frameDt
+			view.RenderTick = (view.RenderTick or 0) + 1
+			if view.RenderTick % bystanderEvery(view, camera) ~= 0 then
+				continue
+			end
+			local dt = view.PendingDt
+			view.PendingDt = 0
 			if view.Scene then
 				view.Scene.Muted = active ~= nil and active ~= view
 				for _, fighter in view.Scene.Fighters do
@@ -511,17 +535,17 @@ function Controller:Start()
 			and active.Hud ~= nil
 		self:BindLock(aiming)
 		if aiming and not active.Drag then
-			self:StickAim(active, dt)
+			self:StickAim(active, frameDt)
 		end
 		-- After rendering, so prompt bookkeeping can never stall the fights.
-		self:UpdatePrompts(dt)
+		self:UpdatePrompts(frameDt)
 		if profile then
 			local spent = os.clock() - started
 			profile.Frames += 1
 			profile.Total += spent
 			profile.Max = math.max(profile.Max, spent)
-			profile.Dt += dt
-			profile.MaxDt = math.max(profile.MaxDt, dt)
+			profile.Dt += frameDt
+			profile.MaxDt = math.max(profile.MaxDt, frameDt)
 			profile.Views = math.max(
 				profile.Views,
 				(function()

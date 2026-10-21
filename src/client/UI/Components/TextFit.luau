@@ -159,6 +159,11 @@ local function bind(label)
 	end
 	bound[label] = true
 	states[label] = { Base = base, Schedule = schedule }
+	-- Luau weak keys are not ephemerons: this state's closures reference the label, so the entry would keep
+	-- every destroyed label (and its closures) alive forever. Drop it when the label goes.
+	label.Destroying:Connect(function()
+		states[label], bound[label] = nil, nil
+	end)
 	for _, prop in PROPS do
 		label:GetPropertyChangedSignal(prop):Connect(function()
 			if not busy and label[prop] ~= final[prop] then

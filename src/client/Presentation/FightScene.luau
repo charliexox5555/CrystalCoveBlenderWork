@@ -233,6 +233,9 @@ function Scene:HideBroken(side)
 	end
 end
 
+-- Status tints, built once (Update runs every frame for every fighter in range).
+local WHITE, FROZEN, RAGE = Color3.new(1, 1, 1), Color3.fromHex("#B3F4FF"), Color3.fromHex("#FF5533")
+
 function Scene:Update(r, time)
 	for side, f in self.Fighters do
 		Health.update(f, r.Hp[side], self.Viewing)
@@ -248,11 +251,8 @@ function Scene:Update(r, time)
 		f.Bubble.Transparency = if shield then 0.42 else 1
 		local glaze = (f.Effects.glaze or -1) > time
 		local active = frozen or rage or r.Slam[side] or r.Pump[side] or glaze
-		local tint = if glaze
-			then Color3.new(1, 1, 1)
-			elseif frozen then Color3.fromHex("#B3F4FF")
-			elseif rage then Color3.fromHex("#FF5533")
-			else Color3.fromHex(f.Def.Tint)
+		f.TintColor = f.TintColor or Color3.fromHex(f.Def.Tint)
+		local tint = if glaze then WHITE elseif frozen then FROZEN elseif rage then RAGE else f.TintColor
 		-- Highlights are a render pass each (and capped per client); only keep them on while visible.
 		f.Highlight.Enabled = active == true
 		if active then

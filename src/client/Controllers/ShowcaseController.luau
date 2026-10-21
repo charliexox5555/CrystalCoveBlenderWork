@@ -11,6 +11,9 @@ local Cosmetics = require(RS.Shared.Config.RoundCosmetics)
 local Presentation = script.Parent.Parent.Presentation
 local RidePose = require(Presentation.RidePose)
 local RideMotion = require(Presentation.RideMotion)
+local ViewCull = require(Presentation.ViewCull)
+local RideCullRadius = require(RS.Shared.Config.Balance).CosmeticPresentation.RideCullRadius
+local RideHalfRateDistance = require(RS.Shared.Config.Balance).CosmeticPresentation.RideHalfRateDistance
 local FinisherFX = require(Presentation.FinisherFX)
 local UIAssets = require(RS.Shared.Config.UIAssets)
 local UIMotion = require(script.Parent.Parent.UI.Components.Motion)
@@ -87,6 +90,18 @@ function Ride.new(parent, id, base, avatar, launch)
 end
 
 function Ride:Step(time, base, near)
+	-- Off-screen displays skip their frame; the time-driven motion is right again when they come back into view.
+	local camera = workspace.CurrentCamera
+	self.Tick = (self.Tick or 0) + 1
+	local far = camera and (camera.CFrame.Position - base.Position).Magnitude > RideHalfRateDistance
+	local shown = (not far or self.Tick % 2 == 0 or ViewCull.off())
+		and ViewCull.visible(camera, base.Position, RideCullRadius)
+	if self.Pose then
+		self.Pose.Culled = not shown
+	end
+	if not shown then
+		return
+	end
 	local pose = self.Motion:Step(time, base, near)
 	if self.LandAt and time >= self.LandAt then
 		self.LandAt = nil

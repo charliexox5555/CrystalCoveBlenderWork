@@ -4,6 +4,7 @@ local T = require(game.ReplicatedStorage.Shared.Config.Balance).CosmeticPresenta
 local Controller = {}
 local RidePose = require(script.Parent.Parent.Presentation.RidePose)
 local RideMotion = require(script.Parent.Parent.Presentation.RideMotion)
+local ViewCull = require(script.Parent.Parent.Presentation.ViewCull)
 local LocalSettings = require(script.Parent.Parent.LocalSettings)
 local Players = game:GetService("Players")
 -- A ride first seen this soon after its stage appeared launches in; later sightings (streaming, late
@@ -88,7 +89,17 @@ function Controller:Step(time)
 			continue
 		end
 		local distance = (camera.CFrame.Position - entry.Base.Position).Magnitude
-		if distance > T.RideDistance then
+		-- Off-screen rides skip their frame (motion is time-driven, so they are right when seen again); the
+		-- rider's pose solver skips with them.
+		-- Far rides animate every 2nd frame (time-driven, so only the update rate changes).
+		entry.Tick = (entry.Tick or 0) + 1
+		local shown = distance <= T.RideDistance
+			and (distance <= T.RideHalfRateDistance or entry.Tick % 2 == 0 or ViewCull.off())
+			and ViewCull.visible(camera, entry.Base.Position, T.RideCullRadius)
+		if entry.Pose then
+			entry.Pose.Culled = not shown
+		end
+		if not shown then
 			continue
 		end
 		-- Particles, trails, beams, lights and the loop sound only run near the camera, and not on other

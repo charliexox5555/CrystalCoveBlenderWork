@@ -1,0 +1,107 @@
+{
+ "Record": "assets/ui/screens/profile/roblox_assets.json",
+ "Items": [
+  {
+   "Key": "badge_open",
+   "Path": "assets/ui/screens/profile/png/badge_open.png",
+   "Type": "Decal",
+   "Name": "GC Profile badge_open"
+  },
+  {
+   "Key": "icon_crown",
+   "Path": "assets/ui/screens/profile/png/icon_crown.png",
+   "Type": "Decal",
+   "Name": "GC Profile icon_crown"
+  },
+  {
+   "Key": "icon_finishers",
+   "Path": "assets/ui/screens/profile/png/icon_finishers.png",
+   "Type": "Decal",
+   "Name": "GC Profile icon_finishers"
+  },
+  {
+   "Key": "icon_flame",
+   "Path": "assets/ui/screens/profile/png/icon_flame.png",
+   "Type": "Decal",
+   "Name": "GC Profile icon_flame"
+  },
+  {
+   "Key": "icon_flyers",
+   "Path": "assets/ui/screens/profile/png/icon_flyers.png",
+   "Type": "Decal",
+   "Name": "GC Profile icon_flyers"
+  },
+  {
+   "Key": "icon_glassies",
+   "Path": "assets/ui/screens/profile/png/icon_glassies.png",
+   "Type": "Decal",
+   "Name": "GC Profile icon_glassies"
+  },
+  {
+   "Key": "icon_winrate",
+   "Path": "assets/ui/screens/profile/png/icon_winrate.png",
+   "Type": "Decal",
+   "Name": "GC Profile icon_winrate"
+  },
+  {
+   "Key": "name_plate",
+   "Path": "assets/ui/screens/profile/png/name_plate.png",
+   "Type": "Decal",
+   "Name": "GC Profile name_plate"
+  },
+  {
+   "Key": "portrait_frame",
+   "Path": "assets/ui/screens/profile/png/portrait_frame.png",
+   "Type": "Decal",
+   "Name": "GC Profile portrait_frame"
+  },
+  {
+   "Key": "rewards_strip",
+   "Path": "assets/ui/screens/profile/png/rewards_strip.png",
+   "Type": "Decal",
+   "Name": "GC Profile rewards_strip"
+  },
+  {
+   "Key": "stat_amber",
+   "Path": "assets/ui/screens/profile/png/stat_amber.png",
+   "Type": "Decal",
+   "Name": "GC Profile stat_amber"
+  },
+  {
+   "Key": "stat_aqua",
+   "Path": "assets/ui/screens/profile/png/stat_aqua.png",
+   "Type": "Decal",
+   "Name": "GC Profile stat_aqua"
+  },
+  {
+   "Key": "stat_ruby_wide",
+   "Path": "assets/ui/screens/profile/png/stat_ruby_wide.png",
+   "Type": "Decal",
+   "Name": "GC Profile stat_ruby_wide"
+  },
+  {
+   "Key": "tab_active",
+   "Path": "assets/ui/screens/profile/png/tab_active.png",
+   "Type": "Decal",
+   "Name": "GC Profile tab_active"
+  },
+  {
+   "Key": "tab_idle",
+   "Path": "assets/ui/screens/profile/png/tab_idle.png",
+   "Type": "Decal",
+   "Name": "GC Profile tab_idle"
+  },
+  {
+   "Key": "xp_fill",
+   "Path": "assets/ui/screens/profile/png/xp_fill.png",
+   "Type": "Decal",
+   "Name": "GC Profile xp_fill"
+  },
+  {
+   "Key": "xp_track",
+   "Path": "assets/ui/screens/profile/png/xp_track.png",
+   "Type": "Decal",
+   "Name": "GC Profile xp_track"
+  }
+ ]
+}

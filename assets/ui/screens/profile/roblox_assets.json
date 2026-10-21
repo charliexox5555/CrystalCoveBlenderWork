@@ -1,0 +1,124 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "badge_open": {
+   "AssetId": "116377337577308",
+   "Path": "assets/ui/screens/profile/png/badge_open.png",
+   "Sha256": "1b7904081bcf17b59bb6e606bb5f8956bfbc3c21ad3282108f6d55393f2dce20",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:16:33"
+  },
+  "icon_crown": {
+   "AssetId": "93974575413445",
+   "Path": "assets/ui/screens/profile/png/icon_crown.png",
+   "Sha256": "86152fc1331e5418b1fa7f09d58f998d3bb9a98c911b6bf44bbd5c5900ab8da0",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:16:35"
+  },
+  "icon_finishers": {
+   "AssetId": "128541892619736",
+   "Path": "assets/ui/screens/profile/png/icon_finishers.png",
+   "Sha256": "5587f4372636bea24bc24da351c9b06e327e3d228005d184b470665205669fa6",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:16:38"
+  },
+  "icon_flame": {
+   "AssetId": "106286372192814",
+   "Path": "assets/ui/screens/profile/png/icon_flame.png",
+   "Sha256": "cee40345e2cbb40e367fd6a21746bae55d29de7e98ea34d38ab3b991f1d76bf7",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:16:41"
+  },
+  "icon_flyers": {
+   "AssetId": "98753081019263",
+   "Path": "assets/ui/screens/profile/png/icon_flyers.png",
+   "Sha256": "7475ba3a5d6e1e71ade5cc245aed6efcaf1a71e52e0d0add98e849e9c6274aa9",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:16:43"
+  },
+  "icon_glassies": {
+   "AssetId": "125396732895406",
+   "Path": "assets/ui/screens/profile/png/icon_glassies.png",
+   "Sha256": "46e8df5b6d8d4936bcdd4cb969bd1e0745c7bfad3e54a32786992bcd8d67e254",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:16:46"
+  },
+  "icon_winrate": {
+   "AssetId": "80624239086393",
+   "Path": "assets/ui/screens/profile/png/icon_winrate.png",
+   "Sha256": "51f6732e89421fd5ecc752666d05dc33e5fe564cf1e86c737c8b511b40e2a9b2",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:16:49"
+  },
+  "name_plate": {
+   "AssetId": "80044128163128",
+   "Path": "assets/ui/screens/profile/png/name_plate.png",
+   "Sha256": "a81d270c406274333ef69bc7a1d8c38ca123815ae3287030a18cc508daff6dde",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:16:51"
+  },
+  "portrait_frame": {
+   "AssetId": "93326234282040",
+   "Path": "assets/ui/screens/profile/png/portrait_frame.png",
+   "Sha256": "416ef932f49192afe3390d680d691a3e38d7bd05fae6fe1694d5e3677ede184a",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:16:56"
+  },
+  "rewards_strip": {
+   "AssetId": "84648863543766",
+   "Path": "assets/ui/screens/profile/png/rewards_strip.png",
+   "Sha256": "8420f82283371b840d3fd2db014b6496188985fc2c861c2605e0b4f54198542d",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:16:59"
+  },
+  "stat_amber": {
+   "AssetId": "103332435809409",
+   "Path": "assets/ui/screens/profile/png/stat_amber.png",
+   "Sha256": "19b02afff08ef0e2abe49225f2319093e3c5e60ae13bb35eb92f5313cfeb4957",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:17:02"
+  },
+  "stat_aqua": {
+   "AssetId": "134185061234515",
+   "Path": "assets/ui/screens/profile/png/stat_aqua.png",
+   "Sha256": "f365b05000ce6277cf1a59ec05477481c490e01007046d1db8560bfe969a6230",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:17:04"
+  },
+  "stat_ruby_wide": {
+   "AssetId": "76055654409361",
+   "Path": "assets/ui/screens/profile/png/stat_ruby_wide.png",
+   "Sha256": "4e9eaf272ecac18a2882cb6ed4b50ee515c7f4e778a7531c5cf7626dd702702a",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:17:07"
+  },
+  "tab_active": {
+   "AssetId": "103636548655878",
+   "Path": "assets/ui/screens/profile/png/tab_active.png",
+   "Sha256": "33b91d6909758098724dc6489d9dcebde34734eabf76d0d9c4178471b52a5e9c",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:17:10"
+  },
+  "tab_idle": {
+   "AssetId": "122943338508350",
+   "Path": "assets/ui/screens/profile/png/tab_idle.png",
+   "Sha256": "4bec4b5cb4d535cf4b120a1607b8a3a7f86121534eb9935bfe918aedb1b46493",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:17:13"
+  },
+  "xp_fill": {
+   "AssetId": "100077331141595",
+   "Path": "assets/ui/screens/profile/png/xp_fill.png",
+   "Sha256": "2e845b02b5eb134082366be8b2fb62fe982cb8ed2f8fa4aab5da5849748ca754",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:21:07"
+  },
+  "xp_track": {
+   "AssetId": "136465433808323",
+   "Path": "assets/ui/screens/profile/png/xp_track.png",
+   "Sha256": "424b9d2853a115798e358f1077020ce7e6b3851dde033122227a38846085ad1e",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:21:10"
+  }
+ }
+}

@@ -268,6 +268,10 @@ function Service:Queue(player, arena, side, now)
 	if arena.Busy or arena.Queue[side] or self.ByPlayer[player] or self.Services.MatchService.ByPlayer[player] then
 		return false
 	end
+	local onboarding = self.Services.OnboardingService
+	if onboarding and onboarding:BeforePlay(player) then
+		return false -- a new player's claim card (welcome opens, first-win prize) opens first (decision 100)
+	end
 	local holder = self:Holder(arena)
 	if holder and holder ~= player then
 		Remotes.MatchState:FireClient(
@@ -300,6 +304,10 @@ function Service:Queue(player, arena, side, now)
 		-- The new player's reserved arena: the bot is already waiting.
 		self.Reserved[player] = nil
 		arena.QueuedAt = now - Balance.Match.QueueBotAfterSeconds
+		arena.FirstMatch = player
+	elseif not arena.Hill and not arena.Queue[3 - side] and onboarding and onboarding:IsFirstMatch(player) then
+		-- A new player who walked to another free arena: the bot comes at once there too; the reservation is freed.
+		self:Unreserve(player)
 		arena.FirstMatch = player
 	end
 	self:PadState(arena)

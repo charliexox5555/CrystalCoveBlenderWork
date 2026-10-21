@@ -653,6 +653,12 @@ Balance.Onboarding = {
 	LoserTaken = 1.35,
 	ReserveSeconds = 240, -- how long an arena stays reserved for the new player
 	PlayHintSeconds = 20, -- after this long without reaching the arena, PLAY pulses
+	-- Keep it going (client watcher): standing still with nothing open for this long brings the next step back
+	-- (Daily Rewards re-opens, PLAY pulses on the Arena step and right after the tutorial), so nobody sits idle.
+	IdleNudgeSeconds = 6,
+	KeepCheckSeconds = 0.5, -- how often the watcher looks
+	ClaimRetrySeconds = 5, -- OPEN sent but no opening came back: the card is offered again
+	DoneNudgeSeconds = 180, -- for this long after the win prize, an idle player sees PLAY pulse (until a match starts)
 	DailyCloseSeconds = 1.6, -- the tutorial daily screen closes this long after the claim
 	ActionRateSeconds = 0.5,
 }

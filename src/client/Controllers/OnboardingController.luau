@@ -4,10 +4,12 @@
 --   Daily:   Daily Rewards opens with a pointer on today's CLAIM; it closes by itself after the claim
 --   Arena:   a chevron beam to the reserved pad; after a while a pointer on PLAY
 --   Match:   a pointer on the first CAST
--- Kids skip reading, so the guidance is pictures and motion only: no hint text.
 --   Win:     once the results are gone, the claim card again ("YOU WON!", one Kiln) -> OPEN -> the win opening
+-- Kids skip reading, so the guidance is pictures and motion only: no hint text. Keep() brings the step's moment back
+-- whenever the lobby goes quiet (a closed screen, a reset, a lost opening), so nobody is left with nothing to do.
 local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
+local CAS = game:GetService("ContextActionService")
 local Remotes = require(RS.Shared.Remotes)
 local Balance = require(RS.Shared.Config.Balance)
 local Motion = require(script.Parent.Parent.UI.Components.Motion)
@@ -94,27 +96,13 @@ function Controller:ShowClaim(kind)
 		self.ClaimWired = true
 		button.Activated:Connect(function()
 			local open = CLAIMS[self.Player:GetAttribute("OnboardingStep")]
-			if not open or not gui.Enabled then
-				return
+			if not open or not gui.Enabled or self.ClaimPending then
+				return -- a second tap while the card closes does nothing
 			end
 			Remotes.OnboardingAction:FireServer(open.Action)
-			if self.ClaimNav then
-				self.ClaimNav.Pop()
-				self.ClaimNav = nil
-			end
-			local anim = self.ClaimAnim
-			self.ClaimAnim = nil
-			if anim then
-				-- The close fades everything; the template's look comes back once it is hidden (the Win claim
-				-- reuses the card).
-				local restore = Motion.fadeSnapshot(gui:FindFirstChild("Panel"))
-				anim.Close(function()
-					gui.Enabled = false
-					restore()
-				end)
-			else
-				gui.Enabled = false
-			end
+			-- The opening takes the stage next; don't re-offer the card while the server answers.
+			self.ClaimPending = os.clock()
+			self:HideClaim()
 		end)
 	end
 	-- A clean stage: only the wallet stays on screen behind the card.
@@ -125,6 +113,21 @@ function Controller:ShowClaim(kind)
 		lobby:ShowWallet()
 	end
 	gui.Enabled = true
+	self.ClaimKind, self.ClaimPending = kind, nil
+	-- The card is the one thing to do: keyboard / controller walking is held while it is up (touch is gated above).
+	CAS:BindActionAtPriority(
+		"OnboardingClaim",
+		function()
+			return Enum.ContextActionResult.Sink
+		end,
+		false,
+		Enum.ContextActionPriority.High.Value,
+		Enum.PlayerActions.CharacterForward,
+		Enum.PlayerActions.CharacterBackward,
+		Enum.PlayerActions.CharacterLeft,
+		Enum.PlayerActions.CharacterRight,
+		Enum.PlayerActions.CharacterJump
+	)
 	-- Controller: the one big OPEN button is selected, so A opens.
 	if self.ClaimNav then
 		self.ClaimNav.Pop()
@@ -146,6 +149,68 @@ function Controller:ShowClaim(kind)
 			task.wait()
 		end
 	end)
+end
+
+-- Puts the claim card away. The lobby stays put away: the opening (or the menu or match that took the screen)
+-- owns it next.
+function Controller:HideClaim()
+	local gui = self.Player.PlayerGui:FindFirstChild("WelcomeScreen")
+	CAS:UnbindAction("OnboardingClaim")
+	self.ClaimKind = nil
+	if self.ClaimNav then
+		self.ClaimNav.Pop()
+		self.ClaimNav = nil
+	end
+	local anim = self.ClaimAnim
+	self.ClaimAnim = nil
+	if gui and gui.Enabled then
+		if anim then
+			-- The close fades everything; the template's look comes back once it is hidden (the Win claim reuses the
+			-- card).
+			local restore = Motion.fadeSnapshot(gui:FindFirstChild("Panel"))
+			anim.Close(function()
+				if not self.ClaimKind then
+					gui.Enabled = false
+				end
+				restore()
+			end)
+		else
+			gui.Enabled = false
+		end
+	end
+end
+
+-- The welcome / win opening (glassies the server already granted). `reveal` = self.Revealing: { Data, Screen,
+-- Waiting, Replayed }; Keep plays it again if something closes it before COLLECT.
+function Controller:PlayReveal(reveal)
+	local lobby = self.Controllers.LobbyController
+	if not lobby then
+		return
+	end
+	local data = reveal.Data
+	local status = if data.Kind == "Win" then "YOU WON! A FREE KILN OPEN" else "YOUR FIRST GLASSIES!"
+	reveal.Waiting = true
+	self:WhenFree(function()
+		reveal.Waiting = false
+		if self.Revealing ~= reveal then
+			return
+		end
+		lobby:Reveal({ Results = data.Results, Status = status }, function()
+			self:RevealDone(reveal)
+		end)
+		reveal.Screen = lobby.Screen
+	end)
+end
+
+function Controller:RevealDone(reveal)
+	if self.Revealing ~= reveal then
+		return
+	end
+	self.Revealing = nil
+	Remotes.OnboardingAction:FireServer("Collected") -- funnel: the opening was closed
+	if self.Player:GetAttribute("OnboardingStep") == "Daily" then
+		self:ShowDaily()
+	end
 end
 
 -- Step 2 ------------------------------------------------------------------------------------------------------
@@ -261,8 +326,94 @@ function Controller:WatchMatch()
 	end)
 end
 
+-- Keep it going -----------------------------------------------------------------------------------------------
+-- The step's own moment comes back whenever the lobby is quiet, whatever the player did in between (closed Daily
+-- Rewards, opened another menu, reset, watched a match, a card lost behind a queue): a new player always has the
+-- next thing in front of them. Pictures and motion only, like the rest.
+function Controller:Keep()
+	local player, pg = self.Player, self.Player.PlayerGui
+	local step = player:GetAttribute("OnboardingStep")
+	local topbar, lobby = self.Controllers.TopbarController, self.Controllers.LobbyController
+	local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+	local matchUi = busy(pg) or pg:GetAttribute("Watching")
+	local menu = topbar and topbar.Open
+	local now = os.clock()
+	-- Quiet = in the lobby, nothing open, not walking: the moment a kid is left with nothing to do.
+	local panel = lobby and lobby.PanelOpen and not self.ClaimKind and not self.ClaimPending
+	if matchUi or menu or panel or self.Revealing or (humanoid and humanoid.MoveDirection.Magnitude > 0.1) then
+		self.QuietSince = now
+	end
+	local quiet = now - (self.QuietSince or now)
+	local claim = CLAIMS[step]
+	if self.ClaimKind and self.ClaimKind ~= step then
+		-- Opened from elsewhere (the server opens it when they try to play): the opening takes over, as after OPEN.
+		self.ClaimPending = now
+		self:HideClaim()
+	elseif self.ClaimKind and (matchUi or menu) then
+		-- Settings over the card, or a match took the screen (each puts the lobby away itself): it comes back after.
+		self:HideClaim()
+	end
+	if self.ClaimPending and self.Revealing then
+		self.ClaimPending = nil
+	elseif self.ClaimPending and now - self.ClaimPending > O.ClaimRetrySeconds then
+		self.ClaimPending = nil -- no opening came: give the lobby back (the card comes again if it is still due)
+		if lobby and lobby.Gui then
+			lobby:Close()
+		end
+	end
+	-- The opening was taken off the stage (a menu, a reset) before COLLECT: play it again once, so the new glassies
+	-- are always seen; a second loss just finishes it.
+	local reveal = self.Revealing
+	if reveal and reveal.Screen and lobby and lobby.Screen ~= reveal.Screen then
+		reveal.Screen = nil
+		if reveal.Replayed then
+			self:RevealDone(reveal)
+		else
+			reveal.Replayed = true
+		end
+	end
+	if reveal and not reveal.Screen and not reveal.Waiting and not matchUi and not menu then
+		self:PlayReveal(reveal)
+	end
+	local card = pg:FindFirstChild("WelcomeScreen")
+	if claim and card and not card.Enabled and not self.ClaimKind and not self.ClaimPending then
+		if not self.Revealing and not matchUi and not menu and not (lobby and lobby.PanelOpen) then
+			self:ShowClaim(step)
+		end
+	end
+	local daily = menu and menu.Name == "DailyRewardsScreen"
+	if step == "Daily" and not daily and not self.Revealing and quiet >= O.IdleNudgeSeconds then
+		self.QuietSince = now
+		self:ShowDaily()
+	end
+	if step == "Arena" then
+		if matchUi and self.Guide then
+			self:StopArenaGuide() -- watching or queued elsewhere: the beam comes back in the lobby
+		elseif not matchUi and not self.Guide and typeof(player:GetAttribute("OnboardingPad")) == "Vector3" then
+			self:StartArenaGuide() -- no pad (every arena busy): the PLAY nudge below finds one
+		end
+	end
+	-- PLAY pulses for a still player on the Arena step, and once more right after the tutorial (the second match).
+	local after = step == "Done" and self.DoneAt and now - self.DoneAt < O.DoneNudgeSeconds
+	if matchUi then
+		self.DoneAt = nil -- the next match started: the tutorial's last nudge is spent
+	end
+	if (step == "Arena" or after) and not matchUi and not self.Hints.play and quiet >= O.IdleNudgeSeconds then
+		local hud = pg:FindFirstChild("LobbyHUD")
+		local play = hud and hud:FindFirstChild("PlayButton")
+		if play then
+			self:Hint("play", play, true)
+		end
+	elseif step ~= "Arena" and not after then
+		self:Unhint("play")
+	end
+end
+
 -- Steps -------------------------------------------------------------------------------------------------------
 function Controller:Apply(step, previous)
+	if step == "Done" and previous == "Win" then
+		self.DoneAt = os.clock() -- the win prize is open: the next nudge points at PLAY (Keep)
+	end
 	if step ~= "Daily" then
 		self:Unhint("daily")
 	end
@@ -302,10 +453,11 @@ end
 function Controller:Start()
 	local player = self.Player
 	player:WaitForChild("PlayerGui")
-	local previous = nil
+	local previous, ready = nil, false
 	local function changed()
 		local step = player:GetAttribute("OnboardingStep")
-		if step and step ~= previous then
+		-- Nothing shows under the loading screen: the profile's step can arrive before it is gone.
+		if ready and step and step ~= previous then
 			local was = previous
 			previous = step
 			self:Apply(step, was)
@@ -313,7 +465,8 @@ function Controller:Start()
 	end
 	player:GetAttributeChangedSignal("OnboardingStep"):Connect(changed)
 	player:GetAttributeChangedSignal("OnboardingPad"):Connect(function()
-		if player:GetAttribute("OnboardingStep") == "Arena" and self.Guide then
+		-- A new or renewed reservation re-targets the beam; a first one that failed (no free arena) starts it now.
+		if player:GetAttribute("OnboardingStep") == "Arena" and (self.Guide or not busy(player.PlayerGui)) then
 			self:StartArenaGuide()
 		end
 	end)
@@ -324,21 +477,11 @@ function Controller:Start()
 		end
 	end)
 	Remotes.OnboardingReveal.OnClientEvent:Connect(function(data)
-		local lobby = self.Controllers.LobbyController
-		if not lobby or type(data) ~= "table" then
+		if type(data) ~= "table" or type(data.Results) ~= "table" then
 			return
 		end
-		self.Revealing = true
-		local status = if data.Kind == "Win" then "YOU WON! A FREE KILN OPEN" else "YOUR FIRST GLASSIES!"
-		self:WhenFree(function()
-			lobby:Reveal({ Results = data.Results, Status = status }, function()
-				self.Revealing = false
-				Remotes.OnboardingAction:FireServer("Collected") -- funnel: the opening was closed
-				if player:GetAttribute("OnboardingStep") == "Daily" then
-					self:ShowDaily()
-				end
-			end)
-		end)
+		self.Revealing = { Data = data }
+		self:PlayReveal(self.Revealing)
 	end)
 	-- The first card waits for the loading screen (ReplicatedFirst LoadingScreen sets ClientLoaded when it is gone;
 	-- the cap covers a client without it), then gives the lobby a beat.
@@ -347,7 +490,18 @@ function Controller:Start()
 		task.wait(0.1)
 	end
 	task.wait(0.6)
+	ready = true
 	changed()
+	task.spawn(function()
+		while true do
+			task.wait(O.KeepCheckSeconds)
+			local ok, err = pcall(self.Keep, self)
+			if not ok then
+				warn("[Onboarding] " .. tostring(err))
+				task.wait(5)
+			end
+		end
+	end)
 end
 
 return Controller

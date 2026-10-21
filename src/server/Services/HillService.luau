@@ -363,6 +363,10 @@ function Service:Join(player, arena)
 	if self:Busy(player) then
 		return
 	end
+	local onboarding = self.Services.OnboardingService
+	if onboarding and onboarding:BeforePlay(player) then
+		return -- a new player's claim card opens first (decision 100)
+	end
 	local ok = Rules.join(hill.State, player.UserId)
 	if ok then
 		self:SyncLine(hill)

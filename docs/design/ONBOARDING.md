@@ -51,6 +51,16 @@ fake:
   bit softer. In the round the bot should win, the bot hits a bit harder. Overtime still guarantees every round ends.
 - Pure presentation stays identical: same physics, hits, powers and finishers.
 
+**No straying, no idle time (decision 112, Proposed; audit in `docs/testing/onboarding_audit/REPORT.md`):**
+- The claim cards are modal: walking and jumping are held while one is up, and trying to play anyway (a pad, PLAY,
+  a hill challenge) opens that claim instead of queuing (server, `OnboardingRules.claimBeforePlay`).
+- A solo bot match from Daily, Arena or Match is the assisted first match (`OnboardingRules.isFirstMatch`), on any
+  free arena; the bot joins at once and the reservation is let go.
+- Whenever the lobby is quiet (no match, menu or opening, and the player standing still) for
+  `IdleNudgeSeconds` (6 s), the step comes back: the card, Daily Rewards with its pointer, the beam, or a pulse on
+  PLAY. After the win prize, PLAY pulses for an idle player for up to 3 minutes, until the second match starts.
+- An opening closed by something else before COLLECT plays again once; a card hidden by a menu comes back after it.
+
 **Who gets it:** new profiles only. Anyone with a finished match or an earlier welcome pull skips it. Rejoining
 resumes at the current step. Progress is logged as the tutorial funnel below. The old one-pull welcome after the first match is replaced by this flow.
 

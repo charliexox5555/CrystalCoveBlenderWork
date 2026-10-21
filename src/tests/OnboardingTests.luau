@@ -147,4 +147,21 @@ return function(t, d)
 		midway.Onboarding = { Step = "Arena", Funnel = 4 }
 		t.eq(Schema.reconcile(midway, 0).Onboarding.Funnel, 4)
 	end)
+	t.test("no playing around a claim card: Welcome and Win open their claim instead of queuing", function()
+		t.eq(Rules.claimBeforePlay("Welcome"), "OpenWelcome")
+		t.eq(Rules.claimBeforePlay("Win"), "OpenWin")
+		for _, step in { "Daily", "Arena", "Match", "Done" } do
+			t.eq(Rules.claimBeforePlay(step), nil)
+		end
+	end)
+	t.test("the first solo bot match is assisted from Daily, Arena or Match, never before or after", function()
+		for _, step in Rules.Steps do
+			local expected = step == "Daily" or step == "Arena" or step == "Match"
+			t.eq(Rules.isFirstMatch(step), expected)
+		end
+		-- Every step a player can queue from is either assisted or has a claim to open first, except Done.
+		for _, step in Rules.Steps do
+			t.ok(step == "Done" or Rules.isFirstMatch(step) or Rules.claimBeforePlay(step) ~= nil, step)
+		end
+	end)
 end

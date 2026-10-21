@@ -20,6 +20,21 @@ function Rules.initial(data)
 	return if played or (data.Flags and data.Flags.WelcomePullUsed) then "Done" else "Welcome"
 end
 
+-- Steps whose solo bot match is the assisted first match: Arena (the guided path), Match (it is running) and Daily
+-- (a player who closed Daily Rewards and walked to a pad still gets the easy first win; Daily stays claimable).
+Rules.FirstMatchSteps = { Daily = true, Arena = true, Match = true }
+
+function Rules.isFirstMatch(step)
+	return Rules.FirstMatchSteps[step] == true
+end
+
+-- Trying to play (a pad, PLAY, a hill challenge) while a claim card waits opens that claim instead of queuing: the
+-- welcome opens come before any match (a new player owns no glassies yet), the first-win prize before the second.
+-- Returns the OnboardingService open to run, or nil (go ahead and queue).
+function Rules.claimBeforePlay(step)
+	return if step == "Welcome" then "OpenWelcome" elseif step == "Win" then "OpenWin" else nil
+end
+
 local function shuffle(list, rng)
 	for i = #list, 2, -1 do
 		local j = math.floor(rng() * i) + 1

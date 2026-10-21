@@ -31,8 +31,19 @@ end
 
 -- Is `player` in the assisted first match window (MatchService asks before starting a match)?
 function Service:IsFirstMatch(player)
-	local step = self:Step(player)
-	return step == "Arena" or step == "Match"
+	return Rules.isFirstMatch(self:Step(player))
+end
+
+-- ArenaService / HillService, before queuing: a claim card still waiting (Welcome, Win) is opened instead, so the
+-- player is pulled back to the next step and never plays around it. True = handled, don't queue.
+function Service:BeforePlay(player)
+	local open = Rules.claimBeforePlay(self:Step(player))
+	if open == "OpenWelcome" then
+		self:OpenWelcome(player)
+	elseif open == "OpenWin" then
+		self:OpenWin(player)
+	end
+	return open ~= nil
 end
 
 -- Logs the funnel step `event` completes (once per player, in order; see OnboardingRules.Funnel). Funnel events only
@@ -119,7 +130,7 @@ end
 -- MatchService: a match with `player` in it started / finished. `tutorial` = the assisted first match.
 function Service:MatchStarted(player, tutorial)
 	local step = self:Step(player)
-	if tutorial and step == "Arena" then
+	if tutorial and step ~= "Match" and Rules.isFirstMatch(step) then
 		self:Track(player, "FirstMatchStarted")
 		self:SetStep(player, "Match")
 	elseif not tutorial and step == "Done" then
@@ -164,11 +175,11 @@ end
 -- DataService: profile ready.
 function Service:Loaded(player)
 	local step = self:Step(player)
-	player:SetAttribute("OnboardingStep", step)
 	if step == "Match" then
 		step = "Arena" -- a match can't survive a rejoin
 		data(self, player).Onboarding.Step = step
 	end
+	player:SetAttribute("OnboardingStep", step) -- after the fix-up, or the client would wait on a match that is gone
 	if step == "Arena" then
 		self:Reserve(player)
 	end
@@ -199,7 +210,13 @@ function Service:Start()
 		while true do
 			task.wait(5)
 			for _, player in Players:GetPlayers() do
-				if self:Step(player) == "Arena" and not self.Services.ArenaService:ReservedFor(player) then
+				local arenas = self.Services.ArenaService
+				if
+					self:Step(player) == "Arena"
+					and not arenas.ByPlayer[player]
+					and not self.Services.MatchService.ByPlayer[player]
+					and not arenas:ReservedFor(player)
+				then
 					self:Reserve(player)
 				end
 			end

@@ -3,6 +3,25 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-21 — Claude (tutorial-audit session) — First-session tutorial audit and hardening (decision 112, Proposed)
+Done:
+- Played the whole first session in Studio Play as new players (desktop + Galaxy A06), real clicks and walking, and tried to break it. Report with 18 captures and timings: docs/testing/onboarding_audit/REPORT.md.
+- Fixed (all re-checked in Play):
+  - keyboard players could walk off with the welcome card up and play an unassisted match on the loaner hand; the cards now hold walking, and the server opens a waiting claim instead of queuing (`OnboardingRules.claimBeforePlay`, `OnboardingService:BeforePlay`, hooked in ArenaService:Queue and HillService:Join)
+  - Daily Rewards closed unclaimed was never offered again (tutorial stuck); skipping it to a pad gave an unassisted match. Daily now comes back after 6 s idle, and a solo bot match from Daily is the assisted first match (`OnboardingRules.isFirstMatch`)
+  - a menu opened during the welcome/win opening destroyed it and stalled the tutorial; it now replays once
+  - Settings over a claim card; the card now steps aside and comes back
+  - a different free arena now gets Rookie Bot at once and frees the reservation; the renewal loop no longer reserves a 2nd arena for a queued player; a late reservation now starts the beam
+  - rejoin mid first match published "Match" to the client (no beam); the attribute is now set after the fix-up
+  - the welcome card could start under the loading screen
+- Dead time: client `Keep()` watcher brings the step back after 6 s standing still (card, Daily, beam, PLAY pulse); PLAY also pulses for up to 3 min after the win prize, the pull into the second match.
+- Funnel: all 12 steps logged once, in order (Joined → Second Match Finished). Double/triple-tap OPEN grants once. No script errors.
+- Lune 222/222 (2 new OnboardingTests).
+Next:
+- Creator: try it with a real controller and on a phone; pick from the bigger ideas in the report (Kiln goal badge for the 3rd match, faster bot for the 2nd match, 40 s pick timer in round 1 only, camera turn toward the arena, hide PICK ANY in the first match).
+Problems / questions for the user:
+- Not testable in Studio: controller input, a real rejoin, two players fighting over the reserved arena (covered by reading the code).
+
 ## 2026-10-21 — Claude (loading-tiers session) — Fast join: tiered loading (decision 111, Proposed)
 Done:
 - Measured first (docs/testing/loading/BASELINE.md): the old screen preloaded everything (~200 jobs) after `game.Loaded`, closing at 18.4 s (first Studio run) / 10.3 s (cached); 37 glassies alone were ~14 s of job time. Researched Creator Docs + DevForum (sources in BASELINE): preload only the loading art, key menu images and the starting area; skip button; lean ReplicatedStorage.

@@ -740,6 +740,42 @@ table.insert(list, {
 	Description = "Plants lantern seeds on clashes, then calls them home as wisps.",
 })
 
+-- Daily Rewards exclusives (decision 115): granted only by the Daily calendar (Day 2 and Day 7). Like the seasonal
+-- set they sit outside the release roster, so they are never in the Kiln, the daily store or bot hands.
+local dailyIds = { "whiskers", "midnight_moon" }
+table.insert(list, {
+	Id = "whiskers",
+	Name = "Whiskers",
+	Type = "Sharp",
+	Rarity = "Epic",
+	Base = { Power = 21, HP = 105, Swing = 14 },
+	Passive = "second_wind",
+	PassiveName = "Nine Lives",
+	Special = "slam",
+	SpecialName = "Yarn Toss",
+	Radius = 0.74,
+	Tint = "#B9A7FF",
+	ClinkPitch = 1.15,
+	Asset = "whiskers",
+	Description = "A playful glass kitty: bats a yarn ball out and back that tangles whoever it hits.",
+})
+table.insert(list, {
+	Id = "midnight_moon",
+	Name = "Midnight",
+	Type = "Fizzy",
+	Rarity = "Legendary",
+	Base = { Power = 20, HP = 110, Swing = 10 },
+	Passive = "glow_core",
+	PassiveName = "Moonglow",
+	Special = "slam",
+	SpecialName = "Lullaby",
+	Radius = 0.62,
+	Tint = "#9AA2FF",
+	ClinkPitch = 0.9,
+	Asset = "midnight_moon",
+	Description = "The sleepy moon of Midnights Studio: sings a lullaby that makes its foe drowsy.",
+})
+
 local Glassies = {
 	List = list,
 	ById = {} :: { [string]: GlassyDef },
@@ -772,16 +808,24 @@ end
 function Glassies.isRelease(id: string): boolean
 	return ReleaseRoster.ById[id] == true
 end
+Glassies.DailyIds = dailyIds
+function Glassies.isDaily(id: string): boolean
+	return table.find(dailyIds, id) ~= nil
+end
 Glassies.SeasonalIds = seasonalIds
 function Glassies.isSeasonal(id: string): boolean
 	return table.find(seasonalIds, id) ~= nil
 end
--- Owned legacy entries remain inspectable; they do not inflate the release's 24-item total.
+-- Owned legacy entries remain inspectable; they do not inflate the release's 24-item total. The Daily Rewards
+-- glassies always show (locked until claimed), so players can see what the calendar gives.
 function Glassies.visible(collection)
 	local entries = table.clone(Glassies.ReleaseList)
 	for _, definition in list do
 		local owned = collection and collection[definition.Id]
-		if not Glassies.isRelease(definition.Id) and owned and (owned.Count == nil or owned.Count > 0) then
+		if
+			Glassies.isDaily(definition.Id)
+			or (not Glassies.isRelease(definition.Id) and owned and (owned.Count == nil or owned.Count > 0))
+		then
 			table.insert(entries, definition)
 		end
 	end

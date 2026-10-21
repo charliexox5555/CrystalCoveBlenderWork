@@ -79,9 +79,17 @@ function EconomySim.simulate(seed: number?)
 			local t, firstWin = 0, false
 			local gifts = 1
 			coins += econ.DailyQuestCoins * e.QuestsCompletedPerDay
-			-- Daily Rewards calendar (decision 99): claimed every day in the sim; a free Kiln pull counts as one pull's coins.
+			-- Daily Rewards calendar (decisions 99, 115): claimed every day in the sim; a free Kiln pull counts as one
+			-- pull's coins. A Daily glassy (Day 2 Epic, Day 7 Legendary) counts as that rarity's first at the day's start.
 			local calendar = econ.DailyRewards[(day - 1) % #econ.DailyRewards + 1]
 			coins += (calendar.Coins or 0) + (if calendar.Pull == "Glassies" then econ.KilnCoinCost else 0)
+			if calendar.Item and calendar.Item.Category == "Glassies" then
+				local rarity = Glassies.get(calendar.Item.Id).Rarity
+				if firsts[rarity] and not seen[rarity] then
+					seen[rarity] = true
+					table.insert(firsts[rarity], (day - 1) * e.SessionMinutes)
+				end
+			end
 			while t + matchSeconds <= e.SessionMinutes * 60 do
 				t += matchSeconds
 				local got, win = playMatch(rng)

@@ -38,4 +38,6 @@ return {
 	grizzly_guardian = { Radius = 0.994843, Center = 1.365667 },
 	glass_unicorn = { Radius = 0.800000, Center = 1.292125 },
 	glass_phoenix = { Radius = 0.850000, Center = 1.075999 },
+	whiskers = { Radius = 0.740000, Center = 1.050000 },
+	midnight_moon = { Radius = 0.622578, Center = 1.015066 },
 }

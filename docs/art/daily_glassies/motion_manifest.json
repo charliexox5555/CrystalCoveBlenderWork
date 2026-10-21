@@ -1,0 +1,778 @@
+{
+ "schema": "launch_glassies_v4/1 (glassy_revamp_v3/1 plus `follows` and the `drip` idle type)",
+ "coordinates": "Roblox model space: roblox = (x, z, -y) of Blender; studs at GlassyScale 1; origin = hang point",
+ "idle_types": {
+  "sway": "rotate about axis amp_deg*sin(2*pi*t/period_s+phase)",
+  "spin": "rotate about axis at deg_per_s",
+  "bob": "translate along axis amp_studs*sin(...)",
+  "pulse": "scale about pivot 1+amp*sin(...); Neon parts also brighten",
+  "slosh": "rotate about axis by -gain*swing angular velocity (deg/s), clamp max_deg, spring freq_hz/damping",
+  "flicker": "random scale jitter amp at rate_hz",
+  "blink": "scale along axis to 0.1 for dur_s every interval_s (+-40%)",
+  "drip": "loop every period_s: scale 0->1 over grow_s at the pivot, then slide fall_studs along the axis while fading, reset",
+  "static": "no idle motion"
+ },
+ "hit_types": {
+  "kick": "rotate deg about axis (sign from hit side), spring back",
+  "flare": "rotate deg outward, spring back",
+  "hop": "translate studs along axis, spring back",
+  "squash": "scale factor along axis, spring back",
+  "flash": "Neon/brighten for dur_s",
+  "spin_boost": "add deg_per_s decaying over dur_s",
+  "none": "no reaction"
+ },
+ "follows": "A part with `follows` rides the named part: apply the parent's motion first, then its own idle/hit in the parent's frame (fish tail on the fish, eye shine on the eyes, chips on their cookie). Parts with the same motion as the parent repeat it.",
+ "body_motion": "Glass Top's Body has a cosmetic spin about the hang axis; its stripes, ring, knob and tip follow it.",
+ "lod": "Low-detail mode: animate only parts with lod_keep=true (plus client-driven kit names).",
+ "glassies": {
+  "whiskers": {
+   "name": "Whiskers",
+   "rarity": "Epic",
+   "tint": "#B9A7FF",
+   "version": "v4",
+   "bundle": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx",
+   "icon": "assets/blender/glassies/whiskers/v4/whiskers_icon.png",
+   "intact_triangles": 1480,
+   "shard_count": 18,
+   "release_geometry": {
+    "Radius": 0.74,
+    "Center": 1.05
+   },
+   "radius_target": 0.74,
+   "body_dimensions_roblox": [
+    1.4800000190734863,
+    1.8600000143051147,
+    1.2400000095367432
+   ],
+   "fbx_roundtrip": true,
+   "animated_parts": 9,
+   "parts": [
+    {
+     "name": "Body",
+     "role": "Body",
+     "material": "Glass",
+     "color": "#B9A7FF",
+     "transparency": 0.38,
+     "effect_only": false
+    },
+    {
+     "name": "Eyes",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#1B2440",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Eyes",
+     "pivot_roblox": [
+      0.0,
+      -0.64,
+      0.588578
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "blink",
+      "interval_s": 4.0,
+      "dur_s": 0.12
+     },
+     "hit": {
+      "type": "none"
+     },
+     "lod_keep": false
+    },
+    {
+     "name": "EyeShine",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FFFFFF",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_EyeShine",
+     "pivot_roblox": [
+      0.0,
+      -0.64,
+      0.588578
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "blink",
+      "interval_s": 4.0,
+      "dur_s": 0.12
+     },
+     "hit": {
+      "type": "none"
+     },
+     "lod_keep": false,
+     "note": "blinks with Eyes",
+     "follows": "Eyes"
+    },
+    {
+     "name": "Cheeks",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FF8FB0",
+     "transparency": 0.35,
+     "effect_only": false
+    },
+    {
+     "name": "Nose",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FF8FB8",
+     "transparency": 0,
+     "effect_only": false
+    },
+    {
+     "name": "Mouth",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#3A2A5C",
+     "transparency": 0,
+     "effect_only": false
+    },
+    {
+     "name": "Whiskers",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FFFFFF",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Whiskers",
+     "pivot_roblox": [
+      0.0,
+      -0.75,
+      0.537939
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 3,
+      "period_s": 2.4,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 10,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "whiskers twitch on hits"
+    },
+    {
+     "name": "Ears",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#B9A7FF",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Ears",
+     "pivot_roblox": [
+      0.0,
+      -0.38,
+      0.01
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 4,
+      "period_s": 2.6,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "flare",
+      "deg": 16,
+      "freq_hz": 2.5,
+      "damping": 0.35
+     },
+     "lod_keep": false,
+     "note": "ear twitch"
+    },
+    {
+     "name": "EarInners",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FF8FB8",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_EarInners",
+     "pivot_roblox": [
+      0.0,
+      -0.38,
+      0.01
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "none"
+     },
+     "lod_keep": false,
+     "note": "pink inside of the ears",
+     "follows": "Ears"
+    },
+    {
+     "name": "Paws",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#E9E1FF",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Paws",
+     "pivot_roblox": [
+      0.0,
+      -1.42,
+      -0.04
+     ],
+     "axis_roblox": [
+      1.0,
+      0.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 4,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false
+    },
+    {
+     "name": "InnerGlow",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#8E74F2",
+     "transparency": 0.15,
+     "effect_only": false,
+     "pivot_empty": "Pivot_InnerGlow",
+     "pivot_roblox": [
+      0.0,
+      -1.42,
+      -0.04
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "pulse",
+      "amp": 0.05,
+      "period_s": 1.8,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "squash",
+      "factor": 0.92,
+      "freq_hz": 4.0,
+      "damping": 0.35
+     },
+     "lod_keep": false,
+     "note": "lilac inner glass"
+    },
+    {
+     "name": "Tail",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#B9A7FF",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Tail",
+     "pivot_roblox": [
+      0.3,
+      -1.84,
+      -0.4
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 12,
+      "period_s": 1.8,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 20,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": true,
+     "note": "tail swish; wiggles hard in the pounce windup"
+    },
+    {
+     "name": "Collar",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FF5C8A",
+     "transparency": 0,
+     "effect_only": false
+    },
+    {
+     "name": "Bell",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FFC94A",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Bell",
+     "pivot_roblox": [
+      0.0,
+      -1.1,
+      0.525152
+     ],
+     "axis_roblox": [
+      1.0,
+      0.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 6,
+      "period_s": 1.4,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 28,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": true,
+     "note": "jingles on every clash"
+    },
+    {
+     "name": "BellGlow",
+     "role": "Detail",
+     "material": "Neon",
+     "color": "#FFF6C2",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_BellGlow",
+     "pivot_roblox": [
+      0.0,
+      -1.1,
+      0.525152
+     ],
+     "axis_roblox": [
+      1.0,
+      0.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "pulse",
+      "amp": 0.15,
+      "period_s": 1.6,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "flash",
+      "dur_s": 0.3
+     },
+     "lod_keep": false,
+     "note": "Epic accent: glows at Ready",
+     "follows": "Bell"
+    },
+    {
+     "name": "HangLoop",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FFE7A8",
+     "transparency": 0.28,
+     "effect_only": false
+    }
+   ]
+  },
+  "midnight_moon": {
+   "name": "Midnight",
+   "rarity": "Legendary",
+   "tint": "#9AA2FF",
+   "version": "v4",
+   "bundle": "assets/blender/glassies/midnight_moon/v4/midnight_moon_bundle.fbx",
+   "icon": "assets/blender/glassies/midnight_moon/v4/midnight_moon_icon.png",
+   "intact_triangles": 2868,
+   "shard_count": 20,
+   "release_geometry": {
+    "Radius": 0.622578,
+    "Center": 1.015066
+   },
+   "radius_target": 0.62,
+   "body_dimensions_roblox": [
+    1.1403124332427979,
+    1.890132188796997,
+    0.5617231130599976
+   ],
+   "fbx_roundtrip": true,
+   "animated_parts": 8,
+   "parts": [
+    {
+     "name": "Body",
+     "role": "Body",
+     "material": "Glass",
+     "color": "#9AA2FF",
+     "transparency": 0.38,
+     "effect_only": false
+    },
+    {
+     "name": "Eyes",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#1B2440",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Eyes",
+     "pivot_roblox": [
+      -0.295,
+      -0.964325,
+      0.252041
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "blink",
+      "interval_s": 4.0,
+      "dur_s": 0.12
+     },
+     "hit": {
+      "type": "none"
+     },
+     "lod_keep": false
+    },
+    {
+     "name": "EyeShine",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FFFFFF",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_EyeShine",
+     "pivot_roblox": [
+      -0.295,
+      -0.964325,
+      0.252041
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "blink",
+      "interval_s": 4.0,
+      "dur_s": 0.12
+     },
+     "hit": {
+      "type": "none"
+     },
+     "lod_keep": false,
+     "note": "blinks with Eyes",
+     "follows": "Eyes"
+    },
+    {
+     "name": "Cheeks",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FF8FB0",
+     "transparency": 0.35,
+     "effect_only": false
+    },
+    {
+     "name": "Smile",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#1A1C4A",
+     "transparency": 0,
+     "effect_only": false
+    },
+    {
+     "name": "NightSky",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#2B2F95",
+     "transparency": 0.15,
+     "effect_only": false,
+     "pivot_empty": "Pivot_NightSky",
+     "pivot_roblox": [
+      -0.295,
+      -1.014325,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "pulse",
+      "amp": 0.03,
+      "period_s": 3.0,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "squash",
+      "factor": 0.94,
+      "freq_hz": 4.0,
+      "damping": 0.35
+     },
+     "lod_keep": false,
+     "note": "the night inside the moon"
+    },
+    {
+     "name": "StarSpecks",
+     "role": "Detail",
+     "material": "Neon",
+     "color": "#FFD25A",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_StarSpecks",
+     "pivot_roblox": [
+      0.3,
+      -1.014325,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "pulse",
+      "amp": 0.12,
+      "period_s": 2.2,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "flash",
+      "dur_s": 0.35
+     },
+     "lod_keep": false,
+     "note": "twinkle; flare at Ready and on the lullaby"
+    },
+    {
+     "name": "MoonCore",
+     "role": "Detail",
+     "material": "Neon",
+     "color": "#FFF3B8",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_MoonCore",
+     "pivot_roblox": [
+      -0.195,
+      -1.354325,
+      -0.06
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "pulse",
+      "amp": 0.1,
+      "period_s": 2.6,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "flash",
+      "dur_s": 0.35
+     },
+     "lod_keep": false,
+     "note": "Legendary core: glows brighter at Ready"
+    },
+    {
+     "name": "Nightcap",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#8C5CFF",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Nightcap",
+     "pivot_roblox": [
+      0.367348,
+      -0.170873,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 6,
+      "period_s": 2.6,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 16,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "floppy nightcap"
+    },
+    {
+     "name": "CapBrim",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#F4F0FF",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_CapBrim",
+     "pivot_roblox": [
+      0.367348,
+      -0.170873,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "none"
+     },
+     "lod_keep": false,
+     "follows": "Nightcap"
+    },
+    {
+     "name": "PomPom",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FFFFFF",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_PomPom",
+     "pivot_roblox": [
+      0.367348,
+      -0.170873,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "none"
+     },
+     "lod_keep": false,
+     "follows": "Nightcap"
+    },
+    {
+     "name": "HangingStar",
+     "role": "Detail",
+     "material": "Neon",
+     "color": "#FFD25A",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_HangingStar",
+     "pivot_roblox": [
+      0.477632,
+      -1.928261,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 14,
+      "period_s": 2.0,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 30,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": true,
+     "note": "pendulum star; flashes when the lullaby lands"
+    },
+    {
+     "name": "Sparkles",
+     "role": "Detail",
+     "material": "Neon",
+     "color": "#FFFFFF",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Sparkles",
+     "pivot_roblox": [
+      0.3,
+      -1.014325,
+      -0.0
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "spin",
+      "deg_per_s": 24
+     },
+     "hit": {
+      "type": "flash",
+      "dur_s": 0.3
+     },
+     "lod_keep": false,
+     "idle_layers": [
+      {
+       "type": "pulse",
+       "amp": 0.25,
+       "period_s": 1.3,
+       "phase": 0.0
+      }
+     ]
+    },
+    {
+     "name": "HangLoop",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FFD25A",
+     "transparency": 0.28,
+     "effect_only": false
+    }
+   ]
+  }
+ }
+}

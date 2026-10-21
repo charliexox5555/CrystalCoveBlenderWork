@@ -1734,6 +1734,224 @@ Kits.glass_phoenix = {
 	end,
 }
 
+-- ===================================================================================================================
+-- Daily Rewards glassies (decision 115)
+-- ===================================================================================================================
+
+-- Yarn loops wrapped round a tangled glassy for `seconds` (Whiskers' slow): three tilted rings that spin and tighten.
+local function tangle(fx, side, target, seconds, start)
+	local color, accent = fx:Colors(side)
+	local loops = {}
+	for i = 1, fx:Count(side, 3) do
+		loops[i] = fx:Part("Ring", if i == 2 then accent else color)
+	end
+	fx:Spawn({
+		Side = side,
+		Key = "tangle:" .. target,
+		Start = start,
+		Seconds = seconds,
+		Parts = loops,
+		Step = function(_, age, k)
+			local f = fx:Fighter(target)
+			if not f or f.Broken or f.Finishing then
+				return false
+			end
+			local pos, size = fx:Body(target)
+			local wrap = fx.pop(age / 0.25)
+			for i, p in loops do
+				fx:Fit(p, size * (1.35 - 0.12 * i) * (1.6 - 0.6 * wrap))
+				p.CFrame = CFrame.new(pos) * CFrame.Angles(0.9 * i, age * (2 + i), 0.6 * i + age * 1.5)
+				p.Transparency = 0.15 + 0.85 * fx.smooth((k - 0.82) / 0.18)
+			end
+		end,
+	})
+end
+
+Kits.whiskers = {
+	Windup = function(fx, side, e)
+		-- Stage 1: the kitty crouches and wiggles its bottom; stage 2 (Epic hush): it freezes, then pounces.
+		gather(fx, side, e, { MoteKind = "Ball", Motes = 5, MoteSize = 0.3, MotionAmount = 1.6, TwoStage = true })
+		fx:Cue(side, "whiskers_wiggle")
+	end,
+	Release = function(fx, side, e, ctx)
+		local color, accent = fx:Colors(side)
+		-- A glass yarn ball rolls out and back, trailing a long thin strand of yarn.
+		shots(fx, side, e, ctx, {
+			Kind = "BubbleDome",
+			Size = 1.05,
+			Core = false,
+			Trail = 0.55,
+			TrailWidth = 0.18,
+			Spin = 12,
+			Step = function(pos, age)
+				if math.floor(age * 12) ~= math.floor((age - 1 / 60) * 12) then
+					fx:Glints(side, pos, accent, 1, { Speed = NumberRange.new(0.5, 1.5) })
+				end
+			end,
+		})
+		for _, shot in ctx.Shots do
+			if shot.Effect then
+				shot.Effect.Parts[1].Color = color
+				shot.Effect.Parts[1].Material = Enum.Material.Glass
+			end
+		end
+		fx:Flash(side, ctx.Here, accent, 1.2, 0.12)
+		fx:Cue(side, "whiskers_toss")
+	end,
+	Hit = function(fx, side, _, at)
+		local color, accent = fx:Colors(side)
+		fx:Flash(side, at, color, 1.6, 0.14)
+		fx:Ring(side, at, accent, 0.6, 3.2, 0.3, { Kind = "ShockCrown", Spin = 3 })
+		fx:Chips(side, at, color, 6, 4, 0.5, { Kind = "Ball", Size = 0.25, Alternate = accent, Up = 2 })
+		fx:Cue(side, "whiskers_tangle")
+	end,
+	Status = function(fx, side, e)
+		if e.Kind == "Slow" and e.Target then
+			tangle(fx, side, e.Target, e.Seconds or 1.2, e.Time)
+		end
+	end,
+}
+
+-- "z z Z" floating up from a sleepy glassy (Midnight's lullaby). A BillboardGui on a pooled anchor; letters only, no
+-- words, so it reads at any age. Bystander fights skip it (low tier).
+local function sleepy(fx, side, target, seconds, start)
+	if fx:Low(side) then
+		return
+	end
+	local _, accent = fx:Colors(side)
+	local anchor = fx:Part("Anchor", WHITE)
+	local stars = { fx:Part("NovaStar", accent), fx:Part("NovaStar", WHITE) }
+	local board = Instance.new("BillboardGui")
+	board.Name, board.Size, board.LightInfluence = "Sleepy", UDim2.fromScale(2.2, 2.2), 0
+	board.AlwaysOnTop, board.Adornee, board.Parent = false, anchor, anchor
+	local letters = {}
+	for i = 1, 3 do
+		local z = Instance.new("TextLabel")
+		z.BackgroundTransparency, z.Text = 1, if i == 3 then "Z" else "z"
+		z.FontFace = Font.new("rbxasset://fonts/families/DenkOne.json")
+		z.TextScaled, z.TextColor3 = true, Color3.fromHex("#E9E6FF")
+		z.Size = UDim2.fromScale(0.28 + 0.1 * i, 0.28 + 0.1 * i)
+		z.AnchorPoint = Vector2.new(0.5, 0.5)
+		z:SetAttribute("TextFit", false)
+		local stroke = Instance.new("UIStroke")
+		stroke.Color, stroke.Thickness = Color3.fromHex("#2B2F95"), 2
+		stroke.Parent = z
+		z.Parent = board
+		letters[i] = z
+	end
+	local parts = { anchor, stars[1], stars[2] }
+	local effect = fx:Spawn({
+		Side = side,
+		Key = "sleepy:" .. target,
+		Start = start,
+		Seconds = seconds,
+		Parts = parts,
+		Stop = function()
+			board:Destroy()
+		end,
+		Step = function(_, age, k)
+			local f = fx:Fighter(target)
+			if not f or f.Broken or f.Finishing then
+				return false
+			end
+			local pos, size = fx:Body(target)
+			anchor.CFrame = CFrame.new(pos + Vector3.yAxis * size * 0.9)
+			for i, z in letters do
+				local t = (age * 0.7 + i / 3) % 1
+				z.Position = UDim2.fromScale(0.35 + 0.18 * i + 0.05 * math.sin(age * 3 + i), 0.85 - 0.7 * t)
+				z.TextTransparency = 0.1 + 0.9 * math.max(fx.smooth((t - 0.7) / 0.3), fx.smooth((k - 0.85) / 0.15))
+			end
+			for i, p in stars do
+				local a = age * 2.2 + i * math.pi
+				fx:Fit(p, size * 0.35)
+				p.CFrame = CFrame.new(pos + Vector3.new(math.cos(a), 0.55, math.sin(a)) * size * 0.75)
+					* CFrame.Angles(0, a, 0)
+				p.Transparency = 0.1 + 0.9 * fx.smooth((k - 0.85) / 0.15)
+			end
+		end,
+	})
+	if not effect then -- already over (a late event): nothing was registered, so clean up here
+		board:Destroy()
+		for _, p in parts do
+			fx:Free(p)
+		end
+	end
+end
+
+Kits.midnight_moon = {
+	Windup = function(fx, side, e)
+		-- The moon rocks like a cradle while stars gather in, then a hush (Hero two-stage anticipation).
+		local _, accent = fx:Colors(side)
+		gather(fx, side, e, { MoteKind = "NovaStar", Motes = 6, MoteSize = 0.42, Motion = "rear", MotionAmount = 0.8 })
+		fx:Move(side, "wiggle", e.Windup or 0.5, 0.7)
+		fx:Glints(side, (fx:Body(side)), accent, 8, { Speed = NumberRange.new(1, 2.5) })
+		fx:Cue(side, "midnight_lullaby")
+	end,
+	Release = function(fx, side, e, ctx)
+		local color, accent = fx:Colors(side)
+		-- The lullaby: soft violet rings with gold star notes drifting out on them.
+		pulseRings(fx, side, e, ctx, { Rings = 3, Kind = "Ring" })
+		local range = e.Range or 5.5
+		local notes = {}
+		for i = 1, fx:Count(side, 8) do
+			notes[i] = fx:Part("NovaStar", if i % 2 == 0 then accent else WHITE)
+		end
+		fx:Spawn({
+			Side = side,
+			Start = e.Time,
+			Seconds = math.max(0.4, e.Duration or 0.6) + 0.3,
+			Parts = notes,
+			Step = function(_, age, k)
+				local here = ctx.Here()
+				local c = workspace.CurrentCamera.CFrame
+				for i, p in notes do
+					local a = i / #notes * math.pi * 2 + age * 1.2
+					local r = range * fx.easeOut(k) * 0.9
+					local bob = math.sin(age * 6 + i) * 0.25
+					fx:Fit(p, 0.55 * (1 - 0.4 * k))
+					p.CFrame = CFrame.new(here + c.RightVector * math.cos(a) * r + c.UpVector * (math.sin(a) * r + bob))
+						* CFrame.Angles(0, 0, age * 2)
+					p.Transparency = 0.05 + 0.95 * fx.smooth((k - 0.75) / 0.25)
+				end
+			end,
+		})
+		fx:Light(side, ctx.Here, color, 0.6)
+		fx:HeroBloom(side, 0.8)
+	end,
+	Hit = function(fx, side, _, at)
+		local color, accent = fx:Colors(side)
+		fx:Flash(side, at, color, 1.8, 0.16)
+		fx:Chips(side, at, accent, 6, 3, 0.6, { Kind = "NovaStar", Size = 0.4, Alternate = WHITE, Up = 1 })
+		fx:Glints(side, at, accent, 10, { Speed = NumberRange.new(1, 3) })
+	end,
+	Status = function(fx, side, e)
+		if e.Kind == "Mark" and e.Target then
+			sleepy(fx, side, e.Target, e.Seconds or 3.5, e.Time)
+			fx:Cue(side, "midnight_sleepy")
+		end
+	end,
+	Payoff = function(fx, side, _, at)
+		-- Wake-up bonk: a big gold star pops on the clash and the Zzz vanish.
+		local color, accent = fx:Colors(side)
+		fx:StopKey("sleepy:" .. (3 - side))
+		local star = fx:Part("NovaStar", accent)
+		fx:Spawn({
+			Side = side,
+			Seconds = 0.45,
+			Parts = { star },
+			Step = function(_, _, k)
+				fx:Fit(star, 3.2 * fx.pop(k / 0.3))
+				star.CFrame = fx.face(at) * CFrame.Angles(0, 0, 0.25 + k * 0.6)
+				star.Transparency = 0.02 + 0.98 * fx.easeIn(k)
+			end,
+		})
+		fx:Spokes(side, at, accent, 8, 2.2, 0.3, { Alternate = color, Width = 0.3 })
+		fx:Flash(side, at, WHITE, 1.6, 0.12)
+		fx:Glints(side, at, accent, 12)
+		fx:Cue(side, "midnight_bonk")
+	end,
+}
+
 -- Hollowlight keeps its bespoke LanternSeeds presentation, with the Hero tier of the shared Ready/cast states
 -- (premium seasonal set; rarity and stats stay Epic). docs/vfx/HOLLOWLIGHT_PREMIUM.md section 4.
 Kits.hollowlight = { Skip = true, Tier = "Hero" }

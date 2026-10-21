@@ -3,6 +3,7 @@ local Shared = if script then game.ReplicatedStorage.Shared else nil
 local Balance = if Shared then require(Shared.Config.Balance) else require("../../shared/Config/Balance")
 local Content = if Shared then require(Shared.Config.Retention) else require("../../shared/Config/Retention")
 local Grant = if script then require(script.Parent.RewardGrant) else require("./RewardGrant")
+local Formula = if Shared then require(Shared.Formula) else require("../../shared/Formula")
 local Rules = {}
 local function natural(value)
 	return if type(value) == "number"
@@ -67,15 +68,54 @@ function Rules.match(data, match, side, observed, now)
 	end
 	return 0
 end
--- A playtime gift's bundle on a UTC day: coins plus, for a RotatingPull gift, that day's free pull ticket.
+-- A playtime gift's bundle on a UTC day: coins and XP plus, for a RotatingPull gift, that day's free pull ticket.
 function Rules.giftReward(gift, day)
 	local reward = {}
 	if (gift.Coins or 0) > 0 then
 		reward.Coins = gift.Coins
 	end
+	if (gift.Xp or 0) > 0 then
+		reward.Xp = gift.Xp
+	end
 	if gift.RotatingPull then
 		reward.Pull = gift.RotatingPull[day % #gift.RotatingPull + 1]
 	end
+	return reward
+end
+
+-- Playtime gifts collect themselves (decision 115): every gift whose time is reached is granted once per UTC day.
+-- Returns the list of gifts granted now: { { Id, Reward, Item }, ... } (empty when nothing new).
+function Rules.collectGifts(data, now)
+	local daily = Rules.ensure(data, now)
+	local granted = {}
+	for i, gift in Balance.Economy.PlaytimeGifts do
+		local key = "gift_" .. i
+		if not daily.PlaytimeClaimed[key] and daily.PlaytimeSeconds >= gift.Minutes * 60 then
+			daily.PlaytimeClaimed[key] = true
+			local reward = Rules.giftReward(gift, daily.Day)
+			table.insert(granted, { Id = i, Reward = reward, Item = Grant.apply(data, reward, now) })
+		end
+	end
+	return granted
+end
+
+-- A Daily glassy day gives another copy until the glassy is at max stars, then its WhenMaxed bundle (decision 115).
+local function maxed(data, item)
+	local owned = item and item.Category == "Glassies" and data.Glassies[item.Id]
+	if not owned then
+		return false
+	end
+	local stars = Formula.starsFromDuplicates(owned.Count - 1)
+	return stars >= Balance.Growth.MaxStars
+end
+
+-- What a calendar day gives this player now: the bundle without its WhenMaxed note, or WhenMaxed when it applies.
+function Rules.dailyReward(data, def)
+	if def.WhenMaxed and maxed(data, def.Item) then
+		return table.clone(def.WhenMaxed)
+	end
+	local reward = table.clone(def)
+	reward.WhenMaxed = nil
 	return reward
 end
 
@@ -86,12 +126,16 @@ function Rules.calendar(data, now)
 	local cal = data.Calendar
 	local claimedToday = cal.LastDay == day
 	local count = if claimedToday or cal.Index < #Balance.Economy.DailyRewards then cal.Index else 0
+	local rewards = {}
+	for i, def in Balance.Economy.DailyRewards do
+		rewards[i] = Rules.dailyReward(data, def)
+	end
 	return {
 		Count = count,
 		Next = if claimedToday then nil else count + 1,
 		ClaimedToday = claimedToday,
 		ResetAt = (day + 1) * Balance.Data.DaySeconds,
-		Rewards = Balance.Economy.DailyRewards,
+		Rewards = rewards,
 	}
 end
 

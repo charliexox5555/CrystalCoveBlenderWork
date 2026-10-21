@@ -80,7 +80,8 @@ return function(t, deps)
 			"wine",
 			"champagne",
 			"vodka",
-			"whisk",
+			"whiskey", -- not "whisk": Whiskers the kitten (decision 115) is fine
+			"whisky",
 			"rum ",
 			"liquor",
 			"sake",

@@ -290,6 +290,10 @@ function Signatures.slow(state, source, target, kit, emit)
 	Traits.slow(state, source, target, kit, emit)
 end
 
+function Signatures.mark(state, source, target, kit, emit)
+	Traits.mark(state, source, target, kit, emit)
+end
+
 function Signatures.turnaround(state, side, emit)
 	if state.Over then
 		return

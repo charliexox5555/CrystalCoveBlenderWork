@@ -642,6 +642,9 @@ function FightRules.resolveAbility(state: State, castId: number, landed: boolean
 		if amount > 0 and cast.Params.Slow then
 			Signatures.slow(state, attacker, target, cast.Params, emit)
 		end
+		if amount > 0 and cast.Params.MarkDamage then
+			Signatures.mark(state, attacker, target, cast.Params, emit)
+		end
 	end
 	emit(state, {
 		Type = "CastContact",

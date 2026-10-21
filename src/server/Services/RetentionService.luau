@@ -16,6 +16,30 @@ function Service:Loaded(player)
 		self.Clocks[player] = { At = os.clock(), Sync = os.clock(), Fraction = 0 }
 	end
 end
+-- Playtime gifts collect themselves (decision 115): grant every reached gift, save, and tell the client so it can
+-- show a small toast. Called from the playtime tick, so a gift reached in an earlier session today arrives soon
+-- after joining.
+function Service:Collect(player, data)
+	local granted = Rules.collectGifts(data, os.time())
+	if #granted == 0 then
+		return
+	end
+	self.Services.DataService:Sync(player)
+	local profile = self.Services.DataService.Profiles[player]
+	if profile then
+		profile.Profile:Save()
+	end
+	for _, gift in granted do
+		Remotes.RetentionResult:FireClient(player, {
+			Ok = true,
+			Auto = true,
+			Kind = "Gift",
+			Id = gift.Id,
+			Reward = gift.Reward,
+			Item = gift.Item,
+		})
+	end
+end
 function Service:View(player)
 	local data = self.Services.DataService:Get(player)
 	return data and Rules.view(data, os.time(), RunService:IsStudio())
@@ -116,6 +140,7 @@ function Service:Start()
 					clock.Fraction -= seconds
 					Rules.advance(data, seconds, os.time())
 					clock.At = now
+					self:Collect(player, data)
 					if now - clock.Sync >= Balance.Retention.SnapshotSeconds then
 						clock.Sync = now
 						self.Services.DataService:Sync(player)
@@ -136,6 +161,11 @@ function Service:Start()
 			end
 			if action == "Advance" then
 				Rules.advance(data, value, os.time())
+				self:Collect(player, data)
+				self.Services.DataService:Sync(player)
+			elseif action == "Calendar" then
+				-- QA: make `value` (1-7) today's claimable calendar day.
+				data.Calendar.Index, data.Calendar.LastDay = math.clamp(value - 1, 0, 6), Rules.day(os.time()) - 1
 				self.Services.DataService:Sync(player)
 			elseif action == "Observe" then
 				Rules.match(data, { Winner = 1 }, 1, value, os.time())

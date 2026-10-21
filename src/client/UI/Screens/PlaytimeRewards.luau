@@ -1,6 +1,8 @@
--- Drives StarterGui.PlaytimeRewardsScreen (design: docs/ui/screens/PlaytimeRewardsScreen.md; rules: decision 99).
+-- Drives StarterGui.PlaytimeRewardsScreen (design: docs/ui/screens/PlaytimeRewardsScreen.md; rules: decisions 99, 115).
 -- Render(gifts, seconds): gifts from RetentionRules.view ({ Id, Seconds, Reward, Claimed }), seconds = today's play
 -- time (server value plus local ticking). Time maps to the bar piecewise, so each gem sits over its cell.
+-- Gifts collect themselves when their time is reached (decision 115), so a reached gift shows as collected at once
+-- (the server grant and its toast follow within a second); there is no CLAIM step.
 local UIAssets = require(game.ReplicatedStorage.Shared.Config.UIAssets)
 local Visuals = require(script.Parent.RewardVisuals)
 local Screen = {}
@@ -71,9 +73,8 @@ function Screen:Render(gifts, seconds)
 			continue
 		end
 		self:Bind(cell, gift.Id)
-		local state = if gift.Claimed
+		local state = if gift.Claimed or seconds >= gift.Seconds
 			then "Claimed"
-			elseif seconds >= gift.Seconds then "Ready"
 			elseif i == nextIndex then "Next"
 			else "Locked"
 		cell:SetAttribute("State", state)

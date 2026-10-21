@@ -1,0 +1,9 @@
+{
+ "Record": "docs/art/daily_glassies/roblox_assets.json",
+ "Items": [
+  {"Key": "whiskers_bundle", "Path": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx", "Type": "Model", "Name": "GlassClash Whiskers v4"},
+  {"Key": "whiskers_icon", "Path": "assets/blender/glassies/whiskers/v4/whiskers_icon.png", "Type": "Decal", "Name": "GlassClash Whiskers icon v4"},
+  {"Key": "midnight_moon_bundle", "Path": "assets/blender/glassies/midnight_moon/v4/midnight_moon_bundle.fbx", "Type": "Model", "Name": "GlassClash Midnight v4"},
+  {"Key": "midnight_moon_icon", "Path": "assets/blender/glassies/midnight_moon/v4/midnight_moon_icon.png", "Type": "Decal", "Name": "GlassClash Midnight icon v4"}
+ ]
+}

@@ -22,8 +22,40 @@ return {
 		PW_FireBurst = { Id = "rbxassetid://9114444008", Seconds = 0.9 }, -- Fire Whoosh 3
 		PW_FireLick = { Id = "rbxassetid://9114446852", Seconds = 0.7 }, -- Fire Whoosh 15
 		PW_SlideUp = { Id = "rbxassetid://9119198150", Seconds = 0.75 }, -- Slide Whistle 6
+		PW_MusicBox = { Id = "rbxassetid://9117042092", Seconds = 2.4 }, -- Music Box Swan Lake Single Notes 3 (decision 115)
 	},
 	Cues = {
+		-- Daily Rewards glassies (decision 115). Whiskers: a slide-whistle wiggle, a whoosh with a tiny bell, a soft pop
+		-- when the yarn tangles. Midnight: a music-box lullaby over a rising bell triad, a shimmer as the foe gets
+		-- sleepy, and a bright bonk + chime when the next clash wakes it.
+		whiskers_wiggle = {
+			{ Key = "PW_SlideUp", Volume = 0.2, Pitch = 1.7, Seconds = 0.35 },
+			{ Key = "LanternBell", Volume = 0.16, Pitch = 2.6, Delay = 0.05, Seconds = 0.25 },
+		},
+		whiskers_toss = {
+			{ Key = "PW_AirRush", Volume = 0.3, Pitch = 1.5, Jitter = 0.04, Seconds = 0.45 },
+			{ Key = "LanternBell", Volume = 0.16, Pitch = 3.0, Delay = 0.03, Seconds = 0.25 },
+		},
+		whiskers_tangle = {
+			Contact = true,
+			{ Key = "BubblePop", Volume = 0.35, Pitch = 0.8, Jitter = 0.05 },
+			{ Key = "ChimeCluster", Volume = 0.18, Pitch = 1.6, Seconds = 0.5 },
+		},
+		midnight_lullaby = {
+			{ Key = "PW_MusicBox", Volume = 0.38, Pitch = 1.0, Seconds = 1.6 },
+			{ Key = "LanternBell", Volume = 0.16, Pitch = 1.0, Seconds = 0.6 },
+			{ Key = "LanternBell", Volume = 0.15, Pitch = 1.26, Delay = 0.18, Seconds = 0.6 },
+			{ Key = "LanternBell", Volume = 0.15, Pitch = 1.5, Delay = 0.36, Seconds = 0.8 },
+		},
+		midnight_sleepy = {
+			Contact = true,
+			{ Key = "FallingShimmer", Volume = 0.25, Pitch = 0.8, Seconds = 0.9 },
+		},
+		midnight_bonk = {
+			Contact = true,
+			{ Key = "PW_LidBonk", Volume = 0.35, Pitch = 1.5, Seconds = 0.4 },
+			{ Key = "ChimeCluster", Volume = 0.2, Pitch = 1.2, Seconds = 0.6 },
+		},
 		pop_payoff = {
 			Contact = true,
 			{ Key = "PW_FizzPop", Volume = 0.45, Pitch = 1.15, Jitter = 0.05 },

@@ -495,6 +495,43 @@ Balance.CombatRelease = {
 			},
 			Then = { Shape = "volley", Pulses = 3, Arc = 0.5, Damage = 0.5 },
 		},
+		-- Daily Rewards glassies (decision 115). Whiskers bats a yarn ball out and back; the first leg that lands
+		-- tangles the foe (slow). Midnight sings a lullaby ring: a landed ring makes the foe Sleepy (slow) and its
+		-- next clash within MarkSeconds is a wake-up bonk for MarkDamage (generic ranged Mark, FightRules).
+		whiskers = {
+			Trigger = "turnaround",
+			Every = 2,
+			Shape = "projectile",
+			Path = "return",
+			Pulses = 2,
+			Range = 6.5,
+			Radius = 0.28,
+			Damage = 0.8,
+			Slow = 0.75,
+			StatusSeconds = 1.2,
+			Immunity = 2.5,
+			Windup = 0.45,
+			Duration = 1.0,
+			LandChance = 0.65,
+		},
+		midnight_moon = {
+			Trigger = "timer",
+			First = 6,
+			Interval = 8.5,
+			Jitter = 0.8,
+			Shape = "pulse",
+			Range = 5.5,
+			Radius = 0.14,
+			Damage = 0.3,
+			Slow = 0.7,
+			StatusSeconds = 1.6,
+			Immunity = 2.5,
+			MarkDamage = 0.35,
+			MarkSeconds = 3.5,
+			Windup = 0.5,
+			Duration = 0.6,
+			LandChance = 0.8,
+		},
 		arc_coil = {
 			Trigger = "contact",
 			Every = 3,
@@ -628,6 +665,8 @@ Balance.CombatVFX = {
 -- Free retention plumbing only; existing economy/fight/content values are unchanged.
 Balance.Retention = {
 	TickSeconds = 1,
+	AutoOpenWaitSeconds = 90, -- Daily Rewards opens by itself within this long after joining (decision 115)...
+	AutoOpenQuietSeconds = 1.5, -- ...once the lobby has been quiet (no match, queue, results or menu) this long
 	SnapshotSeconds = 5,
 	ClaimRateSeconds = 0.5,
 	CodeRateSeconds = 1,
@@ -906,25 +945,33 @@ Balance.Economy = {
 	-- Free coin sources
 	DailyQuestCoins = 75, -- per quest, 3 quests a day
 	DailyQuests = 3,
-	-- Playtime gifts (decision 99): time adds up over the UTC day. A gift with RotatingPull gives one free pull
-	-- ticket, rotating by UTC day through the listed crate categories (spent in the Shop, odds shown first).
+	-- Playtime gifts (decisions 99, 115): time adds up over the UTC day, and each gift collects itself when its time
+	-- is reached (a small toast, no claim). Xp goes through LevelRules (decision 104). A gift with RotatingPull also
+	-- gives one free pull ticket, rotating by UTC day through the listed crate categories (spent in the Shop, odds
+	-- shown first).
 	PlaytimeGifts = {
-		{ Minutes = 10, Coins = 30 },
-		{ Minutes = 20, Coins = 50 },
-		{ Minutes = 30, Coins = 75 },
-		{ Minutes = 45, Coins = 100 },
-		{ Minutes = 60, Coins = 0, RotatingPull = { "Glassies", "Finishers", "Rideables" } },
+		{ Minutes = 10, Coins = 75 },
+		{ Minutes = 20, Coins = 100 },
+		{ Minutes = 30, Coins = 125 },
+		{ Minutes = 45, Coins = 0, Xp = 200 },
+		{ Minutes = 60, Coins = 150, RotatingPull = { "Glassies", "Finishers", "Rideables" } },
 	},
-	-- Daily Rewards calendar (decision 99): one claim per UTC day, a missed day keeps your place, then repeats.
-	-- Pull = a free pull ticket for that crate category.
+	-- Daily Rewards calendar (decisions 99, 115): one claim per UTC day, a missed day keeps your place, then repeats.
+	-- Pull = a free pull ticket for that crate category. Item = a Daily-only glassy (Day 2 Epic Whiskers, Day 7
+	-- Legendary Midnight); a repeat week gives another copy (+1 star, like a Kiln duplicate) until it is at max stars,
+	-- then WhenMaxed instead (coins and the item are replaced, not added).
 	DailyRewards = {
-		{ Coins = 50 },
-		{ Coins = 75 },
 		{ Coins = 100 },
-		{ Coins = 125 },
+		{ Coins = 100, Item = { Category = "Glassies", Id = "whiskers" }, WhenMaxed = { Coins = 200 } },
+		{ Coins = 100 },
 		{ Coins = 150 },
-		{ Coins = 200 },
-		{ Coins = 250, Pull = "Glassies" },
+		{ Coins = 100, Pull = "Glassies" },
+		{ Coins = 150 },
+		{
+			Coins = 300,
+			Item = { Category = "Glassies", Id = "midnight_moon" },
+			WhenMaxed = { Coins = 300, Pull = "Glassies" },
+		},
 	},
 	FirstWinOfDayCoins = 100,
 	WelcomeKilnPulls = 1, -- free pull right after a new player's first match

@@ -19,6 +19,17 @@ function Traits.slow(state, source, target, kit, emit)
 	status(state, emit, source.Side, "Slow", { Target = target.Side, Seconds = kit.StatusSeconds })
 end
 
+-- A ranged power that marks on a landed hit (Midnight's lullaby, decision 115): the target's next clash within
+-- MarkSeconds pays the owner's MarkDamage, the same payoff as mark_contact.
+function Traits.mark(state, source, target, kit, emit)
+	if not target.Signature then
+		return
+	end
+	local seconds = kit.MarkSeconds or kit.StatusSeconds
+	target.Signature.Mark = { Source = source.Side, Damage = kit.MarkDamage, Until = state.Time + seconds }
+	status(state, emit, source.Side, "Mark", { Target = target.Side, Seconds = seconds })
+end
+
 function Traits.damaged(state, target, amount, kind, emit, begin)
 	local s = target.Signature
 	if not s or amount <= 0 or target.Hp <= 0 then

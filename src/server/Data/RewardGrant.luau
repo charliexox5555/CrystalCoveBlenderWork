@@ -1,5 +1,5 @@
--- One reward bundle for Daily Rewards, Playtime gifts and codes (decision 99), pure and Lune-tested:
---   { Coins = n?, Marbles = n?, Pull = "Glassies"|"Finishers"|"Rideables"?, Pulls = n?, Item = { Category, Id }? }
+-- One reward bundle for Daily Rewards, Playtime gifts and codes (decisions 99, 115), pure and Lune-tested:
+--   { Coins = n?, Marbles = n?, Xp = n?, Pull = "Glassies"|"Finishers"|"Rideables"?, Pulls = n?, Item = { Category, Id }? }
 -- A Pull is a free pull ticket (data.FreePulls), spent in the normal Shop so the odds are always shown first.
 local Shared = if script then game.ReplicatedStorage.Shared else nil
 local Glassies = if Shared then require(Shared.Config.Glassies) else require("../../shared/Config/Glassies")
@@ -8,6 +8,7 @@ local Cosmetics = if Shared
 	else require("../../shared/Config/RoundCosmetics")
 local Roster = if Shared then require(Shared.Config.ReleaseRoster) else require("../../shared/Config/ReleaseRoster")
 local Schema = if script then require(script.Parent.ProfileSchema) else require("./ProfileSchema")
+local Levels = if Shared then require(Shared.LevelRules) else require("../../shared/LevelRules")
 local Grant = {}
 
 Grant.PullCategories = { Glassies = true, Finishers = true, Rideables = true }
@@ -19,8 +20,9 @@ end
 
 local function itemName(item)
 	if item.Category == "Glassies" then
-		-- Released glassies and the seasonal Hollowlight only; dormant definitions are never granted.
-		local def = (Roster.ById[item.Id] or item.Id == "hollowlight") and Glassies.ById[item.Id]
+		-- Released glassies, the seasonal Hollowlight and the Daily glassies only; dormant definitions are never granted.
+		local def = (Roster.ById[item.Id] or item.Id == "hollowlight" or Glassies.isDaily(item.Id))
+			and Glassies.ById[item.Id]
 		return def and def.Name
 	end
 	local def = Cosmetics.ByCategory[item.Category] and Cosmetics.ByCategory[item.Category][item.Id]
@@ -34,7 +36,7 @@ function Grant.valid(reward)
 	end
 	local any = false
 	for key, value in reward do
-		if key == "Coins" or key == "Marbles" or key == "Pulls" then
+		if key == "Coins" or key == "Marbles" or key == "Pulls" or key == "Xp" then
 			if not count(value) then
 				return false
 			end
@@ -64,6 +66,9 @@ function Grant.describe(reward)
 	if reward.Marbles then
 		table.insert(parts, "+" .. reward.Marbles .. " Marbles")
 	end
+	if reward.Xp then
+		table.insert(parts, "+" .. reward.Xp .. " XP")
+	end
 	if reward.Pull then
 		local n = reward.Pulls or 1
 		table.insert(parts, (if n > 1 then n .. "× " else "a ") .. PULL_NAMES[reward.Pull])
@@ -79,6 +84,9 @@ function Grant.apply(data, reward, now)
 	assert(Grant.valid(reward), "Invalid reward")
 	data.Coins += reward.Coins or 0
 	data.Marbles += reward.Marbles or 0
+	if reward.Xp then
+		data.Xp = Levels.add(data.Xp, reward.Xp)
+	end
 	if reward.Pull then
 		data.FreePulls[reward.Pull] = (data.FreePulls[reward.Pull] or 0) + (reward.Pulls or 1)
 	end

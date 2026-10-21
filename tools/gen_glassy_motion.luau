@@ -9,6 +9,7 @@ local Convert = require("../src/shared/GlassyMotionConvert")
 local SOURCES = {
 	"docs/art/glassy_revamp/motion_manifest.json",
 	"docs/art/launch_glassies/motion_manifest.json",
+	"docs/art/daily_glassies/motion_manifest.json",
 }
 local OUT = "src/shared/Config/GlassyMotion.luau"
 

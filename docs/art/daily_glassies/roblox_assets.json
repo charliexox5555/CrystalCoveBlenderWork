@@ -1,0 +1,33 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "whiskers_bundle": {
+   "AssetId": "95251427008240",
+   "Path": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx",
+   "Sha256": "438d9d2e4035d66c5b81b45243e480c4c066c6ca328077ffbc1608b1a29f8313",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-21T18:30:20"
+  },
+  "whiskers_icon": {
+   "AssetId": "86973568284533",
+   "Path": "assets/blender/glassies/whiskers/v4/whiskers_icon.png",
+   "Sha256": "7bfb05341796e28b778700b726f08ce958125acf8b6e23e2a09ff1a3ddb94161",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-21T18:30:23"
+  },
+  "midnight_moon_bundle": {
+   "AssetId": "111277137073348",
+   "Path": "assets/blender/glassies/midnight_moon/v4/midnight_moon_bundle.fbx",
+   "Sha256": "84d9108656ad6933151bccb20d5e1d5d50c0a96eecd30fc0f6ff9a8daaa1be37",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-21T18:30:47"
+  },
+  "midnight_moon_icon": {
+   "AssetId": "133554552372945",
+   "Path": "assets/blender/glassies/midnight_moon/v4/midnight_moon_icon.png",
+   "Sha256": "808915f59bc699572d942eaf33e7b2c0ea6d46b99fb4d6f0624e3a7d01131621",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-21T18:30:50"
+  }
+ }
+}

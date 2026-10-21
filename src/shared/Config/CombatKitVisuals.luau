@@ -373,4 +373,25 @@ return {
 		MeshA = "Thorn",
 		MeshB = "Ring",
 	},
+	-- Daily Rewards glassies (decision 115).
+	whiskers = {
+		Name = "Yarn Toss",
+		Color = "#FF7FC4", -- signature colour (power VFX v2): pink yarn
+		Accent = "#FFE27A", -- the gold bell
+		Description = "A playful glass kitty: bats a yarn ball out and back that tangles whoever it hits.",
+		ReleaseSound = "AxeAir",
+		ContactSound = "ClinkLightA",
+		MeshA = "BubbleDome",
+		MeshB = "Ring",
+	},
+	midnight_moon = {
+		Name = "Lullaby",
+		Color = "#7C83FF", -- signature colour (power VFX v2): moonlit violet
+		Accent = "#FFD25A", -- star gold
+		Description = "The sleepy moon of Midnights Studio: its lullaby makes the foe drowsy, and their next clash wakes them with a bonk.",
+		ReleaseSound = "ChargeGlass",
+		ContactSound = "ChimeCluster",
+		MeshA = "Ring",
+		MeshB = "CrystalChip",
+	},
 }

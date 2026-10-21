@@ -1,10 +1,12 @@
--- How a reward bundle looks in a reward cell (decision 99): its picture and a short amount line.
--- Bundles: { Coins?, Marbles?, Pull?, Pulls?, Item? } (server RewardGrant). Shared by Daily and Playtime screens.
+-- How a reward bundle looks in a reward cell (decisions 99, 115): its picture and a short amount line.
+-- Bundles: { Coins?, Marbles?, Xp?, Pull?, Pulls?, Item? } (server RewardGrant). Shared by Daily and Playtime screens.
 -- Coins show as a pile that grows with the amount (CoinPile, built from the coin art in the cell's Icon slot); a free
--- pull shows the real Kiln / crate machine in a ViewportFrame (PullPortrait). The cell's authored Icon stays the
--- "state" source: screens dim or grey the Icon, and sync() copies that look onto the pile or portrait.
+-- pull shows the real Kiln / crate machine (PullPortrait); a glassy shows its item picture (ItemPortrait); XP shows the
+-- XP star. The cell's authored Icon stays the "state" source: screens dim or grey the Icon, and sync() copies that
+-- look onto the pile or portrait.
 local UIAssets = require(game.ReplicatedStorage.Shared.Config.UIAssets)
 local Item = require(script.Parent.Parent.Components.ItemPresentation)
+local Glassies = require(game.ReplicatedStorage.Shared.Config.Glassies)
 local Visuals = {}
 
 local PULL_ICON =
@@ -43,12 +45,20 @@ function Visuals.icon(reward)
 		return UIAssets[PULL_ICON[reward.Pull]]
 	elseif reward.Marbles and not reward.Coins then
 		return UIAssets["icon/marble"]
+	elseif reward.Xp and not reward.Coins then
+		return UIAssets["icon/xp"]
 	end
 	return UIAssets["icon/coin"]
 end
 
 function Visuals.amount(reward)
-	if reward.Pull then
+	if reward.Item then
+		local def = reward.Item.Category == "Glassies" and Glassies.ById[reward.Item.Id]
+		local name = if def then string.upper(def.Name) else "ITEM"
+		return if reward.Coins then name .. " +" .. reward.Coins else name
+	elseif reward.Xp and not reward.Coins then
+		return "+" .. reward.Xp .. " XP"
+	elseif reward.Pull then
 		local text = "FREE " .. PULL_TEXT[reward.Pull]
 		return if reward.Coins then text .. " +" .. reward.Coins else text
 	elseif reward.Coins then
@@ -116,8 +126,31 @@ function Visuals.apply(cell, reward)
 	end
 	icon.Image = Visuals.icon(reward)
 	local pileFrame, view = cell:FindFirstChild("CoinPile"), cell:FindFirstChild("PullPortrait")
-	local mode = if reward.Pull then "Pull" elseif reward.Coins and not reward.Marbles then "Coins" else "Icon"
-	if mode == "Pull" then
+	local itemView = cell:FindFirstChild("ItemPortrait")
+	local mode = if reward.Item
+		then "Item"
+		elseif reward.Pull then "Pull"
+		elseif reward.Coins and not reward.Marbles then "Coins"
+		else "Icon"
+	if mode == "Item" then
+		local id = reward.Item.Id
+		if not itemView or itemView:GetAttribute("ItemId") ~= id then
+			if itemView then
+				itemView:Destroy()
+			end
+			local ok, made =
+				pcall(Item.portrait, cell, reward.Item.Category, id, icon.Size, icon.Position, "ItemPortrait")
+			itemView = if ok then made else nil
+			if itemView then
+				itemView:SetAttribute("ItemId", id)
+			else
+				mode = "Icon"
+			end
+		end
+		if itemView then
+			itemView.AnchorPoint, itemView.ZIndex = icon.AnchorPoint, icon.ZIndex + 1
+		end
+	elseif mode == "Pull" then
 		local ok, made = pcall(portrait, cell, icon, reward.Pull)
 		view = if ok then made else nil
 		if not ok then
@@ -133,6 +166,9 @@ function Visuals.apply(cell, reward)
 	end
 	if view then
 		view.Visible = mode == "Pull"
+	end
+	if itemView then
+		itemView.Visible = mode == "Item"
 	end
 end
 
@@ -157,8 +193,8 @@ function Visuals.sync(cell)
 			coin.ImageColor3, coin.ImageTransparency = color, transparency
 		end
 	end
-	local view = cell:FindFirstChild("PullPortrait")
-	if mode == "Pull" and view then
+	local view = cell:FindFirstChild(if mode == "Item" then "ItemPortrait" else "PullPortrait")
+	if (mode == "Pull" or mode == "Item") and view then
 		view.ImageColor3, view.ImageTransparency = color, transparency
 	end
 end

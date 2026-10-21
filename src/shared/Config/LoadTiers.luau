@@ -165,7 +165,10 @@ LoadTiers.OnDemand = {
 -- these Assets folders). ProfileSnapshot feeds "owned" instead.
 LoadTiers.HintRemotes = { "OnboardingReveal", "KilnResult", "RollOffers", "CosmeticResult", "StoreResult" }
 LoadTiers.HintFolders = { "Glassies", "Rideables", "RoundFinishers", "Seasonal" }
--- Extra items per hinted name ({name} = the model name), e.g. its pre-rendered icon: "images:ItemIcons/Small/{name}".
+-- Extra items per hinted name, e.g. its pre-rendered icon: "images:ItemIcons/Small/{category}/{name}".
+-- {name} = the model name, {category} = HintCategories[its Assets folder] (a template with {category} is skipped for
+-- folders not listed). Ids with a colon ("Machines/Glassies:Coins") are fine in a path.
 LoadTiers.HintItems = {}
+LoadTiers.HintCategories = { Glassies = "Glassies", Rideables = "Rideables", RoundFinishers = "Finishers" }
 
 return LoadTiers

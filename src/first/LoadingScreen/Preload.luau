@@ -530,8 +530,12 @@ function Preload.hint(payload: any, lane: string?): { Job }
 				local folder = root and root:FindFirstChild(folderName)
 				if folder and folder:FindFirstChild(value) then
 					local items = { "asset:" .. folderName .. "/" .. value }
+					local category = (config.HintCategories or {})[folderName]
 					for _, template in config.HintItems or {} do
-						table.insert(items, (template:gsub("{name}", value)))
+						if category or not template:find("{category}", 1, true) then
+							local filled = template:gsub("{name}", value):gsub("{category}", category or "")
+							table.insert(items, filled)
+						end
 					end
 					for _, item in items do
 						for _, job in enqueue(item, lane or "Urgent", lane or "Urgent") do

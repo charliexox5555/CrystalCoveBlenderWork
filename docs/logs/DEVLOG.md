@@ -3,7 +3,7 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
-## 2026-10-21 — Claude (input session) — Controller and keyboard support, CAST keybind (decision 106, Proposed)
+## 2026-10-21 — Claude (input session) — Controller and keyboard support, CAST keybind (decision 107, Proposed)
 Done:
 - `UI/Components/GamepadNav`, one central controller layer:
   - Screens push their root, close callback and first button; the top menu gets a selected button, SelectionGroup keeps the stick inside it, and B closes it.

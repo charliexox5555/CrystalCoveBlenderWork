@@ -22,7 +22,7 @@ Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DES
 - [ ] **U:** save the place (ProfileScreen template), tap a leaderboard row and another player in a 2-player test, phone check of the profile.
 - [x] **CL:** Crown Hill on the featured arena (decision 105): King of the Hill with one-heart sudden-death challenges, a challenger line, the Crown Bot holding an empty hill, a 5-defence reign cap, AFK step-down, crown coins that trickle only while the King fights (500/day cap, balanced against normal play by `HillEconomySim`), a 3D crown, a crown board, line chip and coin pops. Hill fights never touch trophies, wins or streaks. Verified in Studio Play. [Design](design/FEATURED_STAGE.md)
 - [ ] **U:** Crown Hill feel check with 2–3 players (queue a friend, steal the crown), phone check of the line chip and board.
-- [x] **CL:** controller and keyboard support (decision 106, Proposed): every menu selectable with a controller (GamepadNav, gold selection, B closes), CAST keys with glyphs, stick / keys aiming and lock. Real-controller check remains with the creator.
+- [x] **CL:** controller and keyboard support (decision 107, Proposed): every menu selectable with a controller (GamepadNav, gold selection, B closes), CAST keys with glyphs, stick / keys aiming and lock. Real-controller check remains with the creator.
 - [ ] **U:** watch the onboarding funnel in Creator Dashboard after launch.
 - [ ] **CL/U:** Quests redesign (screen and row held back); retire the old combined RewardsScreen once Quests have a home.
 - [ ] **U:** phone check of the four new screens and the top bar; listen to volume sliders.

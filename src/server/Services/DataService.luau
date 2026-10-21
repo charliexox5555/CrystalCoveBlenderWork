@@ -127,6 +127,9 @@ function Service:Load(player)
 	if self.Services.OnboardingService then
 		self.Services.OnboardingService:Loaded(player)
 	end
+	if self.Services.GroupRewardService then
+		self.Services.GroupRewardService:Loaded(player)
+	end
 	local granted = Schema.testerGrant(profile.Data, require(RS.Shared.Config.Testing).TesterMarbles)
 	if granted > 0 then
 		player:SetAttribute("TesterMarblesGranted", granted)

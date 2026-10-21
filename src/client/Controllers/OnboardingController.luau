@@ -73,16 +73,28 @@ end
 -- The claim card (StarterGui.WelcomeScreen): one Kiln and an OPEN button, like claiming any reward. "Welcome" shows x3
 -- (the 3 welcome opens); "Win" is the free Kiln open for the first win. OPEN asks the server, which grants and sends
 -- the opening.
+-- "Group" is the group reward stand's card (decision 114, GroupRewardController): the Marble Kiln (Coin Kiln where paid
+-- random items are restricted), offered while the server says the gift is Ready.
 local CLAIMS = {
 	Welcome = { Title = "WELCOME!", Count = "x3", Action = "OpenWelcome" },
 	Win = { Title = "YOU WON!", Action = "OpenWin" },
+	Group = { Title = "GROUP GIFT!", Group = true },
 }
+
+-- Is the card `kind` still due? Onboarding cards follow the step; the group card follows the stand's state.
+local function due(player, kind)
+	if CLAIMS[kind] and CLAIMS[kind].Group then
+		return player:GetAttribute("GroupReward") == "Ready"
+	end
+	return player:GetAttribute("OnboardingStep") == kind
+end
+Controller.ClaimDue = due
 
 function Controller:ShowClaim(kind)
 	local claim = CLAIMS[kind]
 	local pg = self.Player.PlayerGui
 	local gui = pg:WaitForChild("WelcomeScreen", 30)
-	if not claim or not gui or gui.Enabled or self.Player:GetAttribute("OnboardingStep") ~= kind then
+	if not claim or not gui or gui.Enabled or not due(self.Player, kind) then
 		return
 	end
 	StainedGlass.bindSlices(gui)
@@ -94,12 +106,14 @@ function Controller:ShowClaim(kind)
 		-- Free opens show no odds line on the card (creator, 2026-10-20); paid Kiln pulls keep theirs.
 		odds.Visible = false
 	end
-	-- The Coin Kiln in the claim slot, framed like the shop's (the authored Kiln viewport is the editable stand-in).
+	-- The Kiln in the claim slot, framed like the shop's (the authored Kiln viewport is the editable stand-in): the
+	-- Coin Kiln, or the group gift's Kiln.
 	local reward = gui:FindFirstChild("Reward", true)
 	local slot = reward and reward:FindFirstChild("Kiln")
-	if slot and not slot:GetAttribute("Framed") then
-		local ok = pcall(Item.crate, reward, "Glassies", "Coins", slot.Size, slot.Position, "Kiln")
-		slot:SetAttribute("Framed", ok)
+	local currency = if claim.Group then self.Player:GetAttribute("GroupRewardKiln") or "Coins" else "Coins"
+	if slot and reward:GetAttribute("FramedKiln") ~= currency then
+		local ok = pcall(Item.crate, reward, "Glassies", currency, slot.Size, slot.Position, "Kiln")
+		reward:SetAttribute("FramedKiln", if ok then currency else nil)
 	end
 	local count = reward and reward:FindFirstChild("Count", true)
 	if count then
@@ -109,11 +123,16 @@ function Controller:ShowClaim(kind)
 	if button and not self.ClaimWired then
 		self.ClaimWired = true
 		button.Activated:Connect(function()
-			local open = CLAIMS[self.Player:GetAttribute("OnboardingStep")]
-			if not open or not gui.Enabled or self.ClaimPending then
+			local kind = self.ClaimKind
+			local open = kind and CLAIMS[kind]
+			if not open or not due(self.Player, kind) or not gui.Enabled or self.ClaimPending then
 				return -- a second tap while the card closes does nothing
 			end
-			Remotes.OnboardingAction:FireServer(open.Action)
+			if open.Group then
+				Remotes.GroupReward:FireServer("Claim")
+			else
+				Remotes.OnboardingAction:FireServer(open.Action)
+			end
 			-- The opening takes the stage next; don't re-offer the card while the server answers.
 			self.ClaimPending = os.clock()
 			self:HideClaim()
@@ -152,7 +171,7 @@ function Controller:ShowClaim(kind)
 	local glow = reward and reward:FindFirstChild("Glow")
 	task.spawn(function()
 		local last = 0
-		while gui.Enabled and self.Player:GetAttribute("OnboardingStep") == kind do
+		while gui.Enabled and due(self.Player, kind) do
 			if glow and not Motion.reduced() then
 				glow.Rotation = (glow.Rotation + 0.4) % 360
 			end
@@ -202,14 +221,17 @@ function Controller:PlayReveal(reveal)
 		return
 	end
 	local data = reveal.Data
-	local status = if data.Kind == "Win" then "YOU WON! A FREE KILN OPEN" else "YOUR FIRST GLASSIES!"
+	local status = if data.Kind == "Win"
+		then "YOU WON! A FREE KILN OPEN"
+		elseif data.Kind == "Group" then "THANKS FOR JOINING!"
+		else "YOUR FIRST GLASSIES!"
 	reveal.Waiting = true
 	self:WhenFree(function()
 		reveal.Waiting = false
 		if self.Revealing ~= reveal then
 			return
 		end
-		lobby:Reveal({ Results = data.Results, Status = status }, function()
+		lobby:Reveal({ Results = data.Results, Status = status, Currency = data.Currency }, function()
 			self:RevealDone(reveal)
 		end)
 		reveal.Screen = lobby.Screen
@@ -221,7 +243,9 @@ function Controller:RevealDone(reveal)
 		return
 	end
 	self.Revealing = nil
-	Remotes.OnboardingAction:FireServer("Collected") -- funnel: the opening was closed
+	if reveal.Data.Kind ~= "Group" then
+		Remotes.OnboardingAction:FireServer("Collected") -- funnel: the opening was closed
+	end
 	if self.Player:GetAttribute("OnboardingStep") == "Daily" then
 		self:ShowDaily()
 	end
@@ -359,7 +383,7 @@ function Controller:Keep()
 	end
 	local quiet = now - (self.QuietSince or now)
 	local claim = CLAIMS[step]
-	if self.ClaimKind and self.ClaimKind ~= step then
+	if self.ClaimKind and not due(player, self.ClaimKind) then
 		-- Opened from elsewhere (the server opens it when they try to play): the opening takes over, as after OPEN.
 		self.ClaimPending = now
 		self:HideClaim()

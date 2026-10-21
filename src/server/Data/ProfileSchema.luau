@@ -141,6 +141,7 @@ function Schema.reconcile(data, now)
 		end
 	end
 	data.Flags.WelcomePullUsed = data.Flags.WelcomePullUsed == true
+	data.Flags.GroupRewardClaimed = data.Flags.GroupRewardClaimed == true -- group reward (decision 114)
 	data.Onboarding.Funnel = math.min(#Rules.Funnel, integer(data.Onboarding.Funnel, 0))
 	for category in data.FreePulls do
 		data.FreePulls[category] = integer(data.FreePulls[category], 0)

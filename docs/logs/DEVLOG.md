@@ -3,6 +3,35 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-21 — Claude (group-reward session) — Group reward stand (decision 114, Proposed)
+Done:
+- Research first (docs/design/GROUP_REWARD.md, sources cited). `PromptJoinAsync` runs on the client and returns
+  Joined / AlreadyMember / JoinRequestPending / None. `IsInGroupAsync` caches per peer, and a join through the prompt
+  clears only the client's cache, so the server re-checks with `GetGroupsAsync` (3 tries, 2 s apart). The flag is set at
+  the claim, never at join. Group perks are fine under the Community Standards; no reward for likes.
+- Stand: `tools/blender/build_group_reward_stand.py`, 1,536 tris (Stained Glass plinth, mini Marble Kiln, three-friends
+  emblem, glass marbles, floating glass heart). Uploaded as Model 91987420283885 (group 11116787). Placed at
+  `Workspace.Lobby.GroupRewardStand` between the Finishers machine and the Kilns, facing the spawn; nothing overlapped
+  or hidden from the spawn view.
+- Code:
+  - `GroupRewardRules` (pure, 8 Lune tests), `GroupRewardService` and `GroupRewardController`.
+  - The claim card has a `Group` kind showing the Marble Kiln; the opening takes `Currency`.
+  - Policy-restricted or unknown → Coin Kiln.
+  - Remote `GroupReward`, rate-limited.
+  - Analytics custom events GroupRewardPrompted / Joined / Claimed.
+  - Studio override `ServerStorage.GroupRewardDev`.
+- Studio Play (docs/testing/group_reward/REPORT.md): Ready → card → OPEN (double tap grants once) → Marble Kiln
+  opening → Claimed. Join state, a non-member claim refused, the server re-check flipping Join → Ready, junk remote
+  arguments ignored. Lune and Studio RunAll 232/232.
+Next:
+- Creator: look at the render and captures (docs/testing/group_reward/captures) and **save the place** (the stand lives
+  in it). Check the join modal once on a live server with an account outside the group.
+Problems / questions for the user:
+- Roblox's join modal doesn't show or return in Studio, so that last step is only testable live. The client guard on it
+  now expires after 30 s.
+- E picks one prompt per key, weighted by where the camera points, so between the stand and the Finishers machine,
+  face the one you want.
+
 ## 2026-10-21 — Claude (main session) — Feedback button in the top bar
 Done:
 - New top bar button (chat bubble, gvesster pack "Chat 1st Outline", decal 119865142598145 -> image 97702394632493, `topbar/feedback`) right of the gift; hidden in matches like the gift.

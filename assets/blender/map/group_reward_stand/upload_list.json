@@ -1,0 +1,11 @@
+{
+	"Record": "assets/blender/map/group_reward_stand/roblox_assets.json",
+	"Items": [
+		{
+			"Key": "GroupRewardStand",
+			"Path": "assets/blender/map/group_reward_stand/GroupRewardStand.fbx",
+			"Type": "Model",
+			"Name": "Glass Clash Group Reward Stand"
+		}
+	]
+}

@@ -28,6 +28,8 @@
 --   Server -> client: StoreOffers (view, NextReset, ServerNow, Message), StoreResult (purchase outcome)
 --     RequestPlayerProfile (RemoteEvent) userId: number -> PlayerProfile { UserId, Name, View } | { UserId, Missing }
 --                    another player's read-only profile (ProfileSchema.publicView; DataService, decision 104)
+--     GroupReward    (RemoteEvent)  "Prompt", status: GroupMembershipStatus name | "Claim" (GroupRewardService, decision 114)
+--                    state comes back as Player attributes; the opening as OnboardingReveal { Kind = "Group", Currency }
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
@@ -70,6 +72,7 @@ local reliable = {
 	"SetSetting",
 	"RequestPlayerProfile",
 	"PlayerProfile",
+	"GroupReward",
 }
 local unreliable = { "FightSnapshot" }
 

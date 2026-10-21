@@ -1,0 +1,12 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "GroupRewardStand": {
+   "AssetId": "91987420283885",
+   "Path": "assets/blender/map/group_reward_stand/GroupRewardStand.fbx",
+   "Sha256": "53b7e6d6e2344ef649cec7a7dfb488982aaef80ab4fecb68fdcad9b5fc756b3f",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-21T18:16:35"
+  }
+ }
+}

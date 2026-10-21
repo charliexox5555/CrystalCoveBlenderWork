@@ -106,7 +106,7 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 ## F4 — Retention and monetization (Nov 3–9)
 
 - [x] **C:** daily quests, playtime gifts, login streak tracking (no free Marbles), first win bonus, Studio test code; [F4 report](testing/F4_FREE_RETENTION.md)
-- [ ] **U/C:** group reward: owner group ID and permitted reward configuration pending; free Marbles disabled
+- [x] **C:** group reward: lobby stand (join prompt → server re-check → claim card), one free Marble Kiln open once ever (Coin Kiln where paid random items are restricted), decision 114 (Proposed). [Report](testing/group_reward/REPORT.md); live join-modal check remains
 - [ ] **C:** Marble packs, gamepasses and idempotent `ProcessReceipt`; match-selection wallet spends/policy checks completed in F5, paid storefront remains deferred
 - [x] **C:** Trophies, Match Wins and Shatters boards; published ordered-store verification pending
 - [x] **C:** Finisher/Flyer Coin/Marble crate shops, matching owned/unowned inventories, duplicate counts and category opening effects; creator-approved provisional prices, policy-gated Marble spends, no Robux storefront. [Report](testing/CRATE_SHOPS.md); phone/feel review remains.

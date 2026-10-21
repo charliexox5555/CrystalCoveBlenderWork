@@ -21,7 +21,8 @@ function Screen.reveal(data, close)
 			table.insert(odds, { Id = def.Id, Chance = 1 })
 		end
 	end
-	self:Result({ Results = data.Results, Category = "Glassies", Currency = "Coins", Odds = odds })
+	-- data.Currency = "Marbles" stages the Marble Kiln (the group gift, decision 114).
+	self:Result({ Results = data.Results, Category = "Glassies", Currency = data.Currency or "Coins", Odds = odds })
 	if data.Status and self.Opening then
 		self.Opening.Content.Status.Text = data.Status
 	end

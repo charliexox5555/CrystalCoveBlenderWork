@@ -257,7 +257,7 @@ Pop (Fizzy), Jam (Heavy) and Prism (Sharp) were the starters; since decision 102
 ## 11. Retention and community
 
 - 7-day login streak (Marbles on days 3 and 7), 3 daily quests ("Win 3 rounds", "Land 2 Perfect Releases", "Shatter a Heavy glassy"), playtime gifts at 5 / 15 / 30 / 60 min.
-- **Group join** reward (20 Marbles) and like reminder.
+- **Group join** reward: a lobby stand gives group members one free Marble Kiln open, once ever (Coin Kiln where paid random items are restricted; decision 114, `docs/design/GROUP_REWARD.md`). No reward for likes.
 - **Index:** every glassy, unowned ones as silhouettes; rewards for owning all of a rarity.
 - Leaderboards: Trophies, Match Wins, Shatters, Best Win Streak.
 - **Weekly updates:** 2–3 new glassies + a code. Community votes on the next glassy on Discord; build it with the Blender pipeline.

@@ -189,7 +189,10 @@ local ok, err = xpcall(function()
 		for i, line in log do
 			if i < #log then
 				assert(line:find(" true Scriptable ", 1, true), name .. ": watch or camera dropped: " .. line)
-				assert(line:find(b.Name .. "=" .. bState, 1, true), name .. ": B not " .. bState .. ": " .. line)
+				-- "none" = B has no character this instant (mid-respawn), which also shows nothing.
+				local ok = line:find(b.Name .. "=" .. bState, 1, true)
+					or bState == "hidden" and line:find(b.Name .. "=none", 1, true)
+				assert(ok, name .. ": B not " .. bState .. ": " .. line)
 				assert(
 					line:find(" hidden " .. b.Name, 1, true) or line:find(" hidden Player", 1, true),
 					name .. ": own avatar shown"

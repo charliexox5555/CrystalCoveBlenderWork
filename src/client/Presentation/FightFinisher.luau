@@ -25,7 +25,8 @@ function Finish.new(scene, loser, now)
 	winner.Glints.Rate = 0
 	winner.Glints:Emit(Feel.VictoryGlints)
 	local start = winner.Model:GetPivot()
-	local positions = if scene.Viewing then scene.Data.AvatarPositions else scene.Data.HeartPositions
+	-- Everyone sees the winner fly to the losing rider (bystanders too, at their low tier); pads are the fallback.
+	local positions = scene.Data.AvatarPositions or scene.Data.HeartPositions
 	local target = (positions and positions[loser] or scene.Fighters[loser].Body.Position) + Vector3.yAxis
 	return setmetatable({
 		Scene = scene,

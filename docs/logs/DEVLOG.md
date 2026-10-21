@@ -3,6 +3,19 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-21 — Claude (perf-pass session) — Optimization pass and bystander tier (decision 108, Proposed)
+Done:
+- Measured first (docs/testing/perf/BASELINE.md): Studio-only probes `PlayerScripts.PerfProbeDev` / `ServerStorage.PerfProbeServerDev`, the script profiler (`ScriptProfilerService` from the MCP client) and engine Stats, with 7 bot fights. The server is cheap (FightService 0.36 ms/frame, ~27 kbps to a player). Client costs: match flyers + rider poses ~2.3 ms/frame, lobby showcase ~1.3 ms, bystander fights ~1.2 ms.
+- Fixes (feed55a + this commit): off-screen culling for rides, showcase displays and rider poses (`Presentation/ViewCull`, Studio A/B switch `workspace.PerfNoCull`); rate tiers for far rides and bystander fights (skipped time carried over); two memory leaks (TextFit label state, FinisherFX rigs; Luau weak keys are not ephemerons); per-frame caching in RideMotion, CombatEffects, SignaturePresentation, FightScene, RidePose.
+- Result: client scripts 13.5 -> 6.3 ms/frame from a bystander spot with 7 fights (-53%, same frame rate, same camera); memory flat over 3 minutes of rounds (instances ~70.3k steady, heap +0.35 MB/min).
+- Bystander tier (creator request): finisher low show now lands on the losing rider; status badges and fast-swing trails show to bystanders; powers, flyers and riders already had a low tier. Finisher tiers measured (visible parts / lights, low vs full): Emberwing 30/0 vs 36/1, Starfall 16/0 vs 25/1, Glass Burst 11/0 vs 20/0.
+- QA: Lune 214/214; multiplayer harness passed (6 stages, 0 errors); watch QA passed (rerun after a fix to its check: a sample with B mid-respawn has no character).
+Next:
+- Creator: feel check of far rides at 30 Hz and bystander fights from the lobby path; a 20-minute soak for the heap creep.
+- Later: bind TextFit only when a screen first enables (PlayerGui holds ~5.8k template instances); BulkMoveTo for flyer models.
+Problems / questions for the user:
+- None.
+
 ## 2026-10-21 — Claude (main session) — Device fitting and UI fixes (decision 106, Proposed)
 Done:
 - Device audit with the Studio device simulator (MCP skill `rbx-device-simulator-lua`; `StudioDeviceSimulatorService` works from Edit and the Play client) on Galaxy A06 (705x338), iPhone 17 Pro, iPad Pro 13, Xbox One and iPhone portrait, using a new Studio-only `Dev/UIAudit` hook (`PlayerScripts.UIAuditDev`: Open/Close any screen, Scan for off-screen, small targets and cut text).

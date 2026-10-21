@@ -266,7 +266,8 @@ function Scene:Update(r, time)
 		local dt = time - (f.LastPoseTime or time)
 		local speed = if f.LastPosePosition and dt > 0 then (f.Body.Position - f.LastPosePosition).Magnitude / dt else 0
 		f.LastPosePosition, f.LastPoseTime = f.Body.Position, time
-		f.Trail.Enabled = r.Pump[side] or (self.Viewing == true and speed >= Balance.CombatVFX.FastSwingSpeed)
+		-- Fast-swing trails read from across the lobby, so bystanders get them too.
+		f.Trail.Enabled = r.Pump[side] or speed >= Balance.CombatVFX.FastSwingSpeed
 	end
 	if self.Combat then
 		self.Combat:Update(r, time)

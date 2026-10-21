@@ -89,7 +89,8 @@ function Presentation.status(self, r, time)
 	local camera = workspace.CurrentCamera.CFrame
 	for side, f in self.Scene.Fighters do
 		local ef = r.Effect[side] or {}
-		local alive = not f.Broken and not f.Finishing and self.Scene.Viewing == true
+		-- Status badges (marked, slowed) are a few small meshes: bystanders see them too.
+		local alive = not f.Broken and not f.Finishing
 		local foe = self.Scene.Fighters[3 - side]
 		local foeColor = Presentation.color(foe)
 		local size = math.max(f.Body.Size.X, f.Body.Size.Y)

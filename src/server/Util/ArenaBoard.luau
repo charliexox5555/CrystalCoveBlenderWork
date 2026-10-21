@@ -127,6 +127,16 @@ function Board.build(arena)
 	for side = 1, 2 do
 		view.Sides[side] = portrait(root, side)
 	end
+	-- Crown Hill (decision 105): a crown sits on the King's hex.
+	view.Crown = image(
+		root,
+		"Crown",
+		"screens/profile/icon_crown",
+		UDim2.fromScale(0.16, 0.2),
+		UDim2.fromScale(0.22, 0.2),
+		{ ZIndex = 6, Visible = false, Rotation = -12 }
+	)
+	make("UIAspectRatioConstraint", view.Crown, { AspectRatio = 1 })
 	view.VS = text(root, "VS", "VS", UDim2.fromScale(0.2, 0.22), UDim2.fromScale(0.5, 0.4), Theme.Fonts.Heading, nil, 3)
 	make("UIGradient", view.VS, { Rotation = 90, Color = ColorSequence.new(Color3.new(1, 1, 1), GOLD) })
 	view.Count = text(
@@ -147,7 +157,8 @@ function Board.build(arena)
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		BackgroundTransparency = 1,
 	})
-	image(reward, "Coin", "icon/coin", UDim2.fromScale(0.34, 1), UDim2.fromScale(0.17, 0.5), { ZIndex = 4 })
+	view.WinIcon =
+		image(reward, "Coin", "icon/coin", UDim2.fromScale(0.34, 1), UDim2.fromScale(0.17, 0.5), { ZIndex = 4 })
 	view.Win = text(
 		reward,
 		"Win",
@@ -184,7 +195,9 @@ local function set(object, key, value)
 	end
 end
 
--- state = { Title, Count, Status, Sides = { [1|2] = { UserId: number?, Name: string } | nil } }
+-- state = { Title, Count, Status, Sides = { [1|2] = { UserId: number?, Name: string } | nil },
+--   Win: string? (prize chip text, default "WIN <coins>"), WinIcon: string? (UIAssets key, default coin),
+--   Crown: boolean? (crown on side 1, Crown Hill) }
 function Board.update(view, state)
 	if not view or not view.Gui.Parent then
 		return
@@ -192,6 +205,13 @@ function Board.update(view, state)
 	set(view.Title, "Text", state.Title)
 	set(view.Count, "Text", state.Count)
 	set(view.Status, "Text", state.Status)
+	set(view.Win, "Text", state.Win or ("WIN " .. Balance.Match.Rewards.MatchWinCoins))
+	if view.WinIcon then
+		set(view.WinIcon, "Image", UIAssets[state.WinIcon or "icon/coin"] or "")
+	end
+	if view.Crown then
+		set(view.Crown, "Visible", state.Crown == true)
+	end
 	for side = 1, 2 do
 		local ui, who = view.Sides[side], state.Sides[side]
 		local id = who and who.UserId or 0

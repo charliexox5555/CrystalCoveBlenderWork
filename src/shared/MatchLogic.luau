@@ -24,6 +24,7 @@ export type PlayerSetup = {
 	Collection: Collection,
 	IsBot: boolean?,
 	Skill: number?, -- bots only, 0..1
+	Hearts: number?, -- defaults to Balance.Match.Hearts (Crown Hill fights use 1, decision 105)
 }
 
 export type Side = {
@@ -103,7 +104,7 @@ function MatchLogic.new(players: { PlayerSetup }, rng: () -> number): Match
 			Collection = p.Collection,
 			IsBot = p.IsBot == true,
 			Skill = p.Skill or 0,
-			Hearts = B.Hearts,
+			Hearts = p.Hearts or B.Hearts,
 			RoundsWon = 0,
 			RerollsUsed = 0,
 			PickAnyUsed = 0,

@@ -115,7 +115,8 @@ local function playerChip(parent, side, data)
 		data.Hearts and data.Hearts[side] or 3,
 		UDim2.fromScale(1, 0.42),
 		UDim2.fromScale(0, 0.56),
-		right
+		right,
+		data.MaxHearts
 	)
 	return chip
 end

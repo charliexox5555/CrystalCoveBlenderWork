@@ -16,6 +16,7 @@ local Remotes = require(RS.Shared.Remotes)
 local Guard = require(script.Parent.Parent.Util.RemoteGuard)
 local Stage = require(script.Parent.Parent.Util.MatchStage)
 local Board = require(script.Parent.Parent.Util.ArenaBoard)
+local HillConfig = require(RS.Shared.Config.Hill)
 local Service = {}
 
 function Service:Init(services)
@@ -38,11 +39,16 @@ function Service:Init(services)
 	end
 	for _, arena in self.Arenas do
 		assert(arena.Pads[1] and arena.Pads[2], "Arena missing queue pads")
+		-- Crown Hill (decision 105): the featured arena runs King of the Hill through HillService.
+		arena.Hill = HillConfig.Enabled and arena.Stand:GetAttribute("Featured") == true
 	end
 end
 
 function Service:Title(arena)
-	return if arena.Stand:GetAttribute("Featured") then "FEATURED ARENA" else "ARENA " .. arena.Id
+	return if arena.Hill
+		then HillConfig.Title
+		elseif arena.Stand:GetAttribute("Featured") then "FEATURED ARENA"
+		else "ARENA " .. arena.Id
 end
 
 local function who(player)
@@ -83,7 +89,13 @@ function Service:Reserve(player)
 	local from = if root then root.Position else workspace.Lobby.SpawnLocation.Position
 	local best, bestPad, distance = nil, nil, math.huge
 	for _, arena in self.Arenas do
-		if not arena.Busy and not arena.Queue[1] and not arena.Queue[2] and not self:Holder(arena) then
+		if
+			not arena.Hill
+			and not arena.Busy
+			and not arena.Queue[1]
+			and not arena.Queue[2]
+			and not self:Holder(arena)
+		then
 			for _, pad in arena.Pads do
 				local d = (pad.Position - from).Magnitude
 				if d < distance then
@@ -110,6 +122,9 @@ end
 
 -- Queue board for an arena that is not fighting.
 function Service:QueueBoard(arena, now)
+	if arena.Hill and self.Services.HillService then
+		return self.Services.HillService:Board(arena)
+	end
 	local a, b = arena.Queue[1], arena.Queue[2]
 	local count = (if a then 1 else 0) + (if b then 1 else 0)
 	local holder = self:Holder(arena)
@@ -131,6 +146,9 @@ end
 
 -- Board while a match runs; MatchService passes its meta (names, ids, hearts, round).
 function Service:MatchBoard(arena, meta)
+	if arena.Hill and self.Services.HillService then
+		return self.Services.HillService:Board(arena, meta)
+	end
 	local sides = {}
 	for side = 1, 2 do
 		sides[side] = { UserId = meta.PlayerIds[side], Name = meta.Names[side] }
@@ -150,7 +168,8 @@ end
 function Service:PadState(arena)
 	for side, pad in arena.Pads do
 		local prompt = arena.Prompts[side]
-		local open = not arena.Busy and not arena.Queue[side]
+		-- Crown Hill: pad A is the King's (no prompt); pad B's prompt joins the challenger line at any time.
+		local open = if arena.Hill then side == 2 else not arena.Busy and not arena.Queue[side]
 		if prompt and prompt.Enabled ~= open then
 			prompt.Enabled = open
 		end
@@ -162,13 +181,20 @@ function Service:PadState(arena)
 			glow:SetAttribute("OpenColor", glow.Color)
 			glow:SetAttribute("OpenTransparency", glow.Transparency)
 		end
-		local state = if arena.Busy then "Busy" elseif arena.Queue[side] then "Waiting" else "Open"
+		local state = if arena.Hill and side == 1
+			then "King"
+			elseif arena.Busy then "Busy"
+			elseif arena.Queue[side] then "Waiting"
+			else "Open"
 		if glow:GetAttribute("PadState") == state then
 			continue
 		end
 		glow:SetAttribute("PadState", state)
 		local openColor, base = glow:GetAttribute("OpenColor"), glow:GetAttribute("OpenTransparency")
-		glow.Color = if state == "Busy" then Color3.fromHex(Balance.Lobby.BusyPadColor) else openColor
+		glow.Color = if state == "King"
+			then Color3.fromHex(HillConfig.PadColor)
+			elseif state == "Busy" then Color3.fromHex(Balance.Lobby.BusyPadColor)
+			else openColor
 		glow.Transparency = if state == "Busy"
 			then Balance.Lobby.BusyPadTransparency
 			elseif state == "Waiting" then Balance.Lobby.WaitingPadTransparency
@@ -182,7 +208,8 @@ function Service:MakePrompts(arena)
 		anchor.Name, anchor.Parent = "QueuePromptAnchor", pad
 		anchor.WorldPosition = pad.Position + Vector3.yAxis * 3
 		local prompt = anchor:FindFirstChild("QueuePrompt") or Instance.new("ProximityPrompt")
-		prompt.Name, prompt.ActionText, prompt.ObjectText = "QueuePrompt", "Join Battle", self:Title(arena)
+		prompt.Name, prompt.ActionText, prompt.ObjectText =
+			"QueuePrompt", if arena.Hill then "Challenge" else "Join Battle", self:Title(arena)
 		prompt.HoldDuration, prompt.RequiresLineOfSight = 0, false
 		prompt.MaxActivationDistance = Balance.Match.QueuePromptDistance
 		prompt.KeyboardKeyCode = Enum.KeyCode.E
@@ -191,9 +218,16 @@ function Service:MakePrompts(arena)
 		prompt.Parent = anchor
 		arena.Prompts[side] = prompt
 		prompt.Triggered:Connect(function(player)
-			if self.Guard:Allow(player, "Prompt", Balance.Match.QueuePromptRateSeconds) then
-				self:Queue(player, arena, side, workspace:GetServerTimeNow())
+			if not self.Guard:Allow(player, "Prompt", Balance.Match.QueuePromptRateSeconds) then
+				return
 			end
+			if arena.Hill then
+				if side == 2 and self.Services.HillService then
+					self.Services.HillService:Join(player, arena)
+				end
+				return
+			end
+			self:Queue(player, arena, side, workspace:GetServerTimeNow())
 		end)
 	end
 end
@@ -222,6 +256,9 @@ function Service:Leave(player, reason)
 	self.ByPlayer[player] = nil
 	self:Unlock(player)
 	self:PadState(entry.Arena)
+	if entry.Arena.Hill and self.Services.HillService then
+		self.Services.HillService:QueueLeft(entry.Arena, player, entry.Side)
+	end
 	if player.Parent == Players then
 		Remotes.MatchState:FireClient(player, { Phase = "QueueLeft", ArenaId = entry.Arena.Id, Reason = reason })
 	end
@@ -271,7 +308,9 @@ function Service:Queue(player, arena, side, now)
 		Phase = "Queue",
 		ArenaId = arena.Id,
 		Side = side,
-		Deadline = if self:BotsAllowed(arena) then arena.QueuedAt + Balance.Match.QueueBotAfterSeconds else nil,
+		Deadline = if not arena.Hill and self:BotsAllowed(arena)
+			then arena.QueuedAt + Balance.Match.QueueBotAfterSeconds
+			else nil,
 		Locked = true,
 		CanLeave = true,
 		Spot = character:GetPivot(),
@@ -280,7 +319,8 @@ function Service:Queue(player, arena, side, now)
 	return true
 end
 
-function Service:StartArena(arena, now)
+-- options: passed to MatchService:StartMatch (Crown Hill fights, decision 105).
+function Service:StartArena(arena, now, options)
 	local players = { [1] = arena.Queue[1], [2] = arena.Queue[2] }
 	arena.FirstMatch = nil
 	for _, player in players do
@@ -288,7 +328,7 @@ function Service:StartArena(arena, now)
 	end
 	arena.Queue, arena.QueuedAt, arena.Busy = {}, nil, true
 	self:PadState(arena)
-	self.Services.MatchService:StartMatch(arena, players, now)
+	self.Services.MatchService:StartMatch(arena, players, now, false, options)
 end
 
 function Service:Release(arena, players)
@@ -296,7 +336,7 @@ function Service:Release(arena, players)
 	for side, player in players do
 		self:Unlock(player)
 		if player.Parent == Players then
-			self.Recent[player] = { Arena = arena, Side = side }
+			self.Recent[player] = if arena.Hill then nil else { Arena = arena, Side = side }
 			Remotes.MatchState:FireClient(player, { Phase = "QueueLeft", ArenaId = arena.Id, Reason = "MatchOver" })
 		end
 	end
@@ -353,6 +393,10 @@ function Service:Step(now)
 	end
 	for _, arena in self.Arenas do
 		self:PadState(arena)
+		if arena.Hill and self.Services.HillService then
+			self.Services.HillService:Step(arena, now)
+			continue
+		end
 		if arena.Busy then
 			continue
 		end
@@ -384,7 +428,7 @@ function Service:JoinNearest(player)
 	-- A new player's PLAY goes to their reserved arena.
 	local reserved = self:ReservedFor(player)
 	for _, arena in if reserved then { reserved } else self.Arenas do
-		if not arena.Busy and (reserved or not self:Holder(arena)) then
+		if not arena.Hill and not arena.Busy and (reserved or not self:Holder(arena)) then
 			for side, pad in arena.Pads do
 				if not arena.Queue[side] then
 					local d = (pad.Position - root.Position).Magnitude

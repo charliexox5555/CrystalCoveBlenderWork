@@ -82,7 +82,7 @@ function Kit.icon(parent, name, path, size, position, anchor)
 end
 
 -- Row of three glass hearts (full or broken), square and as tall as the row.
-function Kit.hearts(parent, name, count, size, position, right)
+function Kit.hearts(parent, name, count, size, position, right, max)
 	local row = Kit.frame(parent, name, size, position)
 	local layout = Instance.new("UIListLayout")
 	layout.FillDirection, layout.Padding = Enum.FillDirection.Horizontal, UDim.new(0, 3)
@@ -104,7 +104,7 @@ function Kit.hearts(parent, name, count, size, position, right)
 	end
 	row:GetPropertyChangedSignal("AbsoluteSize"):Connect(fit)
 	fit()
-	S.hearts(row, count)
+	S.hearts(row, count, max)
 	return row
 end
 

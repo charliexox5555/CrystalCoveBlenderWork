@@ -3,6 +3,19 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-21 — Claude (featured-stage session) — Crown Hill (decision 105)
+Done:
+- Brainstorm of 5 featured-stage options (`docs/design/FEATURED_STAGE.md`); the creator picked Crown Hill with crown coins. Built it the same session.
+- Pure `HillRules` + `Config/Hill`: line, next fight, Crown Bot, reign cap 5, AFK step-down, crown coins with a 500/day cap, once-a-day retire crate ticket, Crowns / Best Reign stats. 18 Lune tests (`HillTests`), incl. a one-heart match and a balance guard. MatchLogic takes a per-side `Hearts`.
+- `HillService` runs the featured arena: King on pad A (gold glow), "Challenge" prompt on pad B joins the line any time, King re-queued between fights, part-built 3D crown on the King (or the Crown Bot's avatar), island chime when the crown changes hands, crown board (crown on the King, defences / 5, line, next up). Small hooks in ArenaService, MatchService (`StartMatch` options, hill branch in `Finish`, `MaxHearts` in meta), ArenaBoard. Hill fights skip trophies, wins, streaks, quests and onboarding; half XP.
+- Client `HillController`: crown + "#N" line chip, "+1" coin pops over your crown, gold burst on crowning / retiring. Heart rows show only the match's hearts (1 on the hill).
+- Studio Play (single player, `ServerStorage.HillDev`): challenge -> crowned (+25), Crown Bot challenge after 10 s, ticks +3 in 16 s, defence +15 with wins/trophies unchanged and half XP, 5 defences -> retire (+115, Flyer crate ticket, Best Reign 5), AFK step-down after 2, Leave drops the crown, board "IN BATTLE / SUDDEN DEATH!". No script errors. Lune 214/214.
+Economy (`lune run tools/economy_sim`, new `HillEconomySim`): normal play 11.6 coins/min; 15 min on the hill with an empty line 1.28x normal (+10% on the day), with ~1 ahead in line 0.79x (-8%), a whole 40-min session hits the cap (+7% on the day); about 3% of reigns retire. No tuning needed.
+Next:
+- Creator: 2–3 player feel test (queue a friend, steal the crown), phone check of the chip and board.
+Problems / questions for the user:
+- Choices made: the Crown Bot challenges even players with Bot Play off (it's the hill's rule); hill fights don't count for quests.
+
 ## 2026-10-21 — Claude (profile session) — Levels + player profile (decision 104)
 Done:
 - Design (creator-approved): Stained Glass ProfileScreen template (`tools/studio/build_profile_screen.luau`, art `tools/ui/profile_art.py`, 21 pieces), 2x2 stats with a Glassies collection tile, read-only grids, other-player view and a lobby tap bubble. Doc and captures: `docs/ui/screens/ProfileScreen.md`.

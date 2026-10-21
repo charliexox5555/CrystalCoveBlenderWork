@@ -4,6 +4,15 @@
 add-on that never out-earns normal play or spoils other players' matches. See
 [Crown Hill: full design](#crown-hill-full-design-creator-pick) at the end.
 
+**Built (Oct 21, decision 105).** Code map:
+- **Rules and numbers:** pure `src/shared/HillRules.luau` and `src/shared/Config/Hill.luau`, Lune-tested in
+  `src/tests/HillTests.luau`.
+- **Server:** `src/server/Services/HillService.luau` (line, King, crown, coins, board), with small hooks in
+  ArenaService (the featured arena's queue, prompts, pads and board), MatchService (`StartMatch` options and the hill
+  branch in `Finish`), MatchLogic (per-side `Hearts`) and ArenaBoard (crown, prize chip).
+- **Client:** `src/client/Controllers/HillController.luau` (line chip, "+1" crown coins, crown burst).
+- **Economy check:** `src/tests/HillEconomySim.luau`, printed by `lune run tools/economy_sim`.
+
 Written Oct 20, 2026. The featured island at the end of the lobby (Arena 7, board text "FEATURED ARENA") runs the same
 matches as every other arena. GAME_DESIGN 5 once planned to show the highest-trophy fights on a big board there. This
 doc lists ways to make it special. **Nothing is built until the creator picks.**

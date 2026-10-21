@@ -45,6 +45,8 @@ function Service:Meta(entry)
 		LastPicks = {},
 		ArenaId = entry.Arena.Id,
 		Spectate = entry.Spectate,
+		Hill = entry.Hill,
+		MaxHearts = entry.MaxHearts,
 		Deadline = entry.Runner.Deadline,
 		Phase = entry.Runner.Phase,
 		StageName = entry.Stage and entry.Stage.Folder.Name,
@@ -90,7 +92,8 @@ function Service:Offer(entry, side, message, reelAction)
 	})
 end
 
-function Service:StartMatch(arena, players, now, spectate)
+-- options (Crown Hill, decision 105): { Hill = true, Hearts = n, BotName = string, BotSkill = number }.
+function Service:StartMatch(arena, players, now, spectate, options)
 	if self.Matches[arena.Id] then
 		return false
 	end
@@ -101,7 +104,8 @@ function Service:StartMatch(arena, players, now, spectate)
 	local humanCollection = self:Collection(players[1] or players[2])
 	-- Onboarding (decision 100): a new player's first match against a bot is assisted (OnboardingRules.assist).
 	local tutorial = nil
-	local onboarding = self.Services.OnboardingService
+	-- Crown Hill fights never count as onboarding matches (no tutorial assist, no funnel steps).
+	local onboarding = if options and options.Hill then nil else self.Services.OnboardingService
 	for side = 1, 2 do
 		local player = players[side]
 		if player and not players[3 - side] and onboarding and onboarding:IsFirstMatch(player) then
@@ -113,8 +117,12 @@ function Service:StartMatch(arena, players, now, spectate)
 			Collection = players[side] and self:Collection(players[side])
 				or Assets.collection(Logic.botCollection(humanCollection, rng)),
 			IsBot = players[side] == nil,
-			Skill = if tutorial and side ~= tutorial.Side
-				then Balance.Onboarding.BotSkill
+			Hearts = options and options.Hearts,
+			Skill = if options
+					and options.BotSkill
+					and players[side] == nil
+				then options.BotSkill
+				elseif tutorial and side ~= tutorial.Side then Balance.Onboarding.BotSkill
 				else Balance.Match.BotSkillMin + rng() * (Balance.Match.BotSkillMax - Balance.Match.BotSkillMin),
 		}
 	end
@@ -124,6 +132,8 @@ function Service:StartMatch(arena, players, now, spectate)
 		Players = players,
 		Seed = seed,
 		Spectate = spectate == true,
+		Hill = options ~= nil and options.Hill == true,
+		MaxHearts = options and options.Hearts,
 		Runner = Runner.new(
 			setups,
 			rng,
@@ -151,8 +161,9 @@ function Service:StartMatch(arena, players, now, spectate)
 			-- Visual variety without consuming or changing the gameplay RNG stream.
 			entry.Cosmetics.Rideables[side] = CosmeticConfig.Rideables[(seed + side) % #CosmeticConfig.Rideables + 1].Id
 			entry.Cosmetics.Finishers[side] = CosmeticConfig.Finishers[(seed + side) % #CosmeticConfig.Finishers + 1].Id
-			entry.BotNames[side] = if tutorial
-				then Balance.Onboarding.BotName
+			entry.BotNames[side] = if options and options.BotName
+				then options.BotName
+				elseif tutorial then Balance.Onboarding.BotName
 				else Bots.Names[math.floor(rng() * #Bots.Names) + 1]
 		end
 	end
@@ -183,9 +194,13 @@ function Service:Finish(entry)
 		self.Services.FightService:Stop(entry.FightId, { MatchId = entry.Id, ArenaId = entry.Arena.Id, Over = true })
 	end
 	Stage.finish(entry)
+	if entry.Hill and self.Services.HillService then
+		-- Crown Hill fights pay crown coins and never touch trophies, wins or streaks (decision 105).
+		self.Services.HillService:MatchFinished(entry, eligible)
+	end
 	for side, player in entry.Players do
 		self.ByPlayer[player] = nil
-		if not player.Parent then
+		if not player.Parent or entry.Hill then
 			continue
 		end
 		local profile = self.Services.DataService and self.Services.DataService:Get(player)

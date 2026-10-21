@@ -35,6 +35,7 @@ local order = {
 	"GlassyMotionTests",
 	"RideFamiliesTests",
 	"LevelTests",
+	"HillTests",
 }
 local suites = {}
 for _, name in order do

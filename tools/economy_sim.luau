@@ -2,3 +2,5 @@
 local economySim = require("../src/tests/EconomySim")
 
 print(economySim.report())
+print()
+print(require("../src/tests/HillEconomySim").report())

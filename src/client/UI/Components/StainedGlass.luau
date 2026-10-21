@@ -151,9 +151,12 @@ function S.image(parent, name, path, size, position)
 	object.Parent = parent
 	return object
 end
-function S.hearts(parent, count)
+-- max: hearts this match starts with (Crown Hill fights have 1, decision 105); the rest are hidden.
+function S.hearts(parent, count, max)
 	for i = 1, 3 do
-		S.setAsset(parent["Heart" .. i], if i <= (count or 3) then "icon/heart_full" else "icon/heart_broken")
+		local heart = parent["Heart" .. i]
+		S.setAsset(heart, if i <= (count or 3) then "icon/heart_full" else "icon/heart_broken")
+		heart.Visible = i <= (max or 3)
 	end
 end
 function S.tag(object, text, colour)

@@ -43,7 +43,7 @@ function Billboards.new(data)
 		anchor.Position, anchor.Parent = position + offset, workspace
 		gui.Adornee, gui.Enabled, gui.Parent = anchor, true, Players.LocalPlayer.PlayerGui
 		S.bindSlices(gui)
-		list[side] = { Gui = gui, Anchor = anchor, Head = head, Offset = offset }
+		list[side] = { Gui = gui, Anchor = anchor, Head = head, Offset = offset, Max = data.MaxHearts }
 	end
 	return list
 end
@@ -76,7 +76,7 @@ function Billboards.update(list, hearts, hp, maxima)
 				Debris:AddItem(pop, Feel.HeartTweenSeconds)
 			end
 		end
-		S.hearts(item.Gui.Body.Hearts, hearts[side])
+		S.hearts(item.Gui.Body.Hearts, hearts[side], item.Max)
 		item.Hearts = count
 		local amount = item.Gui.Body:FindFirstChild("HpAmount")
 		if amount and hp then

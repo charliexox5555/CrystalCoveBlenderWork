@@ -59,7 +59,12 @@ return function(t)
 			end
 			t.ok(found, where .. ": " .. item .. " matches a UIAssets key")
 		elseif kind == "images" or kind == "sounds" or kind == "anims" then
-			t.ok(Modules[arg] ~= nil and hasId(Modules[arg], 0), where .. ": " .. item .. " names a config with ids")
+			local segments = string.split(arg, "/")
+			local value = Modules[segments[1]]
+			for i = 2, #segments do
+				value = if type(value) == "table" then value[segments[i]] else nil
+			end
+			t.ok(value ~= nil and hasId(value, 0), where .. ": " .. item .. " names a config part with ids")
 		elseif kind == "id" then
 			t.ok(arg:match("^rbxassetid://%d+$") ~= nil, where .. ": " .. item .. " is an asset id")
 		elseif kind == "screen" or kind == "asset" or kind == "rs" then

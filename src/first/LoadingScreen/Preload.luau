@@ -218,8 +218,14 @@ local function resolve(item: string): { { any } }
 			table.insert(units, { item, { child } })
 		end
 	elseif kind == "images" or kind == "sounds" or kind == "anims" then
+		-- "images:ItemIcons/Small/pop" walks into the config table; "images:ItemIcons" takes all of it.
+		local segments = string.split(arg, "/")
+		local value = configModule(segments[1])
+		for i = 2, #segments do
+			value = if type(value) == "table" then value[segments[i]] else nil
+		end
 		local ids = {}
-		scanIds(configModule(arg), kind == "anims", ids, {}, nil, 0)
+		scanIds(value, kind == "anims", ids, {}, nil, 0)
 		local targets: { any } = images(ids)
 		if kind == "sounds" then
 			targets = makeInstances("Sound", "SoundId", ids)
@@ -523,8 +529,14 @@ function Preload.hint(payload: any, lane: string?): { Job }
 			for _, folderName in config.HintFolders do
 				local folder = root and root:FindFirstChild(folderName)
 				if folder and folder:FindFirstChild(value) then
-					for _, job in enqueue("asset:" .. folderName .. "/" .. value, lane or "Urgent", lane or "Urgent") do
-						table.insert(covered, job)
+					local items = { "asset:" .. folderName .. "/" .. value }
+					for _, template in config.HintItems or {} do
+						table.insert(items, (template:gsub("{name}", value)))
+					end
+					for _, item in items do
+						for _, job in enqueue(item, lane or "Urgent", lane or "Urgent") do
+							table.insert(covered, job)
+						end
 					end
 				end
 			end

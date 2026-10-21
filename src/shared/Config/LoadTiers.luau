@@ -8,7 +8,8 @@
 --   "screen:<Name>"         a StarterGui screen template (its images, fonts and any viewport models)
 --   "asset:<Folder>[/<Child>]"  ReplicatedStorage.Assets models (a folder = one job per child)
 --   "rs:<Name>"             any other ReplicatedStorage child (the Clash Stand)
---   "images:<Config>"       every rbxassetid in Shared.Config.<Config>, as images
+--   "images:<Config>"       every rbxassetid in Shared.Config.<Config>, as images ("images:<Config>/<Key>/..." takes
+--                           only that part of the table, e.g. "images:ItemIcons/Small")
 --   "sounds:<Config>"       ... as Sounds (a bare id string only ever loads as an image)
 --   "anims:<Config>"        ... the ids under R15 / R6 / Animation keys, as Animations
 --   "id:rbxassetid://<n>"   one image id, for art that lives in no config yet
@@ -164,5 +165,7 @@ LoadTiers.OnDemand = {
 -- these Assets folders). ProfileSnapshot feeds "owned" instead.
 LoadTiers.HintRemotes = { "OnboardingReveal", "KilnResult", "RollOffers", "CosmeticResult", "StoreResult" }
 LoadTiers.HintFolders = { "Glassies", "Rideables", "RoundFinishers", "Seasonal" }
+-- Extra items per hinted name ({name} = the model name), e.g. its pre-rendered icon: "images:ItemIcons/Small/{name}".
+LoadTiers.HintItems = {}
 
 return LoadTiers

@@ -55,6 +55,20 @@ function Controller:WhenFree(fn)
 	end)
 end
 
+-- The claim card's Kiln is in the Soon loading tier (decision 111) while the card shows as soon as the loading screen
+-- is gone: ask for it first and give it a moment, so the card never opens with an empty slot. A client without the
+-- loading module just skips the wait.
+local function preload(item, timeout)
+	local screen = game.ReplicatedFirst:FindFirstChild("LoadingScreen")
+	local module = screen and screen:FindFirstChild("Preload")
+	local ok, Preload = pcall(require, module)
+	if ok and type(Preload) == "table" then
+		pcall(function()
+			Preload.await(Preload.want(item), timeout)
+		end)
+	end
+end
+
 -- Steps 1 and 5 ------------------------------------------------------------------------------------------------
 -- The claim card (StarterGui.WelcomeScreen): one Kiln and an OPEN button, like claiming any reward. "Welcome" shows x3
 -- (the 3 welcome opens); "Win" is the free Kiln open for the first win. OPEN asks the server, which grants and sends
@@ -376,7 +390,14 @@ function Controller:Keep()
 		self:PlayReveal(reveal)
 	end
 	local card = pg:FindFirstChild("WelcomeScreen")
-	if claim and card and not card.Enabled and not self.ClaimKind and not self.ClaimPending then
+	if
+		claim
+		and card
+		and not card.Enabled
+		and not self.ClaimKind
+		and not self.ClaimPending
+		and not self.ClaimLoading
+	then
 		if not self.Revealing and not matchUi and not menu and not (lobby and lobby.PanelOpen) then
 			self:ShowClaim(step)
 		end
@@ -423,6 +444,9 @@ function Controller:Apply(step, previous)
 	if step == "Welcome" or step == "Win" then
 		-- Win waits for the results screen to close (WhenFree).
 		self:WhenFree(function()
+			self.ClaimLoading = true -- Keep waits for this first show
+			preload("asset:Kilns", O.ClaimPreloadSeconds)
+			self.ClaimLoading = false
 			self:ShowClaim(step)
 		end)
 	elseif step == "Daily" and previous ~= "Welcome" and not self.Revealing then

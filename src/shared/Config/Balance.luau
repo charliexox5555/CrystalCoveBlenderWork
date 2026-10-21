@@ -658,6 +658,7 @@ Balance.Onboarding = {
 	IdleNudgeSeconds = 6,
 	KeepCheckSeconds = 0.5, -- how often the watcher looks
 	ClaimRetrySeconds = 5, -- OPEN sent but no opening came back: the card is offered again
+	ClaimPreloadSeconds = 2, -- the claim card waits at most this long for its Kiln to load (decision 111 tiers)
 	DoneNudgeSeconds = 180, -- for this long after the win prize, an idle player sees PLAY pulse (until a match starts)
 	DailyCloseSeconds = 1.6, -- the tutorial daily screen closes this long after the claim
 	ActionRateSeconds = 0.5,

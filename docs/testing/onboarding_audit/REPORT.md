@@ -20,6 +20,24 @@ of the 12 funnel steps logged once, in order (server console, run C):
 
 No script errors or `[Onboarding]` warnings in any run. Lune 222/222 (2 new tests).
 
+## Research basis
+
+The fixes follow published first-time-user-experience (FTUE) practice, not guesses. Sources are listed at the end.
+
+| Practice (source) | What we do | Fit |
+|---|---|---|
+| Get new players to the fun fast, "ideally in 5 minutes or less" (Roblox, *Retention*) | An engaged kid is swinging in their first fight about a minute after joining: card ~5 s, opens ~10 s, Daily ~3 s, beam/PLAY, then pick and aim. The audit removed the places where the flow stopped (Daily lost, card stuck over a match). | Meets it. A kid who touches nothing takes ~5.5 min for the whole match; idea 3 below shortens that. |
+| Guide with arrows, beams and highlights; a trail should strongly suggest an action without requiring it (Roblox, *Onboarding techniques*) | Gold chevron beam to the reserved arena, pointers on CLAIM, PLAY and CAST. Walking stays free on the Arena step, and any free arena now counts. | Matches the guidance. |
+| Timed hints: show them only to players who need them, only the first time, after a delay found by playtesting (e.g. highlight at 11 s if most find it in 10 s), and tune the delay with Experiments (Roblox, *Onboarding techniques*) | The `Keep()` re-offers fire only for onboarding players, only when they are standing still with nothing open, and the post-tutorial PLAY pulse stops at the next match. | The 6 s delay is a first guess from the timings above. The guidance says to measure it: A/B 6 s vs 10 s (`Balance.Onboarding.IdleNudgeSeconds`) once there is live traffic. |
+| Showing beats telling: highlighting "is more effective than describing it in text" (Roblox, *Onboarding techniques*). Children read little (ages 3–5 not at all, then tentatively, then by scanning), skip instruction blocks, like animation, want instant results and leave rather than wait (Nielsen Norman Group, children's UX, 125 children aged 3–12) | Still no hint text: pulses, pointers, beam, a card with one button. The fixes removed waits a kid would leave over (the dead Daily step, a card they could not get past). | Matches. It also supports ideas 2 and 3 (fewer waits). |
+| Start gameplay at once; present non-essentials after onboarding and avoid "distracting players from completing onboarding" (Apple, *Onboarding for Games*) | Menus opened mid-step step aside and the step comes back. Trying to play before the welcome opens opens them (they are the player's first hand). | Matches. The welcome card is a one-tap reward, not a gate. |
+| One easy first match against bots, then normal play (PUBG Mobile, Naraka; see ONBOARDING.md) | The assisted first match now starts from any free arena and also from the Daily step, so a kid who wanders still gets the easy first win. | Matches. |
+| End onboarding with "a moment of joy"; show short-, mid- and long-term goals prominently (Roblox, *Onboarding*). Show the benefit of returning, e.g. daily rewards (Apple) | The "YOU WON!" Kiln open is the moment of joy. Daily Rewards is in the flow, and can no longer be lost. | The short-term goal after the tutorial is thin: idea 1 (Kiln goal badge) fills it. |
+| Longer first sessions go with better D1 on Roblox: the median D1 is ~4.3% for 0–3 min sessions and ~11.5% for 19–24 min (GameAnalytics, 2025 Roblox benchmark report) | The PLAY pulse after the win prize pulls into the second match. Ideas 1–2 are aimed at the third. | Direction matches. These figures are correlation, not proof that nudges cause it. |
+| Funnel steps are logged from the server, once per player, right after each step. A later step marks skipped ones complete. Fix the biggest drop first. After changing steps, read only dates after the change (Roblox, *Funnel events*) | Unchanged 12 steps, logged server-side, once each (verified). | Side effect of the new Daily rule: a player who skips Daily and plays logs step 5, which marks step 4 "Daily Claimed" as done. Step 4 can now read slightly high. If the creator wants it exact, Daily can move out of the funnel (a new funnel version). |
+
+Where we go further than "suggest, don't require": the claim cards hold walking while they are up. A card is one big button that gives the player something, so holding them for one tap costs little. It also stops the worst case found in run A (a match with the loaner hand and the card stuck on top). Trying to play still works: it opens the claim instead of starting a match.
+
 ## Bugs found and fixed
 
 | # | What a kid could do | What happened | Fix |
@@ -34,6 +52,7 @@ No script errors or `[Onboarding]` warnings in any run. Lune 222/222 (2 new test
 | 8 | **Rejoin in the middle of the first match** | The server set the step back to Arena but published "Match" to the client first, so the client waited on a match that no longer existed: no beam, no pointer. | The attribute is set after the fix-up. Checked with `DataDev "Reload"` mid-match: Match → Arena with a fresh pad. |
 | 9 | (fixed during the audit) my first watcher hid the card with `lobby:Close()`, which closed the opening that had just started | Soft-lock, caught in run B, never committed | The card is put away without touching the lobby; the opening owns it. |
 | 10 | Welcome card could start under the loading screen | The step attribute can arrive before `ClientLoaded`; the change handler fired early. | Nothing shows until the loading screen has gone (`ready` gate). |
+| 11 | (after decision 111) The loading screen now closes at ~4.7 s and the Coin Kiln model loads in the later "Soon" tier | The welcome card could open with an empty Kiln slot | The card first asks the loader for `asset:Kilns` and waits up to 2 s (`Balance.Onboarding.ClaimPreloadSeconds`); the watcher holds off until then. Checked: card with its Kiln at ~5 s of game time ([19](19_card_after_fast_load.jpg)). |
 
 ### Checked and fine (no change)
 
@@ -116,6 +135,15 @@ the step's moment back whenever the lobby is **quiet** (no match, menu, opening,
 - `src/server/Services/ArenaService.luau`, `HillService.luau`: `BeforePlay` before queuing; instant bot on any free
   arena for a first-match player.
 - `src/client/Controllers/OnboardingController.luau`: modal claim card (`HideClaim`), `PlayReveal` / `RevealDone`
-  (replay), `Keep()` watcher, `ready` gate.
+  (replay), `Keep()` watcher, `ready` gate, Kiln preload before the first card.
 - `src/shared/Config/Balance.luau`: `Onboarding.IdleNudgeSeconds`, `KeepCheckSeconds`, `ClaimRetrySeconds`,
-  `DoneNudgeSeconds`.
+  `DoneNudgeSeconds`, `ClaimPreloadSeconds`.
+
+## Sources
+
+- Roblox Creator Docs: [Onboarding](https://create.roblox.com/docs/production/game-design/onboarding), [Onboarding techniques](https://create.roblox.com/docs/production/game-design/onboarding-techniques), [Funnel events](https://create.roblox.com/docs/production/analytics/funnel-events) (`LogOnboardingFunnelStepEvent`), [Retention](https://create.roblox.com/docs/production/analytics/retention)
+- Nielsen Norman Group, [Children's UX: Usability Issues in Designing for Young People](https://www.nngroup.com/articles/childrens-websites-usability-issues/)
+- Apple Developer, [Onboarding for Games](https://developer.apple.com/app-store/onboarding-for-games/)
+- GameAnalytics, [2025 Roblox Benchmark Report](https://www.gameanalytics.com/reports/2025-roblox-report) (D1 by session length)
+- First-match bots and win margins: the sources in [ONBOARDING.md](../../design/ONBOARDING.md) (PC Gamer on Naraka, GameSpot on PUBG Mobile, the Flinders near-miss study)
+- Not used: I couldn't open the GDC Vault (under maintenance) or find a primary teardown of Adopt Me / Pet Simulator / Grow a Garden onboarding. The search results were player guides, so they are not cited.

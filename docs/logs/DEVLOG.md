@@ -17,6 +17,7 @@ Done:
 - Dead time: client `Keep()` watcher brings the step back after 6 s standing still (card, Daily, beam, PLAY pulse); PLAY also pulses for up to 3 min after the win prize, the pull into the second match.
 - Funnel: all 12 steps logged once, in order (Joined → Second Match Finished). Double/triple-tap OPEN grants once. No script errors.
 - Lune 222/222 (2 new OnboardingTests).
+- Follow-up: REPORT now has a "Research basis" section with cited sources (Roblox Onboarding / Onboarding techniques / Funnel events / Retention docs, NN/g children's UX, Apple Onboarding for Games, GameAnalytics 2025 Roblox benchmark). The welcome card now preloads the Coin Kiln (≤2 s) because the tiered loading screen (decision 111) closes before it loads.
 Next:
 - Creator: try it with a real controller and on a phone; pick from the bigger ideas in the report (Kiln goal badge for the 3rd match, faster bot for the 2nd match, 40 s pick timer in round 1 only, camera turn toward the arena, hide PICK ANY in the first match).
 Problems / questions for the user:

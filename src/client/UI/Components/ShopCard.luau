@@ -57,6 +57,28 @@ function Card.new(frame)
 	U.make("UIStroke", name, { Thickness = 1.5, Color = Theme.Palette.lead })
 	local button = Gem.new(frame, "Buy", "…", "Green", UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.8))
 	button.Label.UITextSizeConstraint.MaxTextSize = 30
+	-- On short cards (phones) the button's 44 px minimum is taller than its 20% slot and covered the name band:
+	-- pin it to the bottom and give the art whatever height is left.
+	button.AnchorPoint, button.Position = Vector2.new(0, 1), UDim2.fromScale(0, 1)
+	local function relayout()
+		local minimum = button:FindFirstChildOfClass("UISizeConstraint")
+		local height = frame.AbsoluteSize.Y
+		local short = height > 0 and height < 100
+		-- A full-width button stays easy to tap a little under 44 px; it leaves the art room to show the item.
+		if minimum then
+			minimum.MinSize = Vector2.new(minimum.MinSize.X, if short then 34 else 44)
+		end
+		band.Size = UDim2.fromScale(1, if short then 0.34 else 0.2)
+		local used = button.AbsoluteSize.Y
+		if height > 0 and used > height * 0.2 + 1 then
+			art.Size = UDim2.new(1, 0, 0, math.max(1, math.floor(height - used - 2)))
+		else
+			art.Size = UDim2.fromScale(1, 0.78)
+		end
+	end
+	frame:GetPropertyChangedSignal("AbsoluteSize"):Connect(relayout)
+	button:GetPropertyChangedSignal("AbsoluteSize"):Connect(relayout)
+	task.defer(relayout)
 	return {
 		Frame = frame,
 		Art = art,

@@ -7,6 +7,16 @@ local S = require(script.Parent.StainedGlass)
 local Panel = {}
 Panel.__index = Panel
 local titles = { Glassies = "Kiln", Finishers = "Burst Capsule", Rideables = "Sky Capsule" }
+-- An OPEN label shorter than this (px) can't fit two readable lines (phones): "OPEN 1 · 300" on one line instead.
+-- The pane header already names the currency.
+local TWO_LINES = 28
+local function setOpenText(button, text, short)
+	button:SetAttribute("OpenText", text)
+	button:SetAttribute("OpenShort", short)
+	local label = button:FindFirstChild("Label") or button
+	local height = label.AbsoluteSize.Y
+	S.buttonText(button, if height > 0 and height < TWO_LINES then short else text)
+end
 function Panel.new(parent, category, offers, callbacks)
 	local self =
 		setmetatable({ Category = category, Offers = offers, Panels = {}, Carousels = {}, Connections = {} }, Panel)
@@ -137,6 +147,20 @@ function Panel.new(parent, category, offers, callbacks)
 				UDim2.fromScale(0.025 + (i - 1) * 0.495, 0.8)
 			)
 			U.make("UISizeConstraint", b, { MinSize = Vector2.new(44, 44) })
+			setOpenText(
+				b,
+				"OPEN " .. count .. "\n" .. cost .. " " .. string.upper(currency),
+				"OPEN " .. count .. " · " .. cost
+			)
+			table.insert(
+				self.Connections,
+				b:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+					local text, short = b:GetAttribute("OpenText"), b:GetAttribute("OpenShort")
+					if text and short then
+						setOpenText(b, text, short)
+					end
+				end)
+			)
 			table.insert(
 				self.Connections,
 				b.Activated:Connect(function()
@@ -183,7 +207,13 @@ function Panel:Wallet(data, frees, welcome)
 				then "WELCOME · FREE"
 				elseif free then "OPEN 1\nFREE"
 				else "OPEN " .. count .. "\n" .. cost .. " " .. string.upper(currency)
-			S.buttonText(button, text)
+			local short = if free
+					and self.Category == "Glassies"
+					and (welcome or 0) > 0
+				then "WELCOME · FREE"
+				elseif free then "OPEN 1 · FREE"
+				else "OPEN " .. count .. " · " .. cost
+			setOpenText(button, text, short)
 			local label = button:FindFirstChild("Label") or button
 			label.TextTransparency = if (data[currency] or 0) >= cost then 0 else 0.28
 			button.Active, button.Selectable = true, true

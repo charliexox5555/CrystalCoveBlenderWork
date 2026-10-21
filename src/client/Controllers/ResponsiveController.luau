@@ -101,6 +101,40 @@ function Controller:FitWindow(gui)
 	panel.Position = UDim2.new(0.5, 0, 0.5, math.floor(shown * (entry.Up - entry.Down) / 2))
 end
 
+-- Phone layouts for screens whose authored rows are too small to tap (applied before the window is fitted).
+local PHONE_LAYOUTS = {
+	-- Shop: the five tabs shared a short row with the coin/Marble pills (~14 px tall on a phone). The pills move up
+	-- into the title strip, like the SHOP banner, and the tabs take the whole row.
+	KilnScreen = function(panel)
+		local tabs, coins, marbles =
+			panel:FindFirstChild("Tabs"), panel:FindFirstChild("Coins"), panel:FindFirstChild("Marbles")
+		if not tabs or not coins or not marbles then
+			return
+		end
+		tabs.Position, tabs.Size = UDim2.fromScale(0.035, 0.09), UDim2.fromScale(0.93, 0.115)
+		coins.Position = UDim2.fromScale(0.545, -0.005)
+		marbles.Position = UDim2.fromScale(0.72, -0.005)
+	end,
+}
+
+function Controller:PhoneLayout(gui, panel)
+	local layout = PHONE_LAYOUTS[gui.Name]
+	if not layout or self:Class() ~= "Compact" then
+		return
+	end
+	layout(panel)
+	-- Content added later (the Shop's Marbles tab resizes the tab row) gets the phone layout again.
+	local tabs = panel:FindFirstChild("Tabs")
+	if tabs then
+		table.insert(
+			self.Connections[gui],
+			tabs.ChildAdded:Connect(function()
+				task.defer(layout, panel)
+			end)
+		)
+	end
+end
+
 function Controller:WatchWindow(gui)
 	if self.Connections[gui] then
 		return
@@ -137,6 +171,7 @@ function Controller:WatchWindow(gui)
 			self.Connections[gui] = nil
 		end),
 	}
+	self:PhoneLayout(gui, panel)
 	fit()
 end
 

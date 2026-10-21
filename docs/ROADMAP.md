@@ -29,7 +29,8 @@ Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DES
 - [ ] **CL:** turn the code-built screens (RollScreen, FightHud, Results/QueuePanel/RoundEnd, CastButton, PickAnyConfirm, BundlePreview, music button) into editable StarterGui templates.
 - [ ] **U:** creator sets Robux prices for Epic Standard / Legendary / Mythic flyers and Mythic finishers (until then they're crate-only).
 - [x] **CL:** device fitting (decision 106): Studio device-simulator audit (phone, iPhone, iPad, Xbox, portrait) and one `ResponsiveController` for window fit, overscan, touch currency, phone fight HUD and landscape lock.
-- [ ] **CL:** taller Shop tab row for touch; phone-friendly Inventory info pane.
+- [x] **CL:** Shop on phones: full-width tab row (48x14 -> 77x22 px) with the coin/Marble pills in the title strip, one-line "OPEN 1 · 300" crate buttons, Marble pack cards that keep the amount visible above a 34 px buy button.
+- [ ] **CL:** phone-friendly Inventory info pane (descriptions cut to one line on phones).
 - [ ] **U:** real-phone checks (Studio's device simulator now works through MCP), listening pass on new sounds.
 - [ ] **U:** save the place again (flyer installs after the last save), then publish.
 

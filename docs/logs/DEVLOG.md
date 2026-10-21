@@ -25,8 +25,12 @@ Done:
   - Results borrows the Inventory window frame, with its buttons moved inside it
   - the loading status sits clear of the bar
 - Re-checked in Studio Play on each device: windows fully on screen, Settings readable on the A06, counters clear of the thumbstick, the swing visible under the headline, the Shop inside the TV-safe area. Lune 214/214.
+- Shop on phones (creator follow-up, checked on the A06 and a laptop for no change):
+  - The tabs take the whole row and the coin/Marble pills move up into the title strip, like the SHOP banner (`ResponsiveController` phone layout; tabs 48x14 -> 77x22 px).
+  - Crate OPEN buttons too short for two lines read "OPEN 1 · 300". The price was cut to "OPEN 1..." before; the pane header names the currency.
+  - Marble pack cards: the 44 px buy button covered the "100 Marbles" band. It now sits at the bottom (34 px minimum on short cards) and the art takes the rest.
 Next:
-- The Shop's five tabs are ~14 px tall on phones (authored template row); needs a taller tab row for touch. Inventory info-pane descriptions still cut on phones (one-line boxes).
+- Inventory info-pane descriptions still cut on phones (one-line boxes).
 - Creator: real-phone check; save the place.
 Problems / questions for the user:
 - Portrait now always turns to landscape on phones; say if you'd rather keep portrait.

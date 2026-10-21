@@ -197,15 +197,19 @@ function Service:Finish(entry)
 			Perfects = entry.Perfects[side],
 			Forfeited = entry.Forfeited[side],
 		})
+		-- XP (decision 104): ProfileSchema.recordMatch writes XpGained / LevelsGained back into this table.
+		local observed = {
+			Eligible = eligible,
+			Perfects = entry.Perfects[side],
+			RoundWins = entry.ActualWins[side],
+			Shatters = entry.ActualWins[side],
+			Used = entry.Used[side],
+			HeavyShatters = entry.HeavyShatters[side],
+			VsBot = entry.Players[3 - side] == nil,
+			Forfeited = entry.Forfeited[side] == true,
+		}
 		if self.Services.DataService then
-			self.Services.DataService:RecordMatch(player, entry.Id, match, side, rewards, {
-				Eligible = eligible,
-				Perfects = entry.Perfects[side],
-				RoundWins = entry.ActualWins[side],
-				Shatters = entry.ActualWins[side],
-				Used = entry.Used[side],
-				HeavyShatters = entry.HeavyShatters[side],
-			})
+			self.Services.DataService:RecordMatch(player, entry.Id, match, side, rewards, observed)
 		else
 			temp.Coins += rewards.Coins
 			temp.Trophies += rewards.Trophies
@@ -223,6 +227,7 @@ function Service:Finish(entry)
 			Names = names,
 			Quests = self.Services.RetentionService and self.Services.RetentionService:View(player).Quests or {},
 			FirstMatch = entry.Tutorial ~= nil and entry.Tutorial.Player == player,
+			Xp = { Gained = observed.XpGained or 0, LevelsGained = observed.LevelsGained or 0 },
 		})
 		if self.Services.OnboardingService then
 			self.Services.OnboardingService:MatchFinished(

@@ -122,6 +122,8 @@ function Service:Draw(board, rows, now)
 		end
 		if frame then
 			frame.Visible = row ~= nil
+			-- Tapping a row opens that player's read-only profile (ProfileController, decision 104).
+			frame:SetAttribute("UserId", if row and row.UserId > 0 then row.UserId else nil)
 		end
 		if row and frame then
 			local medal = MEDALS[rank]

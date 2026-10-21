@@ -153,6 +153,36 @@ function Service:RecordMatch(player, id, match, side, rewards, observed)
 	return changed
 end
 
+-- Another player's read-only profile (decision 104): live from this server, otherwise a view-only store read
+-- (no session lock), cached for Balance.Levels.ViewCacheSeconds. Returns (view, name) or nil.
+function Service:PublicProfile(userId)
+	local online = self.ByUserId[userId]
+	local live = online and self:Get(online)
+	if live then
+		return Schema.publicView(live), online.DisplayName
+	end
+	self.ViewCache = self.ViewCache or {}
+	local cached = self.ViewCache[userId]
+	if cached and os.clock() - cached.At < Balance.Levels.ViewCacheSeconds then
+		return cached.View, cached.Name
+	end
+	local ok, profile = pcall(function()
+		return self.Store:GetAsync("Player_" .. userId)
+	end)
+	local data = ok and profile and profile.Data
+	if type(data) ~= "table" then
+		return nil
+	end
+	local found, name = pcall(Players.GetNameFromUserIdAsync, Players, userId)
+	local view = Schema.publicView(data)
+	self.ViewCacheSize = (self.ViewCacheSize or 0) + 1
+	if self.ViewCacheSize > 200 then
+		self.ViewCache, self.ViewCacheSize = {}, 1 -- bounded: start over rather than grow
+	end
+	self.ViewCache[userId] = { View = view, Name = if found then name else nil, At = os.clock() }
+	return view, self.ViewCache[userId].Name
+end
+
 function Service:AddCoins(player, amount)
 	local data = self:Get(player)
 	if not data or not Guard.finite(amount) or amount % 1 ~= 0 or data.Coins + amount < 0 then
@@ -200,6 +230,27 @@ function Service:Start()
 			self:Sync(player)
 		end
 	end)
+	Remotes.RequestPlayerProfile.OnServerEvent:Connect(function(player, userId)
+		if
+			type(userId) ~= "number"
+			or userId ~= userId
+			or userId % 1 ~= 0
+			or userId < 1
+			or userId > 2 ^ 53
+			or not self.Guard:Allow(player, "PlayerProfile", Balance.Levels.ViewRateSeconds)
+		then
+			return
+		end
+		task.spawn(function()
+			local view, name = self:PublicProfile(userId)
+			if player.Parent == Players then
+				Remotes.PlayerProfile:FireClient(
+					player,
+					if view then { UserId = userId, Name = name, View = view } else { UserId = userId, Missing = true }
+				)
+			end
+		end)
+	end)
 	game:BindToClose(function()
 		self.Closing = true
 		for player in self.Profiles do
@@ -243,6 +294,42 @@ function Service:Start()
 				local result = Schema.grant(d, value, false, os.time())
 				self:Sync(player)
 				return result
+			end
+			if command == "Match" then
+				-- Records a finished match through the real path (XP, stats, streaks); value = observed fields.
+				local observed = if type(value) == "table" then value else {}
+				local won = observed.Won ~= false
+				local id = "dev-" .. os.clock()
+				self:RecordMatch(
+					player,
+					id,
+					{ Over = true, Winner = if won then 1 else 2 },
+					1,
+					{ Coins = 0, Trophies = 0 },
+					observed
+				)
+				return {
+					Xp = observed.XpGained,
+					Levels = observed.LevelsGained,
+					View = Schema.snapshot(self:Get(player)).Level,
+				}
+			end
+			if command == "MockProfile" and self.Mock and type(value) == "table" and type(value.UserId) == "number" then
+				-- Writes an offline profile into the mock store so another player's profile can be opened in Studio.
+				local profile = self.Store:StartSessionAsync("Player_" .. value.UserId)
+				if not profile then
+					return false
+				end
+				Schema.reconcile(profile.Data, os.time())
+				profile.Data.Xp = value.Xp or 0
+				profile.Data.Stats.MatchWins, profile.Data.Stats.MatchLosses = value.Wins or 0, value.Losses or 0
+				profile.Data.Stats.BestStreak = value.BestStreak or 0
+				for _, glassy in value.Glassies or {} do
+					Schema.grant(profile.Data, glassy, false, os.time())
+				end
+				profile:EndSession()
+				self.ViewCache = {}
+				return true
 			end
 			if command == "Reload" then
 				self:Release(player)

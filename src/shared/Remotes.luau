@@ -26,6 +26,8 @@
 --     RequestSettings (RemoteEvent) (no args) -> Settings { Master, Music, SFX, BotPlay, AutoCast, ... } (Config/Settings)
 --     SetSetting     (RemoteEvent)  key: string, value: number (0-1) | boolean; saved by SettingsService (decision 99)
 --   Server -> client: StoreOffers (view, NextReset, ServerNow, Message), StoreResult (purchase outcome)
+--     RequestPlayerProfile (RemoteEvent) userId: number -> PlayerProfile { UserId, Name, View } | { UserId, Missing }
+--                    another player's read-only profile (ProfileSchema.publicView; DataService, decision 104)
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
@@ -66,6 +68,8 @@ local reliable = {
 	"RequestSettings",
 	"Settings",
 	"SetSetting",
+	"RequestPlayerProfile",
+	"PlayerProfile",
 }
 local unreliable = { "FightSnapshot" }
 

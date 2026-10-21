@@ -671,6 +671,21 @@ Balance.Data = {
 	DaySeconds = 86400,
 }
 
+-- Player levels (LevelRules, decision 104). XP per finished match; bot matches give half; a forfeit gives none.
+-- XP from level L to L + 1 = BaseXp + StepXp * (L - 1): Lv 2 after ~2 matches, Lv 5 in the first session,
+-- Lv 10 after ~40 matches, then a slow climb with no cap. No level rewards yet.
+Balance.Levels = {
+	WinXp = 100,
+	LossXp = 40,
+	RoundWonXp = 10, -- per round won
+	PerfectXp = 15, -- per Perfect release
+	BotScale = 0.5, -- matches against a bot
+	BaseXp = 100,
+	StepXp = 70, -- EconomySim: Lv 10 after ~42 matches (40 min/day, 50% wins, 40% bots, 1 Perfect)
+	ViewRateSeconds = 1, -- RequestPlayerProfile (another player's read-only profile)
+	ViewCacheSeconds = 60, -- offline profiles read from the store are reused this long
+}
+
 -- Sky lobby recovery; no combat or economy tuning.
 Balance.Lobby = {
 	FallY = -40,

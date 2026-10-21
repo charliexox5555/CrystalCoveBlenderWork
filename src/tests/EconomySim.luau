@@ -154,6 +154,46 @@ local function minutes(m: number): string
 	return string.format("%.1f h of play", m / 60)
 end
 
+-- Level pacing (LevelRules, decision 104) for the model's player: same win rate and bot share as the coin sim.
+function EconomySim.levels(seed: number?): { [string]: number }
+	local e = Balance.EconomyModel
+	local Levels = if script then require(game.ReplicatedStorage.Shared.LevelRules) else require("../shared/LevelRules")
+	local rng = Rng.new(seed or 104)
+	local perDay = e.SessionMinutes * 60 / EconomySim.matchSeconds()
+	local total, matches, out = 0, 0, { ToLv5 = 0, ToLv10 = 0 }
+	for day = 1, e.Days do
+		for _ = 1, math.floor(perDay * day) - math.floor(perDay * (day - 1)) do
+			local won, lost = 0, 0
+			while won < Balance.Match.Hearts and lost < Balance.Match.Hearts do
+				if rng() < e.WinRate then
+					won += 1
+				else
+					lost += 1
+				end
+			end
+			total += Levels.matchXp({
+				Won = won == Balance.Match.Hearts,
+				RoundsWon = won,
+				Perfects = e.PerfectsPerMatch,
+				VsBot = rng() < e.BotMatchShare,
+			})
+			matches += 1
+			local level = Levels.level(total)
+			if level >= 5 and out.ToLv5 == 0 then
+				out.ToLv5 = matches
+			end
+			if level >= 10 and out.ToLv10 == 0 then
+				out.ToLv10 = matches
+			end
+		end
+		if day == 1 or day == 7 or day == e.Days then
+			out["Day" .. day] = Levels.level(total)
+		end
+	end
+	out.PerDay = perDay
+	return out
+end
+
 function EconomySim.report(): string
 	local e, econ = Balance.EconomyModel, Balance.Economy
 	local r = EconomySim.simulate()
@@ -180,6 +220,16 @@ function EconomySim.report(): string
 	add("Kiln: %d coins a pull, %d glassies inside", econ.KilnCoinCost, r.KilnGlassies)
 	add("Pulls on day 1: %d   by day 30: %d", r.PullsDay1, r.PullsDay30)
 	add("Unique glassies (of %d in the Kiln): day 7 %d, day 30 %d", r.KilnGlassies, r.UniqueDay7, r.UniqueDay30)
+	local lv = EconomySim.levels()
+	add(
+		"Levels: Lv %d after day 1, Lv %d by day 7, Lv %d by day %d; Lv 5 after %d matches, Lv 10 after %d",
+		lv.Day1,
+		lv.Day7,
+		lv["Day" .. e.Days],
+		e.Days,
+		lv.ToLv5,
+		lv.ToLv10
+	)
 	add("")
 	add("Median play time to a player's first:")
 	for _, rarity in { "Rare", "Epic", "Legendary", "Mythic" } do

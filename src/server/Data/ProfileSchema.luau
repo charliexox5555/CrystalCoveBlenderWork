@@ -8,6 +8,7 @@ local RoundCosmetics = if Shared then require(Shared.RoundCosmeticRules) else re
 local DailyStore = if Shared then require(Shared.DailyStoreRules) else require("../../shared/DailyStoreRules")
 local Rules = if script then require(script.Parent.OnboardingRules) else require("./OnboardingRules")
 local Boards = if script then require(script.Parent.LeaderboardRules) else require("./LeaderboardRules")
+local Levels = if Shared then require(Shared.LevelRules) else require("../../shared/LevelRules")
 
 function Schema.copy(value)
 	if type(value) ~= "table" then
@@ -26,6 +27,8 @@ function Schema.new(now)
 		Coins = 0,
 		Marbles = 0,
 		Trophies = 0,
+		-- Total XP (decision 104); the level is derived from it by LevelRules. Everyone starts at Lv 1 / 0 XP.
+		Xp = 0,
 		Glassies = {},
 		Cosmetics = { ShatterFx = { "default" }, EquippedShatterFx = "default", Fills = {} },
 		Stats = {
@@ -118,6 +121,7 @@ function Schema.reconcile(data, now)
 	data.Version = Balance.Data.Version
 	data.Coins, data.Marbles, data.Trophies =
 		integer(data.Coins, 0), integer(data.Marbles, 0), integer(data.Trophies, 0)
+	data.Xp = integer(data.Xp, 0)
 	for id, owned in data.Glassies do
 		if Glassies.ById[id] then
 			if type(owned) ~= "table" then
@@ -212,8 +216,47 @@ function Schema.recordMatch(data, id, match, side, rewards, observed)
 	for glassyId in observed.Used or {} do
 		stats.GlassyUses[glassyId] = (stats.GlassyUses[glassyId] or 0) + 1
 	end
+	-- XP (decision 104): written back into `observed` so the caller can show it.
+	local xp = Levels.matchXp({
+		Won = match.Winner == side,
+		RoundsWon = observed.RoundWins,
+		Perfects = observed.Perfects,
+		VsBot = observed.VsBot,
+		Forfeited = observed.Forfeited,
+	})
+	local levels
+	data.Xp, levels = Levels.add(data.Xp, xp)
+	observed.XpGained, observed.LevelsGained = xp, levels
 	RoundCosmetics.reconcile(data)
 	return true
+end
+
+-- What another player may see of this profile (read-only profile view, decision 104): level, a few stats and
+-- what they own. Nothing about currency, purchases, codes or settings.
+function Schema.publicView(data)
+	local glassies = {}
+	for id, owned in data.Glassies or {} do
+		if Glassies.ById[id] and type(owned) == "table" then
+			glassies[id] =
+				{ Count = integer(owned.Count, 1), Stars = integer(owned.Stars, 0), Rainbow = owned.Rainbow == true }
+		end
+	end
+	local stats, cosmetics = data.Stats or {}, data.Cosmetics or {}
+	return {
+		Level = Levels.view(data.Xp),
+		Stats = {
+			MatchWins = integer(stats.MatchWins, 0),
+			MatchLosses = integer(stats.MatchLosses, 0),
+			BestStreak = integer(stats.BestStreak, 0),
+		},
+		Glassies = glassies,
+		Cosmetics = {
+			Finishers = Schema.copy(cosmetics.Finishers or {}),
+			Rideables = Schema.copy(cosmetics.Rideables or {}),
+			EquippedFinishers = cosmetics.EquippedFinishers,
+			EquippedRideables = cosmetics.EquippedRideables,
+		},
+	}
 end
 
 -- Playtest grant (Config/Testing): once per wave while enabled; returns the Marbles added.
@@ -241,6 +284,7 @@ function Schema.snapshot(data)
 		Coins = data.Coins,
 		Marbles = data.Marbles,
 		Trophies = data.Trophies,
+		Level = Levels.view(data.Xp),
 		Glassies = data.Glassies,
 		Cosmetics = data.Cosmetics,
 		Stats = data.Stats,

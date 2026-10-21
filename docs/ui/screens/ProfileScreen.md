@@ -14,6 +14,16 @@ Rebuild with `tools/studio/build_profile_screen.luau` (Studio Edit, lock held). 
 
 ![Profile page](ProfileScreen.jpg)
 
+## Top bar button
+
+A third TopbarPlus button, **left of Settings**, uses the player's own avatar headshot
+(`rbxthumb://type=AvatarHeadShot&id=<userId>&w=150&h=150`, which TopbarPlus `setImage` accepts) with the caption
+"Profile". The mock below was made in Play with a temporary local icon; nothing was added to `Config/Topbar` yet.
+
+| Top bar | Open over the lobby (Play) |
+|---|---|
+| ![top bar](ProfileScreen_topbar.jpg) | ![in play](ProfileScreen_play.jpg) |
+
 ## The two tab options (creator picks one)
 
 | A: **Grids** (recommended). The tabs show read-only grids inside the profile | B: **Jump**. The tabs open the Inventory on that tab |

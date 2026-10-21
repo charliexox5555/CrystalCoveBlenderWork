@@ -338,7 +338,9 @@ function Catalog:Detail(id)
 	S.buttonText(self.Preview, if self.Category == "Finishers" then "PREVIEW EFFECT" else "TURN PREVIEW")
 	self.Preview.Visible = true
 	local slot = self.Info.InfoPortrait
-	self.Portrait, self.World = Portrait.new(self.Info, self.Category, id, slot.Size, slot.Position, "InfoPortrait")
+	-- Live (effect preview, turn preview); the tiles use icons.
+	self.Portrait, self.World =
+		Portrait.new(self.Info, self.Category, id, slot.Size, slot.Position, "InfoPortrait", true)
 	self.Portrait.Visible = true
 	self.PreviewResize = self.Portrait:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 		self:FitPreview()

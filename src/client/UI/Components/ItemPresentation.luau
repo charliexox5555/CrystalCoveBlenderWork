@@ -7,11 +7,12 @@ local P = {}
 function P.definition(category, id)
 	return if category == "Glassies" then G.get(id) else C.ByCategory[category][id]
 end
-function P.portrait(parent, category, id, size, position, name)
+-- `live` = true keeps a 3D viewport even when the item has a pre-rendered icon (decision 113).
+function P.portrait(parent, category, id, size, position, name, live)
 	name = name or "Portrait"
 	local slot = parent:FindFirstChild(name)
 	if category == "Glassies" then
-		return Glassy.new(parent, id, size, position, name)
+		return Glassy.new(parent, id, size, position, name, live)
 	end
 	return Cosmetic.new(
 		parent,
@@ -19,11 +20,28 @@ function P.portrait(parent, category, id, size, position, name)
 		id,
 		size or slot and slot.Size or UDim2.fromScale(1, 1),
 		position or slot and slot.Position or UDim2.new(),
-		name
+		name,
+		live
 	)
 end
 -- opening = true on the opening stage: reserves headroom above the machine for the popping lid.
-function P.crate(parent, category, currency, size, position, name, opening)
+-- live = true keeps the 3D machine (the Shop panes, where its idle animation is the point).
+function P.crate(parent, category, currency, size, position, name, opening, live)
+	if not opening and not live then
+		-- Reward cells and the welcome card show the machine's icon; the opening stays live.
+		local icon = require(script.Parent.ItemIcon).mount(
+			parent,
+			name or "CratePortrait",
+			"Machines",
+			category .. ":" .. currency,
+			size,
+			position
+		)
+		if icon then
+			return icon, nil
+		end
+	end
+	require(script.Parent.ItemIcon).viewportSlot(parent, name or "CratePortrait")
 	local U = require(script.Parent.Util)
 	local Presentation = script.Parent.Parent.Parent.Presentation
 	local Machine = require(Presentation.CrateMachine)

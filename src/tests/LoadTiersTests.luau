@@ -14,6 +14,7 @@ local Modules = if script
 		FinisherShows = config("FinisherShows"),
 		RideAnimations = config("RideAnimations"),
 		RideFamilies = config("RideFamilies"),
+		ItemIcons = config("ItemIcons"),
 	}
 	else {
 		Audio = require("../shared/Config/Audio"),
@@ -23,6 +24,7 @@ local Modules = if script
 		FinisherShows = require("../shared/Config/FinisherShows"),
 		RideAnimations = require("../shared/Config/RideAnimations"),
 		RideFamilies = require("../shared/Config/RideFamilies"),
+		ItemIcons = require("../shared/Config/ItemIcons"),
 	}
 
 local KINDS =

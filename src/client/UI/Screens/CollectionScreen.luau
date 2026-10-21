@@ -9,6 +9,7 @@ local Window = require(script.Parent.Parent.Components.Window)
 local Button = require(script.Parent.Parent.Components.Button)
 local Panel = require(script.Parent.Parent.Components.Panel)
 local Portrait = require(script.Parent.Parent.Components.GlassyPortrait)
+local ItemIcon = require(script.Parent.Parent.Components.ItemIcon)
 local Screen = {}
 Screen.__index = Screen
 local types = { "All types", "Heavy", "Sharp", "Fizzy" }
@@ -133,12 +134,7 @@ function Screen:Refresh(profile)
 			p = Portrait.new(tile, def.Id, UDim2.fromScale(1, 0.6), UDim2.new())
 			p.Visible = true
 			if not owned then
-				p.Ambient, p.LightColor = Color3.new(), Color3.new()
-				for _, part in p:GetDescendants() do
-					if part:IsA("BasePart") then
-						part.Color, part.Material = Theme.Colors.Shadow, Enum.Material.SmoothPlastic
-					end
-				end
+				ItemIcon.silhouette(p, Theme.Colors.Shadow)
 			end
 		else
 			local existing = tile:FindFirstChild("Portrait")
@@ -197,7 +193,7 @@ function Screen:Detail(id)
 		Position = UDim2.fromScale(0, 0.04),
 	})
 	if installed(id) and owned then
-		self.DetailPortrait = Portrait.new(art, id, UDim2.fromScale(1, 1), UDim2.new())
+		self.DetailPortrait = Portrait.new(art, id, UDim2.fromScale(1, 1), UDim2.new(), nil, true)
 	else
 		U.text(art, "Unowned", "?", UDim2.fromScale(1, 1), UDim2.new(), Theme.Fonts.Heading).UITextSizeConstraint.MaxTextSize =
 			80

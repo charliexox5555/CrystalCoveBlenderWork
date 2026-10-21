@@ -1,0 +1,461 @@
+{
+ "Record": "assets/icons/items/roblox_assets_1024.json",
+ "Items": [
+  {
+   "Key": "1024/finishers_brick_boom",
+   "Path": "assets/icons/items/1024/finishers_brick_boom.png",
+   "Type": "Decal",
+   "Name": "GC icon finishers_brick_boom 1024"
+  },
+  {
+   "Key": "1024/finishers_bubble_bloom",
+   "Path": "assets/icons/items/1024/finishers_bubble_bloom.png",
+   "Type": "Decal",
+   "Name": "GC icon finishers_bubble_bloom 1024"
+  },
+  {
+   "Key": "1024/finishers_emberwing",
+   "Path": "assets/icons/items/1024/finishers_emberwing.png",
+   "Type": "Decal",
+   "Name": "GC icon finishers_emberwing 1024"
+  },
+  {
+   "Key": "1024/finishers_frost_pop",
+   "Path": "assets/icons/items/1024/finishers_frost_pop.png",
+   "Type": "Decal",
+   "Name": "GC icon finishers_frost_pop 1024"
+  },
+  {
+   "Key": "1024/finishers_glass_burst",
+   "Path": "assets/icons/items/1024/finishers_glass_burst.png",
+   "Type": "Decal",
+   "Name": "GC icon finishers_glass_burst 1024"
+  },
+  {
+   "Key": "1024/finishers_gumball",
+   "Path": "assets/icons/items/1024/finishers_gumball.png",
+   "Type": "Decal",
+   "Name": "GC icon finishers_gumball 1024"
+  },
+  {
+   "Key": "1024/finishers_hocus_pop",
+   "Path": "assets/icons/items/1024/finishers_hocus_pop.png",
+   "Type": "Decal",
+   "Name": "GC icon finishers_hocus_pop 1024"
+  },
+  {
+   "Key": "1024/finishers_honeyburst",
+   "Path": "assets/icons/items/1024/finishers_honeyburst.png",
+   "Type": "Decal",
+   "Name": "GC icon finishers_honeyburst 1024"
+  },
+  {
+   "Key": "1024/finishers_lantern_eclipse",
+   "Path": "assets/icons/items/1024/finishers_lantern_eclipse.png",
+   "Type": "Decal",
+   "Name": "GC icon finishers_lantern_eclipse 1024"
+  },
+  {
+   "Key": "1024/finishers_party_burst",
+   "Path": "assets/icons/items/1024/finishers_party_burst.png",
+   "Type": "Decal",
+   "Name": "GC icon finishers_party_burst 1024"
+  },
+  {
+   "Key": "1024/finishers_petalstorm",
+   "Path": "assets/icons/items/1024/finishers_petalstorm.png",
+   "Type": "Decal",
+   "Name": "GC icon finishers_petalstorm 1024"
+  },
+  {
+   "Key": "1024/finishers_starfall",
+   "Path": "assets/icons/items/1024/finishers_starfall.png",
+   "Type": "Decal",
+   "Name": "GC icon finishers_starfall 1024"
+  },
+  {
+   "Key": "1024/finishers_starmane",
+   "Path": "assets/icons/items/1024/finishers_starmane.png",
+   "Type": "Decal",
+   "Name": "GC icon finishers_starmane 1024"
+  },
+  {
+   "Key": "1024/glassies_arc_coil",
+   "Path": "assets/icons/items/1024/glassies_arc_coil.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_arc_coil 1024"
+  },
+  {
+   "Key": "1024/glassies_briar_flask",
+   "Path": "assets/icons/items/1024/glassies_briar_flask.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_briar_flask 1024"
+  },
+  {
+   "Key": "1024/glassies_bubble_wand",
+   "Path": "assets/icons/items/1024/glassies_bubble_wand.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_bubble_wand 1024"
+  },
+  {
+   "Key": "1024/glassies_chime",
+   "Path": "assets/icons/items/1024/glassies_chime.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_chime 1024"
+  },
+  {
+   "Key": "1024/glassies_comet",
+   "Path": "assets/icons/items/1024/glassies_comet.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_comet 1024"
+  },
+  {
+   "Key": "1024/glassies_cookie_jar",
+   "Path": "assets/icons/items/1024/glassies_cookie_jar.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_cookie_jar 1024"
+  },
+  {
+   "Key": "1024/glassies_crescent_axe",
+   "Path": "assets/icons/items/1024/glassies_crescent_axe.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_crescent_axe 1024"
+  },
+  {
+   "Key": "1024/glassies_crystal_ball",
+   "Path": "assets/icons/items/1024/glassies_crystal_ball.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_crystal_ball 1024"
+  },
+  {
+   "Key": "1024/glassies_crystal_crown",
+   "Path": "assets/icons/items/1024/glassies_crystal_crown.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_crystal_crown 1024"
+  },
+  {
+   "Key": "1024/glassies_crystal_tumbler",
+   "Path": "assets/icons/items/1024/glassies_crystal_tumbler.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_crystal_tumbler 1024"
+  },
+  {
+   "Key": "1024/glassies_fishbowl",
+   "Path": "assets/icons/items/1024/glassies_fishbowl.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_fishbowl 1024"
+  },
+  {
+   "Key": "1024/glassies_frostglobe",
+   "Path": "assets/icons/items/1024/glassies_frostglobe.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_frostglobe 1024"
+  },
+  {
+   "Key": "1024/glassies_galaxy_orb",
+   "Path": "assets/icons/items/1024/glassies_galaxy_orb.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_galaxy_orb 1024"
+  },
+  {
+   "Key": "1024/glassies_glass_cup",
+   "Path": "assets/icons/items/1024/glassies_glass_cup.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_glass_cup 1024"
+  },
+  {
+   "Key": "1024/glassies_glass_dragon",
+   "Path": "assets/icons/items/1024/glassies_glass_dragon.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_glass_dragon 1024"
+  },
+  {
+   "Key": "1024/glassies_glass_duck",
+   "Path": "assets/icons/items/1024/glassies_glass_duck.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_glass_duck 1024"
+  },
+  {
+   "Key": "1024/glassies_glass_lollipop",
+   "Path": "assets/icons/items/1024/glassies_glass_lollipop.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_glass_lollipop 1024"
+  },
+  {
+   "Key": "1024/glassies_glass_phoenix",
+   "Path": "assets/icons/items/1024/glassies_glass_phoenix.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_glass_phoenix 1024"
+  },
+  {
+   "Key": "1024/glassies_glass_sword",
+   "Path": "assets/icons/items/1024/glassies_glass_sword.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_glass_sword 1024"
+  },
+  {
+   "Key": "1024/glassies_glass_top",
+   "Path": "assets/icons/items/1024/glassies_glass_top.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_glass_top 1024"
+  },
+  {
+   "Key": "1024/glassies_glass_unicorn",
+   "Path": "assets/icons/items/1024/glassies_glass_unicorn.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_glass_unicorn 1024"
+  },
+  {
+   "Key": "1024/glassies_grizzly_guardian",
+   "Path": "assets/icons/items/1024/glassies_grizzly_guardian.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_grizzly_guardian 1024"
+  },
+  {
+   "Key": "1024/glassies_hollowlight",
+   "Path": "assets/icons/items/1024/glassies_hollowlight.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_hollowlight 1024"
+  },
+  {
+   "Key": "1024/glassies_honey_bear",
+   "Path": "assets/icons/items/1024/glassies_honey_bear.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_honey_bear 1024"
+  },
+  {
+   "Key": "1024/glassies_hot_sauce",
+   "Path": "assets/icons/items/1024/glassies_hot_sauce.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_hot_sauce 1024"
+  },
+  {
+   "Key": "1024/glassies_hourglass",
+   "Path": "assets/icons/items/1024/glassies_hourglass.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_hourglass 1024"
+  },
+  {
+   "Key": "1024/glassies_jack_o_glass",
+   "Path": "assets/icons/items/1024/glassies_jack_o_glass.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_jack_o_glass 1024"
+  },
+  {
+   "Key": "1024/glassies_jam",
+   "Path": "assets/icons/items/1024/glassies_jam.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_jam 1024"
+  },
+  {
+   "Key": "1024/glassies_ketchup_bottle",
+   "Path": "assets/icons/items/1024/glassies_ketchup_bottle.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_ketchup_bottle 1024"
+  },
+  {
+   "Key": "1024/glassies_lemonade_bottle",
+   "Path": "assets/icons/items/1024/glassies_lemonade_bottle.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_lemonade_bottle 1024"
+  },
+  {
+   "Key": "1024/glassies_light_bulb",
+   "Path": "assets/icons/items/1024/glassies_light_bulb.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_light_bulb 1024"
+  },
+  {
+   "Key": "1024/glassies_mason_jar",
+   "Path": "assets/icons/items/1024/glassies_mason_jar.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_mason_jar 1024"
+  },
+  {
+   "Key": "1024/glassies_message_bottle",
+   "Path": "assets/icons/items/1024/glassies_message_bottle.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_message_bottle 1024"
+  },
+  {
+   "Key": "1024/glassies_milk_bottle",
+   "Path": "assets/icons/items/1024/glassies_milk_bottle.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_milk_bottle 1024"
+  },
+  {
+   "Key": "1024/glassies_perfume",
+   "Path": "assets/icons/items/1024/glassies_perfume.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_perfume 1024"
+  },
+  {
+   "Key": "1024/glassies_pickle_jar",
+   "Path": "assets/icons/items/1024/glassies_pickle_jar.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_pickle_jar 1024"
+  },
+  {
+   "Key": "1024/glassies_piggy_bank",
+   "Path": "assets/icons/items/1024/glassies_piggy_bank.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_piggy_bank 1024"
+  },
+  {
+   "Key": "1024/glassies_pop",
+   "Path": "assets/icons/items/1024/glassies_pop.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_pop 1024"
+  },
+  {
+   "Key": "1024/glassies_potion_flask",
+   "Path": "assets/icons/items/1024/glassies_potion_flask.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_potion_flask 1024"
+  },
+  {
+   "Key": "1024/glassies_prism",
+   "Path": "assets/icons/items/1024/glassies_prism.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_prism 1024"
+  },
+  {
+   "Key": "1024/glassies_prism_blade",
+   "Path": "assets/icons/items/1024/glassies_prism_blade.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_prism_blade 1024"
+  },
+  {
+   "Key": "1024/glassies_rocket_pop",
+   "Path": "assets/icons/items/1024/glassies_rocket_pop.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_rocket_pop 1024"
+  },
+  {
+   "Key": "1024/glassies_starblade",
+   "Path": "assets/icons/items/1024/glassies_starblade.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_starblade 1024"
+  },
+  {
+   "Key": "1024/glassies_water_jug",
+   "Path": "assets/icons/items/1024/glassies_water_jug.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_water_jug 1024"
+  },
+  {
+   "Key": "1024/machines_Finishers_Coins",
+   "Path": "assets/icons/items/1024/machines_Finishers_Coins.png",
+   "Type": "Decal",
+   "Name": "GC icon machines_Finishers_Coins 1024"
+  },
+  {
+   "Key": "1024/machines_Finishers_Marbles",
+   "Path": "assets/icons/items/1024/machines_Finishers_Marbles.png",
+   "Type": "Decal",
+   "Name": "GC icon machines_Finishers_Marbles 1024"
+  },
+  {
+   "Key": "1024/machines_Glassies_Coins",
+   "Path": "assets/icons/items/1024/machines_Glassies_Coins.png",
+   "Type": "Decal",
+   "Name": "GC icon machines_Glassies_Coins 1024"
+  },
+  {
+   "Key": "1024/machines_Glassies_Marbles",
+   "Path": "assets/icons/items/1024/machines_Glassies_Marbles.png",
+   "Type": "Decal",
+   "Name": "GC icon machines_Glassies_Marbles 1024"
+  },
+  {
+   "Key": "1024/machines_Rideables_Coins",
+   "Path": "assets/icons/items/1024/machines_Rideables_Coins.png",
+   "Type": "Decal",
+   "Name": "GC icon machines_Rideables_Coins 1024"
+  },
+  {
+   "Key": "1024/machines_Rideables_Marbles",
+   "Path": "assets/icons/items/1024/machines_Rideables_Marbles.png",
+   "Type": "Decal",
+   "Name": "GC icon machines_Rideables_Marbles 1024"
+  },
+  {
+   "Key": "1024/rideables_bubble_pod",
+   "Path": "assets/icons/items/1024/rideables_bubble_pod.png",
+   "Type": "Decal",
+   "Name": "GC icon rideables_bubble_pod 1024"
+  },
+  {
+   "Key": "1024/rideables_carousel",
+   "Path": "assets/icons/items/1024/rideables_carousel.png",
+   "Type": "Decal",
+   "Name": "GC icon rideables_carousel 1024"
+  },
+  {
+   "Key": "1024/rideables_cloud_cushion",
+   "Path": "assets/icons/items/1024/rideables_cloud_cushion.png",
+   "Type": "Decal",
+   "Name": "GC icon rideables_cloud_cushion 1024"
+  },
+  {
+   "Key": "1024/rideables_dragonfly",
+   "Path": "assets/icons/items/1024/rideables_dragonfly.png",
+   "Type": "Decal",
+   "Name": "GC icon rideables_dragonfly 1024"
+  },
+  {
+   "Key": "1024/rideables_honey_hover",
+   "Path": "assets/icons/items/1024/rideables_honey_hover.png",
+   "Type": "Decal",
+   "Name": "GC icon rideables_honey_hover 1024"
+  },
+  {
+   "Key": "1024/rideables_lantern_skiff",
+   "Path": "assets/icons/items/1024/rideables_lantern_skiff.png",
+   "Type": "Decal",
+   "Name": "GC icon rideables_lantern_skiff 1024"
+  },
+  {
+   "Key": "1024/rideables_no_flyer",
+   "Path": "assets/icons/items/1024/rideables_no_flyer.png",
+   "Type": "Decal",
+   "Name": "GC icon rideables_no_flyer 1024"
+  },
+  {
+   "Key": "1024/rideables_paper_jet",
+   "Path": "assets/icons/items/1024/rideables_paper_jet.png",
+   "Type": "Decal",
+   "Name": "GC icon rideables_paper_jet 1024"
+  },
+  {
+   "Key": "1024/rideables_prism_ray",
+   "Path": "assets/icons/items/1024/rideables_prism_ray.png",
+   "Type": "Decal",
+   "Name": "GC icon rideables_prism_ray 1024"
+  },
+  {
+   "Key": "1024/rideables_rocket_skiff",
+   "Path": "assets/icons/items/1024/rideables_rocket_skiff.png",
+   "Type": "Decal",
+   "Name": "GC icon rideables_rocket_skiff 1024"
+  },
+  {
+   "Key": "1024/rideables_skyboard",
+   "Path": "assets/icons/items/1024/rideables_skyboard.png",
+   "Type": "Decal",
+   "Name": "GC icon rideables_skyboard 1024"
+  },
+  {
+   "Key": "1024/rideables_starwhale",
+   "Path": "assets/icons/items/1024/rideables_starwhale.png",
+   "Type": "Decal",
+   "Name": "GC icon rideables_starwhale 1024"
+  },
+  {
+   "Key": "1024/rideables_sunwing",
+   "Path": "assets/icons/items/1024/rideables_sunwing.png",
+   "Type": "Decal",
+   "Name": "GC icon rideables_sunwing 1024"
+  }
+ ]
+}

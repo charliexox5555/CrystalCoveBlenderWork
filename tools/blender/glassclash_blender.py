@@ -582,9 +582,11 @@ def _world_bounds(objects):
     return lo, hi
 
 
-def render_icon(objects, path, tint_hex=None, size=512, samples=48, engine="CYCLES"):
+def render_icon(objects, path, tint_hex=None, size=512, samples=48, engine="CYCLES", camera=None,
+                world_strength=0.45, view_transform=None, world_color=(0.18, 0.24, 0.36)):
     """Renders `objects` alone with the shared icon camera + lighting to a transparent PNG.
-    Restores the scene afterwards (other objects, camera, world and render settings)."""
+    `camera` = (matrix_world, vertical_fov_radians) replaces the shared three-quarter camera, e.g. to match
+    an in-game portrait's framing (tools/blender/item_icons.py). Restores the scene afterwards."""
     scene = bpy.context.scene
     objects = list(objects)
     if tint_hex:
@@ -612,11 +614,17 @@ def render_icon(objects, path, tint_hex=None, size=512, samples=48, engine="CYCL
         cam = bpy.data.objects.new("GC_IconCam", cam_data)
         scene.collection.objects.link(cam)
         temp.append(cam)
-        direction = Vector((1.0, -1.35, 0.75)).normalized()
-        fov = 2 * math.atan(cam_data.sensor_width / (2 * cam_data.lens))
-        distance = radius / math.sin(fov / 2) * 1.08
-        cam.location = centre + direction * distance
-        cam.rotation_euler = (-direction).to_track_quat("-Z", "Y").to_euler()
+        if camera:
+            cam.matrix_world = camera[0]
+            cam_data.sensor_fit = "VERTICAL"
+            cam_data.angle_y = camera[1]
+            cam_data.clip_start, cam_data.clip_end = 0.01, 1000
+        else:
+            direction = Vector((1.0, -1.35, 0.75)).normalized()
+            fov = 2 * math.atan(cam_data.sensor_width / (2 * cam_data.lens))
+            distance = radius / math.sin(fov / 2) * 1.08
+            cam.location = centre + direction * distance
+            cam.rotation_euler = (-direction).to_track_quat("-Z", "Y").to_euler()
         scene.camera = cam
 
         def add_light(name, kind, energy, loc, size_=2.0, color=(1, 1, 1)):
@@ -643,9 +651,12 @@ def render_icon(objects, path, tint_hex=None, size=512, samples=48, engine="CYCL
             pass
         bg = next((n for n in world.node_tree.nodes if n.type == "BACKGROUND"), None)
         if bg:
-            bg.inputs["Color"].default_value = (0.18, 0.24, 0.36, 1.0)
-            bg.inputs["Strength"].default_value = 0.45
+            bg.inputs["Color"].default_value = (*world_color, 1.0)
+            bg.inputs["Strength"].default_value = world_strength
         scene.world = world
+        saved["view"] = scene.view_settings.view_transform
+        if view_transform:
+            scene.view_settings.view_transform = view_transform
 
         render.engine = engine
         if engine == "CYCLES":
@@ -682,6 +693,8 @@ def render_icon(objects, path, tint_hex=None, size=512, samples=48, engine="CYCL
                 scene.objects[name].hide_render = value
         scene.camera = saved["camera"]
         scene.world = saved["world"]
+        if "view" in saved:
+            scene.view_settings.view_transform = saved["view"]
         render.engine = saved["engine"]
         render.resolution_x, render.resolution_y = saved["x"], saved["y"]
         render.resolution_percentage = saved["pct"]

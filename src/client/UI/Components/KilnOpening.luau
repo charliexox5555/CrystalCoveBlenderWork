@@ -184,7 +184,8 @@ function Opening:ShowRewards(instant)
 		end
 		card.Glow.ImageColor3 = Theme.Rarity[def.Rarity].Top
 		card.Parent = c.Rewards
-		Item.portrait(card, self.Category, result.Id)
+		-- One reward = the hero reveal, kept live; multi-pull cards use icons (decision 113).
+		Item.portrait(card, self.Category, result.Id, nil, nil, nil, not multi)
 		table.insert(self.Cards, { Object = card, Destination = destination, Delay = (i - 1) * K.CardStagger })
 	end
 	S.bindSlices(c.Rewards)

@@ -59,6 +59,8 @@ LoadTiers.Tiers = {
 		"screen:LobbyHUD",
 		"screen:WelcomeScreen",
 		"screen:DailyRewardsScreen",
+		-- The Coin Kiln picture on the welcome card and the Daily pull cells (decision 113).
+		"images:ItemIcons/Small/Machines/Glassies:Coins",
 		-- The Featured stage is in view from the spawn.
 		"asset:Glassies/hollowlight",
 		"asset:Seasonal/Hollowlight",
@@ -80,6 +82,8 @@ LoadTiers.Tiers = {
 		"asset:Kilns",
 		"asset:Crates",
 		"asset:CrateMachines",
+		-- Glassy pictures: the Shop's Featured cards and prize carousels, the Inventory grid, the 10-pull reels.
+		"images:ItemIcons/Small/Glassies",
 		-- The first fight: queue, roll, stand, billboards, hits, cracks, the shatter, powers.
 		"screen:QueuePanel",
 		"screen:RollScreen",
@@ -102,6 +106,8 @@ LoadTiers.Tiers = {
 	},
 	-- Everything not listed above also runs here, after these.
 	Later = {
+		-- Flyer, finisher and machine pictures (512 px; the 1024 px ones load when a big slot shows them).
+		"images:ItemIcons/Small",
 		"asset:Glassies",
 		"asset:Rideables",
 		"anims:RideAnimations",
@@ -131,10 +137,17 @@ LoadTiers.OnDemand = {
 		"asset:Kilns",
 		"asset:Crates",
 		"asset:CrateMachines",
+		"images:ItemIcons/Small",
 	},
 	KilnRevealScreen = { "screen:KilnRevealScreen", "images:PrizeCardAssets", "asset:Kilns" },
-	CollectionScreen = { "screen:CollectionScreen", "screen:GlassyDetailScreen", "ui:tile/", "owned" },
-	ProfileScreen = { "screen:ProfileScreen", "ui:screens/profile/" },
+	CollectionScreen = {
+		"screen:CollectionScreen",
+		"screen:GlassyDetailScreen",
+		"ui:tile/",
+		"owned",
+		"images:ItemIcons/Small/Glassies",
+	},
+	ProfileScreen = { "screen:ProfileScreen", "ui:screens/profile/", "images:ItemIcons/Small" },
 	SettingsScreen = { "screen:SettingsScreen", "ui:screens/settings/" },
 	CodesScreen = { "screen:CodesScreen", "ui:screens/codes/" },
 	PlaytimeRewardsScreen = { "screen:PlaytimeRewardsScreen", "ui:screens/playtime_rewards/" },
@@ -168,7 +181,7 @@ LoadTiers.HintFolders = { "Glassies", "Rideables", "RoundFinishers", "Seasonal" 
 -- Extra items per hinted name, e.g. its pre-rendered icon: "images:ItemIcons/Small/{category}/{name}".
 -- {name} = the model name, {category} = HintCategories[its Assets folder] (a template with {category} is skipped for
 -- folders not listed). Ids with a colon ("Machines/Glassies:Coins") are fine in a path.
-LoadTiers.HintItems = {}
+LoadTiers.HintItems = { "images:ItemIcons/Small/{category}/{name}" }
 LoadTiers.HintCategories = { Glassies = "Glassies", Rideables = "Rideables", RoundFinishers = "Finishers" }
 
 return LoadTiers

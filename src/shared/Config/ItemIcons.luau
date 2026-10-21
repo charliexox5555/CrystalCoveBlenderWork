@@ -1,0 +1,205 @@
+--!strict
+-- Pre-rendered item portraits that stand in for ViewportFrames in grids, cards, reels and reward cells (decision 113).
+-- Rendered by tools/blender/item_icons.py from the game's own portrait framing (tools/studio/dump_portraits.luau),
+-- uploaded through Open Cloud (assets/icons/items/upload_list.json). Small = 512 px, Large = 1024 px (used when the
+-- slot is bigger than LargeAbovePixels on screen). An item missing from Small keeps its live viewport, so new drops
+-- still show before their icon is rendered.
+-- Machines: "<Glassies|Finishers|Rideables>:<Coins|Marbles>" (the Kilns and crate machines).
+-- Config/LoadTiers preloads these by path, e.g. "images:ItemIcons/Small/Glassies".
+export type Entry = { Small: string, Large: string? }
+type Set = {
+	Glassies: { [string]: string },
+	Rideables: { [string]: string },
+	Finishers: { [string]: string },
+	Machines: { [string]: string },
+}
+
+local ItemIcons = {}
+
+ItemIcons.Small = {
+	Glassies = {
+		["arc_coil"] = "rbxassetid://101565038387658",
+		["briar_flask"] = "rbxassetid://82468652834675",
+		["bubble_wand"] = "rbxassetid://104539152351821",
+		["chime"] = "rbxassetid://99377908504356",
+		["comet"] = "rbxassetid://71148111498453",
+		["cookie_jar"] = "rbxassetid://103078021541051",
+		["crescent_axe"] = "rbxassetid://101393933172383",
+		["crystal_ball"] = "rbxassetid://107821284913402",
+		["crystal_crown"] = "rbxassetid://91252610156617",
+		["crystal_tumbler"] = "rbxassetid://129351444014575",
+		["fishbowl"] = "rbxassetid://99410249535585",
+		["frostglobe"] = "rbxassetid://71695293227160",
+		["galaxy_orb"] = "rbxassetid://86072711849083",
+		["glass_cup"] = "rbxassetid://123898747992835",
+		["glass_dragon"] = "rbxassetid://100983512586971",
+		["glass_duck"] = "rbxassetid://125233717539434",
+		["glass_lollipop"] = "rbxassetid://128328335949283",
+		["glass_phoenix"] = "rbxassetid://136484474988713",
+		["glass_sword"] = "rbxassetid://110411028358934",
+		["glass_top"] = "rbxassetid://123222873261724",
+		["glass_unicorn"] = "rbxassetid://122814624223456",
+		["grizzly_guardian"] = "rbxassetid://116420489775426",
+		["hollowlight"] = "rbxassetid://132378937746791",
+		["honey_bear"] = "rbxassetid://89359682708399",
+		["hot_sauce"] = "rbxassetid://77487070825030",
+		["hourglass"] = "rbxassetid://90958463836182",
+		["jack_o_glass"] = "rbxassetid://88872606871308",
+		["jam"] = "rbxassetid://104636547178752",
+		["ketchup_bottle"] = "rbxassetid://117746857613313",
+		["lemonade_bottle"] = "rbxassetid://101142062147998",
+		["light_bulb"] = "rbxassetid://107855098305786",
+		["mason_jar"] = "rbxassetid://108930929149740",
+		["message_bottle"] = "rbxassetid://102698045689865",
+		["milk_bottle"] = "rbxassetid://125592709102538",
+		["perfume"] = "rbxassetid://84697540618704",
+		["pickle_jar"] = "rbxassetid://99729774729652",
+		["piggy_bank"] = "rbxassetid://79293467828224",
+		["pop"] = "rbxassetid://89961972087631",
+		["potion_flask"] = "rbxassetid://123878868624773",
+		["prism"] = "rbxassetid://112016686333603",
+		["prism_blade"] = "rbxassetid://108710254576772",
+		["rocket_pop"] = "rbxassetid://117885015076160",
+		["starblade"] = "rbxassetid://134084713543397",
+		["water_jug"] = "rbxassetid://135987025834080",
+	},
+	Rideables = {
+		["bubble_pod"] = "rbxassetid://106247034794054",
+		["carousel"] = "rbxassetid://84153430527359",
+		["cloud_cushion"] = "rbxassetid://87614250757857",
+		["dragonfly"] = "rbxassetid://113488508948717",
+		["honey_hover"] = "rbxassetid://103299580723558",
+		["lantern_skiff"] = "rbxassetid://80606858336252",
+		["no_flyer"] = "rbxassetid://102323552981553",
+		["paper_jet"] = "rbxassetid://119629554076635",
+		["prism_ray"] = "rbxassetid://91927127344605",
+		["rocket_skiff"] = "rbxassetid://90256133978714",
+		["skyboard"] = "rbxassetid://119805410609736",
+		["starwhale"] = "rbxassetid://130893521767040",
+		["sunwing"] = "rbxassetid://93080099716624",
+	},
+	Finishers = {
+		["brick_boom"] = "rbxassetid://102799403791932",
+		["bubble_bloom"] = "rbxassetid://104574338891201",
+		["emberwing"] = "rbxassetid://130880245841783",
+		["frost_pop"] = "rbxassetid://97560465833218",
+		["glass_burst"] = "rbxassetid://127045924403200",
+		["gumball"] = "rbxassetid://135876514663877",
+		["hocus_pop"] = "rbxassetid://100569878204894",
+		["honeyburst"] = "rbxassetid://125323475250792",
+		["lantern_eclipse"] = "rbxassetid://88683314265751",
+		["party_burst"] = "rbxassetid://136345477101302",
+		["petalstorm"] = "rbxassetid://127490804660115",
+		["starfall"] = "rbxassetid://136226189444738",
+		["starmane"] = "rbxassetid://72201097802564",
+	},
+	Machines = {
+		["Finishers:Coins"] = "rbxassetid://95418656619968",
+		["Finishers:Marbles"] = "rbxassetid://122175481902648",
+		["Glassies:Coins"] = "rbxassetid://80136449062351",
+		["Glassies:Marbles"] = "rbxassetid://87541574279265",
+		["Rideables:Coins"] = "rbxassetid://75658175270208",
+		["Rideables:Marbles"] = "rbxassetid://112628576222024",
+	},
+} :: Set
+
+ItemIcons.Large = {
+	Glassies = {
+		["arc_coil"] = "rbxassetid://86978810646030",
+		["briar_flask"] = "rbxassetid://114168707921726",
+		["bubble_wand"] = "rbxassetid://77806495498927",
+		["chime"] = "rbxassetid://136789889337735",
+		["comet"] = "rbxassetid://89583754780671",
+		["cookie_jar"] = "rbxassetid://96182257020076",
+		["crescent_axe"] = "rbxassetid://129455486319442",
+		["crystal_ball"] = "rbxassetid://129049212509610",
+		["crystal_crown"] = "rbxassetid://89420571612706",
+		["crystal_tumbler"] = "rbxassetid://109146818433325",
+		["fishbowl"] = "rbxassetid://105095421475132",
+		["frostglobe"] = "rbxassetid://74547820996666",
+		["galaxy_orb"] = "rbxassetid://135023215258535",
+		["glass_cup"] = "rbxassetid://104332809157120",
+		["glass_dragon"] = "rbxassetid://106403131862048",
+		["glass_duck"] = "rbxassetid://130479435441188",
+		["glass_lollipop"] = "rbxassetid://84248419475688",
+		["glass_phoenix"] = "rbxassetid://100758666747166",
+		["glass_sword"] = "rbxassetid://85899865571553",
+		["glass_top"] = "rbxassetid://84764621749893",
+		["glass_unicorn"] = "rbxassetid://122913409352011",
+		["grizzly_guardian"] = "rbxassetid://137888626538330",
+		["hollowlight"] = "rbxassetid://101682592870689",
+		["honey_bear"] = "rbxassetid://140312984276697",
+		["hot_sauce"] = "rbxassetid://120854343205051",
+		["hourglass"] = "rbxassetid://109346396083921",
+		["jack_o_glass"] = "rbxassetid://100031234535312",
+		["jam"] = "rbxassetid://80000340815561",
+		["ketchup_bottle"] = "rbxassetid://76858637822313",
+		["lemonade_bottle"] = "rbxassetid://134689654819052",
+		["light_bulb"] = "rbxassetid://137786630991717",
+		["mason_jar"] = "rbxassetid://133323741522969",
+		["message_bottle"] = "rbxassetid://136406300854859",
+		["milk_bottle"] = "rbxassetid://89651184805847",
+		["perfume"] = "rbxassetid://98774804340155",
+		["pickle_jar"] = "rbxassetid://113759072292780",
+		["piggy_bank"] = "rbxassetid://108118645478520",
+		["pop"] = "rbxassetid://132843109690832",
+		["potion_flask"] = "rbxassetid://72743896362246",
+		["prism"] = "rbxassetid://99866527286193",
+		["prism_blade"] = "rbxassetid://112678500654260",
+		["rocket_pop"] = "rbxassetid://125469298442738",
+		["starblade"] = "rbxassetid://117103803810174",
+		["water_jug"] = "rbxassetid://101362981536135",
+	},
+	Rideables = {
+		["bubble_pod"] = "rbxassetid://101264941012624",
+		["carousel"] = "rbxassetid://81486524928813",
+		["cloud_cushion"] = "rbxassetid://76527063005071",
+		["dragonfly"] = "rbxassetid://105692079399036",
+		["honey_hover"] = "rbxassetid://102550175721108",
+		["lantern_skiff"] = "rbxassetid://129450006594069",
+		["no_flyer"] = "rbxassetid://82823359660737",
+		["paper_jet"] = "rbxassetid://97179600997464",
+		["prism_ray"] = "rbxassetid://117951733311833",
+		["rocket_skiff"] = "rbxassetid://121484663948721",
+		["skyboard"] = "rbxassetid://114382898438182",
+		["starwhale"] = "rbxassetid://117840023658145",
+		["sunwing"] = "rbxassetid://113866600145520",
+	},
+	Finishers = {
+		["brick_boom"] = "rbxassetid://120769690522187",
+		["bubble_bloom"] = "rbxassetid://126282463149713",
+		["emberwing"] = "rbxassetid://111151490129803",
+		["frost_pop"] = "rbxassetid://116391482294294",
+		["glass_burst"] = "rbxassetid://138157207370343",
+		["gumball"] = "rbxassetid://94162112650194",
+		["hocus_pop"] = "rbxassetid://80091659784601",
+		["honeyburst"] = "rbxassetid://135199277551627",
+		["lantern_eclipse"] = "rbxassetid://104982709051251",
+		["party_burst"] = "rbxassetid://135390001730158",
+		["petalstorm"] = "rbxassetid://84786864480713",
+		["starfall"] = "rbxassetid://108662830150262",
+		["starmane"] = "rbxassetid://73385186392108",
+	},
+	Machines = {
+		["Finishers:Coins"] = "rbxassetid://117446702461258",
+		["Finishers:Marbles"] = "rbxassetid://104355345581272",
+		["Glassies:Coins"] = "rbxassetid://125467532344401",
+		["Glassies:Marbles"] = "rbxassetid://87691246833519",
+		["Rideables:Coins"] = "rbxassetid://79126831566319",
+		["Rideables:Marbles"] = "rbxassetid://124588889386181",
+	},
+} :: Set
+
+ItemIcons.LargeAbovePixels = 220
+
+function ItemIcons.get(category: string, id: string): Entry?
+	local small = (ItemIcons.Small :: any)[category]
+	local large = (ItemIcons.Large :: any)[category]
+	local image = if type(small) == "table" then small[id] else nil
+	if not image then
+		return nil
+	end
+	return { Small = image, Large = if type(large) == "table" then large[id] else nil }
+end
+
+return ItemIcons

@@ -60,7 +60,16 @@ function Panel.new(parent, category, offers, callbacks)
 			Theme.Fonts.Heading
 		)
 		-- Reused template objects keep their authored layout, so set the geometry explicitly.
-		local crate = Item.crate(pane, category, currency, UDim2.fromScale(0.41, 0.3), UDim2.fromScale(0.025, 0.105))
+		local crate = Item.crate(
+			pane,
+			category,
+			currency,
+			UDim2.fromScale(0.41, 0.3),
+			UDim2.fromScale(0.025, 0.105),
+			nil,
+			nil,
+			true
+		)
 		crate.Size, crate.Position = UDim2.fromScale(0.41, 0.3), UDim2.fromScale(0.025, 0.105)
 		local odds = U.make("Frame", pane, {
 			Name = "Odds",

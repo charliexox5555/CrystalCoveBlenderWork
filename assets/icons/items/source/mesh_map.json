@@ -1,0 +1,2926 @@
+{
+"100025683744849": {
+"file": "assets/blender/glassies/rocket_pop/v4/rocket_pop_bundle.fbx",
+"object": "RocketFin_2"
+},
+"100324109640937": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "TailFin_R"
+},
+"100454144280767": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "Forelock_2"
+},
+"100829548347849": {
+"file": "assets/blender/glassies/arc_coil/v4/arc_coil_bundle.fbx",
+"object": "Spark_1"
+},
+"100868587785100": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "HornSparkle"
+},
+"100915630867892": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_BodyCloudBase"
+},
+"100920757980294": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "EngineRing_R"
+},
+"101096617926789": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Eclipse_WispTail2"
+},
+"101266910224711": {
+"file": "assets/blender/glassies/glass_duck/v4/glass_duck_bundle.fbx",
+"object": "Wing_L"
+},
+"101382593777820": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "TailFeather_2"
+},
+"101484746898489": {
+"file": "assets/blender/round_cosmetics/flyers_v3/starwhale/starwhale.fbx",
+"object": "Belly"
+},
+"101756965589368": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "Beak"
+},
+"101992820212358": {
+"file": "assets/blender/round_cosmetics/flyers_v3/starwhale/starwhale.fbx",
+"object": "Eyes"
+},
+"102140898718846": {
+"file": "assets/blender/round_cosmetics/flyers_v3/honey_hover/honey_hover.fbx",
+"object": "BeeEyes"
+},
+"102329476096120": {
+"file": "assets/blender/glassies/crystal_tumbler/v4/crystal_tumbler_bundle.fbx",
+"object": "ThickRim"
+},
+"102383583739977": {
+"file": "assets/blender/glassies/chime/v4/chime_bundle.fbx",
+"object": "ChimeBubbles"
+},
+"102444788651767": {
+"file": "assets/blender/glassies/ketchup_bottle/v4/ketchup_bottle_body.fbx",
+"object": "Body"
+},
+"102461674536184": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "Hull"
+},
+"102682971917618": {
+"file": "assets/blender/glassies/lemonade_bottle/v4/lemonade_bottle_bundle.fbx",
+"object": "LemonSliceFlesh"
+},
+"102781457754116": {
+"file": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+"object": "Bulbs"
+},
+"102853374048901": {
+"file": "assets/blender/round_cosmetics/flyers_v3/starwhale/starwhale.fbx",
+"object": "Fin_R"
+},
+"102939310078346": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "Saddle"
+},
+"102943118475858": {
+"file": "assets/blender/glassies/prism_blade/v4/prism_blade_bundle.fbx",
+"object": "PrismShard_1"
+},
+"102979364973621": {
+"file": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",
+"object": "FV4_FlowerStem"
+},
+"103099066910504": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "TailGlow"
+},
+"103166414929850": {
+"file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
+"object": "Eyes"
+},
+"103285714582640": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "Crest_2"
+},
+"103597918211612": {
+"file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_body.fbx",
+"object": "Body"
+},
+"103903150780452": {
+"file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
+"object": "LiftGlow_L"
+},
+"104212811681956": {
+"file": "assets/blender/glassies/glass_top/v4/glass_top_bundle.fbx",
+"object": "Tip"
+},
+"104378923485042": {
+"file": "assets/blender/glassies/fishbowl/v4/fishbowl_bundle.fbx",
+"object": "Fish"
+},
+"104388772027008": {
+"file": "assets/blender/round_cosmetics/flyers_v3/paper_jet/paper_jet.fbx",
+"object": "WingCore_R"
+},
+"104789070443885": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "Nostrils"
+},
+"104825780677691": {
+"file": "assets/blender/glassies/ketchup_bottle/v4/ketchup_bottle_bundle.fbx",
+"object": "SqueezeNozzle"
+},
+"104972084221281": {
+"file": "assets/blender/glassies/bubble_wand/v4/bubble_wand_bundle.fbx",
+"object": "FilmRainbow_Cyan"
+},
+"105048515192853": {
+"file": "assets/blender/glassies/frostglobe/v4/frostglobe_bundle.fbx",
+"object": "FrostMist"
+},
+"105077755011741": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "Nacelle_L"
+},
+"105140916731936": {
+"file": "assets/blender/glassies/chime/v4/chime_bundle.fbx",
+"object": "Ribbon"
+},
+"105370801589553": {
+"file": "assets/blender/round_cosmetics/flyers_v3/bubble_pod/bubble_pod.fbx",
+"object": "Foam"
+},
+"105406962415167": {
+"file": "assets/blender/glassies/briar_flask/v4/briar_flask_bundle.fbx",
+"object": "Thorn_3"
+},
+"105441022421841": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "Hooves"
+},
+"105526676287394": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Jamb_2_75_2"
+},
+"105615207048220": {
+"file": "assets/blender/glassies/milk_bottle/v4/milk_bottle_bundle.fbx",
+"object": "FoamBubble_2"
+},
+"105901404171525": {
+"file": "assets/blender/glassies/pop/v4/pop_bundle.fbx",
+"object": "ChargeBubble_3"
+},
+"105935413746335": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_BodyFoot"
+},
+"106025224553410": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "WingCovert_R"
+},
+"106466742329859": {
+"file": "assets/blender/glassies/jam/v4/jam_bundle.fbx",
+"object": "Berries"
+},
+"106581656514928": {
+"file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
+"object": "Treads"
+},
+"106648652029326": {
+"file": "assets/blender/glassies/pop/v4/pop_bundle.fbx",
+"object": "SodaFill"
+},
+"106657730077337": {
+"file": "assets/blender/glassies/rocket_pop/v4/rocket_pop_bundle.fbx",
+"object": "PortholeGlass"
+},
+"106682006128112": {
+"file": "assets/blender/glassies/piggy_bank/v4/piggy_bank_bundle.fbx",
+"object": "CoinStack_2"
+},
+"106884810326428": {
+"file": "assets/blender/glassies/hot_sauce/v4/hot_sauce_bundle.fbx",
+"object": "Sauce"
+},
+"106906172620611": {
+"file": "assets/blender/glassies/honey_bear/v4/honey_bear_bundle.fbx",
+"object": "HoneyDrip"
+},
+"106973920445700": {
+"file": "assets/blender/round_cosmetics/flyers_v3/prism_ray/prism_ray.fbx",
+"object": "Eyes"
+},
+"106989527447769": {
+"file": "assets/blender/glassies/prism/v4/prism_bundle.fbx",
+"object": "Glints"
+},
+"107106457355066": {
+"file": "assets/blender/glassies/pop/v4/pop_bundle.fbx",
+"object": "Cap"
+},
+"107144503993935": {
+"file": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",
+"object": "FV4_GumballCrank"
+},
+"107261811149232": {
+"file": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+"object": "ManeTail_2"
+},
+"107502531556881": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "Grips"
+},
+"107570006285476": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "Fan_R"
+},
+"107609235675506": {
+"file": "assets/blender/glassies/prism/v4/prism_body.fbx",
+"object": "Body"
+},
+"107639173249797": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_RevealLid"
+},
+"107655029150542": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_BodyDoor"
+},
+"107697886874101": {
+"file": "assets/blender/glassies/piggy_bank/v4/piggy_bank_bundle.fbx",
+"object": "SlotCoin"
+},
+"107729614757371": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "TailFeather_3"
+},
+"107835744121813": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Roof"
+},
+"107875511634621": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Back"
+},
+"107881802140656": {
+"file": "assets/blender/glassies/milk_bottle/v4/milk_bottle_bundle.fbx",
+"object": "FoamBubble_1"
+},
+"108143049590528": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "Wing_R"
+},
+"108226082772422": {
+"file": "assets/blender/round_cosmetics/finishers_v3/finishers_v3.fbx",
+"object": "FV3_FizzCrown"
+},
+"108233778684345": {
+"file": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",
+"object": "FV4_GumballLid"
+},
+"108322426507118": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Eclipse_Core_AntiqueGold"
+},
+"108537856458356": {
+"file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
+"object": "Sparkles"
+},
+"108570856631191": {
+"file": "assets/blender/glassies/glass_top/v4/glass_top_body.fbx",
+"object": "Body"
+},
+"108651522484133": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "EmberCore"
+},
+"108881970191373": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "Crest"
+},
+"108905225450250": {
+"file": "assets/blender/glassies/prism_blade/v4/prism_blade_bundle.fbx",
+"object": "RainbowCore"
+},
+"108997160480139": {
+"file": "assets/blender/round_cosmetics/flyers_v3/starwhale/starwhale.fbx",
+"object": "Backrest"
+},
+"109020984011471": {
+"file": "assets/blender/glassies/milk_bottle/v4/milk_bottle_bundle.fbx",
+"object": "Cap"
+},
+"109047889737315": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_TrayLip_2_28"
+},
+"109074167339418": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Pumpkin_LeafVein1"
+},
+"109280741106702": {
+"file": "assets/blender/glassies/cookie_jar/v4/cookie_jar_body.fbx",
+"object": "Body"
+},
+"109285245293347": {
+"file": "assets/blender/glassies/cookie_jar/v4/cookie_jar_bundle.fbx",
+"object": "Cookie_1"
+},
+"109327107427083": {
+"file": "assets/blender/glassies/glass_duck/v4/glass_duck_bundle.fbx",
+"object": "HeadTuft"
+},
+"109449427387701": {
+"file": "assets/blender/round_cosmetics/flyers_v3/bubble_pod/bubble_pod.fbx",
+"object": "WandHeart"
+},
+"109645431144749": {
+"file": "assets/blender/glassies/arc_coil/v4/arc_coil_bundle.fbx",
+"object": "InnerBolt"
+},
+"109801661315053": {
+"file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
+"object": "HoverPod_B"
+},
+"109862539359877": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "Sparkles"
+},
+"109932517015685": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Arch_05"
+},
+"109953291784155": {
+"file": "assets/blender/glassies/bubble_wand/v4/bubble_wand_bundle.fbx",
+"object": "Bubble_1"
+},
+"110015796973526": {
+"file": "assets/blender/glassies/ketchup_bottle/v4/ketchup_bottle_bundle.fbx",
+"object": "TomatoLeaf"
+},
+"110430236766019": {
+"file": "assets/blender/glassies/honey_bear/v4/honey_bear_bundle.fbx",
+"object": "Bow"
+},
+"110544871931586": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_NeonTopGem"
+},
+"110727134219898": {
+"file": "assets/blender/glassies/piggy_bank/v4/piggy_bank_bundle.fbx",
+"object": "Snout"
+},
+"110789318823251": {
+"file": "assets/blender/glassies/prism_blade/v4/prism_blade_bundle.fbx",
+"object": "PommelGem"
+},
+"110884756046659": {
+"file": "assets/blender/glassies/milk_bottle/v4/milk_bottle_bundle.fbx",
+"object": "FoamBubble_3"
+},
+"110971542797884": {
+"file": "assets/blender/round_cosmetics/flyers_v3/honey_hover/honey_hover.fbx",
+"object": "FootPad"
+},
+"110984452490039": {
+"file": "assets/blender/glassies/piggy_bank/v4/piggy_bank_bundle.fbx",
+"object": "HangLoop"
+},
+"111112433811117": {
+"file": "assets/blender/glassies/hourglass/v4/hourglass_bundle.fbx",
+"object": "FrameCap_Bottom"
+},
+"111123298710578": {
+"file": "assets/blender/round_cosmetics/flyers_v3/cloud_cushion/cloud_cushion.fbx",
+"object": "RainbowPink"
+},
+"111203715474091": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Jamb_2_75_0"
+},
+"111353294170204": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_SpinCrank"
+},
+"111386150364773": {
+"file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
+"object": "HeartCore"
+},
+"111609191684823": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "FinTip_R"
+},
+"111782348033462": {
+"file": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+"object": "ManeTail_1"
+},
+"111833498061805": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Pumpkin_Leaf1"
+},
+"111842243275652": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_SpinShard1"
+},
+"111992644025269": {
+"file": "assets/blender/glassies/piggy_bank/v4/piggy_bank_bundle.fbx",
+"object": "Ear_L"
+},
+"112013767603454": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "WingTips_L"
+},
+"112089974818103": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_CoolingTray"
+},
+"112125828853598": {
+"file": "assets/blender/glassies/chime/v4/chime_bundle.fbx",
+"object": "Clapper"
+},
+"112214045101898": {
+"file": "assets/blender/glassies/piggy_bank/v4/piggy_bank_bundle.fbx",
+"object": "Legs"
+},
+"112293219862530": {
+"file": "assets/blender/glassies/arc_coil/v4/arc_coil_bundle.fbx",
+"object": "Terminal"
+},
+"112296916954771": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Arch_07"
+},
+"112351193694669": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "HullStars"
+},
+"112357806866616": {
+"file": "assets/blender/glassies/pickle_jar/v4/pickle_jar_bundle.fbx",
+"object": "BrineBubbles"
+},
+"112393988878946": {
+"file": "assets/blender/round_cosmetics/flyers_v3/bubble_pod/bubble_pod.fbx",
+"object": "OrbitBubbles"
+},
+"112753991774618": {
+"file": "assets/blender/round_cosmetics/flyers_v3/bubble_pod/bubble_pod.fbx",
+"object": "WandFilm"
+},
+"112772188185923": {
+"file": "assets/blender/glassies/galaxy_orb/v4/galaxy_orb_bundle.fbx",
+"object": "OrbitBand_2_Moons"
+},
+"112834969600229": {
+"file": "assets/blender/seasonal/hollowlight_v1/HOLLOWLIGHT_COSMETICS_IMPORT.fbx",
+"object": "HHL_Eclipse_Spiral1"
+},
+"113004110819838": {
+"file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
+"object": "Stringer"
+},
+"113225404674078": {
+"file": "assets/blender/glassies/lemonade_bottle/v4/lemonade_bottle_body.fbx",
+"object": "Body"
+},
+"113454235693962": {
+"file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
+"object": "Muzzle"
+},
+"113517948615175": {
+"file": "assets/blender/glassies/crystal_ball/v4/crystal_ball_bundle.fbx",
+"object": "Sparkle_1"
+},
+"113619058047882": {
+"file": "assets/blender/vfx/combat_release/Ring.001.fbx",
+"object": "Ring.001"
+},
+"113781189497622": {
+"file": "assets/blender/glassies/glass_cup/v4/glass_cup_bundle.fbx",
+"object": "Bubbles"
+},
+"113805896236030": {
+"file": "assets/blender/glassies/briar_flask/v4/briar_flask_bundle.fbx",
+"object": "Thorn_1"
+},
+"113870872462526": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "Wing_L"
+},
+"113877499003310": {
+"file": "assets/blender/glassies/water_jug/v4/water_jug_bundle.fbx",
+"object": "Bubbles"
+},
+"113962020415430": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "Wing_FR"
+},
+"113995003037719": {
+"file": "assets/blender/round_cosmetics/flyers_v3/honey_hover/honey_hover.fbx",
+"object": "WaxRim"
+},
+"114070776303694": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "BreathCore"
+},
+"114473013692163": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "EyeShine"
+},
+"114516697645618": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Pumpkin_Eye_L"
+},
+"114556376138627": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_GlassChamber"
+},
+"115080154704353": {
+"file": "assets/blender/glassies/milk_bottle/v4/milk_bottle_body.fbx",
+"object": "Body"
+},
+"115153287418499": {
+"file": "assets/blender/seasonal/hollowlight_v1/HOLLOWLIGHT_COSMETICS_IMPORT.fbx",
+"object": "HHL_Eclipse_Spiral2"
+},
+"115219236055681": {
+"file": "assets/blender/glassies/glass_cup/v4/glass_cup_bundle.fbx",
+"object": "Straw"
+},
+"115298087695047": {
+"file": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",
+"object": "FV4_GlassSnowflake"
+},
+"115339399076861": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Pumpkin_EyeEdge_R"
+},
+"115482677400070": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "WingEdge_R"
+},
+"115599945700252": {
+"file": "assets/blender/glassies/pop/v4/pop_bundle.fbx",
+"object": "Fizz"
+},
+"115626823258618": {
+"file": "assets/blender/round_cosmetics/flyers_v3/prism_ray/prism_ray.fbx",
+"object": "Wing_R"
+},
+"115633541642683": {
+"file": "assets/blender/glassies/honey_bear/v4/honey_bear_bundle.fbx",
+"object": "Nose"
+},
+"115882381543109": {
+"file": "assets/blender/glassies/honey_bear/v4/honey_bear_bundle.fbx",
+"object": "Cheeks"
+},
+"115922172817923": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_TrayLeg_-2_28"
+},
+"116087378802279": {
+"file": "assets/blender/round_cosmetics/finishers_v3/finishers_v3.fbx",
+"object": "FV3_PinataCore"
+},
+"116391867878982": {
+"file": "assets/blender/round_cosmetics/flyers_v3/prism_ray/prism_ray.fbx",
+"object": "SaddleRim"
+},
+"116572503281005": {
+"file": "assets/blender/round_cosmetics/flyers_v3/starwhale/starwhale.fbx",
+"object": "StarPoints"
+},
+"116652461979430": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "TailEye_1"
+},
+"116704553494782": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Pumpkin_Eye_R"
+},
+"116717631661782": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "Seat"
+},
+"116780611246284": {
+"file": "assets/blender/round_cosmetics/finishers_v3/finishers_v3.fbx",
+"object": "FV3_CandyGem"
+},
+"116804080136143": {
+"file": "assets/blender/round_cosmetics/flyers_v3/starwhale/starwhale.fbx",
+"object": "EyeShine"
+},
+"116978821766523": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Side_3_65"
+},
+"117042717263142": {
+"file": "assets/blender/glassies/light_bulb/v4/light_bulb_body.fbx",
+"object": "Body"
+},
+"117099409037348": {
+"file": "assets/blender/glassies/jam/v4/jam_bundle.fbx",
+"object": "CapTie"
+},
+"117672333357104": {
+"file": "assets/blender/glassies/potion_flask/v4/potion_flask_bundle.fbx",
+"object": "TagStar"
+},
+"117672717387794": {
+"file": "assets/blender/round_cosmetics/flyers_v3/cloud_cushion/cloud_cushion.fbx",
+"object": "Puff_B"
+},
+"117690302490131": {
+"file": "assets/blender/glassies/potion_flask/v4/potion_flask_bundle.fbx",
+"object": "BrewGlow"
+},
+"117761280887136": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "WingTipRibs_L"
+},
+"117794281006081": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_ChimneyRim"
+},
+"117888425611421": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_TrimStripeL"
+},
+"117892394979866": {
+"file": "assets/blender/glassies/jam/v4/jam_bundle.fbx",
+"object": "Cap"
+},
+"117954397625874": {
+"file": "assets/blender/round_cosmetics/flyers_v3/cloud_cushion/cloud_cushion.fbx",
+"object": "Puff_R"
+},
+"117960412922005": {
+"file": "assets/blender/round_cosmetics/finishers_v3/finishers_v3.fbx",
+"object": "FV3_FizzDrops"
+},
+"117980943216892": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_body.fbx",
+"object": "Body"
+},
+"118001583309861": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "Wing_L"
+},
+"118143433656763": {
+"file": "assets/blender/glassies/galaxy_orb/v4/galaxy_orb_bundle.fbx",
+"object": "Stardust"
+},
+"118153379293819": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_NeonLampR"
+},
+"118549192573076": {
+"file": "assets/blender/glassies/hot_sauce/v4/hot_sauce_bundle.fbx",
+"object": "Ember_3"
+},
+"118554029412472": {
+"file": "assets/blender/round_cosmetics/flyers_v3/prism_ray/prism_ray.fbx",
+"object": "BodyCore"
+},
+"118597299119517": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "Handlebar"
+},
+"118643190116907": {
+"file": "assets/blender/round_cosmetics/flyers_v3/paper_jet/paper_jet.fbx",
+"object": "NoseTip"
+},
+"118691516413719": {
+"file": "assets/blender/glassies/frostglobe/v4/frostglobe_bundle.fbx",
+"object": "CrystalSprout"
+},
+"118798518499925": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "HullGlow_L"
+},
+"118803574689300": {
+"file": "assets/blender/glassies/bubble_wand/v4/bubble_wand_body.fbx",
+"object": "Body"
+},
+"118882138898189": {
+"file": "assets/blender/glassies/galaxy_orb/v4/galaxy_orb_bundle.fbx",
+"object": "OrbitBand_1"
+},
+"119017866530246": {
+"file": "assets/blender/glassies/comet/v4/comet_bundle.fbx",
+"object": "Eyes"
+},
+"119228484824957": {
+"file": "assets/blender/round_cosmetics/flyers_v3/starwhale/starwhale.fbx",
+"object": "SmileBlowhole"
+},
+"119614166381399": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "WingTipEdge_L"
+},
+"120272750418729": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "Fangs"
+},
+"120304546396969": {
+"file": "assets/blender/glassies/briar_flask/v4/briar_flask_bundle.fbx",
+"object": "Vine"
+},
+"120374917660927": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "Wing_L"
+},
+"120390833360202": {
+"file": "assets/blender/glassies/frostglobe/v4/frostglobe_bundle.fbx",
+"object": "SnowDrift"
+},
+"120458605435040": {
+"file": "assets/blender/glassies/crystal_tumbler/v4/crystal_tumbler_body.fbx",
+"object": "Body"
+},
+"120610999578061": {
+"file": "assets/blender/round_cosmetics/finishers_v3/finishers_v3.fbx",
+"object": "FV3_PrismFacet"
+},
+"120674520496101": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Jamb_-2_75_2"
+},
+"120914991034992": {
+"file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
+"object": "TailFin_R"
+},
+"121109751115063": {
+"file": "assets/blender/glassies/piggy_bank/v4/piggy_bank_bundle.fbx",
+"object": "Tail"
+},
+"121168324278117": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "Footrest"
+},
+"121212761850478": {
+"file": "assets/blender/round_cosmetics/finishers_v3/finishers_v3.fbx",
+"object": "FV3_ToyBlock"
+},
+"121249316937755": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "Crest_3"
+},
+"121282453379735": {
+"file": "assets/blender/round_cosmetics/flyers_v3/prism_ray/prism_ray.fbx",
+"object": "Saddle"
+},
+"121343177987634": {
+"file": "assets/blender/glassies/briar_flask/v4/briar_flask_bundle.fbx",
+"object": "LeafStopper"
+},
+"121414699082612": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "Eyes"
+},
+"121428118646171": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Chimney"
+},
+"121439596909664": {
+"file": "assets/blender/glassies/honey_bear/v4/honey_bear_bundle.fbx",
+"object": "Cap"
+},
+"121494880047654": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Eclipse_WispTail1"
+},
+"121526028295987": {
+"file": "assets/blender/round_cosmetics/flyers_v3/honey_hover/honey_hover.fbx",
+"object": "HoneyDrips_A"
+},
+"121601179225754": {
+"file": "assets/blender/glassies/jam/v4/jam_bundle.fbx",
+"object": "JamInsert"
+},
+"121621840159038": {
+"file": "assets/blender/glassies/potion_flask/v4/potion_flask_bundle.fbx",
+"object": "Bubble_1"
+},
+"121792298760250": {
+"file": "assets/blender/glassies/bubble_wand/v4/bubble_wand_bundle.fbx",
+"object": "HandleGrip"
+},
+"121847402648112": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Pumpkin_Grin"
+},
+"121872634531862": {
+"file": "assets/blender/glassies/galaxy_orb/v4/galaxy_orb_bundle.fbx",
+"object": "HangCrown"
+},
+"122024963238372": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "Grips"
+},
+"122125107611239": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "Wing_BR"
+},
+"122207925324158": {
+"file": "assets/blender/glassies/mason_jar/v4/mason_jar_bundle.fbx",
+"object": "Cap"
+},
+"122228713918083": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "Wing_R"
+},
+"122478573281059": {
+"file": "assets/blender/glassies/honey_bear/v4/honey_bear_bundle.fbx",
+"object": "Eyes"
+},
+"122729620448617": {
+"file": "assets/blender/glassies/pop/v4/pop_body.fbx",
+"object": "Body"
+},
+"122732120747113": {
+"file": "assets/blender/glassies/cookie_jar/v4/cookie_jar_bundle.fbx",
+"object": "CookieChips_1"
+},
+"122764077847655": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_TrimEmblemCoin"
+},
+"122885887733451": {
+"file": "assets/blender/glassies/rocket_pop/v4/rocket_pop_bundle.fbx",
+"object": "BoosterFlame"
+},
+"122895823646267": {
+"file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
+"object": "Chevrons"
+},
+"122907481453045": {
+"file": "assets/blender/glassies/fishbowl/v4/fishbowl_body.fbx",
+"object": "Body"
+},
+"122991107398575": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "Abdomen"
+},
+"123010741015514": {
+"file": "assets/blender/glassies/arc_coil/v4/arc_coil_bundle.fbx",
+"object": "ChargeCore"
+},
+"123093934595121": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "Pylon_R"
+},
+"123222958814933": {
+"file": "assets/blender/glassies/crystal_ball/v4/crystal_ball_bundle.fbx",
+"object": "MistEyes"
+},
+"123304731195729": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "Eyes"
+},
+"123368722999947": {
+"file": "assets/blender/round_cosmetics/finishers_v3/finishers_v3.fbx",
+"object": "FV3_StarHaloGems"
+},
+"123383029607500": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Pumpkin_Body"
+},
+"123424585228047": {
+"file": "assets/blender/round_cosmetics/flyers_v3/paper_jet/paper_jet.fbx",
+"object": "KneelPad"
+},
+"123442039623786": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "Head"
+},
+"123502928728419": {
+"file": "assets/blender/round_cosmetics/hero_v2/ROUND_HEROES_V2_IMPORT.fbx",
+"object": "RH2_vfx_ConfettiCurl"
+},
+"123526490119571": {
+"file": "assets/blender/round_cosmetics/flyers_v3/bubble_pod/bubble_pod.fbx",
+"object": "Bench"
+},
+"123571174222075": {
+"file": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+"object": "Pony"
+},
+"123626857309531": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_BodyPedestal"
+},
+"123776460401297": {
+"file": "assets/blender/round_cosmetics/flyers_v3/prism_ray/prism_ray.fbx",
+"object": "WingVein_L"
+},
+"123817728214758": {
+"file": "assets/blender/glassies/hourglass/v4/hourglass_bundle.fbx",
+"object": "FramePost_1"
+},
+"123884123508595": {
+"file": "assets/blender/glassies/hourglass/v4/hourglass_bundle.fbx",
+"object": "TimeRing"
+},
+"123956766316232": {
+"file": "assets/blender/round_cosmetics/finishers_v3/finishers_v3.fbx",
+"object": "FV3_PinataPoint"
+},
+"123981426180198": {
+"file": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+"object": "CanopyMint"
+},
+"124216564161532": {
+"file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
+"object": "DeckCore"
+},
+"124229303842631": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_RoofBand"
+},
+"124603164432522": {
+"file": "assets/blender/round_cosmetics/finishers_v3/finishers_v3.fbx",
+"object": "FV3_NovaRay"
+},
+"124613724412373": {
+"file": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+"object": "PonyEyeShine"
+},
+"124696194640993": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Eclipse_WispFace1"
+},
+"124782650171583": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "EngineCore_R"
+},
+"124787298826204": {
+"file": "assets/blender/round_cosmetics/hero_v2/ROUND_HEROES_V2_IMPORT.fbx",
+"object": "RH2_vfx_BlastBloom"
+},
+"124794191622579": {
+"file": "assets/blender/glassies/rocket_pop/v4/rocket_pop_bundle.fbx",
+"object": "BoosterFlameCore"
+},
+"124802734900625": {
+"file": "assets/blender/glassies/potion_flask/v4/potion_flask_body.fbx",
+"object": "Body"
+},
+"124822215534162": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "InnerGlow"
+},
+"124841982718524": {
+"file": "assets/blender/glassies/prism_blade/v4/prism_blade_body.fbx",
+"object": "Body"
+},
+"124891865599231": {
+"file": "assets/blender/round_cosmetics/flyers_v3/honey_hover/honey_hover.fbx",
+"object": "WaxCells"
+},
+"124907531278427": {
+"file": "assets/blender/glassies/light_bulb/v4/light_bulb_bundle.fbx",
+"object": "Stem"
+},
+"124909121251091": {
+"file": "assets/blender/glassies/glass_top/v4/glass_top_bundle.fbx",
+"object": "HandleKnob"
+},
+"125066955520676": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "BellyPlates"
+},
+"125171114387225": {
+"file": "assets/blender/glassies/pickle_jar/v4/pickle_jar_bundle.fbx",
+"object": "Brine"
+},
+"125404442432225": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "Tail_1"
+},
+"125499437826883": {
+"file": "assets/blender/glassies/lemonade_bottle/v4/lemonade_bottle_bundle.fbx",
+"object": "Cap"
+},
+"125510821980972": {
+"file": "assets/blender/glassies/glass_duck/v4/glass_duck_bundle.fbx",
+"object": "Beak"
+},
+"125725375650475": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_TrimCollar"
+},
+"125776032359175": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "Tail_3"
+},
+"125860888218588": {
+"file": "assets/blender/glassies/glass_cup/v4/glass_cup_bundle.fbx",
+"object": "ThickRim"
+},
+"125930086679690": {
+"file": "assets/blender/glassies/glass_duck/v4/glass_duck_bundle.fbx",
+"object": "CrownBubble"
+},
+"125987997411978": {
+"file": "assets/blender/glassies/rocket_pop/v4/rocket_pop_bundle.fbx",
+"object": "SodaFill"
+},
+"126034816962142": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "TailJoints"
+},
+"126175943228128": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "Ears"
+},
+"126223426231828": {
+"file": "assets/blender/round_cosmetics/flyers_v3/prism_ray/prism_ray.fbx",
+"object": "Body"
+},
+"126308731598135": {
+"file": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+"object": "CanopyRing"
+},
+"126374921007146": {
+"file": "assets/blender/glassies/comet/v4/comet_bundle.fbx",
+"object": "Cheeks"
+},
+"126431125481918": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "Cheeks"
+},
+"126533144913211": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "Pylon_L"
+},
+"126761721699468": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Arch_02"
+},
+"126893971223313": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "WingTips_R"
+},
+"127316133566820": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "FinTip_L"
+},
+"127663357233910": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "EyeShine"
+},
+"127730218624738": {
+"file": "assets/blender/glassies/prism_blade/v4/prism_blade_bundle.fbx",
+"object": "BladeGlints"
+},
+"127812418506162": {
+"file": "assets/blender/glassies/ketchup_bottle/v4/ketchup_bottle_bundle.fbx",
+"object": "SauceFill"
+},
+"127818098908067": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "Fan_L"
+},
+"127865369494734": {
+"file": "assets/blender/glassies/galaxy_orb/v4/galaxy_orb_bundle.fbx",
+"object": "Nebula"
+},
+"128184456144699": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "Column"
+},
+"128199056304636": {
+"file": "assets/blender/seasonal/hollowlight_v1/HOLLOWLIGHT_COSMETICS_IMPORT.fbx",
+"object": "HHL_Eclipse_InnerHalo"
+},
+"128330947085801": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "Eyes"
+},
+"128474449399347": {
+"file": "assets/blender/glassies/crystal_ball/v4/crystal_ball_body.fbx",
+"object": "Body"
+},
+"128481212514060": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "Flame_R"
+},
+"128495690968398": {
+"file": "assets/blender/glassies/potion_flask/v4/potion_flask_bundle.fbx",
+"object": "BrewLiquid"
+},
+"128553929695888": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "IntakeRing_L"
+},
+"128605789642293": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "IntakeRing_R"
+},
+"128638463467505": {
+"file": "assets/blender/glassies/light_bulb/v4/light_bulb_bundle.fbx",
+"object": "ScrewBase"
+},
+"128721652685827": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "InnerFlame"
+},
+"128794588270492": {
+"file": "assets/blender/glassies/pickle_jar/v4/pickle_jar_body.fbx",
+"object": "Body"
+},
+"128801197354979": {
+"file": "assets/blender/glassies/light_bulb/v4/light_bulb_bundle.fbx",
+"object": "Filament"
+},
+"128840506889776": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "HangLoop"
+},
+"129278045788831": {
+"file": "assets/blender/glassies/prism/v4/prism_bundle.fbx",
+"object": "Sparkle"
+},
+"129480418990901": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "HullGlow_R"
+},
+"129488526351762": {
+"file": "assets/blender/glassies/potion_flask/v4/potion_flask_bundle.fbx",
+"object": "Bubble_2"
+},
+"129607085592723": {
+"file": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+"object": "Pole"
+},
+"129836608700194": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_RevealSeatInset"
+},
+"130033725850884": {
+"file": "assets/blender/glassies/crystal_tumbler/v4/crystal_tumbler_bundle.fbx",
+"object": "IceCube"
+},
+"130048409392728": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_SpinTokensGold"
+},
+"130146803040991": {
+"file": "assets/blender/glassies/fishbowl/v4/fishbowl_bundle.fbx",
+"object": "Bubble_1"
+},
+"130211217557779": {
+"file": "assets/blender/seasonal/hollowlight_v1/HOLLOWLIGHT_COSMETICS_IMPORT.fbx",
+"object": "HHL_Eclipse_Wisp0"
+},
+"130335458550162": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "ThoraxCore"
+},
+"130381030061264": {
+"file": "assets/blender/glassies/mason_jar/v4/mason_jar_bundle.fbx",
+"object": "JarBubbles"
+},
+"130892897573927": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Eclipse_WispFace2"
+},
+"130980112612862": {
+"file": "assets/blender/glassies/mason_jar/v4/mason_jar_bundle.fbx",
+"object": "Threads"
+},
+"131258924664926": {
+"file": "assets/blender/glassies/briar_flask/v4/briar_flask_body.fbx",
+"object": "Body"
+},
+"131303562861075": {
+"file": "assets/blender/round_cosmetics/flyers_v3/bubble_pod/bubble_pod.fbx",
+"object": "SheenPink"
+},
+"131327036566232": {
+"file": "assets/blender/glassies/honey_bear/v4/honey_bear_body.fbx",
+"object": "Body"
+},
+"131371072828596": {
+"file": "assets/blender/glassies/cookie_jar/v4/cookie_jar_bundle.fbx",
+"object": "LidChips"
+},
+"131413744655709": {
+"file": "assets/blender/glassies/glass_duck/v4/glass_duck_bundle.fbx",
+"object": "EyeShine"
+},
+"131722265219152": {
+"file": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",
+"object": "FV4_IceSlab"
+},
+"132150439038406": {
+"file": "assets/blender/glassies/potion_flask/v4/potion_flask_bundle.fbx",
+"object": "Cork"
+},
+"132197547068830": {
+"file": "assets/blender/glassies/briar_flask/v4/briar_flask_bundle.fbx",
+"object": "Leaf_1"
+},
+"132261086959740": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Eclipse_Core_MidnightViolet"
+},
+"132290413095615": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "TailFeather_2"
+},
+"132368833944040": {
+"file": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",
+"object": "FV4_RainbowArc"
+},
+"132727936964424": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "DashGem"
+},
+"132877435822263": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "Wing_R"
+},
+"133003114921181": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "WingTip_L"
+},
+"133041290923240": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "WingRibs_R"
+},
+"133142811502309": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "Flame_L"
+},
+"133149857969222": {
+"file": "assets/blender/glassies/potion_flask/v4/potion_flask_bundle.fbx",
+"object": "Bubble_3"
+},
+"133319347849521": {
+"file": "assets/blender/round_cosmetics/finishers_v3/finishers_v3.fbx",
+"object": "FV3_PrismSliver"
+},
+"133526966513995": {
+"file": "assets/blender/glassies/lemonade_bottle/v4/lemonade_bottle_bundle.fbx",
+"object": "Fizz"
+},
+"133527305396402": {
+"file": "assets/blender/glassies/glass_duck/v4/glass_duck_bundle.fbx",
+"object": "TailFeather"
+},
+"133686171184539": {
+"file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
+"object": "Grip"
+},
+"133842725951137": {
+"file": "assets/blender/glassies/lemonade_bottle/v4/lemonade_bottle_bundle.fbx",
+"object": "Lemonade"
+},
+"133902322408752": {
+"file": "assets/blender/glassies/galaxy_orb/v4/galaxy_orb_bundle.fbx",
+"object": "GalaxySwirl"
+},
+"134093204834312": {
+"file": "assets/blender/round_cosmetics/flyers_v3/prism_ray/prism_ray.fbx",
+"object": "TailPrism"
+},
+"134167563177802": {
+"file": "assets/blender/glassies/prism/v4/prism_bundle.fbx",
+"object": "GemStopper"
+},
+"134233825160945": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "WingTipRibs_R"
+},
+"134532696694261": {
+"file": "assets/blender/glassies/honey_bear/v4/honey_bear_bundle.fbx",
+"object": "EyeShine"
+},
+"134645836587636": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_SpinTokensSapphire"
+},
+"134694814729943": {
+"file": "assets/blender/glassies/arc_coil/v4/arc_coil_bundle.fbx",
+"object": "Cap"
+},
+"134703196746220": {
+"file": "assets/blender/glassies/arc_coil/v4/arc_coil_bundle.fbx",
+"object": "CoilSegment_1"
+},
+"134755538910146": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_body.fbx",
+"object": "Body"
+},
+"135058345921357": {
+"file": "assets/blender/glassies/comet/v4/comet_bundle.fbx",
+"object": "TailFin_2"
+},
+"135066019474401": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "Mouth"
+},
+"135111454019395": {
+"file": "assets/blender/glassies/comet/v4/comet_bundle.fbx",
+"object": "Sparkle_2"
+},
+"135112393303861": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "Mane_1"
+},
+"135175204601980": {
+"file": "assets/blender/glassies/crystal_tumbler/v4/crystal_tumbler_bundle.fbx",
+"object": "WaterFill"
+},
+"135229074124684": {
+"file": "assets/blender/glassies/piggy_bank/v4/piggy_bank_bundle.fbx",
+"object": "Smile"
+},
+"135324278351225": {
+"file": "assets/blender/glassies/comet/v4/comet_bundle.fbx",
+"object": "StarCore"
+},
+"135342160998510": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "Sparkles"
+},
+"135406590788513": {
+"file": "assets/blender/glassies/galaxy_orb/v4/galaxy_orb_bundle.fbx",
+"object": "StarCore"
+},
+"135480919861484": {
+"file": "assets/blender/round_cosmetics/finishers_v3/finishers_v3.fbx",
+"object": "FV3_BurstSign"
+},
+"135489139905833": {
+"file": "assets/blender/round_cosmetics/flyers_v3/paper_jet/paper_jet.fbx",
+"object": "WingCore_L"
+},
+"135493064196656": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_ChamberDark"
+},
+"135512539987723": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "DeckPlate"
+},
+"135648316266955": {
+"file": "assets/blender/glassies/mason_jar/v4/mason_jar_bundle.fbx",
+"object": "StressBand_2"
+},
+"135683749688142": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Pumpkin_Curl"
+},
+"135712228038340": {
+"file": "assets/blender/seasonal/hollowlight_v1/HOLLOWLIGHT_COSMETICS_IMPORT.fbx",
+"object": "HHL_Eclipse_Wisp2"
+},
+"135714641420178": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Pumpkin_Stem"
+},
+"135921532981747": {
+"file": "assets/blender/glassies/bubble_wand/v4/bubble_wand_bundle.fbx",
+"object": "FilmRainbow_Pink"
+},
+"136001850362887": {
+"file": "assets/blender/glassies/comet/v4/comet_bundle.fbx",
+"object": "EyeShine"
+},
+"136027168531892": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_SpinTokensPink"
+},
+"136136281816032": {
+"file": "assets/blender/glassies/lemonade_bottle/v4/lemonade_bottle_bundle.fbx",
+"object": "LemonSlice"
+},
+"136283675261762": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "Mane_2"
+},
+"136341513997479": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "Spines"
+},
+"136396924983962": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "WingVeins_FL"
+},
+"136445631353374": {
+"file": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",
+"object": "FV4_BeeBody"
+},
+"136475845335448": {
+"file": "assets/blender/glassies/prism/v4/prism_bundle.fbx",
+"object": "RayLens"
+},
+"136699185608740": {
+"file": "assets/blender/round_cosmetics/flyers_v3/prism_ray/prism_ray.fbx",
+"object": "EyeShine"
+},
+"136734739320577": {
+"file": "assets/blender/round_cosmetics/flyers_v3/bubble_pod/bubble_pod.fbx",
+"object": "Glint"
+},
+"136826728558052": {
+"file": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+"object": "ManeTail_3"
+},
+"136909070727191": {
+"file": "assets/blender/glassies/potion_flask/v4/potion_flask_bundle.fbx",
+"object": "PotionTag"
+},
+"136959501710884": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_BodyDomeFloor"
+},
+"137005574004846": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_TrimCrankHub"
+},
+"137087311522596": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "Body"
+},
+"137217713733138": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "EmberVeins_L"
+},
+"137219358348955": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "HullCore"
+},
+"137260569202643": {
+"file": "assets/blender/glassies/cookie_jar/v4/cookie_jar_bundle.fbx",
+"object": "LidCookie"
+},
+"137324783747883": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "TailFeather_3"
+},
+"137340877119967": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "LanternChain"
+},
+"137345479033742": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_SpinShard2"
+},
+"137446431577536": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_TrayLeg_2_28"
+},
+"137536609707639": {
+"file": "assets/blender/glassies/crystal_ball/v4/crystal_ball_bundle.fbx",
+"object": "HangCap"
+},
+"137722164715495": {
+"file": "assets/blender/glassies/chime/v4/chime_body.fbx",
+"object": "Body"
+},
+"137761628004201": {
+"file": "assets/blender/round_cosmetics/flyers_v3/prism_ray/prism_ray.fbx",
+"object": "WingVein_R"
+},
+"137766240806154": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "Hook"
+},
+"137791672729253": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_RevealSeat"
+},
+"137863423376167": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_CornerBand_-3_65"
+},
+"138083311019457": {
+"file": "assets/blender/glassies/crescent_axe/v4/crescent_axe_bundle.fbx",
+"object": "MistStars"
+},
+"138272011791306": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "TailEye_3"
+},
+"138321673954099": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "HullTrim_L"
+},
+"138333246295266": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "EyeShine"
+},
+"138525588681074": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Base"
+},
+"138575702040877": {
+"file": "assets/blender/round_cosmetics/flyers_v3/paper_jet/paper_jet.fbx",
+"object": "PencilLine_L"
+},
+"138624662170188": {
+"file": "assets/blender/round_cosmetics/flyers_v3/paper_jet/paper_jet.fbx",
+"object": "PencilLine_R"
+},
+"138642210323719": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "TailStar"
+},
+"138656995404133": {
+"file": "assets/blender/glassies/hot_sauce/v4/hot_sauce_bundle.fbx",
+"object": "ChiliCharm"
+},
+"139047844402174": {
+"file": "assets/blender/round_cosmetics/flyers_v3/honey_hover/honey_hover.fbx",
+"object": "CellGlints"
+},
+"139123797110869": {
+"file": "assets/blender/glassies/cookie_jar/v4/cookie_jar_bundle.fbx",
+"object": "CookieChips_3"
+},
+"139178894963667": {
+"file": "assets/blender/round_cosmetics/flyers_v3/honey_hover/honey_hover.fbx",
+"object": "Bees"
+},
+"139200578389670": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "Crest_1"
+},
+"139248135447760": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "Mane_3"
+},
+"139279392416244": {
+"file": "assets/blender/seasonal/hollowlight_v1/HOLLOWLIGHT_COSMETICS_IMPORT.fbx",
+"object": "HHL_Eclipse_Wisp1"
+},
+"139287833976780": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_CoolingSurface"
+},
+"139326112140126": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "Tail_2"
+},
+"139468317672150": {
+"file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
+"object": "ChestPlates"
+},
+"139721653235689": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_SpinShard3"
+},
+"139925938914169": {
+"file": "assets/blender/glassies/crystal_ball/v4/crystal_ball_bundle.fbx",
+"object": "NebulaSwirl"
+},
+"139926561503570": {
+"file": "assets/blender/round_cosmetics/finishers_v3/finishers_v3.fbx",
+"object": "FV3_StarCore"
+},
+"139991001142942": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "AbdomenCore"
+},
+"140012382515903": {
+"file": "assets/blender/glassies/lemonade_bottle/v4/lemonade_bottle_bundle.fbx",
+"object": "LemonRind"
+},
+"140269252179623": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "WingGold_L"
+},
+"70385374479536": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_RevealCore"
+},
+"70496591190672": {
+"file": "assets/blender/glassies/prism_blade/v4/prism_blade_bundle.fbx",
+"object": "Hilt"
+},
+"70877859219309": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "Nozzle_R"
+},
+"71165426021673": {
+"file": "assets/blender/glassies/hot_sauce/v4/hot_sauce_bundle.fbx",
+"object": "HeatBubbles"
+},
+"71166301592674": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "TailFeather_1"
+},
+"71280221764647": {
+"file": "assets/blender/glassies/frostglobe/v4/frostglobe_bundle.fbx",
+"object": "HangPearl"
+},
+"71434216239332": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_ChamberBackGlow"
+},
+"71451986014986": {
+"file": "assets/blender/glassies/light_bulb/v4/light_bulb_bundle.fbx",
+"object": "BaseTip"
+},
+"71558540361487": {
+"file": "assets/blender/glassies/prism_blade/v4/prism_blade_bundle.fbx",
+"object": "PrismShard_3"
+},
+"71630225457266": {
+"file": "assets/blender/glassies/cookie_jar/v4/cookie_jar_bundle.fbx",
+"object": "CookieChips_2"
+},
+"71704599446023": {
+"file": "assets/blender/round_cosmetics/finishers_v3/finishers_v3.fbx",
+"object": "FV3_BlockLetterO"
+},
+"71707146247935": {
+"file": "assets/blender/round_cosmetics/flyers_v3/bubble_pod/bubble_pod.fbx",
+"object": "SheenCyan"
+},
+"71785898498726": {
+"file": "assets/blender/round_cosmetics/flyers_v3/prism_ray/prism_ray.fbx",
+"object": "Wing_L"
+},
+"71816635688310": {
+"file": "assets/blender/glassies/hot_sauce/v4/hot_sauce_bundle.fbx",
+"object": "Cap"
+},
+"71896521785498": {
+"file": "assets/blender/glassies/briar_flask/v4/briar_flask_bundle.fbx",
+"object": "Leaf_2"
+},
+"71905223585159": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Pumpkin_GrinEdge"
+},
+"71910736849675": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Pumpkin_LeafVein_L"
+},
+"72010259153603": {
+"file": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+"object": "SaddleTrim"
+},
+"72340567907495": {
+"file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
+"object": "InnerAmber"
+},
+"72390255434844": {
+"file": "assets/blender/round_cosmetics/flyers_v3/starwhale/starwhale.fbx",
+"object": "SaddleRim"
+},
+"72410533577822": {
+"file": "assets/blender/glassies/chime/v4/chime_bundle.fbx",
+"object": "Crown"
+},
+"72486165352403": {
+"file": "assets/blender/glassies/arc_coil/v4/arc_coil_bundle.fbx",
+"object": "CoilSegment_3"
+},
+"72541395354242": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "Hull"
+},
+"72549462759108": {
+"file": "assets/blender/round_cosmetics/flyers_v3/bubble_pod/bubble_pod.fbx",
+"object": "RimTrim"
+},
+"72674536630594": {
+"file": "assets/blender/glassies/rocket_pop/v4/rocket_pop_bundle.fbx",
+"object": "Fizz"
+},
+"72681411807727": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Hearth"
+},
+"72977660729333": {
+"file": "assets/blender/glassies/potion_flask/v4/potion_flask_bundle.fbx",
+"object": "BrewSurface"
+},
+"73020045826258": {
+"file": "assets/blender/glassies/fishbowl/v4/fishbowl_bundle.fbx",
+"object": "Handle"
+},
+"73128427564408": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_TrimRing"
+},
+"73137978953637": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "Eyes"
+},
+"73182365224123": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "TailFeather_1"
+},
+"73194905567174": {
+"file": "assets/blender/round_cosmetics/flyers_v3/paper_jet/paper_jet.fbx",
+"object": "Keel"
+},
+"73244396299354": {
+"file": "assets/blender/glassies/rocket_pop/v4/rocket_pop_bundle.fbx",
+"object": "RocketFin_1"
+},
+"73270261738519": {
+"file": "assets/blender/glassies/galaxy_orb/v4/galaxy_orb_bundle.fbx",
+"object": "OrbitBand_2"
+},
+"73357030795239": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "WingTip_R"
+},
+"73460625804463": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "Nacelle_R"
+},
+"73752614130660": {
+"file": "assets/blender/round_cosmetics/flyers_v3/starwhale/starwhale.fbx",
+"object": "GalaxySwirl"
+},
+"73779575390693": {
+"file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
+"object": "InnerAmberHead"
+},
+"73845445088181": {
+"file": "assets/blender/glassies/rocket_pop/v4/rocket_pop_bundle.fbx",
+"object": "BoosterNozzle"
+},
+"73910023830449": {
+"file": "assets/blender/glassies/comet/v4/comet_body.fbx",
+"object": "Body"
+},
+"73971406017272": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "EyeShine"
+},
+"73989584659034": {
+"file": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+"object": "PonyCore"
+},
+"74069724460861": {
+"file": "assets/blender/glassies/briar_flask/v4/briar_flask_bundle.fbx",
+"object": "Nectar"
+},
+"74087221646774": {
+"file": "assets/blender/glassies/crescent_axe/v4/crescent_axe_bundle.fbx",
+"object": "ShoulderBand"
+},
+"74179030188707": {
+"file": "assets/blender/glassies/crescent_axe/v4/crescent_axe_bundle.fbx",
+"object": "CrescentStopper"
+},
+"74203265854093": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "Wing_FL"
+},
+"74287244319944": {
+"file": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",
+"object": "FV4_BeeStripes"
+},
+"74773088845932": {
+"file": "assets/blender/glassies/arc_coil/v4/arc_coil_bundle.fbx",
+"object": "CoilSegment_2"
+},
+"74781387936709": {
+"file": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",
+"object": "FV4_FrogCrown"
+},
+"74801056015974": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "EmberVeins_R"
+},
+"74892000525370": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "Pupils"
+},
+"75035374567228": {
+"file": "assets/blender/glassies/prism_blade/v4/prism_blade_bundle.fbx",
+"object": "Crossguard"
+},
+"75055169229715": {
+"file": "assets/blender/round_cosmetics/hero_v2/ROUND_HEROES_V2_IMPORT.fbx",
+"object": "RH2_vfx_ShockCrown"
+},
+"75225397635883": {
+"file": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+"object": "Horn"
+},
+"75255504364627": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_TrayLip_-2_28"
+},
+"75366486749631": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "Horns"
+},
+"75372373629086": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "WingVeins_FR"
+},
+"75373995799946": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "NacelleCore_L"
+},
+"75396357479102": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_SpinTokensWhite"
+},
+"75460375450993": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Eclipse_Core_CarvedEdge"
+},
+"75463428344164": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Arch_01"
+},
+"75464911948967": {
+"file": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",
+"object": "FV4_RuneRing"
+},
+"75610770882943": {
+"file": "assets/blender/glassies/prism_blade/v4/prism_blade_bundle.fbx",
+"object": "GuardGem"
+},
+"75868924613568": {
+"file": "assets/blender/glassies/pop/v4/pop_bundle.fbx",
+"object": "ChargeBubble_1"
+},
+"76226377146531": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Jamb_2_75_1"
+},
+"76479160398370": {
+"file": "assets/blender/glassies/glass_duck/v4/glass_duck_body.fbx",
+"object": "Body"
+},
+"76496742991228": {
+"file": "assets/blender/glassies/piggy_bank/v4/piggy_bank_bundle.fbx",
+"object": "Ear_R"
+},
+"76535518146004": {
+"file": "assets/blender/round_cosmetics/flyers_v3/paper_jet/paper_jet.fbx",
+"object": "Wing_R"
+},
+"76675987108675": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Arch_03"
+},
+"76678269913463": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "HangChain"
+},
+"76774550000419": {
+"file": "assets/blender/glassies/glass_duck/v4/glass_duck_bundle.fbx",
+"object": "HeartCore"
+},
+"76774855410530": {
+"file": "assets/blender/glassies/piggy_bank/v4/piggy_bank_bundle.fbx",
+"object": "Eyes"
+},
+"76937529360815": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "Cheeks"
+},
+"77036140982260": {
+"file": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+"object": "Saddle"
+},
+"77197844990964": {
+"file": "assets/blender/glassies/bubble_wand/v4/bubble_wand_bundle.fbx",
+"object": "FilmGlint"
+},
+"77224283708987": {
+"file": "assets/blender/glassies/galaxy_orb/v4/galaxy_orb_bundle.fbx",
+"object": "OrbitBand_1_Moons"
+},
+"77241775029045": {
+"file": "assets/blender/round_cosmetics/flyers_v3/paper_jet/paper_jet.fbx",
+"object": "WingTip_R"
+},
+"77404136434698": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Jamb_-2_75_0"
+},
+"77408131460698": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_TrimEmblemMarble"
+},
+"77490387788075": {
+"file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
+"object": "Ear_R"
+},
+"77517715852133": {
+"file": "assets/blender/glassies/lemonade_bottle/v4/lemonade_bottle_bundle.fbx",
+"object": "LemonPulp"
+},
+"77592146703968": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "WingQuills_L"
+},
+"77613211697175": {
+"file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
+"object": "Ear_L"
+},
+"77764888511594": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "Embers"
+},
+"78060976397725": {
+"file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
+"object": "TailFin_L"
+},
+"78125620087347": {
+"file": "assets/blender/glassies/hourglass/v4/hourglass_body.fbx",
+"object": "Body"
+},
+"78189102569111": {
+"file": "assets/blender/glassies/comet/v4/comet_bundle.fbx",
+"object": "Sparkle_3"
+},
+"78270398706397": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "EnginePod_R"
+},
+"78326248544351": {
+"file": "assets/blender/round_cosmetics/flyers_v3/cloud_cushion/cloud_cushion.fbx",
+"object": "Cushion"
+},
+"78387646140402": {
+"file": "assets/blender/glassies/hot_sauce/v4/hot_sauce_bundle.fbx",
+"object": "ChiliStem"
+},
+"78387939718665": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_RevealCore"
+},
+"78390049522225": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "HullTrim_R"
+},
+"78557510981291": {
+"file": "assets/blender/round_cosmetics/flyers_v3/honey_hover/honey_hover.fbx",
+"object": "BeeStripes"
+},
+"78569016527400": {
+"file": "assets/blender/glassies/comet/v4/comet_bundle.fbx",
+"object": "TailFin_1"
+},
+"78815668258219": {
+"file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
+"object": "LiftGlow_R"
+},
+"78940437150067": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "Beak"
+},
+"79152916997794": {
+"file": "assets/blender/glassies/honey_bear/v4/honey_bear_bundle.fbx",
+"object": "Smile"
+},
+"79185903966084": {
+"file": "assets/blender/glassies/briar_flask/v4/briar_flask_bundle.fbx",
+"object": "RoseSeed"
+},
+"79321086973820": {
+"file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
+"object": "HoverRing_B"
+},
+"79323579727114": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_GlassChamber"
+},
+"79395289078350": {
+"file": "assets/blender/glassies/mason_jar/v4/mason_jar_bundle.fbx",
+"object": "Firefly_1"
+},
+"79427011749169": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "Eyes"
+},
+"79469160180975": {
+"file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
+"object": "HoverPod_F"
+},
+"79515606863266": {
+"file": "assets/blender/round_cosmetics/hero_v2/ROUND_HEROES_V2_IMPORT.fbx",
+"object": "RH2_vfx_NovaStar"
+},
+"79766718274719": {
+"file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
+"object": "Rail"
+},
+"79869739925279": {
+"file": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",
+"object": "FV4_GumballBase"
+},
+"80209183488264": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "Forelock_3"
+},
+"80226736633519": {
+"file": "assets/blender/glassies/fishbowl/v4/fishbowl_bundle.fbx",
+"object": "FishFins"
+},
+"80250878136002": {
+"file": "assets/blender/round_cosmetics/flyers_v3/paper_jet/paper_jet.fbx",
+"object": "TailFlap_L"
+},
+"80269097891982": {
+"file": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+"object": "Crossbar"
+},
+"80303646839105": {
+"file": "assets/blender/round_cosmetics/flyers_v3/paper_jet/paper_jet.fbx",
+"object": "WingTip_L"
+},
+"80362446064853": {
+"file": "assets/blender/glassies/prism_blade/v4/prism_blade_bundle.fbx",
+"object": "EdgeGlow"
+},
+"80449485788644": {
+"file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
+"object": "BrowGem"
+},
+"80498612100769": {
+"file": "assets/blender/glassies/honey_bear/v4/honey_bear_bundle.fbx",
+"object": "Muzzle"
+},
+"80543187869970": {
+"file": "assets/blender/glassies/bubble_wand/v4/bubble_wand_bundle.fbx",
+"object": "Bow"
+},
+"80596442447158": {
+"file": "assets/blender/glassies/crystal_tumbler/v4/crystal_tumbler_bundle.fbx",
+"object": "Bubbles"
+},
+"80599431182333": {
+"file": "assets/blender/glassies/jam/v4/jam_body.fbx",
+"object": "Body"
+},
+"80638175618718": {
+"file": "assets/blender/glassies/prism_blade/v4/prism_blade_bundle.fbx",
+"object": "PrismShard_2"
+},
+"80740175681677": {
+"file": "assets/blender/glassies/chime/v4/chime_bundle.fbx",
+"object": "InnerTone"
+},
+"80901993985268": {
+"file": "assets/blender/glassies/piggy_bank/v4/piggy_bank_bundle.fbx",
+"object": "Cheeks"
+},
+"81152422694728": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "SaddleTrim"
+},
+"81215204146019": {
+"file": "assets/blender/glassies/crystal_ball/v4/crystal_ball_bundle.fbx",
+"object": "Sparkle_3"
+},
+"81226934737283": {
+"file": "assets/blender/glassies/rocket_pop/v4/rocket_pop_body.fbx",
+"object": "Body"
+},
+"81303767730525": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_RevealLid"
+},
+"81554081113634": {
+"file": "assets/blender/glassies/rocket_pop/v4/rocket_pop_bundle.fbx",
+"object": "Porthole"
+},
+"81716736456374": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_TrimEmblemMarble"
+},
+"81744789401378": {
+"file": "assets/blender/glassies/briar_flask/v4/briar_flask_bundle.fbx",
+"object": "Thorn_2"
+},
+"81784115739435": {
+"file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
+"object": "TailFin_C"
+},
+"81795779239640": {
+"file": "assets/blender/round_cosmetics/finishers_v3/finishers_v3.fbx",
+"object": "FV3_StarHaloBand"
+},
+"81856301008721": {
+"file": "assets/blender/glassies/honey_bear/v4/honey_bear_bundle.fbx",
+"object": "Ear_L"
+},
+"81883732311754": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Pumpkin_EyeEdge_L"
+},
+"81915649232061": {
+"file": "assets/blender/round_cosmetics/flyers_v3/bubble_pod/bubble_pod.fbx",
+"object": "Shell"
+},
+"82454899054897": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_SpinTokensAqua"
+},
+"82468465474857": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Jamb_-2_75_1"
+},
+"82520483696069": {
+"file": "assets/blender/glassies/milk_bottle/v4/milk_bottle_bundle.fbx",
+"object": "FoamRim"
+},
+"82577104621604": {
+"file": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",
+"object": "FV4_HoneyHex"
+},
+"82689673001915": {
+"file": "assets/blender/round_cosmetics/flyers_v3/cloud_cushion/cloud_cushion.fbx",
+"object": "RainbowAqua"
+},
+"82756008087460": {
+"file": "assets/blender/glassies/crystal_ball/v4/crystal_ball_bundle.fbx",
+"object": "MistShell"
+},
+"82890667801776": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "NacelleCore_R"
+},
+"82897943096666": {
+"file": "assets/blender/glassies/crescent_axe/v4/crescent_axe_body.fbx",
+"object": "Body"
+},
+"82962340274772": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "WingTipEdge_R"
+},
+"83115402610386": {
+"file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
+"object": "Claws"
+},
+"83276968373867": {
+"file": "assets/blender/round_cosmetics/flyers_v3/starwhale/starwhale.fbx",
+"object": "Fin_L"
+},
+"83296427344499": {
+"file": "assets/blender/glassies/hot_sauce/v4/hot_sauce_bundle.fbx",
+"object": "Ember_2"
+},
+"83427769220818": {
+"file": "assets/blender/glassies/ketchup_bottle/v4/ketchup_bottle_bundle.fbx",
+"object": "FlipCap"
+},
+"83467656237985": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Arch_00"
+},
+"83487244138914": {
+"file": "assets/blender/glassies/ketchup_bottle/v4/ketchup_bottle_bundle.fbx",
+"object": "Cap"
+},
+"83549742778982": {
+"file": "assets/blender/glassies/bubble_wand/v4/bubble_wand_bundle.fbx",
+"object": "Film"
+},
+"83611583328389": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_BodyStem"
+},
+"83652627274376": {
+"file": "assets/blender/glassies/glass_duck/v4/glass_duck_bundle.fbx",
+"object": "InnerGlow"
+},
+"83825461920620": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "BodyCore"
+},
+"83828942549757": {
+"file": "assets/blender/glassies/hourglass/v4/hourglass_bundle.fbx",
+"object": "SandGlints"
+},
+"83829917035422": {
+"file": "assets/blender/glassies/hourglass/v4/hourglass_bundle.fbx",
+"object": "FramePost_2"
+},
+"83926930689956": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_NeonSwirl"
+},
+"83935931254153": {
+"file": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+"object": "Grips"
+},
+"84010221549086": {
+"file": "assets/blender/glassies/crystal_ball/v4/crystal_ball_bundle.fbx",
+"object": "Sparkle_2"
+},
+"84262082773270": {
+"file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
+"object": "Deck"
+},
+"84318624105601": {
+"file": "assets/blender/round_cosmetics/flyers_v3/prism_ray/prism_ray.fbx",
+"object": "Blush"
+},
+"84347083789876": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "EngineCore_L"
+},
+"84425754736496": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "BodyVeins"
+},
+"84480142764220": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Arch_04"
+},
+"84511111428420": {
+"file": "assets/blender/glassies/cookie_jar/v4/cookie_jar_bundle.fbx",
+"object": "Lid"
+},
+"84532212758247": {
+"file": "assets/blender/glassies/hourglass/v4/hourglass_bundle.fbx",
+"object": "SandStream"
+},
+"84588109204077": {
+"file": "assets/blender/glassies/jam/v4/jam_bundle.fbx",
+"object": "JamBubbles"
+},
+"84621587907981": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_TrimEmblemCoin"
+},
+"84784605532131": {
+"file": "assets/blender/glassies/comet/v4/comet_bundle.fbx",
+"object": "InnerGlow"
+},
+"84985209208448": {
+"file": "assets/blender/glassies/cookie_jar/v4/cookie_jar_bundle.fbx",
+"object": "Cookie_2"
+},
+"84990800101824": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_SpinProp2"
+},
+"85012228157975": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_BodyBase"
+},
+"85109921662971": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "Arms"
+},
+"85130040536938": {
+"file": "assets/blender/glassies/fishbowl/v4/fishbowl_bundle.fbx",
+"object": "WaterSurface"
+},
+"85138884947049": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "SaddleTrim"
+},
+"85145682781011": {
+"file": "assets/blender/glassies/pickle_jar/v4/pickle_jar_bundle.fbx",
+"object": "Pickle_1"
+},
+"85168114045269": {
+"file": "assets/blender/glassies/crystal_ball/v4/crystal_ball_bundle.fbx",
+"object": "HangLoop"
+},
+"85389548654964": {
+"file": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+"object": "PonyEyes"
+},
+"85516457570055": {
+"file": "assets/blender/round_cosmetics/flyers_v3/cloud_cushion/cloud_cushion.fbx",
+"object": "Puff_F"
+},
+"85632119173779": {
+"file": "assets/blender/glassies/crystal_tumbler/v4/crystal_tumbler_bundle.fbx",
+"object": "MirrorFacet"
+},
+"85672365956470": {
+"file": "assets/blender/glassies/hourglass/v4/hourglass_bundle.fbx",
+"object": "SandInsert"
+},
+"85702619291707": {
+"file": "assets/blender/glassies/galaxy_orb/v4/galaxy_orb_bundle.fbx",
+"object": "CoreHalo"
+},
+"85802874889002": {
+"file": "assets/blender/glassies/rocket_pop/v4/rocket_pop_bundle.fbx",
+"object": "Cap"
+},
+"86062211579623": {
+"file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
+"object": "Cheeks"
+},
+"86240107144808": {
+"file": "assets/blender/glassies/pickle_jar/v4/pickle_jar_bundle.fbx",
+"object": "Cap"
+},
+"86443372783346": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_SpinProp1"
+},
+"86478803699362": {
+"file": "assets/blender/round_cosmetics/finishers_v3/finishers_v3.fbx",
+"object": "FV3_BlockLetterB"
+},
+"86492805477840": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Side_-3_65"
+},
+"86512584049877": {
+"file": "assets/blender/glassies/mason_jar/v4/mason_jar_body.fbx",
+"object": "Body"
+},
+"86605839321597": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "Handlebar"
+},
+"86689223567581": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_MoltenPool"
+},
+"86713483458719": {
+"file": "assets/blender/glassies/crystal_ball/v4/crystal_ball_bundle.fbx",
+"object": "Stand"
+},
+"86722806436933": {
+"file": "assets/blender/glassies/glass_duck/v4/glass_duck_bundle.fbx",
+"object": "Wing_R"
+},
+"86813167796736": {
+"file": "assets/blender/glassies/glass_duck/v4/glass_duck_bundle.fbx",
+"object": "Cheeks"
+},
+"86914493803846": {
+"file": "assets/blender/glassies/water_jug/v4/water_jug_body.fbx",
+"object": "Body"
+},
+"86942821020039": {
+"file": "assets/blender/glassies/piggy_bank/v4/piggy_bank_body.fbx",
+"object": "Body"
+},
+"87027455861299": {
+"file": "assets/blender/glassies/crystal_ball/v4/crystal_ball_bundle.fbx",
+"object": "StarSeed"
+},
+"87042106941112": {
+"file": "assets/blender/glassies/glass_duck/v4/glass_duck_bundle.fbx",
+"object": "BeakLower"
+},
+"87137232939098": {
+"file": "assets/blender/glassies/mason_jar/v4/mason_jar_bundle.fbx",
+"object": "StressBand_1"
+},
+"87177216832924": {
+"file": "assets/blender/round_cosmetics/flyers_v3/cloud_cushion/cloud_cushion.fbx",
+"object": "Buttons"
+},
+"87339319322887": {
+"file": "assets/blender/glassies/cookie_jar/v4/cookie_jar_bundle.fbx",
+"object": "Cookie_3"
+},
+"87611535703927": {
+"file": "assets/blender/round_cosmetics/flyers_v3/starwhale/starwhale.fbx",
+"object": "Saddle"
+},
+"87716256807553": {
+"file": "assets/blender/glassies/bubble_wand/v4/bubble_wand_bundle.fbx",
+"object": "Bubble_2"
+},
+"87822089466915": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "Stripe"
+},
+"88141366896339": {
+"file": "assets/blender/round_cosmetics/flyers_v3/paper_jet/paper_jet.fbx",
+"object": "Wing_L"
+},
+"88195050156141": {
+"file": "assets/blender/round_cosmetics/flyers_v3/cloud_cushion/cloud_cushion.fbx",
+"object": "Puff_C"
+},
+"88239251576265": {
+"file": "assets/blender/glassies/glass_cup/v4/glass_cup_bundle.fbx",
+"object": "Juice"
+},
+"88254597315508": {
+"file": "assets/blender/glassies/glass_duck/v4/glass_duck_bundle.fbx",
+"object": "Eyes"
+},
+"88270634158611": {
+"file": "assets/blender/round_cosmetics/flyers_v3/starwhale/starwhale.fbx",
+"object": "BodyCore"
+},
+"88516064248198": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "Nozzle_L"
+},
+"88544954538478": {
+"file": "assets/blender/glassies/frostglobe/v4/frostglobe_bundle.fbx",
+"object": "SnowCollar"
+},
+"88666143600327": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Eclipse_WispTail0"
+},
+"88701352096991": {
+"file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
+"object": "EyeShine"
+},
+"89032572155874": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_CornerBand_3_65"
+},
+"89048156303024": {
+"file": "assets/blender/glassies/crystal_ball/v4/crystal_ball_bundle.fbx",
+"object": "RuneGems"
+},
+"89313335658832": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "WingCovert_L"
+},
+"89480557528418": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "WingVeins_BL"
+},
+"89507049365928": {
+"file": "assets/blender/glassies/honey_bear/v4/honey_bear_bundle.fbx",
+"object": "HoneyFill"
+},
+"89543800857593": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_body.fbx",
+"object": "Body"
+},
+"89585322298986": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_NeonOrbitRing"
+},
+"89659651714967": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "EnginePod_L"
+},
+"89695964265601": {
+"file": "assets/blender/glassies/piggy_bank/v4/piggy_bank_bundle.fbx",
+"object": "EyeShine"
+},
+"89788151599188": {
+"file": "assets/blender/round_cosmetics/finishers_v3/finishers_v3.fbx",
+"object": "FV3_BlockLetterM"
+},
+"89859688546406": {
+"file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
+"object": "Mouth"
+},
+"90169335483545": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "Talons"
+},
+"90275431924999": {
+"file": "assets/blender/glassies/arc_coil/v4/arc_coil_bundle.fbx",
+"object": "Spark_2"
+},
+"90376105124356": {
+"file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
+"object": "Nose"
+},
+"90403826658317": {
+"file": "assets/blender/glassies/fishbowl/v4/fishbowl_bundle.fbx",
+"object": "FishTail"
+},
+"90416478274968": {
+"file": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",
+"object": "FV4_SunFeatherPlate"
+},
+"90457666306253": {
+"file": "assets/blender/round_cosmetics/flyers_v3/honey_hover/honey_hover.fbx",
+"object": "DeckCore"
+},
+"90480680055759": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "WingRibs_R"
+},
+"90502043457217": {
+"file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
+"object": "NoseGem"
+},
+"90528658235450": {
+"file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
+"object": "HoverRing_F"
+},
+"90595168990289": {
+"file": "assets/blender/glassies/hot_sauce/v4/hot_sauce_body.fbx",
+"object": "Body"
+},
+"90736105059958": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "Legs"
+},
+"90878876038441": {
+"file": "assets/blender/glassies/comet/v4/comet_bundle.fbx",
+"object": "Sparkle_1"
+},
+"90888996469030": {
+"file": "assets/blender/round_cosmetics/flyers_v3/starwhale/starwhale.fbx",
+"object": "Fluke"
+},
+"90914578373599": {
+"file": "assets/blender/glassies/hourglass/v4/hourglass_bundle.fbx",
+"object": "FrameCap_Top"
+},
+"90934352855872": {
+"file": "assets/blender/glassies/chime/v4/chime_bundle.fbx",
+"object": "BellRim"
+},
+"91255414723803": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Eclipse_Core_AmberGlass"
+},
+"91270082040294": {
+"file": "assets/blender/glassies/jam/v4/jam_bundle.fbx",
+"object": "CapCloth"
+},
+"91306283855977": {
+"file": "assets/blender/glassies/rocket_pop/v4/rocket_pop_bundle.fbx",
+"object": "RocketFin_3"
+},
+"91564652556929": {
+"file": "assets/blender/glassies/milk_bottle/v4/milk_bottle_bundle.fbx",
+"object": "MilkInsert"
+},
+"91663298133814": {
+"file": "assets/blender/glassies/pop/v4/pop_bundle.fbx",
+"object": "ChargeBubble_2"
+},
+"91804802733811": {
+"file": "assets/blender/round_cosmetics/flyers_v3/prism_ray/prism_ray.fbx",
+"object": "BrowGem"
+},
+"91841089627164": {
+"file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
+"object": "TailFin_L"
+},
+"91854584979753": {
+"file": "assets/blender/glassies/fishbowl/v4/fishbowl_bundle.fbx",
+"object": "FishEyeShine"
+},
+"92154499049699": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_TrimStripeR"
+},
+"92304755468638": {
+"file": "assets/blender/round_cosmetics/flyers_v3/prism_ray/prism_ray.fbx",
+"object": "Tail"
+},
+"92427892187691": {
+"file": "assets/blender/glassies/potion_flask/v4/potion_flask_bundle.fbx",
+"object": "Twine"
+},
+"92491814002111": {
+"file": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",
+"object": "FV4_FrogBody"
+},
+"92526400720523": {
+"file": "assets/blender/glassies/frostglobe/v4/frostglobe_body.fbx",
+"object": "Body"
+},
+"92606273094621": {
+"file": "assets/blender/glassies/glass_top/v4/glass_top_bundle.fbx",
+"object": "EquatorRing"
+},
+"92671710113141": {
+"file": "assets/blender/glassies/crescent_axe/v4/crescent_axe_bundle.fbx",
+"object": "MoonMist"
+},
+"93083509194012": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "Forelock_1"
+},
+"93141354632879": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "WingVeins_BR"
+},
+"93207252459223": {
+"file": "assets/blender/glassies/ketchup_bottle/v4/ketchup_bottle_bundle.fbx",
+"object": "TomatoBadge"
+},
+"93217228429246": {
+"file": "assets/blender/glassies/water_jug/v4/water_jug_bundle.fbx",
+"object": "Handle"
+},
+"93285811283754": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Eclipse_Core_WispMint"
+},
+"93387835444155": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_ChimneyDark"
+},
+"93454793467551": {
+"file": "assets/blender/round_cosmetics/flyers_v3/starwhale/starwhale.fbx",
+"object": "Body"
+},
+"93484425462963": {
+"file": "assets/blender/glassies/piggy_bank/v4/piggy_bank_bundle.fbx",
+"object": "CoinSlot"
+},
+"93494485403575": {
+"file": "assets/blender/glassies/piggy_bank/v4/piggy_bank_bundle.fbx",
+"object": "CoinStack_1"
+},
+"93649622230684": {
+"file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
+"object": "HangRing"
+},
+"93699013852120": {
+"file": "assets/blender/round_cosmetics/flyers_v3/cloud_cushion/cloud_cushion.fbx",
+"object": "RainbowButter"
+},
+"93844553439149": {
+"file": "assets/blender/round_cosmetics/flyers_v3/carousel/carousel.fbx",
+"object": "CanopyWhite"
+},
+"93993518512694": {
+"file": "assets/blender/glassies/pickle_jar/v4/pickle_jar_bundle.fbx",
+"object": "Pickle_2"
+},
+"94017394599093": {
+"file": "assets/blender/glassies/honey_bear/v4/honey_bear_bundle.fbx",
+"object": "HoneycombCore"
+},
+"94086515734013": {
+"file": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",
+"object": "FV4_FlowerBloom"
+},
+"94129417132491": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Arch_08"
+},
+"94160732741704": {
+"file": "assets/blender/glassies/honey_bear/v4/honey_bear_bundle.fbx",
+"object": "Paws"
+},
+"94187058712385": {
+"file": "assets/blender/glassies/rocket_pop/v4/rocket_pop_bundle.fbx",
+"object": "RaceStripe"
+},
+"94293332586769": {
+"file": "assets/blender/glassies/prism/v4/prism_bundle.fbx",
+"object": "FacetCore"
+},
+"94315357529592": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "InnerGlow"
+},
+"94357369984740": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "BD_NeonLampL"
+},
+"94470379476024": {
+"file": "assets/blender/glassies/hourglass/v4/hourglass_bundle.fbx",
+"object": "SandTop"
+},
+"94563781395318": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "WingRibs_L"
+},
+"94571581844383": {
+"file": "assets/blender/glassies/honey_bear/v4/honey_bear_bundle.fbx",
+"object": "Ear_R"
+},
+"94690692728006": {
+"file": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",
+"object": "FV4_BeeWings"
+},
+"94695391928710": {
+"file": "assets/blender/glassies/glass_cup/v4/glass_cup_body.fbx",
+"object": "Body"
+},
+"94735217809150": {
+"file": "assets/blender/glassies/fishbowl/v4/fishbowl_bundle.fbx",
+"object": "FishEyes"
+},
+"94862409099850": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "WingGold_R"
+},
+"94877277630435": {
+"file": "assets/blender/glassies/glass_top/v4/glass_top_bundle.fbx",
+"object": "CandyStripes"
+},
+"94880504398733": {
+"file": "assets/blender/round_cosmetics/flyers_v3/honey_hover/honey_hover.fbx",
+"object": "Deck"
+},
+"94900272731222": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "TailEye_2"
+},
+"95316555559946": {
+"file": "assets/blender/round_cosmetics/flyers_v3/bubble_pod/bubble_pod.fbx",
+"object": "BenchPost"
+},
+"95328040074904": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_BodyPropHub"
+},
+"95500114538347": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "Jaw"
+},
+"95670007720238": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "Thorax"
+},
+"95823386454572": {
+"file": "assets/blender/glassies/hot_sauce/v4/hot_sauce_bundle.fbx",
+"object": "FlameBand"
+},
+"95865228493980": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "Tail"
+},
+"95878861844533": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "Wing_L"
+},
+"95954721224410": {
+"file": "assets/blender/glassies/arc_coil/v4/arc_coil_body.fbx",
+"object": "Body"
+},
+"96086187207862": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "Muzzle"
+},
+"96102787013866": {
+"file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
+"object": "CG_TrimLidBand"
+},
+"96221726513844": {
+"file": "assets/blender/seasonal/hollowlight_v1/HOLLOWLIGHT_COSMETICS_IMPORT.fbx",
+"object": "HHL_Eclipse_Spiral0"
+},
+"96339416068050": {
+"file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
+"object": "Horn"
+},
+"96417602251312": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "EyeShine"
+},
+"96423986491465": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Pumpkin_Leaf_L"
+},
+"96680522636609": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "WingRibs_L"
+},
+"96897800735746": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "WingEdge_L"
+},
+"97387574523454": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "Wing_BL"
+},
+"97508185503248": {
+"file": "assets/blender/round_cosmetics/flyers_v3/honey_hover/honey_hover.fbx",
+"object": "UnderGlow"
+},
+"97664389007958": {
+"file": "assets/blender/round_cosmetics/flyers_v3/paper_jet/paper_jet.fbx",
+"object": "Fold"
+},
+"97677727193630": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "Saddle"
+},
+"97714343589099": {
+"file": "assets/blender/glassies/cookie_jar/v4/cookie_jar_bundle.fbx",
+"object": "Ribbon"
+},
+"97805311069275": {
+"file": "assets/blender/round_cosmetics/flyers_v3/prism_ray/prism_ray.fbx",
+"object": "HeadFin_R"
+},
+"97879308816618": {
+"file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
+"object": "Cheeks"
+},
+"97923923128762": {
+"file": "assets/blender/round_cosmetics/flyers_v3/bubble_pod/bubble_pod.fbx",
+"object": "SheenGold"
+},
+"97945077756930": {
+"file": "assets/blender/round_cosmetics/flyers_v3/honey_hover/honey_hover.fbx",
+"object": "HoneyDrips_B"
+},
+"98146901680299": {
+"file": "assets/blender/round_cosmetics/flyers_v3/paper_jet/paper_jet.fbx",
+"object": "TailFlap_R"
+},
+"98268025194747": {
+"file": "assets/blender/glassies/frostglobe/v4/frostglobe_bundle.fbx",
+"object": "SnowSwirl"
+},
+"98325964594856": {
+"file": "assets/blender/glassies/comet/v4/comet_bundle.fbx",
+"object": "TailFin_3"
+},
+"98613536960012": {
+"file": "assets/blender/glassies/comet/v4/comet_bundle.fbx",
+"object": "Mouth"
+},
+"98671230601236": {
+"file": "assets/blender/seasonal/hollowlight_v1/HOLLOWLIGHT_COSMETICS_IMPORT.fbx",
+"object": "HHL_Eclipse_Halo"
+},
+"98688368992379": {
+"file": "assets/blender/glassies/piggy_bank/v4/piggy_bank_bundle.fbx",
+"object": "Nostrils"
+},
+"98709139396587": {
+"file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
+"object": "Antennae"
+},
+"98761463017828": {
+"file": "assets/blender/round_cosmetics/flyers_v3/prism_ray/prism_ray.fbx",
+"object": "HeadFin_L"
+},
+"98816632456346": {
+"file": "assets/blender/round_cosmetics/flyers_v3/cloud_cushion/cloud_cushion.fbx",
+"object": "Puff_L"
+},
+"98831454348412": {
+"file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
+"object": "Backrest"
+},
+"98847704128777": {
+"file": "assets/blender/glassies/crescent_axe/v4/crescent_axe_bundle.fbx",
+"object": "CrescentEmblem"
+},
+"98949395981885": {
+"file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
+"object": "Kiln_Arch_06"
+},
+"99072186603567": {
+"file": "assets/blender/round_cosmetics/flyers_v3/starwhale/starwhale.fbx",
+"object": "ConstellationLines"
+},
+"99136836112996": {
+"file": "assets/blender/glassies/water_jug/v4/water_jug_bundle.fbx",
+"object": "WaterInsert"
+},
+"99147639789313": {
+"file": "assets/blender/glassies/galaxy_orb/v4/galaxy_orb_body.fbx",
+"object": "Body"
+},
+"99153831666018": {
+"file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
+"object": "HH2_Eclipse_WispFace0"
+},
+"99441948056803": {
+"file": "assets/blender/glassies/light_bulb/v4/light_bulb_bundle.fbx",
+"object": "InnerGlow"
+},
+"99462289544751": {
+"file": "assets/blender/round_cosmetics/flyers_v3/honey_hover/honey_hover.fbx",
+"object": "BeeWings"
+},
+"99480570643473": {
+"file": "assets/blender/glassies/light_bulb/v4/light_bulb_bundle.fbx",
+"object": "SupportWires"
+},
+"99498994398407": {
+"file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
+"object": "WingQuills_R"
+},
+"99666898095099": {
+"file": "assets/blender/round_cosmetics/flyers_v3/cloud_cushion/cloud_cushion.fbx",
+"object": "CloudBody"
+},
+"99759456438356": {
+"file": "assets/blender/glassies/mason_jar/v4/mason_jar_bundle.fbx",
+"object": "Firefly_2"
+},
+"99853989534751": {
+"file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
+"object": "Wing_R"
+},
+"99975824838035": {
+"file": "assets/blender/glassies/hot_sauce/v4/hot_sauce_bundle.fbx",
+"object": "Ember_1"
+}
+}

@@ -254,7 +254,7 @@ function Screen:Detail(id)
 	p.InfoPortrait.Visible, p.UnknownPortrait.Visible, p.ArtworkPending.Visible =
 		installed, not installed, not installed
 	if installed then
-		self.DetailPortrait = Portrait.new(p, id, p.InfoPortrait.Size, p.InfoPortrait.Position, "InfoPortrait")
+		self.DetailPortrait = Portrait.new(p, id, p.InfoPortrait.Size, p.InfoPortrait.Position, "InfoPortrait", true) -- live: one pane
 	end
 	p.PassiveName.Text = passive.Name
 	p.PassiveDescription.Text = passive.Description

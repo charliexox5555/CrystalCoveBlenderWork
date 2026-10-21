@@ -1,10 +1,19 @@
 local RS = game:GetService("ReplicatedStorage")
 local U = require(script.Parent.Util)
+local ItemIcon = require(script.Parent.ItemIcon)
 local Portrait = {}
 local resizeBindings = setmetatable({}, { __mode = "k" })
 
--- The approved meshes provide a sharp portrait without another texture upload.
-function Portrait.new(parent, id, size, position, name)
+-- A pre-rendered icon when one exists (Config/ItemIcons); `live` = true keeps the 3D viewport (detail panes, the
+-- single Kiln reveal). Without an icon the approved meshes are shown live, so new glassies still appear.
+function Portrait.new(parent, id, size, position, name, live)
+	if not live then
+		local icon = ItemIcon.mount(parent, name or "Portrait", "Glassies", id, size, position)
+		if icon then
+			return icon
+		end
+	end
+	ItemIcon.viewportSlot(parent, name or "Portrait")
 	local viewport = U.make("ViewportFrame", parent, {
 		Name = name or "Portrait",
 		Size = size,

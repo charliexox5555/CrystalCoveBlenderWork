@@ -1,5 +1,6 @@
 local RS = game:GetService("ReplicatedStorage")
 local U = require(script.Parent.Util)
+local ItemIcon = require(script.Parent.ItemIcon)
 local Portrait = {}
 function Portrait.fitEffect(viewport, radius)
 	local camera = viewport.CurrentCamera
@@ -14,7 +15,15 @@ function Portrait.fitEffect(viewport, radius)
 	local distance = radius / math.sin(limiting)
 	camera.CFrame = CFrame.lookAt(Vector3.zAxis * distance, Vector3.zero)
 end
-function Portrait.new(parent, category, id, size, position, name)
+-- Icon first (Config/ItemIcons) unless `live` (the catalog's preview pane); returns (portrait, world or nil).
+function Portrait.new(parent, category, id, size, position, name, live)
+	if not live then
+		local icon = ItemIcon.mount(parent, name or "CosmeticPortrait", category, id, size, position)
+		if icon then
+			return icon, nil
+		end
+	end
+	ItemIcon.viewportSlot(parent, name or "CosmeticPortrait")
 	local viewport = U.make("ViewportFrame", parent, {
 		Name = name or "CosmeticPortrait",
 		Size = size,

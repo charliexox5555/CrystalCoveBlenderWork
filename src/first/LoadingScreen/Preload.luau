@@ -343,7 +343,7 @@ local function checkTier(tier: string)
 		return
 	end
 	tierDoneAt[tier] = os.clock() - started
-	if tier == "Later" then
+	if released and tierDoneAt.Soon and tierDoneAt.Later then
 		player:SetAttribute("LoadStage", "Done")
 	end
 end
@@ -466,11 +466,13 @@ function Preload.start()
 			warn("[GlassClash] preload item " .. item .. " failed: " .. tostring(err))
 		end
 	end
+	-- Studio A/B switch (workspace attribute LoadNoLater): skip the Later tier to compare memory and frame times.
+	local noLater = RunService:IsStudio() and workspace:GetAttribute("LoadNoLater") == true
 	for _, tier in config.Order do
-		for _, item in config.Tiers[tier] do
+		for _, item in if noLater and tier == "Later" then {} else config.Tiers[tier] do
 			add(item, tier)
 		end
-		if tier == "Later" then
+		if tier == "Later" and not noLater then
 			-- Anything no tier listed (new UI images, screens, models, the rest of the lobby) goes last.
 			for _, item in { "ui:", "screen:", "asset:", "lobby" } do
 				add(item, "Later")
@@ -493,7 +495,7 @@ end
 -- The loading screen is gone: Soon and Later may start.
 function Preload.release()
 	released = true
-	player:SetAttribute("LoadStage", "Background")
+	player:SetAttribute("LoadStage", if tierDoneAt.Soon and tierDoneAt.Later then "Done" else "Background")
 	dispatch()
 	wake:Fire()
 end

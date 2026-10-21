@@ -53,7 +53,7 @@ fetch. A job with a real failure runs once more in Later; failures show in the S
 Then it sets the local Player attributes `LoadSeconds` and `ClientLoaded = true` and releases Soon and Later.
 `OnboardingController` waits for `ClientLoaded` (45 s cap) before the welcome card. `LoadStage` reads `Background`
 until every tier is done, then `Done`. In Studio the Preload module carries `Summary` and `Jobs` attributes (one
-row per job: start, seconds, tier, lane, key, targets, failed) for the MCP or the command bar.
+row per job: start, seconds, tier, lane, key, targets, failed) for the MCP or the command bar. Studio A/B: the workspace attribute `LoadNoLater = true` skips the Later tier.
 
 Timing in Studio (2026-10-21, `docs/testing/loading/REPORT.md`): closes at 4.7 s (was 10.3 s cached, 18.4 s first
 run); Soon is done ~7 s after joining and Later ~35 s.

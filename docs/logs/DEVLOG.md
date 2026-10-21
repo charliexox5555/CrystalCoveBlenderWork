@@ -3,6 +3,18 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-21 — Claude (loading-tiers session) — Fast join: tiered loading (decision 111, Proposed)
+Done:
+- Measured first (docs/testing/loading/BASELINE.md): the old screen preloaded everything (~200 jobs) after `game.Loaded`, closing at 18.4 s (first Studio run) / 10.3 s (cached); 37 glassies alone were ~14 s of job time. Researched Creator Docs + DevForum (sources in BASELINE): preload only the loading art, key menu images and the starting area; skip button; lean ReplicatedStorage.
+- `Config/LoadTiers` (one table): Essential (fonts, HUD / top bar / onboarding / Daily art, LobbyHUD + Welcome + Daily templates, Featured stage models, parts within 150 studs of the spawn after `RequestStreamAroundAsync`), Soon (owned glassies, Shop + opening, first fight incl. sounds, rest of the lobby; 2 at a time after close), Later (everything else, 1 at a time). `LoadingScreen/Preload` rewritten as a lane scheduler: on-demand jumps for screens opening, `Queued`/`InMatch`, Kiln/roll/reveal payloads, `ProfileController` -> `owned`; one retry for real failures; Studio report attributes; `workspace.LoadNoLater` A/B switch. `src/client/LoadGate` for client code.
+- Found: a bare id string passed to `PreloadAsync` reports Failure and restarts the fetch. Images now preload as ImageLabels. This also fixes `Finishers/Kit`, which swapped every uploaded finisher texture for its fallback, and the loading-screen art. Music / Shatter / Topbar / Kit preloads wait for `ClientLoaded`.
+- Result (REPORT.md): closes at 4.5-4.95 s over 5 runs; Soon done ~7 s, Later ~31-36 s; on-demand verified (Inventory screens and a welcome-pull glassy jumped to Urgent); no added frame hitching; Later costs ~+24 MB texture / +17 MB mesh. `ClientLoaded` contract unchanged (fires earlier; tutorial-audit told). Lune 220/220.
+Next:
+- Re-upload three meshes that fail with "Asset is not approved for the requester": glass_phoenix Body, carousel PonyCore, gumball crank (may be invisible live).
+- Move review-only `Assets.CombatReleasePreview` out of ReplicatedStorage; check `LoadSeconds` on a phone after publishing; viewport-to-images adds its icons via `images:ItemIcons/...` + `HintItems`.
+Problems / questions for the user:
+- Finisher shows now use their uploaded textures instead of fallbacks; worth a look.
+
 ## 2026-10-21 — Claude (marketing session) — Thumbnail + icon kit for ChatGPT
 Done:
 - `tools/marketing/thumbnail_kit.py` builds 17 scenes headless from the real assets (v4 glassies and their shard sets at GlassyScale 1.75, clash stand with hooks at +-HookGap/2, sky islands, sky-kit clouds, decor, Kiln) and renders beauty / subject / background / mask passes (Cycles 64, denoised) into `assets/marketing/thumbnails/kit/<T#>/`, plus each `<id>_scene.blend`.

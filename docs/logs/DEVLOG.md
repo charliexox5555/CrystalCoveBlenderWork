@@ -3,6 +3,23 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-21 — Claude (viewport-to-images session) — Item picture alignment (decision 113 follow-up)
+Done:
+- Creator approved the pictures and asked for the Daily / Playtime alignment to be fixed; crate machines and detail
+  panes stay live.
+- Cause: ItemIcon re-anchored every new picture on its centre (only GlassyPortrait ever did that), and RewardVisuals
+  then sets the AnchorPoint itself, so machine pictures sat half their size off (Day 7 Kiln at 0.76/0.65 instead of
+  0.5/0.45).
+- Fix: only glassy portraits re-centre. Daily, Playtime and the welcome card are centred again, desktop and
+  iPhone 17 Pro (docs/testing/viewports/captures/alignment).
+- Swept every mount site by centre and size against its parent: unchanged.
+- Tried and dropped cropping pictures to the item's bounds for wide slots: live viewports keep square framing, so
+  the crop made items bigger than before.
+- Lune 224/224.
+Problems / questions for the user:
+- The Profile Glassies grid can show 10 placeholder tiles (live viewports) from the StarterGui template when it
+  can't find the Collection tile template. Existing, not changed here; worth a small fix in ProfileScreen.
+
 ## 2026-10-21 — Claude (marketing session) — Thumbnails finished and exported
 Done:
 - Reviewed all 28 ChatGPT thumbnail options (`from_chatgpt/`, report in REPORT.md) against the real renders: glassies on-model, no text/UI, bottom 15% clear. Icons deferred by the creator.

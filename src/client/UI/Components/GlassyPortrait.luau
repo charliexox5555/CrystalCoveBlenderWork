@@ -8,7 +8,7 @@ local resizeBindings = setmetatable({}, { __mode = "k" })
 -- single Kiln reveal). Without an icon the approved meshes are shown live, so new glassies still appear.
 function Portrait.new(parent, id, size, position, name, live)
 	if not live then
-		local icon = ItemIcon.mount(parent, name or "Portrait", "Glassies", id, size, position)
+		local icon = ItemIcon.mount(parent, name or "Portrait", "Glassies", id, size, position, true)
 		if icon then
 			return icon
 		end

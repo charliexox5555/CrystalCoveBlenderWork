@@ -77,7 +77,9 @@ function ItemIcon.has(category, id)
 end
 
 -- Mounts the icon in the slot `name` (reusing an authored slot's layout like Util.make does). nil = no icon.
-function ItemIcon.mount(parent, name, category, id, size, position)
+-- `center` re-anchors the slot on its centre without moving it, as GlassyPortrait always did; cosmetic and machine
+-- portraits keep the caller's anchor (RewardVisuals and others set AnchorPoint themselves afterwards).
+function ItemIcon.mount(parent, name, category, id, size, position, center)
 	local entry = lookup(category, id)
 	if not entry then
 		return nil
@@ -87,10 +89,12 @@ function ItemIcon.mount(parent, name, category, id, size, position)
 		image.Size = size or image.Size
 		image.Position = position or image.Position
 	end
-	require(script.Parent.Motion).center(image)
-	local shape = image:FindFirstChildOfClass("UIAspectRatioConstraint")
-	if shape then
-		shape.AspectType = Enum.AspectType.FitWithinMaxSize
+	if center then
+		require(script.Parent.Motion).center(image)
+		local shape = image:FindFirstChildOfClass("UIAspectRatioConstraint")
+		if shape then
+			shape.AspectType = Enum.AspectType.FitWithinMaxSize
+		end
 	end
 	image.BackgroundTransparency, image.ScaleType = 1, Enum.ScaleType.Fit
 	image.ImageColor3 = Color3.new(1, 1, 1)

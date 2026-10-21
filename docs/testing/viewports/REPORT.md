@@ -85,11 +85,48 @@ Each pair is the same screen, same session: `workspace.ItemIconsOff = true` (bef
   complete. The live model in fights may be missing its body until the asset is approved or re-uploaded.
 - Worth checking on the Creator Dashboard.
 
+### Alignment fix after the creator's review (Oct 21, `captures/alignment/`)
+
+The creator approved the pictures but saw them sit off-centre in the Daily and Playtime Rewards cells.
+
+**Cause.**
+- `ItemIcon.mount` re-anchored every new picture on its centre, moving its Position to compensate.
+- The old crate and cosmetic viewports never did that; only `GlassyPortrait` did.
+- `RewardVisuals` then sets the slot's AnchorPoint itself, so the machine pictures moved by half their size: the
+  Day 7 Kiln went from (0.5, 0.45) to (0.76, 0.65) (`daily_icons_misaligned.jpg`).
+
+**Fix.** Only glassy portraits are re-centred (`ItemIcon.mount(..., center)`). Cosmetic and machine pictures keep
+the caller's anchor, exactly as their viewports did.
+
+**Checked in Studio Play.** Picture centre and size relative to the parent, compared with the live viewports:
+
+| Screen | Live | Fixed |
+|---|---|---|
+| Daily Rewards | `daily_live.jpg` | `daily_fixed.jpg` |
+| Daily Rewards, iPhone 17 Pro | | `phone_iphone17pro_daily_fixed.jpg` |
+| Playtime Rewards | `playtime_live.jpg` | `playtime_fixed.jpg` |
+| Playtime Rewards, iPhone 17 Pro | | `phone_iphone17pro_playtime_fixed.jpg` |
+| Welcome card | | `welcome_fixed.jpg` (centre = slot centre) |
+
+**The other places pictures appear are unchanged.** Each one either keeps a template slot's layout or sets
+AnchorPoint and Position itself after mounting: Featured cards and bundle slots, prize carousels and View All, reel
+tiles, Inventory / Collection grids, roll cards, results history, claim cards (same `RewardVisuals` path as Daily).
+
+**Tried and dropped: cropping pictures to the item's bounds** (`featured_icons_cropped_rejected.jpg`).
+- The idea was to make wide items fill wide slots, like a viewport camera refitting to the slot.
+- The live viewports didn't actually do that: their cameras keep square framing.
+- So the crop made the Featured Cloud Cushion bigger than its viewport. The square pictures were the closer match,
+  and they're what the creator approved.
+
+**Found, not changed: the Profile screen's Glassies grid.**
+- It sometimes shows 10 placeholder tiles authored into `StarterGui.ProfileScreen` (live viewports, "12 / 36").
+- `BuildGrid` returns early when it can't find the Collection screen's tile template; it borrows that template from
+  `PlayerGui.CollectionScreen`.
+- When it does build, it uses pictures.
+
 ## Not done / next
 
-- **Creator review of the side-by-sides.** Live viewports that remain and could also become images if preferred:
-  - the Shop's crate machines (idle animation)
-  - the glassy detail panes (living-glassy idle)
+- **Creator review: done.** Pictures approved. The Shop's crate machines and the glassy detail panes stay live.
 - **Gumball and a few neon-heavy finisher stills render brighter than their viewport.** Roblox draws Neon flat in
   viewports. Lowering `LOOK.neon_emission` in `tools/blender/item_icons.py` and re-rendering those keys would fix it
   (`--keys finishers_gumball ...`, then `tools/icons/make_small.sh` and the uploader; the uploader skips unchanged

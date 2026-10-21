@@ -1,0 +1,396 @@
+{
+  "tool": "built-in image_gen",
+  "thumbnails": [
+    {
+      "id": "T1a",
+      "selectedOption": "B",
+      "attempts": [
+        1,
+        1
+      ],
+      "selectedGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-bc2c4e02-26f1-413d-b023-7770ab523747.png",
+      "alternateGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-39d3844d-51f7-4a92-af4c-fd5cd3e37228.png",
+      "notes": "Warm rim light, impact ring, arc trails, distant floating islands; B has cleaner blue debris and clear zone. Faces/silhouettes visually close, not pixel-identical.",
+      "files": [
+        {
+          "path": "T1a.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2366471,
+          "sha256": "5993391fd95c066211a2e2b1b764ea8f03e615b8dfad1d3222208878bd259072"
+        },
+        {
+          "path": "alt/T1a_b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2471122,
+          "sha256": "b6aad76c32a91a5abc28e38fdd81490d26f9ff4d542d7f163e30c1c102618c80"
+        }
+      ]
+    },
+    {
+      "id": "T1b",
+      "selectedOption": "A",
+      "attempts": [
+        2,
+        3
+      ],
+      "selectedGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-8e4185e6-bb5e-4fdd-b2b3-af882fc33e01.png",
+      "alternateGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-e2f27e2a-21c0-4655-a959-3922dfbc29e8.png",
+      "notes": "Reframed lower with broad blue-peach headroom, gold clash ring and arcs. Pick ~42% height rather than 55%. Alternate after 3 attempts has Comet base slightly in bottom 15%; generator cannot fully satisfy both size and safe area.",
+      "files": [
+        {
+          "path": "T1b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2221246,
+          "sha256": "1a685e51f4233e406656a76c87fd09863e3adab0e8037668d9c029daf8f4fcc0"
+        },
+        {
+          "path": "alt/T1b_b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2083031,
+          "sha256": "d9ab4814aa90daf74f78ac954a37e1b8f91b297606088a4f7c8cdf05bd65cbb7"
+        }
+      ]
+    },
+    {
+      "id": "T1c",
+      "selectedOption": "B",
+      "attempts": [
+        1,
+        1
+      ],
+      "selectedGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-7da33f6f-ce0b-43ad-bdb6-e9cf517fc756.png",
+      "alternateGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-254cbd61-3dc9-4e95-bb26-3d6791de2e1d.png",
+      "notes": "Added amethyst/sapphire sky, violet rim, white-gold flash, arc trails, blue shard depth and soft islands; B preserves a calmer top-left. Render identity visually close; exact pixel/geometry preservation not guaranteed by generation.",
+      "files": [
+        {
+          "path": "T1c.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2410761,
+          "sha256": "0363724c13763b0dc579ea0d7db072d31639be252204b008db8b1326e85f1082"
+        },
+        {
+          "path": "alt/T1c_b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2501053,
+          "sha256": "9aaac2666f06a923fd55bb0c76c1219b8921666715a3fdd97c29a82540d5619a"
+        }
+      ]
+    },
+    {
+      "id": "T1d",
+      "selectedOption": "B",
+      "attempts": [
+        2,
+        2
+      ],
+      "selectedGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-67ccfe2f-5052-4bd5-968e-98a6dac95c94.png",
+      "alternateGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-9b960fae-6aa7-4cd8-9edb-2c784f1f8ad5.png",
+      "notes": "Reframed centered, dark jewel sky, fading strings, violet rim, impact and arc trails; B less overexposed. Top-centre headroom about 27% rather than full third; minor sparks near clear-zone boundary remain after retry.",
+      "files": [
+        {
+          "path": "T1d.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2283726,
+          "sha256": "31494f22454b31402b610d9b40d2765576c0e7a4013fd7286f4a033dc26feff1"
+        },
+        {
+          "path": "alt/T1d_b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2246714,
+          "sha256": "242894682278561ea5ba8b4ebbef873191afd214f204cffc7cc6a9fa41efd5d1"
+        }
+      ]
+    },
+    {
+      "id": "T1h",
+      "selectedOption": "B",
+      "attempts": [
+        1,
+        1
+      ],
+      "selectedGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-b6ccdf0a-af6f-44b5-9b49-667ce481705c.png",
+      "alternateGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-1bf2cf6e-4452-4437-bfcd-a8c594983aa2.png",
+      "notes": "Added orange-violet night horizon, soft top-right moon, gold rim and controlled impact/arc glow; B has clean top-left and fewer sparks. No obvious content-rule failure on visual review; exact source pixels not retained.",
+      "files": [
+        {
+          "path": "T1h.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2303288,
+          "sha256": "600dd1cc69e47ae056efec14b12877d27c590c63ab4456e9ed921985722570fd"
+        },
+        {
+          "path": "alt/T1h_b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2370260,
+          "sha256": "6393127f52fe42e47eef14eab3830fb1d687ba046e2bf68a7ad3541d36f8b72c"
+        }
+      ]
+    },
+    {
+      "id": "T2a",
+      "selectedOption": "B",
+      "attempts": [
+        2,
+        2
+      ],
+      "selectedGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-44c06722-e397-4014-b7f2-b683724e0a40.png",
+      "alternateGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-11f2f461-2bd6-49ea-81a5-11dd1fdfe77b.png",
+      "notes": "Added golden rim, mint crack glow, right-side flying shards/DOF, soft sky islands; revised framing removes obstructing stand. B safer feet and calmer sky. Dragon ~67% height versus75%; exact material/geometry fidelity is visual, not deterministic.",
+      "files": [
+        {
+          "path": "T2a.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2306579,
+          "sha256": "63967ac8fd6cd0243cbde5e222feee5a0c144cfb048a09978f26fe184ccacf0d"
+        },
+        {
+          "path": "alt/T2a_b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2359512,
+          "sha256": "fde23912064acec6c43117e0f5d05937ee607b9fb7930aa410fa2e1aac253c1e"
+        }
+      ]
+    },
+    {
+      "id": "T2b",
+      "selectedOption": "A",
+      "attempts": [
+        2,
+        2
+      ],
+      "selectedGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-ee95ebdb-093a-4537-983d-36b9e1f35c5a.png",
+      "alternateGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-5df1cd23-b320-45bf-b182-c53b5101b936.png",
+      "notes": "Added gold rim, mint crack flare and shard depth; zoomed out after unsafe feet/headroom attempts. Pick ~50% height, alternate ~40%, not75%; string remains visible across otherwise calm top-centre. A stronger mobile read.",
+      "files": [
+        {
+          "path": "T2b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2271884,
+          "sha256": "d70ae77ce8476d7a954858526c3c8b6c1b4c947a163dd19df689cb8d94b97906"
+        },
+        {
+          "path": "alt/T2b_b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2169468,
+          "sha256": "6fdf1b39850cb9a6c91464cc6067b09f5d2e7cf961696b0d0ddacfbd2247a474"
+        }
+      ]
+    },
+    {
+      "id": "T2c",
+      "selectedOption": "A",
+      "attempts": [
+        1,
+        2
+      ],
+      "selectedGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-189fc1e1-b2de-4206-bc83-6bd3f19a6512.png",
+      "alternateGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-9a09f218-7702-47f5-a534-6b663288ba8c.png",
+      "notes": "Added purple-blue night, violet rim, pink crack/shatter flare and DOF shards, distant islands. A larger and clearer; B zoomed out to correct low hooves. Minor facial/refraction changes remain; strict unchanged geometry is not assured.",
+      "files": [
+        {
+          "path": "T2c.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2359843,
+          "sha256": "0b4cb191a4a57ce3c4877b56170048407326a486fc6f6985a6858dd92f91c58a"
+        },
+        {
+          "path": "alt/T2c_b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2335264,
+          "sha256": "108fb4458017ec3d7550f78451e8f7b628f64ed2c83ea3618c296560da3f95f3"
+        }
+      ]
+    },
+    {
+      "id": "T3a",
+      "selectedOption": "B",
+      "attempts": [
+        2,
+        2
+      ],
+      "selectedGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-6e09e983-5f62-480d-9761-db68f4cd7a84.png",
+      "alternateGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-09e8eff4-b155-461d-ac53-d1eeaa4818b4.png",
+      "notes": "Composited two Studio avatars at edges with requested cheer/shock faces; enlarged exact-source Bear/Blade clash, gold rim and arcs. Shifted timber toward borders to clear top-left. Pads only partly visible due crop; glass highlights/refractions differ from source.",
+      "files": [
+        {
+          "path": "T3a.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2107547,
+          "sha256": "99875ead36b3a9f1753921aca8ce1c98914e478a5cb3c64c210215b9db76e0a0"
+        },
+        {
+          "path": "alt/T3a_b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2287227,
+          "sha256": "a926f594c74f6512e6115c8b150e95371dcbaf663aa20128b7db0d10d734fdfa"
+        }
+      ]
+    },
+    {
+      "id": "T3b",
+      "selectedOption": "A",
+      "attempts": [
+        1,
+        1
+      ],
+      "selectedGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-622fc5cf-acfc-407e-9af2-18fb5b7eb16a.png",
+      "alternateGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-557142af-a10b-495c-b398-99b4a3ae2c64.png",
+      "notes": "Added expressive Studio avatars, enlarged central Bear/Blade clash, gold rim, arc trails and clouds; lowered crossbar for top-centre sky. A has more headroom; alternate band smaller (~21%). Pads mostly cropped and glass refraction differs.",
+      "files": [
+        {
+          "path": "T3b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2248330,
+          "sha256": "6dab11240c5d1491e30f477ef76b8a9d514a145a91a2cf91f3c3fa36ce208328"
+        },
+        {
+          "path": "alt/T3b_b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2094186,
+          "sha256": "0e9bd396a6b554f26524eb180856bed4a80e53fea8b6935373d6c1fb8c157383"
+        }
+      ]
+    },
+    {
+      "id": "T4a",
+      "selectedOption": "A",
+      "attempts": [
+        2,
+        3
+      ],
+      "selectedGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-26331d3d-57a0-412f-b8d1-1276c90553e8.png",
+      "alternateGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-af043477-c496-4bab-9d51-9ac65a7351c3.png",
+      "notes": "Gold unicorn spotlight/halo, jewel trims, glossy lighting and hot cream/brick Kiln; wider view with plain foreground fascia keeps20 source-visible toys above bottom strip. Common row partially occluded as source; all20 not individually readable at300px; clear horn picks up strong gold tint and small faces/refractions not exact.",
+      "files": [
+        {
+          "path": "T4a.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2472974,
+          "sha256": "fd58dfdc26068177e4e418f2b391fef8e7014caaec0a7d6f5c737c49c7f378e0"
+        },
+        {
+          "path": "alt/T4a_b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2477259,
+          "sha256": "d310881b41e2d475d890f0886ae201b0e5054641073cd87d1df98596424b03d9"
+        }
+      ]
+    },
+    {
+      "id": "T4b",
+      "selectedOption": "B",
+      "attempts": [
+        3,
+        2
+      ],
+      "selectedGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-381d4b02-8021-47a7-a910-e37ec188fd89.png",
+      "alternateGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-3eb92e6c-b626-4ebe-8d38-614d924c3941.png",
+      "notes": "Centered20-toy display with localized gold Unicorn halo, glowing rarity trims, hot Kiln and purple bokeh; common portions remain above foreground fascia. Clear zone only~15% headroom, horn gold-tinted, tiny faces/refractions differ; source occlusion and mobile legibility unresolved after retries.",
+      "files": [
+        {
+          "path": "T4b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2272267,
+          "sha256": "a08d88115d6a334fbc37965a5daaa6c4b2dff167478381042f46f678b8598368"
+        },
+        {
+          "path": "alt/T4b_b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2327665,
+          "sha256": "431ce264b0e7cda3ba050c95407a24fe91d010d1377edc82c315449ca2d1bcd6"
+        }
+      ]
+    },
+    {
+      "id": "T5a",
+      "selectedOption": "B",
+      "attempts": [
+        3,
+        1
+      ],
+      "selectedGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-ebd45676-d9b3-4e8e-9209-a6df46fcf4c1.png",
+      "alternateGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-32f109fc-c859-4559-b158-e6c3796e649a.png",
+      "notes": "Composited King and source crowd, corrected five-post gem crown after rejected extra-jewel attempts, gold rim/ray, distant arena islands and source clash. B calmer sky; crown scale/facets and small crowd faces differ from Studio, source toy highlights differ.",
+      "files": [
+        {
+          "path": "T5a.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2223425,
+          "sha256": "8d5461714d513b9a9654f707a5efacbecca18ce3d39e981695dc314a90dad500"
+        },
+        {
+          "path": "alt/T5a_b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2305495,
+          "sha256": "6d32b3a3577c155cca7c279789bc6128e65c9744cd591ccbe34d1f9792a8c698"
+        }
+      ]
+    },
+    {
+      "id": "T5b",
+      "selectedOption": "B",
+      "attempts": [
+        1,
+        3
+      ],
+      "selectedGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-dcdd1cc1-3563-4f9a-a365-4c22fb09d1be.png",
+      "alternateGeneration": "/Users/charleslamont/.codex/generated_images/01a16042-bf74-7513-b4f9-1e6330840f31/exec-a251af47-655a-4151-8b23-f8b8ed132150.png",
+      "notes": "Centered stand/arch, King/crowd, source clash, golden light, distant arenas; final retry retains five-tip crown and softens sun. B cleaner sky; arch still enters top-centre near29%, glassies small at300px, crown/crowd details not pixel-exact.",
+      "files": [
+        {
+          "path": "T5b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2346532,
+          "sha256": "8646f23be7f4c190fae176c54d72012f359d45c7522226875c81226161fe68ec"
+        },
+        {
+          "path": "alt/T5b_b.png",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 2323127,
+          "sha256": "793fa1681c166c6b9f35db529225a5ad724a0af59afe5dba4b7519405e4511e0"
+        }
+      ]
+    }
+  ],
+  "icons": "deferred by creator",
+  "ranking": [
+    "T1c",
+    "T1a",
+    "T1h",
+    "T2a",
+    "T3a",
+    "T2c",
+    "T5a",
+    "T3b",
+    "T1d",
+    "T4a"
+  ]
+}

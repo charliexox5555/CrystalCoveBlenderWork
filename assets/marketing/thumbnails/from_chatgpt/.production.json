@@ -1,0 +1,72 @@
+[
+  {
+    "id": "T1a",
+    "pick": "B",
+    "notes": "Warm rim light, impact ring, arc trails, distant floating islands; B has cleaner blue debris and clear zone. Faces/silhouettes visually close, not pixel-identical."
+  },
+  {
+    "id": "T1b",
+    "pick": "A",
+    "notes": "Reframed lower with broad blue-peach headroom, gold clash ring and arcs. Pick ~42% height rather than 55%. Alternate after 3 attempts has Comet base slightly in bottom 15%; generator cannot fully satisfy both size and safe area."
+  },
+  {
+    "id": "T1c",
+    "pick": "B",
+    "notes": "Added amethyst/sapphire sky, violet rim, white-gold flash, arc trails, blue shard depth and soft islands; B preserves a calmer top-left. Render identity visually close; exact pixel/geometry preservation not guaranteed by generation."
+  },
+  {
+    "id": "T1d",
+    "pick": "B",
+    "notes": "Reframed centered, dark jewel sky, fading strings, violet rim, impact and arc trails; B less overexposed. Top-centre headroom about 27% rather than full third; minor sparks near clear-zone boundary remain after retry."
+  },
+  {
+    "id": "T1h",
+    "pick": "B",
+    "notes": "Added orange-violet night horizon, soft top-right moon, gold rim and controlled impact/arc glow; B has clean top-left and fewer sparks. No obvious content-rule failure on visual review; exact source pixels not retained."
+  },
+  {
+    "id": "T2a",
+    "pick": "B",
+    "notes": "Added golden rim, mint crack glow, right-side flying shards/DOF, soft sky islands; revised framing removes obstructing stand. B safer feet and calmer sky. Dragon ~67% height versus75%; exact material/geometry fidelity is visual, not deterministic."
+  },
+  {
+    "id": "T2b",
+    "pick": "A",
+    "notes": "Added gold rim, mint crack flare and shard depth; zoomed out after unsafe feet/headroom attempts. Pick ~50% height, alternate ~40%, not75%; string remains visible across otherwise calm top-centre. A stronger mobile read."
+  },
+  {
+    "id": "T2c",
+    "pick": "A",
+    "notes": "Added purple-blue night, violet rim, pink crack/shatter flare and DOF shards, distant islands. A larger and clearer; B zoomed out to correct low hooves. Minor facial/refraction changes remain; strict unchanged geometry is not assured."
+  },
+  {
+    "id": "T3a",
+    "pick": "B",
+    "notes": "Composited two Studio avatars at edges with requested cheer/shock faces; enlarged exact-source Bear/Blade clash, gold rim and arcs. Shifted timber toward borders to clear top-left. Pads only partly visible due crop; glass highlights/refractions differ from source."
+  },
+  {
+    "id": "T3b",
+    "pick": "A",
+    "notes": "Added expressive Studio avatars, enlarged central Bear/Blade clash, gold rim, arc trails and clouds; lowered crossbar for top-centre sky. A has more headroom; alternate band smaller (~21%). Pads mostly cropped and glass refraction differs."
+  },
+  {
+    "id": "T4a",
+    "pick": "A",
+    "notes": "Gold unicorn spotlight/halo, jewel trims, glossy lighting and hot cream/brick Kiln; wider view with plain foreground fascia keeps20 source-visible toys above bottom strip. Common row partially occluded as source; all20 not individually readable at300px; clear horn picks up strong gold tint and small faces/refractions not exact."
+  },
+  {
+    "id": "T4b",
+    "pick": "B",
+    "notes": "Centered20-toy display with localized gold Unicorn halo, glowing rarity trims, hot Kiln and purple bokeh; common portions remain above foreground fascia. Clear zone only~15% headroom, horn gold-tinted, tiny faces/refractions differ; source occlusion and mobile legibility unresolved after retries."
+  },
+  {
+    "id": "T5a",
+    "pick": "B",
+    "notes": "Composited King and source crowd, corrected five-post gem crown after rejected extra-jewel attempts, gold rim/ray, distant arena islands and source clash. B calmer sky; crown scale/facets and small crowd faces differ from Studio, source toy highlights differ."
+  },
+  {
+    "id": "T5b",
+    "pick": "B",
+    "notes": "Centered stand/arch, King/crowd, source clash, golden light, distant arenas; final retry retains five-tip crown and softens sun. B cleaner sky; arch still enters top-centre near29%, glassies small at300px, crown/crowd details not pixel-exact."
+  }
+]

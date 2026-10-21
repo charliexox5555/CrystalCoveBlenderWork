@@ -3,6 +3,53 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-21 — Claude (marketing session) — Thumbnails finished and exported
+Done:
+- Reviewed all 28 ChatGPT thumbnail options (`from_chatgpt/`, report in REPORT.md) against the real renders: glassies on-model, no text/UI, bottom 15% clear. Icons deferred by the creator.
+- Picked 10 for upload: T1a, T3a, T2a, T1c, T5a, T1h, T2c, T4a, T3b, T1b (spares: T4b, T5b, T2b, T1d alt). Mix of all five types and both logo spots.
+- `tools/marketing/compose.py`: light finish (sharpen, +6% saturation, soft vignette), jewel wordmark in each clear zone with a soft shadow, 1920x1080 JPG at ~0.5 MB; clean no-logo copies in `final/clean/`; `final/contact_sheet.png` at 300 px on light and dark.
+- `assets/marketing/thumbnails/UPLOAD.md`: order, steps, what to check after a week.
+Next: creator uploads the 10 and starts personalization; icons later; swap T1h after Halloween.
+
+## 2026-10-21 — Claude (viewport-to-images session) — Item pictures instead of live viewports (decision 113, Proposed)
+Done:
+- Research first (docs/testing/viewports/AUDIT.md, sources cited): Roblox's Improve-performance guide (texture memory
+  follows pixels, 512 px is enough for most UI), the ViewportFrame release thread (a static viewport costs about an
+  image; updating ones switch render targets; glass/neon at lowest quality), DevForum consensus (images for anything
+  static, one live viewport where motion matters). EditableImage / CaptureService can't do this.
+- Audit and measurements:
+  - Every viewport use inventoried. The lobby holds 122 viewports (807 parts) at idle; Inventory shows 38 at once;
+    a 10-pull showed 83.
+  - A/B in Studio Play with the new switch `workspace.ItemIconsOff`.
+- 76 icons, 1024 + 512 px, uploaded to group 11116787:
+  - 44 glassies, 13 flyers, 13 finisher stills, 6 Kilns / crate machines.
+  - Rendered in Blender (headless) from each portrait's own camera, parts and Studio colours: Studio dump
+    (`tools/studio/dump_portraits.luau`); in-game meshes matched to repo FBX by EditableMesh fingerprint (731/731,
+    `tools/icons/match_meshes.py`); `tools/blender/item_icons.py` with the shared `render_icon` rig.
+  - Ids in `Config/ItemIcons` (Small / Large).
+- `Components/ItemIcon`:
+  - `GlassyPortrait` / `CosmeticPortrait` / `ItemPresentation` show the icon in the same slot; `live = true` keeps 3D.
+  - Kept live: detail panes, catalog preview, single-pull Kiln reveal, Kiln opening stage, Shop crate machines.
+  - No icon → viewport (new drops still show).
+  - Reels, glows, dimming, pop-ins and silhouettes keep working.
+- LoadTiers (with loading-tiers):
+  - Coin Kiln icon Essential, glassy icons Soon, the rest Later.
+  - Shop / Profile / Collection pull them forward; payload hints fetch an item's icon.
+- Results (REPORT.md, captures/):
+  - Opening the Inventory and the Shop is 12–20% faster.
+  - Up to 1,400 fewer instances.
+  - 10-pull reels: worst frame 110 → 77 ms, parts in PlayerGui 640 → 213.
+  - The viewport reels showed blank tiles mid-spin; icons fill every tile.
+  - Same look side by side, desktop and iPhone 17 Pro.
+- Lune 224/224.
+Next:
+- Creator: look at the side-by-sides (docs/testing/viewports/captures) and say whether the Shop machines or the
+  detail panes should also become pictures.
+- Gumball (and a few neon-heavy finisher stills) render brighter than their viewport; re-render with less neon glow.
+Problems / questions for the user:
+- Glass Phoenix's body mesh (89543800857593) is "not approved for the requester" in Studio, so the live model may be
+  missing its body. Check it on the Creator Dashboard (the icon is fine; it was rendered from the repo FBX).
+
 ## 2026-10-21 — Claude (tutorial-audit session) — First-session tutorial audit and hardening (decision 112, Proposed)
 Done:
 - Played the whole first session in Studio Play as new players (desktop + Galaxy A06), real clicks and walking, and tried to break it. Report with 18 captures and timings: docs/testing/onboarding_audit/REPORT.md.

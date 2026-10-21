@@ -22,3 +22,6 @@ Thumbs.db
 # Python
 __pycache__/
 *.pyc
+
+# Third-party reference screenshots stay local (public repo)
+docs/references/images/

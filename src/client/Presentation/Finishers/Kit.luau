@@ -80,12 +80,17 @@ task.spawn(function()
 			byId[id] = key
 		end
 	end
-	local ids = {}
+	-- ImageLabels, not bare id strings: a string preload reports Failure even for a good image (decision 111), which
+	-- sent every show to its fallbacks. Waits for the loading screen so it doesn't compete with the Essential tier.
+	local labels = {}
 	for id in byId do
-		table.insert(ids, id)
+		local label = Instance.new("ImageLabel")
+		label.Image = id
+		table.insert(labels, label)
 	end
+	require(script.Parent.Parent.Parent.LoadGate).afterLoading()
 	pcall(function()
-		game:GetService("ContentProvider"):PreloadAsync(ids, function(id, status)
+		game:GetService("ContentProvider"):PreloadAsync(labels, function(id, status)
 			local key = byId[id]
 			if key and status ~= Enum.AssetFetchStatus.Success then
 				failed[key] = true

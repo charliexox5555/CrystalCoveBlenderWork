@@ -11,6 +11,7 @@ local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
 local Music = require(RS.Shared.Config.Music)
+local LoadGate = require(script.Parent.Parent.LoadGate)
 local Remotes = require(RS.Shared.Remotes)
 local AudioGroups = require(script.Parent.Parent.AudioGroups)
 local Controller = {}
@@ -61,6 +62,7 @@ function Controller:BuildAudio()
 		self.Stings[name] = sound
 	end
 	task.spawn(function()
+		LoadGate.afterLoading() -- the beds are big; the loading screen's Essential tier goes first (a playing bed loads itself)
 		pcall(function()
 			game:GetService("ContentProvider"):PreloadAsync(master:GetDescendants())
 		end)

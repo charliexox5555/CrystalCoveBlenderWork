@@ -35,7 +35,9 @@ function Shatter:Start()
 			self.Sounds[id] = sound
 			table.insert(sounds, sound)
 		end
-		-- Sound instances tell ContentProvider to request audio, rather than an image URL.
+		-- Sound instances tell ContentProvider to request audio, rather than an image URL. After the loading screen,
+		-- so the Essential tier goes first (Config/LoadTiers also has these in its Soon tier).
+		require(script.Parent.Parent.LoadGate).afterLoading()
 		ContentProvider:PreloadAsync(sounds)
 	end)
 end

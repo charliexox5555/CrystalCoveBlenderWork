@@ -264,6 +264,7 @@ function Controller:Start()
 	end)
 	-- Fetch the screens' art in the background so a first open never shows empty frames on a slow connection.
 	task.spawn(function()
+		require(script.Parent.Parent.LoadGate).afterLoading() -- Essential tier first (Daily is already in it)
 		local pg = self.Player:WaitForChild("PlayerGui")
 		local images = {}
 		for _, spec in Config.Buttons do

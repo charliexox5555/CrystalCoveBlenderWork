@@ -8,6 +8,7 @@ local RS = game:GetService("ReplicatedStorage")
 local Remotes = require(RS.Shared.Remotes)
 local UIAssets = require(RS.Shared.Config.UIAssets)
 local ProfileScreen = require(script.Parent.Parent.UI.Screens.ProfileScreen)
+local LoadGate = require(script.Parent.Parent.LoadGate)
 local Controller = {}
 
 local SCREEN = "ProfileScreen"
@@ -228,6 +229,10 @@ end
 function Controller:Start()
 	Remotes.ProfileSnapshot.OnClientEvent:Connect(function(profile)
 		self.Profile = profile
+		local loader = LoadGate.loader()
+		if loader then
+			loader.owned(profile) -- your glassies and equipped cosmetics load before the rest (Config/LoadTiers)
+		end
 		if not self.Target then
 			self:Refresh()
 		end

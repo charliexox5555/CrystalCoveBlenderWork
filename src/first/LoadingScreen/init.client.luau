@@ -1,8 +1,9 @@
 --!strict
 -- Glass Clash loading screen (ReplicatedFirst, so it is the first thing a player sees). Roblox's default screen is
--- replaced by the clash show (Clash), while the game's art preloads in the background (Preload): UI images, screen
--- templates, every model and effect, the lobby. It closes when that is done, with guards so nobody gets stuck:
--- SKIP shows after SKIP_AFTER seconds and the screen closes by itself after MAX_SECONDS (loading carries on behind).
+-- replaced by the clash show (Clash), while the Essential tier preloads (Preload, Shared.Config.LoadTiers): the
+-- first-minute UI, fonts and the spawn area. It closes when that is done and the game has loaded, with guards so
+-- nobody gets stuck: SKIP shows after SKIP_AFTER seconds and the screen closes by itself after MAX_SECONDS. Then
+-- the Soon and Later tiers load in the background (Preload.release).
 -- When it is gone it sets the local Player attribute ClientLoaded = true (OnboardingController waits for it).
 local ContentProvider = game:GetService("ContentProvider")
 local Players = game:GetService("Players")
@@ -12,7 +13,8 @@ local Art = require(script:WaitForChild("Art"))
 local Clash = require(script:WaitForChild("Clash"))
 local Preload = require(script:WaitForChild("Preload"))
 
-local MIN_SECONDS = 3.2 -- at least one full clash
+local MIN_SECONDS = 2.4
+local MIN_SHOW = 1.6 -- the clash is on screen at least this long (the first hit lands at ~1 s)
 local SKIP_AFTER = 10
 local MAX_SECONDS = 30
 local W, H = 1920, 1080
@@ -221,11 +223,17 @@ local veil = make("Frame", gui, {
 ReplicatedFirst:RemoveDefaultLoadingScreen()
 
 -- Show ------------------------------------------------------------------------------------------------------------
+-- The Essential tier starts now, beside the screen's own art; it doesn't need the whole game to have loaded (its
+-- first wait is for ReplicatedStorage.Shared, so the art gets a head start).
+task.spawn(Preload.start)
 -- The screen's own art first (small, a few seconds at most), then the clash starts.
 do
 	local own = {}
 	for _, id in Art.Images do
-		table.insert(own, id)
+		-- ImageLabels, not id strings: a bare string reports Failure at once and the show would start on blanks.
+		local label = Instance.new("ImageLabel")
+		label.Image = id
+		table.insert(own, label)
 	end
 	local ready = false
 	task.spawn(function()
@@ -238,6 +246,7 @@ do
 end
 TweenService:Create(backdrop, TweenInfo.new(0.4), { ImageTransparency = 0 }):Play()
 stage.Visible = true
+local showStarted = os.clock()
 local show = Clash.new(stage)
 tap.Activated:Connect(function()
 	show:Poke()
@@ -268,29 +277,27 @@ local barConnection = game:GetService("RunService").RenderStepped:Connect(functi
 	percent.Text = string.format("%d%%", math.floor(shown * 100 + 0.5))
 end)
 
-if not game:IsLoaded() then
-	game.Loaded:Wait()
-end
 status.Text = Art.Lines[1]
 
-local loaded = false
-task.spawn(function()
-	local jobs = Preload.jobs()
-	Preload.run(jobs, function(done, total)
-		target = if total > 0 then done / total else 1
-	end)
-	loaded = true
-end)
-
+-- The bar is the Essential tier only; it never runs backwards when the spawn area adds jobs.
 while true do
 	local elapsed = os.clock() - started
+	local done, total = Preload.progress()
+	if total > 0 then
+		target = math.max(target, done / total)
+	end
+	local loaded = Preload.essentialDone() and game:IsLoaded()
 	if elapsed > SKIP_AFTER and not skip.Visible and not loaded then
 		skip.Visible = true
 	end
-	if (loaded and elapsed >= MIN_SECONDS) or skipped or elapsed >= MAX_SECONDS then
+	if
+		(loaded and elapsed >= MIN_SECONDS and os.clock() - showStarted >= MIN_SHOW)
+		or skipped
+		or elapsed >= MAX_SECONDS
+	then
 		break
 	end
-	task.wait(0.1)
+	task.wait(0.05)
 end
 
 -- Close -----------------------------------------------------------------------------------------------------------
@@ -308,7 +315,19 @@ dip.Completed:Wait()
 show:Destroy()
 barConnection:Disconnect()
 root:Destroy()
+player:SetAttribute("LoadSeconds", math.floor((os.clock() - started) * 100) / 100)
 player:SetAttribute("ClientLoaded", true)
+Preload.release()
+if game:GetService("RunService"):IsStudio() then
+	task.spawn(function()
+		Preload.publishReport()
+		local waited = os.clock()
+		while player:GetAttribute("LoadStage") ~= "Done" and os.clock() - waited < 300 do
+			task.wait(1)
+		end
+		Preload.publishReport()
+	end)
+end
 local rise = TweenService:Create(veil, TweenInfo.new(0.45), { BackgroundTransparency = 1 })
 rise:Play()
 rise.Completed:Wait()

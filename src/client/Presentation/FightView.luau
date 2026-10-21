@@ -132,9 +132,6 @@ function Controller:ExitView()
 end
 
 function Controller:EndFight()
-	if self.Watching then
-		self.Player.PlayerGui:SetAttribute("Watching", false)
-	end
 	self:ExitView()
 	if self.Feel then
 		self.Feel:Destroy()
@@ -145,7 +142,7 @@ function Controller:EndFight()
 		self.Scene = nil
 	end
 	self.KOQueue = {}
-	self.Viewing, self.Watching = false, false
+	self.Viewing, self.Watching, self.Lingering = false, false, false
 	self.Data, self.Snapshots, self.Events, self.Drag, self.RenderTime = nil, {}, {}, nil, 0
 	self.FinalTime, self.FinalSide, self.SlowUntil, self.LastSnapshotWall = nil, nil, nil, nil
 	self.Locked, self.Focus, self.LastCountdown = false, nil, nil
@@ -263,11 +260,11 @@ function Controller:EnterView()
 end
 
 -- Spectate a nearby fight on request, without rebuilding its scene or losing its snapshot buffer.
+-- FightController owns the match-long watch (and the PlayerGui "Watching" flag); this is one round's part of it.
 function Controller:Watch(on)
 	if not self.Scene or self.Participant or on == self.Watching then
 		return
 	end
-	self.Player.PlayerGui:SetAttribute("Watching", on)
 	if on then
 		self.Watching, self.Viewing = true, true
 		local latest = self.Snapshots[#self.Snapshots]

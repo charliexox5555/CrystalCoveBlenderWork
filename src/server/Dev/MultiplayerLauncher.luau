@@ -36,4 +36,20 @@ function Launcher.combat()
 	end)
 	return "Focused two-client combat QA started"
 end
+-- Two-client watch / stage isolation QA (Dev/WatchHarness). Result in ServerStorage.WatchQAResult.
+function Launcher.watch()
+	assert(game:GetService("RunService"):IsStudio() and not game:GetService("RunService"):IsRunning())
+	local output = game.ServerStorage:FindFirstChild("WatchQAResult") or Instance.new("StringValue")
+	assert(output:GetAttribute("Running") ~= true, "Watch QA already running")
+	output.Name, output.Value, output.Parent = "WatchQAResult", "", game.ServerStorage
+	output:SetAttribute("Running", true)
+	task.spawn(function()
+		local ok, result = pcall(function()
+			return game:GetService("StudioTestService"):ExecuteMultiplayerTestAsync(2, { Name = "GlassClashWatchQA" })
+		end)
+		output.Value = game:GetService("HttpService"):JSONEncode({ Launched = ok, Result = result })
+		output:SetAttribute("Running", false)
+	end)
+	return "Two-client watch QA started; result appears in ServerStorage.WatchQAResult"
+end
 return Launcher

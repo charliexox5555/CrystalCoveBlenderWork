@@ -1002,7 +1002,8 @@ Balance.Feel = {
 	FarSwingAngle = 0.42, -- radians either side of FarSwingCenter
 	FarSwingCenter = -0.16, -- negative = pulled back; the peak stops just short of contact
 	WatchPromptDistance = 18, -- studs from a pen's centre to offer "Watch"
-	WatchRejoinSeconds = 35, -- keep watching an arena across the roll between its rounds
+	WatchRejoinSeconds = 60, -- safety only: a watch gives up if the next round hasn't started this long after the last
+	WatchHidesSelf = true, -- while watching, your own avatar is hidden too (only the two fighters stay in the shot)
 	PadRootHeight = 3,
 	FinisherPause = 0.55,
 	FinisherRiseSeconds = 0.55,

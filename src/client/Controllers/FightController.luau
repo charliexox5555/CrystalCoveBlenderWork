@@ -8,6 +8,7 @@ local Codec = require(RS.Shared.SnapshotCodec)
 local Rules = require(RS.Shared.FightRules)
 local Balance = require(RS.Shared.Config.Balance)
 local View = require(script.Parent.Parent.Presentation.FightView)
+local Isolation = require(script.Parent.Parent.Presentation.StageIsolation)
 local CastButton = require(script.Parent.Parent.UI.Screens.CastButton)
 local Controller = {}
 function Controller:Init(controllers)
@@ -16,11 +17,18 @@ function Controller:Init(controllers)
 end
 
 -- Watching (GAME_DESIGN 7): a local prompt at each busy stand points your camera at that fight.
+-- A watch lasts the whole match: every round, effect, finisher and heart pop. Each round is its own fight view,
+-- so the watch lives here, per match (self.Watch): between rounds the last round's view stays on screen
+-- (camera, HUD, the survivor at rest) until the next round's view takes over in the same frame. It ends when
+-- the server says the match is over, or the player exits.
 local WATCHABLE = { Aiming = true, Countdown = true, Fighting = true, RoundEnd = true }
 
 function Controller:CanWatch()
 	local pg = Players.LocalPlayer:FindFirstChild("PlayerGui")
 	if pg and (pg:GetAttribute("InMatch") or pg:GetAttribute("Queued") or pg:GetAttribute("ResultsOpen")) then
+		return false
+	end
+	if self.Watch then
 		return false
 	end
 	for _, view in self.Views do
@@ -43,17 +51,75 @@ end
 function Controller:StartWatching(arenaId)
 	local view = self:WatchableView(arenaId)
 	if view and WATCHABLE[view.Phase] and self:CanWatch() then
-		self.WatchArena, self.WatchUntil = arenaId, nil
-		view:Watch(true)
+		local data = view.Data
+		self.Watch = {
+			ArenaId = arenaId,
+			MatchId = data.MatchId,
+			PlayerIds = data.PlayerIds,
+			StageName = data.StageName,
+		}
+		Players.LocalPlayer.PlayerGui:SetAttribute("Watching", true)
+		self:Follow(view)
+		self:UpdateIsolation()
 	end
 end
 
+function Controller:DropView(view)
+	for id, other in self.Views do
+		if other == view then
+			self.Views[id] = nil
+		end
+	end
+	view:EndFight()
+end
+
+-- The watched match's next round: close the previous round's view first (it gives the normal camera back),
+-- then enter the new one, all in one frame, so the shot never leaves the arena.
+function Controller:Follow(view)
+	local watch = self.Watch
+	local old = watch.View
+	watch.View, watch.LingerUntil = view, nil
+	if old and old ~= view then
+		self:DropView(old)
+	end
+	view:Watch(true)
+end
+
 function Controller:StopWatching()
-	self.WatchArena, self.WatchUntil = nil, nil
-	for _, view in self.Views do
+	local watch = self.Watch
+	self.Watch = nil
+	local view = watch and watch.View
+	if view then
 		if view.Watching then
 			view:Watch(false)
 		end
+		if view.Lingering then
+			self:DropView(view)
+		end
+	end
+	for _, other in self.Views do
+		if other.Watching then
+			other:Watch(false)
+		end
+	end
+	local pg = Players.LocalPlayer:FindFirstChild("PlayerGui")
+	if pg then
+		pg:SetAttribute("Watching", false)
+	end
+	self:UpdateIsolation()
+end
+
+-- Hide everyone who isn't in the match we're playing or watching (StageIsolation); show them again after.
+function Controller:UpdateIsolation()
+	local watch = self.Watch
+	local pg = Players.LocalPlayer:FindFirstChild("PlayerGui")
+	local own = self.OwnMatch
+	if watch then
+		Isolation.set({ Keep = watch.PlayerIds, Stage = watch.StageName, HideSelf = Balance.Feel.WatchHidesSelf })
+	elseif own and pg and pg:GetAttribute("InMatch") then
+		Isolation.set({ Keep = own.PlayerIds, Stage = own.StageName })
+	else
+		Isolation.set(nil)
 	end
 end
 
@@ -93,6 +159,12 @@ function Controller:UpdatePrompts(dt)
 		return
 	end
 	self.PromptClock = 0
+	local watch = self.Watch
+	if watch and watch.LingerUntil and os.clock() > watch.LingerUntil then
+		-- The next round never came (missed packet, server hiccup): give the camera back.
+		self:StopWatching()
+	end
+	self:UpdateIsolation()
 	local allowed = self:CanWatch()
 	for id, prompt in self.Prompts do
 		local view = if allowed then self:WatchableView(id) else nil
@@ -146,13 +218,21 @@ function Controller:Start()
 		if data.Phase ~= "Fighting" and mine and mine.Participant then
 			self.CastUi:Clear()
 		end
+		if table.find(data.PlayerIds or {}, Players.LocalPlayer.UserId) and data.MatchId then
+			self.OwnMatch = { MatchId = data.MatchId, PlayerIds = data.PlayerIds, StageName = data.StageName }
+		end
 		if data.Phase == "Idle" then
+			local watch = self.Watch
+			if watch and data.MatchOver and data.MatchId == watch.MatchId then
+				self:StopWatching()
+			end
 			local view = self.Views[data.Id]
-			if view then
-				if view.Watching then
-					-- Keep watching this arena if its next round starts soon.
-					self.WatchUntil = os.clock() + Balance.Feel.WatchRejoinSeconds
-				end
+			watch = self.Watch
+			if view and watch and watch.View == view then
+				-- Between rounds: keep this view on screen until the next round's view takes over.
+				view.Lingering = true
+				watch.LingerUntil = os.clock() + Balance.Feel.WatchRejoinSeconds
+			elseif view then
 				view:EndFight()
 				self.Views[data.Id] = nil
 			end
@@ -168,8 +248,10 @@ function Controller:Start()
 			local view = self.Views[data.Id]
 			if not view then
 				view = View.new(self.Controllers)
-				view.OnStopWatching = function()
-					self.WatchArena, self.WatchUntil = nil, nil
+				view.OnStopWatching = function(stopped)
+					if self.Watch and self.Watch.View == stopped then
+						self:StopWatching()
+					end
 				end
 				self.Views[data.Id] = view
 			end
@@ -177,18 +259,17 @@ function Controller:Start()
 			if data.Phase == "Fighting" and data.SignatureState then
 				self:CastEvents(view, data.SignatureState)
 			end
-			if
-				self.WatchArena == data.ArenaId
-				and self.WatchUntil
-				and os.clock() < self.WatchUntil
-				and WATCHABLE[view.Phase]
-				and not view.Participant
-				and self:CanWatch()
-			then
-				self.WatchUntil = nil
-				view:Watch(true)
+			local watch = self.Watch
+			if watch and watch.View ~= view and data.ArenaId == watch.ArenaId and not view.Participant then
+				if data.MatchId == watch.MatchId then
+					self:Follow(view)
+				else
+					-- A new match in that arena: ours ended without us hearing.
+					self:StopWatching()
+				end
 			end
 		end
+		self:UpdateIsolation()
 	end)
 	Remotes.FightSnapshot.OnClientEvent:Connect(function(packet)
 		self.SnapshotCount += 1
@@ -266,6 +347,7 @@ function Controller:Start()
 	end)
 	Players.LocalPlayer.CharacterRemoving:Connect(function()
 		self.CastUi:Clear()
+		self:StopWatching()
 		for _, view in self.Views do
 			view:EndFight()
 		end
@@ -286,8 +368,13 @@ function Controller:Start()
 	for _, attribute in { "InMatch", "Queued" } do
 		pg:GetAttributeChangedSignal(attribute):Connect(function()
 			if pg:GetAttribute(attribute) then
-				self:StopWatching()
+				if self.Watch then
+					self:StopWatching()
+				end
+			elseif attribute == "InMatch" then
+				self.OwnMatch = nil
 			end
+			self:UpdateIsolation()
 		end)
 	end
 	RunService:BindToRenderStep("GlassClashFight", Enum.RenderPriority.Camera.Value + 1, function(dt)
@@ -361,6 +448,26 @@ function Controller:Start()
 				end
 				Remotes.RequestFightState:FireServer()
 				return true
+			end
+			if command == "Watch" then
+				-- Studio-only: the same as triggering an arena's Watch prompt (arg = arena id, nil to stop).
+				if arg == nil then
+					self:StopWatching()
+					return true
+				end
+				self:StartWatching(arg)
+				return self.Watch ~= nil
+			end
+			if command == "Watching" then
+				local watch = self.Watch
+				return watch
+					and {
+						ArenaId = watch.ArenaId,
+						MatchId = watch.MatchId,
+						ViewId = watch.View and watch.View.Data and watch.View.Data.Id,
+						Lingering = watch.View and watch.View.Lingering == true,
+						Isolated = Isolation.active(),
+					}
 			end
 			if command == "DropEvery" then
 				self.DropEvery = arg

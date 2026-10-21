@@ -180,7 +180,7 @@ function Service:Finish(entry)
 	local eligible = entry.ActualWins[1] + entry.ActualWins[2] > 0
 	local names = self:Meta(entry).Names
 	if entry.FightId then
-		self.Services.FightService:Stop(entry.FightId)
+		self.Services.FightService:Stop(entry.FightId, { MatchId = entry.Id, ArenaId = entry.Arena.Id, Over = true })
 	end
 	Stage.finish(entry)
 	for side, player in entry.Players do
@@ -242,7 +242,10 @@ function Service:Dispatch(entry, now)
 		local match = entry.Runner.Match
 		if change.Phase == "Rolling" then
 			if entry.FightId then
-				self.Services.FightService:Stop(entry.FightId)
+				self.Services.FightService:Stop(
+					entry.FightId,
+					{ MatchId = entry.Id, ArenaId = entry.Arena.Id, Over = false }
+				)
 			end
 			entry.FightId = entry.Id .. "-round-" .. match.Round
 			for side, player in entry.Players do

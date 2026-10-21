@@ -17,6 +17,7 @@ Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DES
 - [x] **CL:** UI polish from creator notes: menu open/close animations, claim celebrations, coin burst into the wallet with aura pulses, coin piles and 3D Kiln/crate viewports in reward cells, crate opening rarity moments (Legendary/Mythic build-up), Shop reopens on the same tab after an opening, Stained Glass arena boards that only show up close, roll screen overlap fixed.
 - [x] **CL:** onboarding (decision 100): welcome opens, daily step, reserved arena with guide beam, assisted 3-1 first match vs Rookie Bot, first-win Kiln open, funnel analytics. [Design](design/ONBOARDING.md)
 - [x] **U/CL:** onboarding visual pass with Studio on screen (no hint text, Kiln x3 claim card, win claim card, stacked reels, chevron beam) and a 12-step tutorial funnel through the second match.
+- [x] **CL:** viewing fixes (decision 103): a watch follows the whole match (every round, finisher and heart pop) and ends only at match end or EXIT; while playing or watching, everyone outside the match is hidden on your screen (own avatar too while watching). Two-client Studio QA (`MultiplayerLauncher.watch()`) passes.
 - [ ] **U:** watch the onboarding funnel in Creator Dashboard after launch.
 - [ ] **CL/U:** Quests redesign (screen and row held back); retire the old combined RewardsScreen once Quests have a home.
 - [ ] **U:** phone check of the four new screens and the top bar; listen to volume sliders.

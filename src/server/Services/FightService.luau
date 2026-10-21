@@ -105,9 +105,16 @@ function Service:StartFight(id, arena, setup, seed, metadata, onEnd)
 	return session
 end
 
-function Service:Stop(id)
+-- `match` (optional) tells watchers whether the match goes on to another round: { MatchId, ArenaId, Over }.
+function Service:Stop(id, match)
 	-- Aiming/countdown views exist before a simulation session. Close those too on cancellation.
-	Remotes.MatchState:FireAllClients({ Id = id, Phase = "Idle" })
+	Remotes.MatchState:FireAllClients({
+		Id = id,
+		Phase = "Idle",
+		MatchId = match and match.MatchId,
+		ArenaId = match and match.ArenaId,
+		MatchOver = match and match.Over,
+	})
 	self.Sessions[id] = nil
 end
 

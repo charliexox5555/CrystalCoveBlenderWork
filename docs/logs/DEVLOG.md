@@ -3,6 +3,24 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-20 — Claude (next patch, main session) — Viewing fixes (decision 103)
+Done:
+- Watching lasts the whole match. The watch is now match-level state in `FightController` (`self.Watch`). At a round's `Idle` the watched view lingers (camera, HUD, survivor at rest). The next round's view of the same match takes over in the same frame (`Follow`), at full detail. The watch ends on the server's new `MatchOver` flag (FightService:Stop now carries `MatchId`/`ArenaId`/`MatchOver`; MatchService sends it at the roll and at Finish), on EXIT/Escape, on a new match in that arena, or after the 60 s safety timeout (`Feel.WatchRejoinSeconds`). The PlayerGui "Watching" flag is now owned by the controller, so it no longer flickers between rounds.
+- Matches are isolated on screen (`Presentation/StageIsolation`). While you play or watch a match, everyone who isn't one of its fighters is hidden locally: parts and decals (LocalTransparencyModifier), nameplates, effects and guis, other matches' `MatchStage_*` rides, plus anything that spawns or respawns during it. Everything is restored afterwards. While watching, your own avatar is hidden too (`Feel.WatchHidesSelf`, creator's choice). Separate from "Hide Others' Cosmetics".
+- New two-client Studio QA: `require(ServerScriptService.Server.Dev.MultiplayerLauncher).watch()` (Dev/WatchHarness server + client); result in `ServerStorage.WatchQAResult`. Passed:
+  - Bot match: watched all 4 rounds with the watch flag and fight camera unbroken. B stood in the arena and respawned there, and stayed hidden throughout; own avatar and the other match's stage were hidden.
+  - Own match vs bot with B in the arena: B hidden, own avatar shown.
+  - Human match with 6 s picks: the view held through each roll, the human fighter stayed visible, and a forfeit ended the watch.
+  - Every case restored the normal camera and everyone's visibility.
+- First run caught a bug: the keep list dropped non-positive user ids (Studio test players are negative), hiding a fighter; now only bot side 0 is skipped.
+- Also this patch, in other sessions: the featured stage brainstorm `docs/design/FEATURED_STAGE.md` (recommends Crown Hill + a daily featured matchup; its questions are waiting for the creator) and the ProfileScreen mockups (task 1, in progress).
+- Lune 189/189. Balance change is presentation-only (`Feel.WatchRejoinSeconds` 35 -> 60, new `Feel.WatchHidesSelf`); sims unchanged (Kiln odds Common 56.25 / Uncommon 22 / Rare 14 / Epic 6 / Legendary 1.5 / Mythic 0.25; types Fizzy 46%, Heavy 48%, Sharp 58% in the stand-in model).
+Next:
+- Creator: watch a real match in Studio Play and walk a second player into the arena; check the camera hand-over between rounds feels smooth.
+- The old `MultiplayerHarness` still asserts starter glassies (pop/jam/prism), which decision 102 removed; it needs updating before its next run.
+Problems / questions for the user:
+- None.
+
 ## 2026-10-20 — Claude — Creator fix list (decision 102)
 Done:
 - Starters: new profiles own no glassies, the 3 welcome opens are the first hand; Pop, Jam, Prism are Common Kiln drops (Kiln 33 -> 36). `Glassies.Fallback` tops up short hands for a match (never granted); bots draw from the pool. Collection filter loses "Starter".

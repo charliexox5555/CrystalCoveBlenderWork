@@ -155,7 +155,11 @@ end
 
 function Controller:Build(Icon)
 	for order, spec in Config.Buttons do
-		local icon = Icon.new():setName(spec.Id):setImage(UIAssets[spec.Image]):setCaption(spec.Caption):setOrder(order)
+		local image = UIAssets[spec.Image]
+		if spec.Headshot and self.Player.UserId > 0 then
+			image = ("rbxthumb://type=AvatarHeadShot&id=%d&w=150&h=150"):format(self.Player.UserId)
+		end
+		local icon = Icon.new():setName(spec.Id):setImage(image):setCaption(spec.Caption):setOrder(order)
 		if spec.Items then
 			local rows = {}
 			for _, item in spec.Items do

@@ -16,6 +16,7 @@ export type Button = {
 	Id: string,
 	Caption: string,
 	Image: string,
+	Headshot: boolean?, -- draw the local player's avatar headshot instead of Image (Image is the fallback)
 	HideInMatch: boolean,
 	Screen: string?,
 	Items: { Item }?,
@@ -29,6 +30,15 @@ local Topbar = {
 	-- Containers whose children pop in one after another when a screen opens (Motion.stagger).
 	Stagger = { "Days", "Rewards", "Rows" },
 	Buttons = {
+		-- Profile (decision 104): your own avatar headshot, left of Settings. Hidden in matches like the gift.
+		{
+			Id = "Profile",
+			Caption = "Profile",
+			Image = "screens/profile/icon_glassies",
+			Headshot = true,
+			HideInMatch = true,
+			Screen = "ProfileScreen",
+		},
 		{
 			Id = "Settings",
 			Caption = "Settings",

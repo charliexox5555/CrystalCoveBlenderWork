@@ -42,11 +42,11 @@ return function(t, deps)
 		end
 	end)
 
-	t.test("starters are always in the collection; small collections offer everything", function()
+	t.test("short collections are topped up to a full roll; small collections offer everything", function()
 		local offers = MatchLogic.rollOffers({}, 3, Rng.new(1))
-		t.eq(#offers, 3, "starters fill the roll")
+		t.eq(#offers, 3, "the fallback hand fills the roll")
 		local ids = MatchLogic.ownedIds({ glass_cup = {} })
-		t.eq(#ids, 4, "starters + 1")
+		t.eq(#ids, 3, "glass cup + 2 loaners")
 		t.ok(table.find(MatchLogic.ownedIds({ not_a_glassy = {} }), "not_a_glassy") == nil, "unknown ids ignored")
 	end)
 
@@ -234,8 +234,18 @@ return function(t, deps)
 		end
 		t.eq(size, 7, "same size")
 		t.ok(best <= Balance.Rarities.Legendary.Order, "no rarer than the player's best")
-		for _, id in Glassies.Starters do
-			t.ok(bot[id] ~= nil, "bot owns " .. id)
+	end)
+
+	t.test("short collections borrow the fallback hand; full ones never do", function()
+		t.eq(#MatchLogic.ownedIds({}), Balance.Match.RollChoices, "an empty collection can still fill a roll")
+		local ids = MatchLogic.ownedIds({ milk_bottle = {} })
+		t.eq(#ids, Balance.Match.RollChoices)
+		t.ok(table.find(ids, "milk_bottle") ~= nil, "owned glassies stay")
+		local full = { milk_bottle = {}, pickle_jar = {}, ketchup_bottle = {} }
+		local owned = MatchLogic.ownedIds(full)
+		t.eq(#owned, 3)
+		for _, id in Glassies.Fallback do
+			t.ok(table.find(owned, id) == nil, "no loaner when three are owned: " .. id)
 		end
 	end)
 end

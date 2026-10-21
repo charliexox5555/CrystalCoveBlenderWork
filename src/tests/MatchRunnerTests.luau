@@ -7,7 +7,14 @@ local Guard = if script
 
 return function(t, d)
 	local function new()
-		return Runner.new({ { Collection = { milk_bottle = {} } }, { Collection = {} } }, d.Rng.new(42), 0)
+		return Runner.new(
+			{
+				{ Collection = { milk_bottle = {}, pickle_jar = {}, ketchup_bottle = {}, glass_cup = {} } },
+				{ Collection = {} },
+			},
+			d.Rng.new(42),
+			0
+		)
 	end
 	t.test("picks and locks control phase transitions, with timeout defaults", function()
 		local r = new()

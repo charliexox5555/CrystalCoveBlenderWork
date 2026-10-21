@@ -179,7 +179,7 @@ function EconomySim.report(): string
 	)
 	add("Kiln: %d coins a pull, %d glassies inside", econ.KilnCoinCost, r.KilnGlassies)
 	add("Pulls on day 1: %d   by day 30: %d", r.PullsDay1, r.PullsDay30)
-	add("Unique glassies (of %d + 3 starters): day 7 %d, day 30 %d", r.KilnGlassies, r.UniqueDay7, r.UniqueDay30)
+	add("Unique glassies (of %d in the Kiln): day 7 %d, day 30 %d", r.KilnGlassies, r.UniqueDay7, r.UniqueDay30)
 	add("")
 	add("Median play time to a player's first:")
 	for _, rarity in { "Rare", "Epic", "Legendary", "Mythic" } do

@@ -12,7 +12,7 @@ local Portrait = require(script.Parent.Parent.Components.GlassyPortrait)
 local Screen = {}
 Screen.__index = Screen
 local types = { "All types", "Heavy", "Sharp", "Fizzy" }
-local rarities = { "All rarities", "Starter", "Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic" }
+local rarities = { "All rarities", "Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic" }
 local sorts = { "Rarity", "Name", "Stars" }
 local function installed(id)
 	return RS.Assets.Glassies:FindFirstChild(id) ~= nil

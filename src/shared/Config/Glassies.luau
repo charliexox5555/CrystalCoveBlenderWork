@@ -35,12 +35,13 @@ export type GlassyDef = {
 }
 
 local list: { GlassyDef } = {
-	-- Starters (every new player owns these three) ------------------------------------------
+	-- The first three (decision 102: regular Common Kiln drops; new players start with none and get
+	-- their first three from the welcome opens) ----------------------------------------------
 	{
 		Id = "pop",
 		Name = "Pop",
 		Type = "Fizzy",
-		Rarity = "Starter",
+		Rarity = "Common",
 		Base = { Power = 20, HP = 110, Swing = 10 },
 		Passive = "fizz_burst",
 		Special = "slam",
@@ -55,7 +56,7 @@ local list: { GlassyDef } = {
 		Id = "jam",
 		Name = "Jam",
 		Type = "Heavy",
-		Rarity = "Starter",
+		Rarity = "Common",
 		Base = { Power = 20, HP = 112, Swing = 6 },
 		Passive = "sturdy",
 		PassiveName = "Thick Glass",
@@ -71,7 +72,7 @@ local list: { GlassyDef } = {
 		Id = "prism",
 		Name = "Prism",
 		Type = "Sharp",
-		Rarity = "Starter",
+		Rarity = "Common",
 		Base = { Power = 21, HP = 105, Swing = 14 },
 		Passive = "sharp_edge",
 		Special = "beam",
@@ -742,7 +743,9 @@ table.insert(list, {
 local Glassies = {
 	List = list,
 	ById = {} :: { [string]: GlassyDef },
-	Starters = { "pop", "jam", "prism" },
+	-- Loaner hand, never granted: tops up a collection that has fewer than Balance.Match.RollChoices
+	-- glassies so a roll can always be filled (e.g. walking onto a pad before the welcome opens).
+	Fallback = { "pop", "jam", "prism" },
 }
 
 for _, def in list do

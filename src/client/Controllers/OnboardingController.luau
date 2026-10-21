@@ -61,17 +61,6 @@ local CLAIMS = {
 	Win = { Title = "YOU WON!", Action = "OpenWin" },
 }
 
-local function claimOdds(kind)
-	if kind == "Win" then
-		return string.format(
-			"RARE %d%% · EPIC %d%%",
-			math.round(O.WinPullOdds.Rare * 100),
-			math.round(O.WinPullOdds.Epic * 100)
-		)
-	end
-	return "1 COMMON · 1 UNCOMMON · 1 RARE (100%)"
-end
-
 function Controller:ShowClaim(kind)
 	local claim = CLAIMS[kind]
 	local pg = self.Player.PlayerGui
@@ -85,7 +74,8 @@ function Controller:ShowClaim(kind)
 		title.Text = claim.Title
 	end
 	if odds then
-		odds.Text = claimOdds(kind)
+		-- Free opens show no odds line on the card (creator, 2026-10-20); paid Kiln pulls keep theirs.
+		odds.Visible = false
 	end
 	-- The Coin Kiln in the claim slot, framed like the shop's (the authored Kiln viewport is the editable stand-in).
 	local reward = gui:FindFirstChild("Reward", true)
@@ -197,20 +187,22 @@ function Controller:StartArenaGuide()
 	local a0, a1 = Instance.new("Attachment"), Instance.new("Attachment")
 	a0.Name, a0.Parent = "OnboardingGuideStart", root
 	a1.Parent = marker
-	-- Gold chevrons that stream toward the pad (no words: the arena's board already says it is reserved).
+	-- Gold chevrons that stream toward the pad (no words: the arena's board already says it is reserved). A Beam lays
+	-- its texture's vertical axis along its length with the top at Attachment0, and a positive TextureSpeed scrolls
+	-- toward Attachment0, so the pad is Attachment0 and the "^" chevrons point and flow to it.
 	local beam = Instance.new("Beam")
-	beam.Attachment0, beam.Attachment1 = a0, a1
+	beam.Attachment0, beam.Attachment1 = a1, a0
 	beam.Texture, beam.TextureMode, beam.TextureLength =
 		UIAssets["onboarding/guide_chevron"] or "", Enum.TextureMode.Static, 2.2
 	beam.TextureSpeed = if Motion.reduced() then 0 else 1.2
 	beam.Color = ColorSequence.new(Color3.fromHex("#FFC53D"), Color3.fromHex("#FFE9A8"))
-	beam.Transparency = NumberSequence.new({
-		NumberSequenceKeypoint.new(0, 1),
-		NumberSequenceKeypoint.new(0.12, 0.05),
-		NumberSequenceKeypoint.new(1, 0),
+	beam.Transparency = NumberSequence.new({ -- fades out at the player's end
+		NumberSequenceKeypoint.new(0, 0),
+		NumberSequenceKeypoint.new(0.88, 0.05),
+		NumberSequenceKeypoint.new(1, 1),
 	})
 	beam.Width0, beam.Width1, beam.LightEmission, beam.LightInfluence, beam.FaceCamera = 1.6, 1.6, 0.4, 0, true
-	beam.CurveSize0, beam.Segments = 3, 24
+	beam.Segments = 24
 	beam.Parent = marker
 	folder.Parent = workspace
 	self.Guide = {

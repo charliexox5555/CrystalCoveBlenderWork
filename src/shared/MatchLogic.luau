@@ -16,7 +16,7 @@ local Balance = if script then require(script.Parent.Config.Balance) else requir
 local Glassies = if script then require(script.Parent.Config.Glassies) else require("./Config/Glassies")
 local FightRules = if script then require(script.Parent.FightRules) else require("./FightRules")
 
--- A player's collection: glassy id -> { Stars, Rainbow }. Starters are always included.
+-- A player's collection: glassy id -> { Stars, Rainbow }. Short collections are topped up with Glassies.Fallback.
 export type Owned = { Stars: number?, Rainbow: boolean? }
 export type Collection = { [string]: Owned }
 
@@ -71,8 +71,12 @@ function MatchLogic.ownedIds(collection: Collection): { string }
 			table.insert(ids, id)
 		end
 	end
-	for _, id in Glassies.Starters do
-		if collection[id] == nil then
+	-- Fewer than a full roll owned (should not happen after the welcome opens): borrow the fallback hand.
+	for _, id in Glassies.Fallback do
+		if #ids >= Balance.Match.RollChoices then
+			break
+		end
+		if not table.find(ids, id) then
 			table.insert(ids, id)
 		end
 	end
@@ -371,8 +375,8 @@ function MatchLogic.rewards(
 	return { Coins = coins, Trophies = delta }
 end
 
--- A bot's collection for a player: the starters plus random glassies up to the player's best
--- rarity, about the same size as the player's collection.
+-- A bot's collection for a player: random glassies up to the player's best rarity, about the same size as the
+-- player's collection (at least a full roll).
 function MatchLogic.botCollection(playerCollection: Collection, rng: () -> number): Collection
 	local best = 1
 	local size = 0
@@ -393,10 +397,7 @@ function MatchLogic.botCollection(playerCollection: Collection, rng: () -> numbe
 	table.sort(pool)
 	shuffle(pool, rng)
 	local collection: Collection = {}
-	for _, id in Glassies.Starters do
-		collection[id] = {}
-	end
-	for i = 1, math.min(math.max(size - #Glassies.Starters, 0), #pool) do
+	for i = 1, math.min(math.max(size, Balance.Match.RollChoices), #pool) do
 		collection[pool[i]] = {}
 	end
 	return collection

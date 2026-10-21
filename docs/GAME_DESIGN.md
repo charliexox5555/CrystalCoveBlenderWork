@@ -165,7 +165,7 @@ One entry in `Config/Glassies.luau` + one asset folder = a new glassy. Fields: T
 
 | Rarity | HP × | Kiln odds | Examples |
 |---|---|---|---|
-| Starter | 1.01 | — (everyone owns all 3) | Pop, Jam, Prism |
+| Starter | 1.01 | — (unused since decision 102: Pop, Jam, Prism are Commons) | — |
 | Common | 1.00 | 56.25% | milk bottle, pickle jar, glass cup |
 | Uncommon | 1.01 | 22% | mason jar, hot sauce |
 | Rare | 1.015 | 14% | crescent axe, frostglobe |
@@ -182,7 +182,7 @@ Rarity buys **flair, size, more complex powers and bigger presentation**, not nu
 
 ### 4.4 The roster (31)
 
-Starters Pop (Fizzy), Jam (Heavy), Prism (Sharp) plus 28 configured for the Kiln: see `Config/Glassies.luau`. Twelve native models are installed (3 starters + 6 Commons + 3 Uncommons). The Kiln only rolls the nine installed non-starters and displays their normalized odds; remaining art is built in Blender batches (ART_BIBLE).
+Pop (Fizzy), Jam (Heavy) and Prism (Sharp) were the starters; since decision 102 they are Common Kiln drops and new players start with the 3 welcome opens. Plus 28 configured for the Kiln: see `Config/Glassies.luau`. Twelve native models are installed (3 starters + 6 Commons + 3 Uncommons). The Kiln only rolls the nine installed non-starters and displays their normalized odds; remaining art is built in Blender batches (ART_BIBLE).
 
 ## 5. World: the lobby
 
@@ -198,7 +198,7 @@ Starters Pop (Fizzy), Jam (Heavy), Prism (Sharp) plus 28 configured for the Kiln
 ## 6. Bots
 
 - Fill any pad after 15 s alone. Name them like players' pets ("Bottle Bot", original names only), with a small BOT tag.
-- **Collection:** the starters plus random glassies up to the player's best rarity, same size as the player's collection (`MatchLogic.botCollection`).
+- **Collection:** random glassies up to the player's best rarity, same size as the player's collection, at least 3 (`MatchLogic.botCollection`).
 - **Skill** 0.2–0.7 (`BotSkillMin/Max`): aim error and smarter picks (counter the player's last type). Bots auto-fire specials.
 - Rewards vs bots: same coins as vs players, +5 trophies on a win, never lose trophies.
 

@@ -3,6 +3,20 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-20 — Claude — Creator fix list (decision 102)
+Done:
+- Starters: new profiles own no glassies, the 3 welcome opens are the first hand; Pop, Jam, Prism are Common Kiln drops (Kiln 33 -> 36). `Glassies.Fallback` tops up short hands for a match (never granted); bots draw from the pool. Collection filter loses "Starter".
+- Free claim cards (welcome, first win) hide the odds line.
+- Guide chevrons: a Beam lays the texture's vertical axis along its length with the top at Attachment0, and positive TextureSpeed scrolls toward Attachment0. New "^" chevron (rbxassetid://102392265911815), pad on Attachment0, fade at the player's end; checked with a test beam in Studio.
+- Leaderboard emblems (crown, hourglass, gem) centred in their rose windows as flat reliefs (deep 3D shapes looked off-centre from the ground). Applied in the place (old parts in ServerStorage.Backup_LeaderboardEmblems) and baked into the installer (`seatEmblem`).
+- Kiln reels: tiles keep a card shape from the reel's pixel size; 10-pulls are a 5 x 2 grid of short sideways reels (tiles ~97 x 113 px, were ~145 x 50), still 50 viewports; 2-4 opens get taller rows. A vertical slot-machine version was built and rejected by the creator.
+- Ghost glass after a round: the finisher wrapped the losing avatar in reflective Glass blocks plus a full-body highlight fill. Now small matte chips and an outline-only flash.
+- Lune 189/189. Sims (stats unchanged apart from Pop/Jam/Prism HP x1.00 instead of x1.01): first-three matrix pop>jam 71%, jam>prism 68%, prism>pop 53%; side bias 48%; pulls day 1: 3, day 30: 89; unique Kiln glassies day 7: 15, day 30: 28; first Rare 63 min, Epic 2.6 h, Legendary 10.4 h.
+Next:
+- Creator: watch a real finisher on the losing side, and the 10-pull grid on a phone.
+Problems / questions for the user:
+- Save the place (leaderboard emblem fix). Studio disconnected during the last check; if it closed unsaved, rerun `tools/studio/install_leaderboards_v3.luau` (it now centres the emblems).
+
 ## 2026-10-20 — Claude — Power direction audit (creator note)
 Done:
 - Audit of every directional power on the real swing (`tools/power_direction_audit.luau`): releases aim well (6-14° off the foe), but windups used the CastStart direction (30-110° off by release) and effects were pinned at release/contact points while the glassies swing ~6 studs away. Report with before/after captures: `docs/testing/combat_release/POWER_DIRECTION_AUDIT.md`.

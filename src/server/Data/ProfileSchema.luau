@@ -64,9 +64,7 @@ function Schema.new(now)
 		-- Daily Featured store: today's locked offers, open Robux intents, bundle purchases.
 		Store = { Version = 0, Day = -1, Offers = {}, Intents = {}, Bundles = {} },
 	}
-	for _, id in Glassies.Starters do
-		data.Glassies[id] = { Stars = 0, Rainbow = false, Count = 1, FirstAt = now }
-	end
+	-- No starter glassies (decision 102): the welcome opens are a new player's first three.
 	RoundCosmetics.reconcile(data)
 	return data
 end

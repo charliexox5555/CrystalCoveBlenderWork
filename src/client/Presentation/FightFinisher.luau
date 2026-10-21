@@ -125,7 +125,8 @@ function Finish:Impact()
 		local flash = Instance.new("Highlight")
 		flash.Name, flash.Adornee = "GlassyImpact", avatar
 		flash.FillColor, flash.OutlineColor = color, color
-		flash.FillTransparency, flash.OutlineTransparency = 0.7, 0.1
+		-- Outline only: a fill coated the whole character in a see-through "glass copy" (creator note 2026-10-20).
+		flash.FillTransparency, flash.OutlineTransparency = 1, 0.1
 		flash.Parent = scene.Root
 		TweenService
 			:Create(flash, TweenInfo.new(Feel.FinisherImpactSeconds), { FillTransparency = 1, OutlineTransparency = 1 })
@@ -135,13 +136,18 @@ function Finish:Impact()
 	local random = Random.new()
 	for _, original in avatar and avatar:GetDescendants() or {} do
 		if original:IsA("BasePart") and original.Name ~= "HumanoidRootPart" and original.Transparency < 1 then
-			-- Toy glass fragments echo the shattered glassy without killing the actual character.
-			for _ = 1, 2 do
+			-- Small toy chips echo the shattered glassy without killing the actual character. Matte on purpose: big Glass
+			-- blocks over each body part kept reflecting while they faded and read as a ghost copy of the glass.
+			do
 				local shard = Instance.new("Part")
-				shard.Name, shard.Material, shard.Color = "AvatarGlassShard", Enum.Material.Glass, color
-				shard.Size = original.Size * 0.4
-				shard.CFrame = original.CFrame * CFrame.new(random:NextNumber(-0.3, 0.3), 0, 0)
-				shard.Transparency, shard.CanCollide, shard.CanTouch, shard.CanQuery = 0.15, false, false, false
+				shard.Name, shard.Material, shard.Color = "AvatarGlassShard", Enum.Material.SmoothPlastic, color
+				shard.Reflectance, shard.CastShadow = 0, false
+				local edge = math.clamp(math.min(original.Size.X, original.Size.Y, original.Size.Z) * 0.35, 0.15, 0.45)
+				shard.Size = Vector3.new(edge, edge * 0.6, edge)
+				shard.CFrame = original.CFrame
+					* CFrame.new(random:NextNumber(-0.3, 0.3), 0, 0)
+					* CFrame.Angles(random:NextNumber(0, 6.28), random:NextNumber(0, 6.28), 0)
+				shard.Transparency, shard.CanCollide, shard.CanTouch, shard.CanQuery = 0.1, false, false, false
 				shard.Parent = scene.Root
 				shard.AssemblyLinearVelocity = Vector3.new(
 					random:NextNumber(-1, 1),

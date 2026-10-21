@@ -806,7 +806,7 @@ Balance.Types = {
 }
 
 -- Rarities (GAME_DESIGN 4.2). CrateWeight = percent chance in the Kiln (coin gacha).
--- Starters are not in crates. Decision 86: rarity is a small edge (~55% Mythic vs Common at
+-- Starter is unused since decision 102 (Pop, Jam and Prism are Commons). Decision 86: rarity is a small edge (~55% Mythic vs Common at
 -- equal skill). StatMultiplier applies to HP only (Formula.stats), because Power is ~20 and
 -- rounds to whole numbers, so a few percent on Power would jump in 5% steps.
 Balance.Rarities = {

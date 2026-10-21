@@ -25,11 +25,35 @@ local function rarityGlow(cell, rarity)
 	glow.ImageTransparency = GLOW_TRANSPARENCY[RevealFx.tier(rarity)] or 0.8
 end
 
+-- Layouts (all reels spin sideways): one open = one big reel; 2-4 = reels stacked down the middle; 5+ (the 10-pull) =
+-- a 5-wide grid of short reels, the same grid as the reveal cards (the old 2 x 5 grid of thin rows made tiles tiny).
+-- Tiles keep a card shape (width / height) whatever the reel's size, so portraits stay big and never stretch: the
+-- spacing between tiles comes from the reel's real pixel size.
+local TILE_ASPECT = { Multi = 0.86, Single = 0.8 }
+local TILE_CROSS = 0.94 -- tile size across the reel, as a share of the track
+local TILE_FILL = 0.93 -- tile length / stride (the rest is the gap)
+local MANY = 5 -- this many opens or more use the grid
+local GRID_COLUMNS = 5
+
+-- Stride (and tile width) as a share of the track's width.
+local function strideFor(row)
+	local size = row.Frame.Track.AbsoluteSize
+	if size.X < 1 or size.Y < 1 then
+		return row.Stride
+	end
+	return size.Y * TILE_CROSS * row.Aspect / TILE_FILL / size.X
+end
+
+local function tileSize(row)
+	return UDim2.fromScale(row.Stride * TILE_FILL, TILE_CROSS)
+end
+
 function Reels.new(content, results, odds, category)
 	local self =
 		setmetatable({ Rows = {}, Content = content, Random = Random.new(), Category = category or "Glassies" }, Reels)
 	local multi = #results > 1
-	local few = multi and #results <= 4 -- stacked big reels instead of the 10-pull grid
+	local few = multi and #results < MANY -- stacked horizontal reels
+	local many = #results >= MANY -- grid of short reels
 	local pool, total = {}, 0
 	for _, entry in odds or {} do
 		if entry.Chance > 0 then
@@ -51,14 +75,19 @@ function Reels.new(content, results, odds, category)
 		frame.Name, frame.Visible = "Reel" .. i, true
 		if few then
 			-- A few opens (the onboarding welcome): big reels stacked 1, 2, 3 down the middle.
-			local gap = 0.03
-			local height = math.min(0.28, (0.92 - gap * (#results - 1)) / #results)
+			local gap = 0.02
+			local height = math.min(0.32, (0.98 - gap * (#results - 1)) / #results)
 			local top = 0.5 - (#results * (height + gap) - gap) / 2
 			frame.Size = UDim2.fromScale(0.86, height)
 			frame.Position = UDim2.fromScale(0.07, top + (i - 1) * (height + gap))
-		elseif multi then
-			frame.Size = UDim2.fromScale(0.485, 0.181)
-			frame.Position = UDim2.fromScale((i - 1) % 2 * 0.515, math.floor((i - 1) / 2) * 0.204)
+		elseif many then
+			local rows = math.ceil(#results / GRID_COLUMNS)
+			local gapX, gapY = 0.015, 0.05
+			local width = (1 - gapX * (GRID_COLUMNS - 1)) / GRID_COLUMNS
+			local height = (1 - gapY * (rows - 1)) / rows
+			local column, line = (i - 1) % GRID_COLUMNS, (i - 1) // GRID_COLUMNS
+			frame.Size = UDim2.fromScale(width, height)
+			frame.Position = UDim2.fromScale(column * (width + gapX), line * (height + gapY))
 		else
 			frame.Size, frame.Position = UDim2.fromScale(0.96, 0.64), UDim2.fromScale(0.02, 0.18)
 		end
@@ -69,15 +98,18 @@ function Reels.new(content, results, odds, category)
 			row.Stream[n] = filler()
 		end
 		row.Stream[target] = result.Id
-		row.Stride = if multi and not few then 0.32 else 0.22
-		row.Radius = if multi and not few then 2 else 3
+		row.Aspect = if multi then TILE_ASPECT.Multi else TILE_ASPECT.Single
+		row.Stride = if many then 0.5 else 0.22 -- until the reel has a size
+		row.Stride = strideFor(row)
+		-- Enough tiles to cover the reel from edge to edge, plus one entering.
+		row.Radius = math.clamp(math.ceil(0.5 / row.Stride) + 1, 2, 8)
 		for n = 1, row.Radius * 2 + 1 do
 			local cell = content.Templates.ReelCell:Clone()
 			cell.Name, cell.Visible = "Cell" .. n, true
-			cell.Size, cell.Parent = UDim2.fromScale(row.Stride * 0.93, 0.96), frame.Track
+			cell.Size, cell.Parent = tileSize(row), frame.Track
 			if multi then
 				cell.NameLabel.Visible = false
-				cell.Portrait.Size, cell.Portrait.Position = UDim2.fromScale(0.9, 0.86), UDim2.fromScale(0.5, 0.46)
+				cell.Portrait.Size, cell.Portrait.Position = UDim2.fromScale(0.94, 0.84), UDim2.fromScale(0.5, 0.45)
 			end
 			table.insert(row.Cells, cell)
 		end
@@ -95,6 +127,13 @@ function Reels:Step(time)
 		local t = math.clamp(time / duration, 0, 1)
 		local offset = 5 + (row.Target - 5) * (1 - (1 - t) ^ 4)
 		local nearest = math.floor(offset + 0.5)
+		local stride = strideFor(row)
+		if math.abs(stride - row.Stride) > 1e-4 then -- resized (window, rotation)
+			row.Stride = stride
+			for _, cell in row.Cells do
+				cell.Size = tileSize(row)
+			end
+		end
 		if nearest ~= row.LastTick then
 			ticked, row.LastTick = true, nearest
 		end

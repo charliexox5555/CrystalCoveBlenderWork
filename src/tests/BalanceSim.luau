@@ -259,10 +259,10 @@ function BalanceSim.report(roundsPerMatchup: number?): string
 	add("Side bias (side 1 win rate, pop mirror): %s", pct(BalanceSim.sideBias("pop", n)))
 
 	add("")
-	add("Starters (row beats column):")
-	for _, a in Glassies.Starters do
+	add("First three, Pop / Jam / Prism (row beats column):")
+	for _, a in Glassies.Fallback do
 		local row = {}
-		for _, b in Glassies.Starters do
+		for _, b in Glassies.Fallback do
 			table.insert(
 				row,
 				if a == b then "  -  " else string.format("%5s", pct(BalanceSim.matchup(a, b, n).WinRate))

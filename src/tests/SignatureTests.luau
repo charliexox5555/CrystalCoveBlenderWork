@@ -166,7 +166,7 @@ return function(t, deps)
 			"24 release + 13 dormant + 6 new launch definitions + seasonal"
 		)
 		local odds = deps.Formula.kilnOdds()
-		t.eq(#odds, 33, "21 + 12 launch glassies in the Kiln")
+		t.eq(#odds, 36, "24 + 12 launch glassies in the Kiln (Pop, Jam and Prism are Commons, decision 102)")
 		for _, e in odds do
 			t.ok(deps.Glassies.isRelease(e.Id))
 		end

@@ -28,23 +28,24 @@ return function(t, d)
 			t.eq(Schema.welcomePulls(data), 0)
 		end
 	end)
-	t.test("new profiles own three starters and snapshots omit private bookkeeping", function()
-		local data = Schema.new(123)
-		for _, id in d.Glassies.Starters do
-			t.eq(data.Glassies[id].Count, 1)
-			t.eq(data.Glassies[id].Stars, 0)
+	t.test(
+		"new profiles own no glassies (the welcome opens are the first three) and snapshots omit bookkeeping",
+		function()
+			local data = Schema.new(123)
+			t.eq(next(data.Glassies), nil, "no starter glassies (decision 102)")
+			t.eq(Schema.reconcile(Schema.new(5), 5).Glassies.pop, nil, "reconcile does not add them back")
+			t.eq(Schema.welcomePulls(data), 0)
+			local snapshot = Schema.snapshot(data)
+			t.eq(snapshot.ProcessedReceipts, nil)
+			t.eq(snapshot.RecentMatches, nil)
+			t.eq(snapshot.Marbles, 0)
+			snapshot.Coins = 999
+			t.eq(data.Coins, 0, "snapshot cannot mutate server data")
 		end
-		t.eq(Schema.welcomePulls(data), 0)
-		local snapshot = Schema.snapshot(data)
-		t.eq(snapshot.ProcessedReceipts, nil)
-		t.eq(snapshot.RecentMatches, nil)
-		t.eq(snapshot.Marbles, 0)
-		snapshot.Coins = 999
-		t.eq(data.Coins, 0, "snapshot cannot mutate server data")
-	end)
+	)
 	t.test("duplicate copies reach five stars then overflow at the configured coin amount", function()
 		local data = Schema.new(0)
-		for _ = 1, 5 do
+		for _ = 1, 6 do -- the first copy, then five duplicates
 			Schema.grant(data, "pop", false, 1)
 		end
 		t.eq(data.Glassies.pop.Stars, 5)
@@ -92,7 +93,7 @@ return function(t, d)
 		t.eq(data.Glassies.pop.Count, 4)
 		t.eq(data.Glassies.pop.Stars, 3)
 		t.eq(data.Custom.Keep, true)
-		t.eq(data.Glassies.jam.Count, 1)
+		t.eq(data.Glassies.jam, nil, "no starter glassies are added (decision 102)")
 		local corrupt = { Coins = 0 / 0, Stats = "bad", Glassies = { pop = "bad" } }
 		Schema.reconcile(corrupt, 200)
 		t.eq(corrupt.Coins, 0)
@@ -110,7 +111,7 @@ return function(t, d)
 		for _ = 1, 200 do
 			t.ok(available[d.Formula.rollKiln(rng, available)])
 		end
-		t.eq(#d.Formula.kilnOdds({ pop = true, jam = true, prism = true }), 0)
+		t.eq(#d.Formula.kilnOdds({ pop = true, jam = true, prism = true }), 3, "Pop, Jam and Prism are Kiln Commons")
 		local ok = pcall(function()
 			d.Formula.rollKiln(rng, {})
 		end)

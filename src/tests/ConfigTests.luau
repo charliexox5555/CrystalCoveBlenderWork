@@ -33,16 +33,18 @@ return function(t, deps)
 		end
 	end)
 
-	t.test("starters exist, use the Starter rarity and cover all types", function()
-		t.eq(#Glassies.Starters, 3, "three starters")
+	t.test("the fallback hand is three Kiln Commons covering all types (decision 102)", function()
+		t.eq(#Glassies.Fallback, Balance.Match.RollChoices, "fills a whole roll")
 		local types = {}
-		for _, id in Glassies.Starters do
+		for _, id in Glassies.Fallback do
 			local g = Glassies.get(id)
-			t.eq(g.Rarity, "Starter", id .. " rarity")
+			t.eq(g.Rarity, "Common", id .. " is a regular Common drop")
 			types[g.Type] = true
 		end
-		t.ok(types.Heavy and types.Sharp and types.Fizzy, "one starter of each type")
-		t.ok(#Glassies.Starters >= Balance.Match.RollChoices, "new players can fill a whole roll")
+		t.ok(types.Heavy and types.Sharp and types.Fizzy, "one of each type")
+		for _, g in Glassies.List do
+			t.ok(g.Rarity ~= "Starter", g.Id .. " uses a Kiln rarity")
+		end
 	end)
 
 	t.test("every Kiln rarity has glassies", function()

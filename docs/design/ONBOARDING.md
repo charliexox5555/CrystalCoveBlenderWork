@@ -33,7 +33,7 @@ spawn to their first win in about 3 minutes, teaching by doing, with almost no t
 | 2. Three pulls | The normal Kiln opening with 3 cards: three big reels stacked 1, 2, 3, then the reveal | 3 new glassies, no duplicates (**Q2**) |
 | 3. Daily reward | The Daily Rewards screen opens with a pointer (no text) on Day 1's CLAIM | After the claim celebration it closes by itself (**Q4**) |
 | 4. Go battle | A gold chevron beam streams from the player to a **reserved arena** (the nearest free one), whose board reads "RESERVED FOR <name>". Stepping on the pad starts at once against a bot | After 20 s without arriving, a pointer lands on PLAY (PLAY goes to the reserved arena) |
-| 5. First match | A normal match against **"Rookie Bot"**, with a few gentle hints (below) and an assisted outcome (**Q1**) | Their 6 glassies (3 starters + 3 new) form the hand as usual |
+| 5. First match | A normal match against **"Rookie Bot"**, with a few gentle hints (below) and an assisted outcome (**Q1**) | Their 3 welcome glassies form the hand (no starter glassies since decision 102) |
 | 6. Win | Normal results + coins, then the same claim card: "YOU WON!", one Kiln, its odds (Rare 70% · Epic 30%) and **OPEN** → one more opening | Picked and granted only when they press OPEN (step `Win`, survives a rejoin). New glassy, no duplicate (**Q3**) |
 | 7. Free play | Nothing else. The notice dots and the PLAY button carry them on | Onboarding marked done |
 

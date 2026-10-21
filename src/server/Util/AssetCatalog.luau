@@ -34,11 +34,6 @@ function Catalog.collection(collection)
 			out[id] = table.clone(owned)
 		end
 	end
-	for _, id in Glassies.Starters do
-		if Catalog.has(id) and not out[id] then
-			out[id] = {}
-		end
-	end
 	return out
 end
 return Catalog

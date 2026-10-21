@@ -249,6 +249,54 @@ local function plate(model, name, rect, s)
 end
 
 local report = {}
+-- The emblem (crown, hourglass, gem) as a flat relief centred in its rose window: the Blender emblems are deep 3D
+-- shapes standing out from the window, which looks off-centre from the ground (creator note 2026-10-20).
+local function seatEmblem(model)
+	local ring, parts = nil, {}
+	for _, p in model:GetChildren() do
+		if p:IsA("BasePart") and p.Name:match("_RoseRing$") then
+			ring = p
+		elseif p:IsA("BasePart") and p.Name:match("_Emblem") then
+			table.insert(parts, p)
+		end
+	end
+	if not ring or #parts == 0 then
+		return
+	end
+	local rcf = ring.CFrame
+	local min, max = Vector3.one * math.huge, -Vector3.one * math.huge
+	for _, p in parts do
+		local half = p.Size / 2
+		for _, sx in { -1, 1 } do
+			for _, sy in { -1, 1 } do
+				for _, sz in { -1, 1 } do
+					local l = rcf:PointToObjectSpace(p.CFrame:PointToWorldSpace(half * Vector3.new(sx, sy, sz)))
+					min, max = min:Min(l), max:Max(l)
+				end
+			end
+		end
+	end
+	local center, extent = (min + max) / 2, max - min
+	local fit = math.min(ring.Size.X * 0.62 / extent.X, ring.Size.Y * 0.62 / extent.Y, 1)
+	local depth = 0.45
+	local sz = depth / extent.Z
+	local targetZ = (if center.Z < 0 then -1 else 1) * (ring.Size.Z / 2 + depth / 2)
+	local function axisScale(v)
+		return math.abs(v.X) * fit + math.abs(v.Y) * fit + math.abs(v.Z) * sz
+	end
+	for _, p in parts do
+		local l = rcf:PointToObjectSpace(p.Position) - center
+		local rot = p.CFrame - p.Position
+		local d = p.Size
+		p.Size = Vector3.new(
+			d.X * axisScale(rcf:VectorToObjectSpace(p.CFrame.XVector)),
+			d.Y * axisScale(rcf:VectorToObjectSpace(p.CFrame.YVector)),
+			d.Z * axisScale(rcf:VectorToObjectSpace(p.CFrame.ZVector))
+		)
+		p.CFrame = CFrame.new(rcf:PointToWorldSpace(Vector3.new(l.X * fit, l.Y * fit, targetZ + l.Z * sz))) * rot
+	end
+end
+
 for _, b in DATA.Boards do
 	local existing = props:FindFirstChild("Leaderboard_" .. b.Id)
 	if existing then
@@ -285,6 +333,7 @@ for _, b in DATA.Boards do
 		p.Size /= 100
 		p.Position /= 100
 	end
+	seatEmblem(model)
 	plate(model, "Screen", b.Screen, b.Scale)
 	plate(model, "TitlePlate", b.TitleRect, b.Scale)
 	display(model.Screen, b)

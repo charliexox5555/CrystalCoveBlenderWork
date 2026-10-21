@@ -115,6 +115,8 @@ the step's moment back whenever the lobby is **quiet** (no match, menu, opening,
 
 ## Bigger ideas for the creator (not built)
 
+**Creator, 2026-10-21: none of these are wanted.** Kept here for the record only.
+
 1. **One more win = a Kiln open.** In run C the player had 250 coins after the first session and a Kiln open
    costs 300 (a match win pays 100), so one more win pays for one. A small Kiln badge filling up next to the coin counter, which pulses
    and points at the Kiln when it is full, would give a clear, picture-only reason to play a third match.

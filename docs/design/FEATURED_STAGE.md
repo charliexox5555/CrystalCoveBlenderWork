@@ -1,5 +1,9 @@
 # Featured Stage: options (brainstorm, not built)
 
+**Creator pick (Oct 20): Crown Hill**, with coins that trickle in while you hold the crown. It must stay a fun
+add-on that never out-earns normal play or spoils other players' matches. See
+[Crown Hill: full design](#crown-hill-full-design-creator-pick) at the end.
+
 Written Oct 20, 2026. The featured island at the end of the lobby (Arena 7, board text "FEATURED ARENA") runs the same
 matches as every other arena. GAME_DESIGN 5 once planned to show the highest-trophy fights on a big board there. This
 doc lists ways to make it special. **Nothing is built until the creator picks.**
@@ -192,3 +196,107 @@ farming).
 2. Should hill fights be **one sudden-death round**, or best of 3 hearts (longer waits)?
 3. Reign cap of **5 defences**: OK, or a different number?
 4. Should the crown show over the King's head everywhere in the lobby, or only on the featured island?
+
+---
+
+## Crown Hill: full design (creator pick)
+
+The creator chose Crown Hill and asked for coins while you hold the crown, balanced so it stays an add-on: fun, worth
+a visit, and never better than playing normal matches.
+
+### The loop
+
+1. **The hill is never empty.** When nobody holds it, the **Crown Bot** is King.
+2. **Join the line** by stepping on the challenger pad. You get a spot in the line, shown as a number on the board,
+   and can walk around the island while you wait.
+3. **Your turn:** one **sudden-death round** against the King (1 heart each). It uses the normal roll / pick / aim /
+   swing, so all powers, finishers and flyers work as usual.
+4. **Win and you're King:**
+   - A gold crown floats over your head.
+   - Your name, avatar and streak go up on the big board.
+   - A crown burst plays and the whole island hears a fanfare.
+5. **As King, you keep defending.** The next person in line steps up. If the line is empty for 10 s, the Crown Bot
+   challenges you, so the King is **always playing, never idle**.
+6. **Reign cap: 5 defences.** After the 5th, you **retire undefeated**: a big crown shower, a bonus, and the hill goes
+   back to the Crown Bot.
+7. **Lose and you go back to the lobby, or join the end of the line.** Losing costs nothing.
+
+### Crown coins: balanced against normal play
+
+Normal play earns about **800 coins an hour** (about **13 a minute**: 100 per match win, 8–40 per loss, 5.7-minute
+matches). The rule for Crown Hill is that **a King earns about the same per minute as a player winning normal matches
+(about 15–18 a minute), never much more**, and a **daily cap** stops it from replacing normal play.
+
+| What | Coins | Notes |
+|---|---|---|
+| **Crown trickle** | **+1 every 5 s** while you are King **and a hill fight is running** | About 12 a minute. A "+1" coin pops over your crown. No ticks while idle, walking away or between fights, so there's no AFK farming. |
+| Take the crown | 25 | Beating the King, or the Crown Bot. |
+| Each defence won | 15 | |
+| Retire undefeated (5 defences) | 100 | Plus one free Coin crate ticket, **once per day** (odds shown in the Shop as usual). |
+| Losing a hill fight | 5 | Just a thank-you for playing. |
+| **Daily cap on all Crown Hill coins** | **500** | About 40 minutes of normal play. After the cap you can still play, wear the crown and grow your streak; the coin pops just stop (the crown keeps its sparkle). The board shows a small coin meter, not text. |
+
+**What this works out to (one round is about 100 s including picks):**
+
+| | Coins | Time | Per minute |
+|---|---|---|---|
+| A full 5-defence reign | about 25 + 5×15 + about 100 trickle + 100 = **300** | about 9 minutes | about **33** |
+| The same 9 minutes of normal play | about **120** | | about 13 |
+| A typical King (holds 1–2 defences) | about 75–100 | about 3–4 minutes | about **25** |
+| A challenger who loses | 5 | about 2 minutes | about **2.5** |
+
+- A great reign is a **treat** (about 2× normal for a few minutes).
+- Most visits are about even with normal play, and losing pays less than a normal loss.
+- So kids who only want coins still do best playing normal matches.
+- With the 500 daily cap the hill adds at most about **35%** to a 40-minute day of normal play (about 530 coins).
+- Run `tools/economy_sim` with a "visits the hill once a day" case before shipping, and keep "first Legendary" within
+  10% of today's 10.4 h.
+
+### Keeping it fair and kind
+
+- **Doesn't touch the main game:**
+  - Hill fights don't change **Trophies**, the **Wins** leaderboard, Win Rate or Best Streak. Those stay normal-match
+    stats.
+  - The hill has its own stats: **Crowns taken** and **Best Reign**, ready for the profile page.
+  - Quests and level XP count a hill fight as half a match at most (set when the profile/levels work lands).
+- **Everyone gets a turn:**
+  - First come, first served.
+  - One line spot per player.
+  - The reign cap stops camping.
+  - A King who loses goes to the back like everyone else.
+- **No farming:**
+  - Coins only tick during real fights.
+  - Daily cap.
+  - Crate ticket once per day.
+  - Win-trading between friends hits the same cap.
+- **AFK King:** if the King doesn't aim in two fights in a row (the swing auto-releases), they step down and the crown
+  passes on.
+- **Walking away:** the King must stay on the featured island. Leaving the island or the server hands the crown to the
+  next in line, or to the Crown Bot. Coins already earned are kept.
+- **Nobody spoils the shot:** this patch's hide-others fix keeps passers-by out of the King's and the challenger's view.
+- **Kind losing:** no "dethroned" text or sad sounds aimed at the loser. The camera celebrates the new King, and the
+  old King gets a small "Best Reign" medal if they set a personal best.
+- **Bots:** the Crown Bot is clearly a bot (BOT tag, name ends in "Bot") with medium skill (about 0.5), so a kid with
+  Commons beats it about half the time. It never earns or keeps coins.
+- **Rarity:** still the normal ≈ 55% edge. One-round fights keep luck in play, so Legendaries don't own the hill.
+
+### Build plan (when approved)
+
+- **Pure `HillRules`** + Lune tests: line order, turn hand-off, reign cap, AFK step-down, coin trickle, daily cap,
+  stats.
+- **`Balance.Hill`:** all the numbers above.
+- **ArenaService:** a Crown Hill mode for the featured stand (King pad + challenger line), with the Crown Bot when empty.
+- **MatchService / Runner:** a `Hearts = 1` option and hill rewards through `HillRules`. The results screen is skipped
+  between hill fights (just the crown moment).
+- **Profile fields** (reconcile migration): `Hill = { Crowns, BestReign, Day, CoinsToday, TicketDay }`.
+- **Client:** crown accessory over the King, "+1" coin pops, the big board (King, streak, line, coin meter), and the
+  crown burst and fanfare.
+- **Checks:** a 3-player Studio test with the multiplayer harness, and the economy sim with a hill case.
+- **Estimate:** about 3–4 days.
+- **Start after the levels/profile work lands,** since both touch MatchService rewards and the profile.
+
+### Defaults chosen (change any of them)
+
+- Sudden-death **one-round** fights.
+- **5-defence** reign cap.
+- The crown shows only while you're on the featured island, because the King has to stay there.

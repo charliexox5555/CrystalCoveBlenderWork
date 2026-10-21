@@ -66,6 +66,8 @@ def stat_tile(w, h, key, sd):
 A["stat_amber"] = stat_tile(400, 205, "amber", 51)
 A["stat_aqua"] = stat_tile(400, 205, "aqua", 52)
 A["stat_ruby_wide"] = stat_tile(810, 205, "ruby", 53)
+A["stat_ruby"] = stat_tile(400, 205, "ruby", 54)
+A["stat_emerald"] = stat_tile(400, 205, "emerald", 55)
 
 # XP bar (600x84): leaded track with pointed ends and a sapphire glass fill (the fill is drawn full-length and
 # clipped by its parent frame's width at runtime).
@@ -163,6 +165,29 @@ def arrow_badge():
               + '<path d="%s" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>' % arrow)
 
 
+def collection():
+    """The collection count: three glassies side by side on a little shelf."""
+    s = '<rect x="6" y="100" width="116" height="16" rx="5" fill="%s" stroke="%s" stroke-width="5"/>' % (P["amber"][2], P["lead"])
+    for x, col, h in ((28, P["aqua"], 44), (64, P["ruby"], 60), (100, P["amethyst"], 40)):
+        top = 100 - h
+        s += '<rect x="%d" y="%d" width="14" height="12" rx="3" fill="%s" stroke="%s" stroke-width="4"/>' % (x - 7, top - 10, P["amber"][2], P["lead"])
+        s += '<path d="M%d %d H%d C%d %d %d %d %d 100 H%d C%d %d %d %d %d %d Z" fill="%s" stroke="%s" stroke-width="5" stroke-linejoin="round"/>' % (
+            x - 8, top, x + 8, x + 8, top + 8, x + 20, top + 12, x + 20, x - 20, x - 20, top + 12, x - 8, top + 8, x - 8, top, col[0], P["lead"])
+        s += '<path d="M%d %d v14" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-opacity="0.7"/>' % (x - 10, top + 22)
+    return SV(128, 128, s)
+
+
+def bubble():
+    """Tap bubble over another player in the lobby: a sapphire ring for their headshot with a pointer underneath."""
+    ring = '<circle cx="80" cy="74" r="66" fill="%s" stroke="%s" stroke-width="8"/>' % (P["sapphire"][0], P["lead"])
+    ring += '<circle cx="80" cy="74" r="52" fill="%s" stroke="%s" stroke-width="5"/>' % (P["viewport"], P["lead"])
+    ring += '<path d="M34 34 A62 62 0 0 1 96 12" fill="none" stroke="%s" stroke-width="7" stroke-linecap="round" stroke-opacity="0.8"/>' % P["sapphire"][1]
+    tip = poly([[62, 136], [98, 136], [80, 168]], P["sapphire"][0], LEAD(6))
+    return SV(160, 176, tip + ring)
+
+
+A["icon_collection"] = collection()
+A["bubble_profile"] = bubble()
 A["icon_crown"] = crown()
 A["icon_winrate"] = winrate()
 A["icon_flame"] = flame()

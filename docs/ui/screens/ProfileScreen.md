@@ -1,7 +1,7 @@
 # ProfileScreen (top bar → Profile)
 
 Design only (Oct 20): no controller, no remotes, no XP yet. Placeholder data: Lv.4, 120 / 300 XP, 37 wins, 62%, best
-streak 5. It's a regular-size Stained Glass window with the same footprint as Inventory (Panel `0.86 × 0.9` of the
+streak 5, 12/36 glassies. It's a regular-size Stained Glass window with the same footprint as Inventory (Panel `0.86 × 0.9` of the
 screen, aspect 1.773, Scale only). It has a **ruby** title banner ("PROFILE"), so it stands apart from Inventory
 (sapphire), Daily (amber), Settings and Playtime (aqua) and Codes (amethyst).
 
@@ -10,9 +10,27 @@ its level, and stat tiles). The art is our own kit.
 
 Rebuild with `tools/studio/build_profile_screen.luau` (Studio Edit, lock held). It copies the old screen to
 `ServerStorage.UIBackup_Topbar.ProfileScreen` and then replaces `StarterGui.ProfileScreen`. Art comes from
-`tools/ui/profile_art.py` (17 pieces, keys `screens/profile/*` in `Config/UIAssets`).
+`tools/ui/profile_art.py` (21 pieces, keys `screens/profile/*` in `Config/UIAssets`).
 
 ![Profile page](ProfileScreen.jpg)
+
+Creator answers (Oct 20): option A (read-only grids; equipping stays in the Inventory), a 4th stat tile for the
+collection count, other players' profiles open read-only, no Trophies tile, no level over players' heads.
+
+## Someone else's profile
+
+The same read-only screen filled with the other player's data (their headshot on the Profile tab, name, level, stats
+and collection grids). Set `VIEWER = "Other"` in the build script to preview it (sample: builderman).
+
+It opens two ways:
+- **In the lobby:** tap (or click) another player and a sapphire bubble with their headshot pops over their head for a
+  few seconds (`bubble_profile`). Tap the bubble to open their profile. Two taps, so dragging the camera on a phone
+  doesn't open profiles by accident.
+- **On a leaderboard:** tap a row.
+
+| Another player's profile | Lobby tap bubble (mock) |
+|---|---|
+| ![other](ProfileScreen_other.jpg) | ![lobby tap](ProfileScreen_lobby_tap.jpg) |
 
 ## Top bar button
 
@@ -50,12 +68,6 @@ Set `VARIANT = "Jump"` at the top of the build script to build option B. `PAGE =
 | `ProfilePage.Portrait.Level.Text` | TextLabel | "Lv.N" on an amber tag riding the portrait's bottom edge |
 | `ProfilePage.Xp` | Frame | attributes `Xp`, `XpNext`. `Track` + `Fill` (its width = Xp / XpNext × 0.98; the `Fill.Art` inside keeps full length) |
 | `ProfilePage.XpText` | TextLabel | "120 / 300 XP" (attribute `Format`) |
-| `ProfilePage.Wins` / `WinRate` / `BestStreak` | Frame | stat tiles: `Art`, `Label`, `Icon` (crown / win dial / flame), `Value` |
+| `ProfilePage.Wins` / `WinRate` / `BestStreak` / `Collection` | Frame | 2 × 2 stat tiles: `Art`, `Label`, `Icon` (crown / win dial / flame / three glassies), `Value`. `Collection` reads "12/36" (attribute `Format`) |
 | `ProfilePage.LevelRewards` | Frame | **empty for now**: a dim strip with faint stepping stones and a lock. `Track` is where level reward cells go later |
 | `Content.GlassiesPage` / `FinishersPage` / `FlyersPage` | Frame | option A only. `Count.Text` ("12 / 36") and `Grid.Tiles` (UIGridLayout, 5 per row, tiles cloned at runtime) |
-
-## Open questions (asked in the main session)
-
-The XP numbers and level speed, whether old profiles get back-filled XP, option A or B, whether other players'
-profiles open, extra stats (Trophies, Shatters, collection count), the headshot top bar icon, and whether the level
-shows anywhere else.

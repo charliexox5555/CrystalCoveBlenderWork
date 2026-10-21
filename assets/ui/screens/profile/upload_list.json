@@ -8,6 +8,18 @@
    "Name": "GC Profile badge_open"
   },
   {
+   "Key": "bubble_profile",
+   "Path": "assets/ui/screens/profile/png/bubble_profile.png",
+   "Type": "Decal",
+   "Name": "GC Profile bubble_profile"
+  },
+  {
+   "Key": "icon_collection",
+   "Path": "assets/ui/screens/profile/png/icon_collection.png",
+   "Type": "Decal",
+   "Name": "GC Profile icon_collection"
+  },
+  {
    "Key": "icon_crown",
    "Path": "assets/ui/screens/profile/png/icon_crown.png",
    "Type": "Decal",
@@ -72,6 +84,18 @@
    "Path": "assets/ui/screens/profile/png/stat_aqua.png",
    "Type": "Decal",
    "Name": "GC Profile stat_aqua"
+  },
+  {
+   "Key": "stat_emerald",
+   "Path": "assets/ui/screens/profile/png/stat_emerald.png",
+   "Type": "Decal",
+   "Name": "GC Profile stat_emerald"
+  },
+  {
+   "Key": "stat_ruby",
+   "Path": "assets/ui/screens/profile/png/stat_ruby.png",
+   "Type": "Decal",
+   "Name": "GC Profile stat_ruby"
   },
   {
    "Key": "stat_ruby_wide",

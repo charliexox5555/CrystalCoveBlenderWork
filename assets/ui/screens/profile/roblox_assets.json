@@ -119,6 +119,34 @@
    "Sha256": "424b9d2853a115798e358f1077020ce7e6b3851dde033122227a38846085ad1e",
    "Moderation": "Approved",
    "Uploaded": "2026-10-20T23:21:10"
+  },
+  "bubble_profile": {
+   "AssetId": "82876656204759",
+   "Path": "assets/ui/screens/profile/png/bubble_profile.png",
+   "Sha256": "adb47206e4834cb9bf75aa493cd0c9748c640a48d17a71ce3c26808ab8733fcf",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:40:29"
+  },
+  "icon_collection": {
+   "AssetId": "112110047919007",
+   "Path": "assets/ui/screens/profile/png/icon_collection.png",
+   "Sha256": "2db94c65ad0cc197227370441efbff7f456fe08b9408d5bf6728de4bd14ce434",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:40:31"
+  },
+  "stat_emerald": {
+   "AssetId": "87778133626182",
+   "Path": "assets/ui/screens/profile/png/stat_emerald.png",
+   "Sha256": "d6fe39760657619aba4afda17db763adbd903bf1ae201a2c865ee82432de8395",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:40:34"
+  },
+  "stat_ruby": {
+   "AssetId": "72160855917430",
+   "Path": "assets/ui/screens/profile/png/stat_ruby.png",
+   "Sha256": "b34cf09c2ce9f63a45286496228049eed15fcc253b753a795314967a6d22c698",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-20T23:40:36"
   }
  }
 }

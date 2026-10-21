@@ -102,6 +102,8 @@ local UIAssets = {
 	["screens/codes/field_focus"] = "rbxassetid://79664857485058",
 	-- SettingsScreen (tools/ui/settings_art.mjs; assets/ui/screens/settings)
 	["screens/profile/badge_open"] = "rbxassetid://122885890482531",
+	["screens/profile/bubble_profile"] = "rbxassetid://88638957879500",
+	["screens/profile/icon_collection"] = "rbxassetid://110882498850416",
 	["screens/profile/icon_crown"] = "rbxassetid://95901055766653",
 	["screens/profile/icon_finishers"] = "rbxassetid://76476098201046",
 	["screens/profile/icon_flame"] = "rbxassetid://138668853430505",
@@ -113,6 +115,8 @@ local UIAssets = {
 	["screens/profile/rewards_strip"] = "rbxassetid://112713485025085",
 	["screens/profile/stat_amber"] = "rbxassetid://128044873969831",
 	["screens/profile/stat_aqua"] = "rbxassetid://99211983728754",
+	["screens/profile/stat_emerald"] = "rbxassetid://78634638320544",
+	["screens/profile/stat_ruby"] = "rbxassetid://98773395065892",
 	["screens/profile/stat_ruby_wide"] = "rbxassetid://95440625854768",
 	["screens/profile/tab_active"] = "rbxassetid://99580315584236",
 	["screens/profile/tab_idle"] = "rbxassetid://90010243896958",

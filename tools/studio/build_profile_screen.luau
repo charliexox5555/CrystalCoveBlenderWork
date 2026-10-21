@@ -5,12 +5,15 @@
 -- VARIANT "Grids": the Glassies / Finishers / Flyers tabs show read-only grids inside the profile (option A).
 -- VARIANT "Jump": those tabs carry an arrow badge and open the Inventory on that tab instead (option B).
 -- PAGE picks the page shown in the saved build ("Profile" or, with VARIANT "Grids", "Glassies").
+-- VIEWER "Self" shows your own profile; "Other" previews someone else's (opened by tapping them in the lobby or on a
+-- leaderboard row). It is the same read-only screen filled with their data.
 -- Re-runnable: replaces only ProfileScreen, after copying the previous one to ServerStorage.UIBackup_Topbar.
 assert(not game:GetService("RunService"):IsRunning(), "Run in Edit")
 local StarterGui, ServerStorage = game:GetService("StarterGui"), game:GetService("ServerStorage")
 
 local VARIANT = "Grids"
 local PAGE = "Profile"
+local VIEWER = "Self"
 
 -- Image ids (also in Config/UIAssets as screens/profile/* and the kit keys).
 local A = {
@@ -20,7 +23,9 @@ local A = {
 	namePlate = "rbxassetid://73357375001383",
 	statAmber = "rbxassetid://128044873969831",
 	statAqua = "rbxassetid://99211983728754",
-	statRubyWide = "rbxassetid://95440625854768",
+	statRuby = "rbxassetid://98773395065892",
+	statEmerald = "rbxassetid://78634638320544",
+	collection = "rbxassetid://110882498850416",
 	xpTrack = "rbxassetid://95884890829347",
 	xpFill = "rbxassetid://103999406609062",
 	rewardsStrip = "rbxassetid://112713485025085",
@@ -44,6 +49,11 @@ local userId = 1
 pcall(function()
 	userId = game:GetService("StudioService"):GetUserId()
 end)
+if VIEWER == "Other" then
+	-- A sample other player (Roblox's builderman account) with different numbers.
+	DATA = { Level = 17, Xp = 640, XpNext = 900, Wins = 212, WinRate = "71%", BestStreak = 14, Owned = 29, Total = 36 }
+	userId = 156
+end
 local userName = "Player"
 pcall(function()
 	userName = game:GetService("Players"):GetNameFromUserIdAsync(userId)
@@ -58,6 +68,7 @@ local C = {
 	rubyLight = hex("#FF8EA0"),
 	slateLight = hex("#B7B3CC"),
 	sapphireLight = hex("#93BCFF"),
+	emeraldLight = hex("#86EDB8"),
 }
 local HEADING = Font.new("rbxasset://fonts/families/DenkOne.json")
 local BODY = Font.new("rbxasset://fonts/families/Nunito.json", Enum.FontWeight.Heavy)
@@ -147,6 +158,7 @@ local gui = make("ScreenGui", nil, "ProfileScreen", {
 gui:SetAttribute("TopbarScreen", true)
 gui:SetAttribute("DesignBuild", "build_profile_screen.luau")
 gui:SetAttribute("Variant", VARIANT)
+gui:SetAttribute("Viewer", VIEWER)
 local source = StarterGui:WaitForChild("CollectionScreen"):WaitForChild("Panel")
 local panel = make("Frame", gui, "Panel", {
 	BackgroundTransparency = 1,
@@ -290,55 +302,39 @@ local xpText =
 	})
 xpText:SetAttribute("Format", "%d / %d XP")
 
--- Stat tiles: Wins and Win Rate side by side, Best Streak wide under them
-local function statTile(name_, label, value, art, icon, labelColor, geo, wide)
+-- Stat tiles, 2 x 2: Wins, Win Rate / Best Streak, Glassies collected
+local function statTile(name_, label, value, art, icon, labelColor, geo)
 	local tile = frame(page, name_, geo, 1)
 	image(tile, "Art", art, box(0.5, 0.5, 1, 1), 1)
-	text(
-		tile,
-		"Label",
-		label,
-		box(0.5, 0.24, wide and 0.5 or 0.8, 0.2),
-		2,
-		{ Max = 32, Color = labelColor, Stroke = 2.5 }
-	)
-	local iconW = wide and 0.11 or 0.24
-	image(tile, "Icon", icon, box(wide and 0.4 or 0.3, 0.6, iconW, iconW * (wide and 810 / 205 or 400 / 205)), 2, 1).ScaleType =
-		Enum.ScaleType.Fit
-	local v = text(
-		tile,
-		"Value",
-		tostring(value),
-		box(wide and 0.56 or 0.62, 0.6, wide and 0.22 or 0.44, 0.46),
-		2,
-		{ Max = 90, Stroke = 3.5 }
-	)
-	v.TextXAlignment = wide and Enum.TextXAlignment.Left or Enum.TextXAlignment.Center
+	text(tile, "Label", label, box(0.5, 0.24, 0.8, 0.2), 2, { Max = 32, Color = labelColor, Stroke = 2.5 })
+	image(tile, "Icon", icon, box(0.28, 0.6, 0.24, 0.24 * 400 / 205), 2, 1).ScaleType = Enum.ScaleType.Fit
+	text(tile, "Value", tostring(value), box(0.62, 0.6, 0.48, 0.46), 2, { Max = 90, Stroke = 3.5 })
 	return tile
 end
 local SW, SH = 0.245, 0.245 * ASPECT / (400 / 205)
-statTile("Wins", "WINS", DATA.Wins, A.statAmber, A.crown, C.amberLight, box(0.455 + SW / 2, 0.255 + SH / 2, SW, SH))
-statTile(
-	"WinRate",
-	"WIN RATE",
-	DATA.WinRate,
-	A.statAqua,
-	A.winrate,
-	C.aquaLight,
-	box(0.955 - SW / 2, 0.255 + SH / 2, SW, SH)
-)
-local WW = 0.5
-local WH = WW * ASPECT / (810 / 205)
+local ROW2 = 0.255 + SH + 0.014
+local LEFT, RIGHT = 0.455 + SW / 2, 0.955 - SW / 2
+statTile("Wins", "WINS", DATA.Wins, A.statAmber, A.crown, C.amberLight, box(LEFT, 0.255 + SH / 2, SW, SH))
+statTile("WinRate", "WIN RATE", DATA.WinRate, A.statAqua, A.winrate, C.aquaLight, box(RIGHT, 0.255 + SH / 2, SW, SH))
 statTile(
 	"BestStreak",
 	"BEST STREAK",
 	DATA.BestStreak,
-	A.statRubyWide,
+	A.statRuby,
 	A.flame,
 	C.rubyLight,
-	box(0.705, 0.255 + SH + 0.014 + WH / 2, WW, WH),
-	true
+	box(LEFT, ROW2 + SH / 2, SW, SH)
 )
+local owned = statTile(
+	"Collection",
+	"GLASSIES",
+	DATA.Owned .. "/" .. DATA.Total,
+	A.statEmerald,
+	A.collection,
+	C.emeraldLight,
+	box(RIGHT, ROW2 + SH / 2, SW, SH)
+)
+owned:SetAttribute("Format", "%d/%d")
 
 -- Level rewards: an empty strip kept for later (no rewards yet)
 local RW = 0.74

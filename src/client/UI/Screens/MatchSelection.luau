@@ -290,7 +290,9 @@ function Screen:Controls()
 	self.PickAnyButton.Visible = not data.Picked
 	Kit.enable(self.PickAnyButton, ready)
 	Kit.setCost(self.PickAnyButton, data.PickAnyCost or 0)
-	self.RerollButton.Visible = data.PaidRandomAllowed == true and not data.Picked
+	-- A reroll needs more owned glassies than one hand (the server says so in CanReroll); a loaned starter hand has none.
+	local rerollable = data.PaidRandomAllowed == true and not data.Picked and data.CanReroll ~= false
+	self.RerollButton.Visible = rerollable
 	Kit.enable(self.RerollButton, ready)
 	Kit.setCost(self.RerollButton, data.RerollCost or 3)
 	Motion.countTo(self.WalletAmount, data.Marbles or 0)
@@ -298,8 +300,8 @@ function Screen:Controls()
 	for _ in data.Collection do
 		count += 1
 	end
-	self.OddsNote.Visible = data.PaidRandomAllowed == true and not data.Picked
-	self.OddsButton.Visible = data.PaidRandomAllowed == true and not data.Picked
+	self.OddsNote.Visible = rerollable and count > 0
+	self.OddsButton.Visible = rerollable
 	Kit.enable(self.OddsButton, ready)
 	self.OddsNote.Text = string.format(
 		"Reroll: 3 distinct owned glassies • each %.2f%% • the same hand can return",

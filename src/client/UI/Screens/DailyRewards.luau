@@ -30,6 +30,16 @@ function Screen.bind(gui, onClaim)
 					onClaim(cell)
 				end
 			end)
+			-- The CLAIM pill is small on phones: the whole card claims too (the pill stays the gamepad target).
+			local hit = Instance.new("TextButton")
+			hit.Name, hit.Text, hit.BackgroundTransparency, hit.AutoButtonColor = "CellHit", "", 1, false
+			hit.Size, hit.ZIndex, hit.Selectable = UDim2.fromScale(1, 1), math.max(1, button.ZIndex - 1), false
+			hit.Activated:Connect(function()
+				if cell:GetAttribute("State") == "Today" then
+					onClaim(cell)
+				end
+			end)
+			hit.Parent = cell
 		end
 	end
 	return self

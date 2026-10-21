@@ -3,6 +3,34 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-21 — Claude (main session) — Device fitting and UI fixes (decision 106, Proposed)
+Done:
+- Device audit with the Studio device simulator (MCP skill `rbx-device-simulator-lua`; `StudioDeviceSimulatorService` works from Edit and the Play client) on Galaxy A06 (705x338), iPhone 17 Pro, iPad Pro 13, Xbox One and iPhone portrait, using a new Studio-only `Dev/UIAudit` hook (`PlayerScripts.UIAuditDev`: Open/Close any screen, Scan for off-screen, small targets and cut text).
+- Found:
+  - Phone: window banners and close diamonds left the screen; Settings/Codes opened small, so text was cut and toggles were tiny.
+  - iPhone: the thumbstick covered the coin/Marble counters.
+  - Phone fights: PULL BACK covered the swing; player billboards were unreadable.
+  - TV: the Shop used 94% of the screen (overscan).
+  - Daily CLAIM was 48x13 px.
+  - A loaned starter hand showed "each 0.00%" and a useless 3-Marble reroll.
+  - Results was a plain box; the loading text touched its bar; portrait was barely usable.
+- New `Controllers/ResponsiveController` + `Config/Responsive` (event-driven, no per-frame work):
+  - fits every window to the safe area, decorations included (bigger on phones, overscan-safe on TV)
+  - moves the counters top right on touch (`PreferredInput`)
+  - shrinks the fight headline on phones and grows the player billboards
+  - locks phones to landscape (reapplied, since Roblox copies StarterGui's Sensor setting over it on spawn)
+- Also:
+  - the whole Daily card claims
+  - REROLL/ODDS follow the server's `CanReroll`
+  - Results borrows the Inventory window frame, with its buttons moved inside it
+  - the loading status sits clear of the bar
+- Re-checked in Studio Play on each device: windows fully on screen, Settings readable on the A06, counters clear of the thumbstick, the swing visible under the headline, the Shop inside the TV-safe area. Lune 214/214.
+Next:
+- The Shop's five tabs are ~14 px tall on phones (authored template row); needs a taller tab row for touch. Inventory info-pane descriptions still cut on phones (one-line boxes).
+- Creator: real-phone check; save the place.
+Problems / questions for the user:
+- Portrait now always turns to landscape on phones; say if you'd rather keep portrait.
+
 ## 2026-10-21 — Claude (input session) — Controller and keyboard support, CAST keybind (decision 107, Proposed)
 Done:
 - `UI/Components/GamepadNav`, one central controller layer:

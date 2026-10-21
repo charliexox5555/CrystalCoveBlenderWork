@@ -160,6 +160,16 @@ function Screens.results(data, replay, lobby)
 	local ratio = Instance.new("UIAspectRatioConstraint")
 	ratio.AspectRatio, ratio.Parent = 1.6, panel
 	self.Panel = panel
+	-- Same cut-glass window frame as every menu (borrowed from the Inventory template), over the dark pane.
+	local template = game.StarterGui:FindFirstChild("CollectionScreen")
+	local artwork = template and template:FindFirstChild("Panel") and template.Panel:FindFirstChild("WindowArtwork")
+	if artwork then
+		local frame = artwork:Clone()
+		frame.ZIndex = 0
+		frame.Parent = panel
+		panel.ImageTransparency = 1
+		S.bindSlices(panel)
+	end
 	Kit.label(
 		panel,
 		"Title",
@@ -256,14 +266,14 @@ function Screens.results(data, replay, lobby)
 					else ""
 			),
 		UDim2.fromScale(0.9, 0.06),
-		UDim2.fromScale(0.05, 0.71),
+		UDim2.fromScale(0.05, 0.685),
 		{ Font = Theme.Fonts.Caption, Color = Theme.Palette.milkDark, MaxSize = 18, Outline = 1.5 }
 	)
 	local again =
-		Kit.gem(panel, "PlayAgain", "PLAY AGAIN", "emerald", UDim2.fromScale(0.4, 0.17), UDim2.fromScale(0.28, 0.88))
+		Kit.gem(panel, "PlayAgain", "PLAY AGAIN", "emerald", UDim2.fromScale(0.4, 0.15), UDim2.fromScale(0.28, 0.83))
 	self:Connect(again, replay)
 	self:Connect(
-		Kit.gem(panel, "Lobby", "LOBBY", "sapphire", UDim2.fromScale(0.4, 0.17), UDim2.fromScale(0.72, 0.88)),
+		Kit.gem(panel, "Lobby", "LOBBY", "sapphire", UDim2.fromScale(0.4, 0.15), UDim2.fromScale(0.72, 0.83)),
 		lobby
 	)
 	-- Controller: lands on PLAY AGAIN; B goes back to the lobby.

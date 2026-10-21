@@ -114,8 +114,8 @@ stroke(title, 6)
 local status = make("TextLabel", stage, {
 	Name = "Status",
 	AnchorPoint = Vector2.new(0.5, 0.5),
-	Position = at(960, 940),
-	Size = size(900, 46),
+	Position = at(960, 926), -- clear of the bar's outline on short phone screens
+	Size = size(900, 44),
 	BackgroundTransparency = 1,
 	Text = "Joining...",
 	FontFace = Art.Heading,

@@ -28,7 +28,9 @@ Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DES
 - [ ] **U:** phone check of the four new screens and the top bar; listen to volume sliders.
 - [ ] **CL:** turn the code-built screens (RollScreen, FightHud, Results/QueuePanel/RoundEnd, CastButton, PickAnyConfirm, BundlePreview, music button) into editable StarterGui templates.
 - [ ] **U:** creator sets Robux prices for Epic Standard / Legendary / Mythic flyers and Mythic finishers (until then they're crate-only).
-- [ ] **U:** real-phone checks (no device emulation through MCP), listening pass on new sounds.
+- [x] **CL:** device fitting (decision 106): Studio device-simulator audit (phone, iPhone, iPad, Xbox, portrait) and one `ResponsiveController` for window fit, overscan, touch currency, phone fight HUD and landscape lock.
+- [ ] **CL:** taller Shop tab row for touch; phone-friendly Inventory info pane.
+- [ ] **U:** real-phone checks (Studio's device simulator now works through MCP), listening pass on new sounds.
 - [ ] **U:** save the place again (flyer installs after the last save), then publish.
 
 - [x] **CL:** flyers v3 (workstream H, decision 93): four premium Blender flyers built and FBX-validated, shared `RideMotion` (float, drift, bank, launch, loop sound) live, trails/particles/lights on the current meshes. Uploaded and installed (A's upload, H's installer), rider poses fitted, verified in rounds, lobby display and shop portraits. Creator feel/phone/sound review remains. [Report](testing/flyers_v3/REPORT.md)

@@ -15,7 +15,7 @@ Current follow-up: the creator requested replacement combat sounds on 2026-10-15
 | Cork throw, wobble, catch / escape | M3 | |
 | Crate open (shatter reveal), rarity stings | M3 | |
 | Tournament start, final, champion fanfare | M4 | |
-| Music: lobby, route, battle, tournament final | M2-M4 | Loopable, kid-friendly. Lobby, match and calm tracks approved 2026-10-16 (see Background music below) |
+| Music: lobby, route, battle, tournament final | M2-M4 | Loopable, kid-friendly. Lobby playlist, Fight, Overtime and stings since 2026-10-21 (see Background music below) |
 
 Record real glass clinks if you can (safely, with care); they'll be unique. Otherwise use licensed Creator Store audio and list the IDs here.
 
@@ -56,17 +56,23 @@ Creator approved these 15 ProSoundEffects Creator Store sounds (Roblox's license
 
 No ProSoundEffects confetti popper was found; Party Pop layers the horn, MagicPoof, BubblePop and CapRattle instead. Search: Studio MCP `search_asset`, Creator Store, creator "ProSoundEffects" only.
 
-## Background music (approved 2026-10-16)
+## Background music (music plan 2026-10-21, decision 109)
 
-Creator picked these three APM Music cues from Roblox's licensed music library. They are published by the verified Creator Store account **APMOfficial** ("Courtesy of APM Music"); Roblox's [audio asset documentation](https://create.roblox.com/docs/audio/assets) describes its licensed library as free to use in experiences. All three loaded in a Studio client (IsLoaded=true) and loop. They are short cues, so each repeats often; if players tire of them, swap in longer APM tracks by changing IDs in `src/shared/Config/Music.luau` only.
+Replaces the 2026-10-16 rotation (Rainbow Garden lobby loop, the 30 s "I know that you like it" match loop, Positive Pre School Program for panels/results). All IDs loaded in Studio (IsLoaded=true, no permission or moderation error) on 2026-10-21; lengths are the measured `TimeLength`. Numbers and IDs live in `src/shared/Config/Music.luau` only.
 
-| Role | Asset ID | Name | Length | Plays when | Notes |
-|---|---|---|---|---|---|
-| Lobby | [9043613723](https://create.roblox.com/store/asset/9043613723) | Rainbow Garden (a 30) | 30.1 s | In the lobby | KPM Main Series, "Creativity & Tasking": breezy folk, bright acoustic guitar, piano, shakers, handclaps |
-| Match | [9042710302](https://create.roblox.com/store/asset/9042710302) | I know that you like it 30 sec no vocals | 32.0 s | Queued match, aiming, fight, spectating | Invasion From Mars, "Festival Nights": energetic danceable beats with builds, no vocals |
-| Calm | [1836139113](https://create.roblox.com/store/asset/1836139113) | Positive Pre School Program | 20.0 s | Results screen, and Kiln / Glassies / Rewards panels | APM cue; vibe judged from its title, no store description |
+| Slot | Asset ID | Name | Length | Publisher | Plays when | Loop / gain |
+|---|---|---|---|---|---|---|
+| Lobby A | [78720640408712](https://create.roblox.com/store/asset/78720640408712) | Gravity Well | 240.0 s | DistrokidOfficial (creator pick) | Lobby and lobby panels; alternates with B, random start per join | Crossfade, 0.22 |
+| Lobby B | [109260416655887](https://create.roblox.com/store/asset/109260416655887) | Fractal Tide | 239.1 s | DistrokidOfficial (creator pick) | Same | Crossfade, 0.22 |
+| Fight | [9042709616](https://create.roblox.com/store/asset/9042709616) | I know that you like it no vocals | 202.0 s | APMOfficial (Invasion From Mars, "Festival Nights") | Rolling, aiming, countdown, fight, spectating | Crossfade, 0.26 |
+| Overtime | [9042708952](https://create.roblox.com/store/asset/9042708952) | Heavy Artillery main | 154.9 s | APMOfficial (same album: funky bass into dubstep drops, distorted guitar) | Overtime, or a round where either side is on its last heart (so every Crown Hill round) | Crossfade, 0.24 |
+| Tension sting | [103121809098519](https://create.roblox.com/store/asset/103121809098519) | Abiter_Leave | 3.0 s | ARABIC_GOKU1 (user upload, creator pick) | Ends on the release: starts 3 s before `ReleaseAt` (1 s into the 4 s countdown) | One shot, 0.32 |
+| Winner | [127039883737564](https://create.roblox.com/store/asset/127039883737564) | winner! | 1.6 s | 4nrxyk (user upload, creator pick) | `MatchResult` with `Won` | One shot, 0.40 |
+| Loser | [1844442622](https://create.roblox.com/store/asset/1844442622) | Loser | 1.3 s | APMOfficial | `MatchResult` without `Won` (no sting on a no-contest) | One shot, 0.38 |
 
-How it plays (`Config/Music.luau`, `Controllers/MusicController.luau`): one looped Sound per track in a `MusicMaster` SoundGroup so music never competes with the effects bank (track gains 0.28-0.32, player volume 0.7 by default). Tracks crossfade (1.6 s in, 1.2 s out, 0.6 s settle delay). Music ducks to 35% for about 2.4 s when the fight HUD stamps `LastShatter`. A round button at the top right mutes/unmutes; the choice is saved per player by `MusicPrefsService` (DataStore `GlassClashMusicPrefs_v1`, falls back to defaults if the store fails). Listening and mix review on a real phone are still pending.
+The Fight track is the full 202 s no-vocals version of the 30 s cue the creator liked. Overtime alternates if Heavy Artillery is too much: [9042713825](https://create.roblox.com/store/asset/9042713825) "Do you need Me no vocals" (183.9 s, long builds and dance drops) and [9042713847](https://create.roblox.com/store/asset/9042713847) "Do you need Me no melodies" (183.8 s); both from the same APM album, both load. **Licensing note:** the tension sting and winner jingle are ordinary user uploads, not Roblox-licensed library audio; keep them only if the creator is confident they are cleared for use, otherwise swap to an APM sting.
+
+How it plays (`Controllers/MusicController.luau`): beds are cloned from preloaded templates in `MusicMaster/MusicTemplates`, so a track can crossfade into its own next play or the next playlist track. Every long track is "Crossfade": the next play starts 3 s before the end and the two overlap, so hard cuts and ring-outs at the end never show (how each track ends was not checked by ear). Context switches fade (1.5 s in, 1.2 s out) after a 0.6 s settle delay. Overtime: the bed crossfades to Overtime when the `Overtime` FightEvent fires or a round starts with a side on its last heart, and back to Fight only at a new round where neither holds. On `MatchResult` the bed fades out under the win/lose sting, stays silent 0.8 s after it, then lobby music fades in. Ducks: beds dip to 35% for ~2.4 s on the shatter and the Kiln reveal (`PlayerGui.MusicDuckAt`), and to 40% for each sting's length. Stings play in `MusicMaster` beside the duck group, so the Music slider and mute control everything. Listening and mix review by the creator are pending.
 
 ## Power sounds (workstream E, 2026-10-20)
 

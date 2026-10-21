@@ -140,6 +140,7 @@ function Opening:ShowRewards(instant)
 		self.Anticipation = nil
 	end
 	RevealFx.playTier(self.Tier, self.Sounds)
+	game:GetService("Players").LocalPlayer.PlayerGui:SetAttribute("MusicDuckAt", os.clock()) -- MusicController dips
 	local centerY = (
 		self.Window.Gui.AbsolutePosition.Y
 		+ self.Window.Gui.AbsoluteSize.Y / 2

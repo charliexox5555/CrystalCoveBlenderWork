@@ -409,6 +409,7 @@ function Scene:Event(e, hud)
 		end
 	elseif e.Type == "Overtime" and hud then
 		hud:Phase("Fighting", "OVERTIME • HITS GET STRONGER!")
+		hud.Gui:SetAttribute("Overtime", true) -- MusicController crossfades to the Overtime bed
 	end
 end
 

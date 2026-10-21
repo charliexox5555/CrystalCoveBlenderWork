@@ -29,6 +29,7 @@ local order = {
 	"CrateTests",
 	"RetentionTests",
 	"SettingsTests",
+	"MusicTests",
 	"OnboardingTests",
 	"LeaderboardTests",
 	"DailyStoreTests",

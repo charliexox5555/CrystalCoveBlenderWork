@@ -318,6 +318,11 @@ function Controller:State(data)
 	end
 	if self.Hud then
 		self.Hud:Phase(data.Phase, if data.Phase == "Aiming" and self.Participant then "PULL BACK" else "")
+		-- Music cues for MusicController: the release time (tension sting) and a last-heart round (Overtime bed).
+		self.Hud.Gui:SetAttribute("ReleaseAt", data.ReleaseAt)
+		if data.Hearts and (data.Phase == "Aiming" or data.Phase == "Countdown") then
+			self.Hud.Gui:SetAttribute("LastHeart", math.min(data.Hearts[1], data.Hearts[2]) <= 1)
+		end
 	end
 end
 
@@ -454,6 +459,7 @@ function Controller:Event(e)
 		-- Round-win beat on the survivor as it rises (the finisher shatters it before ShowRoundResult).
 		feel:Victory(3 - e.Side, now)
 		if self.Viewing then
+			Players.LocalPlayer.PlayerGui:SetAttribute("MusicDuckAt", os.clock()) -- MusicController dips under it
 			-- A double KO can emit two Shatters; keep one owned flash for cleanup.
 			self.Post = self.Post or Instance.new("ColorCorrectionEffect")
 			self.Post.Name = "FightShatterFlash"

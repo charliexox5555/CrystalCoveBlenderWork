@@ -3,6 +3,15 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-21 — Claude (sound session) — Music plan (decision 109, Proposed)
+Done:
+- Replaced the Lobby / Match / Calm rotation. `Config/Music` now has beds (LobbyA/B Gravity Well and Fractal Tide, Fight = full 202 s "I know that you like it no vocals", Overtime = "Heavy Artillery main"), playlists, stings (Tension, Win, Lose) and fade/duck numbers; `MusicController` rewritten: cloned voices crossfade into the next play 3 s before the end, contexts switch by crossfade after the settle delay, Overtime on the `Overtime` event or a last-heart round, tension sting timed to end on `ReleaseAt`, win/lose sting on `MatchResult` then lobby fades back in.
+- Signals: FightView stamps `ReleaseAt` / `LastHeart` on the FightHud, FightScene stamps `Overtime`; the shatter and the Kiln reveal stamp `PlayerGui.MusicDuckAt`. The old duck read a `LastShatter` attribute nothing set, so it never fired; now it does. No new remotes.
+- All 9 IDs (incl. 2 Overtime alternates) load in Studio; lengths and publishers in SOUND_LIST. The tension sting and winner jingle are user uploads, not licensed-library audio (flagged).
+- Tests: new `MusicTests` (config validity); Lune 217/217. Touched client files compile.
+Not done (creator asked for minimal testing): no Studio play-test of a full match, spectating or Overtime, no Studio RunAll, and track endings/loudness not checked by ear.
+Next: creator listening pass (lobby loudness vs the APM beds, Overtime pick), then a bot match in Studio; Save to Roblox.
+
 ## 2026-10-21 — Claude (perf-pass session) — Optimization pass and bystander tier (decision 108, Proposed)
 Done:
 - Measured first (docs/testing/perf/BASELINE.md): Studio-only probes `PlayerScripts.PerfProbeDev` / `ServerStorage.PerfProbeServerDev`, the script profiler (`ScriptProfilerService` from the MCP client) and engine Stats, with 7 bot fights. The server is cheap (FightService 0.36 ms/frame, ~27 kbps to a player). Client costs: match flyers + rider poses ~2.3 ms/frame, lobby showcase ~1.3 ms, bystander fights ~1.2 ms.

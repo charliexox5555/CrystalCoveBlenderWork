@@ -18,6 +18,8 @@ Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DES
 - [x] **CL:** onboarding (decision 100): welcome opens, daily step, reserved arena with guide beam, assisted 3-1 first match vs Rookie Bot, first-win Kiln open, funnel analytics. [Design](design/ONBOARDING.md)
 - [x] **U/CL:** onboarding visual pass with Studio on screen (no hint text, Kiln x3 claim card, win claim card, stacked reels, chevron beam) and a 12-step tutorial funnel through the second match.
 - [x] **CL:** viewing fixes (decision 103): a watch follows the whole match (every round, finisher and heart pop) and ends only at match end or EXIT; while playing or watching, everyone outside the match is hidden on your screen (own avatar too while watching). Two-client Studio QA (`MultiplayerLauncher.watch()`) passes.
+- [x] **CL:** levels + player profile (decision 104): XP per match and a no-cap level curve (`LevelRules`), a Profile top bar button with the player's headshot, a Stained Glass profile (level, XP, Wins / Win Rate / Best Streak / Glassies, read-only collection grids) and other players' read-only profiles from a lobby tap or a leaderboard row. Verified in Studio Play. [Doc](ui/screens/ProfileScreen.md)
+- [ ] **U:** save the place (ProfileScreen template), tap a leaderboard row and another player in a 2-player test, phone check of the profile.
 - [ ] **U:** watch the onboarding funnel in Creator Dashboard after launch.
 - [ ] **CL/U:** Quests redesign (screen and row held back); retire the old combined RewardsScreen once Quests have a home.
 - [ ] **U:** phone check of the four new screens and the top bar; listen to volume sliders.

@@ -1,7 +1,8 @@
 # ProfileScreen (top bar → Profile)
 
-Design only (Oct 20): no controller, no remotes, no XP yet. Placeholder data: Lv.4, 120 / 300 XP, 37 wins, 62%, best
-streak 5, 12/36 glassies. It's a regular-size Stained Glass window with the same footprint as Inventory (Panel `0.86 × 0.9` of the
+Wired (Oct 21, decision 104): `Controllers/ProfileController` + `UI/Screens/ProfileScreen` fill this template with live data
+(levels from `LevelRules`); the build script's placeholder data (Lv.4, 120 / 300 XP, 37 wins, 62%, streak 5, 12/36) only shows in
+Edit. Live captures: `docs/testing/profile/`. It's a regular-size Stained Glass window with the same footprint as Inventory (Panel `0.86 × 0.9` of the
 screen, aspect 1.773, Scale only). It has a **ruby** title banner ("PROFILE"), so it stands apart from Inventory
 (sapphire), Daily (amber), Settings and Playtime (aqua) and Codes (amethyst).
 

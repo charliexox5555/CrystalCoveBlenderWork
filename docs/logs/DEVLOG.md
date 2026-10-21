@@ -3,6 +3,21 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-21 — Claude (profile session) — Levels + player profile (decision 104)
+Done:
+- Design (creator-approved): Stained Glass ProfileScreen template (`tools/studio/build_profile_screen.luau`, art `tools/ui/profile_art.py`, 21 pieces), 2x2 stats with a Glassies collection tile, read-only grids, other-player view and a lobby tap bubble. Doc and captures: `docs/ui/screens/ProfileScreen.md`.
+- `LevelRules` + `Balance.Levels` + 7 Lune tests: XP per match (win 100, loss 40, +10/round won, +15/Perfect, bots half, forfeits none), step curve 100 + 70 x (L-1), no cap. Profiles store total `Xp` (all start at Lv 1 / 0 XP); the snapshot carries the level; MatchResult carries XP gained.
+- Other players' profiles: `RequestPlayerProfile` -> `PlayerProfile` (`ProfileSchema.publicView`, live or view-only store read, rate-limited, cached 60 s). Leaderboard rows carry `UserId`.
+- Client: `ProfileController` (top bar headshot button in `Config/Topbar`, lobby tap bubble, leaderboard row taps) and `UI/Screens/ProfileScreen`. Studio-only hooks: `DataDev` "Match" / "MockProfile", `PlayerScripts.ProfileClientDev`.
+- Studio Play: XP adds up per match (73, 130, 50, 160, 65 -> Lv 3 208/240), own profile, Glassies grid (rarest first, x2 counts) and builderman's offline profile all render; captures in `docs/testing/profile/`. Lune 214/214.
+Balance sim (Balance.Levels added; nothing else changed):
+- Economy: Levels: Lv 4 after day 1, Lv 10 by day 7, Lv 22 by day 30; Lv 5 after 9 matches, Lv 10 after 42. Pulls day 1: 3, day 30: 89; unique Kiln glassies day 7: 15, day 30: 28. Balance sim unchanged.
+Next:
+- Creator: save the place (ProfileScreen lives in StarterGui), click a real leaderboard row and tap another player in a 2-player test (only checked with hooks: the billboard bubble isn't visible in Studio captures), phone check.
+- Later: level rewards in the empty strip; show "+XP" on the results screen (MatchResult.Xp is ready).
+Problems / questions for the user:
+- A 40-minute first session (about 7 matches) ends at Lv 4; Lv 5 comes early in the second. Say if Lv 5 should come sooner.
+
 ## 2026-10-20 — Claude (next patch, main session) — Viewing fixes (decision 103)
 Done:
 - Watching lasts the whole match. The watch is now match-level state in `FightController` (`self.Watch`). At a round's `Idle` the watched view lingers (camera, HUD, survivor at rest). The next round's view of the same match takes over in the same frame (`Follow`), at full detail. The watch ends on the server's new `MatchOver` flag (FightService:Stop now carries `MatchId`/`ArenaId`/`MatchOver`; MatchService sends it at the roll and at Finish), on EXIT/Escape, on a new match in that arena, or after the 60 s safety timeout (`Feel.WatchRejoinSeconds`). The PlayerGui "Watching" flag is now owned by the controller, so it no longer flickers between rounds.

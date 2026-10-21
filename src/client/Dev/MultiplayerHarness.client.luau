@@ -13,6 +13,7 @@ local function start(folder)
 	started = true
 	local command, report = folder:WaitForChild("Command"), folder:WaitForChild("Report")
 	local remotes = require(RS.Shared.Remotes)
+	local TouchGate = require(script.Parent.Parent.UI.TouchGate)
 	local scripts = player:WaitForChild("PlayerScripts")
 	local lobby = scripts:WaitForChild("LobbyClientDev", 30)
 	local match = scripts:WaitForChild("MatchClientDev", 30)
@@ -32,8 +33,13 @@ local function start(folder)
 		end
 	end)
 	local results = 0
+	local offersReported = false
 	remotes.RollOffers.OnClientEvent:Connect(function(data)
 		if not data.Picked then
+			if not offersReported then
+				offersReported = true
+				report:FireServer("Offers", { Offers = table.clone(data.Offers) })
+			end
 			task.delay(0.15, function()
 				remotes.PickGlassy:FireServer(if table.find(data.Offers, "pop") then "pop" else data.Offers[1])
 			end)
@@ -99,8 +105,16 @@ local function start(folder)
 		elseif action == "Dismiss" then
 			match:Invoke("DismissResults")
 			task.delay(0.35, function()
+				-- A new profile's WELCOME claim card (decision 102) holds the touch gate through the lobby panel.
+				local claim = player.PlayerGui:FindFirstChild("WelcomeScreen")
+				local owners = 0
+				for _ in TouchGate.Owners do
+					owners += 1
+				end
 				report:FireServer("Cleanup" .. results, {
 					Touch = game:GetService("GuiService").TouchControlsEnabled,
+					Claim = claim ~= nil and claim.Enabled,
+					GateOwners = owners,
 					Camera = tostring(workspace.CurrentCamera.CameraType),
 					InMatch = player.PlayerGui:GetAttribute("InMatch"),
 					ResultsOpen = player.PlayerGui:GetAttribute("ResultsOpen"),

@@ -3,6 +3,21 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-21 — Claude (mp-harness session) — MultiplayerHarness brought up to date
+Done:
+- `Dev/MultiplayerHarness` (server + client) updated and passing again (`MultiplayerLauncher.run()`, 220 s, all 6 stages, no errors):
+  - Decision 102: the "starter progress" check is replaced. New profiles must own no glassies, a match must not grant one, and each player's first roll must be a full hand from `Glassies.Fallback` (both got pop/jam/prism).
+  - Pads queue only through their ProximityPrompt now, so the harness stands the player on the pad and calls `ArenaService:Queue` (the prompt's own path).
+  - Controls check: a new profile's WELCOME claim card holds the touch gate by design, so "restored" also passes when that card is up and is the only gate owner.
+  - The late-join spectator check starts a new bot match in arena 2 whenever the arena is free (the old one could be between rounds or finishing).
+  - Studio noise (MeshContentProvider, ContentId, AssistantCommand) is filtered like WatchHarness.
+  - RunAll is dropped from the harness: run unyielding next to 7 fights and 3 clients it hit the script timeout and killed the harness before EndTest (the run hung). Run RunAll on a plain Play server instead.
+- Lune 214/214.
+Next:
+- None for the harness.
+Problems / questions for the user:
+- None.
+
 ## 2026-10-21 — Claude (featured-stage session) — Crown Hill (decision 105)
 Done:
 - Brainstorm of 5 featured-stage options (`docs/design/FEATURED_STAGE.md`); the creator picked Crown Hill with crown coins. Built it the same session.

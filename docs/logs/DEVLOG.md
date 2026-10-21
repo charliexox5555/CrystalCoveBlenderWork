@@ -3,6 +3,29 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-21 — Claude (input session) — Controller and keyboard support, CAST keybind (decision 106, Proposed)
+Done:
+- `UI/Components/GamepadNav`, one central controller layer:
+  - Screens push their root, close callback and first button; the top menu gets a selected button, SelectionGroup keeps the stick inside it, and B closes it.
+  - Gold Stained Glass `SelectionImageObject` (aqua while a slider is grabbed); hidden or rebuilt buttons never keep the selection.
+  - Hooked into `Window` (Shop/Kiln/Inventory/Collection/Rewards/Pick Any/odds windows), the top bar screens (Settings, Daily, Playtime, Codes, Profile), the welcome / win claim card, the Kiln opening (Skip, then Collect), RollScreen (first dealt card), the Pick Any confirm (NO), queue (B leaves, nothing pre-selected), results (PLAY AGAIN; B = lobby) and the bundle preview (buy button).
+  - Lobby: D-pad left / right / down lands on PLAY, B steps off; TopbarPlus D-pad-up shortcut turns off while a menu is open.
+  - Settings sliders: A grabs, left / right / stick step 10%, A or B lets go.
+- CAST: Space, F, A, X, R1, R2 while lit; `UI/Components/InputGlyph` shows a SPACE key-cap or the platform's A art (Roblox `GetImageForKeyCode`), nothing on touch. LOCK has the same glyph.
+- Aiming without a mouse (FightController `StickAim` / `BindLock`): left stick, D-pad, arrows or WASD; Space / Enter / A lock. The fight hint text follows the input in use (`Hud:Instruct`). New `Feel.StickAimSeconds` 1.2, `StickYawSeconds` 1.0, `StickDeadzone` 0.2 (presentation only).
+- `UI/InputKind`: PreferredInput with a Studio-only `PlayerGui.DevInput` override, because Studio can't fake a controller (the Xbox device preset only sets the screen size, and injected pad buttons don't reach GuiService or CAS).
+- Studio Play (Xbox One preset, `DevInput` = Gamepad), verified:
+  - welcome card selects OPEN; the Kiln opening moves from Skip to Collect; Settings lands on the first toggle
+  - B (through the `GamepadNavDev` hook) closes Settings; the D-pad home lands on PLAY, and B steps off it
+  - RollScreen selects the first card; LOCK and CAST show the A glyph, and the SPACE key-cap in keyboard mode
+  - arrow keys moved the aim onto PERFECT, Space locked it (no jump), and Space fired CAST
+- Lune 214/214.
+Next:
+- Creator: try a real controller (A on buttons, B closing, stick aim, the slider grab) and a keyboard.
+Problems / questions for the user:
+- Escape never reached game code on PC (it opens the Roblox menu), so the old Escape bindings (close lobby panel, stop watching) never fired. They still work on B, and the X buttons cover the mouse.
+- Opening other players' profiles still needs a tap on their avatar or a leaderboard row; there's no controller route to it yet.
+
 ## 2026-10-21 — Claude (mp-harness session) — MultiplayerHarness brought up to date
 Done:
 - `Dev/MultiplayerHarness` (server + client) updated and passing again (`MultiplayerLauncher.run()`, 220 s, all 6 stages, no errors):

@@ -6,10 +6,12 @@ local RS = game:GetService("ReplicatedStorage")
 local SoundService = game:GetService("SoundService")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
+local GuiService = game:GetService("GuiService")
 local Remotes = require(RS.Shared.Remotes)
 local Settings = require(RS.Shared.Config.Settings)
 local AudioGroups = require(script.Parent.Parent.AudioGroups)
 local UiAudio = require(script.Parent.Parent.UI.Components.UiAudio)
+local GamepadNav = require(script.Parent.Parent.UI.Components.GamepadNav)
 local Motion = require(script.Parent.Parent.UI.Components.Motion)
 local Controller = {}
 
@@ -169,7 +171,8 @@ function Controller:WireSlider(row, key)
 			self.Dragging, self.DragInput = nil, nil
 		end
 	end)
-	-- Gamepad / keyboard selection: left and right step by 10%.
+	-- Gamepad / keyboard selection: left and right step by 10%. On a controller, A grabs the slider first (the
+	-- selection glows aqua and left / right stop moving between rows), then A or B lets go.
 	slider.SelectionGained:Connect(function()
 		self.Selected = key
 	end)
@@ -177,7 +180,37 @@ function Controller:WireSlider(row, key)
 		if self.Selected == key then
 			self.Selected = nil
 		end
+		if self.Editing == key then
+			self:Edit(nil)
+		end
 	end)
+	slider.Activated:Connect(function()
+		if GamepadNav.usingGamepad() and GuiService.SelectedObject == slider then
+			self:Edit(if self.Editing == key then nil else key)
+		end
+	end)
+	self.SliderButtons = self.SliderButtons or {}
+	self.SliderButtons[key] = slider
+end
+
+-- Grab (key) or let go (nil) of a slider for controller stepping.
+function Controller:Edit(key)
+	local previous = self.Editing and self.SliderButtons[self.Editing]
+	if previous then
+		previous.SelectionBehaviorLeft, previous.SelectionBehaviorRight =
+			Enum.SelectionBehavior.Escape, Enum.SelectionBehavior.Escape
+	end
+	self.Editing = key
+	local slider = key and self.SliderButtons[key]
+	if slider then
+		slider.SelectionBehaviorLeft, slider.SelectionBehaviorRight =
+			Enum.SelectionBehavior.Stop, Enum.SelectionBehavior.Stop
+		GamepadNav.setEditing(function()
+			self:Edit(nil)
+		end)
+	else
+		GamepadNav.setEditing(nil)
+	end
 end
 
 function Controller:WireToggle(row, key)
@@ -261,12 +294,31 @@ function Controller:Wire(gui)
 		if not key or not gui.Enabled then
 			return
 		end
-		local step = if input.KeyCode == Enum.KeyCode.DPadLeft or input.KeyCode == Enum.KeyCode.Left
+		-- Keyboard arrows step a selected slider; the D-pad only while it is grabbed (else it moves between rows).
+		local grabbed = self.Editing == key
+		local step = if input.KeyCode == Enum.KeyCode.Left or (grabbed and input.KeyCode == Enum.KeyCode.DPadLeft)
 			then -0.1
-			elseif input.KeyCode == Enum.KeyCode.DPadRight or input.KeyCode == Enum.KeyCode.Right then 0.1
+			elseif input.KeyCode == Enum.KeyCode.Right or (grabbed and input.KeyCode == Enum.KeyCode.DPadRight) then 0.1
 			else 0
 		if step ~= 0 then
 			self:Set(key, math.clamp(self.Values[key] + step, 0, 1), true)
+		end
+	end)
+	-- The left stick steps a grabbed slider too, a step every 0.2 s while held over.
+	UserInputService.InputChanged:Connect(function(input)
+		local key = self.Editing
+		if not key or not gui.Enabled or input.KeyCode ~= Enum.KeyCode.Thumbstick1 then
+			return
+		end
+		local x = input.Position.X
+		if math.abs(x) > 0.6 and os.clock() - (self.StickStep or 0) > 0.2 then
+			self.StickStep = os.clock()
+			self:Set(key, math.clamp(self.Values[key] + (if x > 0 then 0.1 else -0.1), 0, 1), true)
+		end
+	end)
+	gui:GetPropertyChangedSignal("Enabled"):Connect(function()
+		if not gui.Enabled and self.Editing then
+			self:Edit(nil)
 		end
 	end)
 	self:Render(false)

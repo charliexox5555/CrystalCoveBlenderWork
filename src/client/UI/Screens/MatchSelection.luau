@@ -9,6 +9,7 @@ local S = require(script.Parent.Parent.Components.StainedGlass)
 local Portrait = require(script.Parent.Parent.Components.GlassyPortrait)
 local HandRoll = require(script.Parent.Parent.Components.HandRoll)
 local Kit = require(script.Parent.Parent.Components.MatchKit)
+local GamepadNav = require(script.Parent.Parent.Components.GamepadNav)
 local Motion = require(script.Parent.Parent.Components.Motion)
 local UiAudio = require(script.Parent.Parent.Components.UiAudio)
 local Window = require(script.Parent.Parent.Components.Window)
@@ -208,6 +209,19 @@ function Screen.new(data, pick, reroll, pickAny, onMarblesRequested)
 		Kit.enable(button, false)
 	end
 	self.RerollButton.Visible, self.OddsButton.Visible = false, false
+	-- Controller: lands on the first card (once the roll has dealt it); the bottom row is reachable below.
+	self.Nav = GamepadNav.push(panel, {
+		First = function()
+			for i = 1, 3 do
+				local card = panel.Cards:FindFirstChild("Card" .. i)
+				local open = card and card.Visible and card:FindFirstChild("Open")
+				if open and open.Selectable then
+					return open
+				end
+			end
+			return nil
+		end,
+	})
 	Kit.popIn(panel)
 	return self
 end
@@ -538,6 +552,7 @@ end
 
 function Screen:Destroy()
 	self.Dead = true
+	self.Nav.Pop()
 	if self.Animation then
 		self.Animation:Destroy()
 	end

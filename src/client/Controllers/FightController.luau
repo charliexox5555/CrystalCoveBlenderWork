@@ -2,6 +2,8 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local CollectionService = game:GetService("CollectionService")
 local UIS = game:GetService("UserInputService")
+local CAS = game:GetService("ContextActionService")
+local GuiService = game:GetService("GuiService")
 local RS = game:GetService("ReplicatedStorage")
 local Remotes = require(RS.Shared.Remotes)
 local Codec = require(RS.Shared.SnapshotCodec)
@@ -183,6 +185,104 @@ function Controller:Active()
 		end
 	end
 end
+-- Controller and keyboard aiming: the left stick, D-pad, arrows or WASD pull (down = more) and turn, at a steady
+-- rate; Space / Enter / A locks. Mouse and touch keep the drag.
+local LOCK_ACTION = "GlassClashLock"
+local PULL_KEYS = {
+	[Enum.KeyCode.Down] = 1,
+	[Enum.KeyCode.S] = 1,
+	[Enum.KeyCode.Up] = -1,
+	[Enum.KeyCode.W] = -1,
+}
+local TURN_KEYS = {
+	[Enum.KeyCode.Right] = 1,
+	[Enum.KeyCode.D] = 1,
+	[Enum.KeyCode.Left] = -1,
+	[Enum.KeyCode.A] = -1,
+}
+
+function Controller:StickAim(view, dt)
+	local pull, turn = 0, 0
+	local dead = Balance.Feel.StickDeadzone
+	local pad = Enum.UserInputType.Gamepad1
+	for _, input in if UIS:GetGamepadConnected(pad) then UIS:GetGamepadState(pad) else {} do
+		if input.KeyCode == Enum.KeyCode.Thumbstick1 then
+			if math.abs(input.Position.Y) > dead then
+				pull -= input.Position.Y
+			end
+			if math.abs(input.Position.X) > dead then
+				turn += input.Position.X
+			end
+		end
+	end
+	for key, sign in { [Enum.KeyCode.DPadDown] = 1, [Enum.KeyCode.DPadUp] = -1 } do
+		if UIS:IsGamepadButtonDown(pad, key) then
+			pull += sign
+		end
+	end
+	for key, sign in { [Enum.KeyCode.DPadRight] = 1, [Enum.KeyCode.DPadLeft] = -1 } do
+		if UIS:IsGamepadButtonDown(pad, key) then
+			turn += sign
+		end
+	end
+	if not UIS:GetFocusedTextBox() then
+		for key, sign in PULL_KEYS do
+			if UIS:IsKeyDown(key) then
+				pull += sign
+			end
+		end
+		for key, sign in TURN_KEYS do
+			if UIS:IsKeyDown(key) then
+				turn += sign
+			end
+		end
+	end
+	pull, turn = math.clamp(pull, -1, 1), math.clamp(turn, -1, 1)
+	if pull ~= 0 then
+		local range = Balance.Motion.AimMax - Balance.Motion.AimMin
+		view.Aim = Rules.clampAim(view.Aim + pull * range / Balance.Feel.StickAimSeconds * dt)
+	end
+	if turn ~= 0 then
+		view.Yaw = Rules.clampYaw(view.Yaw + turn * Balance.Motion.AimYawMax / Balance.Feel.StickYawSeconds * dt)
+	end
+end
+
+-- LOCK keys are bound only while our own aim is open, so Space / A do nothing else then (and never jump).
+function Controller:BindLock(on)
+	if on == (self.LockBound == true) then
+		return
+	end
+	self.LockBound = on
+	if not on then
+		CAS:UnbindAction(LOCK_ACTION)
+		return
+	end
+	if UIS.PreferredInput == Enum.PreferredInput.Gamepad then
+		GuiService.SelectedObject = nil -- the left stick aims; it must not move a menu selection
+	end
+	CAS:BindActionAtPriority(
+		LOCK_ACTION,
+		function(_, state)
+			if state ~= Enum.UserInputState.Begin then
+				return Enum.ContextActionResult.Sink
+			end
+			local view = self:Active()
+			if view and view.Participant and view.Phase == "Aiming" and not view.Locked then
+				view:Lock()
+				if view.Hud then
+					view.Hud:LockPressed()
+				end
+			end
+			return Enum.ContextActionResult.Sink
+		end,
+		false,
+		Enum.ContextActionPriority.High.Value + 10,
+		Enum.KeyCode.Space,
+		Enum.KeyCode.Return,
+		Enum.KeyCode.ButtonA
+	)
+end
+
 -- CAST button (decision 85): follows our own side's Ready / cast events.
 local CLEARS = { ReadyCancel = true, CastStart = true, SignatureArmed = true, Shatter = true, End = true }
 
@@ -403,6 +503,15 @@ function Controller:Start()
 		end
 		if active and active.Participant and active.Phase == "Fighting" then
 			self.CastUi:Update(active)
+		end
+		local aiming = active ~= nil
+			and active.Participant
+			and active.Phase == "Aiming"
+			and not active.Locked
+			and active.Hud ~= nil
+		self:BindLock(aiming)
+		if aiming and not active.Drag then
+			self:StickAim(active, dt)
 		end
 		-- After rendering, so prompt bookkeeping can never stall the fights.
 		self:UpdatePrompts(dt)

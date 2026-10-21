@@ -23,6 +23,8 @@ function Hud.new(open)
 			end
 		end)
 	)
+	-- Controller: D-pad left / right / down from the lobby lands on PLAY (UI/Components/GamepadNav).
+	require(script.Parent.Parent.Components.GamepadNav).setHome(gui, gui.PlayButton)
 	-- "+" on the Marble counter opens the shop on its Marbles page.
 	require(script.Parent.Parent.Components.MarbleShop).attachPlus(gui.Currency.Marbles, function()
 		open("Kiln")

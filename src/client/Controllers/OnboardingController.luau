@@ -11,6 +11,7 @@ local RS = game:GetService("ReplicatedStorage")
 local Remotes = require(RS.Shared.Remotes)
 local Balance = require(RS.Shared.Config.Balance)
 local Motion = require(script.Parent.Parent.UI.Components.Motion)
+local GamepadNav = require(script.Parent.Parent.UI.Components.GamepadNav)
 local Hint = require(script.Parent.Parent.UI.Components.Hint)
 local StainedGlass = require(script.Parent.Parent.UI.Components.StainedGlass)
 local Item = require(script.Parent.Parent.UI.Components.ItemPresentation)
@@ -97,6 +98,10 @@ function Controller:ShowClaim(kind)
 				return
 			end
 			Remotes.OnboardingAction:FireServer(open.Action)
+			if self.ClaimNav then
+				self.ClaimNav.Pop()
+				self.ClaimNav = nil
+			end
 			local anim = self.ClaimAnim
 			self.ClaimAnim = nil
 			if anim then
@@ -120,6 +125,11 @@ function Controller:ShowClaim(kind)
 		lobby:ShowWallet()
 	end
 	gui.Enabled = true
+	-- Controller: the one big OPEN button is selected, so A opens.
+	if self.ClaimNav then
+		self.ClaimNav.Pop()
+	end
+	self.ClaimNav = GamepadNav.push(gui:FindFirstChild("Panel") or gui, { First = button })
 	self.ClaimAnim = Motion.windowIn(gui, gui:FindFirstChild("Panel"))
 	-- One big button needs no pointer: it pulses, and the glow behind the Kiln turns.
 	local glow = reward and reward:FindFirstChild("Glow")

@@ -88,6 +88,12 @@ function Opening.new(window, results, odds, collected, category, currency)
 	window:Connect(c.Collect, function()
 		self:Collect()
 	end)
+	-- Controller: A skips the reels, then collects.
+	if window.Nav then
+		window.Nav.SetFirst(function()
+			return if c.Collect.Visible then c.Collect else c.Skip
+		end)
+	end
 	self:SetPhase("Reels")
 	return self
 end

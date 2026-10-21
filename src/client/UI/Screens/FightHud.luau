@@ -7,6 +7,8 @@ local Theme = require(script.Parent.Parent.Theme)
 local U = require(script.Parent.Parent.Components.Util)
 local S = require(script.Parent.Parent.Components.StainedGlass)
 local Kit = require(script.Parent.Parent.Components.MatchKit)
+local InputGlyph = require(script.Parent.Parent.Components.InputGlyph)
+local InputKind = require(script.Parent.Parent.InputKind)
 local Hud = {}
 Hud.__index = Hud
 
@@ -65,9 +67,17 @@ function Hud.new(data, maxima, lock, stop)
 	self.Lock = Kit.gem(self.Gui, "Lock", "LOCK", "emerald", UDim2.fromScale(0.26, 0.15), UDim2.fromScale(0.79, 0.77))
 	self.LockConnection = self.Lock.Activated:Connect(function()
 		lock()
-		-- One press per round: grey it out until the next aiming phase.
-		Kit.enable(self.Lock, false)
+		self:LockPressed()
 	end)
+	-- Keyboard / controller players see the key that locks (FightController binds it while aiming).
+	self.LockGlyph = InputGlyph.new(
+		self.Lock,
+		{ Keyboard = Enum.KeyCode.Space, Gamepad = Enum.KeyCode.ButtonA },
+		UDim2.fromScale(0.3, 0.5),
+		UDim2.fromScale(0.86, 0.14)
+	)
+	local square = Instance.new("UIAspectRatioConstraint")
+	square.AspectRatio, square.Parent = 1, self.LockGlyph.Root
 	if stop then
 		self.Stop = Kit.gem(
 			self.Gui,
@@ -80,8 +90,16 @@ function Hud.new(data, maxima, lock, stop)
 		self.StopConnection = self.Stop.Activated:Connect(stop)
 	end
 	self.BannerSerial = 0
+	self.InputConnections = InputKind.changed(function()
+		self:Instruct()
+	end)
 	self:Update({ Hp = maxima })
 	return self
+end
+
+-- One press per round: grey LOCK out until the next aiming phase (button, key or controller).
+function Hud:LockPressed()
+	Kit.enable(self.Lock, false)
 end
 
 function Hud:Aim(aim, yaw, perfect)
@@ -110,11 +128,22 @@ function Hud:Phase(phase, text)
 	if self.Stop then
 		self.Stop.Visible = phase ~= "Fighting"
 	end
+	self:Instruct()
+end
+
+-- The one-line hint under the fight, worded for what the player is holding (refreshed when that changes).
+function Hud:Instruct()
+	local phase = self.LastPhase
+	local aiming = phase == "Aiming" and not self.Spectator
+	local input = InputKind.current()
 	self.Instruction.Text = if aiming
-		then "Drag to pull • aim for gold"
-		elseif phase == "Fighting" then (if UIS.PreferredInput == Enum.PreferredInput.Touch
+		then (if input == Enum.PreferredInput.Gamepad
+			then "Left stick to pull • aim for gold"
+			elseif input == Enum.PreferredInput.KeyboardAndMouse then "Drag or arrows to pull • aim for gold"
+			else "Drag to pull • aim for gold")
+		elseif phase == "Fighting" then (if input == Enum.PreferredInput.Touch
 			then "Swipe to rotate the camera"
-			elseif UIS.PreferredInput == Enum.PreferredInput.Gamepad then "Right stick to rotate the camera"
+			elseif input == Enum.PreferredInput.Gamepad then "Right stick to rotate the camera"
 			else "Drag or Q / E to rotate the camera")
 		elseif self.Spectator and phase == "Aiming" then "WATCHING • players are aiming"
 		else ""
@@ -189,6 +218,10 @@ function Hud:Destroy()
 	self.BannerSerial += 1
 	require(script.Parent.FightBillboards).destroy(self.Billboards)
 	self.LockConnection:Disconnect()
+	self.LockGlyph:Destroy()
+	for _, connection in self.InputConnections do
+		connection:Disconnect()
+	end
 	if self.StopConnection then
 		self.StopConnection:Disconnect()
 	end

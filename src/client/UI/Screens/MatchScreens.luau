@@ -9,6 +9,7 @@ local S = require(script.Parent.Parent.Components.StainedGlass)
 local Portrait = require(script.Parent.Parent.Components.GlassyPortrait)
 local Window = require(script.Parent.Parent.Components.Window)
 local Kit = require(script.Parent.Parent.Components.MatchKit)
+local GamepadNav = require(script.Parent.Parent.Components.GamepadNav)
 local Screens = {}
 Screens.__index = Screens
 
@@ -62,6 +63,8 @@ function Screens.queue(data, leave)
 		end
 	)
 	self.Data = data
+	-- Controller: B leaves the queue; nothing is pre-selected so a stray A press never leaves by accident.
+	self.Nav = GamepadNav.push(panel, { Close = leave, AutoSelect = false })
 	Kit.popIn(panel, true)
 	return self
 end
@@ -256,14 +259,15 @@ function Screens.results(data, replay, lobby)
 		UDim2.fromScale(0.05, 0.71),
 		{ Font = Theme.Fonts.Caption, Color = Theme.Palette.milkDark, MaxSize = 18, Outline = 1.5 }
 	)
-	self:Connect(
-		Kit.gem(panel, "PlayAgain", "PLAY AGAIN", "emerald", UDim2.fromScale(0.4, 0.17), UDim2.fromScale(0.28, 0.88)),
-		replay
-	)
+	local again =
+		Kit.gem(panel, "PlayAgain", "PLAY AGAIN", "emerald", UDim2.fromScale(0.4, 0.17), UDim2.fromScale(0.28, 0.88))
+	self:Connect(again, replay)
 	self:Connect(
 		Kit.gem(panel, "Lobby", "LOBBY", "sapphire", UDim2.fromScale(0.4, 0.17), UDim2.fromScale(0.72, 0.88)),
 		lobby
 	)
+	-- Controller: lands on PLAY AGAIN; B goes back to the lobby.
+	self.Nav = GamepadNav.push(panel, { First = again, Close = lobby })
 	Kit.popIn(panel)
 	return self
 end
@@ -292,6 +296,9 @@ function Screens:Render(now)
 end
 
 function Screens:Destroy()
+	if self.Nav then
+		self.Nav.Pop()
+	end
 	if self.Info then
 		self.Info:Destroy()
 	end

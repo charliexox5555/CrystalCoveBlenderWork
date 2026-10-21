@@ -5,6 +5,7 @@ local Glassies = require(RS.Shared.Config.Glassies)
 local Theme = require(script.Parent.Parent.Theme)
 local S = require(script.Parent.StainedGlass)
 local Kit = require(script.Parent.MatchKit)
+local GamepadNav = require(script.Parent.GamepadNav)
 local Portrait = require(script.Parent.GlassyPortrait)
 local Confirm = {}
 Confirm.__index = Confirm
@@ -64,6 +65,13 @@ function Confirm.new(options)
 			self:Finish(options.OnNo)
 		end),
 	}
+	-- Controller: lands on NO (spending stays a deliberate choice); B is NO.
+	self.Nav = GamepadNav.push(panel, {
+		First = no,
+		Close = function()
+			self:Finish(options.OnNo)
+		end,
+	})
 	Kit.popIn(panel)
 	return self
 end
@@ -83,6 +91,7 @@ function Confirm:Close()
 		return
 	end
 	self.Closed = true
+	self.Nav.Pop()
 	for _, connection in self.Connections do
 		connection:Disconnect()
 	end

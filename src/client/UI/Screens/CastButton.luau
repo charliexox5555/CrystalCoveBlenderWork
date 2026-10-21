@@ -10,14 +10,23 @@ local Geometry = require(RS.Shared.Config.ReleaseGeometry)
 local CastTiming = require(RS.Shared.CastTiming)
 local Theme = require(script.Parent.Parent.Theme)
 local Kit = require(script.Parent.Parent.Components.MatchKit)
+local InputGlyph = require(script.Parent.Parent.Components.InputGlyph)
 local Cast = {}
 Cast.__index = Cast
 
 local M = Balance.Motion
 local GOLD = Color3.fromRGB(255, 214, 92)
 local ACTION = "GlassClashCast"
--- Bound above the default controls only while CAST is lit, so Space/ButtonA don't also jump.
-local KEYS = { Enum.KeyCode.Space, Enum.KeyCode.F, Enum.KeyCode.ButtonA, Enum.KeyCode.ButtonR2 }
+-- Bound above the default controls only while CAST is lit, so Space/ButtonA don't also jump. Q/E stay with the
+-- fight camera orbit. The glyph on the button shows the first key of the player's input (Space / A).
+local KEYS = {
+	Enum.KeyCode.Space,
+	Enum.KeyCode.F,
+	Enum.KeyCode.ButtonA,
+	Enum.KeyCode.ButtonX,
+	Enum.KeyCode.ButtonR1,
+	Enum.KeyCode.ButtonR2,
+}
 
 function Cast.new(onPress)
 	local self = setmetatable({ OnPress = onPress }, Cast)
@@ -38,6 +47,15 @@ function Cast.new(onPress)
 	)
 	self.Button =
 		Kit.gem(self.Root, "CastButton", "CAST!", "amber", UDim2.fromScale(1, 0.55), UDim2.fromScale(0.5, 0.5))
+	-- Keyboard / controller players see which key casts; touch players just tap the button.
+	self.Glyph = InputGlyph.new(
+		self.Button,
+		{ Keyboard = Enum.KeyCode.Space, Gamepad = Enum.KeyCode.ButtonA },
+		UDim2.fromScale(0.3, 0.42),
+		UDim2.fromScale(0.86, 0.14)
+	)
+	local square = Instance.new("UIAspectRatioConstraint")
+	square.AspectRatio, square.Parent = 1, self.Glyph.Root
 	self.Glow = Instance.new("UIStroke")
 	self.Glow.Thickness, self.Glow.Color, self.Glow.Transparency = 0, GOLD, 1
 	self.Glow.ApplyStrokeMode, self.Glow.Parent = Enum.ApplyStrokeMode.Border, self.Button
@@ -173,6 +191,7 @@ end
 
 function Cast:Destroy()
 	ContextActionService:UnbindAction(ACTION)
+	self.Glyph:Destroy()
 	self.Connection:Disconnect()
 	self.Gui:Destroy()
 	self.Root = nil

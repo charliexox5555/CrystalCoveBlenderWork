@@ -20,6 +20,7 @@ local Components = script.Parent.Parent.Components
 local U = require(Components.Util)
 local S = require(Components.StainedGlass)
 local Motion = require(Components.Motion)
+local GamepadNav = require(script.Parent.Parent.Components.GamepadNav)
 local UiAudio = require(Components.UiAudio)
 local Gem = require(Components.GemButton)
 local Item = require(Components.ItemPresentation)
@@ -153,6 +154,15 @@ function Screen.new(bundleId, view)
 	self.Player = Players.LocalPlayer
 	self.Gui = U.screen("BundlePreview", 30)
 	self:BuildUi()
+	-- Controller: lands on the bundle's buy button; B closes the preview.
+	self.Nav = GamepadNav.push(self.Root, {
+		First = function()
+			return self.BundleBuy
+		end,
+		Close = function()
+			BundlePreview.close()
+		end,
+	})
 	self:TakeOver()
 	self.Stage = BundleStage.new({
 		Glassy = (itemOf(def, "Glassies") or {}).Id,
@@ -892,6 +902,7 @@ function Screen:Destroy(instant)
 		return
 	end
 	self.Destroyed = true
+	self.Nav.Pop()
 	local function teardown()
 		if self.Bound then
 			RunService:UnbindFromRenderStep("BundlePreview")

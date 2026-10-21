@@ -6,6 +6,7 @@ local Panel = require(script.Parent.Panel)
 local Button = require(script.Parent.Button)
 local Motion = require(script.Parent.Motion)
 local S = require(script.Parent.StainedGlass)
+local GamepadNav = require(script.Parent.GamepadNav)
 local Window = {}
 Window.__index = Window
 -- Windows closed this frame, by screen name. A new window of the same kind opening straight after (a refresh)
@@ -106,6 +107,8 @@ function Window.new(name, title, close)
 		Size = UDim2.fromScale(0.95, 0.82),
 		Position = UDim2.fromScale(0.025, 0.16),
 	})
+	-- Controller: lands inside this window, B / Escape closes it (screens can repoint First via self.Nav).
+	self.Nav = GamepadNav.push(self.Panel, { Close = close })
 	if self.Panel:GetAttribute("StainedGlass") then
 		return self
 	end
@@ -131,6 +134,9 @@ function Window:Connect(button, callback)
 end
 
 function Window:Destroy()
+	if self.Nav then
+		self.Nav.Pop()
+	end
 	for _, connection in self.Connections do
 		connection:Disconnect()
 	end

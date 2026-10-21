@@ -10,6 +10,7 @@ local TouchGate = require(script.Parent.Parent.UI.TouchGate)
 local StainedGlass = require(script.Parent.Parent.UI.Components.StainedGlass)
 local Motion = require(script.Parent.Parent.UI.Components.Motion)
 local UiAudio = require(script.Parent.Parent.UI.Components.UiAudio)
+local GamepadNav = require(script.Parent.Parent.UI.Components.GamepadNav)
 local Controller = {}
 
 -- Screens that keep the HUD wallet visible (Config/Topbar Wallet = true).
@@ -82,6 +83,10 @@ function Controller:CloseMenu()
 		return
 	end
 	self.Open, self.OpenIcon, self.OpenAnim = nil, nil, nil
+	if self.Nav then
+		self.Nav.Pop()
+		self.Nav = nil
+	end
 	local panel = gui:FindFirstChild("Panel")
 	if anim and panel then
 		-- Same close as the other windows (shrink + fade); the template's look comes back once it is hidden.
@@ -131,6 +136,14 @@ function Controller:OpenMenu(name, icon)
 	end
 	gui.Enabled = true
 	local panel = gui:FindFirstChild("Panel")
+	-- Controller: land inside the menu; B / Escape closes it.
+	self.Nav = GamepadNav.push(panel or gui, {
+		Close = function()
+			if self.Open == gui then
+				self:CloseMenu()
+			end
+		end,
+	})
 	if panel then
 		self.OpenAnim = Motion.windowIn(gui, panel)
 		for _, container in Config.Stagger do
@@ -245,6 +258,10 @@ function Controller:Start()
 	end
 	Icon.setDisplayOrder(Config.DisplayOrder)
 	self:Build(Icon)
+	-- Controller: D-pad up reaches the top bar from the lobby, but inside an open menu it moves the selection.
+	GamepadNav.onMenuChanged(function(open)
+		Icon.highlightKey = if open then false else Enum.KeyCode.DPadUp
+	end)
 	-- Fetch the screens' art in the background so a first open never shows empty frames on a slow connection.
 	task.spawn(function()
 		local pg = self.Player:WaitForChild("PlayerGui")

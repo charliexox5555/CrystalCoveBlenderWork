@@ -48,6 +48,7 @@ local UIAssets = {
 	["topbar/playtime"] = "rbxassetid://124806461609711",
 	["topbar/quests"] = "rbxassetid://76906669013402",
 	["topbar/settings"] = "rbxassetid://91094338327415",
+	["topbar/feedback"] = "rbxassetid://97702394632493", -- Chat 1st Outline (decal 119865142598145)
 	-- Free-pull reward icons (decision 99), same pack: Lucky Block, Aura, Blue Hoverboard.
 	["reward/kiln_pull"] = "rbxassetid://94652504328636",
 	["reward/finisher_crate"] = "rbxassetid://80161543442554",

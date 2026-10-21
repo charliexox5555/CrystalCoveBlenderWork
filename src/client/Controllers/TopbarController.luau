@@ -187,6 +187,11 @@ function Controller:Build(Icon)
 			icon:modifyTheme({ "Dropdown", "MaxIcons", #rows })
 				:modifyChildTheme({ "Widget", "MinimumWidth", Config.DropdownWidth })
 				:setDropdown(rows)
+		elseif spec.Action == "Feedback" then
+			icon:oneClick()
+			icon.selected:Connect(function()
+				self:Feedback()
+			end)
 		elseif spec.Screen then
 			local screen = spec.Screen
 			icon.selected:Connect(function()
@@ -201,6 +206,25 @@ function Controller:Build(Icon)
 		end
 		self.Icons[spec.Id] = { Icon = icon, Spec = spec }
 	end
+end
+
+-- Roblox's in-experience feedback form. It yields until the player closes it; Roblox applies its own per-player
+-- cooldown (and shows "unavailable" to the game's owner), so a failure is only logged.
+function Controller:Feedback()
+	if self.FeedbackOpen then
+		return
+	end
+	self.FeedbackOpen = true
+	self:CloseMenu()
+	task.spawn(function()
+		local ok, err = pcall(function()
+			game:GetService("SocialService"):PromptFeedbackSubmissionAsync()
+		end)
+		if not ok then
+			warn("[GlassClash] feedback prompt failed: " .. tostring(err))
+		end
+		self.FeedbackOpen = false
+	end)
 end
 
 -- Red count on a dropdown row (and, summed by TopbarPlus, on its button): claimable rewards (decision 99).

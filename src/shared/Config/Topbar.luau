@@ -20,6 +20,7 @@ export type Button = {
 	HideInMatch: boolean,
 	Screen: string?,
 	Items: { Item }?,
+	Action: string?, -- one click runs this instead of opening a screen ("Feedback")
 }
 
 local Topbar = {
@@ -69,6 +70,14 @@ local Topbar = {
 				{ Id = "Codes", Label = "Codes", Image = "topbar/codes", Screen = "CodesScreen", Wallet = true },
 				-- Quests (topbar/quests, QuestsScreen) is held back until its design is decided.
 			},
+		},
+		-- Feedback: opens Roblox's own feedback form (SocialService:PromptFeedbackSubmissionAsync).
+		{
+			Id = "Feedback",
+			Caption = "Feedback",
+			Image = "topbar/feedback",
+			HideInMatch = true,
+			Action = "Feedback",
 		},
 	} :: { Button },
 }

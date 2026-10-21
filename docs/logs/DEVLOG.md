@@ -3,6 +3,16 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-21 — Claude (main session) — Feedback button in the top bar
+Done:
+- New top bar button (chat bubble, gvesster pack "Chat 1st Outline", decal 119865142598145 -> image 97702394632493, `topbar/feedback`) right of the gift; hidden in matches like the gift.
+- One click calls `SocialService:PromptFeedbackSubmissionAsync()` on the client, which opens Roblox's own feedback form (Creator Docs, SocialService). `Config/Topbar` buttons can now carry `Action = "Feedback"` instead of a Screen; TopbarController closes any open menu, guards double clicks and logs a failed prompt.
+- Studio Play: the icon shows and clicking it raises no errors. Studio captures don't include Roblox's own overlays, so the form itself still needs a look in a live server. DevForum reports say the owner sees "Feedback unavailable" and Roblox applies a per-player cooldown. Lune 232/232.
+Next:
+- Creator: try it from a non-owner account in a live server.
+Problems / questions for the user:
+- None.
+
 ## 2026-10-21 — Claude (viewport-to-images session) — Item picture alignment (decision 113 follow-up)
 Done:
 - Creator approved the pictures and asked for the Daily / Playtime alignment to be fixed; crate machines and detail

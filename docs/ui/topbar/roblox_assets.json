@@ -70,6 +70,13 @@
    "Sha256": "10c2c298e72a609be9a9452293315697db79f6ec0d2b0cec83be3551866285c6",
    "Moderation": "Approved",
    "Uploaded": "2026-10-19T23:07:35"
+  },
+  "topbar_feedback": {
+   "AssetId": "119865142598145",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/UI/Chat/256w/Chat 1st Outline 256px.png",
+   "Sha256": "04e9c969a978b5b1f0be2b4d1efe7c935be32298b15f2271474a63217fdd6a94",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-21T18:08:00"
   }
  }
 }

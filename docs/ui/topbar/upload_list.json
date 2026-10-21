@@ -70,6 +70,13 @@
    "Type": "Decal",
    "Name": "Onboarding Hint Pointer",
    "Description": "Glass Clash onboarding pointer (gvesster Free Icon Pack v3.1)."
+  },
+  {
+   "Key": "topbar_feedback",
+   "Path": "assets/Free Icon Pack v3.1 (Basic)/UI/Chat/256w/Chat 1st Outline 256px.png",
+   "Type": "Decal",
+   "Name": "Topbar Feedback",
+   "Description": "Glass Clash top bar icon (gvesster Free Icon Pack v3.1)."
   }
  ]
 }

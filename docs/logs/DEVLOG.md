@@ -3,6 +3,15 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-21 — Claude (marketing session) — Thumbnail + icon kit for ChatGPT
+Done:
+- `tools/marketing/thumbnail_kit.py` builds 17 scenes headless from the real assets (v4 glassies and their shard sets at GlassyScale 1.75, clash stand with hooks at +-HookGap/2, sky islands, sky-kit clouds, decor, Kiln) and renders beauty / subject / background / mask passes (Cycles 64, denoised) into `assets/marketing/thumbnails/kit/<T#>/`, plus each `<id>_scene.blend`.
+- 14 thumbnails: T1 Action (Phoenix vs Comet; golden + purple, logo zone TL + TC; Halloween T1h Hollowlight vs Galaxy Orb), T2 Hero shatter (Dragon golden TL/TC, Unicorn purple), T3 People, T4 Collection (19 glassies by rarity, Unicorn spotlit, Kiln), T5 Crown Hill. 3 icons: I1 Dragon shatter on a stained-glass sunburst, I2 tight clash, I3 Unicorn + Honey Bear + Potion Flask.
+- Real Studio shots: lobby/Kilns/Crown Hill island/fight, plus temporary posed R15 avatars on Arena 7's pads (cheer, shock), the King with the HillService crown and a crowd (temp models deleted afterwards; nothing saved to the place).
+- `assets/marketing/thumbnails/CHATGPT_PROMPTS.md`: style bible, reject list, one section per image; `references/README.md` lists the Ball VS Ball style references (images to be saved by the creator). No logo or text in any render.
+Next: creator runs the prompts, saves picks to `from_chatgpt/`, then step 3 (export, contact sheet, UPLOAD.md).
+Problems: the Ball VS Ball reference images were pasted in chat, so they couldn't be saved by Claude; the creator saves them to `references/`. The in-game crown hovers ~1 stud above the head (as HillService builds it); renders keep it that way.
+
 ## 2026-10-21 — Claude (sound session) — Music plan (decision 109, Proposed)
 Done:
 - Replaced the Lobby / Match / Calm rotation. `Config/Music` now has beds (LobbyA/B Gravity Well and Fractal Tide, Fight = full 202 s "I know that you like it no vocals", Overtime = "Heavy Artillery main"), playlists, stings (Tension, Win, Lose) and fade/duck numbers; `MusicController` rewritten: cloned voices crossfade into the next play 3 s before the end, contexts switch by crossfade after the settle delay, Overtime on the `Overtime` event or a last-heart round, tension sting timed to end on `ReleaseAt`, win/lose sting on `MatchResult` then lobby fades back in.

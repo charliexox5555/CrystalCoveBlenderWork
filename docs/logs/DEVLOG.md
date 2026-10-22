@@ -2,6 +2,16 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-21 — Codex — Bacon avatar thumbnail variants
+Done:
+- Replaced the supplied T3a/T3b foreground players and T5a King/crowd with reference-based bacon boy / red-haired default girl artwork. Matched sunset lighting and retained original game objects, logos and compositions. Originals preserved; three new `*_bacon_avatars_v2_block_arms.png` files in `assets/marketing/thumbnails/final/`.
+- Creator rejected the initial hollow/oversized hands during generation. Corrected all characters to the previously permitted classic R6 solid flat-ended arms; inspected foreground and crowd. Exact prompts, reference provenance, artifact hashes and layout recommendations are in `assets/marketing/thumbnails/avatar_edits_2026_10_21/`.
+- Verified all outputs decode, are 1672x941 native PNG and below3MB. Built-in imagegen returned smaller than requested1920x1080; no resizing/recompression. No Studio, gameplay code, economy, design decision or dashboard changes.
+Next:
+- Creator review/test of the variants. T3a is the strongest composition hypothesis; a later T3b/T5a test could give more space to the clash and reduce bloom/background competition.
+Problems:
+- Required project test attempt `lune run tools/run_tests` could not start: Windows Application Control blocked the existing Lune executable. No tests ran or failed. No Studio sessions were connected for the documented alternate runner. Image visual/format checks passed; code was not edited.
+
 ```
 ## 2026-10-21 — Claude (main session) — Duplicate avatar at spawn fixed
 Done:

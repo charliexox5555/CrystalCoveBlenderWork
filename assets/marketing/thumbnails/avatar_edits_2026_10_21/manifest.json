@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-21",
+  "mode": "built-in imagegen",
+  "status": "unmeasured artwork candidates",
+  "hand_style": "Classic R6 solid flat-ended arms; v1 C hands rejected by user",
+  "native_dimensions": [
+    1672,
+    941
+  ],
+  "outputs": [
+    {
+      "source": "T3a.jpg",
+      "final": "T3a_bacon_avatars_v2_block_arms.png",
+      "bytes": 1840649,
+      "sha256": "588C86A238BA0C5DD4C0FC0DE299D5A5F60DCAA36653B6ED46DA03C33FE1C024"
+    },
+    {
+      "source": "T3b.jpg",
+      "final": "T3b_bacon_avatars_v2_block_arms.png",
+      "bytes": 1943516,
+      "sha256": "6CD470A5537B03121CCDC460585AA4078C10953EF53D1EEFF143A13212453878"
+    },
+    {
+      "source": "T5a.jpg",
+      "final": "T5a_bacon_avatars_v2_block_arms.png",
+      "bytes": 1806457,
+      "sha256": "7CB785E5347D63E44B95DB33BD0F08ACF6D6DE9F3B441E0B9F964F535B5CFEB7"
+    }
+  ],
+  "validation": {
+    "originals_preserved": true,
+    "all_below_3MB": true,
+    "no_code_image_editing": true,
+    "studio_changed": false,
+    "gameplay_code_changed": false,
+    "uploaded": false,
+    "project_tests": "Not run: Windows Application Control blocked existing Lune binary; no Studio sessions connected for documented alternate runner."
+  }
+}

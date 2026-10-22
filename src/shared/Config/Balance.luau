@@ -996,14 +996,7 @@ Balance.Economy = {
 	FirstWinOfDayCoins = 100,
 	WelcomeKilnPulls = 1, -- free pull right after a new player's first match
 	GroupJoinMarbles = 20, -- one time, for joining the group
-	-- Marble packs (dev products). Robux prices are set on the Creator Dashboard; keep the
-	-- Marbles-per-Robux curve gently rising so small packs aren't a bad deal for kids.
-	MarblePacks = {
-		{ Marbles = 40, Robux = 49 },
-		{ Marbles = 100, Robux = 99 },
-		{ Marbles = 220, Robux = 199 },
-		{ Marbles = 600, Robux = 499 },
-	},
+	-- Marble packs and Robux offers live in Config/MarbleShop and Config/Offers (decision 116).
 }
 
 -- ECONOMY SIMULATOR ONLY: how a typical player plays. Compare with real analytics after launch.

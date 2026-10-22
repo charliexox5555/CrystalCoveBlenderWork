@@ -224,6 +224,7 @@ function Controller:PlayReveal(reveal)
 	local status = if data.Kind == "Win"
 		then "YOU WON! A FREE KILN OPEN"
 		elseif data.Kind == "Group" then "THANKS FOR JOINING!"
+		elseif data.Kind == "Daily" then "YOUR DAILY GLASSY!" -- the 9 R$ Daily Glassy (decision 116)
 		else "YOUR FIRST GLASSIES!"
 	reveal.Waiting = true
 	self:WhenFree(function()
@@ -243,7 +244,7 @@ function Controller:RevealDone(reveal)
 		return
 	end
 	self.Revealing = nil
-	if reveal.Data.Kind ~= "Group" then
+	if reveal.Data.Kind == "Welcome" or reveal.Data.Kind == "Win" then
 		Remotes.OnboardingAction:FireServer("Collected") -- funnel: the opening was closed
 	end
 	if self.Player:GetAttribute("OnboardingStep") == "Daily" then

@@ -32,7 +32,7 @@ Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DES
 - [ ] **CL/U:** Quests redesign (screen and row held back); retire the old combined RewardsScreen once Quests have a home.
 - [ ] **U:** phone check of the four new screens and the top bar; listen to volume sliders.
 - [ ] **CL:** turn the code-built screens (RollScreen, FightHud, Results/QueuePanel/RoundEnd, CastButton, PickAnyConfirm, BundlePreview, music button) into editable StarterGui templates.
-- [ ] **U:** creator sets Robux prices for Epic Standard / Legendary / Mythic flyers and Mythic finishers (until then they're crate-only).
+- [x] **CL:** Robux prices for Epic Standard / Legendary / Mythic flyers (199 / 399 / 599) and Mythic finishers (499) set in config (decision 116); they join the daily rotation once their products exist (`Config/ProductIds`).
 - [x] **CL:** device fitting (decision 106): Studio device-simulator audit (phone, iPhone, iPad, Xbox, portrait) and one `ResponsiveController` for window fit, overscan, touch currency, phone fight HUD and landscape lock.
 - [x] **CL:** Shop on phones: full-width tab row (48x14 -> 77x22 px) with the coin/Marble pills in the title strip, one-line "OPEN 1 · 300" crate buttons, Marble pack cards that keep the amount visible above a 34 px buy button.
 - [ ] **CL:** phone-friendly Inventory info pane (descriptions cut to one line on phones).
@@ -109,7 +109,9 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 - [x] **C:** daily quests, playtime gifts, login streak tracking (no free Marbles), first win bonus, Studio test code; [F4 report](testing/F4_FREE_RETENTION.md)
 - [x] **C:** group reward: lobby stand (join prompt → server re-check → claim card), one free Marble Kiln open once ever (Coin Kiln where paid random items are restricted), decision 114 (Proposed). [Report](testing/group_reward/REPORT.md); live join-modal check remains
-- [ ] **C:** Marble packs, gamepasses and idempotent `ProcessReceipt`; match-selection wallet spends/policy checks completed in F5, paid storefront remains deferred
+- [x] **CL:** Robux monetization on (decision 116, Proposed; [design + research](design/MONETIZATION.md), [Studio report](testing/monetization/REPORT.md)): Starter Pack (49 R$, once ever, HUD + Shop side tile + popup), Daily Glassy (9 R$, odds first, policy-gated), Daily Marbles (49 R$ ladder) on a scrolling Marbles page, Need Marbles prompt (reroll, Pick Any, Marble Kiln/crates), repriced Marble ladder / daily store / Hollowlight bundle, price guard against dashboard mismatches, PayerSim. No game passes (nothing needs one).
+- [ ] **U:** create the 7 new developer products and change the 15 prices (MONETIZATION.md §9; or add the developer-product scope to the Open Cloud key and ask Claude), then fill `Config/ProductIds`.
+- [ ] **U:** after launch: watch Starter Pack / Daily offer conversion; turn on regional pricing; decide on watch-an-ad Marbles (MONETIZATION.md §8).
 - [x] **C:** Trophies, Match Wins and Shatters boards; published ordered-store verification pending
 - [x] **C:** Finisher/Flyer Coin/Marble crate shops, matching owned/unowned inventories, duplicate counts and category opening effects; creator-approved provisional prices, policy-gated Marble spends, no Robux storefront. [Report](testing/CRATE_SHOPS.md); phone/feel review remains.
 - [ ] **C:** analytics events (GAME_DESIGN 15b)

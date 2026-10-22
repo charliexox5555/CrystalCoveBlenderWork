@@ -28,6 +28,8 @@
 --   Server -> client: StoreOffers (view, NextReset, ServerNow, Message), StoreResult (purchase outcome)
 --     RequestPlayerProfile (RemoteEvent) userId: number -> PlayerProfile { UserId, Name, View } | { UserId, Missing }
 --                    another player's read-only profile (ProfileSchema.publicView; DataService, decision 104)
+--     Deals          (RemoteEvent)  "Request" | "Buy", kind ("Starter" | "DailyGlassy" | "DailyMarbles") | "AutoOpened"
+--                    -> DealState (OfferRules.view + Held, ServerNow, Message); StoreService, decision 116
 --     GroupReward    (RemoteEvent)  "Prompt", status: GroupMembershipStatus name | "Claim" (GroupRewardService, decision 114)
 --                    state comes back as Player attributes; the opening as OnboardingReveal { Kind = "Group", Currency }
 
@@ -73,6 +75,8 @@ local reliable = {
 	"RequestPlayerProfile",
 	"PlayerProfile",
 	"GroupReward",
+	"Deals",
+	"DealState",
 }
 local unreliable = { "FightSnapshot" }
 

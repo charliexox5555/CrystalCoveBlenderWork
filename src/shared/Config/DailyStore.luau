@@ -46,28 +46,35 @@ DailyStore.FeaturedBand = {
 
 -- Robux product matrix keyed [Category][Rarity][ValueBand]. Each entry is its own developer
 -- product (universe 10770493435, created 2026-10-17, regional pricing off so Price is what the
--- player pays). Price must match the Creator Dashboard. Combos no item can reach are left out.
-local function p(id: number, price: number)
+-- player pays). Price must match the Creator Dashboard (StoreService holds back a product whose
+-- dashboard price differs). Combos no item can reach are left out. Repriced by decision 116 onto
+-- the 49/99/149/199/249/299/399/599 points (docs/design/MONETIZATION.md §6); the four new products'
+-- ids live in Config/ProductIds (nil = not created: those items stay out of the rotation).
+local Ids = if script then require(script.Parent.ProductIds) else require("./ProductIds")
+local function p(id: number?, price: number)
 	return { ProductId = id, Price = price }
 end
 DailyStore.RobuxProducts = {
 	Glassies = {
 		Uncommon = { Standard = p(3719124013, 49) },
 		Rare = { Standard = p(3719124035, 99), Featured = p(3719124041, 129) },
-		Epic = { Standard = p(3719124045, 179), Featured = p(3719124054, 229) },
-		Legendary = { Standard = p(3719124061, 349) },
+		Epic = { Standard = p(3719124045, 199), Featured = p(3719124054, 249) },
+		Legendary = { Standard = p(3719124061, 399) },
 		Mythic = { Standard = p(3719124065, 599), Featured = p(3719124069, 699) },
 	},
 	Finishers = {
-		Uncommon = { Standard = p(3719124072, 39) },
-		Rare = { Standard = p(3719124077, 79) },
+		Uncommon = { Standard = p(3719124072, 49) },
+		Rare = { Standard = p(3719124077, 99) },
 		Epic = { Standard = p(3719124084, 149) },
-		Legendary = { Featured = p(3719124089, 279) },
+		Legendary = { Featured = p(3719124089, 299) },
+		Mythic = { Standard = p(Ids.FinisherMythic, 499) },
 	},
 	Rideables = {
-		Uncommon = { Standard = p(3719124092, 59) },
-		Rare = { Standard = p(3719124095, 119) },
-		Epic = { Featured = p(3719124103, 249) },
+		Uncommon = { Standard = p(3719124092, 79) },
+		Rare = { Standard = p(3719124095, 149) },
+		Epic = { Standard = p(Ids.FlyerEpic, 199), Featured = p(3719124103, 299) },
+		Legendary = { Standard = p(Ids.FlyerLegendary, 399) },
+		Mythic = { Standard = p(Ids.FlyerMythic, 599) },
 	},
 } :: { [string]: { [string]: { [string]: { ProductId: number?, Price: number? } } } }
 
@@ -75,9 +82,8 @@ DailyStore.RobuxProducts = {
 DailyStore.Excluded = {
 	Glassies = { hollowlight = true },
 	Finishers = { lantern_eclipse = true },
-	-- carousel/sunwing/starwhale: no Robux product for their flyer band yet (Epic/Legendary/Mythic Standard);
-	-- they stay in crate pools. A/creator to decide products.
-	Rideables = { lantern_skiff = true, carousel = true, sunwing = true, starwhale = true },
+	-- carousel/sunwing/starwhale join the rotation once their products (Config/ProductIds) exist.
+	Rideables = { lantern_skiff = true },
 }
 
 -- Limited bundles. The first entry with Featured = true headlines the Featured page; others are
@@ -89,7 +95,7 @@ DailyStore.Bundles = {
 		Tagline = "Halloween limited set",
 		Featured = true,
 		ProductId = 3719124109 :: number?,
-		Price = 499 :: number?,
+		Price = 699 :: number?, -- decision 116 (was 499): 26% under its parts at daily-store prices (249 + 399 + 299)
 		Items = {
 			{ Category = "Glassies", Id = "hollowlight" },
 			{ Category = "Rideables", Id = "lantern_skiff" },

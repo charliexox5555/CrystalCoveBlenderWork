@@ -7,6 +7,8 @@ local G = if script then require(script.Parent.Config.Glassies) else require("./
 local C = if script then require(script.Parent.Config.RoundCosmetics) else require("./Config/RoundCosmetics")
 local Rng = if script then require(script.Parent.Rng) else require("./Rng")
 local M = if script then require(script.Parent.Config.MarbleShop) else require("./Config/MarbleShop")
+-- Starter Pack, Daily Glassy and Daily Marbles intents (decision 116) are built and applied by OfferRules.
+local Offers = if script then require(script.Parent.OfferRules) else require("./OfferRules")
 
 local Rules = {}
 Rules.Categories = { "Glassies", "Finishers", "Rideables" }
@@ -64,7 +66,7 @@ end
 function Rules.catalog(installed)
 	local out = {}
 	local function add(category, def)
-		if D.Excluded[category] and D.Excluded[category][def.Id] then
+		if (D.Excluded[category] and D.Excluded[category][def.Id]) or Offers.exclusive(category, def.Id) then
 			return
 		end
 		if installed and not installed(category, def.Id) then
@@ -82,10 +84,10 @@ function Rules.catalog(installed)
 	for _, category in { "Finishers", "Rideables" } do
 		out[category] = {}
 		for _, def in C[category] do
-			-- Free starter cosmetics are never sold, and a rarity with no Robux product yet (e.g. the new
-			-- Mythic cosmetics, priced by the creator) stays out of the daily store until it has one.
-			local priced = D.RobuxProducts[category] and D.RobuxProducts[category][def.Rarity]
-			if def.Matches ~= 0 and def.Rarity and priced then
+			-- Free starter cosmetics are never sold, and an item whose rarity and band have no created Robux product
+			-- yet (Config/ProductIds still nil) stays out of the daily store until it has one.
+			local priced = def.Rarity and Rules.product(category, def.Rarity, Rules.valueBand(category, def.Id))
+			if def.Matches ~= 0 and priced then
 				add(category, def)
 			end
 		end
@@ -280,6 +282,7 @@ function Rules.reconcile(data)
 	store.Offers = if type(store.Offers) == "table" then store.Offers else {}
 	store.Intents = if type(store.Intents) == "table" then store.Intents else {}
 	store.Bundles = if type(store.Bundles) == "table" then store.Bundles else {}
+	Offers.reconcile(data)
 	data.ProcessedReceipts = if type(data.ProcessedReceipts) == "table" then data.ProcessedReceipts else {}
 	return store
 end
@@ -354,8 +357,9 @@ local function sameItem(a, b)
 end
 
 -- Persist what a Robux prompt is for before prompting. kind "Offer": ref = { Slot, Id, Day };
--- kind "Bundle": ref = { Id }; kind "Marbles": ref = { Id } (a Marble pack). An unresolved
--- intent for another item is never overwritten.
+-- kind "Bundle": ref = { Id }; kind "Marbles": ref = { Id } (a Marble pack); kinds "Starter", "DailyGlassy" and
+-- "DailyMarbles": ref = the OfferRules ctx. An unresolved intent for another item is never overwritten; an
+-- OfferRules kind always refreshes its own snapshot (one product per kind, so it is always the same item).
 function Rules.beginIntent(data, kind, ref, now)
 	local store = Rules.reconcile(data)
 	if type(ref) ~= "table" then
@@ -404,6 +408,12 @@ function Rules.beginIntent(data, kind, ref, now)
 		for i, item in intent.Items do
 			intent.Items[i] = table.clone(item)
 		end
+	elseif Offers.Kinds[kind] then
+		local ok, made, offerProduct = Offers.intent(data, kind, now, ref)
+		if not ok then
+			return fail(made)
+		end
+		intent, product = made, offerProduct
 	elseif kind == "Marbles" then
 		local pack = type(ref.Id) == "string" and Rules.marblePack(ref.Id)
 		if not pack then
@@ -420,6 +430,11 @@ function Rules.beginIntent(data, kind, ref, now)
 	intent.ProductId, intent.Price, intent.CreatedAt, intent.Open = product.ProductId, product.Price, now, 1
 	local key = tostring(product.ProductId)
 	local existing = store.Intents[key]
+	if existing and Offers.Kinds[intent.Kind] and existing.Kind == intent.Kind then
+		intent.Open = (if existing.Cancelled then 0 else existing.Open or 0) + 1
+		store.Intents[key] = intent
+		return true, intent
+	end
 	if existing then
 		if sameItem(existing, intent) then
 			existing.Open = (existing.Cancelled and 0 or existing.Open or 0) + 1
@@ -445,8 +460,9 @@ function Rules.cancelIntent(data, productId)
 	return intent
 end
 
--- Idempotent receipt application. Returns "Granted", "Duplicate" or "NoIntent" plus details.
-function Rules.applyReceipt(data, receipt, now, grant)
+-- Idempotent receipt application. Returns "Granted", "Duplicate" or "NoIntent" plus details. The Daily Glassy draw
+-- uses `draw` when given, else a generator seeded by the PurchaseId (unknown before the purchase).
+function Rules.applyReceipt(data, receipt, now, grant, draw)
 	local store = Rules.reconcile(data)
 	local purchaseId = type(receipt) == "table" and receipt.PurchaseId
 	if type(purchaseId) ~= "string" or purchaseId == "" then
@@ -470,6 +486,8 @@ function Rules.applyReceipt(data, receipt, now, grant)
 	elseif intent.Kind == "Marbles" then
 		data.Marbles = (data.Marbles or 0) + intent.Marbles
 		table.insert(grants, { Marbles = intent.Marbles })
+	elseif Offers.Kinds[intent.Kind] then
+		grants = Offers.apply(data, intent, now, grant, draw or rng("receipt", purchaseId))
 	else
 		for _, item in intent.Items do
 			table.insert(grants, grant(item.Category, item.Id))
@@ -543,7 +561,8 @@ function Rules.marblePacks()
 			Id = pack.Id,
 			Name = pack.Name,
 			Marbles = pack.Marbles,
-			Bonus = pack.Bonus,
+			-- Shown on the card; computed from the smallest pack's rate so it is always true.
+			Bonus = if product then Offers.bonus(pack.Marbles, product.Price) else 0,
 			Art = pack.Art,
 			RobuxPrice = product and product.Price,
 			Available = product ~= nil,

@@ -152,10 +152,13 @@ return function(t, deps)
 	end)
 
 	t.test("marble packs get better value as they grow", function()
-		local packs = Balance.Economy.MarblePacks
+		local packs = if script
+			then require(game.ReplicatedStorage.Shared.Config.MarbleShop).Packs
+			else require("../shared/Config/MarbleShop").Packs
 		for i = 2, #packs do
+			t.ok(packs[i].Price > packs[i - 1].Price, "pack " .. i .. " costs more")
 			t.ok(
-				packs[i].Marbles / packs[i].Robux >= packs[i - 1].Marbles / packs[i - 1].Robux,
+				packs[i].Marbles / packs[i].Price > packs[i - 1].Marbles / packs[i - 1].Price,
 				"pack " .. i .. " value"
 			)
 		end

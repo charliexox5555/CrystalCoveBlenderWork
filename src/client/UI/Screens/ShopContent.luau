@@ -1,5 +1,6 @@
 -- Same quoted crate structure for Glassies, Finishers and Flyers.
 local S = require(script.Parent.Parent.Components.StainedGlass)
+local Theme = require(script.Parent.Parent.Theme)
 local Pools = require(script.Parent.ShopPools)
 local CratePanel = require(script.Parent.Parent.Components.CrateShopPanel)
 local FeaturedOffers = require(script.Parent.Parent.Components.FeaturedOffers)
@@ -60,6 +61,123 @@ function Shop.addMarblesTab(panel, content)
 	end
 end
 
+function Shop.deals()
+	local ok, controller = pcall(require, script.Parent.Parent.Parent.Controllers.DealsController)
+	return if ok then controller else nil
+end
+
+-- Starter Pack tile on the right side of the open Shop (decision 116), like the HUD tile; gone once bought or over.
+function Shop.starterSide(self)
+	local deals = Shop.deals()
+	local panel = self.Window and self.Window.Panel
+	if not deals or not panel then
+		return
+	end
+	local Kit = require(script.Parent.Parent.Components.MatchKit)
+	local Presentation = require(script.Parent.Parent.Components.ItemPresentation)
+	local side = Instance.new("ImageButton")
+	side.Name, side.BackgroundTransparency, side.Image = "StarterSide", 1, ""
+	side.AnchorPoint, side.Position, side.Size =
+		Vector2.new(0, 0.5), UDim2.fromScale(1.005, 0.56), UDim2.fromScale(0.15, 0.36)
+	side.ZIndex, side.Visible, side.Parent = 8, false, panel
+	S.aspect(side, 0.72)
+	local art = Kit.icon(side, "Artwork", "card/card_legendary", UDim2.fromScale(1, 1), UDim2.fromScale(0.5, 0.5))
+	art.AnchorPoint, art.ZIndex = Vector2.new(0.5, 0.5), 8
+	art.UIAspectRatioConstraint:Destroy()
+	local title = Kit.label(side, "Title", "STARTER", UDim2.fromScale(0.84, 0.12), UDim2.fromScale(0.08, 0.05), {
+		Color = Theme.Palette.amberLight,
+		MaxSize = 24,
+	})
+	title.ZIndex = 10
+	local price = Kit.gem(
+		side,
+		"Price",
+		utf8.char(0xE002) .. " 49",
+		"emerald",
+		UDim2.fromScale(0.9, 0.2),
+		UDim2.fromScale(0.5, 0.86)
+	)
+	price.ZIndex, price.Active = 10, false
+	for _, part in price:GetDescendants() do
+		if part:IsA("GuiObject") then
+			part.ZIndex = 10
+		end
+	end
+	local timer = Kit.label(side, "Timer", "", UDim2.fromScale(0.84, 0.09), UDim2.fromScale(0.08, 0.66), {
+		Color = Theme.Palette.milkLight,
+		MaxSize = 18,
+		Small = true,
+	})
+	timer.ZIndex = 10
+	require(script.Parent.Parent.Components.Motion).button(side)
+	-- Room beside the window: where the window fills the screen, it shrinks a little (keeping its left edge) so the
+	-- tile sits next to it instead of over the content. Phones skip the side tile (the HUD tile stays in the lobby).
+	local responsive = (function()
+		local ok, controller = pcall(require, script.Parent.Parent.Parent.Controllers.ResponsiveController)
+		return if ok then controller else nil
+	end)()
+	local compact = responsive ~= nil and responsive.Class ~= nil and responsive:Class() == "Compact"
+	local placed
+	local function makeRoom()
+		local gui = self.Window.Gui
+		if not side.Visible or not gui or placed == panel.Size then
+			return
+		end
+		local area, origin = gui.AbsoluteSize, gui.AbsolutePosition
+		local left = panel.AbsolutePosition.X - origin.X
+		local w, h, tile = panel.AbsoluteSize.X, panel.AbsoluteSize.Y, side.AbsoluteSize.X
+		if w < 2 or left + w + tile + 12 <= area.X then
+			return
+		end
+		local f = math.clamp((area.X - 12 - left) / (w + tile), 0.6, 1)
+		local y = panel.Position.Y
+		placed = UDim2.fromOffset(math.floor(w * f), math.floor(h * f))
+		panel.Size = placed
+		panel.Position = UDim2.new(0, math.floor(left + w * f / 2), y.Scale, y.Offset)
+	end
+	table.insert(
+		self.Window.Connections,
+		panel:GetPropertyChangedSignal("Size"):Connect(function()
+			task.defer(makeRoom)
+		end)
+	)
+	local function clamp()
+		task.defer(makeRoom)
+	end
+	table.insert(
+		self.Window.Connections,
+		side.Activated:Connect(function()
+			deals:OpenStarter()
+		end)
+	)
+	local unwatch = deals:Watch(function(view)
+		local state = view.Starter
+		side.Visible = side.Parent ~= nil and state.Visible and not compact
+		if state.Visible and not side:FindFirstChild("Picture") then
+			for _, item in state.Items or {} do
+				if item.Category == "Glassies" then
+					local ok, picture = pcall(
+						Presentation.portrait,
+						side,
+						"Glassies",
+						item.Id,
+						UDim2.fromScale(0.76, 0.46),
+						UDim2.fromScale(0.12, 0.17),
+						"Picture"
+					)
+					if ok and typeof(picture) == "Instance" and picture:IsA("GuiObject") then
+						picture.ZIndex = 9
+					end
+				end
+			end
+		end
+		local ends = state.EndsAt
+		timer.Text = if ends then require(script.Parent.DealScreens).duration(ends - deals:Now()) else ""
+		task.defer(clamp)
+	end)
+	table.insert(self.Window.Connections, { Disconnect = unwatch })
+end
+
 function Shop.showPool(self, currency, category)
 	category = category or categories[self.Tab] or "Glassies"
 	local tab = if category == "Rideables" then "Flyers" else category
@@ -111,10 +229,19 @@ function Shop.bind(self, data)
 				return
 			end
 			if (self.Data[currency] or 0) < cost then
-				self.Message.Text = "Need " .. (cost - (self.Data[currency] or 0)) .. " more " .. string.lower(currency)
+				local short = cost - (self.Data[currency] or 0)
+				self.Message.Text = "Need " .. short .. " more " .. string.lower(currency)
 				if currency == "Marbles" then
+					-- Need Marbles (decision 116): one-tap buy of the cheapest offer that covers it; MORE opens the page.
 					self.Window.Gui:SetAttribute("MarbleStoreRequested", true)
-					Shop.select(self, "Marbles")
+					local deals = Shop.deals()
+					if deals then
+						deals:NeedMarbles(short, function()
+							Shop.select(self, "Marbles")
+						end)
+					else
+						Shop.select(self, "Marbles")
+					end
 				end
 				return
 			end
@@ -144,6 +271,7 @@ function Shop.bind(self, data)
 		self.Message.Text = text
 	end)
 	MarbleShop.attachPlus(self.Window.Panel:FindFirstChild("Marbles"))
+	Shop.starterSide(self)
 	-- A "+" (here or on the HUD) while the shop is open switches to the Marbles page.
 	table.insert(
 		self.Window.Connections,

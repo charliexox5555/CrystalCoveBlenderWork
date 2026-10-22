@@ -67,7 +67,7 @@ Each glassy must be less likely than every glassy of a lower rarity (tested). Wh
 - Every match: **1 free reroll**, then **5 / 10 / 20 Marbles** (the last cost repeats).
 - Rerolls only reshuffle the player's own glassies; they never grant an item.
 - Free Marbles: 20 for joining the group, 5 on streak day 3, 15 on day 7 (~20 a week): enough for a few paid rerolls a week without paying.
-- Packs: 40 for R$49, 100 for R$99, 220 for R$199, 600 for R$499 (value rises gently; tested).
+- Packs, Daily Marbles, the Starter Pack and the Daily Glassy: see [MONETIZATION.md](MONETIZATION.md) (decision 116); payer pacing in `src/tests/PayerSim.luau`.
 - **Watch after launch:** if paid rerolls are a large share of Marble spending or players call it pay-to-win, make rerolls coins-only or earned (DECISIONS 25).
 
 ## 6. Guard rails

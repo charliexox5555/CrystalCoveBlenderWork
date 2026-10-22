@@ -241,6 +241,20 @@ function Screen:NeedMarbles(action, cost)
 	self.Gui:SetAttribute("RequestedMarbles", shortfall)
 	if self.OnMarblesRequested then
 		self.OnMarblesRequested(action, shortfall)
+	else
+		-- Need Marbles (decision 116): buy the cheapest offer that covers it without leaving the selection. The new
+		-- Marbles arrive through the profile (Wallet), so the player taps REROLL / PICK ANY again right here.
+		local ok, deals = pcall(require, script.Parent.Parent.Parent.Controllers.DealsController)
+		if ok and deals and not self.Dead then
+			self.Modal = true
+			self:Controls()
+			deals:NeedMarbles(shortfall, nil, function()
+				if not self.Dead then
+					self.Modal = self.Chooser ~= nil
+					self:Controls()
+				end
+			end)
+		end
 	end
 	self:Say("Need {M}" .. shortfall .. " more Marbles", Theme.Palette.rubyLight)
 	Motion.bump(self.WalletPlaque, 0.18)

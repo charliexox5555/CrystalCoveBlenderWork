@@ -1,6 +1,7 @@
--- Marbles page of the shop window: a grid of Marble packs (Config/MarbleShop) on the shared
--- ShopCard. The "+" on the HUD and shop-window Marble counters opens the shop on this page.
--- Packs are bought through StoreService (BuyMarblePack -> intent -> Robux prompt -> receipt).
+-- Marbles page of the shop window: a scrolling page with Daily Marbles (decision 116) on top and the
+-- Marble packs (Config/MarbleShop) below, on the shared ShopCard. The "+" on the HUD and shop-window
+-- Marble counters opens the shop on this page. Packs are bought through StoreService (BuyMarblePack ->
+-- intent -> Robux prompt -> receipt); Daily Marbles through DealsController.
 local RS = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local Remotes = require(RS.Shared.Remotes)
@@ -72,33 +73,182 @@ local function pile(parent, step)
 	return art
 end
 
--- Builds the pack grid inside `page`; `say` shows a status line. Returns a CrateViews-style view.
-function MarbleShop.page(page, say)
-	local self = setmetatable({ Page = page, Connections = {}, Cards = {} }, MarbleShop)
+local Assets = require(RS.Shared.Config.UIAssets)
+local function picture(parent, name, path, size, position)
+	local image = U.make("ImageLabel", parent, {
+		Name = name,
+		BackgroundTransparency = 1,
+		Image = Assets[path] or "",
+		ScaleType = Enum.ScaleType.Fit,
+		Size = size,
+		Position = position or UDim2.new(),
+	})
+	return image
+end
+
+local function deals()
+	local ok, controller = pcall(require, script.Parent.Parent.Parent.Controllers.DealsController)
+	return if ok then controller else nil
+end
+
+local function duration(seconds)
+	seconds = math.max(0, math.floor(seconds))
+	local h, m = seconds // 3600, seconds % 3600 // 60
+	return if h > 0 then string.format("%dh %dm", h, m) else string.format("%dm %02ds", m, seconds % 60)
+end
+
+-- Daily Marbles (decision 116): one buy a day, and each buy makes the next one bigger (a missed day keeps your
+-- place). Big card on the left, the seven-step ladder on the right.
+function MarbleShop:Daily(canvas)
 	local header = U.text(
-		page,
-		"Header",
-		"MARBLE PACKS",
-		UDim2.fromScale(0.5, 0.075),
+		canvas,
+		"DailyHeader",
+		"DAILY MARBLES",
+		UDim2.fromScale(0.5, 0.045),
 		UDim2.fromScale(0.02, 0),
 		Theme.Fonts.Heading
 	)
 	header.TextXAlignment = Enum.TextXAlignment.Left
+	local frame = U.make("Frame", canvas, {
+		Name = "DailyCard",
+		BackgroundTransparency = 1,
+		Position = UDim2.fromScale(0.02, 0.05),
+		Size = UDim2.fromScale(0.3, 0.33),
+	})
+	local card = Card.new(frame)
+	pile(card.Art, 3)
+	Card.accent(card, Theme.Palette.amberLight)
+	Card.pill(card.Rarity, "TODAY", "amber")
+	local strip = U.make("Frame", canvas, {
+		Name = "Ladder",
+		BackgroundTransparency = 1,
+		Position = UDim2.fromScale(0.34, 0.07),
+		Size = UDim2.fromScale(0.64, 0.29),
+	})
+	U.make("UIListLayout", strip, {
+		FillDirection = Enum.FillDirection.Horizontal,
+		HorizontalAlignment = Enum.HorizontalAlignment.Center,
+		VerticalAlignment = Enum.VerticalAlignment.Center,
+		Padding = UDim.new(0.01, 0),
+		SortOrder = Enum.SortOrder.LayoutOrder,
+	})
+	local cells = {}
+	for i, amount in require(RS.Shared.Config.Offers).DailyMarbles.Amounts do
+		local cell = picture(strip, "Day" .. i, "screens/daily_rewards/cell_locked", UDim2.fromScale(0.13, 1))
+		cell.LayoutOrder = i
+		U.make("UIAspectRatioConstraint", cell, { AspectRatio = 0.72 })
+		local day = U.text(
+			cell,
+			"Day",
+			"DAY " .. i,
+			UDim2.fromScale(0.8, 0.16),
+			UDim2.fromScale(0.1, 0.06),
+			Theme.Fonts.Heading
+		)
+		day.UITextSizeConstraint.MaxTextSize = 20
+		local icon = S.image(cell, "Marble", "icon/marble", UDim2.fromScale(0.55, 0.4))
+		icon.AnchorPoint, icon.Position = Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.5)
+		local value = U.text(
+			cell,
+			"Amount",
+			"x" .. amount,
+			UDim2.fromScale(0.86, 0.18),
+			UDim2.fromScale(0.07, 0.74),
+			Theme.Fonts.Heading
+		)
+		value.UITextSizeConstraint.MaxTextSize = 22
+		U.make("UIStroke", value, { Thickness = 1.5, Color = Theme.Palette.lead })
+		cells[i] = cell
+	end
+	local note =
+		U.text(canvas, "LadderNote", "", UDim2.fromScale(0.64, 0.035), UDim2.fromScale(0.34, 0.36), Theme.Fonts.Caption)
+	note.TextColor3 = Theme.Palette.amberLight
+	self.DailyCard, self.Ladder, self.LadderNote = card, cells, note
+	table.insert(
+		self.Connections,
+		card.Button.Activated:Connect(function()
+			local state = self.Deals and self.Deals.DailyMarbles
+			local controller = deals()
+			if state and state.Available and controller then
+				self.Say("Opening the Robux purchase…")
+				controller:Buy("DailyMarbles", card.Button)
+			end
+		end)
+	)
+end
+
+function MarbleShop:ShowDaily(view)
+	self.Deals = view
+	local state = view.DailyMarbles
+	local card = self.DailyCard
+	if not card or not state then
+		return
+	end
+	card.Name.Text = "x" .. state.Next .. " Marbles"
+	Card.pill(card.Corner, if state.Bonus > 0 then "+" .. state.Bonus .. "%" else nil, "emerald")
+	if state.Available then
+		Card.button(card, "robux", Card.ROBUX .. " " .. state.Price)
+	elseif state.BoughtToday then
+		Card.button(card, "sold", "")
+	else
+		Card.button(card, "soon", "COMING SOON")
+	end
+	for i, cell in self.Ladder do
+		-- Steps already bought are claimed; the step the next buy is on glows today, or waits for tomorrow.
+		local path = if i < state.Step
+			then "screens/daily_rewards/cell_claimed"
+			elseif i == state.Step and state.Available then "screens/daily_rewards/cell_today"
+			elseif i == #self.Ladder then "screens/daily_rewards/cell_day7"
+			else "screens/daily_rewards/cell_locked"
+		cell.Image = Assets[path] or ""
+		cell.ImageTransparency = if i <= state.Step then 0 else 0.25
+	end
+	self.LadderNote.Text = if state.Step == #self.Ladder and state.Done >= #self.Ladder
+		then "Top step: x" .. state.Next .. " every day"
+		else "Each day you buy, tomorrow gives more"
+	self:Step()
+end
+
+-- Builds the Marbles page inside `page`: a scrolling page with Daily Marbles on top and the packs below.
+-- `say` shows a status line. Returns a CrateViews-style view.
+function MarbleShop.page(page, say)
+	local self = setmetatable({ Page = page, Connections = {}, Cards = {}, Say = say, Packs = {} }, MarbleShop)
+	local canvas = U.make("ScrollingFrame", page, {
+		Name = "Scroll",
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		Size = UDim2.fromScale(1, 1),
+		CanvasSize = UDim2.fromScale(0, 1.75),
+		ScrollBarThickness = 6,
+		ScrollingDirection = Enum.ScrollingDirection.Y,
+		ScrollBarImageColor3 = Theme.Palette.aquaLight,
+	})
+	self.Canvas = canvas
+	self:Daily(canvas)
+	local header = U.text(
+		canvas,
+		"Header",
+		"MARBLE PACKS",
+		UDim2.fromScale(0.5, 0.045),
+		UDim2.fromScale(0.02, 0.405),
+		Theme.Fonts.Heading
+	)
+	header.TextXAlignment = Enum.TextXAlignment.Left
 	local note = U.text(
-		page,
+		canvas,
 		"Note",
 		"Marbles pay for Pick Any and other Marble items",
-		UDim2.fromScale(0.46, 0.06),
-		UDim2.fromScale(0.52, 0.01),
+		UDim2.fromScale(0.46, 0.035),
+		UDim2.fromScale(0.52, 0.41),
 		Theme.Fonts.Caption
 	)
 	note.TextXAlignment, note.TextColor3 = Enum.TextXAlignment.Right, Theme.Palette.amberLight
 	note.UITextSizeConstraint.MaxTextSize = Theme.TextSize.Small
-	local grid = U.make("Frame", page, {
+	local grid = U.make("Frame", canvas, {
 		Name = "Packs",
 		BackgroundTransparency = 1,
-		Position = UDim2.fromScale(0.02, 0.09),
-		Size = UDim2.fromScale(0.96, 0.9),
+		Position = UDim2.fromScale(0.02, 0.455),
+		Size = UDim2.fromScale(0.96, 0.54),
 	})
 	U.make("UIGridLayout", grid, {
 		CellSize = UDim2.fromScale(0.315, 0.47),
@@ -119,20 +269,17 @@ function MarbleShop.page(page, say)
 			if pack.Bonus > 0 then "+" .. pack.Bonus .. "% BONUS" else nil,
 			if pack.Bonus >= 25 then "amber" else "emerald"
 		)
-		if pack.Available then
-			Card.button(card, "robux", Card.ROBUX .. " " .. commas(pack.RobuxPrice))
-		else
-			Card.button(card, "soon", "COMING SOON")
-		end
+		self.Packs[pack.Id] = { Card = card, Pack = pack }
+		self:ShowPack(pack.Id)
 		table.insert(self.Cards, frame)
 		table.insert(
 			self.Connections,
 			card.Button.Activated:Connect(function()
-				if pack.Available then
+				if self:PackOnSale(pack.Id) then
 					say("Opening the Robux purchase…")
 					Remotes.BuyMarblePack:FireServer(pack.Id)
 				else
-					say("Marble packs open soon")
+					say("This pack is coming soon")
 				end
 			end)
 		)
@@ -140,7 +287,11 @@ function MarbleShop.page(page, say)
 	table.insert(
 		self.Connections,
 		Remotes.StoreResult.OnClientEvent:Connect(function(result)
-			if type(result) == "table" and result.Kind == "Marbles" and type(result.Message) == "string" then
+			if
+				type(result) == "table"
+				and (result.Kind == "Marbles" or result.Kind == "DailyMarbles")
+				and type(result.Message) == "string"
+			then
 				say(result.Message)
 			end
 		end)
@@ -153,13 +304,65 @@ function MarbleShop.page(page, say)
 			end
 		end)
 	)
+	local controller = deals()
+	if controller then
+		self.Unwatch = controller:Watch(function(view)
+			if self.Canvas.Parent then
+				self.Held = view.Held or {}
+				self:ShowDaily(view)
+				for id in self.Packs do
+					self:ShowPack(id)
+				end
+			end
+		end)
+	end
 	return self
 end
 
--- CrateViews interface.
+-- A pack is on sale when it has a product and the server isn't holding it back (dashboard price != config).
+function MarbleShop:PackOnSale(id)
+	local entry = self.Packs[id]
+	local pack = entry and entry.Pack
+	if not pack or not pack.Available then
+		return false
+	end
+	for _, config in require(RS.Shared.Config.MarbleShop).Packs do
+		if config.Id == id and self.Held and self.Held[tostring(config.ProductId)] then
+			return false
+		end
+	end
+	return true
+end
+
+function MarbleShop:ShowPack(id)
+	local entry = self.Packs[id]
+	if self:PackOnSale(id) then
+		Card.button(entry.Card, "robux", Card.ROBUX .. " " .. commas(entry.Pack.RobuxPrice))
+	else
+		Card.button(entry.Card, "soon", "COMING SOON")
+	end
+end
+
+-- CrateViews interface. Step keeps the Daily Marbles countdown ticking.
 function MarbleShop:Wallet() end
-function MarbleShop:Step() end
+function MarbleShop:Step()
+	local state = self.Deals and self.Deals.DailyMarbles
+	if not state or not state.BoughtToday or not self.DailyCard then
+		return
+	end
+	local now = os.clock()
+	if self.LastTick and now - self.LastTick < 1 then
+		return
+	end
+	self.LastTick = now
+	local controller = deals()
+	local serverNow = if controller then controller:Now() else workspace:GetServerTimeNow()
+	S.buttonText(self.DailyCard.Button, "TOMORROW " .. duration(state.NextReset - serverNow))
+end
 function MarbleShop:Destroy()
+	if self.Unwatch then
+		self.Unwatch()
+	end
 	for _, connection in self.Connections do
 		connection:Disconnect()
 	end

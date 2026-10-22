@@ -332,7 +332,8 @@ return function(t, d)
 				Rules.applyReceipt(data, { PurchaseId = "m1", ProductId = intent.ProductId }, MIDNIGHT, grant),
 				"Granted"
 			)
-			t.eq(data.Marbles, before + 420)
+			local pouch = Rules.marblePack("pouch").Marbles
+			t.eq(data.Marbles, before + pouch)
 			t.eq(
 				Rules.applyReceipt(data, { PurchaseId = "m1", ProductId = intent.ProductId }, MIDNIGHT, grant),
 				"Duplicate"
@@ -341,12 +342,12 @@ return function(t, d)
 				Rules.applyReceipt(data, { PurchaseId = "m2", ProductId = intent.ProductId }, MIDNIGHT, grant),
 				"Granted"
 			)
-			t.eq(data.Marbles, before + 840, "both paid prompts honored")
+			t.eq(data.Marbles, before + 2 * pouch, "both paid prompts honored")
 			t.eq(
 				Rules.applyReceipt(data, { PurchaseId = "m3", ProductId = intent.ProductId }, MIDNIGHT, grant),
 				"NoIntent"
 			)
-			t.eq(data.Marbles, before + 840)
+			t.eq(data.Marbles, before + 2 * pouch)
 			for _, pack in Rules.marblePacks() do
 				t.eq(pack.Available, true)
 				t.ok(pack.Marbles >= pack.RobuxPrice, pack.Id .. " never worse than 1 Marble per Robux")

@@ -25,4 +25,13 @@ return function(t, deps)
 		t.ok(r.FirstShare.Mythic < 0.5, "Mythics stay rare in the first month")
 		t.ok(r.UniqueDay30 < r.KilnGlassies, "nobody finishes the collection in a month")
 	end)
+
+	t.test("Robux offers speed up collecting without buying power (decision 116)", function()
+		local PayerSim = if script then require(script.Parent.PayerSim) else require("./PayerSim")
+		local r = PayerSim.simulate(120, 9)
+		t.ok(r.Starter.Edge7 < 0.01 and r.Occasional.Edge7 < 0.01, "small buyers: under 1% HP over a free player")
+		t.ok(r.Daily.Edge7 < 0.02 and r.Whale.Edge7 < 0.04, "daily buyers and whales stay inside the rarity edge")
+		t.ok(r.Daily.UniqueDay30 > r.Free.UniqueDay30, "paying still collects faster")
+		t.ok(r.Free.UniqueDay30 >= 25, "a free player still has most of the Kiln by day 30")
+	end)
 end

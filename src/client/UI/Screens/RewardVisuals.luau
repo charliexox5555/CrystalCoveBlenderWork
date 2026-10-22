@@ -12,6 +12,7 @@ local Visuals = {}
 local PULL_ICON =
 	{ Glassies = "reward/kiln_pull", Finishers = "reward/finisher_crate", Rideables = "reward/flyer_crate" }
 local PULL_TEXT = { Glassies = "KILN PULL", Finishers = "FINISHER CRATE", Rideables = "FLYER CRATE" }
+local ITEM_SCALE = 1.3 -- a glassy prize picture, relative to the cell's coin slot
 
 -- Coin pile layouts: centre x, centre y (fractions of the Icon slot) and tilt, back to front.
 local PILES = {
@@ -53,9 +54,12 @@ end
 
 function Visuals.amount(reward)
 	if reward.Item then
+		-- The picture says which glassy; the line only adds the coins that come with it.
+		if reward.Coins then
+			return "+" .. reward.Coins
+		end
 		local def = reward.Item.Category == "Glassies" and Glassies.ById[reward.Item.Id]
-		local name = if def then string.upper(def.Name) else "ITEM"
-		return if reward.Coins then name .. " +" .. reward.Coins else name
+		return if def then string.upper(def.Name) else ""
 	elseif reward.Xp and not reward.Coins then
 		return "+" .. reward.Xp .. " XP"
 	elseif reward.Pull then
@@ -148,7 +152,17 @@ function Visuals.apply(cell, reward)
 			end
 		end
 		if itemView then
+			-- The glassy is the prize: drawn a bit bigger than the coin slot and centred on it (the picture has its own
+			-- transparent margin).
+			local grow = ITEM_SCALE
 			itemView.AnchorPoint, itemView.ZIndex = icon.AnchorPoint, icon.ZIndex + 1
+			itemView.Size = UDim2.new(
+				icon.Size.X.Scale * grow,
+				icon.Size.X.Offset * grow,
+				icon.Size.Y.Scale * grow,
+				icon.Size.Y.Offset * grow
+			)
+			itemView.Position = icon.Position
 		end
 	elseif mode == "Pull" then
 		local ok, made = pcall(portrait, cell, icon, reward.Pull)

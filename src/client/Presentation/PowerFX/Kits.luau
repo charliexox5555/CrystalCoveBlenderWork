@@ -1777,8 +1777,8 @@ Kits.whiskers = {
 		local color, accent = fx:Colors(side)
 		-- A glass yarn ball rolls out and back, trailing a long thin strand of yarn.
 		shots(fx, side, e, ctx, {
-			Kind = "BubbleDome",
-			Size = 1.05,
+			Kind = "Ball",
+			Size = 0.9,
 			Core = false,
 			Trail = 0.55,
 			TrailWidth = 0.18,
@@ -1793,6 +1793,24 @@ Kits.whiskers = {
 			if shot.Effect then
 				shot.Effect.Parts[1].Color = color
 				shot.Effect.Parts[1].Material = Enum.Material.Glass
+				-- Two loops of yarn wound round the ball, spinning as it rolls.
+				local loops = { fx:Part("Ring", color:Lerp(WHITE, 0.35)), fx:Part("Ring", accent) }
+				fx:Spawn({
+					Side = side,
+					Start = e.Time,
+					Seconds = math.max(0.05, e.Duration or 1),
+					Parts = loops,
+					Step = function(_, age)
+						if shot.Done or not shot.Position then
+							return not shot.Done
+						end
+						for i, p in loops do
+							fx:Fit(p, 0.95)
+							p.CFrame = CFrame.new(shot.Position) * CFrame.Angles(age * 9 + i * 1.3, i * 1.1, age * 4)
+							p.Transparency = 0.05
+						end
+					end,
+				})
 			end
 		end
 		fx:Flash(side, ctx.Here, accent, 1.2, 0.12)

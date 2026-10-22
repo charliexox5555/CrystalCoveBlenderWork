@@ -1,6 +1,6 @@
 # Daily and Playtime Rewards v2: research, numbers and two Daily glassies
 
-October 21, 2026 · **status: Phase 1 proposal. Waiting for the creator's answers (§6) before any building.**
+October 21, 2026 · **status: built (decision 115, Proposed).** The creator delegated the open calls before dinner and chose a half-moon for Day 7 (for Midnights Studio); what was built is in §7. §1-6 are the Phase 1 proposal, kept for the record.
 Builds on decision 99 (`docs/design/REWARDS_SETTINGS_PLAN.md`), decision 104 (levels and XP) and decision 86 (rarity edge about 55%).
 
 The creator asked for:
@@ -148,3 +148,25 @@ Other Phase 2 details I'd do unless told otherwise:
 4. **XP gift:** recommended **45 minutes → 200 XP**, so every coin gift a normal session reaches grows. Or 30 minutes → 150 XP.
 5. **Pick the glassies:** Day 2 = A Whiskers / B Gift Box / C Pebble; Day 7 = D Foxfire / E Frostfang / F Finn (or a mix, or a new idea). Any name changes?
 6. **Numbers OK?** Daily 100 / Epic+100 / 100 / 150 / 100+pull / 150 / Legendary+300; Playtime 75 / 100 / 125 / 200 XP / 150 + pull.
+
+## 7. Built (Oct 21, decision 115)
+
+The creator: "One I think should be a half-moon to represent my studio (midniights studio) for day 7. Day 2 can just be something new and random. Make sure vfx works good." Plus two later asks: Playtime gifts collect themselves with a subtle notice, and Daily Rewards opens by itself on join (not during onboarding).
+
+| Question (§6) | Call | Why |
+|---|---|---|
+| Daily-only or Kiln too? | **Daily-only** (creator) | Outside the release roster: never in the Kiln, the daily store or bot hands. They always show in the Collection, locked until claimed. |
+| Week 2+ on Days 2 and 7 | **Another copy (+1 star) until 5 stars, then Day 2 = 200 coins, Day 7 = free Kiln pull + 300 coins** | Keeps the same glassy growing for 5 weeks (stars are capped, decision 86), then a fair swap. |
+| Old Day 7 free Kiln pull | **Moved to Day 5** | Research: strong rewards in days 2-5. |
+| XP gift | **45 min → 200 XP** | Every coin gift a normal session reaches still grows; 200 XP is about two matches. |
+| Daily coins | **100 / Whiskers + 100 / 100 / 150 / Kiln pull + 100 / 150 / Midnight + 300** | About 100 on most days (creator). |
+| Playtime coins | **75 / 100 / 125 / 200 XP / 150 + rotating free pull** | A bigger ladder (+76% coins). |
+| Playtime collect | **Automatic, toast at the top left** | Server grants each reached gift on its 1 s tick; the toast is [icon] +N [clock], 2.4 s, queued, under the top bar (away from the fight headline and CAST). Coins burst from the toast into the wallet. The 60-minute rotating prize stays a **ticket** (granted, not opened), so the Shop still shows the odds before any opening (decision 99). |
+| Daily auto-open | **Once per join** when today's reward is ready; skipped while `OnboardingStep` isn't Done (onboarding has its own Daily step); waits for 1.5 s of quiet lobby (no match, queue, results, watching, menu or panel); gives up after 90 s. | |
+
+**The glassies** (models built headless with `docs/art/daily_glassies/tools/build_daily.py`, the launch builder as a library; v4 materials, rig4 icons, 18/20 shards; uploaded and installed):
+
+- **Whiskers** `whiskers` · Epic · Sharp · lilac. Passive Nine Lives (`second_wind`). **Yarn Toss:** 2 turnarounds → Ready → bats a glass yarn ball out and back (`projectile`, `Path = "return"`); a landed leg tangles the foe (Slow 0.75 for 1.2 s). Real-swing: **50.3%** equal stats, 50.0% with rarity.
+- **Midnight** `midnight_moon` · Legendary · Fizzy · moonlit periwinkle crescent in a nightcap, gold star specks, a dangling star. Passive Moonglow (`glow_core`). **Lullaby:** timer → Ready → a lullaby ring (`pulse`): a landed ring makes the foe sleepy (Slow 0.7 for 1.6 s, "z z Z") and marks it: its next clash within 3.5 s is a wake-up bonk (MarkDamage 0.45). New rule: a ranged power with `MarkDamage` marks on a landed hit (FightRules → SignatureTraits.mark, the same payoff as mark_contact). Real-swing: **51.6%** equal stats, **54.3%** with rarity (decision 86 target ≈ 55%).
+
+Pacing after the change is the §2 table (EconomySim now counts the Daily glassies as first Epic / first Legendary). Studio verification: `docs/testing/daily_playtime_v2/README.md`.

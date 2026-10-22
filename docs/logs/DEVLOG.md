@@ -3,6 +3,21 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-21 — Claude (daily-playtime session) — Daily and Playtime rewards v2 (decision 115, Proposed)
+Done:
+- Research and proposal: docs/design/DAILY_PLAYTIME_V2.md (sources cited). The creator chose a half-moon for Day 7 (Midnights Studio) and delegated the other calls before dinner (§7).
+- Two Daily-only glassies, built headless at launch quality (docs/art/daily_glassies, v4 materials, 18/20 shards, FBX round-trip passed), uploaded to group 11116787 and installed in Studio (verify Ok): **Whiskers** (Day 2, Epic) and **Midnight** (Day 7, Legendary). Item pictures rendered from the in-game portrait framing and uploaded (Config/ItemIcons); GlassyMotion, ReleaseGeometry, ReleaseCrackPaths and LoadTiers (Essential) updated.
+- Powers: Yarn Toss (out-and-back yarn ball, slow + tangle loops) and Lullaby (pulse ring, "z z Z" sleepy mark, wake-up bonk on the next clash; new ranged `MarkDamage` rule in FightRules/SignatureTraits). Bespoke PowerFX kits and 6 sound cues (ProSoundEffects music box 9117042092 + bank sounds). Real-swing matrix (8 rounds/pair, bots 0.5): Whiskers 50.3% / Midnight 51.6% equal stats; 50.0% / 54.3% with rarity.
+- Rewards: Daily 100 / Whiskers + 100 / 100 / 150 / Kiln pull + 100 / 150 / Midnight + 300; repeat weeks = +1 star until max, then 200 coins / Kiln pull + 300. Playtime 75 / 100 / 125 / 200 XP / 150 + rotating pull; gifts collect themselves with a small top-left toast (UI/Components/RewardToast) and the coin burst from it; XP via LevelRules. Daily Rewards opens by itself once per join (not in onboarding, not over a match/queue/results/menu).
+- Sims. Economy (2000 players, 40 min/day): pulls day 1 4, day 30 105 (was 3 / 89); first Rare 51 min, Epic 40 min (was 2.8 h), Legendary 4.0 h (was 8.9 h; 100% within 30 days, was 75%), Mythic 24% in 30 days. Balance sim: unchanged (FightModel stand-in covers the release roster only).
+- Tests: Lune 238/238 (new DailyGlassyTests); Studio Play server RunAll 238/238. Studio Play: auto-open, Day 2 and Day 7 claims, playtime toasts incl. XP (Lv 1 → 2), power previews; captures in docs/testing/daily_playtime_v2/.
+Next:
+- Creator: save/publish the place (the two models live in it); feel check of both powers and the toast on a phone.
+- Re-connect the Rojo plugin in Studio (it was disconnected; I restarted `rojo serve` and pushed my files' diffs by MCP).
+- Follow-up: tools/blender/item_icons.py may mirror other asymmetric glassies' meshes too (fixed opt-in for these two with `mirrorX`); worth a check against Studio captures.
+Problems / questions for the user:
+- The 1024 px Midnight picture was still in moderation; the 512 px one shows meanwhile.
+
 ## 2026-10-21 — Claude (group-reward session) — Group reward stand (decision 114, Proposed)
 Done:
 - Research first (docs/design/GROUP_REWARD.md, sources cited). `PromptJoinAsync` runs on the client and returns

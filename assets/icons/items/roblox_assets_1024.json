@@ -532,6 +532,20 @@
    "Sha256": "92cc261d37bcc7febe63c181cb42fe637ecb777492d24943f67055a87764e95d",
    "Moderation": "Approved",
    "Uploaded": "2026-10-21T17:10:22"
+  },
+  "1024/glassies_midnight_moon": {
+   "AssetId": "107232710411972",
+   "Path": "assets/icons/items/1024/glassies_midnight_moon.png",
+   "Sha256": "4e9beab5d32f1af1b66d6c68fdbcfcf9f19f3dbbb5253df2a78f18cf61d6193b",
+   "Moderation": "Reviewing",
+   "Uploaded": "2026-10-21T19:05:40"
+  },
+  "1024/glassies_whiskers": {
+   "AssetId": "96352341294806",
+   "Path": "assets/icons/items/1024/glassies_whiskers.png",
+   "Sha256": "44cb0dfb42f602e72656f57883f74bec35ace424fabb1b41cbceb090bc5f59e8",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-21T19:05:45"
   }
  }
 }

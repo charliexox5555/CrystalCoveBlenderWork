@@ -61,6 +61,9 @@ LoadTiers.Tiers = {
 		"screen:DailyRewardsScreen",
 		-- The Coin Kiln picture on the welcome card and the Daily pull cells (decision 113).
 		"images:ItemIcons/Small/Machines/Glassies:Coins",
+		-- The Daily Rewards glassies' pictures (Day 2 and Day 7 cells; the screen can open by itself on join, decision 115).
+		"images:ItemIcons/Small/Glassies/whiskers",
+		"images:ItemIcons/Small/Glassies/midnight_moon",
 		-- The Featured stage is in view from the spawn.
 		"asset:Glassies/hollowlight",
 		"asset:Seasonal/Hollowlight",

@@ -41,6 +41,7 @@ local UIAssets = {
 	["icon/inventory"] = "rbxassetid://125282322841576",
 	["icon/marble"] = "rbxassetid://126376968177419",
 	["icon/shop"] = "rbxassetid://129775144345051",
+	["icon/xp"] = "rbxassetid://92054822422893", -- XP star (decision 115; assets/icons/reward/xp.png)
 	-- Top bar icons: gvesster Free Icon Pack v3.1 "1st Outline" set, uploaded via docs/ui/topbar/upload_list.json.
 	["topbar/codes"] = "rbxassetid://104059116086282",
 	["topbar/daily"] = "rbxassetid://109511006465398",

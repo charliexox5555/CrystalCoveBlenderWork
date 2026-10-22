@@ -51,6 +51,7 @@ ItemIcons.Small = {
 		["light_bulb"] = "rbxassetid://107855098305786",
 		["mason_jar"] = "rbxassetid://108930929149740",
 		["message_bottle"] = "rbxassetid://102698045689865",
+		["midnight_moon"] = "rbxassetid://101423210935563",
 		["milk_bottle"] = "rbxassetid://125592709102538",
 		["perfume"] = "rbxassetid://84697540618704",
 		["pickle_jar"] = "rbxassetid://99729774729652",
@@ -62,6 +63,7 @@ ItemIcons.Small = {
 		["rocket_pop"] = "rbxassetid://117885015076160",
 		["starblade"] = "rbxassetid://134084713543397",
 		["water_jug"] = "rbxassetid://135987025834080",
+		["whiskers"] = "rbxassetid://91805087969753",
 	},
 	Rideables = {
 		["bubble_pod"] = "rbxassetid://106247034794054",
@@ -149,6 +151,7 @@ ItemIcons.Large = {
 		["rocket_pop"] = "rbxassetid://125469298442738",
 		["starblade"] = "rbxassetid://117103803810174",
 		["water_jug"] = "rbxassetid://101362981536135",
+		["whiskers"] = "rbxassetid://107252780005293",
 	},
 	Rideables = {
 		["bubble_pod"] = "rbxassetid://101264941012624",

@@ -156,6 +156,11 @@ function Controller:Start()
 	end)
 	Remotes.RetentionResult.OnClientEvent:Connect(function(data)
 		if data.Auto and data.Ok and type(data.Reward) == "table" then
+			-- The coins of the snapshot that follows burst out of the toast (LobbyController reads GainOrigin).
+			local lobby = self.Controllers.LobbyController
+			if lobby then
+				lobby.GainOrigin = { Position = RewardToast.origin(), At = os.clock() }
+			end
 			task.spawn(function()
 				-- Gifts reached in an earlier session arrive right after joining: wait for the loading screen.
 				local waited = os.clock()
@@ -184,6 +189,15 @@ function Controller:Start()
 	task.spawn(function()
 		self:AutoOpenDaily()
 	end)
+	if game:GetService("RunService"):IsStudio() then
+		-- Studio QA: setting PlayerGui attribute DevAutoOpenDaily re-runs the join check (a fresh Play joins in onboarding).
+		pg:GetAttributeChangedSignal("DevAutoOpenDaily"):Connect(function()
+			self.QuietSince = nil
+			task.spawn(function()
+				self:AutoOpenDaily()
+			end)
+		end)
+	end
 	task.spawn(function()
 		while true do
 			task.wait(TICK)

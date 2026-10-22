@@ -1,0 +1,12 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "xp": {
+   "AssetId": "120885405624826",
+   "Path": "assets/icons/reward/xp.png",
+   "Sha256": "118f9dd654ec7869bfca61a852576bf256479d8c631333de7ac22aa6ce64b1be",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-21T19:05:48"
+  }
+ }
+}

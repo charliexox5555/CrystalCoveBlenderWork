@@ -118,17 +118,14 @@ local function timeline(id, kit, opts, frame, posAt)
 			if kit.Riposte then
 				local r = kit.Riposte
 				local at = rel + 0.72
-				add(
-					at,
-					{
-						Type = "CastStart",
-						CastId = 2,
-						Windup = r.Windup,
-						Shape = "pulse",
-						Riposte = true,
-						ReleaseAt = at + r.Windup,
-					}
-				)
+				add(at, {
+					Type = "CastStart",
+					CastId = 2,
+					Windup = r.Windup,
+					Shape = "pulse",
+					Riposte = true,
+					ReleaseAt = at + r.Windup,
+				})
 				add(at + r.Windup, {
 					Type = "CastRelease",
 					CastId = 2,
@@ -138,18 +135,15 @@ local function timeline(id, kit, opts, frame, posAt)
 					Range = r.Range,
 					Duration = r.Duration,
 				})
-				add(
-					at + r.Windup + 0.15,
-					{
-						Type = "CastContact",
-						CastId = 2,
-						Target = 2,
-						Pulse = 1,
-						Missed = false,
-						Amount = 3,
-						Point = arr(frame:PointToObjectSpace(posAt(2, at + 0.3))),
-					}
-				)
+				add(at + r.Windup + 0.15, {
+					Type = "CastContact",
+					CastId = 2,
+					Target = 2,
+					Pulse = 1,
+					Missed = false,
+					Amount = 3,
+					Point = arr(frame:PointToObjectSpace(posAt(2, at + 0.3))),
+				})
 			end
 		end
 		return events, castAt
@@ -212,6 +206,22 @@ local function timeline(id, kit, opts, frame, posAt)
 			Amount = if opts.Miss then 0 else 4,
 			Point = if opts.Miss then nil else arr(frame:PointToObjectSpace(hitAt)),
 		})
+		-- Ranged statuses on the first landed pulse (decision 115): Whiskers' tangle, Midnight's sleepy mark and
+		-- its wake-up bonk on the next clash.
+		if i == 1 and not opts.Miss then
+			if kit.Slow then
+				add(at, { Type = "SignatureStatus", Kind = "Slow", Target = 2, Seconds = kit.StatusSeconds })
+			end
+			if kit.MarkDamage then
+				local seconds = kit.MarkSeconds or kit.StatusSeconds
+				add(at, { Type = "SignatureStatus", Kind = "Mark", Target = 2, Seconds = seconds })
+				add(at + math.min(1.8, seconds - 0.2), {
+					Type = "SignatureContact",
+					Shape = "splat",
+					Point = arr(frame:PointToObjectSpace(posAt(2, at + 1.8))),
+				})
+			end
+		end
 	end
 	return events, castAt
 end

@@ -148,6 +148,11 @@ def build_mesh_part(dump, part, collection):
     # Studio), so mirror Blender Y and flip the faces back.
     mesh.transform(Matrix.Diagonal((scale[0], -scale[1], scale[2], 1.0)) @ Matrix.Translation(-centre))
     mesh.flip_normals()
+    if part.get("mirrorX"):
+        # Asymmetric meshes from the headless daily_glassies builder (Midnight's crescent) came out left-right mirrored
+        # against Studio with the transform above; portraits.json marks their parts, checked by a Studio capture.
+        mesh.transform(Matrix.Diagonal((-1.0, 1.0, 1.0, 1.0)))
+        mesh.flip_normals()
     mesh.name = part["name"]
     obj = bpy.data.objects.new(part["name"], mesh)
     obj.matrix_world = part_matrix(part["cf"])

@@ -278,6 +278,12 @@
    "Name": "GC icon glassies_message_bottle 512"
   },
   {
+   "Key": "512/glassies_midnight_moon",
+   "Path": "assets/icons/items/512/glassies_midnight_moon.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_midnight_moon 512"
+  },
+  {
    "Key": "512/glassies_milk_bottle",
    "Path": "assets/icons/items/512/glassies_milk_bottle.png",
    "Type": "Decal",
@@ -342,6 +348,12 @@
    "Path": "assets/icons/items/512/glassies_water_jug.png",
    "Type": "Decal",
    "Name": "GC icon glassies_water_jug 512"
+  },
+  {
+   "Key": "512/glassies_whiskers",
+   "Path": "assets/icons/items/512/glassies_whiskers.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_whiskers 512"
   },
   {
    "Key": "512/machines_Finishers_Coins",

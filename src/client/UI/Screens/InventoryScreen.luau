@@ -247,8 +247,12 @@ function Screen:Detail(id)
 	end
 	p.Ownership.Text = if owned then "OWNED • x" .. owned.Count else "UNOWNED • BASE STATS"
 	if owned and not Glassies.isRelease(id) then
-		p.Ownership.Text = (if Glassies.isSeasonal(id) then "SEASONAL • OWNED x" else "LEGACY • OWNED x")
-			.. owned.Count
+		p.Ownership.Text = (
+			if Glassies.isSeasonal(id)
+				then "SEASONAL • OWNED x"
+				elseif Glassies.isDaily(id) then "DAILY • OWNED x"
+				else "LEGACY • OWNED x"
+		) .. owned.Count
 	end
 	local installed = RS.Assets.Glassies:FindFirstChild(id) ~= nil
 	p.InfoPortrait.Visible, p.UnknownPortrait.Visible, p.ArtworkPending.Visible =

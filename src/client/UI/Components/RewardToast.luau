@@ -131,6 +131,11 @@ local function play(entry)
 	pill:Destroy()
 end
 
+-- Where a toast sits (in the core UI safe-inset space the HUD and CurrencyGain use), for coin bursts.
+function Toast.origin(): Vector2
+	return Vector2.new(12 + HEIGHT * 1.5, 10 + HEIGHT / 2)
+end
+
 function Toast.show(chips, tag)
 	if #chips == 0 then
 		return

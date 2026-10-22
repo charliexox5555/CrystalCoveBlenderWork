@@ -7,6 +7,10 @@
 "file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
 "object": "TailFin_R"
 },
+"100430817396368": {
+"file": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx",
+"object": "InnerGlow"
+},
 "100454144280767": {
 "file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
 "object": "Forelock_2"
@@ -98,6 +102,10 @@
 "103099066910504": {
 "file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
 "object": "TailGlow"
+},
+"103160019178744": {
+"file": "assets/blender/glassies/midnight_moon/v4/midnight_moon_bundle.fbx",
+"object": "HangLoop"
 },
 "103166414929850": {
 "file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
@@ -234,6 +242,10 @@
 "107502531556881": {
 "file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
 "object": "Grips"
+},
+"107510033391909": {
+"file": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx",
+"object": "Whiskers"
 },
 "107570006285476": {
 "file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
@@ -427,6 +439,10 @@
 "file": "assets/blender/crates_v2/r1/CRATE_MACHINES_V2.fbx",
 "object": "BD_SpinShard1"
 },
+"111935688081621": {
+"file": "assets/blender/glassies/midnight_moon/v4/midnight_moon_bundle.fbx",
+"object": "CapBrim"
+},
 "111992644025269": {
 "file": "assets/blender/glassies/piggy_bank/v4/piggy_bank_bundle.fbx",
 "object": "Ear_L"
@@ -446,6 +462,10 @@
 "112214045101898": {
 "file": "assets/blender/glassies/piggy_bank/v4/piggy_bank_bundle.fbx",
 "object": "Legs"
+},
+"112267325072991": {
+"file": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx",
+"object": "Nose"
 },
 "112293219862530": {
 "file": "assets/blender/glassies/arc_coil/v4/arc_coil_bundle.fbx",
@@ -518,6 +538,10 @@
 "113962020415430": {
 "file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
 "object": "Wing_FR"
+},
+"113968144392298": {
+"file": "assets/blender/glassies/midnight_moon/v4/midnight_moon_bundle.fbx",
+"object": "NightSky"
 },
 "113995003037719": {
 "file": "assets/blender/round_cosmetics/flyers_v3/honey_hover/honey_hover.fbx",
@@ -835,6 +859,14 @@
 "file": "assets/blender/seasonal/hollowlight_v5/moonlantern_carriage_v5.fbx",
 "object": "Wing_R"
 },
+"122306299583365": {
+"file": "assets/blender/glassies/midnight_moon/v4/midnight_moon_bundle.fbx",
+"object": "Sparkles"
+},
+"122438964456706": {
+"file": "assets/blender/glassies/midnight_moon/v4/midnight_moon_bundle.fbx",
+"object": "Nightcap"
+},
 "122478573281059": {
 "file": "assets/blender/glassies/honey_bear/v4/honey_bear_bundle.fbx",
 "object": "Eyes"
@@ -874,6 +906,10 @@
 "123093934595121": {
 "file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
 "object": "Pylon_R"
+},
+"123180286573986": {
+"file": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx",
+"object": "HangLoop"
 },
 "123222958814933": {
 "file": "assets/blender/glassies/crystal_ball/v4/crystal_ball_bundle.fbx",
@@ -942,6 +978,10 @@
 "124229303842631": {
 "file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
 "object": "Kiln_RoofBand"
+},
+"124470351806278": {
+"file": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx",
+"object": "Collar"
 },
 "124603164432522": {
 "file": "assets/blender/round_cosmetics/finishers_v3/finishers_v3.fbx",
@@ -1079,6 +1119,10 @@
 "file": "assets/blender/glassies/prism_blade/v4/prism_blade_bundle.fbx",
 "object": "BladeGlints"
 },
+"127739290128568": {
+"file": "assets/blender/glassies/midnight_moon/v4/midnight_moon_bundle.fbx",
+"object": "Eyes"
+},
 "127812418506162": {
 "file": "assets/blender/glassies/ketchup_bottle/v4/ketchup_bottle_bundle.fbx",
 "object": "SauceFill"
@@ -1163,6 +1207,10 @@
 "file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
 "object": "Kiln_RevealSeatInset"
 },
+"129900099459888": {
+"file": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx",
+"object": "Bell"
+},
 "130033725850884": {
 "file": "assets/blender/glassies/crystal_tumbler/v4/crystal_tumbler_bundle.fbx",
 "object": "IceCube"
@@ -1242,6 +1290,10 @@
 "132727936964424": {
 "file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
 "object": "DashGem"
+},
+"132868684065852": {
+"file": "assets/blender/glassies/midnight_moon/v4/midnight_moon_bundle.fbx",
+"object": "Smile"
 },
 "132877435822263": {
 "file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
@@ -1379,6 +1431,10 @@
 "file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
 "object": "HH2_Pumpkin_Curl"
 },
+"135691002859430": {
+"file": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx",
+"object": "Paws"
+},
 "135712228038340": {
 "file": "assets/blender/seasonal/hollowlight_v1/HOLLOWLIGHT_COSMETICS_IMPORT.fbx",
 "object": "HHL_Eclipse_Wisp2"
@@ -1479,6 +1535,10 @@
 "file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
 "object": "Kiln_TrayLeg_2_28"
 },
+"137474674702495": {
+"file": "assets/blender/glassies/midnight_moon/v4/midnight_moon_bundle.fbx",
+"object": "HangingStar"
+},
 "137536609707639": {
 "file": "assets/blender/glassies/crystal_ball/v4/crystal_ball_bundle.fbx",
 "object": "HangCap"
@@ -1518,6 +1578,10 @@
 "138333246295266": {
 "file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
 "object": "EyeShine"
+},
+"138392257185896": {
+"file": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx",
+"object": "Body"
 },
 "138525588681074": {
 "file": "assets/blender/map/lobby_v2/Kiln_Furnace.fbx",
@@ -1899,6 +1963,10 @@
 "file": "assets/blender/glassies/bubble_wand/v4/bubble_wand_bundle.fbx",
 "object": "FilmGlint"
 },
+"77201243659848": {
+"file": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx",
+"object": "Eyes"
+},
 "77224283708987": {
 "file": "assets/blender/glassies/galaxy_orb/v4/galaxy_orb_bundle.fbx",
 "object": "OrbitBand_1_Moons"
@@ -1934,6 +2002,10 @@
 "77764888511594": {
 "file": "assets/blender/glassies/glass_phoenix/v4/glass_phoenix_bundle.fbx",
 "object": "Embers"
+},
+"77865791528215": {
+"file": "assets/blender/glassies/midnight_moon/v4/midnight_moon_bundle.fbx",
+"object": "Body"
 },
 "78060976397725": {
 "file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
@@ -2047,6 +2119,10 @@
 "file": "assets/blender/glassies/prism_blade/v4/prism_blade_bundle.fbx",
 "object": "EdgeGlow"
 },
+"80390215461951": {
+"file": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx",
+"object": "Ears"
+},
 "80449485788644": {
 "file": "assets/blender/glassies/grizzly_guardian/v4/grizzly_guardian_bundle.fbx",
 "object": "BrowGem"
@@ -2122,6 +2198,10 @@
 "81883732311754": {
 "file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
 "object": "HH2_Pumpkin_EyeEdge_L"
+},
+"81890290782096": {
+"file": "assets/blender/glassies/midnight_moon/v4/midnight_moon_bundle.fbx",
+"object": "Cheeks"
 },
 "81915649232061": {
 "file": "assets/blender/round_cosmetics/flyers_v3/bubble_pod/bubble_pod.fbx",
@@ -2423,9 +2503,17 @@
 "file": "assets/blender/round_cosmetics/flyers_v3/starwhale/starwhale.fbx",
 "object": "BodyCore"
 },
+"88322484115518": {
+"file": "assets/blender/glassies/midnight_moon/v4/midnight_moon_bundle.fbx",
+"object": "MoonCore"
+},
 "88516064248198": {
 "file": "assets/blender/round_cosmetics/flyers_v3/rocket_skiff/rocket_skiff.fbx",
 "object": "Nozzle_L"
+},
+"88540203454737": {
+"file": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx",
+"object": "BellGlow"
 },
 "88544954538478": {
 "file": "assets/blender/glassies/frostglobe/v4/frostglobe_bundle.fbx",
@@ -2450,6 +2538,10 @@
 "89313335658832": {
 "file": "assets/blender/round_cosmetics/flyers_v3/sunwing/sunwing.fbx",
 "object": "WingCovert_L"
+},
+"89456576322358": {
+"file": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx",
+"object": "EarInners"
 },
 "89480557528418": {
 "file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
@@ -2563,6 +2655,10 @@
 "file": "assets/blender/glassies/pop/v4/pop_bundle.fbx",
 "object": "ChargeBubble_2"
 },
+"91702055096407": {
+"file": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx",
+"object": "Tail"
+},
 "91804802733811": {
 "file": "assets/blender/round_cosmetics/flyers_v3/prism_ray/prism_ray.fbx",
 "object": "BrowGem"
@@ -2587,6 +2683,10 @@
 "file": "assets/blender/glassies/potion_flask/v4/potion_flask_bundle.fbx",
 "object": "Twine"
 },
+"92452321185333": {
+"file": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx",
+"object": "Mouth"
+},
 "92491814002111": {
 "file": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",
 "object": "FV4_FrogBody"
@@ -2598,6 +2698,10 @@
 "92606273094621": {
 "file": "assets/blender/glassies/glass_top/v4/glass_top_bundle.fbx",
 "object": "EquatorRing"
+},
+"92647458517490": {
+"file": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx",
+"object": "Cheeks"
 },
 "92671710113141": {
 "file": "assets/blender/glassies/crescent_axe/v4/crescent_axe_bundle.fbx",
@@ -2618,6 +2722,10 @@
 "93217228429246": {
 "file": "assets/blender/glassies/water_jug/v4/water_jug_bundle.fbx",
 "object": "Handle"
+},
+"93248317223921": {
+"file": "assets/blender/glassies/midnight_moon/v4/midnight_moon_bundle.fbx",
+"object": "StarSpecks"
 },
 "93285811283754": {
 "file": "assets/blender/seasonal/hollowlight_v2/HOLLOWLIGHT_V2_IMPORT.fbx",
@@ -2759,6 +2867,10 @@
 "file": "assets/blender/glassies/arc_coil/v4/arc_coil_body.fbx",
 "object": "Body"
 },
+"95967879780331": {
+"file": "assets/blender/glassies/whiskers/v4/whiskers_bundle.fbx",
+"object": "EyeShine"
+},
 "96086187207862": {
 "file": "assets/blender/glassies/glass_dragon/v4/glass_dragon_bundle.fbx",
 "object": "Muzzle"
@@ -2835,6 +2947,10 @@
 "file": "assets/blender/glassies/frostglobe/v4/frostglobe_bundle.fbx",
 "object": "SnowSwirl"
 },
+"98284990310405": {
+"file": "assets/blender/glassies/midnight_moon/v4/midnight_moon_bundle.fbx",
+"object": "EyeShine"
+},
 "98325964594856": {
 "file": "assets/blender/glassies/comet/v4/comet_bundle.fbx",
 "object": "TailFin_3"
@@ -2910,6 +3026,10 @@
 "99666898095099": {
 "file": "assets/blender/round_cosmetics/flyers_v3/cloud_cushion/cloud_cushion.fbx",
 "object": "CloudBody"
+},
+"99686288767173": {
+"file": "assets/blender/glassies/midnight_moon/v4/midnight_moon_bundle.fbx",
+"object": "PomPom"
 },
 "99759456438356": {
 "file": "assets/blender/glassies/mason_jar/v4/mason_jar_bundle.fbx",

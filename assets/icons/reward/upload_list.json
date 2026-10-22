@@ -1,0 +1,6 @@
+{
+ "Record": "assets/icons/reward/roblox_assets.json",
+ "Items": [
+  {"Key": "xp", "Path": "assets/icons/reward/xp.png", "Type": "Decal", "Name": "GC icon reward xp"}
+ ]
+}

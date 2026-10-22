@@ -46,6 +46,9 @@ else
 	if Glassies.ById.hollowlight then
 		table.insert(ids, "hollowlight")
 	end
+	for _, id in Glassies.DailyIds or {} do -- Daily Rewards glassies (decision 115)
+		table.insert(ids, id)
+	end
 end
 if base ~= "rarity" then
 	for _, info in Balance.Rarities do

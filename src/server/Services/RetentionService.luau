@@ -24,11 +24,7 @@ function Service:Collect(player, data)
 	if #granted == 0 then
 		return
 	end
-	self.Services.DataService:Sync(player)
-	local profile = self.Services.DataService.Profiles[player]
-	if profile then
-		profile.Profile:Save()
-	end
+	-- The notice goes first, so the client's coin burst (on the next snapshot) starts at the toast.
 	for _, gift in granted do
 		Remotes.RetentionResult:FireClient(player, {
 			Ok = true,
@@ -38,6 +34,11 @@ function Service:Collect(player, data)
 			Reward = gift.Reward,
 			Item = gift.Item,
 		})
+	end
+	self.Services.DataService:Sync(player)
+	local profile = self.Services.DataService.Profiles[player]
+	if profile then
+		profile.Profile:Save()
 	end
 end
 function Service:View(player)

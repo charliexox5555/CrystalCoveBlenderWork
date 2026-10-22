@@ -11,7 +11,7 @@ local Guard = require(script.Parent.Parent.Util.RemoteGuard)
 local Service = {}
 
 function Service:Init()
-	self.Guard, self.Values, self.Dirty, self.Loading = Guard.new(), {}, {}, {}
+	self.Guard, self.Values, self.Dirty, self.Loading, self.Unread = Guard.new(), {}, {}, {}, {}
 	local function store(name)
 		local ok, result = pcall(function()
 			return DataStoreService:GetDataStore(name)
@@ -49,6 +49,8 @@ function Service:Load(player)
 		end
 	end
 	if player.Parent then
+		-- A failed read leaves the stored settings unknown: this visit runs on defaults and never overwrites them.
+		self.Unread[player] = not ok or nil
 		-- A SetSetting that landed while the store was loading wins over the stored value.
 		self.Values[player] = self.Values[player] or values
 		Remotes.Settings:FireClient(player, self.Values[player])
@@ -58,7 +60,7 @@ end
 
 function Service:Save(player)
 	local values = self.Values[player]
-	if not (values and self.Store and self.Dirty[player]) then
+	if not (values and self.Store and self.Dirty[player]) or self.Unread[player] then
 		return
 	end
 	self.Dirty[player] = nil
@@ -108,7 +110,7 @@ function Service:Start()
 	end)
 	Players.PlayerRemoving:Connect(function(player)
 		self:Save(player)
-		self.Values[player], self.Dirty[player], self.Loading[player] = nil, nil, nil
+		self.Values[player], self.Dirty[player], self.Loading[player], self.Unread[player] = nil, nil, nil, nil
 		self.Guard:Remove(player)
 	end)
 	game:BindToClose(function()

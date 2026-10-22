@@ -36,7 +36,8 @@ function Controller:Touch()
 	return UIS.TouchEnabled and not UIS.MouseEnabled and not UIS.GamepadEnabled
 end
 
-function Controller:Init()
+function Controller:Init(controllers)
+	self.Controllers = controllers
 	self.Player = Players.LocalPlayer
 	self.Windows = setmetatable({}, { __mode = "k" }) -- [Panel] = { Size, Position, Up, Down }
 	self.Connections = {}
@@ -218,7 +219,29 @@ function Controller:FitPlayHint(gui)
 	end)
 end
 
+-- The smallest phones (Galaxy A06: 280 px under the top bar) shrink the Shop / Inventory buttons below a finger and
+-- cut "Inventory"; grow them back towards their size on a 320 px-tall screen. The offer tiles follow (DealsController).
+function Controller:FitNavigation(gui)
+	local nav = gui:FindFirstChild("Navigation")
+	if not nav or not nav:IsA("GuiObject") then
+		return
+	end
+	self.NavHome = self.NavHome or nav.Size
+	local height = gui.AbsoluteSize.Y
+	local factor = if height > 1 then math.clamp(Tuning.NavReferenceHeight / height, 1, Tuning.NavMaxScale) else 1
+	local home = self.NavHome
+	local size = UDim2.new(home.X.Scale * factor, home.X.Offset, home.Y.Scale * factor, home.Y.Offset)
+	if nav.Size ~= size then
+		nav.Size = size
+		local deals = self.Controllers and self.Controllers.DealsController
+		if deals and deals.PlaceTiles then
+			task.defer(deals.PlaceTiles)
+		end
+	end
+end
+
 function Controller:FitLobbyHud(gui)
+	self:FitNavigation(gui)
 	self:FitPlayHint(gui)
 	local currency = gui:FindFirstChild("Currency")
 	if not currency or not currency:IsA("GuiObject") then
@@ -249,10 +272,19 @@ function Controller:FitLobbyHud(gui)
 					content = math.max(content, child.AbsolutePosition.X + child.AbsoluteSize.X)
 				end
 			end
-			if content > -math.huge and right - content > 1 then
+			-- Either way: the Marble "+" can also reach past the frame (it keeps a finger-sized minimum).
+			if content > -math.huge and math.abs(right - content) > 1 then
 				currency.Position = UDim2.new(1 - Tuning.EdgeMargin, math.floor(right - content), Tuning.EdgeMargin, 0)
 			end
 		end)
+		local plus = currency:FindFirstChild("MarblePlus", true)
+		if plus and not self.PlusWatch then
+			self.PlusWatch = plus:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+				if self:Touch() then
+					self:FitLobbyHud(gui)
+				end
+			end)
+		end
 	else
 		currency.AnchorPoint, currency.Position = self.CurrencyHome.Anchor, self.CurrencyHome.Position
 	end
@@ -311,6 +343,10 @@ function Controller:Added(gui)
 	elseif gui:IsA("ScreenGui") then
 		if gui.Name == "LobbyHUD" then
 			task.defer(self.FitLobbyHud, self, gui)
+			-- Its size is only known once laid out (and changes with the top bar inset).
+			gui:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+				self:FitNavigation(gui)
+			end)
 		elseif gui.Name == "FightHud" then
 			task.defer(self.FitFightHud, self, gui)
 		elseif not gui.Name:match("^Topbar") then

@@ -9,5 +9,7 @@ return {
 	CompactHeadline = 0.12, -- phone: PULL BACK / countdown headline height (share of screen; authored 0.2)
 	BillboardReferenceHeight = 600, -- player billboards grow on screens shorter than this (px)...
 	BillboardMaxScale = 1.8, -- ...up to this factor
+	NavReferenceHeight = 320, -- lobby Shop / Inventory buttons grow on HUDs shorter than this (px under the top bar)...
+	NavMaxScale = 1.2, -- ...up to this factor (more would reach the thumbstick)
 	BillboardMinScale = 1.5, -- every screen: at the authored 5 x 2.5 studs the glassy chip and HP line were ~6 px
 }

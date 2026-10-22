@@ -142,6 +142,45 @@ return function(t, deps)
 		t.eq(s.Fighters[2].Signature.GuardUntil, -1)
 	end)
 
+	t.test("Glass Unicorn's dash pays +ContactBonus on the next clash, or fades with a BoostFade", function()
+		local kit = Balance.CombatRelease.Kits.glass_unicorn
+		local function dash()
+			local s = fight("glass_unicorn", "jam")
+			for _ = 1, kit.Every do
+				Rules.turnaround(s, 1)
+			end
+			t.eq(s.PendingCasts[1] and s.PendingCasts[1].Shape, "boost")
+			Rules.tick(s, kit.Windup + 0.01)
+			t.ok(s.Fighters[1].Signature.BoostUntil > s.Time, "boosting")
+			Rules.drainEvents(s)
+			return s
+		end
+		local function kinds(s)
+			local out = {}
+			for _, e in drain(s) do
+				out[e.Type .. ":" .. tostring(e.Kind or e.Shape)] = true
+			end
+			return out
+		end
+		-- Landed: the clash is boosted and no fade follows.
+		local s = dash()
+		local plain = fight("glass_unicorn", "jam")
+		Rules.hit(s, 20, 0.5)
+		Rules.hit(plain, 20, 0.5)
+		local hit = kinds(s)
+		t.ok(hit["SignatureContact:armed_contact"], "payoff event")
+		local dealt = s.Fighters[2].MaxHp - s.Fighters[2].Hp
+		local plainDealt = plain.Fighters[2].MaxHp - plain.Fighters[2].Hp
+		t.near(dealt / plainDealt, 1 + kit.ContactBonus, 1e-6)
+		Rules.tick(s, kit.Duration + 0.1)
+		t.ok(not kinds(s)["SignatureStatus:BoostFade"], "no fade after a landed dash")
+		-- Whiffed: the boost runs out and says so.
+		s = dash()
+		Rules.tick(s, kit.Duration + 0.1)
+		t.ok(kinds(s)["SignatureStatus:BoostFade"], "fade after a whiffed dash")
+		t.ok(s.Fighters[1].Signature.BoostUntil < s.Time, "boost over")
+	end)
+
 	t.test("Glass Phoenix is reborn once at low HP and its feathers become a volley", function()
 		local s = fight("glass_phoenix", "pop")
 		local f = s.Fighters[1]

@@ -241,6 +241,18 @@ return function(FX)
 				States.disarm(self, side, not stale)
 				return
 			end
+			if e.Kind == "BoostFade" then
+				-- The boost ran out with no clash: the dash and aura stop and fizzle (the miss beat).
+				self:StopKey("aura:" .. side)
+				self:StopKey("dash:" .. side)
+				if self.BoostSeen then
+					self.BoostSeen[side] = nil
+				end
+				if not stale then
+					States.disarm(self, side, true)
+				end
+				return
+			end
 			if e.Kind == "Slow" or e.Kind == "Mark" then
 				States.disarm(self, side, false)
 			end

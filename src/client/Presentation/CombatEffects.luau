@@ -201,8 +201,8 @@ function Effects:Event(e)
 	end
 	local origin = if e.Origin then self.Scene.Frame:PointToWorldSpace(vector(e.Origin)) else f.Body.Position
 	if e.Type == "SignatureStatus" then
-		if e.Kind == "ArmedFade" then
-			return true -- HeroPowers draws the fade
+		if e.Kind == "ArmedFade" or e.Kind == "BoostFade" then
+			return true -- PowerFX draws the fade
 		end
 		if e.Kind == "Echo" then
 			f.EchoPoint, f.EchoUntil = self.Scene.Frame:PointToWorldSpace(vector(e.Point)), e.Time + e.Seconds

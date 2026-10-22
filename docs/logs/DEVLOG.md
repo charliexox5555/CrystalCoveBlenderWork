@@ -2,6 +2,24 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-22 — Claude (unicorn-power session) — "The Unicorn's power did nothing": works, now readable; every power swept
+Done:
+- Glass Unicorn (Rainbow Charge): every 2 turnarounds → Ready → a 2 s aimed dash. The next clash inside 2 s deals +62%, knocks back 15% harder and breaks guards. It deals no damage by itself.
+- Real swing (Pendulum, equal stats):
+  - auto: 34–36% of dashes meet no clash. Smart tap: 14–16%.
+  - Powered clashes average 12 vs 8 for ordinary ones, but about 25–30% still land below an ordinary clash (slow bumps; Studio saw −2s).
+  - Release matrix equal:bot0.5: 46.8%, in band (equal:auto 43.9%). Case 3: works but read as nothing, so no number changed.
+- Readability:
+  - `SignatureTraits` emits `BoostFade` when a boost runs out without a clash (no numbers change). The client fizzles the dash and aura and plays the power-miss shrug; `ArmedFade` gets the shrug too.
+  - A powered clash's damage number is in the power's colour and 1.35× bigger (boosts and armed hits).
+  - A pierced guard shows "GUARD BROKEN!".
+  - New Lune test in LaunchKitTests.
+- Studio Play: synced server, every Unicorn dash ends in one payoff or one BoostFade. Client shows pink size-37 numbers on powered hits and the miss beat, with no errors.
+- `tools/power_check.luau`: every kit, three cast styles, "dud %" per cast. Sweep of 40 kits: 21 kits do nothing in more than 40% of auto or smart casts, mostly ranged kits landing well under their designed LandChance (Crescent Axe 76/69%, Glass Top 74/76%, Fishbowl 80/45%, Piggy Bank 78/62%, Cookie Jar 76/55%, Whiskers 76/75%, Sunny 65/76%, Chime 67/63%). They already have a miss beat, so the problem is frequency. Full table: docs/testing/power_check/REPORT.md.
+- Lune: my test passes. One failure, LoadTiersTests, comes from the loading-tiers session's uncommitted ItemIconSheets work. Sims not run: no Balance, Glassies or Powers change.
+Next:
+- Creator: decide whether to raise land rates on the worst eight ranged kits (a balance pass with the release matrix), and optionally Unicorn `Duration` 2.0 → 2.5.
+
 ## 2026-10-22 — Claude (ui-audit session) — Creator's mobile notes: button motion, fades, PLAY / HP size, shrink-not-cut
 Done:
 - #3: everything that scales (press, pop, bump, stagger) is centre-anchored at the same spot (`Motion.center`), animated buttons stay centred if re-anchored later, and the shop cards' BUY gem is centred and pinned to the card bottom. StarterGui templates needed no change.

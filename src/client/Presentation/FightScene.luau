@@ -385,12 +385,14 @@ function Scene:Event(e, hud)
 		end
 		for side, fighter in self.Fighters do
 			if hud then
+				local tint, scale = AbilityNumbers.clash(self, e, side)
 				hud:Popup(
 					if e.Blocked[side] then "BLOCKED" else "−" .. math.floor(e.Damage[side] + 0.5),
 					fighter.Body.Position,
-					Color3.new(1, 1, 1),
+					tint,
 					if side == 1 then -1 else 1,
-					"Damage" .. side
+					"Damage" .. side,
+					scale
 				)
 			end
 		end

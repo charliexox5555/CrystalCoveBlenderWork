@@ -176,7 +176,7 @@ function Hud:Edge(tint)
 	-- The approved fight UI only uses billboards, power banners and damage popups.
 end
 
-function Hud:Popup(text, position, tint, lane, key)
+function Hud:Popup(text, position, tint, lane, key, scale)
 	self.Popups = self.Popups or {}
 	key = key or text
 	if self.Popups[key] then
@@ -198,7 +198,15 @@ function Hud:Popup(text, position, tint, lane, key)
 	)
 	self.Popups[key] = label
 	label.AnchorPoint, label.TextColor3, label.ZIndex = Vector2.new(0.5, 0.5), tint, 8
-	label.UITextSizeConstraint.MaxTextSize = Theme.TextSize.Heading
+	label.UITextSizeConstraint.MaxTextSize = math.floor(Theme.TextSize.Heading * (scale or 1))
+	if scale then
+		label.Size = UDim2.new(
+			label.Size.X.Scale * scale,
+			label.Size.X.Offset * scale,
+			label.Size.Y.Scale * scale,
+			label.Size.Y.Offset * scale
+		)
+	end
 	U.make("UIStroke", label, { Thickness = 1.5, Color = Theme.Colors.Shadow, Transparency = 0.15 })
 	TweenService:Create(
 		label,

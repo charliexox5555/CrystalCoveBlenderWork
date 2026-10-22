@@ -17,7 +17,10 @@ local STATUSES = {
 	Counter = { Text = "COUNTER READY" },
 	Echo = { Text = "ECHO STORED" },
 	SeedLost = { Text = "SEED KNOCKED!", OnTarget = true },
+	Pierce = { Text = "GUARD BROKEN!", OnTarget = true },
 }
+-- A powered clash's damage number is bigger and in the power's colour, so the payoff reads as the power's hit.
+local POWERED_SCALE = 1.35
 
 local function round(x)
 	return math.floor((x or 0) + 0.5)
@@ -89,6 +92,7 @@ function Numbers.event(scene, e, hud)
 	elseif e.Type == "SignatureBlock" and caster and hud then
 		hud:Popup("BLOCKED " .. round(e.Amount), caster.Body.Position + ABOVE, GUARD, 0, "Status" .. e.Side)
 	elseif e.Type == "SignatureContact" and caster and hud and e.Shape ~= "splat" then
+		scene.PoweredClash = { Side = e.Side, Time = e.Time }
 		-- Contact-boosted clashes: name the ability; the extra damage is in the clash number.
 		local visual = Visuals[caster.Id]
 		if visual and visual.Name then
@@ -101,6 +105,20 @@ function Numbers.event(scene, e, hud)
 			)
 		end
 	end
+end
+
+-- Tint and size for the clash damage number on `side`: the power's colour when the other side's power paid off
+-- on this clash (boosts, armed hits), else plain white.
+function Numbers.clash(scene, e, side)
+	local powered = scene.PoweredClash
+	if powered and powered.Side ~= side and math.abs((e.Time or 0) - (powered.Time or 0)) < 0.1 then
+		local caster = scene.Fighters[powered.Side]
+		local visual = caster and Visuals[caster.Id]
+		if visual and visual.Color then
+			return Color3.fromHex(visual.Color), POWERED_SCALE
+		end
+	end
+	return Color3.new(1, 1, 1), nil
 end
 
 return Numbers

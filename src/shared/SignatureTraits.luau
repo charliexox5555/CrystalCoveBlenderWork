@@ -107,7 +107,7 @@ function Traits.beforeContact(state, emit, point)
 			s.ContactBonus, s.Charge, s.ArmExpiry = 0, 0, nil
 		end
 		if s.BoostUntil and state.Time < s.BoostUntil then
-			s.ContactBonus = s.Kit.ContactBonus
+			s.ContactBonus, s.BoostHit = s.Kit.ContactBonus, true
 			if not s.Kit.ContinuousBonus then
 				s.BoostUntil = -1
 			end
@@ -187,7 +187,7 @@ function Traits.selfRelease(state, cast, emit)
 		f.Hp = math.min(f.MaxHp, f.Hp + f.MaxHp * p.Heal)
 		status(state, emit, cast.Side, "Heal", { Amount = f.Hp - before, Seconds = p.Duration })
 	elseif cast.Shape == "boost" then
-		s.BoostUntil = state.Time + p.Duration
+		s.BoostUntil, s.BoostHit = state.Time + p.Duration, false
 		status(state, emit, cast.Side, "Boost", { Seconds = p.Duration })
 	elseif cast.Shape == "mirror" then
 		s.MirrorUntil = state.Time + p.Duration
@@ -206,6 +206,13 @@ function Traits.tick(state, emit)
 		end
 		if s.ArmExpiry and state.Time >= s.ArmExpiry then
 			s.ContactBonus, s.Charge, s.ArmExpiry = 0, 0, nil
+		end
+		if s.BoostUntil and s.BoostUntil > 0 and state.Time >= s.BoostUntil then
+			-- A boost that ran out without a clash (a whiffed dash): the client shows a miss beat.
+			s.BoostUntil = -1
+			if not s.BoostHit then
+				status(state, emit, side, "BoostFade")
+			end
 		end
 		if s.EchoUntil and state.Time >= s.EchoUntil then
 			s.EchoPoint, s.EchoUntil = nil, nil

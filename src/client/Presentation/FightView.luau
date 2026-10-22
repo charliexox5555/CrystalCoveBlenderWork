@@ -436,6 +436,8 @@ function Controller:Event(e)
 		feel:PowerLand(e.Target or (e.Side and 3 - e.Side), now)
 	elseif e.Type == "SignatureBlock" then
 		feel:Block(e.Side, now)
+	elseif e.Type == "SignatureStatus" and (e.Kind == "BoostFade" or e.Kind == "ArmedFade") then
+		feel:PowerMiss(e.Side) -- a dash or armed hit that never met a clash
 	elseif e.Type == "Power" then
 		if e.Missed then
 			feel:PowerMiss(e.Side)

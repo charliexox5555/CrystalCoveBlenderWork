@@ -1,0 +1,17 @@
+{
+ "Record": "assets/icons/items/sheets/roblox_assets.json",
+ "Items": [
+  {
+   "Key": "sheet/glassies",
+   "Path": "assets/icons/items/sheets/glassies.png",
+   "Type": "Decal",
+   "Name": "GC icon sheet glassies"
+  },
+  {
+   "Key": "sheet/cosmetics",
+   "Path": "assets/icons/items/sheets/cosmetics.png",
+   "Type": "Decal",
+   "Name": "GC icon sheet cosmetics"
+  }
+ ]
+}

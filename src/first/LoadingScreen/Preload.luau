@@ -270,6 +270,16 @@ local function resolve(item: string): { { any } }
 			if model then
 				table.insert(units, { "asset:" .. ownedNames[name] .. "/" .. name, { model } })
 			end
+			-- And its pictures (HintItems), so the hand's cards show at once.
+			local category = (config.HintCategories or {})[ownedNames[name]]
+			for _, template in config.HintItems or {} do
+				if category or not template:find("{category}", 1, true) then
+					local filled = template:gsub("{name}", name):gsub("{category}", category or "")
+					for _, unit in resolve(filled) do
+						table.insert(units, unit)
+					end
+				end
+			end
 		end
 	end
 	return units
@@ -443,6 +453,88 @@ function dispatch()
 			wake.Event:Wait()
 		end
 		dispatching = false
+	end)
+end
+
+-- Keep-warm holder ------------------------------------------------------------------------------------------------
+-- Roblox drops a preloaded image that nothing shows: "preloaded but invisible ImageLabels are treated as unused and
+-- garbage-collected" (Roblox staff, DevForum "ContentProvider doesn't preload ImageLabels", 2026-02-06), worst on
+-- phones with little memory. So the pictures the next screen needs (LoadTiers.KeepWarm) stay parented here: on
+-- screen, 8 px, 99% transparent, behind every other GUI. One label per image, counted per set that wants it.
+local warmGui: ScreenGui? = nil
+local warmLabels: { [string]: { Label: ImageLabel, Count: number } } = {}
+local warmSets: { [string]: { string } } = {}
+
+local function warmHolder(): ScreenGui
+	if warmGui and warmGui.Parent then
+		return warmGui
+	end
+	local gui = Instance.new("ScreenGui")
+	gui.Name, gui.ResetOnSpawn, gui.DisplayOrder, gui.IgnoreGuiInset = "LoadWarm", false, -1000, true
+	gui.Parent = player:WaitForChild("PlayerGui")
+	warmGui = gui
+	return gui
+end
+
+-- Keeps the images of `items` warm under the name `set` (replacing what that set held before).
+function Preload.keepWarm(set: string, items: { string })
+	if not config or (RunService:IsStudio() and workspace:GetAttribute("LoadNoWarm")) then
+		return
+	end
+	local ids, seen = {}, {}
+	for _, item in items do
+		local ok, units = pcall(resolve, item)
+		for _, unit in if ok then units else {} do
+			for _, target in unit[2] do
+				if typeof(target) == "Instance" and target:IsA("ImageLabel") and not seen[target.Image] then
+					seen[target.Image] = true
+					if #ids < config.KeepWarmMax then
+						table.insert(ids, target.Image)
+					end
+				end
+			end
+		end
+	end
+	local holder = warmHolder()
+	for _, id in ids do
+		local entry = warmLabels[id]
+		if not entry then
+			local label = Instance.new("ImageLabel")
+			label.Name, label.Image, label.BackgroundTransparency = "Warm", id, 1
+			label.Size, label.ImageTransparency = UDim2.fromOffset(8, 8), 0.99
+			label.Parent = holder
+			entry = { Label = label, Count = 0 }
+			warmLabels[id] = entry
+		end
+		entry.Count += 1
+	end
+	local previous = warmSets[set]
+	warmSets[set] = ids
+	if previous then
+		Preload.coolDown(set, previous)
+	end
+end
+
+-- Lets a set's images go again (after a short overlap, so a set handing over to the next one never drops them).
+function Preload.coolDown(set: string, ids: { string }?)
+	local list = ids or warmSets[set]
+	if not ids then
+		warmSets[set] = nil
+	end
+	if not list then
+		return
+	end
+	task.delay(config.KeepWarmLinger, function()
+		for _, id in list :: { string } do
+			local entry = warmLabels[id]
+			if entry then
+				entry.Count -= 1
+				if entry.Count <= 0 then
+					entry.Label:Destroy()
+					warmLabels[id] = nil
+				end
+			end
+		end
 	end)
 end
 
@@ -628,6 +720,22 @@ function Preload.watch()
 			screen(child)
 		end
 		gui.ChildAdded:Connect(screen)
+		-- KeepWarm sets: Always from the start, the others while their PlayerGui attribute is true.
+		for name, items in config.KeepWarm or {} do
+			if name == "Always" then
+				Preload.keepWarm(name, items)
+				continue
+			end
+			local function update()
+				if gui:GetAttribute(name) then
+					Preload.keepWarm(name, items)
+				elseif warmSets[name] then
+					Preload.coolDown(name)
+				end
+			end
+			gui:GetAttributeChangedSignal(name):Connect(update)
+			update()
+		end
 		for name in config.OnDemand do
 			gui:GetAttributeChangedSignal(name):Connect(function()
 				if gui:GetAttribute(name) then

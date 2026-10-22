@@ -15,6 +15,7 @@ local Modules = if script
 		RideAnimations = config("RideAnimations"),
 		RideFamilies = config("RideFamilies"),
 		ItemIcons = config("ItemIcons"),
+		ItemIconSheets = config("ItemIconSheets"),
 	}
 	else {
 		Audio = require("../shared/Config/Audio"),
@@ -25,6 +26,7 @@ local Modules = if script
 		RideAnimations = require("../shared/Config/RideAnimations"),
 		RideFamilies = require("../shared/Config/RideFamilies"),
 		ItemIcons = require("../shared/Config/ItemIcons"),
+		ItemIconSheets = require("../shared/Config/ItemIconSheets"),
 	}
 
 local KINDS =
@@ -100,6 +102,29 @@ return function(t)
 			}
 		do
 			t.ok(table.find(LoadTiers.Tiers.Essential, item) ~= nil, item .. " is Essential")
+		end
+	end)
+	t.test("keep-warm sets are valid and the icon sheets cover every small icon", function()
+		t.ok(LoadTiers.KeepWarm.Always ~= nil, "an Always set")
+		for name, items in LoadTiers.KeepWarm do
+			for _, item in items do
+				checkItem("KeepWarm." .. name, item)
+			end
+		end
+		t.ok(LoadTiers.KeepWarmMax >= 3 and LoadTiers.KeepWarmLinger > 0, "keep-warm numbers")
+		t.ok(table.find(LoadTiers.Tiers.Essential, "images:ItemIconSheets") ~= nil, "the sheets are Essential")
+		local Sheets = Modules.ItemIconSheets
+		for category, items in Modules.ItemIcons.Small do
+			for id in items do
+				local found = false
+				for _, sheet in Sheets.Sheets do
+					found = found or sheet.Items[category .. "/" .. id] ~= nil
+				end
+				t.ok(found, category .. "/" .. id .. " has a sheet cell") -- (Sheets.get needs Vector2, not in Lune)
+			end
+		end
+		for _, sheet in Sheets.Sheets do
+			t.ok(sheet.Image:match("^rbxassetid://%d+$") ~= nil and sheet.Cell > 0 and sheet.Columns > 0, "sheet spec")
 		end
 	end)
 	t.test("on-demand groups and lanes are valid", function()

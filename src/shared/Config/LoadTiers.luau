@@ -59,6 +59,9 @@ LoadTiers.Tiers = {
 		"screen:LobbyHUD",
 		"screen:WelcomeScreen",
 		"screen:DailyRewardsScreen",
+		-- The item icon sheets: every reel cell, pick-any tile and reward cell (small slots) in two small downloads,
+		-- kept warm below (decision 120). The welcome opens' reels are the first thing a new player sees.
+		"images:ItemIconSheets",
 		-- The Coin Kiln picture on the welcome card and the Daily pull cells (decision 113).
 		"images:ItemIcons/Small/Machines/Glassies:Coins",
 		-- The Daily Rewards glassies' pictures (Day 2 and Day 7 cells; the screen can open by itself on join, decision 115).
@@ -70,7 +73,11 @@ LoadTiers.Tiers = {
 		"spawn",
 	},
 	Soon = {
-		"owned",
+		"owned", -- the player's glassies and their pictures (the first roll's cards)
+		-- The loan hand when a player owns fewer than three glassies.
+		"images:ItemIcons/Small/Glassies/pop",
+		"images:ItemIcons/Small/Glassies/jam",
+		"images:ItemIcons/Small/Glassies/prism",
 		-- The Shop and its opening.
 		"screen:KilnScreen",
 		"screen:KilnRevealScreen",
@@ -182,6 +189,23 @@ LoadTiers.OnDemand = {
 	},
 	InMatch = { "screen:ResultsScreen", "asset:VFX/Combat", "sounds:Audio", "sounds:PowerAudio" },
 }
+
+-- Pictures kept on screen (invisibly) so the engine can't drop them before they are shown (Preload.keepWarm):
+-- Always from the start, the others while that PlayerGui attribute is true. Roblox collects preloaded images that
+-- nothing displays, worst on phones (docs/testing/loading/REPORT.md).
+local HAND = {
+	"owned",
+	"images:ItemIcons/Small/Glassies/pop",
+	"images:ItemIcons/Small/Glassies/jam",
+	"images:ItemIcons/Small/Glassies/prism",
+}
+LoadTiers.KeepWarm = {
+	Always = { "images:ItemIconSheets" },
+	Queued = HAND, -- from stepping on a pad to the roll
+	InMatch = HAND,
+}
+LoadTiers.KeepWarmMax = 16 -- images per set (each 512 px picture is ~1 MB of texture memory)
+LoadTiers.KeepWarmLinger = 3 -- seconds a released picture stays, so Queued -> InMatch hands over without a gap
 
 -- Remotes whose payloads name glassies / flyers / finishers to fetch now (any string that is the name of a model in
 -- these Assets folders). ProfileSnapshot feeds "owned" instead.

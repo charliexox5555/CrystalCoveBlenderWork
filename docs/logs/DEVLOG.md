@@ -2,6 +2,17 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-22 — Claude (release-qa session) — Release-candidate QA pass
+Done:
+- Checklist with cited Roblox sources, pass / fixed / creator marks and a go / no-go list: docs/testing/release_candidate/CHECKLIST.md.
+- All 25 client remotes validated and rate-limited (read end to end, plus the read-only reviewer); dev hooks Studio-only; ProcessReceipt idempotent for every product with limits before the prompt; ProfileStore locking and reconcile cover the new fields.
+- Studio: `MultiplayerLauncher.run()` (6/6 stages) and `.watch()` pass with zero errors; new `tools/studio/verify_release_remotes.luau` flood (180 malformed calls per remote) granted nothing; 14 bot matches / 74 rounds with flat server instance counts and no errors or warnings; no products held for price mismatches.
+- Fixed: the multiplayer harness was stale (onboarding gate, range-limited snapshots), 7d3e791; offline profile reads stop when the GetAsync budget is low, f8069d2; a failed settings read no longer lets the save overwrite stored settings, 96d2bb0. Lune 267/267.
+Next (creator):
+- `Config/Testing.TesterMarbles` is ON in live (10,000 Marbles to every joiner, kept). Off before Saturday.
+- Save + publish with Rojo connected; maturity questionnaire; Kids & Select steps (until then only 16+ can play); server size 16, Console/VR off.
+- Decide: TOP SUPPORTERS boards vs GAME_DESIGN §10 "no spending leaderboards"; client-judged Perfect release (accepted risk?).
+
 ## 2026-10-22 — Claude (loading-tiers session) — Pictures on the first roll (decision 120, Proposed)
 Done:
 - Creator on mobile: the first roll's pictures showed late. Measured: the welcome reel glassy pictures were 0.70-0.80 s late on a fresh Studio start (0.16-0.21 s warm). Causes: they were 8th in Soon, behind the Shop template, and a preloaded but never-drawn picture still needs ~14 frames to decode on first show (Roblox staff, DevForum 2026: invisible preloaded images are garbage-collected).

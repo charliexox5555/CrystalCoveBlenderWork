@@ -1,0 +1,16 @@
+{
+  "Note": "Studio Play, one player standing between the arenas. MatchDev AllBots twice (7 arenas each wave). Server samples from ServerStorage.ReleaseLeak; TotalMB/LuaHeapMB are the whole Studio process (client + server), so instance counts are the leak signal.",
+  "Server": {"Held":[],"Errors":[],"Warnings":[],"Waves":[{"Wave":1,"Started":7,"Rounds":30,"Seconds":191},{"Wave":2,"Started":7,"Rounds":44,"Seconds":197}],
+    "Samples":[
+      {"Label":"before","GameDescendants":62556,"WorkspaceDescendants":3075,"WorkspaceParts":2150,"HeapKB":19701,"InstancesMB":162,"Matches":0},
+      {"Label":"after wave 1","GameDescendants":62556,"WorkspaceDescendants":3075,"WorkspaceParts":2150,"HeapKB":19640,"InstancesMB":162,"Matches":0},
+      {"Label":"after wave 2","GameDescendants":62556,"WorkspaceDescendants":3075,"WorkspaceParts":2150,"HeapKB":20966,"InstancesMB":164,"Matches":0}]},
+  "Client": {
+    "Before": {"Pos":"spawn (0, 3, 6)","GameDescendants":25690,"WorkspaceDescendants":4171,"PlayerGuiDescendants":6284,"HeapKB":18875},
+    "After": {"Pos":"between arenas (0, 7, -105)","GameDescendants":23466,"WorkspaceDescendants":4354,"PlayerGuiDescendants":3865,"HeapKB":19620},
+    "ShardNamedInstances": {"Showcase_Stage.DemoGlassy.Shards":17,"FeaturedShowcase CapsuleBay SpinShard":3,"Showcase_Stage DemoCycle LanternShard":8},
+    "WorkspaceTopLevel": {"Lobby":2064,"Showcase_Flyers":859,"Showcase_Stage":421,"charliexox555":316,"FeaturedShowcase":237,"LobbyPolish":197,"IslandDecor":118,"Kilns":94,"LobbyConcepts":63,"Camera":2}
+  },
+  "RemoteFlood": {"Before":{"Coins":0,"Marbles":10000,"Trophies":0,"Xp":0,"Glassies":0,"KilnPulls":0},"After":{"Coins":0,"Marbles":10000,"Trophies":0,"Xp":0,"Glassies":0,"KilnPulls":0},"CallsPerRemote":180,"Unchanged":true},
+  "Console": "no errors or warnings from game code; only the known ContentId rbxassetid://203785492 'Asset type does not match' (a place asset, not in src)"
+}

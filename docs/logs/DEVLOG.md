@@ -23,6 +23,15 @@ Problems:
 - Required project test attempt `lune run tools/run_tests` could not start: Windows Application Control blocked the existing Lune executable. No tests ran or failed. No Studio sessions were connected for the documented alternate runner. Image visual/format checks passed; code was not edited.
 
 ```
+## 2026-10-22 — Claude (monetization session) — Daily Glassy odds on the tile, second pass (decision 116)
+Done:
+- Creator: the always-visible odds strip took too much room. Removed it; an ODDS button now sits over the top of the tile (its own HUD button, 76×30 px minimum, so a tap reaches exactly one of ODDS / the tile). Price is the small emerald ⏣ 9 tag again, "Daily" on the plaque. A tap on the tile still opens the Robux prompt; ODDS opens the odds table.
+- Policy re-check (docs/design/MONETIZATION.md §4): Roblox allows the itemized odds in "a clickable pop-up with an 'Info' or 'Details' icon visible and accessible prior to purchase" labelled with a word; the ODDS button on the tile is that. The page also asks for rounding to four places below the first non-zero digit plus a rounding disclaimer, so the odds table and DETAILS now show 8.5714% / 2.1667% / 6.4% / 0.5% and the line "Probabilities are rounded; …".
+- Studio Play: ODDS opens the table without starting a purchase; desktop and iPhone 17 Pro captures (REPORT.md 21-24). Lune 259/259.
+Problems / questions for the user:
+- Testing note: with live products, `StoreDev:Invoke("BuyDeal", …)` opens Studio's real test-purchase dialog, which then blocks every MCP click until Play is restarted.
+- Follow-up: the Shop's Kiln / crate odds use 4 significant digits (e.g. 0.8571%), not 4 places below the first digit; worth the same treatment.
+
 ## 2026-10-22 — Claude (monetization session) — Creator's Daily Glassy and Marble page changes (decision 116)
 Done:
 - Daily Glassy tile moved to the top of the left HUD column (Shop / Inventory step down; on touch Inventory sits beside Shop, away from the thumbstick). A tap opens the Robux prompt straight away; once bought the tile hides until 00:00 UTC. Price is a full-width emerald ⏣ 9 gem; DAILY tag; a larger ODDS button opens the odds table.

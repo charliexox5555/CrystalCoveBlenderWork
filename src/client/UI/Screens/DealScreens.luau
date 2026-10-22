@@ -36,6 +36,22 @@ local RARITY_TEXT = {
 	Mythic = Theme.Palette.rubyLight,
 }
 
+-- Odds as Roblox's paid random items policy asks: rounded to four decimal places below the first non-zero digit
+-- (8.5714%, 0.5%, 60%), shown with ROUNDED_NOTE wherever a rounded value appears.
+function Screens.percent(p)
+	local v = p * 100
+	if v <= 0 then
+		return "0%"
+	end
+	local decimals = math.max(0, 4 - math.floor(math.log10(v)))
+	local text = string.format("%." .. decimals .. "f", v)
+	if text:find("%.") then
+		text = text:gsub("0+$", ""):gsub("%.$", "")
+	end
+	return text .. "%"
+end
+Screens.ROUNDED_NOTE = "Probabilities are rounded; total of displayed individual probabilities may not equal 100%."
+
 function Screens.duration(seconds)
 	seconds = math.max(0, math.floor(seconds))
 	local d, h, m, s = seconds // 86400, seconds % 86400 // 3600, seconds % 3600 // 60, seconds % 60
@@ -377,7 +393,7 @@ function Screens.dailyGlassy(view, serverNow, buy, close)
 		Kit.label(
 			plate,
 			"Chance",
-			string.format("%.4g%%", row.Chance * 100),
+			Screens.percent(row.Chance),
 			UDim2.fromScale(0.22, 0.7),
 			UDim2.fromScale(0.4, 0.15),
 			{
@@ -387,12 +403,19 @@ function Screens.dailyGlassy(view, serverNow, buy, close)
 		Kit.label(
 			plate,
 			"Each",
-			#row.Pool .. " × " .. string.format("%.3g%%", row.Chance / #row.Pool * 100),
+			#row.Pool .. " × " .. Screens.percent(row.Chance / #row.Pool),
 			UDim2.fromScale(0.34, 0.6),
 			UDim2.fromScale(0.63, 0.2),
 			{ Font = Theme.Fonts.Caption, MaxSize = 18, Small = true, Color = Theme.Palette.milk }
 		)
 	end
+	Kit.label(panel, "Rounded", Screens.ROUNDED_NOTE, UDim2.fromScale(0.5, 0.075), UDim2.fromScale(0.47, 0.725), {
+		Font = Theme.Fonts.Caption,
+		Color = Theme.Palette.milkDark,
+		MaxSize = 14,
+		Small = true,
+		Outline = false,
+	})
 	local details = Kit.gem(panel, "Details", "DETAILS", "aqua", UDim2.fromScale(0.22, 0.1), UDim2.fromScale(0.6, 0.85))
 	local button = buyButton(panel, state.Price, UDim2.fromScale(0.3, 0.14), UDim2.fromScale(0.85, 0.85))
 	self.Buy = button
@@ -439,7 +462,14 @@ function Screens.oddsDetails(rows)
 	local self = popup("DailyGlassyOdds", "ALL ODDS", "aqua", 1.3, 0.52)
 	local scroll = Instance.new("ScrollingFrame")
 	scroll.Name, scroll.BackgroundTransparency, scroll.BorderSizePixel = "List", 1, 0
-	scroll.Position, scroll.Size = UDim2.fromScale(0.05, 0.14), UDim2.fromScale(0.9, 0.8)
+	scroll.Position, scroll.Size = UDim2.fromScale(0.05, 0.14), UDim2.fromScale(0.9, 0.76)
+	Kit.label(self.Panel, "Rounded", Screens.ROUNDED_NOTE, UDim2.fromScale(0.9, 0.05), UDim2.fromScale(0.05, 0.915), {
+		Font = Theme.Fonts.Caption,
+		Color = Theme.Palette.milkDark,
+		MaxSize = 16,
+		Small = true,
+		Outline = false,
+	})
 	scroll.ScrollBarThickness, scroll.AutomaticCanvasSize = 6, Enum.AutomaticSize.Y
 	scroll.CanvasSize, scroll.Parent = UDim2.new(), self.Panel
 	local layout = Instance.new("UIGridLayout")
@@ -478,7 +508,7 @@ function Screens.oddsDetails(rows)
 			Kit.label(
 				cell,
 				"Chance",
-				string.format("%.3g%%", row.Chance / #row.Pool * 100),
+				Screens.percent(row.Chance / #row.Pool),
 				UDim2.fromScale(0.64, 0.42),
 				UDim2.fromScale(0.34, 0.52),
 				{ XAlign = Enum.TextXAlignment.Left, MaxSize = 20, Small = true, Color = RARITY_TEXT[row.Rarity] }

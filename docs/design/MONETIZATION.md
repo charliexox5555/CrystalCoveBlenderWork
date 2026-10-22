@@ -120,18 +120,26 @@ Ball VS Ball's Beginner Pack ball is widely called pay-to-win; ours is tuned to 
 - **Odds** (per glassy, the Kiln pool, evenly within a rarity): Rare 60% (7 × 8.57%), Epic 32% (5 × 6.4%), Legendary
   6.5% (3 × 2.17%), Mythic 1.5% (3 × 0.5%). No Commons or Uncommons. Each glassy is rarer than every glassy of a lower
   rarity, as in the Kiln (tested).
-- **One tap to buy, odds always on screen** (creator, 2026-10-22). The tile sits at the top of the left HUD column
-  (Shop and Inventory move down one step; on touch Inventory sits beside Shop, clear of the thumbstick). A tap opens
-  the Robux prompt. Next to the tile, always visible, are a larger **ODDS** button and the rarity odds (Rare 60%, Epic
-  32%, Leg 6.5%, Myth 1.5%). ODDS opens the table with each rarity's per-glassy chance, and its **DETAILS** lists every
-  glassy with its exact percentage. Once bought, the tile, strip and button hide until the next 00:00 UTC reset.
-- **Why this meets Roblox's rule.** The [paid random items policy](https://create.roblox.com/docs/production/monetization/paid-random-items)
-  requires "all possible outcomes and the actual numerical odds" before purchase. It lets the itemized list sit in "a
-  clickable pop-up with an 'Info' or 'Details' icon visible and accessible prior to purchase" (a bare (i) is not
-  enough), and its example shows the odds by rarity tier on screen next to a clickable "Details" button. A labelled ODDS
-  button alone would arguably qualify. The rarity strip keeps the tier odds on screen at the moment of the tap anyway,
-  and each glassy's chance is one labelled tap away. The earlier version (odds popup first, then BUY) was stricter than
-  the policy asks.
+- **One tap to buy, ODDS on the tile** (creator, 2026-10-22, second pass). The tile sits at the top of the left HUD
+  column (Shop and Inventory move down one step; on touch Inventory sits beside Shop, clear of the thumbstick). A tap
+  on the tile opens the Robux prompt. An **ODDS** button attached to the top of the tile opens the odds table: each
+  rarity's chance with its per-glassy chance, and **DETAILS** with every glassy and its exact percentage. The price is
+  the small emerald ⏣ 9 tag again. Once bought, the tile hides until the next 00:00 UTC reset. (A first pass kept the
+  rarity odds always on screen beside the tile; the creator found it took too much room.)
+- **Why this meets Roblox's rule** (re-checked against the
+  [paid random items page](https://create.roblox.com/docs/production/monetization/paid-random-items), 2026-10-22):
+  - The page requires "all possible outcomes and the actual numerical odds of what they may receive". It also says
+    that when there are "too many individual outcomes to fit … the itemized list of final outcomes and their numerical
+    possibilities can be shown in a clickable pop-up with an 'Info' or 'Details' icon visible and accessible prior to
+    purchase", and that a bare (i) symbol "without a descriptive word is **not** sufficient".
+  - 18 glassies don't fit on a HUD tile. The ODDS button carries a descriptive word, is drawn on the tile itself
+    (visible whenever the tile can be tapped), and opens the complete list before any purchase. That is the
+    arrangement the page describes, so the tile meets it without odds text on screen.
+  - The page also asks that rounded percentages use four decimal places below the first non-zero digit, with the
+    disclaimer "Probabilities are rounded; total of displayed individual probabilities may not equal 100%". The odds
+    table and DETAILS now show 8.5714% / 6.4% / 2.1667% / 0.5% (`DealScreens.percent`) and carry that line.
+  - Nothing in the page requires the odds inside Roblox's purchase dialog. Optional extra: put the rarity odds in the
+    developer product's description, which shows in that dialog.
 - **Policy.** Hidden (tile and popup) when `ArePaidRandomItemsRestricted` is true **or unknown**; the server refuses the
   intent too.
 - **Fairness.** 9 R$ is a loss-leader: 30 a month at most (270 R$). It beats a Marble Kiln pull (30 Marbles ≈ 30 R$,

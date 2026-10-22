@@ -156,46 +156,49 @@ end
 function Controller:BuildTiles(hud)
 	local nav = hud:WaitForChild("Navigation")
 	local inventory = nav:WaitForChild("InventoryButton")
-	-- Daily Glassy (creator, 2026-10-22): at the top of the left column, a tap opens the Robux prompt straight away. Roblox's
-	-- paid random items policy wants the odds disclosed before purchase, and allows the per-glassy list behind a
-	-- labelled "Info"/"Details" button "visible and accessible prior to purchase" (its example shows the rarity-tier
-	-- odds on screen next to such a button). So the tile keeps a small rarity-odds strip on screen at all times and its
-	-- own ODDS button, which opens the full table with every glassy's chance.
-	local daily = tile(hud, "DailyGlassyTile", "amethyst", UDim2.fromScale(0.08, 0.19), "")
-	daily.LabelPlaque.Visible = false
+	-- Daily Glassy (creator, 2026-10-22): at the top of the left column, a tap opens the Robux prompt straight away. The
+	-- odds sit behind the ODDS button on top of the tile, always visible with it. Roblox's paid random items policy
+	-- allows the itemized odds in "a clickable pop-up with an 'Info' or 'Details' icon visible and accessible prior to
+	-- purchase" when a descriptive word labels it (docs/design/MONETIZATION.md §4).
+	local daily = tile(hud, "DailyGlassyTile", "amethyst", UDim2.fromScale(0.08, 0.19), "Daily")
 	local picture = safe(
 		Presentation.crate,
 		daily,
 		"Glassies",
 		"Marbles",
-		UDim2.fromScale(0.72, 0.6),
-		UDim2.fromScale(0.14, 0.08),
+		UDim2.fromScale(0.74, 0.62),
+		UDim2.fromScale(0.13, 0.1),
 		"Picture"
 	)
 	if picture and picture:IsA("GuiObject") then
 		picture.ZIndex = 3
 	end
-	local once = Kit.tag(daily, "DailyTag", "DAILY", "amber", UDim2.fromScale(0.62, 0.16), UDim2.fromScale(0.19, -0.05))
-	once.ZIndex = 6
-	-- The price: a full-width emerald gem with the Robux glyph, big enough to read at a glance.
-	local gem =
-		Kit.icon(daily, "PriceGem", "button/gem_emerald", UDim2.fromScale(1.12, 0.34), UDim2.fromScale(0.5, 0.9))
-	gem.AnchorPoint, gem.ZIndex = Vector2.new(0.5, 0.5), 6
-	local price =
-		Kit.label(gem, "Price", utf8.char(0xE002) .. " 9", UDim2.fromScale(0.76, 0.7), UDim2.fromScale(0.12, 0.14), {
-			MaxSize = 40,
-		})
-	price.ZIndex = 7
-	self.DailyPrice = price
-	-- Odds strip beside the tile: the ODDS button on top, one rarity pill per row under it.
-	local strip = Kit.frame(hud, "DailyOdds", UDim2.fromOffset(100, 100), UDim2.new(), Vector2.new(0, 0.5))
-	local oddsButton = Kit.gem(strip, "OddsButton", "ODDS", "aqua", UDim2.fromScale(1, 0.3), UDim2.fromScale(0.5, 0.15))
+	-- Price as it was first built (creator): the small emerald tag.
+	local price = Kit.tag(
+		daily,
+		"PriceTag",
+		utf8.char(0xE002) .. " 9",
+		"emerald",
+		UDim2.fromScale(0.6, 0.18),
+		UDim2.fromScale(0.5, 0.62)
+	)
+	price.ZIndex = 6
+	self.DailyPrice = price.Label
+	-- ODDS: its own button over the top edge of the tile (a sibling, not a child, so a tap reaches exactly one of
+	-- them); a bit larger than a tag so it's easy to hit. Placed with the tile in place().
+	local oddsButton = Kit.gem(hud, "DailyOddsButton", "ODDS", "aqua", UDim2.fromOffset(76, 30), UDim2.new())
 	oddsButton.UIAspectRatioConstraint:Destroy()
-	oddsButton.Label.UITextSizeConstraint.MaxTextSize = 30
-	local rows = Kit.frame(strip, "Rows", UDim2.fromScale(1, 0.68), UDim2.fromScale(0, 0.32))
-	local list = Instance.new("UIListLayout")
-	list.SortOrder, list.Padding, list.Parent = Enum.SortOrder.LayoutOrder, UDim.new(0.02, 0), rows
-	self.DailyTile, self.DailyOdds, self.DailyOddsRows = daily, strip, rows
+	oddsButton.Label.UITextSizeConstraint.MaxTextSize = 26
+	-- Big enough to tap on a phone even where the tile itself is at its minimum size.
+	local minimum = Instance.new("UISizeConstraint")
+	minimum.MinSize, minimum.Parent = Vector2.new(76, 30), oddsButton
+	for _, part in oddsButton:GetDescendants() do
+		if part:IsA("GuiObject") then
+			part.ZIndex += 6
+		end
+	end
+	oddsButton.ZIndex = 7
+	self.DailyTile, self.DailyOddsButton = daily, oddsButton
 	daily.Activated:Connect(function()
 		self:BuyDaily()
 	end)
@@ -245,9 +248,9 @@ function Controller:BuildTiles(hud)
 		)
 		daily.Size = UDim2.fromScale(navSize.X.Scale * shop.Size.X.Scale, navSize.Y.Scale * shop.Size.Y.Scale)
 		local w, h = daily.AbsoluteSize.X, daily.AbsoluteSize.Y
-		strip.Visible = shown
-		strip.Position = UDim2.new(daily.Position.X.Scale, math.floor(w * 0.62), daily.Position.Y.Scale, 0)
-		strip.Size = UDim2.fromOffset(math.floor(math.max(78, w * 0.9)), math.floor(math.max(84, h * 0.92)))
+		oddsButton.Visible = shown
+		oddsButton.Size = UDim2.fromOffset(math.floor(math.max(76, w * 1.0)), math.floor(math.max(30, h * 0.26)))
+		oddsButton.Position = UDim2.new(daily.Position.X.Scale, 0, daily.Position.Y.Scale, -math.floor(h * 0.47))
 		-- Centre-anchored (Motion keeps buttons on their centre); the aspect constraint sets the real width.
 		starter.Position = UDim2.new(0.985, -math.floor(starter.AbsoluteSize.X / 2), 0.45, 0)
 		starter.Size = UDim2.fromScale(daily.Size.X.Scale * 1.15, daily.Size.Y.Scale * 1.15)
@@ -294,44 +297,7 @@ function Controller:StarterPicture(state)
 	end
 end
 
-local RARITY_TAG = { Rare = "sapphire", Epic = "amethyst", Legendary = "amber", Mythic = "ruby" }
-local RARITY_SHORT = { Rare = "Rare", Epic = "Epic", Legendary = "Leg", Mythic = "Myth" }
-
--- The always-visible odds: one coloured pill per rarity, rarest last ("Rare 60%" ... "Myth 1.5%").
-function Controller:OddsStrip(rarities)
-	local rows = self.DailyOddsRows
-	if not rows then
-		return
-	end
-	local key = ""
-	for _, row in rarities do
-		key ..= row.Rarity .. row.Chance
-	end
-	if rows:GetAttribute("Key") == key then
-		return
-	end
-	rows:SetAttribute("Key", key)
-	for _, child in rows:GetChildren() do
-		if child:IsA("GuiObject") then
-			child:Destroy()
-		end
-	end
-	for i, row in rarities do
-		local pill = Kit.tag(
-			rows,
-			"Row" .. row.Rarity,
-			RARITY_SHORT[row.Rarity] .. " " .. string.format("%.3g%%", row.Chance * 100),
-			RARITY_TAG[row.Rarity] or "slate",
-			UDim2.fromScale(1, 0.23),
-			UDim2.new()
-		)
-		pill.UIAspectRatioConstraint:Destroy()
-		pill.LayoutOrder = i
-		pill.Label.UITextSizeConstraint.MaxTextSize = 22
-	end
-end
-
--- One tap on the tile: straight to the Robux prompt (the odds are already on screen beside it).
+-- One tap on the tile: straight to the Robux prompt (the ODDS button on the tile opens the odds first if wanted).
 function Controller:BuyDaily()
 	local state = self.State and self.State.DailyGlassy
 	if self.DailyBusy or not state or not state.Available then
@@ -368,12 +334,12 @@ function Controller:Apply(view)
 		-- Gone once bought until the next 00:00 UTC reset; never shown where paid random items are restricted.
 		local showDaily = dailyState.Visible and not dailyState.BoughtToday
 		self.DailyTile:SetAttribute("DealHidden", not showDaily)
+		self.DailyOddsButton:SetAttribute("DealHidden", not showDaily)
 		self.DailyTile.Visible = showDaily and not self:PopupOpen()
 		self.DailyBusy = false
 		Kit.enable(self.DailyTile, dailyState.Available)
 		self.DailyTile.Artwork.ImageTransparency = if dailyState.Available then 0 else 0.35
 		self.DailyPrice.Text = if dailyState.Available then utf8.char(0xE002) .. " " .. dailyState.Price else "SOON"
-		self:OddsStrip(dailyState.Rarities or {})
 	end
 	if self.Popup and not self.Popup.Closed and self.Popup.Render then
 		self.Popup.Render(view)

@@ -36,6 +36,15 @@ Lune: `lune run tools/run_tests` 259/259 (new `OfferTests`, 15 tests; a payer bo
 | 19 | Marbles page | packs first (7 of them, 4 across), Daily Marbles below | [17](captures/17_marbles_packs_first.jpg), [18](captures/18_marbles_daily_below.jpg) |
 | 20 | iPhone 17 Pro | Daily tile + odds on top, Shop and Inventory side by side under it, nothing near the thumbstick | [19](captures/19_phone_daily_top.jpg) |
 
+Second pass (creator: the odds strip took too much room):
+
+| # | Change | Result | Capture |
+|---|---|---|---|
+| 21 | No odds strip; ODDS button over the top of the tile, "Daily" plaque, small ⏣ 9 tag as before | as asked; ODDS is a separate HUD button (not nested in the tile) with a 76×30 px minimum so it's tappable on phones | [21](captures/21_daily_odds_on_tile.jpg) |
+| 22 | Tap ODDS | opens the odds table; no purchase starts. A tap on the tile itself opens the Robux prompt | [22](captures/22_daily_odds_table_rounded.jpg) |
+| 23 | Rounding | odds shown to 4 decimals below the first digit (8.5714%, 2.1667%) with the policy's "Probabilities are rounded…" line in the table and DETAILS | [23](captures/23_daily_odds_details_rounded.jpg) |
+| 24 | iPhone 17 Pro | ODDS on top of the tile; Shop and Inventory side by side below it (popups hidden for the capture only) | [24](captures/24_phone_daily_odds_on_tile.jpg) |
+
 Also fixed: an offer update arriving while a popup was open could leave the tile hidden after the popup closed (the
 controller re-applies the state on every popup close).
 

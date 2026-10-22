@@ -1,4 +1,6 @@
-# Starter Pack items: the Daybreak set (decision 117, Proposed)
+# Starter Pack items: the Daybreak set (decision 117)
+
+**Creator approved (Oct 21):** after seeing the renders and captures, the creator kept all three as built, choosing them over the offered alternatives (sun-catcher or lighthouse glassy; Rise & Shine or First Light finisher; a smaller kite or a sunrise balloon).
 
 October 21, 2026 · built by the starter-pack-items session while the creator was away. The 49 R$ pack itself (price,
 Marbles, screen, receipts) is the monetization session's (decision 116); this report covers its three exclusive items.

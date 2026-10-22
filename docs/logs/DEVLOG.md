@@ -2,6 +2,14 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-22 — Codex — Logo-free square icon options
+Done:
+- Created two Glass Clash icon options from existing I1/I2 and T1a/T2a render assets: Phoenix–Comet clash and Dragon shatter. Recommended duel v2 enlarges both faces and reduces background/debris after a small-size check; no text or logo.
+- Selected opaque PNGs are in assets/marketing/icons/final/, native 1254x1254. Original references retained. Exact built-in imagegen prompts, official Roblox guidance, provenance and size-check preview: assets/marketing/icons/2026_10_22/.
+- Verification: full-size and browser 150/300px framing/face checks, PNG decode/dimensions; Lune 266 passed, 0 failed. No code-based image edits, gameplay/Studio changes or Roblox uploads.
+Next:
+- Creator chooses the first icon; compare Glass Clash results separately from previous Cookie Inc tests.
+
 ## 2026-10-22 — Codex — Collection thumbnail bottom-crop repair
 Done:
 - Repaired the supplied T4a artwork: removed the wide purple foreground panel and pulled the collection display back so all six front-row glassies and their bases are fully visible, including the rightmost pickle jar. Preserved the lineup, Kiln, logo and style; original T4a.jpg retained.

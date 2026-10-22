@@ -196,6 +196,7 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 - [ ] **U:** maturity questionnaire, icon, thumbnails, description; cross-promote from your other game
 - [x] **C:** creator-requested T3a/T3b/T5a bacon avatar variants, including hand correction to classic block arms; new files and prompts in assets/marketing/thumbnails/avatar_edits_2026_10_21/. Creator review/upload remains above.
 - [x] **C:** T4a collection thumbnail bottom-crop repair; full front row in final/T4a_v2_full_lineup.png, original retained; Lune265/265 and image QA pass.
+- [x] **C:** creator-requested square icons without logo: Phoenix–Comet clash v2 and Dragon shatter v1 in assets/marketing/icons/final/; official guidance, exact prompts and 150/300px display checks in icons/2026_10_22/. Lune 266/266; creator selection/upload remains above.
 
 ## After launch
 

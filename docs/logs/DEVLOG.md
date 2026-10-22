@@ -42,6 +42,10 @@ Problems:
 - Required project test attempt `lune run tools/run_tests` could not start: Windows Application Control blocked the existing Lune executable. No tests ran or failed. No Studio sessions were connected for the documented alternate runner. Image visual/format checks passed; code was not edited.
 
 ```
+## 2026-10-22 — Claude (monetization session) — A06 tap targets on the offer popups and the Marble "+" (decision 116)
+Done:
+- ui-audit's Galaxy A06 findings: popup close diamond 44×44 px minimum; on phone-size screens (short side < 500 px) the popups move left and down, clear of the top-right touch wallet; the Marble "+" (HUD and Shop) 44 px tall and moved past the counter's end so it doesn't cover the amount. Studio A06 check, capture 28. Lune 265/265.
+
 ## 2026-10-22 — Claude (monetization session) — UI audit fixes on the offer tiles (decision 116)
 Done:
 - From the ui-audit session's pass: the Daily / Starter tiles and the ODDS button now follow LobbyHUD.Navigation (hidden under the welcome claim card, Kiln reveals, reward screens and our popups); ODDS is at least 84×36 px; the ⏣ 9 tag is slightly larger with 12 px minimum text; Marble pack tags shortened (BUCKET / +23%) so they don't run together on the four-across grid; the Daily Marbles stack sits under its TODAY / +21% tags. Studio Play checks and captures 25-27 in docs/testing/monetization/REPORT.md. Lune 265/265.

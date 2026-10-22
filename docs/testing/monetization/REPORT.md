@@ -54,6 +54,10 @@ UI audit fixes (ui-audit session findings):
 | 27 | Price text ~8 px | same emerald tag, a little larger, 12 px minimum text | [27](captures/27_lobby_after_audit_fixes.jpg) |
 | 28 | Pack name and bonus tags ran together; Daily Marbles stack under its tags | tags read BUCKET / +23%; the stack sits lower | [26](captures/26_daily_marbles_stack_fixed.jpg) |
 
+Galaxy A06 (705×338) follow-up: the popup close diamond has a 44×44 px minimum and phone-size popups sit left and
+lower so it stays clear of the top-right wallet (32 px gap); the Marble "+" is 39×44 px and sits past the counter so
+it never covers the amount ([28](captures/28_a06_starter_close_plus.jpg)).
+
 Also fixed: an offer update arriving while a popup was open could leave the tile hidden after the popup closed (the
 controller re-applies the state on every popup close).
 

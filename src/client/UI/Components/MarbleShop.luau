@@ -389,7 +389,8 @@ function MarbleShop.attachPlus(plaque, onOpen)
 	end
 	local button = Instance.new("ImageButton")
 	button.Name, button.BackgroundTransparency = "MarblePlus", 1
-	button.AnchorPoint, button.Position = Vector2.new(0.5, 0.5), UDim2.fromScale(0.97, 0.5)
+	-- Mostly past the plaque's right end, so the 44 px button never covers the amount.
+	button.AnchorPoint, button.Position = Vector2.new(0.2, 0.5), UDim2.fromScale(0.97, 0.5)
 	button.Size, button.ZIndex = UDim2.fromScale(0.36, 1.25), (plaque.ZIndex or 1) + 3
 	S.setAsset(button, "hud/hex_emerald")
 	S.aspect(button, 300 / 340)
@@ -398,7 +399,7 @@ function MarbleShop.attachPlus(plaque, onOpen)
 	label.ZIndex = button.ZIndex + 1
 	label.UITextSizeConstraint.MaxTextSize = 40
 	U.make("UIStroke", label, { Thickness = 2, Color = Theme.Palette.lead })
-	U.make("UISizeConstraint", button, { MinSize = Vector2.new(30, 30) })
+	U.make("UISizeConstraint", button, { MinSize = Vector2.new(44, 44) }) -- 44 px tap target (ui-audit, Galaxy A06)
 	button.Parent = plaque
 	Motion.button(button)
 	button.Activated:Connect(function()

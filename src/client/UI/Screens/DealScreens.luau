@@ -78,6 +78,13 @@ local function popup(name, title, tint, aspect, width, close)
 	panel.Size, panel.BackgroundTransparency, panel.Parent = UDim2.fromScale(width, 0.76), 1, self.Gui
 	S.setAsset(panel, "panel/pane_dark")
 	S.aspect(panel, aspect)
+	-- Phones: the coin / Marble wallet sits at the top right (ResponsiveController), so the popup moves left and down
+	-- to keep its close diamond clear of it (ui-audit, Galaxy A06).
+	local camera = workspace.CurrentCamera
+	local viewport = camera and camera.ViewportSize or Vector2.new(1366, 768)
+	if math.min(viewport.X, viewport.Y) < 500 then
+		panel.Position, panel.Size = UDim2.fromScale(0.43, 0.56), UDim2.fromScale(width, 0.72)
+	end
 	self.Panel = panel
 	local banner =
 		Kit.icon(panel, "Banner", "panel/title_" .. tint, UDim2.fromScale(0.56, 0.17), UDim2.fromScale(0.5, 0.0))
@@ -90,6 +97,8 @@ local function popup(name, title, tint, aspect, width, close)
 	closeButton.Size, closeButton.ZIndex, closeButton.Parent = UDim2.fromScale(0.11, 0.11), 5, panel
 	S.setAsset(closeButton, "button/close_diamond")
 	S.aspect(closeButton, 1)
+	local reach = Instance.new("UISizeConstraint")
+	reach.MinSize, reach.Parent = Vector2.new(44, 44), closeButton -- 44 px tap target on any screen
 	local x = Kit.icon(closeButton, "X", "icon/close_x", UDim2.fromScale(0.46, 0.46), UDim2.fromScale(0.5, 0.5))
 	x.AnchorPoint, x.ZIndex = Vector2.new(0.5, 0.5), 6
 	Motion.button(closeButton)

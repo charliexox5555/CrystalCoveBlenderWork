@@ -40,6 +40,11 @@ items jump to Urgent. After the screen closes, glassies / flyers / finishers nam
 `LoadGate.loader().want("KilnScreen")`, `.hint(payload)`, `.await(jobs, timeout)`; `LoadGate.afterLoading()` waits
 for the screen to close (Music, Shatter, Topbar and the finisher Kit start their own preloads after it).
 
+**Keep warm (decision 120).** Roblox drops a preloaded image that nothing draws, so `LoadTiers.KeepWarm` pictures stay
+on screen in `PlayerGui.LoadWarm` (8 px, 99% transparent, behind everything): the item icon sprite sheets always,
+and the player's hand while `Queued` / `InMatch`. Small item slots (80 px or less) draw from those sheets
+(`Config/ItemIconSheets`).
+
 Images are preloaded as `ImageLabel`s and sounds as `Sound`s: a bare id string reports `Failure` and restarts its
 fetch. A job with a real failure runs once more in Later; failures show in the Studio report.
 

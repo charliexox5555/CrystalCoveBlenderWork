@@ -99,3 +99,73 @@ Art follow-up (re-upload under group 11116787, then swap the MeshIds).
   event could log it later).
 - **Viewport-to-images** will add its icons through `images:ItemIcons/...` and `HintItems` (agreed with that
   session); the Shop's on-demand group gets the shop-pool icons.
+
+---
+
+# Follow-up 2026-10-22: pictures missing on the first roll (decision 120)
+
+The creator, on a phone: "the first roll I could not [see] any of the pictures until a little bit."
+
+## What was missing, measured
+
+Studio Play, logging every ImageLabel from the moment it is visible to the moment it reports `IsLoaded`:
+
+| Run | Screen | Pictures | Late | Glassy pictures |
+|---|---|---|---|---|
+| Fresh Studio process (closest to cold), desktop | welcome Kiln reels | 199 | 178 | **0.70-0.80 s** blank (56 px reel cells showing 512 px pictures) |
+| Second Play, desktop | welcome Kiln reels | 181 | 153 | 0.16-0.21 s |
+
+Two causes:
+
+1. **Order.** The welcome card's OPEN comes about 1 s after the loading screen closes, but the glassy pictures were
+   8th in the Soon tier, behind the 282-image Shop template. Opening the reveal pulled them to the front, but 45
+   pictures at 512 px still took 0.76 s.
+2. **Preloaded is not ready.** A picture that was preloaded but never drawn took **0.23 s (14 frames)** to show on
+   the phone preset, about 40 s after its preload. `PreloadAsync` downloads a picture; it is decoded and kept only
+   once something draws it. Phones decode slower and evict sooner.
+
+The pick-screen cards are about 122 px on a 1167x479 window and about 86 px on the Galaxy A06 preset, so they use the
+512 px picture. That makes them subject to cause 2.
+
+## Proven practice
+
+| Source | Says | Taken |
+|---|---|---|
+| [DevForum: ContentProvider doesn't preload ImageLabels](https://devforum.roblox.com/t/contentprovider-doesnt-preload-imagelabels/4039525) (Roblox staff LuigiBurger, 2025-11 to 2026-02) | Preloaded but invisible ImageLabels "are treated as unused and garbage-collected", which cancels the preload. It can't be fixed for now because it conflicts with memory conservation. Pass Instances, not ids. Community workarounds: keep them visible (CanvasGroup at transparency 1, or parent to PlayerGui). | `Preload.keepWarm`: chosen pictures stay parented and drawn (8 px, 99% transparent, behind every GUI). |
+| [DevForum: PreloadAsync doesn't preload images (regression thread)](https://devforum.roblox.com/t/contentproviderpreloadasync-does-not-preload-image-or-texture-assets-in-either-assetid-form-or-instance-form-appears-to-be-a-regression/1637450) | Images "don't appear to load when not .Visible or when .ImageTransparency is 1"; 0.999 transparency loads them. | Holder labels are visible at 0.99. |
+| [Creator Docs: Improve performance, textures](https://create.roblox.com/docs/performance-optimization/improve) | Memory follows pixel count. Most images need at most 512 px; minor ones should be under 256. Sprite sheets (`ImageRectOffset` / `ImageRectSize`) for many small UI images. | Small slots use 128 px cells from two sprite sheets. |
+| [ImageLabel reference](https://robloxapi.github.io/ref-temp/class/ImageLabel.html) | Packing many small icons into one image "can make your experience's image assets load much quicker". | Two downloads instead of 81. |
+
+## What changed
+
+- **Sprite sheets** (`tools/icons/make_sheets.py` in Blender, `tools/icons/write_sheets_config.py`,
+  `Config/ItemIconSheets`):
+  - two sheets of 128 px cells (2 px margin): glassies (47, 1024x768) and flyers + finishers + machines (34, 1024x640)
+  - 0.7 MB for every item, against 7.6 MB for the 512 px set
+  - `ItemIcon` shows the sheet cell when the slot is 80 px or smaller: Kiln reels 37-63 px, pick-any tiles 76 px,
+    reward cells
+  - bigger slots keep the 512 / 1024 px pictures
+- **Essential tier:** `images:ItemIconSheets` (two images, run in parallel).
+- **Keep warm** (`LoadTiers.KeepWarm`):
+  - the sheets, always
+  - while `Queued` or `InMatch`: the hand, meaning owned glassies' pictures (up to 16) and the Pop / Jam / Prism loan hand
+  - a 3 s linger, so Queued -> InMatch never drops them
+- **Preload order:**
+  - `owned` now preloads each owned glassy's picture along with its model
+  - the loan hand's pictures lead the Soon tier
+- **Studio A/B switches:** `workspace.ItemIconSheetsOff`, `workspace.LoadNoWarm`.
+
+## After (Galaxy A06 preset, 705x338)
+
+| Check | Result |
+|---|---|
+| Loading screen | `LoadSeconds` 5.71. Essential done at 4.89 s; the sheet job took 0.06 s, in parallel, and never on the critical path (the Daily template and the spawn area were). |
+| Welcome reels | all 54 glassy pictures come from the sheet (37 px cells). They report loaded in 0.06-0.15 s, the same as the reveal's own frames and glows (up to 0.27 s); it was 0.70-0.80 s. A held sheet on a fresh label: **1 frame**. |
+| Hand during the queue | `Queued = true` fills the holder: 2 sheets + 3 welcome glassies + Pop / Jam / Prism = 8. A held 512 px hand picture shows in 1-2 frames, against 14 frames for a preloaded one that wasn't held. After the queue it drops back to the 2 sheets. |
+| Memory | the sheets hold about 5.6 MB of texture (RGBA); a full hand adds up to 16 x 1 MB while queued or in a match |
+
+Not covered:
+- A true cold start on a real phone. Studio keeps a disk cache, and the welcome reveal can't be clicked through with
+  the device preset on (MCP clicks don't land), so the full first match was not played on the preset.
+- The 1024 px Large pictures on big PC cards are still loaded when shown. On a 1080p screen the pick cards pass 220 px
+  and use them.

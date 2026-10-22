@@ -2,6 +2,15 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-22 — Claude (loading-tiers session) — Pictures on the first roll (decision 120, Proposed)
+Done:
+- Creator on mobile: the first roll's pictures showed late. Measured: the welcome reel glassy pictures were 0.70-0.80 s late on a fresh Studio start (0.16-0.21 s warm). Causes: they were 8th in Soon, behind the Shop template, and a preloaded but never-drawn picture still needs ~14 frames to decode on first show (Roblox staff, DevForum 2026: invisible preloaded images are garbage-collected).
+- Two 128 px item sprite sheets (0.7 MB for all 81 items vs 7.6 MB at 512 px; `tools/icons/make_sheets.py`, uploaded, `Config/ItemIconSheets`). `ItemIcon` uses them for slots of 80 px or less (reels, pick-any tiles, reward cells). Loaded in Essential.
+- `Preload.keepWarm` + `LoadTiers.KeepWarm`: the sheets always, and the hand (owned glassies up to 16 + the Pop/Jam/Prism loan hand) while Queued / InMatch, stay drawn invisibly. `owned` now also preloads the pictures; the loan hand leads Soon.
+- A06 preset: reel pictures from the sheet in 0.06-0.15 s (same as the reveal's frames); held pictures show in 1-2 frames vs 14 unheld; Essential unchanged in practice (sheet job 0.06 s in parallel). Lune 267/267. Report: docs/testing/loading/REPORT.md (follow-up section).
+Next:
+- Real-phone cold join after publishing. New items: re-run make_sheets.py and the uploader, then write_sheets_config.py (LoadTiersTests fails if an icon has no sheet cell).
+
 ## 2026-10-22 — Claude (unicorn-power session) — "The Unicorn's power did nothing": works, now readable; every power swept
 Done:
 - Glass Unicorn (Rainbow Charge): every 2 turnarounds → Ready → a 2 s aimed dash. The next clash inside 2 s deals +62%, knocks back 15% harder and breaks guards. It deals no damage by itself.

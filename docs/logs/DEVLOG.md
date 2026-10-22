@@ -77,9 +77,13 @@ Done:
   - Both orders (popup + Daily, popup over a Shop Kiln opening) bring the full HUD back within 0.3 s, with no watchdog repair needed.
   - A forced leaked hold plus PanelOpen is repaired in about 1 s, with the warning.
   - A reset is fine, and the full HUD returns after a bot match.
+- Desktop, second slot:
+  - Onboarding first match: the assisted match was won, the YOU WON card and the opening show only the wallet, and the full HUD is back after COLLECT.
+  - The Starter auto-open, then a second match: full HUD, no repair warnings.
 - Lune 267/267.
 Next:
-- Next Studio slot: three back-to-back matches on desktop and on the phone, plus the onboarding first match (YOU WON card, then opening).
+- Not yet run: a third back-to-back match.
+- Seen in passing: under the YOU WON card, LobbyHUD is disabled, so the wallet isn't shown either. `ShowWallet` returns early while the FightHud is still enabled. This was already the case before this fix.
 - Other sessions: any new UI that hides lobby HUD buttons must use `HudStage.hide(owner)` / `HudStage.show(owner)`, never save and restore `Visible` itself.
 
 ## 2026-10-22 — Codex — Collection thumbnail bottom-crop repair

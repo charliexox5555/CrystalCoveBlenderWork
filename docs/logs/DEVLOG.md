@@ -42,6 +42,10 @@ Problems:
 - Required project test attempt `lune run tools/run_tests` could not start: Windows Application Control blocked the existing Lune executable. No tests ran or failed. No Studio sessions were connected for the documented alternate runner. Image visual/format checks passed; code was not edited.
 
 ```
+## 2026-10-22 — Claude (monetization session) — Starter auto-open race and TV safe area (decision 116)
+Done:
+- ui-audit findings: the Starter Pack auto-open re-checks the free-lobby conditions right before opening (it could land over Daily Rewards opened in its 1.5 s beat); on TV (IsTenFootInterface) the left HUD column and the Starter tile move 4% in out of overscan, and the Shop side tile keeps inside the 88% safe width. Xbox preset checked, capture 29. Lune 265/265.
+
 ## 2026-10-22 — Claude (monetization session) — A06 tap targets on the offer popups and the Marble "+" (decision 116)
 Done:
 - ui-audit's Galaxy A06 findings: popup close diamond 44×44 px minimum; on phone-size screens (short side < 500 px) the popups move left and down, clear of the top-right touch wallet; the Marble "+" (HUD and Shop) 44 px tall and moved past the counter's end so it doesn't cover the amount. Studio A06 check, capture 28. Lune 265/265.

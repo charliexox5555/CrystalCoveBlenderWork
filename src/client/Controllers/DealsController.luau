@@ -18,7 +18,13 @@ local function safe(fn, ...)
 	local ok, result = pcall(fn, ...)
 	return if ok then result else nil
 end
+local GuiService = game:GetService("GuiService")
 local Controller = {}
+-- TV overscan: HUD columns sit this share of the screen further in (ui-audit, Xbox).
+local TV_INSET = 0.04
+local function starterRight()
+	return if GuiService:IsTenFootInterface() then 0.985 - TV_INSET else 0.985
+end
 
 local function screens()
 	return require(script.Parent.Parent.UI.Screens.DealScreens)
@@ -247,11 +253,12 @@ function Controller:BuildTiles(hud)
 		inventory.Position = if touch and shown
 			then UDim2.new(shop.Position.X.Scale + 1.08, 0, shop.Position.Y.Scale, 0)
 			else inventoryHome
-		nav.Position = if shown
-			then UDim2.new(home.X.Scale, home.X.Offset, home.Y.Scale + step, home.Y.Offset)
-			else home
+		-- TV: the column moves in out of overscan, like the windows ResponsiveController keeps in the safe area.
+		local inset = if GuiService:IsTenFootInterface() then TV_INSET else 0
+		local x = home.X.Scale + inset
+		nav.Position = UDim2.new(x, home.X.Offset, home.Y.Scale + (if shown then step else 0), home.Y.Offset)
 		daily.Position = UDim2.fromScale(
-			home.X.Scale + navSize.X.Scale * shop.Position.X.Scale,
+			x + navSize.X.Scale * shop.Position.X.Scale,
 			home.Y.Scale + navSize.Y.Scale * shop.Position.Y.Scale
 		)
 		daily.Size = UDim2.fromScale(navSize.X.Scale * shop.Size.X.Scale, navSize.Y.Scale * shop.Size.Y.Scale)
@@ -260,7 +267,7 @@ function Controller:BuildTiles(hud)
 		oddsButton.Size = UDim2.fromOffset(math.floor(math.max(84, w * 1.0)), math.floor(math.max(36, h * 0.28)))
 		oddsButton.Position = UDim2.new(daily.Position.X.Scale, 0, daily.Position.Y.Scale, -math.floor(h * 0.47))
 		-- Centre-anchored (Motion keeps buttons on their centre); the aspect constraint sets the real width.
-		starter.Position = UDim2.new(0.985, -math.floor(starter.AbsoluteSize.X / 2), 0.45, 0)
+		starter.Position = UDim2.new(starterRight(), -math.floor(starter.AbsoluteSize.X / 2), 0.45, 0)
 		starter.Size = UDim2.fromScale(daily.Size.X.Scale * 1.15, daily.Size.Y.Scale * 1.15)
 	end
 	self.PlaceTiles = place
@@ -273,7 +280,7 @@ function Controller:BuildTiles(hud)
 	place()
 	task.defer(place)
 	starter:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
-		starter.Position = UDim2.new(0.985, -math.floor(starter.AbsoluteSize.X / 2), 0.45, 0)
+		starter.Position = UDim2.new(starterRight(), -math.floor(starter.AbsoluteSize.X / 2), 0.45, 0)
 	end)
 	UIS.LastInputTypeChanged:Connect(place)
 	workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(place)
@@ -378,10 +385,8 @@ function Controller:MaybeAutoOpen()
 	self.AutoOpening = true
 	task.spawn(function()
 		local pg = self.Player.PlayerGui
-		local quiet = 0
-		while quiet < 4 do
-			task.wait(0.5)
-			local free = not (
+		local function free()
+			return not (
 					pg:GetAttribute("InMatch")
 					or pg:GetAttribute("Queued")
 					or pg:GetAttribute("ResultsOpen")
@@ -390,13 +395,24 @@ function Controller:MaybeAutoOpen()
 				and self.Player:GetAttribute("OnboardingStep") == "Done"
 				and not GamepadNav.hasMenu()
 				and not (self.Popup and not self.Popup.Closed)
+				and not (self.Need and not self.Need.Closed)
 				and not (self.Controllers.LobbyController and self.Controllers.LobbyController.Screen)
 				and self.Player:GetAttribute("ClientLoaded") ~= false
-			quiet = if free then quiet + 1 else 0
 		end
-		task.wait(1.5)
+		-- Quiet for 2 s, a beat, and still free at that moment (a menu opened in the beat restarts the wait).
+		while true do
+			local quiet = 0
+			while quiet < 4 do
+				task.wait(0.5)
+				quiet = if free() then quiet + 1 else 0
+			end
+			task.wait(1.5)
+			if free() then
+				break
+			end
+		end
 		self.AutoOpening = false
-		if self.State and self.State.Starter.AutoOpen and not (self.Popup and not self.Popup.Closed) then
+		if self.State and self.State.Starter.AutoOpen and self.State.Starter.Available then
 			Remotes.Deals:FireServer("AutoOpened")
 			self:OpenStarter()
 		end

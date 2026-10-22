@@ -58,6 +58,11 @@ Galaxy A06 (705×338) follow-up: the popup close diamond has a 44×44 px minimum
 lower so it stays clear of the top-right wallet (32 px gap); the Marble "+" is 39×44 px and sits past the counter so
 it never covers the amount ([28](captures/28_a06_starter_close_plus.jpg)).
 
+Further audit fixes: the Starter auto-open checks that the lobby is still free at the moment it opens (a menu opened in
+the 1.5 s beat restarts the wait, so it never lands on top of Daily Rewards); on TV the left column and the Starter tile
+sit 4% further in, and the Shop side tile stays inside the 88% safe width (Xbox preset: column at 5.8%, side tile within
+it) ([29](captures/29_xbox_shop_side_safe.jpg)).
+
 Also fixed: an offer update arriving while a popup was open could leave the tile hidden after the popup closed (the
 controller re-applies the state on every popup close).
 

@@ -127,10 +127,12 @@ function Shop.starterSide(self)
 		local area, origin = gui.AbsoluteSize, gui.AbsolutePosition
 		local left = panel.AbsolutePosition.X - origin.X
 		local w, h, tile = panel.AbsoluteSize.X, panel.AbsoluteSize.Y, side.AbsoluteSize.X
-		if w < 2 or left + w + tile + 12 <= area.X then
+		-- TV: stay inside the same 88% safe width ResponsiveController keeps windows in (ui-audit, Xbox).
+		local limit = if game:GetService("GuiService"):IsTenFootInterface() then area.X * 0.93 else area.X - 12
+		if w < 2 or left + w + tile <= limit then
 			return
 		end
-		local f = math.clamp((area.X - 12 - left) / (w + tile), 0.6, 1)
+		local f = math.clamp((limit - left) / (w + tile), 0.6, 1)
 		local y = panel.Position.Y
 		placed = UDim2.fromOffset(math.floor(w * f), math.floor(h * f))
 		panel.Size = placed

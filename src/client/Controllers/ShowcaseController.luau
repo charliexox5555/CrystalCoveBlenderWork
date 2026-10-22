@@ -81,6 +81,9 @@ function Ride.new(parent, id, base, avatar, launch)
 	model.Parent = parent
 	if avatar then
 		self.Npc = avatar:Clone()
+		-- Start on the display, not where the cloned avatar stood: an off-screen display skips its Step (perf cull),
+		-- and a rider left at the clone's origin stood at spawn doing ride animations (creator report).
+		self.Npc:PivotTo(base)
 		self.Npc.Parent = parent
 		self.Pose = RidePose.new(self.Npc, model:GetAttribute("PoseId") or id, { Ride = model })
 		-- Arriving displays drop onto the pad: the rider lands as the drop settles.

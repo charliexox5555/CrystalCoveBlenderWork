@@ -3,6 +3,12 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-21 — Claude (main session) — Duplicate avatar at spawn fixed
+Done:
+- Creator saw a copy of their character at spawn doing riding animations. It was a lobby flyer-showcase rider (`Showcase_Flyers.ShowcaseAvatar`). The rider is cloned where the player's avatar stands, and was only moved onto its flyer by the first on-screen `Ride:Step`. Since the perf pass (decision 108) culls off-screen displays, a rider whose display was behind the camera stayed at spawn.
+- Fix: the rider is pivoted onto its display base as soon as it's created (`ShowcaseController` `Ride.new`).
+- Studio Play: both flyer riders and the stage rider sit 32-35 studs from spawn, before and after a flyer swap. Nothing is left at spawn. Lune passes.
+
 ## 2026-10-21 — Claude (main session) — Developer products created and repriced (decision 116)
 Done:
 - Creator gave the group key the developer-product scope (the earlier 403s were the missing permission). `tools/opencloud/products.py` created the 8 products (regional pricing off), with icons from the item pictures:

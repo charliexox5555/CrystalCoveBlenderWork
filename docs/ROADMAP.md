@@ -197,6 +197,7 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 
 - [ ] **Gifting (creator note 2026-10-17):** Gift buttons on the bundle preview, daily offers and Marble packs (reference: Ball v Ball gift buttons beside Buy). Needs a recipient picker, gift developer products or receipt routing to another player, policy checks and abuse limits. Deliberately left out of the pre-release store.
 
-- [ ] Weekly polish/events/codes; roster remains at 24 unless the creator later authorizes expansion
+- [x] **CL:** post-launch live-ops plan (research cited, 8-Saturday calendar Oct 24 → Dec 12, production checklist with timings, drop-day runbook, risks, 12 creator decisions): [design/LIVEOPS_PLAN.md](design/LIVEOPS_PLAN.md). Plan only, nothing built; waiting on the creator's decisions.
+- [ ] Weekly Saturday drops to 50 glassies / 24 flyers / 24 finishers, codes and events per the live-ops plan (replaces "roster remains at 24")
 - [ ] Winter event (~Dec 12): snow globes, ornaments, glass reindeer
 - [ ] Bracket tournament event, 2v2, party pads, Rainbow "re-melt"

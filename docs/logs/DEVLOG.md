@@ -2,6 +2,16 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-21 — Claude (live-ops session) — Post-launch live-ops plan (docs only)
+Done:
+- Research first, cited in the doc: Roblox Creator Docs (Discovery, Retention, Events and updates), the Jun 15 and Aug 6 2026 DevForum announcements (28-day retention windows, Saturday traffic peak), the GameAnalytics 2025 Roblox report, Grow a Garden and Adopt Me weekly schedules, Ball VS Ball's cadence, Balatro's solo-dev burnout. No official "Updated" sort or update-spike size exists in the docs; unverified third-party numbers were not used.
+- docs/design/LIVEOPS_PLAN.md: 8-Saturday calendar (launch Oct 24, W1-W5 drops 3/3/3/4/1 glassies reaching 50 on Nov 28, quiet Dec 5, winter event Dec 12) with Target / Floor / Bench per week, codes, Halloween window (code and Hollowlight end), production checklist with recent timings (Whiskers + Midnight ≈ 73 min for two; Sunny set ≈ 85 min for three; from commit times), drop-day runbook, risks (power creep, Kiln dilution with 30-day odds, burnout), 12 creator decisions.
+Next:
+- Creator answers the 12 decisions (cadence, Floors, drop time and a go-live timestamp, order, Popcorn self-damage, Crown multi-tap, dilution mitigations, New-this-week slot, winter scope, rest week, channels, Hollowlight end date).
+- Findings to act on before launch: the Hollowlight 699 R$ bundle has no end date in config (the HALLOWEEN code expires Nov 8 00:00 UTC).
+Problems / questions for the user:
+- None. Plan only; no code, config or Studio changes.
+
 ## 2026-10-21 — Codex — Bacon avatar thumbnail variants
 Done:
 - Replaced the supplied T3a/T3b foreground players and T5a King/crowd with reference-based bacon boy / red-haired default girl artwork. Matched sunset lighting and retained original game objects, logos and compositions. Originals preserved; three new `*_bacon_avatars_v2_block_arms.png` files in `assets/marketing/thumbnails/final/`.

@@ -230,6 +230,8 @@ decision 39 otherwise keeps out of free play. Don't build it before launch: it c
 
 ## 9. Developer products to create (creator)
 
+**Done 2026-10-21:** all 8 created and all 13 prices updated through `products.py`; ids in `Config/ProductIds`. The price guard reports no mismatches.
+
 Open Cloud can't create them right now: the `ROBLOX_ASSETS_KEY` key returns **"Scope not authorized"** for
 developer products (it lost that scope when Assets read/write was added on 2026-10-19). Two ways:
 

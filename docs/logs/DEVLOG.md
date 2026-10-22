@@ -3,6 +3,30 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-21 — Claude (main session) — Developer products created and repriced (decision 116)
+Done:
+- Creator gave the group key the developer-product scope (the earlier 403s were the missing permission). `tools/opencloud/products.py` created the 8 products (regional pricing off), with icons from the item pictures:
+  - Starter Pack 3720942636 (49)
+  - Daily Glassy 3720942645 (9)
+  - Daily Marbles 3720942670 (49)
+  - Marble Barrel 3720942682 (1,999)
+  - Daily Offer: Mythic Finisher 3720942703 (499)
+  - Daily Offer: Epic Flyer 3720942723 (199)
+  - Daily Offer: Legendary Flyer 3720942740 (399)
+  - Daily Offer: Mythic Flyer 3720942761 (599)
+- The ids are in `Config/ProductIds`.
+- Applied the 13 price changes from MONETIZATION.md §9:
+  - Marble Pouch 199, Jar 399, Bucket 799
+  - Hollowlight Collection 699
+  - Epic Glassy 199, Epic Glassy+ 249, Legendary Glassy 399
+  - Uncommon Finisher 49, Rare Finisher 99, Legendary Finisher+ 299
+  - Uncommon Flyer 79, Rare Flyer 149, Epic Flyer+ 299
+- Verification: the listing matches. Studio Play reads the new prices (GetProductInfoAsync). The `Util/ProductPrices` guard ran a full pass with no held-back products. Lune passes.
+Next:
+- Creator: publish, then make a real test purchase of the Starter Pack and Daily Glassy on a live server.
+Problems / questions for the user:
+- None.
+
 ## 2026-10-21 — Claude (monetization session) — Robux monetization on (decision 116, Proposed)
 Done:
 - Research first (docs/design/MONETIZATION.md, cited): Roblox's starter-pack guide (first spawn, ~90% off, 24 h-3 days, under 399 R$), paid random items policy (odds before purchase, Details list, PolicyService), ProcessReceipt, price optimization (needs scripted prices, ~60k transactions/month), regional pricing lifts, rewarded video ads rules, GameAnalytics 2025 Roblox report (median transaction ~$1.29 ≈ 100 R$), Roblox filings (payer share), Ball VS Ball's offers from the creator's screenshots.

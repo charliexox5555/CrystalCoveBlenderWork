@@ -17,14 +17,14 @@ export type Ids = {
 }
 
 local ids: Ids = {
-	StarterPack = nil,
-	DailyGlassy = nil,
-	DailyMarbles = nil,
-	MarbleBarrel = nil,
-	FinisherMythic = nil,
-	FlyerEpic = nil,
-	FlyerLegendary = nil,
-	FlyerMythic = nil,
+	StarterPack = 3720942636,
+	DailyGlassy = 3720942645,
+	DailyMarbles = 3720942670,
+	MarbleBarrel = 3720942682,
+	FinisherMythic = 3720942703,
+	FlyerEpic = 3720942723,
+	FlyerLegendary = 3720942740,
+	FlyerMythic = 3720942761,
 }
 
 return ids

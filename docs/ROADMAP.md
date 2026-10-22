@@ -29,7 +29,8 @@ Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DES
 - [ ] **U:** Crown Hill feel check with 2–3 players (queue a friend, steal the crown), phone check of the line chip and board.
 - [x] **CL:** controller and keyboard support (decision 107, Proposed): every menu selectable with a controller (GamepadNav, gold selection, B closes), CAST keys with glyphs, stick / keys aiming and lock. Real-controller check remains with the creator.
 - [x] **CL:** badges (decision 118, Proposed): five free launch badges (Welcome, First Win over a player, Legendary Find, Level 10, Midnight's Week) with stained-glass icons, server awarding with retries and no double awards, Open Cloud creation tool. [Design](design/BADGES.md)
-- [ ] **U/CL:** add the badge-create key scope, run `tools/opencloud/badges.py create`, commit the ids in `Config/Badges`, check an award on a live server.
+- [x] **U/CL:** badge-create key scope added; 5 badges created through Open Cloud, ids in `Config/Badges`.
+- [ ] **U:** publish and check the Welcome badge arrives on a live server (icons show after moderation).
 - [ ] **U:** watch the onboarding funnel in Creator Dashboard after launch.
 - [ ] **CL/U:** Quests redesign (screen and row held back); retire the old combined RewardsScreen once Quests have a home.
 - [ ] **U:** phone check of the four new screens and the top bar; listen to volume sliders.

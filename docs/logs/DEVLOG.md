@@ -2,6 +2,18 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-22 — Claude (badges session) — Badges created on Roblox (decision 118)
+Done:
+- The creator added the create scope and said "Ok lets go". `tools/opencloud/badges.py create` made all 5 free (quota 5 → 0, expectedCost=0, nothing spent) and wrote the ids into Config/Badges:
+  - Welcome to Glass Clash! 2887637415045762
+  - First Win! 3891148603193708
+  - Legendary Find 1970777153374977
+  - Level 10 4455849004489714
+  - Midnight's Week 244410661657765
+- Verified: badges.roblox.com shows all 5 enabled under universe 10770493435 with icons (icon moderation Pending), and Studio's GetBadgeInfoAsync reads every id (enabled). Lune 265/265.
+Next:
+- Creator: publish, then join a live server and check that Welcome arrives. Icons show once moderation clears.
+
 ## 2026-10-22 — Claude (ui-audit session) — Full UI audit before the group test (decisions 106, 97)
 Done:
 - Every reachable screen captured and scanned in Studio Play on a laptop (1366x768), Galaxy A06, iPhone 17 Pro, iPad Pro 13 and Xbox. Report with 26 findings, severities and before/after captures: docs/testing/ui_audit_v2/REPORT.md.

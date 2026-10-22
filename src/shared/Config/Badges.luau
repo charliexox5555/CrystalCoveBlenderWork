@@ -9,31 +9,31 @@ Badges.Order = { "Welcome", "FirstWin", "LegendaryFind", "Level10", "DailyWeek" 
 
 Badges.ByKey = {
 	Welcome = {
-		Id = nil,
+		Id = 2887637415045762,
 		Name = "Welcome to Glass Clash!",
 		Description = "You joined Glass Clash! Collect glassies, pick one and swing it into battle.",
 		Icon = "assets/badges/png/welcome.png",
 	},
 	FirstWin = {
-		Id = nil,
+		Id = 3891148603193708,
 		Name = "First Win!",
 		Description = "Win a round against another player. Bots don't count!",
 		Icon = "assets/badges/png/first_win.png",
 	},
 	LegendaryFind = {
-		Id = nil,
+		Id = 1970777153374977,
 		Name = "Legendary Find",
 		Description = "Pull a Legendary or Mythic from any Kiln.",
 		Icon = "assets/badges/png/legendary_find.png",
 	},
 	Level10 = {
-		Id = nil,
+		Id = 4455849004489714,
 		Name = "Level 10",
 		Description = "Reach level 10 by playing matches.",
 		Icon = "assets/badges/png/level_10.png",
 	},
 	DailyWeek = {
-		Id = nil,
+		Id = 244410661657765,
 		Name = "Midnight's Week",
 		Description = "Claim all 7 days of Daily Rewards and meet Midnight.",
 		Icon = "assets/badges/png/daily_week.png",

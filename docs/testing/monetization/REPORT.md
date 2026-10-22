@@ -25,6 +25,20 @@ charged). Design and prices: [MONETIZATION.md](../../design/MONETIZATION.md).
 
 Lune: `lune run tools/run_tests` 259/259 (new `OfferTests`, 15 tests; a payer bound in `EconomyTests`).
 
+## Creator changes (2026-10-22)
+
+| # | Change | Result | Capture |
+|---|---|---|---|
+| 15 | Daily Glassy tile, before / after | before: under Inventory with a small ODDS tag and price tag ([14](captures/14_daily_tile_before.jpg)); after: top of the left column with a full-width emerald ⏣ 9 gem, a DAILY tag, a larger ODDS button and the rarity odds strip beside it | [15](captures/15_daily_tile_after.jpg) |
+| 16 | Tap the tile | the Robux prompt opens straight away (Studio test dialog); the receipt grants once (a replayed PurchaseId is a no-op); the glassy comes out of the Kiln reveal | – |
+| 17 | After buying | tile, strip and ODDS hide; Shop / Inventory move back up; with the server clock one day ahead the tile comes back | [16](captures/16_daily_bought_tile_gone.jpg) |
+| 18 | ODDS button | opens the odds table (DETAILS lists every glassy) | [03](captures/03_daily_glassy_odds.jpg) |
+| 19 | Marbles page | packs first (7 of them, 4 across), Daily Marbles below | [17](captures/17_marbles_packs_first.jpg), [18](captures/18_marbles_daily_below.jpg) |
+| 20 | iPhone 17 Pro | Daily tile + odds on top, Shop and Inventory side by side under it, nothing near the thumbstick | [19](captures/19_phone_daily_top.jpg) |
+
+Also fixed: an offer update arriving while a popup was open could leave the tile hidden after the popup closed (the
+controller re-applies the state on every popup close).
+
 ## Not checked / follow-ups
 
 - **Real Robux prompts for the new offers**: they need the developer products (MONETIZATION.md §9). The Handful

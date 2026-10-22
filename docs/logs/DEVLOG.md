@@ -103,6 +103,11 @@ Problems:
 - Required project test attempt `lune run tools/run_tests` could not start: Windows Application Control blocked the existing Lune executable. No tests ran or failed. No Studio sessions were connected for the documented alternate runner. Image visual/format checks passed; code was not edited.
 
 ```
+## 2026-10-22 — Claude (monetization session) — Marble "+" no longer covers the Shop header counter
+Done:
+- ui-audit: on phones the Shop header's "+" sat over the end of "10,000". The amount label now ends where the button starts (HUD and Shop header, re-fitted on resize). A06 check, capture 30. Lune 265/265.
+- Checked ui-audit's one-off "Starter popup replaced the Shop" report: DealScreens never closes other windows, and the auto-open waits while a lobby window or any GamepadNav menu is open. The windows that call LobbyController:Close() are OnboardingController (claim retry) and TopbarController (one menu at a time, e.g. the Daily Rewards auto-open); one of those most likely closed the Shop and the Starter popup then opened on a free lobby.
+
 ## 2026-10-22 — Claude (monetization session) — Starter auto-open race and TV safe area (decision 116)
 Done:
 - ui-audit findings: the Starter Pack auto-open re-checks the free-lobby conditions right before opening (it could land over Daily Rewards opened in its 1.5 s beat); on TV (IsTenFootInterface) the left HUD column and the Starter tile move 4% in out of overscan, and the Shop side tile keeps inside the 88% safe width. Xbox preset checked, capture 29. Lune 265/265.

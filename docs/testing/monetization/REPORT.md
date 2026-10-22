@@ -63,6 +63,9 @@ the 1.5 s beat restarts the wait, so it never lands on top of Daily Rewards); on
 sit 4% further in, and the Shop side tile stays inside the 88% safe width (Xbox preset: column at 5.8%, side tile within
 it) ([29](captures/29_xbox_shop_side_safe.jpg)).
 
+Marble "+" in the Shop header on phones: the counter's amount now ends where the button starts (measured live), so
+"10,000" is never covered (A06: text ends at x 499, "+" starts at 505) ([30](captures/30_a06_shop_header_plus.jpg)).
+
 Also fixed: an offer update arriving while a popup was open could leave the tile hidden after the popup closed (the
 controller re-applies the state on every popup close).
 

@@ -402,6 +402,22 @@ function MarbleShop.attachPlus(plaque, onOpen)
 	U.make("UISizeConstraint", button, { MinSize = Vector2.new(44, 44) }) -- 44 px tap target (ui-audit, Galaxy A06)
 	button.Parent = plaque
 	Motion.button(button)
+	-- The amount ends where the button starts, so the 44 px "+" never covers "10,000" (HUD and Shop header, any screen).
+	local amount = plaque:FindFirstChild("MarblesAmount")
+	if amount and amount:IsA("GuiObject") then
+		local home = amount.Size
+		local function fit()
+			local full = home.X.Scale * plaque.AbsoluteSize.X + home.X.Offset
+			local room = button.AbsolutePosition.X - 2 - amount.AbsolutePosition.X
+			amount.Size = if room > 0 and room < full
+				then UDim2.new(0, math.floor(room), home.Y.Scale, home.Y.Offset)
+				else home
+		end
+		button:GetPropertyChangedSignal("AbsolutePosition"):Connect(fit)
+		button:GetPropertyChangedSignal("AbsoluteSize"):Connect(fit)
+		plaque:GetPropertyChangedSignal("AbsoluteSize"):Connect(fit)
+		task.defer(fit)
+	end
 	button.Activated:Connect(function()
 		Players.LocalPlayer.PlayerGui:SetAttribute(MarbleShop.TabRequest, "Marbles")
 		if onOpen then

@@ -117,7 +117,9 @@ function MarbleShop:Daily(canvas)
 		Size = UDim2.fromScale(0.3, 0.33),
 	})
 	local card = Card.new(frame)
-	pile(card.Art, 3)
+	-- Lower and smaller than the pack piles so the stack stays under the TODAY / bonus tags.
+	local stack = pile(card.Art, 3)
+	stack.Position, stack.Size = UDim2.fromScale(0.5, 0.52), UDim2.fromScale(0.85, 0.56)
 	Card.accent(card, Theme.Palette.amberLight)
 	Card.pill(card.Rarity, "TODAY", "amber")
 	local strip = U.make("Frame", canvas, {
@@ -161,8 +163,14 @@ function MarbleShop:Daily(canvas)
 		U.make("UIStroke", value, { Thickness = 1.5, Color = Theme.Palette.lead })
 		cells[i] = cell
 	end
-	local note =
-		U.text(canvas, "LadderNote", "", UDim2.fromScale(0.64, 0.035), UDim2.fromScale(0.34, 0.955), Theme.Fonts.Caption)
+	local note = U.text(
+		canvas,
+		"LadderNote",
+		"",
+		UDim2.fromScale(0.64, 0.035),
+		UDim2.fromScale(0.34, 0.955),
+		Theme.Fonts.Caption
+	)
 	note.TextColor3 = Theme.Palette.amberLight
 	self.DailyCard, self.Ladder, self.LadderNote = card, cells, note
 	table.insert(
@@ -266,10 +274,11 @@ function MarbleShop.page(page, say)
 		pile(card.Art, pack.Art)
 		card.Name.Text = commas(pack.Marbles) .. " Marbles"
 		Card.accent(card, tiers[pack.Art] or Theme.Palette.aquaLight)
-		Card.pill(card.Rarity, string.upper(pack.Name), "sapphire")
+		-- Short tags: four cards to a row leave no room for "MARBLE BUCKET" next to "+23% BONUS" (ui-audit).
+		Card.pill(card.Rarity, string.upper((pack.Name:gsub("^Marble ", ""))), "sapphire")
 		Card.pill(
 			card.Corner,
-			if pack.Bonus > 0 then "+" .. pack.Bonus .. "% BONUS" else nil,
+			if pack.Bonus > 0 then "+" .. pack.Bonus .. "%" else nil,
 			if pack.Bonus >= 25 then "amber" else "emerald"
 		)
 		self.Packs[pack.Id] = { Card = card, Pack = pack }

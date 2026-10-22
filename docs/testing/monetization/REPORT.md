@@ -45,6 +45,15 @@ Second pass (creator: the odds strip took too much room):
 | 23 | Rounding | odds shown to 4 decimals below the first digit (8.5714%, 2.1667%) with the policy's "Probabilities are rounded…" line in the table and DETAILS | [23](captures/23_daily_odds_details_rounded.jpg) |
 | 24 | iPhone 17 Pro | ODDS on top of the tile; Shop and Inventory side by side below it (popups hidden for the capture only) | [24](captures/24_phone_daily_odds_on_tile.jpg) |
 
+UI audit fixes (ui-audit session findings):
+
+| # | Finding | Fix | Capture |
+|---|---|---|---|
+| 25 | Tiles stayed up over the welcome claim card and Kiln reveals | the Daily and Starter tiles and ODDS follow `LobbyHUD.Navigation`'s visibility (hidden with the claim cards, reveals, reward screens, popups) | [25](captures/25_reveal_no_tiles.jpg) |
+| 26 | ODDS under the tap-target size | minimum 84×36 px | [27](captures/27_lobby_after_audit_fixes.jpg) |
+| 27 | Price text ~8 px | same emerald tag, a little larger, 12 px minimum text | [27](captures/27_lobby_after_audit_fixes.jpg) |
+| 28 | Pack name and bonus tags ran together; Daily Marbles stack under its tags | tags read BUCKET / +23%; the stack sits lower | [26](captures/26_daily_marbles_stack_fixed.jpg) |
+
 Also fixed: an offer update arriving while a popup was open could leave the tile hidden after the popup closed (the
 controller re-applies the state on every popup close).
 

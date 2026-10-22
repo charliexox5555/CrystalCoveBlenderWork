@@ -179,19 +179,21 @@ function Controller:BuildTiles(hud)
 		"PriceTag",
 		utf8.char(0xE002) .. " 9",
 		"emerald",
-		UDim2.fromScale(0.6, 0.18),
-		UDim2.fromScale(0.5, 0.62)
+		UDim2.fromScale(0.72, 0.24),
+		UDim2.fromScale(0.42, 0.58)
 	)
 	price.ZIndex = 6
+	-- Same tag as before, a little more readable at laptop size (ui-audit: ~8 px text).
+	price.Label.UITextSizeConstraint.MinTextSize = 12
 	self.DailyPrice = price.Label
 	-- ODDS: its own button over the top edge of the tile (a sibling, not a child, so a tap reaches exactly one of
 	-- them); a bit larger than a tag so it's easy to hit. Placed with the tile in place().
-	local oddsButton = Kit.gem(hud, "DailyOddsButton", "ODDS", "aqua", UDim2.fromOffset(76, 30), UDim2.new())
+	local oddsButton = Kit.gem(hud, "DailyOddsButton", "ODDS", "aqua", UDim2.fromOffset(84, 36), UDim2.new())
 	oddsButton.UIAspectRatioConstraint:Destroy()
 	oddsButton.Label.UITextSizeConstraint.MaxTextSize = 26
 	-- Big enough to tap on a phone even where the tile itself is at its minimum size.
 	local minimum = Instance.new("UISizeConstraint")
-	minimum.MinSize, minimum.Parent = Vector2.new(76, 30), oddsButton
+	minimum.MinSize, minimum.Parent = Vector2.new(84, 36), oddsButton
 	for _, part in oddsButton:GetDescendants() do
 		if part:IsA("GuiObject") then
 			part.ZIndex += 6
@@ -224,6 +226,12 @@ function Controller:BuildTiles(hud)
 	end)
 	-- The Daily tile takes the Shop's old slot and Shop / Inventory move down one step; while the tile is hidden
 	-- (bought today, or paid random items restricted) they go back up. Same layout on desktop, touch and console.
+	self.Nav = nav
+	nav:GetPropertyChangedSignal("Visible"):Connect(function()
+		if self.State then
+			self:Apply(self.State)
+		end
+	end)
 	local home = nav.Position
 	local shop = nav:WaitForChild("ShopButton")
 	local inventoryHome = inventory.Position
@@ -249,7 +257,7 @@ function Controller:BuildTiles(hud)
 		daily.Size = UDim2.fromScale(navSize.X.Scale * shop.Size.X.Scale, navSize.Y.Scale * shop.Size.Y.Scale)
 		local w, h = daily.AbsoluteSize.X, daily.AbsoluteSize.Y
 		oddsButton.Visible = shown
-		oddsButton.Size = UDim2.fromOffset(math.floor(math.max(76, w * 1.0)), math.floor(math.max(30, h * 0.26)))
+		oddsButton.Size = UDim2.fromOffset(math.floor(math.max(84, w * 1.0)), math.floor(math.max(36, h * 0.28)))
 		oddsButton.Position = UDim2.new(daily.Position.X.Scale, 0, daily.Position.Y.Scale, -math.floor(h * 0.47))
 		-- Centre-anchored (Motion keeps buttons on their centre); the aspect constraint sets the real width.
 		starter.Position = UDim2.new(0.985, -math.floor(starter.AbsoluteSize.X / 2), 0.45, 0)
@@ -317,6 +325,12 @@ function Controller:PopupOpen()
 	return (self.Popup ~= nil and not self.Popup.Closed) or (self.Need ~= nil and not self.Need.Closed)
 end
 
+-- The tiles follow the lobby HUD's own buttons: hidden while Navigation is (the onboarding claim cards, Kiln reveals,
+-- reward screens) and while one of our popups is open (ui-audit, 2026-10-22).
+function Controller:HudFree()
+	return not self:PopupOpen() and (self.Nav == nil or self.Nav.Visible)
+end
+
 function Controller:Apply(view)
 	self.State = view
 	self.Offset = (view.ServerNow or workspace:GetServerTimeNow()) - workspace:GetServerTimeNow()
@@ -324,7 +338,7 @@ function Controller:Apply(view)
 		local s = view.Starter
 		-- DealHidden tells an open popup not to bring the tile back when it closes.
 		self.StarterTile:SetAttribute("DealHidden", not s.Visible)
-		self.StarterTile.Visible = s.Visible and not self:PopupOpen()
+		self.StarterTile.Visible = s.Visible and self:HudFree()
 		self:StarterPicture(s)
 		local off = self.StarterTile:FindFirstChild("NewTag")
 		if off then
@@ -335,7 +349,7 @@ function Controller:Apply(view)
 		local showDaily = dailyState.Visible and not dailyState.BoughtToday
 		self.DailyTile:SetAttribute("DealHidden", not showDaily)
 		self.DailyOddsButton:SetAttribute("DealHidden", not showDaily)
-		self.DailyTile.Visible = showDaily and not self:PopupOpen()
+		self.DailyTile.Visible = showDaily and self:HudFree()
 		self.DailyBusy = false
 		Kit.enable(self.DailyTile, dailyState.Available)
 		self.DailyTile.Artwork.ImageTransparency = if dailyState.Available then 0 else 0.35

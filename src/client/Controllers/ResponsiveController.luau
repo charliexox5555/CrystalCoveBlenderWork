@@ -277,16 +277,36 @@ function Controller:FitLobbyHud(gui)
 				currency.Position = UDim2.new(1 - Tuning.EdgeMargin, math.floor(right - content), Tuning.EdgeMargin, 0)
 			end
 		end)
-		local plus = currency:FindFirstChild("MarblePlus", true)
-		if plus and not self.PlusWatch then
-			self.PlusWatch = plus:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+		-- The "+" is added (and grows) after the HUD is built; slide again when it does.
+		if not self.CurrencyWatch then
+			local function refit()
 				if self:Touch() then
-					self:FitLobbyHud(gui)
+					task.defer(self.FitLobbyHud, self, gui)
 				end
-			end)
+			end
+			local function watch(child)
+				if child.Name == "MarblePlus" and child:IsA("GuiObject") then
+					child:GetPropertyChangedSignal("AbsoluteSize"):Connect(refit)
+					refit()
+				end
+			end
+			self.CurrencyWatch = currency.DescendantAdded:Connect(watch)
+			for _, child in currency:GetDescendants() do
+				watch(child)
+			end
 		end
 	else
 		currency.AnchorPoint, currency.Position = self.CurrencyHome.Anchor, self.CurrencyHome.Position
+		if self:Class() == "TV" then
+			-- Keep the counters inside the TV safe area (overscan), like the windows.
+			local home = self.CurrencyHome.Position
+			currency.Position = UDim2.new(
+				home.X.Scale + (1 - Tuning.SafeWidth) / 2,
+				home.X.Offset,
+				home.Y.Scale - (1 - Tuning.SafeHeight) / 2,
+				home.Y.Offset
+			)
+		end
 	end
 end
 

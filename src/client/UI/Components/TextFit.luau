@@ -1,7 +1,8 @@
 -- One text-fit policy for every label, button and box in the UI (workstream J). Text never leaves its box:
 --   1. TextScaled inside a UITextSizeConstraint (Theme.TextFit.Min .. the authored/Theme maximum);
 --   2. if even the minimum doesn't fit on one line and the box has room for two lines, wrap;
---   3. still too long: allow down to Theme.TextFit.MinSmall (one line, then two);
+--   3. still too long: allow down to Theme.TextFit.MinSmall (one line, then two), then on down to
+--      Theme.TextFit.MinWord (9, Roblox's readability floor for MinTextSize) rather than be cut;
 --   4. if it still doesn't fit, draw at that floor and end with "…" (TextTruncate.AtEnd).
 -- So text shrinks first, then goes to two lines, and is only cut when it would otherwise be unreadably small.
 -- TextFit.guard(PlayerGui) applies it to everything in the UI, templates included; TextFit.apply sets a
@@ -109,6 +110,7 @@ local function bind(label)
 			-- (An authored minimum above ours is tried first: designers raise it on purpose.)
 			local small = math.max(1, math.min(Fit.MinSmall, minimum))
 			local floors = { math.min(math.max(baseMin or 1, minimum), math.max(1, math.floor(h))), minimum, small }
+			table.insert(floors, math.max(1, math.min(Fit.MinWord, small)))
 			for _, floor in floors do
 				if c and label.TextScaled then
 					c.MinTextSize = floor

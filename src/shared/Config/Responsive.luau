@@ -11,5 +11,7 @@ return {
 	BillboardMaxScale = 1.8, -- ...up to this factor
 	NavReferenceHeight = 320, -- lobby Shop / Inventory buttons grow on HUDs shorter than this (px under the top bar)...
 	NavMaxScale = 1.2, -- ...up to this factor (more would reach the thumbstick)
+	CompactPlayText = 0.78, -- phone: PLAY's text box height (share of the authored one)
+	CompactHpText = 0.85, -- phone: the billboard HP line's height (share of the authored one)
 	BillboardMinScale = 1.5, -- every screen: at the authored 5 x 2.5 studs the glassy chip and HP line were ~6 px
 }

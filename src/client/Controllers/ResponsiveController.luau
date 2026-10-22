@@ -115,7 +115,30 @@ local PHONE_LAYOUTS = {
 		Coins = { Position = UDim2.fromScale(0.545, -0.005) },
 		Marbles = { Position = UDim2.fromScale(0.72, -0.005) },
 	},
+	SettingsScreen = {},
 }
+-- Settings rows on phones (creator: shrink, don't cut). Slider rows: the helper line drops below the value pill and
+-- takes the row's width. Toggle rows have no room beside the switch for a 9 px helper, so the helper goes and the
+-- name gets its height (two lines if it needs them); the icon still says what the row is.
+for _, row in { "Master", "Music", "SFX" } do
+	PHONE_LAYOUTS.SettingsScreen["Content.Rows." .. row .. ".Helper"] =
+		{ Position = UDim2.fromScale(0.2, 0.38), Size = UDim2.fromScale(0.75, 0.16) }
+end
+for _, row in { "BotPlay", "AutoCast", "LargeEffects", "ReducedMotion", "HideCosmetics" } do
+	PHONE_LAYOUTS.SettingsScreen["Content.Rows." .. row .. ".Helper"] = { Visible = false }
+	-- Centred at the authored height, so every name keeps the same size; the longest one gets two lines.
+	PHONE_LAYOUTS.SettingsScreen["Content.Rows." .. row .. ".Label"] = if row == "HideCosmetics"
+		then { Position = UDim2.fromScale(0.17, 0.12), Size = UDim2.fromScale(0.5, 0.76) }
+		else { Position = UDim2.fromScale(0.17, 0.29), Size = UDim2.fromScale(0.5, 0.42) }
+end
+
+local function find(panel, path)
+	local object = panel
+	for part in string.gmatch(path, "[^%.]+") do
+		object = object and object:FindFirstChild(part)
+	end
+	return object
+end
 
 function Controller:PhoneLayout(gui, panel)
 	local layout = PHONE_LAYOUTS[gui.Name]
@@ -127,7 +150,7 @@ function Controller:PhoneLayout(gui, panel)
 	panel:SetAttribute("ResponsiveClass", class) -- read by UI audits
 	self.Layouts = self.Layouts or setmetatable({}, { __mode = "k" }) -- [child] = { Home = {}, Set = {} }
 	for name, props in layout do
-		local child = panel:FindFirstChild(name)
+		local child = find(panel, name)
 		if not child then
 			continue
 		end
@@ -241,9 +264,29 @@ function Controller:FitNavigation(gui)
 	end
 end
 
+-- Phones: the PLAY word fills its gem edge to edge; a slightly shorter text box gives it some air (creator).
+function Controller:FitPlayLabel(gui)
+	local play = gui:FindFirstChild("PlayButton")
+	local label = play and play:FindFirstChild("Label")
+	if not label or not label:IsA("GuiObject") then
+		return
+	end
+	self.PlayLabelHome = self.PlayLabelHome or { label.Position, label.Size }
+	local home = self.PlayLabelHome
+	if self:Class() == "Compact" then
+		local shrink = Tuning.CompactPlayText
+		local h = home[2].Y.Scale * shrink
+		label.Size = UDim2.fromScale(home[2].X.Scale, h)
+		label.Position = UDim2.fromScale(home[1].X.Scale, home[1].Y.Scale + (home[2].Y.Scale - h) / 2)
+	else
+		label.Position, label.Size = home[1], home[2]
+	end
+end
+
 function Controller:FitLobbyHud(gui)
 	self:FitNavigation(gui)
 	self:FitPlayHint(gui)
+	self:FitPlayLabel(gui)
 	local currency = gui:FindFirstChild("Currency")
 	if not currency or not currency:IsA("GuiObject") then
 		return
@@ -355,6 +398,13 @@ function Controller:FitBillboard(gui)
 			UDim2.new(size.X.Scale * factor, size.X.Offset * factor, size.Y.Scale * factor, size.Y.Offset * factor)
 		-- Grow upwards: the bottom edge stays where it was, clear of the avatar's head.
 		gui.StudsOffset += Vector3.yAxis * size.Y.Scale * (factor - 1) / 2
+		-- Phones: the HP line reads at a smaller size than the name and hearts (creator).
+		local hp = gui:FindFirstChild("Body") and gui.Body:FindFirstChild("HpAmount")
+		if hp and self:Class() == "Compact" then
+			local h = hp.Size.Y.Scale * Tuning.CompactHpText
+			hp.Position = UDim2.new(hp.Position.X.Scale, 0, hp.Position.Y.Scale + (hp.Size.Y.Scale - h) / 2, 0)
+			hp.Size = UDim2.new(hp.Size.X.Scale, 0, h, 0)
+		end
 	end
 end
 

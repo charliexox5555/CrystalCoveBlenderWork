@@ -31,10 +31,12 @@ local function signature(profile)
 end
 
 -- Phone rows of the glassy info pane under the smaller preview: [label] = { top, height } (share of the pane).
+-- The type / rarity tags get wider so "Uncommon" or "Legendary" shrink instead of being cut: [tag] = { x, width }.
+local PHONE_TAGS = { TypeTag = { 0.06, 0.36 }, RarityTag = { 0.45, 0.43 } }
 local PHONE_ROWS = {
-	PassiveCaption = { 0.375, 0.04 },
-	PassiveName = { 0.41, 0.045 },
-	PassiveDescription = { 0.455, 0.165 },
+	PassiveCaption = { 0.38, 0.04 },
+	PassiveName = { 0.415, 0.045 },
+	PassiveDescription = { 0.46, 0.16 },
 	PowerCaption = { 0.625, 0.04 },
 	PowerName = { 0.66, 0.045 },
 	PowerDescription = { 0.705, 0.14 },
@@ -50,6 +52,13 @@ function Screen.new(profile, close)
 	local phone = ok and responsive.Class ~= nil and responsive:Class() == "Compact"
 	require(script.Parent.Parent.Components.SquareItemPreview).apply(self.Info, phone)
 	if phone then
+		for name, x in PHONE_TAGS do
+			local tag = self.Info:FindFirstChild(name)
+			if tag then
+				tag.Position = UDim2.new(x[1], 0, tag.Position.Y.Scale, tag.Position.Y.Offset)
+				tag.Size = UDim2.new(x[2], 0, 0.055, 0)
+			end
+		end
 		for name, y in PHONE_ROWS do
 			local label = self.Info:FindFirstChild(name)
 			if label then

@@ -2,6 +2,16 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-22 — Claude (ui-audit session) — Creator's mobile notes: button motion, fades, PLAY / HP size, shrink-not-cut
+Done:
+- #3: everything that scales (press, pop, bump, stagger) is centre-anchored at the same spot (`Motion.center`), animated buttons stay centred if re-anchored later, and the shop cards' BUY gem is centred and pinned to the card bottom. StarterGui templates needed no change.
+- #4: the shared close fade fades text outlines (UIStroke) with the text (`Motion.Fade`, also used by MatchKit popups); toasts too.
+- #5 and #6: phones only, PLAY text 78% and the billboard HP line 85% of their authored height (`Config/Responsive`).
+- #8: TextFit shrinks down to 9 px (Roblox's recommended MinTextSize floor) before "…" (decision 97 amended). Phone Settings rows and info-pane tags got room. A06 cut survey: 16 cut labels → 7 (long item names on small tiles).
+- Studio: A06 and laptop before/after in docs/testing/ui_audit_v2/. Lune 267/267.
+Next:
+- iPhone 17 Pro wasn't re-captured for these (the lock queue was 4 deep); same code path as the A06.
+
 ## 2026-10-22 — Codex — Logo-free square icon options
 Done:
 - Created two Glass Clash icon options from existing I1/I2 and T1a/T2a render assets: Phoenix–Comet clash and Dragon shatter. Recommended duel v2 enlarges both faces and reduces background/debris after a small-size check; no text or logo.

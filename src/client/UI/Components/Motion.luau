@@ -49,6 +49,12 @@ function Motion.center(object)
 	if object.AnchorPoint == Vector2.new(0.5, 0.5) then
 		return
 	end
+	-- A UIScale grows from the AnchorPoint, so anything that scales (press, pop, entrance) needs a centred anchor.
+	-- Layout children are placed by their layout (and scale from their centre) whatever the anchor.
+	local parent = object.Parent
+	if parent and parent:FindFirstChildWhichIsA("UIGridStyleLayout") then
+		return
+	end
 	local p, s, a = object.Position, object.Size, object.AnchorPoint
 	object.Position = UDim2.new(
 		p.X.Scale + s.X.Scale * (0.5 - a.X),
@@ -57,6 +63,19 @@ function Motion.center(object)
 		p.Y.Offset + s.Y.Offset * (0.5 - a.Y)
 	)
 	object.AnchorPoint = Vector2.new(0.5, 0.5)
+end
+
+-- Keeps an animated object centred when the code that owns it re-anchors it later (deferred, so the Position set
+-- in the same statement is converted with it).
+local watched = setmetatable({}, { __mode = "k" })
+local function keepCentred(object)
+	if watched[object] then
+		return
+	end
+	watched[object] = true
+	object:GetPropertyChangedSignal("AnchorPoint"):Connect(function()
+		task.defer(Motion.center, object)
+	end)
 end
 
 -- Primary gem buttons (green/amber/play) get a slow shine sweep and a faint breathing pulse.
@@ -124,6 +143,8 @@ function Motion.button(button)
 	bound[button] = true
 	local target = if button.Name == "Open" then button.Parent else button
 	Motion.center(target)
+	keepCentred(button)
+	keepCentred(target)
 	local scale = target:FindFirstChild("InteractionScale") or Instance.new("UIScale")
 	scale.Name, scale.Parent = "InteractionScale", target
 	local art = button:FindFirstChild("Artwork")
@@ -284,16 +305,20 @@ local function ambienceOff()
 		end)
 	end
 end
--- Properties that fade an element out, by class (only the ones that exist on it are tweened).
+-- Properties that fade an element out, by class (only the ones that exist on it are tweened). Outlines (UIStroke)
+-- fade with their text, so a closing window never leaves its letter outlines hanging for a frame.
 local FADE = {
 	Frame = { "BackgroundTransparency" },
 	TextLabel = { "BackgroundTransparency", "TextTransparency", "TextStrokeTransparency" },
 	TextButton = { "BackgroundTransparency", "TextTransparency", "TextStrokeTransparency" },
+	TextBox = { "BackgroundTransparency", "TextTransparency", "TextStrokeTransparency" },
 	ImageLabel = { "BackgroundTransparency", "ImageTransparency" },
 	ImageButton = { "BackgroundTransparency", "ImageTransparency" },
 	ViewportFrame = { "BackgroundTransparency", "ImageTransparency" },
-	ScrollingFrame = { "BackgroundTransparency" },
+	ScrollingFrame = { "BackgroundTransparency", "ScrollBarImageTransparency" },
+	UIStroke = { "Transparency" },
 }
+Motion.Fade = FADE
 local function fadeOut(panel, info)
 	local count = 0
 	for _, object in panel:GetDescendants() do
@@ -409,6 +434,7 @@ function Motion.bump(object, amount)
 	if Motion.reduced() then
 		return
 	end
+	Motion.center(object)
 	local scale = object:FindFirstChild("BumpScale") or Instance.new("UIScale")
 	scale.Name, scale.Parent, scale.Scale = "BumpScale", object, 1 + (amount or 0.08)
 	TweenService:Create(scale, Motion.Tuning.HoverTween, { Scale = 1 }):Play()
@@ -424,6 +450,7 @@ function Motion.stagger(objects)
 		if not object.Parent then
 			continue
 		end
+		Motion.center(object)
 		local scale = object:FindFirstChild("EntranceScale") or Instance.new("UIScale")
 		scale.Name, scale.Parent, scale.Scale = "EntranceScale", object, T.TileFrom
 		task.delay(math.min((index - 1) * T.TileStep, T.TileMaxDelay), function()
@@ -484,9 +511,21 @@ function Motion.toast(label, hold, done)
 	label.Position = UDim2.new(rest.X.Scale, rest.X.Offset, rest.Y.Scale, rest.Y.Offset + T.ToastRise)
 	label.TextTransparency = 1
 	TweenService:Create(label, T.ToastIn, { Position = rest, TextTransparency = 0 }):Play()
+	for _, stroke in label:GetChildren() do
+		if stroke:IsA("UIStroke") then
+			local shown = stroke.Transparency
+			stroke.Transparency = 1
+			TweenService:Create(stroke, T.ToastIn, { Transparency = shown }):Play()
+		end
+	end
 	task.delay(hold, function()
 		if label.Parent then
 			TweenService:Create(label, T.ToastOut, { TextTransparency = 1 }):Play()
+			for _, stroke in label:GetChildren() do
+				if stroke:IsA("UIStroke") then
+					TweenService:Create(stroke, T.ToastOut, { Transparency = 1 }):Play()
+				end
+			end
 		end
 		task.delay(T.ToastOut.Time, finish)
 	end)

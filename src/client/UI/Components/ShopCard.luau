@@ -58,8 +58,17 @@ function Card.new(frame)
 	local button = Gem.new(frame, "Buy", "…", "Green", UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.8))
 	button.Label.UITextSizeConstraint.MaxTextSize = 30
 	-- On short cards (phones) the button's 44 px minimum is taller than its 20% slot and covered the name band:
-	-- pin it to the bottom and give the art whatever height is left.
-	button.AnchorPoint, button.Position = Vector2.new(0, 1), UDim2.fromScale(0, 1)
+	-- pin it to the bottom and give the art whatever height is left. The anchor is centred (presses scale from the
+	-- middle), so its centre sits half its drawn height above the card's bottom.
+	button.AnchorPoint, button.Position = Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.9)
+	local function pin()
+		local y = -math.floor(button.AbsoluteSize.Y / 2)
+		if button.Position ~= UDim2.new(0.5, 0, 1, y) then
+			button.Position = UDim2.new(0.5, 0, 1, y)
+		end
+	end
+	button:GetPropertyChangedSignal("AbsoluteSize"):Connect(pin)
+	task.defer(pin)
 	local function relayout()
 		local minimum = button:FindFirstChildOfClass("UISizeConstraint")
 		local height = frame.AbsoluteSize.Y

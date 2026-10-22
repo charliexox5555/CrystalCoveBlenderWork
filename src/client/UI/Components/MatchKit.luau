@@ -10,15 +10,7 @@ local Specs = require(script.Parent.StainedAssetSpecs)
 
 local Kit = {}
 
-local FADE = {
-	Frame = { "BackgroundTransparency" },
-	TextLabel = { "BackgroundTransparency", "TextTransparency", "TextStrokeTransparency" },
-	TextButton = { "BackgroundTransparency", "TextTransparency", "TextStrokeTransparency" },
-	ImageLabel = { "BackgroundTransparency", "ImageTransparency" },
-	ImageButton = { "BackgroundTransparency", "ImageTransparency" },
-	ViewportFrame = { "BackgroundTransparency", "ImageTransparency" },
-	UIStroke = { "Transparency" },
-}
+local FADE = Motion.Fade -- one list for every fade, outlines included
 
 -- A ScreenGui with nothing authored in it: match screens are fully built from code.
 function Kit.gui(name, order)
@@ -288,6 +280,7 @@ function Kit.fade(root, info, to)
 end
 
 function Kit.popIn(object, silent)
+	Motion.center(object)
 	local scale = object:FindFirstChild("OpenScale") or Instance.new("UIScale")
 	scale.Name, scale.Parent = "OpenScale", object
 	if Motion.reduced() then

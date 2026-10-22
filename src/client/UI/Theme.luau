@@ -135,6 +135,9 @@ Theme.TextSize = {
 Theme.TextFit = {
 	Min = 12,
 	MinSmall = 10,
+	-- Last floor before "…": text shrinks this far rather than be cut ("Un…" reads worse than a small word, creator).
+	-- 9 is Roblox's own readability floor for MinTextSize; below it a cut is the lesser evil.
+	MinWord = 9,
 	Lines = 2, -- one-line text (names, buttons) may use two lines before it is cut
 	BodyLines = 3, -- descriptions
 	-- Cut-glass art isn't rectangular: keep text inside the inner face (fractions of the art's box).

@@ -9,6 +9,7 @@ export type Ids = {
 	StarterPack: number?, -- "Starter Pack", 49
 	DailyGlassy: number?, -- "Daily Glassy", 9
 	DailyMarbles: number?, -- "Daily Marbles", 49
+	MarbleBarrel: number?, -- "Marble Barrel", 1999
 	FinisherMythic: number?, -- "Daily Offer: Mythic Finisher", 499
 	FlyerEpic: number?, -- "Daily Offer: Epic Flyer", 199
 	FlyerLegendary: number?, -- "Daily Offer: Legendary Flyer", 399
@@ -19,6 +20,7 @@ local ids: Ids = {
 	StarterPack = nil,
 	DailyGlassy = nil,
 	DailyMarbles = nil,
+	MarbleBarrel = nil,
 	FinisherMythic = nil,
 	FlyerEpic = nil,
 	FlyerLegendary = nil,

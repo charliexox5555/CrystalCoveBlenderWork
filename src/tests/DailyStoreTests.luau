@@ -298,7 +298,15 @@ return function(t, d)
 			unique(bundle, bundle.Id)
 		end
 		for _, pack in M.Packs do
-			unique(pack, pack.Id)
+			-- A pack whose product is still to be created (Config/ProductIds) stays unavailable instead.
+			if pack.ProductId ~= nil then
+				unique(pack, pack.Id)
+			end
+		end
+		for _, pack in Rules.marblePacks() do
+			if not Rules.packProduct(Rules.marblePack(pack.Id)) then
+				t.eq(pack.Available, false, pack.Id .. " without a product is not on sale")
+			end
 		end
 		for _, byRarity in D.RobuxProducts do
 			for _, bands in byRarity do

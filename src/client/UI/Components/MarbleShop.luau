@@ -29,6 +29,7 @@ local tiers = {
 	Theme.Palette.amethystLight,
 	Theme.Palette.amberLight,
 	Theme.Palette.rubyLight,
+	Theme.Palette.milkLight,
 }
 
 local function commas(n)
@@ -251,8 +252,9 @@ function MarbleShop.page(page, say)
 		Size = UDim2.fromScale(0.96, 0.54),
 	})
 	U.make("UIGridLayout", grid, {
-		CellSize = UDim2.fromScale(0.315, 0.47),
-		CellPadding = UDim2.fromScale(0.0275, 0.05),
+		-- Four across: seven packs in two rows.
+		CellSize = UDim2.fromScale(0.235, 0.47),
+		CellPadding = UDim2.fromScale(0.018, 0.05),
 		SortOrder = Enum.SortOrder.LayoutOrder,
 		HorizontalAlignment = Enum.HorizontalAlignment.Center,
 	})

@@ -2,7 +2,8 @@
 
 Robux in Glass Clash: what is sold, at what price, why, and how it stays fair for kids. The creator asked for this on
 2026-10-21 and delegated the calls ("make the calls yourself"). Everything here is **Proposed** until the creator
-reviews it.
+reviews it. **Creator answers (2026-10-21):** 3-day Starter Pack window, the Daily Glassy odds table, a missed Daily
+Marbles day keeps your place, Hollowlight at 699: all as proposed; and **keep an 8,999 R$ top Marble pack** (added).
 
 **Rules that never bend** (AGENTS.md): odds before every paid random item, hidden where `PolicyService` restricts
 paid random items, no betting or wagering of coins or Robux, no stronger Robux-only glassies, every purchase through an
@@ -15,7 +16,7 @@ idempotent `ProcessReceipt`.
 | **Starter Pack** | 49 R$ | Sunny (Epic glassy), Daybreak (Epic finisher), Dawn Kite (Epic flyer), 150 Marbles | once ever, for 3 days after you first see it | HUD tile (right edge), tile beside the open Shop, pack popup; opens by itself twice at most |
 | **Daily Glassy** | 9 R$ | one random glassy from the Kiln pool: Rare 60%, Epic 32%, Legendary 6.5%, Mythic 1.5% | once per UTC day | HUD tile under Inventory (next to Shop on touch); odds popup before buying |
 | **Daily Marbles** | 49 R$ | 60 → 65 → 70 → 75 → 80 → 85 → 100 Marbles (each day you buy, the next buy gives more; 100 repeats) | once per UTC day; a missed day keeps your place | top of the Marbles page (now a scrolling page) |
-| **Marble packs** | 99 – 3,999 R$ | 100 – 5,600 Marbles (table in §5) | none | Marbles page |
+| **Marble packs** | 99 – 8,999 R$ | 100 – 13,000 Marbles (table in §5) | none | Marbles page |
 | **Daily store** | 49 – 699 R$ | one named glassy, finisher and flyer a day (decision 76) | one per slot per day | Featured page |
 | **Hollowlight Collection** | 699 R$ (was 499) | Hollowlight + Moonlantern Carriage + Lantern Eclipse | once | Featured page / bundle preview |
 | **Need Marbles** | – | tapping REROLL, PICK ANY, a Marble Kiln or Marble crate without enough Marbles opens one card: the cheapest offer that covers it, one BUY, and you stay where you were | – | over match selection and the Shop |
@@ -149,13 +150,15 @@ written for privacy choices). The ladder still rewards coming back; it just neve
 | Pouch | 220 | 199 | +9% |
 | Jar | 480 | 399 | +19% |
 | Bucket | 1,000 | 799 | +23% |
-| Chest | 2,600 | 1,999 | +28% |
-| Vault | 5,600 | 3,999 | +38% |
+| Barrel (new) | 2,600 | 1,999 | +28% |
+| Chest | 5,600 | 3,999 | +38% |
+| Vault | 13,000 | 8,999 | +43% |
 
-- A rung at every common price point from 99 to 3,999: the old ladder jumped from 99 to 399, where most Roblox
+- A rung at every common price point from 99 to 8,999: the old ladder jumped from 99 to 399, where most Roblox
   purchases (median ≈ 100 R$) never reach. 49 R$ is covered by Daily Marbles and the Starter Pack.
-- The top is **3,999 R$ ($50)** instead of 8,999 for a kids' game; bonuses rise smoothly to +38% (Ball VS Ball tops
-  at ~+30%). Bonus percentages are computed (`OfferRules.bonus`) so the card is always true.
+- Proposed a 3,999 R$ top for a kids' game; **the creator kept an 8,999 R$ Vault** (13,000, +43%, close to Ball VS
+  Ball's ~+30% at 9,999). Bonuses rise smoothly and are computed (`OfferRules.bonus`) so the card is always true.
+  The 3,999 and 8,999 products keep their dashboard prices; the 1,999 Barrel is a new product.
 - Uses are unchanged: Pick Any (6/9/12 after the free one), rerolls (3/3/6/6/9), the Marble Kiln (30 / 300 for 10) and
   Marble crates (30 finisher, 100 flyer).
 
@@ -190,16 +193,16 @@ Free               0      105        19        31       39%        21%      0.0%
 Starter           49      110        22        32       53%        26%      0.1%      0.0%
 Occasional       247      116        23        33       59%        29%      0.2%      0.0%
 Daily           1789      204        29        37       92%        78%      0.9%      0.8%
-Whale          13807      577        37        39      100%       100%      2.6%      1.2%
+Whale          23807     1071        38        39      100%       100%      3.1%      1.2%
 ```
 
 - **No power for Robux.** The "edge" is the HP of a player's best three glassies over a free player's; it is all rarity
-  and stars ever buy (decision 86). Small payers are within 0.2%; a daily buyer within 1%; a whale 2.6% in week one,
+  and stars ever buy (decision 86). Small payers are within 0.2%; a daily buyer within 1%; a whale (two Vaults a month) 3.1% in week one,
   1.2% by day 30, under the +6.1% cap (a 5-star Mythic). Free players reach a Legendary in week one 39% of the time.
 - **Collecting faster is what money buys**, like every collector: a daily buyer (~$22 a month) owns 37 of 39 glassies by
   day 30 against a free player's 31. Free pacing (first Epic 40 min, first Legendary 4 h, 105 pulls by day 30) is
   unchanged.
-- **Caps.** Daily offers are once a day; the Starter Pack once ever; the top pack is 3,999 R$. Nothing Robux buys can
+- **Caps.** Daily offers are once a day; the Starter Pack once ever; the top pack is 8,999 R$. Nothing Robux buys can
   be traded or wagered (there is no trading).
 - `EconomyTests` checks these bounds on every run.
 
@@ -246,6 +249,7 @@ and tell Claude; it creates and updates everything below with `products.py` and 
 | new | Starter Pack | 49 | `StarterPack` |
 | new | Daily Glassy | 9 | `DailyGlassy` |
 | new | Daily Marbles | 49 | `DailyMarbles` |
+| new | Marble Barrel | 1,999 | `MarbleBarrel` |
 | new | Daily Offer: Mythic Finisher | 499 | `FinisherMythic` |
 | new | Daily Offer: Epic Flyer | 199 | `FlyerEpic` |
 | new | Daily Offer: Legendary Flyer | 399 | `FlyerLegendary` |
@@ -256,8 +260,11 @@ and tell Claude; it creates and updates everything below with `products.py` and 
 | Marble Pouch | 3719142028 | 399 | 199 |
 | Marble Jar | 3719142039 | 799 | 399 |
 | Marble Bucket | 3719142052 | 1,899 | 799 |
-| Marble Chest | 3719142077 | 3,999 | 1,999 |
-| Marble Vault | 3719142087 | 8,999 | 3,999 |
+
+(Marble Chest 3,999 and Marble Vault 8,999 keep their prices; only their Marble amounts change in config.)
+
+| Change price of | Id | From | To |
+|---|---|---|---|
 | Hollowlight Collection | 3719124109 | 499 | 699 |
 | Glassy Epic | 3719124045 | 179 | 199 |
 | Glassy Epic Featured | 3719124054 | 229 | 249 |

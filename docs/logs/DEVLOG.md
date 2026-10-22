@@ -10,12 +10,12 @@ Done:
 - Daily Glassy 9 R$/UTC day: Rare 60 / Epic 32 / Legendary 6.5 / Mythic 1.5, odds table + DETAILS before buying, hidden unless PolicyService allows paid random items, Kiln reveal; HUD tile under Inventory (next to Shop on touch).
 - Daily Marbles 49 R$/day: 60 … 85, then 100; missed day keeps your place. Marbles page now scrolls (Daily Marbles on top).
 - Need Marbles card for REROLL / PICK ANY / Marble Kiln / Marble crates: cheapest covering offer, one BUY, stays in place.
-- Repriced: Marble ladder 100/99 … 5,600/3,999 (bonus computed); Hollowlight Collection 699; daily store onto the 49-599 points + 4 new cosmetic products.
+- Repriced: Marble ladder 100/99 … 2,600/1,999 (new Barrel), 5,600/3,999, 13,000/8,999 (creator kept an 8,999 top pack; bonus computed); Hollowlight Collection 699; daily store onto the 49-599 points + 4 new cosmetic products.
 - Code: OfferRules (pure), Config/Offers, Config/ProductIds, StoreService (intent kinds, Deals remotes, Studio placeholder receipts), Util/ProductPrices (holds back any product whose dashboard price differs from config), DealsController, DealScreens, MarbleShop page, ShopContent, MatchSelection, tools/opencloud/products.py.
-- Sims. Economy (free player) unchanged: pulls day 1 4 / day 30 105, first Epic 40 min, first Legendary 4.0 h, Mythic 24% in 30 days. PayerSim (600 each): R$/30d, unique glassies d30, HP edge over free d7: Free 0 / 31 / 0%; Starter 49 / 32 / +0.1%; Occasional 247 / 33 / +0.2%; Daily 1,789 / 37 / +0.9%; Whale 13,807 / 39 / +2.6% (cap +6.1%). Balance sim unchanged (no fight changes).
+- Sims. Economy (free player) unchanged: pulls day 1 4 / day 30 105, first Epic 40 min, first Legendary 4.0 h, Mythic 24% in 30 days. PayerSim (600 each): R$/30d, unique glassies d30, HP edge over free d7: Free 0 / 31 / 0%; Starter 49 / 32 / +0.1%; Occasional 247 / 33 / +0.2%; Daily 1,789 / 37 / +0.9%; Whale (two Vaults) 23,807 / 39 / +3.1% (cap +6.1%). Balance sim unchanged (no fight changes).
 - Tests: Lune 259/259 (new OfferTests, payer bound in EconomyTests). Studio Play: every flow above with clicks; phone (iPhone 17 Pro) and Xbox layout checks; report and captures in docs/testing/monetization/.
 Next:
-- Creator: create the 7 developer products and update 15 prices (MONETIZATION.md §9), or give the Open Cloud key the developer-product scope and ask Claude to run tools/opencloud/products.py; fill Config/ProductIds. Until then repriced products show SOON (price guard) and the new offers SOON on live servers.
+- Creator answered the open calls (3-day window, odds, keep place, Hollowlight 699, keep an 8,999 pack). Create the 8 developer products and update 13 prices (MONETIZATION.md §9), or give the Open Cloud key the developer-product scope and ask Claude to run tools/opencloud/products.py; fill Config/ProductIds. Until then repriced products show SOON (price guard) and the new offers SOON on live servers.
 - Creator: review prices / timings / the watch-an-ad recommendation (§8).
 Problems / questions for the user:
 - ROBLOX_ASSETS_KEY returns "Scope not authorized" for developer products (it could create them on 2026-10-17).

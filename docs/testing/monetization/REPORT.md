@@ -21,7 +21,7 @@ charged). Design and prices: [MONETIZATION.md](../../design/MONETIZATION.md).
 | 11 | iPhone 17 Pro (touch) | Daily tile moves next to Shop (out of the thumbstick area), Starter tile on the right | [11](captures/11_phone_hud_tiles.jpg) |
 | 12 | iPhone 17 Pro popup | fits, text readable | [12](captures/12_phone_starter_popup.jpg) |
 | 13 | Xbox (TV safe area) | popup and tiles inside the safe area | [13](captures/13_xbox_starter_popup.jpg) |
-| 14 | Price guard | at start the server read all 24 existing products' real prices and held back the 15 repriced ones (their dashboard prices are still the old ones): they show COMING SOON and refuse to prompt | console |
+| 14 | Price guard | at start the server read all 24 existing products' real prices and held back the 15 repriced ones (their dashboard prices are still the old ones; 13 after the creator kept the 3,999 / 8,999 prices): they show COMING SOON and refuse to prompt | console |
 
 Lune: `lune run tools/run_tests` 259/259 (new `OfferTests`, 15 tests; a payer bound in `EconomyTests`).
 

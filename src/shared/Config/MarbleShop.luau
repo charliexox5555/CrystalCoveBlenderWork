@@ -11,20 +11,23 @@ export type Pack = {
 	Id: string,
 	Name: string,
 	Marbles: number,
-	Art: number, -- illustration size step 1..6
+	Art: number, -- illustration size step 1..7
 	ProductId: number?,
 	Price: number?,
 }
 
 local MarbleShop = {}
 
+-- The creator kept an 8,999 R$ top pack (2026-10-21); the 3,999 and 8,999 products keep their dashboard prices.
+local Ids = if script then require(script.Parent.ProductIds) else require("./ProductIds")
 MarbleShop.Packs = {
 	{ Id = "handful", Name = "Marble Handful", Marbles = 100, Art = 1, ProductId = 3719142015, Price = 99 },
 	{ Id = "pouch", Name = "Marble Pouch", Marbles = 220, Art = 2, ProductId = 3719142028, Price = 199 },
 	{ Id = "jar", Name = "Marble Jar", Marbles = 480, Art = 3, ProductId = 3719142039, Price = 399 },
 	{ Id = "bucket", Name = "Marble Bucket", Marbles = 1000, Art = 4, ProductId = 3719142052, Price = 799 },
-	{ Id = "chest", Name = "Marble Chest", Marbles = 2600, Art = 5, ProductId = 3719142077, Price = 1999 },
-	{ Id = "vault", Name = "Marble Vault", Marbles = 5600, Art = 6, ProductId = 3719142087, Price = 3999 },
+	{ Id = "barrel", Name = "Marble Barrel", Marbles = 2600, Art = 5, ProductId = Ids.MarbleBarrel, Price = 1999 },
+	{ Id = "chest", Name = "Marble Chest", Marbles = 5600, Art = 6, ProductId = 3719142077, Price = 3999 },
+	{ Id = "vault", Name = "Marble Vault", Marbles = 13000, Art = 7, ProductId = 3719142087, Price = 8999 },
 } :: { Pack }
 
 return MarbleShop

@@ -20,9 +20,7 @@ Offers.StarterPack = {
 		{ Category = "Finishers", Id = "daybreak" },
 		{ Category = "Rideables", Id = "dawn_kite" },
 	},
-	-- Studio only: existing items granted in place of exclusives that are not built yet, so the flow can be tested.
-	StudioStandIns = { Glassies = "frostglobe", Finishers = "bubble_bloom", Rideables = "rocket_skiff" },
-	WindowHours = 72, -- Roblox recommends 24 h to 3 days; nil = no end
+	WindowHours = 72, -- Roblox recommends 24 h to 3 days (creator chose 3 days); nil = no end
 	-- The pack opens by itself at most twice: once back in the lobby after onboarding, once in its last day.
 	AutoOpenLastHours = 24,
 	AutoOpenMax = 2,

@@ -87,22 +87,16 @@ function Rules.exclusive(category, id)
 	return false
 end
 
--- The pack's items as granted: { Category, Id, Rarity, StandIn }. nil while an exclusive is not built yet (live).
-function Rules.starterItems(studio)
+-- The pack's items as granted: { Category, Id, Rarity }. nil while an item has no definition (the pack shows SOON).
+-- `_studio` is kept for callers; the Daybreak set exists everywhere now (decision 117).
+function Rules.starterItems(_studio)
 	local out = {}
 	for _, item in O.StarterPack.Items do
-		local id = item.Id
-		local def = definition(item.Category, id)
-		local standIn = false
-		if not def and studio then
-			id = O.StarterPack.StudioStandIns[item.Category]
-			def = definition(item.Category, id)
-			standIn = true
-		end
+		local def = definition(item.Category, item.Id)
 		if not def then
 			return nil
 		end
-		table.insert(out, { Category = item.Category, Id = id, Rarity = def.Rarity, StandIn = standIn })
+		table.insert(out, { Category = item.Category, Id = item.Id, Rarity = def.Rarity })
 	end
 	return out
 end

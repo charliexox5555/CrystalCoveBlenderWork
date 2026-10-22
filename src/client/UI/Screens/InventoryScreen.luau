@@ -30,12 +30,39 @@ local function signature(profile)
 	return table.concat(parts, "|")
 end
 
+-- Phone rows of the glassy info pane under the smaller preview: [label] = { top, height } (share of the pane).
+local PHONE_ROWS = {
+	PassiveCaption = { 0.375, 0.04 },
+	PassiveName = { 0.41, 0.045 },
+	PassiveDescription = { 0.455, 0.165 },
+	PowerCaption = { 0.625, 0.04 },
+	PowerName = { 0.66, 0.045 },
+	PowerDescription = { 0.705, 0.14 },
+}
+
 function Screen.new(profile, close)
 	local self = setmetatable({ Index = false, Tiles = {}, TileById = {} }, Screen)
 	self.Window = Window.new("CollectionScreen", "INVENTORY", close)
 	self.Grid = self.Window.Content.Grid
 	self.Info = self.Window.Content.InfoPane
-	require(script.Parent.Parent.Components.SquareItemPreview).apply(self.Info)
+	-- Phones (creator, 2026-10-22): a smaller 3D preview, so the passive and power descriptions get two lines each.
+	local ok, responsive = pcall(require, script.Parent.Parent.Parent.Controllers.ResponsiveController)
+	local phone = ok and responsive.Class ~= nil and responsive:Class() == "Compact"
+	require(script.Parent.Parent.Components.SquareItemPreview).apply(self.Info, phone)
+	if phone then
+		for name, y in PHONE_ROWS do
+			local label = self.Info:FindFirstChild(name)
+			if label then
+				label.Position = UDim2.new(label.Position.X.Scale, label.Position.X.Offset, y[1], 0)
+				label.Size = UDim2.new(label.Size.X.Scale, label.Size.X.Offset, y[2], 0)
+				if name:match("Description$") then
+					-- The longest passives need a third line; the small floor keeps them whole instead of "…".
+					label:SetAttribute("FitLines", 3)
+					label:SetAttribute("FitMin", Theme.TextFit.MinSmall)
+				end
+			end
+		end
+	end
 	local cosmeticPage = self.Window.Content:FindFirstChild("CosmeticPage")
 	if cosmeticPage then
 		cosmeticPage.Visible = false

@@ -27,8 +27,8 @@ in a common flow; **Low** polish.
 | 9 | Low | Lobby HUD | Nav labels are fitted one by one, so "Shop" is 26 px and "Inventory" 22 px. | Not changed (cosmetic) |
 | 10 | Low | Kiln prize cards | The odds chip is small and straddles the card's bottom edge (by design); "5.11%" is ≈10 px on a laptop. | Not changed (design) |
 | 11 | Low | Shop footers | "Same items in both crates…" and "Marbles pay for…" captions are ≈11 px and sit on the window frame. | Not changed |
-| 12 | **High** | Kiln odds on phones | On a Galaxy A06 the Shop window is height-bound (465x257 px of a 705x338 screen: Roblox's top bar takes 58 px and the window keeps its 1.8 aspect), so the rarity odds rows are 7 px and the prize cards' names 6 px and odds 5 px ([a06 05](before/a06_05_shop_glassies.jpg)). The odds are there before every pull, but a child can't read them. | **Needs the creator**: proposal below |
-| 13 | Medium | Inventory info pane on phones | Same cause: the passive / power descriptions are cut mid-sentence ("Charges through body clashes. Tap"), stats 6-7 px ([a06 07](before/a06_07_inventory.jpg)). | Needs the creator (same proposal) |
+| 12 | **High** | Kiln odds on phones | On a Galaxy A06 the Shop window is height-bound (465x257 px of a 705x338 screen: Roblox's top bar takes 58 px and the window keeps its 1.8 aspect), so the rarity odds rows are 7 px and the prize cards' names 6 px and odds 5 px ([a06 05](before/a06_05_shop_glassies.jpg)). The odds are there before every pull, but a child can't read them. | Fixed (creator approved, phones only): the four prize cards and their PRIZE PREVIEW title are dropped, the odds list takes their room (rows ≈15 px on the A06), VIEW ALL sits under the crate picture and still lists every prize with its chance (`CrateShopPanel`). [A06](after/a06_kiln_odds_phone.jpg), [iPhone](after/iphone_kiln_odds_phone.jpg), [laptop unchanged](after/laptop_kiln_unchanged.jpg) |
+| 13 | Medium | Inventory info pane on phones | Same cause: the passive / power descriptions are cut mid-sentence ("Charges through body clashes. Tap"), stats 6-7 px ([a06 07](before/a06_07_inventory.jpg)). | Fixed (creator approved, phones only): a smaller 3D preview (`SquareItemPreview.apply(info, true)`), the passive and power rows move up, both descriptions get two to three lines and are no longer cut (`InventoryScreen` PHONE_ROWS). [A06](after/a06_inventory_pane_phone.jpg), [iPhone](after/iphone_inventory_pane_phone.jpg), [laptop unchanged](after/laptop_inventory_unchanged.jpg) |
 | 14 | Medium | Lobby nav on phones | "Inventory" is cut to "Invent..." (its label is 33x11 px) and the Shop / Inventory buttons are ≈40 pt ([a06 01](before/a06_01_lobby_first.jpg)). | Fixed: on HUDs under 320 px tall the column grows up to 1.2x (`Config/Responsive.NavReferenceHeight` / `NavMaxScale`), the Daily tile follows (71e282d) ([after](after/a06_starter_popup_nav.jpg)) |
 | 15 | Medium | Starter Pack popup on phones | Close is 27x27 px and the popup's top-right corner runs into the touch wallet ([a06 03](before/a06_03_starter_popup.jpg)). | Fixed by the monetization session (154dc4f): 44 px close, phone popups clear of the wallet |
 | 16 | Medium | Marble "+" on phones | 26x30 px in the HUD and the Shop header. | Fixed by the monetization session (154dc4f): 44 px |
@@ -55,7 +55,7 @@ Studio Play with the device simulator (landscape); mock profile; captures in [be
 | iPad Pro M5 13" | 1375x1030 | Welcome, Starter, Inventory, Shop, Profile, Settings, Daily, Playtime, Codes (all scans clean) | 22 found and fixed, 25 noted |
 | Xbox One (ten-foot) | 1919x1080 | lobby, Shop + Starter side tile, Starter popup | 24 found; wallet fixed, the rest sent |
 
-## For the creator: windows on small phones (findings 12, 13)
+## Windows on small phones (findings 12, 13; creator approved "Yes, both" on 2026-10-22, built the same day)
 
 Every menu keeps the shape it was drawn at (the Shop is 1.8 : 1). A landscape phone minus Roblox's 58 px top bar is
 about 2.5 : 1, so the window fills the height but only two thirds of the width, and the text in its busiest panels
@@ -68,8 +68,7 @@ fix is to show less in those panels on phones:
 - **Inventory info pane:** on phones only, a smaller 3D preview, and the passive / power descriptions get its room
   (two lines each instead of one).
 
-Both change how those two screens look on phones (laptop, tablet and console stay as they are), so they wait for
-your OK.
+Both apply on phones only (ResponsiveController class "Compact"); laptop, tablet and console are unchanged.
 
 ## Fix commits
 
@@ -78,7 +77,12 @@ session, from these findings). Lune 265/265 before each commit.
 
 ## Not checked / follow-ups
 
-- **Creator decision:** findings 12 and 13 (phone Kiln odds and Inventory info pane), proposal above.
+- **Phones:** the Inventory stat rows (POWER / HP / SWING) and type / rarity tags are still 7-8 px on an A06; the
+  bars carry the meaning. In the Shop header on phones the Marble "+" now sits over the end of the Marble counter
+  ("10,000" is partly covered next to the close diamond, [A06](after/a06_kiln_odds_phone.jpg)); sent to the
+  monetization session.
+- **Starter Pack auto-open, once on the A06:** with the Shop open about 3 s after onboarding was skipped, the Starter
+  popup appeared and the Shop was gone (not reproduced in two more runs); sent to the monetization session.
 - **Monetization session:** its fixes for 23 and 24 were in its working tree at the end of this pass; re-check once pushed.
 - **Not reachable in this pass:** another player's profile (needs a second player; the read-only view uses the same
   screen), watching a match and its STOP WATCHING button, the Crown Hill board and line chip, the group stand prompt,

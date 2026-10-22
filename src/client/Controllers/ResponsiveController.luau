@@ -12,7 +12,8 @@ local RS = game:GetService("ReplicatedStorage")
 local Tuning = require(RS.Shared.Config.Responsive)
 local Controller = {}
 
--- "Compact" (short phone screens), "TV" (console / ten-foot) or "Regular".
+-- "Compact" (short phone screens), "TV" (console / ten-foot) or "Regular". Components call it as
+-- `ResponsiveController:Class()` to pick a phone layout for content they build themselves.
 function Controller:Class()
 	local camera = workspace.CurrentCamera
 	local size = camera and camera.ViewportSize or Vector2.new(1366, 768)

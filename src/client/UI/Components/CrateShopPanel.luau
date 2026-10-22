@@ -7,6 +7,16 @@ local S = require(script.Parent.StainedGlass)
 local Panel = {}
 Panel.__index = Panel
 local titles = { Glassies = "Kiln", Finishers = "Burst Capsule", Rideables = "Sky Capsule" }
+local function compact()
+	local ok, responsive = pcall(require, script.Parent.Parent.Parent.Controllers.ResponsiveController)
+	return ok and responsive.Class ~= nil and responsive:Class() == "Compact"
+end
+-- Phones (creator, 2026-10-22): no prize-preview cards, so the odds rows get twice the height. VIEW ALL moves under
+-- the crate picture and still lists every prize with its chance. [object] = { phone Position, phone Size }.
+local PHONE = {
+	Odds = { UDim2.fromScale(0.45, 0.105), UDim2.fromScale(0.53, 0.66) },
+	ViewAll = { UDim2.fromScale(0.23, 0.66), UDim2.fromScale(0.36, 0.1) },
+}
 -- An OPEN label shorter than this (px) can't fit two readable lines (phones): "OPEN 1 · 300" on one line instead.
 -- The pane header already names the currency.
 local TWO_LINES = 28
@@ -178,9 +188,28 @@ function Panel.new(parent, category, offers, callbacks)
 			)
 			buttons[count] = b
 		end
-		self.Panels[currency] = { Object = pane, Buttons = buttons }
+		self.Panels[currency] = {
+			Object = pane,
+			Buttons = buttons,
+			Odds = odds,
+			ViewAll = view,
+			Strip = strip,
+			Title = previewTitle,
+			Home = {
+				Odds = { odds.Position, odds.Size },
+				ViewAll = { view.Position, view.Size },
+			},
+		}
 	end
 	local function layout()
+		local phone = compact()
+		for _, pane in self.Panels do
+			pane.Strip.Visible, pane.Title.Visible = not phone, not phone
+			for name, home in pane.Home do
+				local spot = if phone then PHONE[name] else home
+				pane[name].Position, pane[name].Size = spot[1], spot[2]
+			end
+		end
 		local narrow = root.AbsoluteSize.X < root.AbsoluteSize.Y * 1.15
 		local both = self.Panels.Marbles ~= nil
 		root.ScrollingEnabled = narrow and both

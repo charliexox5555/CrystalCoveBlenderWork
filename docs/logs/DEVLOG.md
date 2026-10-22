@@ -2,6 +2,16 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-22 — Claude (ui-audit session) — Phone layouts for the Kiln odds and the Inventory pane (decision 119)
+Done:
+- Creator approved both phone-only changes from the UI audit (findings 12 and 13):
+  - Kiln Glassies / Finishers / Flyers panes drop the prize-preview cards, so the odds rows are about 15 px on a Galaxy A06 (were 7 px). VIEW ALL sits under the crate picture.
+  - The glassy info pane uses a smaller 3D preview, so the passive and power descriptions are whole on two to three lines.
+- Code: `CrateShopPanel` (phone positions in its layout pass), `SquareItemPreview.apply(info, small)`, `InventoryScreen` PHONE_ROWS.
+- Studio captures on the A06, iPhone 17 Pro and laptop (laptop unchanged) are in docs/testing/ui_audit_v2/after/. Lune 265/265.
+Next:
+- Monetization session: on phones the Shop-header Marble "+" covers the end of the counter; a one-off Starter auto-open over the Shop on the A06.
+
 ## 2026-10-22 — Claude (mesh-reupload session) — Three rejected meshes rebuilt, re-uploaded and swapped in
 Done:
 - Phoenix body, Gumball crank and Carousel PonyCore were `Rejected` by moderation, so they rendered invisible. Each was rebuilt with small shape changes and uploaded once. All three new meshes are Approved and applied to all 7 MeshParts, with Size, CFrame, material and colour unchanged. Old → new ids, research and captures: docs/testing/mesh_reupload/REPORT.md.

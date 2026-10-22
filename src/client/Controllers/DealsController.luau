@@ -266,6 +266,10 @@ function Controller:BuildTiles(hud)
 	self.PlaceTiles = place
 	daily:GetPropertyChangedSignal("Visible"):Connect(place)
 	daily:GetPropertyChangedSignal("AbsoluteSize"):Connect(place)
+	-- ResponsiveController grows Navigation on the smallest phones; the tiles follow its size by themselves.
+	nav:GetPropertyChangedSignal("Size"):Connect(function()
+		task.defer(place)
+	end)
 	place()
 	task.defer(place)
 	starter:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()

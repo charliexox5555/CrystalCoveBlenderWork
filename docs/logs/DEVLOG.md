@@ -8,10 +8,11 @@ Done:
 - All 25 client remotes validated and rate-limited (read end to end, plus the read-only reviewer); dev hooks Studio-only; ProcessReceipt idempotent for every product with limits before the prompt; ProfileStore locking and reconcile cover the new fields.
 - Studio: `MultiplayerLauncher.run()` (6/6 stages) and `.watch()` pass with zero errors; new `tools/studio/verify_release_remotes.luau` flood (180 malformed calls per remote) granted nothing; 14 bot matches / 74 rounds with flat server instance counts and no errors or warnings; no products held for price mismatches.
 - Fixed: the multiplayer harness was stale (onboarding gate, range-limited snapshots), 7d3e791; offline profile reads stop when the GetAsync budget is low, f8069d2; a failed settings read no longer lets the save overwrite stored settings, 96d2bb0. Lune 267/267.
+- No free or test grants live (checklist §5b): new `ReleaseGuardTests` lock tester Marbles off, test codes Studio-only and separate stores; the place has no non-Rojo scripts besides Roblox's defaults. Lune 270/270.
 Next (creator):
 - Tester Marbles were ON in live (10,000 to every joiner); the creator turned them off with a fresh `GlassClash_v3` store meanwhile (5eb60a6).
 - Save + publish with Rojo connected; maturity questionnaire; Kids & Select steps (until then only 16+ can play); server size 16, Console/VR off.
-- Decide: TOP SUPPORTERS boards vs GAME_DESIGN §10 "no spending leaderboards"; client-judged Perfect release (accepted risk?).
+- Confirm the two live codes (RELEASE, HALLOWEEN). Decide: TOP SUPPORTERS boards vs GAME_DESIGN §10 "no spending leaderboards"; client-judged Perfect release (accepted risk?).
 
 ## 2026-10-22 — Claude (loading-tiers session) — Pictures on the first roll (decision 120, Proposed)
 Done:

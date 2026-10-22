@@ -79,6 +79,28 @@ Scope: no redesigns. Only real bugs and security or data issues were fixed.
 | Player text filtered | **PASS** | The only TextBox is the code box (Rewards); the code is matched against a server list and never shown to other players. No player-typed text is displayed anywhere. Arena boards show `DisplayName`; offline leaderboard and profile names come from `GetNameFromUserIdAsync` (the Roblox username, already moderated by Roblox). Chat is Roblox's own. |
 | **Supporter boards vs the design rules** | **CREATOR** | GAME_DESIGN §10 says "no spending leaderboards", but decision 101 (Proposed, a creator request) shows two "TOP SUPPORTERS" boards ranked by Robux spent. Roblox doesn't forbid this, but for an audience of mostly kids it can read as pressure to spend. Worth a second look before Saturday: keep, swap to another stat in `Config/Leaderboards`, or keep only the all-time board. Not changed. |
 
+## 5b. No free or test grants live
+
+Everything that hands out currency or items outside normal play, and whether it can run on a live server. Locked in by a new Lune suite, `src/tests/ReleaseGuardTests.luau` (270/270 passing): it fails if tester Marbles come back on, if a `TEST*`/`STUDIO*` code isn't StudioOnly, if any StudioOnly code works live, if a live code gives free Marbles, or if Studio and live share a profile store.
+
+| Grant path or switch | Live state | Evidence |
+|---|---|---|
+| Tester Marbles (`Config/Testing`) | **Off** | `Enabled = false` (creator, `5eb60a6`); live data starts fresh in `GlassClash_v3`. ReleaseGuardTests. |
+| Studio codes: STUDIOCLASH, TESTMARBLES, TESTKILN, TESTFLYER, TESTITEM, TESTEXPIRED | **Refused live** | All `StudioOnly = true`; `RetentionRules.redeem` refuses them unless the server is Studio. RetentionTests ("TESTMARBLES ... Studio only") and ReleaseGuardTests. |
+| Live codes: RELEASE (300 Coins), HALLOWEEN (1 free Finisher crate pull, ends Nov 8 00:00 UTC) | **On (intended?)** | Both redeem once per player. **CREATOR:** confirm you want both at launch; they're the only live codes. |
+| Dev hooks (12 `*Dev` BindableFunctions) | **Not created live** | All created inside `if RunService:IsStudio()`, parented to ServerStorage (not visible to clients). |
+| QA harness remotes (`Dev/*Harness.server.luau`) | **Not created live** | Return early unless Studio **and** a matching `StudioTestService` test name. |
+| Client dev scripts (UIAudit, PerfProbe, harnesses, CombatFeel/PowerVFX/UI previews) | **Inactive live** | Each returns or asserts on `IsStudio()`; they run on the client only and can't grant anything. |
+| Mock profiles (`DataService.Mock`, LeaderboardService) | **Studio only** | `Mock = IsStudio() and StudioMock`. Mock-only commands (DataDev "Marbles"/"MockProfile", StoreDev "Receipt"/"Offset"/"ResetDeals") sit behind it. |
+| Studio placeholder purchases (fake receipts, product ids 1-3) | **Studio only** | `StoreService:Prompt` and `OfferRules.product` use them only when the server is Studio; live uses the real product ids in `Config/ProductIds`. |
+| Studio-only switches (workspace attributes `PerfNoCull`, `PowerFXLowDetail`, `LoadNoLater`; `PlayerGui.DevInput`) | **Ignored live** | Every read is `IsStudio() and ...`. |
+| Debug prints (funnel, "would award" badges, placeholder purchases) | **Studio only** | Printed only in Studio; live sends the real analytics/badge calls. |
+| Scripts in the place outside Rojo | **None of ours** | Scanned the place: the 54 non-Rojo scripts are Roblox's default PlayerModule and character scripts. No `require(<id>)`, `getfenv`, `loadstring`, HTTP, currency, badge, purchase or teleport code. `HttpEnabled` is off. |
+| Old `Config/Retention.GroupId = 0` | **Harmless** | A leftover from before the group reward; it only sets `GroupConfigured = false` in the Rewards view. The group reward itself uses `Config/GroupReward.GroupId` (11116787). |
+| Settings store (`GlassClashSettings_v1`) | **Unchanged (fine)** | Volumes and toggles only; nothing grantable. |
+
+Free grants that remain on are the designed ones: welcome opens, Daily Rewards calendar, playtime gifts, daily quests, first-win prize, the group reward and the two live codes.
+
 ## 6. Publishing settings to set on the Creator Dashboard
 
 Recommendations only; nothing was changed.
@@ -127,8 +149,9 @@ Every service drops its RemoteGuard entry and per-player tables on `PlayerRemovi
 
 1. **Tester Marbles are now off and live data starts fresh in `GlassClash_v3`** (creator, `5eb60a6`). The group test runs on the release store, so testers' progress carries into Saturday; if you want a clean launch, bump `Balance.Data.StoreName` again before Saturday.
 2. **Save and publish the place from Studio with Rojo connected**, so the published place has today's code and the Studio-only installs several sessions left unsaved (group reward stand, Daybreak set, daily glassies, re-uploaded meshes, flyer installs).
-3. **On the live server**, check: the Welcome badge arrives; a purchase works end to end (cheapest Marble pack or Daily Marbles, through the real Roblox prompt); the lobby boards fill (published ordered stores).
-4. **Maturity & Compliance questionnaire**: complete every question before the public release (needed for any public experience; required for Kids & Select).
+3. **Confirm the two live codes** (RELEASE 300 Coins, HALLOWEEN a free Finisher pull until Nov 8) are wanted at launch.
+4. **On the live server**, check: the Welcome badge arrives; a purchase works end to end (cheapest Marble pack or Daily Marbles, through the real Roblox prompt); the lobby boards fill (published ordered stores).
+5. **Maturity & Compliance questionnaire**: done on the Creator Hub side per the creator; it must cover every question (required for Kids & Select).
 
 Already fine for the test: all remotes validated and rate-limited, purchases idempotent with limits before the prompt, ProfileStore session locking and reconcile, dev hooks Studio-only, both two-client harnesses and a 74-round bot session clean.
 

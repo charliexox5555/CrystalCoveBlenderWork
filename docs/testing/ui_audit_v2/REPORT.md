@@ -38,8 +38,8 @@ in a common flow; **Low** polish.
 | 20 | Low | Daily Rewards on phones | The CLAIM pill is 48x13 px, but the whole Day card claims (decision 106). | Not changed |
 | 21 | Low | PLAY hint on phones | "joins the nearest free arena" sits on the PLAY button's top edge. | Fixed: lifted clear of the button when PLAY's minimum size reaches it |
 | 22 | Medium | Marble "+" on tablets | On an iPad Pro 13 the touch wallet sat at the right edge and the (now 44 px) "+" hung 15 px off the screen ([ipad 01](before/ipad_01_welcome_plus_offscreen.jpg)). | Fixed: the wallet slides left whenever the "+" reaches past it, also when the "+" appears or grows after the HUD is built ([after](after/ipad_wallet_plus_on_screen.jpg)) |
-| 23 | **High** | Starter Pack auto-open | It checks that the lobby is free, waits 1.5 s, then opens without checking again: on a laptop it opened over the Daily Rewards window, two windows at once ([26](before/laptop_26_starter_over_daily.jpg)). | Sent to the monetization session (owns DealsController) |
-| 24 | Medium | Xbox (TV) | The Shop's Starter side tile reaches the right screen edge, outside the TV safe area ([xbox 02](before/xbox_02_shop_side_tile_edge.jpg)); the lobby wallet and left column sat ≈2% from the edges ([xbox 01](before/xbox_01_lobby_edges.jpg)). | Wallet fixed (inset by the TV safe-area margins, [after](after/xbox_lobby_safe_area_starter.jpg)); the left column moved in by the monetization session; the side tile sent to them |
+| 23 | **High** | Starter Pack auto-open | It checks that the lobby is free, waits 1.5 s, then opens without checking again: on a laptop it opened over the Daily Rewards window, two windows at once ([26](before/laptop_26_starter_over_daily.jpg)). | Fixed by the monetization session: the auto-open re-checks the free-lobby conditions right before opening |
+| 24 | Medium | Xbox (TV) | The Shop's Starter side tile reaches the right screen edge, outside the TV safe area ([xbox 02](before/xbox_02_shop_side_tile_edge.jpg)); the lobby wallet and left column sat ≈2% from the edges ([xbox 01](before/xbox_01_lobby_edges.jpg)). | Wallet fixed (inset by the TV safe-area margins, [after](after/xbox_lobby_safe_area_starter.jpg)); the left column, Starter tile and Shop side tile moved inside it by the monetization session |
 | 25 | Low | Item pictures | On a cold join the Starter Pack cards and Inventory tiles are empty frames for a second or two while their pictures load ([ipad 02](before/ipad_02_starter_art_missing.jpg), [ipad 04](before/ipad_04_inventory_pictures_loading.jpg)). | Not changed (loading tiers, decision 111) |
 | 26 | Low | Starter popup over the HUD | While the Starter popup is open, the lobby HUD (wallet, Shop, Inventory, PLAY) stays visible around it ([xbox after](after/xbox_lobby_safe_area_starter.jpg)). Already listed in the monetization report as cosmetic (the popup is modal). | Not changed |
 
@@ -73,13 +73,13 @@ your OK.
 
 ## Fix commits
 
-db980d7, 1ac7b78, 599abdd and the TV wallet / "+" watch commit (this session); 2848a5e, 154dc4f, 71e282d (monetization
+db980d7, 1ac7b78, 599abdd, 6a8f31b (this session); 2848a5e, 154dc4f, 71e282d (monetization
 session, from these findings). Lune 265/265 before each commit.
 
 ## Not checked / follow-ups
 
 - **Creator decision:** findings 12 and 13 (phone Kiln odds and Inventory info pane), proposal above.
-- **Monetization session:** findings 23 (Starter auto-open race) and 24 (Starter side tile on TV).
+- **Monetization session:** its fixes for 23 and 24 were in its working tree at the end of this pass; re-check once pushed.
 - **Not reachable in this pass:** another player's profile (needs a second player; the read-only view uses the same
   screen), watching a match and its STOP WATCHING button, the Crown Hill board and line chip, the group stand prompt,
   level-up / XP on results (results came up only through `PreviewMatch`), Pick Any and the Need Marbles card in a

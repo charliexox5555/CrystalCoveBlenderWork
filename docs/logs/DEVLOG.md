@@ -2,6 +2,28 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-22 — Claude (ui-audit session) — Full UI audit before the group test (decisions 106, 97)
+Done:
+- Every reachable screen captured and scanned in Studio Play on a laptop (1366x768), Galaxy A06, iPhone 17 Pro, iPad Pro 13 and Xbox. Report with 26 findings, severities and before/after captures: docs/testing/ui_audit_v2/REPORT.md.
+- `UIAuditDev` "Scan" now also reports text over text, text under 9.5 px, cut text and two windows open at once.
+- Fixed (db980d7, 1ac7b78, 599abdd, 6a8f31b):
+  - The Shop's phone header no longer sticks on laptops. It is re-applied or undone on every fit.
+  - Fight billboards are 1.5x everywhere (1.8x on phones) and grow upward. The glassy chip and HP line were about 6 px.
+  - Roll-card power text has room.
+  - The wallet draws above the Daily / Playtime / Codes windows.
+  - One number format (10,000) in wallets and Kiln prices.
+  - Profile and Inventory show the same glassy total (39).
+  - The phone INVITE FRIEND button is at least 40 px tall.
+  - The PLAY hint stays clear of PLAY.
+  - The lobby buttons grow on the smallest phones, so "Inventory" is no longer cut.
+  - The iPad Marble "+" is back on screen, and the TV wallet sits inside the safe area.
+- Monetization session fixed its findings: tiles hide under claim cards, reveals and menus; 44 px targets; the Starter auto-open race; TV safe area.
+Next:
+- Creator: phone Kiln odds rows are 7 px and the Inventory descriptions are cut on a Galaxy A06. The proposal in REPORT.md shows less in those two panels on phones only, and needs an OK.
+- Not covered: watching, Crown Hill, the group stand, another player's profile, the bundle preview, Need Marbles in a match, a real controller.
+Problems:
+- MCP clicks don't land under phone presets, so phone checks were visual only.
+
 ## 2026-10-22 — Claude (badges session) — Five launch badges: icons, server awarding, Open Cloud tool (decision 118, Proposed)
 Done:
 - Research (cited in docs/design/BADGES.md): Creator Docs Badges guide (5 free a day, then 100 R$; 512x512, circular crop), BadgeService API (server-only award, IsEnabled first, pcall, 50 + 35 x players/min, Studio only tests disabled badges), Open Cloud Badges API (create needs legacy-universe.badge:manage-and-spend-robux; expectedCost guards cost), live badges.roblox.com metadata/quota, top games' public badge lists (Doors, PS99, MM2, Arsenal, Tower of Hell, Grow a Garden).

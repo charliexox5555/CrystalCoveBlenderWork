@@ -20,8 +20,14 @@ end
 
 local function itemName(item)
 	if item.Category == "Glassies" then
-		-- Released glassies, the seasonal Hollowlight and the Daily glassies only; dormant definitions are never granted.
-		local def = (Roster.ById[item.Id] or item.Id == "hollowlight" or Glassies.isDaily(item.Id))
+		-- Released glassies, the seasonal Hollowlight, the Daily glassies and the Starter Pack glassy only; dormant
+		-- definitions are never granted.
+		local def = (
+			Roster.ById[item.Id]
+			or item.Id == "hollowlight"
+			or Glassies.isDaily(item.Id)
+			or Glassies.isStarterPack(item.Id)
+		)
 			and Glassies.ById[item.Id]
 		return def and def.Name
 	end

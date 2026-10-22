@@ -1,0 +1,26 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "sunny_rooster_bundle": {
+   "AssetId": "75390126341675",
+   "Path": "assets/blender/glassies/sunny_rooster/v4/sunny_rooster_bundle.fbx",
+   "Sha256": "bbfeac2cfaf55eab7a6c29c2a65892ec9b7d34b862ed5e0ddd2256c6c4bc832c",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-21T20:13:58"
+  },
+  "sunny_rooster_icon": {
+   "AssetId": "126678758554526",
+   "Path": "assets/blender/glassies/sunny_rooster/v4/sunny_rooster_icon.png",
+   "Sha256": "4f8601f8e612901ac3f62a2c2a1f6fc2bdecabecd759ac89d284913d464db53f",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-21T20:14:01"
+  },
+  "dawn_kite_fbx": {
+   "AssetId": "137770082572265",
+   "Path": "assets/blender/round_cosmetics/flyers_v3/dawn_kite/dawn_kite.fbx",
+   "Sha256": "74dc32365a5ece82ed3f87ac8b426bc471b8ffff52b8907455a548c17982e7b6",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-21T20:30:15"
+  }
+ }
+}

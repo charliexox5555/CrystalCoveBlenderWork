@@ -1,5 +1,7 @@
 -- Measured cue starts; source audio is unchanged and licensed copies are not redistributed.
 return {
+	-- Slide Whistle 6 (FN_SlideWhistle / PW_SlideUp): the first rise only, so three notes make Sunny's crow.
+	["rbxassetid://9119198150"] = { Start = 0, Seconds = 0.32, Fade = 0.05, Volume = 0.4, Pitch = 1 },
 	["rbxassetid://9119927252"] = { Start = 0, Seconds = 0.6, Fade = 0.035, Volume = 0.42, Pitch = 1.0 },
 	["rbxassetid://9119927012"] = { Start = 0.328, Seconds = 0.3, Fade = 0.035, Volume = 0.38, Pitch = 1.08 },
 	["rbxassetid://9113557731"] = { Start = 0, Seconds = 0.32, Fade = 0.035, Volume = 0.48, Pitch = 0.92 },

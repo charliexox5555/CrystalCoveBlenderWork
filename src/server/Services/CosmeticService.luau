@@ -65,6 +65,24 @@ function Service:Start()
 				self.Services.DataService:Sync(player)
 				return true
 			end
+			if command == "PreviewStarterPack" and self.Services.DataService.Mock then
+				-- Studio QA (decision 117): the Starter Pack's Daybreak set without a purchase.
+				local data = self.Services.DataService:Get(player)
+				if not data or not Assets.has("sunny_rooster") then
+					return false
+				end
+				local set = { Rideables = "dawn_kite", Finishers = "daybreak" }
+				for key, item in set do
+					if Rules.count(data, key, item) == 0 then
+						Rules.grant(data, key, item)
+					end
+				end
+				if not data.Glassies.sunny_rooster then
+					Schema.grant(data, "sunny_rooster", false, os.time())
+				end
+				self.Services.DataService:Sync(player)
+				return true
+			end
 			if command == "Equip" then
 				return self:Equip(player, category, id)
 			end

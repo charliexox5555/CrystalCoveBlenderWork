@@ -24,6 +24,7 @@ local MAIN = {
 	carousel = "Pole", -- the main part must not move (the pony bobs)
 	sunwing = "Body",
 	starwhale = "Body",
+	dawn_kite = "Board", -- Starter Pack (decision 117)
 }
 -- Flyers whose rider sits on a moving part (RideMotion follows it; see RideMotion:RiderPose).
 local MOUNT = { carousel = "Pony" }

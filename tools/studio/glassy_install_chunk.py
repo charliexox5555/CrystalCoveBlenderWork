@@ -12,7 +12,8 @@ To keep chunks small: send `--installer-only` once (registers _G.GlassyInstallV4
 Keep a chunk to about 6 glassies (each carries ~45 parts of data); --set splits nothing by itself.
 Asset ids come from the Open Cloud Records written by tools/opencloud/upload_assets.py:
   docs/art/glassy_revamp/roblox_assets.json (24 revamped), docs/art/launch_glassies/roblox_assets.json (12 launch) and
-  docs/art/daily_glassies/roblox_assets.json (2 Daily Rewards exclusives).
+  docs/art/daily_glassies/roblox_assets.json (2 Daily Rewards exclusives) and docs/art/starter_pack/roblox_assets.json
+  (the Starter Pack glassy).
 Part data comes from assets/blender/glassies/<id>/<version>/manifest.json (Blender -> Roblox: (x, y, z) -> (x, z, -y)).
 """
 import argparse
@@ -29,9 +30,10 @@ SETS = {
                "crystal_ball", "grizzly_guardian", "glass_unicorn", "glass_phoenix"],
 }
 SETS["daily"] = ["whiskers", "midnight_moon"]  # Daily Rewards exclusives (decision 115)
-SETS["all"] = SETS["revamp"] + SETS["launch"] + SETS["daily"]
+SETS["starter"] = ["sunny_rooster"]  # Starter Pack exclusive (decision 117)
+SETS["all"] = SETS["revamp"] + SETS["launch"] + SETS["daily"] + SETS["starter"]
 RECORDS = ["docs/art/glassy_revamp/roblox_assets.json", "docs/art/launch_glassies/roblox_assets.json",
-           "docs/art/daily_glassies/roblox_assets.json"]
+           "docs/art/daily_glassies/roblox_assets.json", "docs/art/starter_pack/roblox_assets.json"]
 
 
 def lua(v):

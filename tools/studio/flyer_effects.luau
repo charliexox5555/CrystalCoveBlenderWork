@@ -625,6 +625,46 @@ EFFECTS.starwhale = function(P, A)
 	})
 end
 
+-- Starter Pack (decision 117): sunrise ribbons off the board tail and the kite tips, a warm glow on the kite's sun,
+-- golden motes drifting off it, and a peach launch puff.
+EFFECTS.dawn_kite = function(P, A)
+	local dawn = seq({ { 0, "#FFF1B0" }, { 0.35, "#FFB547" }, { 0.7, "#FF8FB0" }, { 1, "#C7A6FF" } })
+	for _, key in { "Trail0", "Trail1" } do
+		trail(A[key].Parent, "DawnWake", A[key], pairBelow(A[key], 0.16), {
+			Color = dawn,
+			Transparency = nseq({ { 0, 0.25 }, { 1, 1 } }),
+			Lifetime = 0.5,
+			LightEmission = 0.7,
+			MinLength = 0.03,
+			WidthScale = nseq({ { 0, 1 }, { 1, 0.3 } }),
+		})
+	end
+	for _, key in { "KiteTrail0", "KiteTrail1" } do
+		trail(A[key].Parent, "KiteRibbon", A[key], pairBelow(A[key], 0.3), {
+			Color = dawn,
+			Transparency = nseq({ { 0, 0.3 }, { 1, 1 } }),
+			Lifetime = 0.7,
+			LightEmission = 0.8,
+			MinLength = 0.03,
+			WidthScale = nseq({ { 0, 1 }, { 1, 0.2 } }),
+		})
+	end
+	emitter(A.Sun, "SunMotes", {
+		Texture = TEX.glint,
+		Color = seq({ { 0, "#FFF1B0" }, { 1, "#FFB547" } }),
+		LightEmission = 1,
+		Size = nseq({ { 0, 0 }, { 0.3, 0.3 }, { 1, 0 } }),
+		Lifetime = NumberRange.new(0.8, 1.3),
+		Rate = 4,
+		Speed = NumberRange.new(0.4, 1),
+		SpreadAngle = Vector2.new(180, 180),
+		Acceleration = Vector3.new(0, -0.6, 0),
+	})
+	light(A.Sun, "#FFC46B", 1.1, 9)
+	wake(A.Wake, "#FFE9D6")
+	launchBurst(A.Launch, "#FFE2CC")
+end
+
 -- No flyer equipped (decision 95): the faint hover pad under a standing rider.
 EFFECTS.stand = function(P, A)
 	emitter(A.Shimmer, "HoverShimmer", {

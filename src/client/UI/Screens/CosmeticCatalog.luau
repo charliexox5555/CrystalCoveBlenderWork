@@ -321,6 +321,7 @@ function Catalog:Detail(id)
 		then "ALWAYS YOURS" .. (if self.Equipped then " · EQUIPPED" else "")
 		elseif count > 0 then "OWNED: " .. count .. (if self.Equipped then " · EQUIPPED" else "")
 		elseif def.Seasonal then "SEASONAL · NOT AVAILABLE YET"
+		elseif def.StarterPack then "STARTER PACK EXCLUSIVE"
 		else "UNOWNED · OPEN A CRATE"
 	self.Status.Visible = true
 	local default = self.Equipped and (def.Matches == 0 or def.None)
@@ -331,6 +332,7 @@ function Catalog:Detail(id)
 			elseif self.Equipped then "UNEQUIP"
 			elseif self.Owned then "EQUIP"
 			elseif def.Seasonal then "SEASONAL ITEM"
+			elseif def.StarterPack then "IN THE STARTER PACK"
 			else "FIND IN THE SHOP"
 	)
 	self.Equip.Visible = true

@@ -1970,6 +1970,107 @@ Kits.midnight_moon = {
 	end,
 }
 
+-- ===================================================================================================================
+-- Starter Pack glassy (decision 117)
+-- ===================================================================================================================
+-- Little suns spinning round a dazzled glassy's head (Sunny's Wake-Up Call). Bystander fights skip it (low tier).
+local function dazzle(fx, side, target, seconds, start)
+	if fx:Low(side) then
+		return
+	end
+	local color, accent = fx:Colors(side)
+	local suns = {}
+	for i = 1, 3 do
+		suns[i] = fx:Part("NovaStar", if i == 2 then accent else color)
+	end
+	fx:Spawn({
+		Side = side,
+		Key = "dazzle:" .. target,
+		Start = start,
+		Seconds = seconds,
+		Parts = suns,
+		Step = function(_, age, k)
+			local f = fx:Fighter(target)
+			if not f or f.Broken or f.Finishing then
+				return false
+			end
+			local pos, size = fx:Body(target)
+			local pop = fx.pop(age / 0.2)
+			for i, p in suns do
+				local a = age * 5 + i / #suns * math.pi * 2
+				fx:Fit(p, size * 0.42 * pop * (1 + 0.15 * math.sin(age * 14 + i)))
+				p.CFrame = CFrame.new(pos + Vector3.new(math.cos(a) * size * 0.8, size * 0.95, math.sin(a) * size * 0.8))
+					* CFrame.Angles(0, a, age * 3)
+				p.Transparency = 0.05 + 0.95 * fx.smooth((k - 0.8) / 0.2)
+			end
+		end,
+	})
+end
+
+Kits.sunny_rooster = {
+	Windup = function(fx, side, e)
+		-- Sunny puffs up and leans back (Epic two-stage hush) while a little sun rises behind its head.
+		local color, accent = fx:Colors(side)
+		gather(fx, side, e, { MoteKind = "NovaStar", Motes = 6, MoteSize = 0.34, Motion = "rear", MotionAmount = 1.2, TwoStage = true })
+		local windup = math.max(0.1, e.Windup or 0.5)
+		local sun, crown = fx:Part("Ball", color), fx:Part("ShockCrown", accent)
+		fx:Spawn({
+			Side = side,
+			Seconds = windup + 0.1,
+			Parts = { sun, crown },
+			Step = function(_, age, k)
+				local pos, size = fx:Body(side)
+				local rise = fx.easeOut(math.min(1, k * 1.15))
+				local at = fx.front(pos + Vector3.yAxis * size * (0.2 + 1.25 * rise), -0.6)
+				sun.Size = Vector3.one * size * (0.25 + 0.55 * rise)
+				sun.CFrame = CFrame.new(at)
+				sun.Transparency = 0.15 + 0.85 * fx.smooth((k - 0.92) / 0.08)
+				fx:Fit(crown, size * (0.6 + 0.9 * rise))
+				crown.CFrame = fx.face(at) * CFrame.Angles(0, 0, age * 2.5)
+				crown.Transparency = 0.35 + 0.65 * fx.smooth((k - 0.9) / 0.1)
+			end,
+		})
+		fx:Cue(side, "sunny_puff")
+	end,
+	Release = function(fx, side, e, ctx)
+		local color, accent = fx:Colors(side)
+		-- Cock-a-doodle-doo: three little suns fan out, with three sound rings on the beat (short, short, long).
+		shots(fx, side, e, ctx, {
+			Kind = "NovaStar",
+			Size = 0.95,
+			FaceCamera = true,
+			Alternate = accent,
+			Trail = 0.28,
+			TrailWidth = 0.6,
+			Spin = 7,
+			Step = function(pos, age)
+				if math.floor(age * 10) ~= math.floor((age - 1 / 60) * 10) then
+					fx:Glints(side, pos, WHITE, 1, { Speed = NumberRange.new(0.5, 1.5) })
+				end
+			end,
+		})
+		for i, delay in { 0, 0.13, 0.26 } do
+			fx:Ring(side, ctx.Here, if i == 2 then accent else color, 0.6, 2.4 + i * 0.5, 0.32 + i * 0.06, { Delay = delay, Alpha = 0.3 })
+		end
+		fx:Spokes(side, ctx.Here, color, 8, 1.8, 0.3, { Alternate = WHITE, Width = 0.26 })
+		fx:Flash(side, ctx.Here, color, 1.5, 0.14)
+		fx:Light(side, ctx.Here, color, 0.5)
+		fx:Cue(side, "sunny_crow")
+	end,
+	Hit = function(fx, side, _, at)
+		local color, accent = fx:Colors(side)
+		fx:Flash(side, at, WHITE, 1.5, 0.12)
+		fx:Spokes(side, at, color, 8, 1.6, 0.26, { Alternate = accent, Width = 0.24 })
+		fx:Glints(side, at, color, 8, { Speed = NumberRange.new(1, 3) })
+		fx:Cue(side, "sunny_dazzle")
+	end,
+	Status = function(fx, side, e)
+		if e.Kind == "Slow" and e.Target then
+			dazzle(fx, side, e.Target, e.Seconds or 1, e.Time)
+		end
+	end,
+}
+
 -- Hollowlight keeps its bespoke LanternSeeds presentation, with the Hero tier of the shared Ready/cast states
 -- (premium seasonal set; rarity and stats stay Epic). docs/vfx/HOLLOWLIGHT_PREMIUM.md section 4.
 Kits.hollowlight = { Skip = true, Tier = "Hero" }

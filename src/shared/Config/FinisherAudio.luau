@@ -180,6 +180,23 @@ return {
 			cue("FallingShimmer", "Burst", 1.4, 0.9, 1.0),
 			cue("FN_GlassPing", "Burst", 1.5, 0.5, 1.3),
 		},
+		-- Daybreak (Starter Pack, peak 0.5, bow 1.45): wood-block hops as Sunny arrives, a warm swell at dusk, a toy
+		-- "cock-a-doodle-doo" (slide whistle short-short-long) landing on the impact with a magic burst and glass
+		-- break, a shimmer as the sun climbs, and a chime for the bow.
+		daybreak = {
+			cue("MagicRiser", "Rise", 0, 0.9, 1.05),
+			cue("RisingWhoosh", "Fly", 0, 0.9, 1.1),
+			cue("ToyBlockA", "Burst", 0.06, 0.6, 1.7),
+			cue("ToyBlockB", "Burst", 0.16, 0.6, 1.8),
+			cue("FN_GlowSwell", "Burst", 0.1, 0.6, 1.2),
+			cue("FN_SlideWhistle", "Burst", 0.26, 0.8, 1.6),
+			cue("FN_SlideWhistle", "Burst", 0.37, 0.8, 1.8),
+			cue("FN_SlideWhistle", "Burst", 0.48, 0.9, 2.1),
+			cue("FN_MagicBurst", "Burst", 0.5, 1.0, 1.1, 1),
+			cue("SafetyGlass", "Burst", 0.52, 0.7, 1.2),
+			cue("FallingShimmer", "Burst", 0.75, 0.9, 1.15),
+			cue("ChimeCluster", "Burst", 1.5, 0.8, 1.2),
+		},
 		-- Basic Shatter: inventory preview only (fights use the glassy's own break sound). Not a catalog item.
 		basic_shatter = {
 			cue("ShatterHeavy", "Burst", 0.3, 0.9, 1.05, 1),

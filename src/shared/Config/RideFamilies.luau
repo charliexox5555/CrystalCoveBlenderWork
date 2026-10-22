@@ -578,6 +578,7 @@ F.Flyers = {
 	carousel = { Family = "HandleSit" }, -- rider follows the bobbing pony (model attribute RiderMount = "Pony")
 	sunwing = { Family = "Kneel" },
 	starwhale = { Family = "Sit" },
+	dawn_kite = { Family = "HandleStand" }, -- Starter Pack (decision 117): hands on the kite's control bar
 }
 
 -- Standard grip layout per handle family, in rider space (contact point at the origin, nose toward -Z). Handle

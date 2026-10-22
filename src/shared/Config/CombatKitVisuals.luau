@@ -394,4 +394,15 @@ return {
 		MeshA = "Ring",
 		MeshB = "CrystalChip",
 	},
+	-- Starter Pack glassy (decision 117, the Daybreak set).
+	sunny_rooster = {
+		Name = "Wake-Up Call",
+		Color = "#FFB547", -- signature colour (power VFX v2): sunrise amber
+		Accent = "#FF5D7E", -- the rose comb
+		Description = "A proud glass rooster: crows a burst of three little suns that dazzle whoever they hit.",
+		ReleaseSound = "ChargeGlass",
+		ContactSound = "ChimeCluster",
+		MeshA = "NovaStar",
+		MeshB = "Ring",
+	},
 }

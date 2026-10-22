@@ -87,6 +87,12 @@ LoadTiers.Tiers = {
 		"asset:CrateMachines",
 		-- Glassy pictures: the Shop's Featured cards and prize carousels, the Inventory grid, the 10-pull reels.
 		"images:ItemIcons/Small/Glassies",
+		-- The Starter Pack's three exclusives (decision 117): their pictures sell the pack in the Shop, and the
+		-- glassy, flyer and finisher models back its preview and the first ride / show after a purchase.
+		"images:ItemIcons/Small/Rideables/dawn_kite",
+		"images:ItemIcons/Small/Finishers/daybreak",
+		"asset:Glassies/sunny_rooster",
+		"asset:Rideables/dawn_kite",
 		-- The first fight: queue, roll, stand, billboards, hits, cracks, the shatter, powers.
 		"screen:QueuePanel",
 		"screen:RollScreen",

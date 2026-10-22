@@ -1,0 +1,7 @@
+{
+ "Record": "docs/art/starter_pack/roblox_assets.json",
+ "Items": [
+  {"Key": "sunny_rooster_bundle", "Path": "assets/blender/glassies/sunny_rooster/v4/sunny_rooster_bundle.fbx", "Type": "Model", "Name": "GlassClash Sunny v4"},
+  {"Key": "sunny_rooster_icon", "Path": "assets/blender/glassies/sunny_rooster/v4/sunny_rooster_icon.png", "Type": "Decal", "Name": "GlassClash Sunny icon v4"}
+ ]
+}

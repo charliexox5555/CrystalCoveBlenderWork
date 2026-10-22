@@ -56,6 +56,21 @@ return {
 			{ Key = "PW_LidBonk", Volume = 0.35, Pitch = 1.5, Seconds = 0.4 },
 			{ Key = "ChimeCluster", Volume = 0.2, Pitch = 1.2, Seconds = 0.6 },
 		},
+		-- Starter Pack glassy (decision 117). Sunny: a rising slide whistle as it puffs up, a toy "cock-a-doodle-doo"
+		-- (three slide-whistle notes, short-short-long, over a bright bell) on the crow, a chime when a sun dazzles.
+		sunny_puff = {
+			{ Key = "PW_SlideUp", Volume = 0.16, Pitch = 1.1, Seconds = 0.45 },
+		},
+		sunny_crow = {
+			{ Key = "PW_SlideUp", Volume = 0.26, Pitch = 1.6, Seconds = 0.15 },
+			{ Key = "PW_SlideUp", Volume = 0.26, Pitch = 1.8, Delay = 0.13, Seconds = 0.15 },
+			{ Key = "PW_SlideUp", Volume = 0.28, Pitch = 2.1, Delay = 0.26, Seconds = 0.4 },
+			{ Key = "LanternBell", Volume = 0.15, Pitch = 2.0, Delay = 0.26, Seconds = 0.5 },
+		},
+		sunny_dazzle = {
+			Contact = true,
+			{ Key = "ChimeCluster", Volume = 0.3, Pitch = 1.5, Jitter = 0.04, Seconds = 0.6 },
+		},
 		pop_payoff = {
 			Contact = true,
 			{ Key = "PW_FizzPop", Volume = 0.45, Pitch = 1.15, Jitter = 0.05 },

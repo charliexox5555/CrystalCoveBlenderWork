@@ -200,6 +200,27 @@ A.Motion = {
 		Launch = { Seconds = 0.95, Drop = 2.2, Pitch = 0.18 },
 		Sound = { Id = "rbxassetid://9118030782", Volume = 0.04, Pitch = 0.8, MinDistance = 6, MaxDistance = 34 },
 	},
+	-- Starter Pack (decision 117): a kiteboard carried by its kite. Long soft float, leans hard into turns like a kite
+	-- pulling round, a quick hop on launch. Loop: ProSoundEffects "Cape Flap Parachute Movement 2" (canopy rustle).
+	dawn_kite = {
+		BobAmp = 0.22,
+		BobHz = 0.5,
+		Bob2Amp = 0.05,
+		Bob2Hz = 1.3,
+		Bank = 0.06,
+		Nod = 0.04,
+		DriftX = 0.32,
+		DriftZ = 0.16,
+		DriftYaw = 0.1,
+		DriftHz = 0.1,
+		TurnBank = 1.2,
+		SlideBank = 0.16,
+		ClimbPitch = 0.07,
+		MaxBank = 0.42,
+		Smooth = 3.2,
+		Launch = { Seconds = 0.8, Drop = 2.0, Pitch = 0.16 },
+		Sound = { Id = "rbxassetid://9113716666", Volume = 0.05, Pitch = 1.05, MinDistance = 6, MaxDistance = 34 },
+	},
 	starwhale = {
 		BobAmp = 0.3,
 		BobHz = 0.35,

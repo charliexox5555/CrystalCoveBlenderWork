@@ -251,6 +251,7 @@ function Screen:Detail(id)
 			if Glassies.isSeasonal(id)
 				then "SEASONAL • OWNED x"
 				elseif Glassies.isDaily(id) then "DAILY • OWNED x"
+				elseif Glassies.isStarterPack(id) then "STARTER PACK • OWNED x"
 				else "LEGACY • OWNED x"
 		) .. owned.Count
 	end

@@ -1,0 +1,555 @@
+{
+ "schema": "launch_glassies_v4/1 (glassy_revamp_v3/1 plus `follows` and the `drip` idle type)",
+ "coordinates": "Roblox model space: roblox = (x, z, -y) of Blender; studs at GlassyScale 1; origin = hang point",
+ "idle_types": {
+  "sway": "rotate about axis amp_deg*sin(2*pi*t/period_s+phase)",
+  "spin": "rotate about axis at deg_per_s",
+  "bob": "translate along axis amp_studs*sin(...)",
+  "pulse": "scale about pivot 1+amp*sin(...); Neon parts also brighten",
+  "slosh": "rotate about axis by -gain*swing angular velocity (deg/s), clamp max_deg, spring freq_hz/damping",
+  "flicker": "random scale jitter amp at rate_hz",
+  "blink": "scale along axis to 0.1 for dur_s every interval_s (+-40%)",
+  "drip": "loop every period_s: scale 0->1 over grow_s at the pivot, then slide fall_studs along the axis while fading, reset",
+  "static": "no idle motion"
+ },
+ "hit_types": {
+  "kick": "rotate deg about axis (sign from hit side), spring back",
+  "flare": "rotate deg outward, spring back",
+  "hop": "translate studs along axis, spring back",
+  "squash": "scale factor along axis, spring back",
+  "flash": "Neon/brighten for dur_s",
+  "spin_boost": "add deg_per_s decaying over dur_s",
+  "none": "no reaction"
+ },
+ "follows": "A part with `follows` rides the named part: apply the parent's motion first, then its own idle/hit in the parent's frame (fish tail on the fish, eye shine on the eyes, chips on their cookie). Parts with the same motion as the parent repeat it.",
+ "body_motion": "Glass Top's Body has a cosmetic spin about the hang axis; its stripes, ring, knob and tip follow it.",
+ "lod": "Low-detail mode: animate only parts with lod_keep=true (plus client-driven kit names).",
+ "glassies": {
+  "sunny_rooster": {
+   "name": "Sunny",
+   "rarity": "Epic",
+   "tint": "#FF9E7A",
+   "version": "v4",
+   "bundle": "assets/blender/glassies/sunny_rooster/v4/sunny_rooster_bundle.fbx",
+   "icon": "assets/blender/glassies/sunny_rooster/v4/sunny_rooster_icon.png",
+   "intact_triangles": 1498,
+   "shard_count": 18,
+   "release_geometry": {
+    "Radius": 0.8,
+    "Center": 1.08
+   },
+   "radius_target": 0.8,
+   "body_dimensions_roblox": [
+    1.600000023841858,
+    1.7599999904632568,
+    1.5199999809265137
+   ],
+   "fbx_roundtrip": true,
+   "animated_parts": 15,
+   "parts": [
+    {
+     "name": "Body",
+     "role": "Body",
+     "material": "Glass",
+     "color": "#FF9E7A",
+     "transparency": 0.38,
+     "effect_only": false
+    },
+    {
+     "name": "Eyes",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#1B2440",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Eyes",
+     "pivot_roblox": [
+      0.0,
+      -0.53,
+      0.60867
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "blink",
+      "interval_s": 4.0,
+      "dur_s": 0.12
+     },
+     "hit": {
+      "type": "none"
+     },
+     "lod_keep": false
+    },
+    {
+     "name": "EyeShine",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FFFFFF",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_EyeShine",
+     "pivot_roblox": [
+      0.0,
+      -0.53,
+      0.60867
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "blink",
+      "interval_s": 4.0,
+      "dur_s": 0.12
+     },
+     "hit": {
+      "type": "none"
+     },
+     "lod_keep": false,
+     "note": "blinks with Eyes",
+     "follows": "Eyes"
+    },
+    {
+     "name": "Cheeks",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FF8FB0",
+     "transparency": 0.35,
+     "effect_only": false
+    },
+    {
+     "name": "Beak",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FFD45C",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Beak",
+     "pivot_roblox": [
+      0.004,
+      -0.66,
+      0.630094
+     ],
+     "axis_roblox": [
+      1.0,
+      0.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 12,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "opens on the crow"
+    },
+    {
+     "name": "Wattle",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FF5D7E",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Wattle",
+     "pivot_roblox": [
+      0.004,
+      -0.71,
+      0.630094
+     ],
+     "axis_roblox": [
+      1.0,
+      0.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 8,
+      "period_s": 1.6,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 22,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "wobbles on hits"
+    },
+    {
+     "name": "Comb",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FF5D7E",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Comb",
+     "pivot_roblox": [
+      0.0,
+      -0.26,
+      0.2
+     ],
+     "axis_roblox": [
+      1.0,
+      0.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 4,
+      "period_s": 2.2,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 18,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": true,
+     "note": "comb wobble; stands tall at Ready"
+    },
+    {
+     "name": "Wing_L",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FF8A5C",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Wing_L",
+     "pivot_roblox": [
+      -0.7,
+      -1.1,
+      0.12
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 4,
+      "period_s": 2.0,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "flare",
+      "deg": 26,
+      "freq_hz": 2.5,
+      "damping": 0.35
+     },
+     "lod_keep": true,
+     "note": "flap on hits; spread wide in the crow"
+    },
+    {
+     "name": "Wing_R",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FF8A5C",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Wing_R",
+     "pivot_roblox": [
+      0.7,
+      -1.1,
+      0.12
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      1.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 4,
+      "period_s": 2.0,
+      "phase": 0.5
+     },
+     "hit": {
+      "type": "flare",
+      "deg": 26,
+      "freq_hz": 2.5,
+      "damping": 0.35
+     },
+     "lod_keep": true,
+     "note": "flap on hits; spread wide in the crow"
+    },
+    {
+     "name": "TailFeather_1",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FF5D7E",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_TailFeather_1",
+     "pivot_roblox": [
+      0.0,
+      -1.12,
+      -0.56
+     ],
+     "axis_roblox": [
+      1.0,
+      0.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 5,
+      "period_s": 2.0,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 16,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "dawn tail; fans up in the crow"
+    },
+    {
+     "name": "TailFeather_2",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FF8A5C",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_TailFeather_2",
+     "pivot_roblox": [
+      0.0,
+      -1.12,
+      -0.56
+     ],
+     "axis_roblox": [
+      1.0,
+      0.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 6,
+      "period_s": 2.0,
+      "phase": 0.5
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 16,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "dawn tail; fans up in the crow"
+    },
+    {
+     "name": "TailFeather_3",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FFB547",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_TailFeather_3",
+     "pivot_roblox": [
+      0.0,
+      -1.12,
+      -0.56
+     ],
+     "axis_roblox": [
+      1.0,
+      0.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 5,
+      "period_s": 2.0,
+      "phase": 1.0
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 16,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": true,
+     "note": "dawn tail; fans up in the crow"
+    },
+    {
+     "name": "TailFeather_4",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FFD45C",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_TailFeather_4",
+     "pivot_roblox": [
+      0.0,
+      -1.12,
+      -0.56
+     ],
+     "axis_roblox": [
+      1.0,
+      0.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 6,
+      "period_s": 2.0,
+      "phase": 1.5
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 16,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "dawn tail; fans up in the crow"
+    },
+    {
+     "name": "TailFeather_5",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#C7A6FF",
+     "transparency": 0.28,
+     "effect_only": false,
+     "pivot_empty": "Pivot_TailFeather_5",
+     "pivot_roblox": [
+      0.0,
+      -1.12,
+      -0.56
+     ],
+     "axis_roblox": [
+      1.0,
+      0.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "sway",
+      "amp_deg": 5,
+      "period_s": 2.0,
+      "phase": 2.0
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 16,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false,
+     "note": "dawn tail; fans up in the crow"
+    },
+    {
+     "name": "SunCharm",
+     "role": "Detail",
+     "material": "Neon",
+     "color": "#FFD45C",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_SunCharm",
+     "pivot_roblox": [
+      0.004,
+      -1.2,
+      0.794775
+     ],
+     "axis_roblox": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "idle": {
+      "type": "pulse",
+      "amp": 0.08,
+      "period_s": 2.0,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "flash",
+      "dur_s": 0.3
+     },
+     "lod_keep": false,
+     "note": "Epic accent: glows at Ready, flares on the crow"
+    },
+    {
+     "name": "SunriseGlow",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FFB547",
+     "transparency": 0.15,
+     "effect_only": false,
+     "pivot_empty": "Pivot_SunriseGlow",
+     "pivot_roblox": [
+      0.0,
+      -1.32,
+      -0.06
+     ],
+     "axis_roblox": [
+      0.0,
+      1.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "pulse",
+      "amp": 0.04,
+      "period_s": 2.4,
+      "phase": 0.0
+     },
+     "hit": {
+      "type": "squash",
+      "factor": 0.93,
+      "freq_hz": 4.0,
+      "damping": 0.35
+     },
+     "lod_keep": false,
+     "note": "inner sunrise glass"
+    },
+    {
+     "name": "Feet",
+     "role": "Detail",
+     "material": "SmoothPlastic",
+     "color": "#FFD45C",
+     "transparency": 0,
+     "effect_only": false,
+     "pivot_empty": "Pivot_Feet",
+     "pivot_roblox": [
+      0.0,
+      -1.86,
+      0.18
+     ],
+     "axis_roblox": [
+      1.0,
+      0.0,
+      -0.0
+     ],
+     "idle": {
+      "type": "static"
+     },
+     "hit": {
+      "type": "kick",
+      "deg": 8,
+      "freq_hz": 3.0,
+      "damping": 0.3
+     },
+     "lod_keep": false
+    },
+    {
+     "name": "HangLoop",
+     "role": "Detail",
+     "material": "Glass",
+     "color": "#FFD45C",
+     "transparency": 0.28,
+     "effect_only": false
+    }
+   ]
+  }
+ }
+}

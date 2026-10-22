@@ -14,6 +14,12 @@
    "Name": "GC icon finishers_bubble_bloom 1024"
   },
   {
+   "Key": "1024/finishers_daybreak",
+   "Path": "assets/icons/items/1024/finishers_daybreak.png",
+   "Type": "Decal",
+   "Name": "GC icon finishers_daybreak 1024"
+  },
+  {
    "Key": "1024/finishers_emberwing",
    "Path": "assets/icons/items/1024/finishers_emberwing.png",
    "Type": "Decal",
@@ -344,6 +350,12 @@
    "Name": "GC icon glassies_starblade 1024"
   },
   {
+   "Key": "1024/glassies_sunny_rooster",
+   "Path": "assets/icons/items/1024/glassies_sunny_rooster.png",
+   "Type": "Decal",
+   "Name": "GC icon glassies_sunny_rooster 1024"
+  },
+  {
    "Key": "1024/glassies_water_jug",
    "Path": "assets/icons/items/1024/glassies_water_jug.png",
    "Type": "Decal",
@@ -408,6 +420,12 @@
    "Path": "assets/icons/items/1024/rideables_cloud_cushion.png",
    "Type": "Decal",
    "Name": "GC icon rideables_cloud_cushion 1024"
+  },
+  {
+   "Key": "1024/rideables_dawn_kite",
+   "Path": "assets/icons/items/1024/rideables_dawn_kite.png",
+   "Type": "Decal",
+   "Name": "GC icon rideables_dawn_kite 1024"
   },
   {
    "Key": "1024/rideables_dragonfly",

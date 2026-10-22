@@ -532,6 +532,26 @@ Balance.CombatRelease = {
 			Duration = 0.6,
 			LandChance = 0.8,
 		},
+		-- Starter Pack glassy (decision 117). Sunny crows on a sunrise timer: three little suns fly out in a fan
+		-- ("cock-a-doodle-doo"); each one that lands dazzles the foe (a short slow, one per round of immunity).
+		sunny_rooster = {
+			Trigger = "timer",
+			First = 5,
+			Interval = 7,
+			Jitter = 0.8,
+			Shape = "volley",
+			Range = 6.5,
+			Radius = 0.2,
+			Arc = 0.55,
+			Pulses = 3,
+			Damage = 1.5,
+			Slow = 0.8,
+			StatusSeconds = 1.0,
+			Immunity = 2.5,
+			Windup = 0.5,
+			Duration = 0.7,
+			LandChance = 0.65,
+		},
 		arc_coil = {
 			Trigger = "contact",
 			Every = 3,

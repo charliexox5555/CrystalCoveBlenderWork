@@ -776,6 +776,27 @@ table.insert(list, {
 	Description = "The sleepy moon of Midnights Studio: sings a lullaby that makes its foe drowsy.",
 })
 
+-- Starter Pack exclusive (decision 117): only the 49 R$ Starter Pack gives it. Epic stats match ordinary Epic Kiln
+-- glassies and its kit is tuned to the same 45-55% equal-stat edge, so it never out-stats the free roster. Like the
+-- Daily set it sits outside the release roster (never in the Kiln, the daily store or bot hands).
+local starterPackIds = { "sunny_rooster" }
+table.insert(list, {
+	Id = "sunny_rooster",
+	Name = "Sunny",
+	Type = "Heavy",
+	Rarity = "Epic",
+	Base = { Power = 20, HP = 112, Swing = 6 },
+	Passive = "sturdy",
+	PassiveName = "Early Bird",
+	Special = "slam",
+	SpecialName = "Wake-Up Call",
+	Radius = 0.8,
+	Tint = "#FF9E7A",
+	ClinkPitch = 1.0,
+	Asset = "sunny_rooster",
+	Description = "A proud glass rooster: crows a burst of three little suns that dazzle whoever they hit.",
+})
+
 local Glassies = {
 	List = list,
 	ById = {} :: { [string]: GlassyDef },
@@ -812,18 +833,23 @@ Glassies.DailyIds = dailyIds
 function Glassies.isDaily(id: string): boolean
 	return table.find(dailyIds, id) ~= nil
 end
+Glassies.StarterPackIds = starterPackIds
+function Glassies.isStarterPack(id: string): boolean
+	return table.find(starterPackIds, id) ~= nil
+end
 Glassies.SeasonalIds = seasonalIds
 function Glassies.isSeasonal(id: string): boolean
 	return table.find(seasonalIds, id) ~= nil
 end
--- Owned legacy entries remain inspectable; they do not inflate the release's 24-item total. The Daily Rewards
--- glassies always show (locked until claimed), so players can see what the calendar gives.
+-- Owned legacy entries remain inspectable; they do not inflate the release's 24-item total. The Daily Rewards and
+-- Starter Pack glassies always show (locked until owned), so players can see what the calendar and the pack give.
 function Glassies.visible(collection)
 	local entries = table.clone(Glassies.ReleaseList)
 	for _, definition in list do
 		local owned = collection and collection[definition.Id]
 		if
 			Glassies.isDaily(definition.Id)
+			or Glassies.isStarterPack(definition.Id)
 			or (not Glassies.isRelease(definition.Id) and owned and (owned.Count == nil or owned.Count > 0))
 		then
 			table.insert(entries, definition)

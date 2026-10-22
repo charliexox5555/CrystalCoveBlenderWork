@@ -3,6 +3,22 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-21 — Claude (starter-pack-items session) — Starter Pack exclusives: the Daybreak set (decision 117, Proposed)
+Done:
+- Three Epic items only the 49 R$ Starter Pack gives (the pack itself is the monetization session's, decision 116), a dawn / first-light set. Report with renders and captures: docs/testing/starter_pack_items/README.md.
+- **Sunny** (`sunny_rooster`, Heavy glass rooster): built headless on the launch builder (docs/art/starter_pack/tools/build_starter.py), 1,498/1,500 tris, 18 shards, FBX round-trip passed, uploaded (75390126341675) and installed (verify Ok). Power **Wake-Up Call**: timer volley of three little suns, a landed sun dazzles (slow); bespoke PowerFX kit (rising-sun windup, sound rings, dazzle suns) and toy-crow sounds. Outside the Kiln, daily store and bot hands; always shown in the Collection.
+- **Daybreak** (`daybreak`): timed show (gather, peak 0.5 s, release, linger to 2.3 s) with Sunny as its hero, a glass sun with rays, dawn-glass shards, FOV punch; FinisherAudio cues (slide-whistle crow on the impact); still baked into Assets.RoundFinishers.
+- **Dawn Kite** (`dawn_kite`, HandleStand kiteboard): docs/art/starter_pack/tools/build_dawn_kite.py on the launch flyer builder, 5,422/7,500 tris, uploaded (137770082572265), installed with flyer_effects (dawn ribbons, sun motes, wake, launch puff), RideMotion profile with a canopy-rustle loop.
+- Item pictures for all three (decision 113 pipeline), LoadTiers (Soon), RewardGrant / catalog / inventory labels, `CosmeticDev:Invoke("PreviewStarterPack", player)` for Studio QA.
+- Real swing (release_matrix, 8 rounds/pair vs 39 kits): Sunny 51.0% equal stats, 52.9% equal with bots casting, 51.9% with rarity, 52.2% rarity + bots (first pass 39.7%, crow damage 0.9 → 1.5, interval 8 → 7).
+- Sims. Balance (FightModel stand-in, release roster only, so Sunny is not in it): types Fizzy 46% / Heavy 48% / Sharp 58%, side bias 48%, Perfect vs worst 60%, 41% comebacks. Economy (40 min/day): first Rare 51 min, Epic 40 min, Legendary 4.0 h; payer report "Starter" (49 R$) HP edge 0.1% at day 7, 0.0% at day 30.
+- Studio Play: a real bot match won 3-2 on the Dawn Kite with Sunny (roll card, crow landing with SLOWED, the Daybreak show on the last round), the kite on the lobby Flyers display, the Starter Pack screen showing all three. Lune 259/259 (new StarterPackItemTests); Studio RunAll 258/259 before the icons existed (the pending icon entry, fixed since).
+Next:
+- Creator: **save / publish the place** (Sunny, the Dawn Kite template and the Daybreak still live in it); feel check of the toy crow, the dazzle suns and the kite canopy size.
+- Monetization: drop the Studio stand-ins in Config/Offers now that the three exist.
+Problems / questions for the user:
+- Studio's Edit require cache is stale, so the stored Daybreak still was baked from the first show version and patched to match (horizon capsules, Sunny 3.8 studs); portraits and icons build live from the current show anyway.
+
 ## 2026-10-21 — Claude (daily-playtime session) — Daily and Playtime rewards v2 (decision 115, Proposed)
 Done:
 - Research and proposal: docs/design/DAILY_PLAYTIME_V2.md (sources cited). The creator chose a half-moon for Day 7 (Midnights Studio) and delegated the other calls before dinner (§7).

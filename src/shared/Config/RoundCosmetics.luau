@@ -262,6 +262,35 @@ C.Seasonal = {
 		},
 	},
 }
+-- Starter Pack exclusives (decision 117, the Daybreak set with the glassy Sunny): only the 49 R$ Starter Pack gives
+-- them. Like the seasonal set they sit outside the crate pools, bot loadouts and the daily store above.
+C.StarterPack = {
+	Rideables = {
+		{
+			Id = "dawn_kite",
+			Name = "Dawn Kite",
+			Rarity = "Epic",
+			Color = "#FF9E7A",
+			Accent = "#FFD45C",
+			StarterPack = true,
+			Description = "Kiteboard through a glass sunrise: a dawn-coloured kite pulls your board and trails ribbons of morning light.",
+		},
+	},
+	Finishers = {
+		{
+			Id = "daybreak",
+			Name = "Daybreak",
+			Rarity = "Epic",
+			Color = "#FF9E7A",
+			Accent = "#FFD45C",
+			StarterPack = true,
+			CameraHoldSeconds = 1.6,
+			CameraPush = 0.74,
+			CameraOrbit = 0.1,
+			Description = "Sunny the rooster crows, a glass sun rises behind your foe, and it bursts into rays of morning light.",
+		},
+	},
+}
 function C.catalog(category)
 	local out = {}
 	for _, def in C[category] or {} do
@@ -270,7 +299,20 @@ function C.catalog(category)
 	for _, def in C.Seasonal[category] or {} do
 		table.insert(out, def)
 	end
+	for _, def in C.StarterPack[category] or {} do
+		table.insert(out, def)
+	end
 	return out
+end
+function C.isStarterPack(id: string): boolean
+	for _, list in C.StarterPack do
+		for _, def in list do
+			if def.Id == id then
+				return true
+			end
+		end
+	end
+	return false
 end
 -- Nothing equipped by default (decision 95): no flyer, and the basic finisher is the plain glass break.
 function C.default(category)

@@ -49,6 +49,9 @@ else
 	for _, id in Glassies.DailyIds or {} do -- Daily Rewards glassies (decision 115)
 		table.insert(ids, id)
 	end
+	for _, id in Glassies.StarterPackIds or {} do -- Starter Pack glassy (decision 117)
+		table.insert(ids, id)
+	end
 end
 if base ~= "rarity" then
 	for _, info in Balance.Rarities do

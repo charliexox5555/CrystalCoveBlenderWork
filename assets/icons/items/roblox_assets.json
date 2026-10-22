@@ -546,6 +546,27 @@
    "Sha256": "e9b32b31c4ad03de80c33d5c74b56c5799a5c3159e41b70107b25dc0aef8bcb4",
    "Moderation": "Approved",
    "Uploaded": "2026-10-21T19:05:34"
+  },
+  "512/finishers_daybreak": {
+   "AssetId": "106056353462713",
+   "Path": "assets/icons/items/512/finishers_daybreak.png",
+   "Sha256": "c06ab5a68b874b66b25ffa30561859bf660ca574f8d7a5e69a50001294410b2d",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-21T20:47:07"
+  },
+  "512/glassies_sunny_rooster": {
+   "AssetId": "87624073887747",
+   "Path": "assets/icons/items/512/glassies_sunny_rooster.png",
+   "Sha256": "c9749bd223564c4acbd49fd79b991ca453f93bff8563d3098e06714e1a5d33f9",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-21T20:47:10"
+  },
+  "512/rideables_dawn_kite": {
+   "AssetId": "107896072312693",
+   "Path": "assets/icons/items/512/rideables_dawn_kite.png",
+   "Sha256": "58936ce6c3751a05ebe66998d5a4c379d84ce5ab8425f9c5e6f238f67ecef971",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-21T20:47:13"
   }
  }
 }

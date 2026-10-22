@@ -331,6 +331,34 @@ S.Shows = {
 			Peak2Brightness = 0.08,
 		},
 	},
+	-- Starter Pack Daybreak set (decision 117, Epic): Sunny hops in at dusk and crows at the impact, a glass sun bursts
+	-- up behind the foe with a fan of rays, the foe breaks into dawn glass, then morning motes rise as the sun climbs.
+	daybreak = {
+		Module = "Daybreak",
+		Duration = 2.3,
+		PeakAt = 0.5,
+		StillAt = 0.66,
+		Shake = 0.3,
+		Punch = -5,
+		RoosterHeight = 3.8,
+		Spot = 3.2, -- studs to the side of the foe
+		Ground = -3.8,
+		HorizonWidth = 16,
+		SunSize = 4.2,
+		SunRise = 5.4, -- the sun's centre above the ground line after the burst
+		Rays = 14,
+		RayLength = 4.5,
+		Motes = 30,
+		Shards = 14,
+		Glints = 24,
+		RiseMotes = 34,
+		FlashSize = 5,
+		RingRadius = 6.5,
+		LightBrightness = 4,
+		LightRange = 18,
+		BowAt = 1.45,
+		LeaveAt = 1.85,
+	},
 }
 
 return S

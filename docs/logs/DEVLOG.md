@@ -179,6 +179,17 @@ Problems:
 - Required project test attempt `lune run tools/run_tests` could not start: Windows Application Control blocked the existing Lune executable. No tests ran or failed. No Studio sessions were connected for the documented alternate runner. Image visual/format checks passed; code was not edited.
 
 ```
+## 2026-10-22 — Claude (main session) — Release data reset, tester Marbles off
+Done:
+- `Config/Testing` TesterMarbles off: no more 10,000 free Marbles on join.
+- Fresh data for release: `Balance.Data.StoreName` GlassClash_v2 -> **GlassClash_v3** (Studio: GlassClash_Studio_v3). This is the standard ProfileStore wipe. Every player starts as new (onboarding, welcome opens, Daily from day 1, Starter Pack window, group reward). The leaderboard ordered stores share the prefix, so the boards start empty. Nothing is deleted: v2 keeps the playtest data. Settings (GlassClashSettings_v1: volumes and toggles) are kept on purpose.
+- Lune passes; sims unchanged (no gameplay numbers changed).
+Next:
+- Creator: publish. Takes effect on live servers after publishing.
+- If testers buy things in the group test, a second wipe before Saturday would take those away: decide before then.
+Problems / questions for the user:
+- None.
+
 ## 2026-10-22 — Claude (monetization session) — Marble "+" no longer covers the Shop header counter
 Done:
 - ui-audit: on phones the Shop header's "+" sat over the end of "10,000". The amount label now ends where the button starts (HUD and Shop header, re-fitted on resize). A06 check, capture 30. Lune 265/265.

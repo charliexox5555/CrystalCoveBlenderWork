@@ -725,8 +725,10 @@ Balance.Onboarding = {
 
 Balance.Data = {
 	Version = 2,
-	StoreName = "GlassClash_v2",
-	StudioStoreName = "GlassClash_Studio_v2",
+	-- v3: fresh start for release (creator, 2026-10-22). v2 (playtest data) is left untouched, so it can be read back
+	-- if ever needed. Leaderboard ordered stores use the same prefix, so they start empty too.
+	StoreName = "GlassClash_v3",
+	StudioStoreName = "GlassClash_Studio_v3",
 	StudioMock = true, -- protects live progress during automated Studio tests
 	LoadTimeout = 60,
 	ReleaseGrace = 0.25,

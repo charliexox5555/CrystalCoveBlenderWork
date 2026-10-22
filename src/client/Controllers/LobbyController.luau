@@ -2,6 +2,7 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local CAS = game:GetService("ContextActionService")
 local TouchGate = require(script.Parent.Parent.UI.TouchGate)
+local HudStage = require(script.Parent.Parent.UI.HudStage)
 local RS = game:GetService("ReplicatedStorage")
 local Remotes = require(RS.Shared.Remotes)
 local Theme = require(script.Parent.Parent.UI.Theme)
@@ -37,6 +38,7 @@ local function hudHidden(pg)
 end
 
 local WALLET_ORDER = 30 -- above windows (20) and top bar screens, under toasts and claim effects
+local WALLET = { StageName = "wallet-only screen" } -- this controller's hold on HudStage
 
 -- Reward screens (top bar Daily / Playtime / Codes) keep only the coin and Marble counters on screen, so claimed
 -- currency has somewhere visible to fly to. Close() puts the rest of the HUD back.
@@ -45,13 +47,8 @@ function Controller:ShowWallet()
 	if not gui or hudHidden(self.Player.PlayerGui) then
 		return
 	end
-	self.WalletOnly = self.WalletOnly or {}
-	for _, child in gui:GetChildren() do
-		if child:IsA("GuiObject") and child.Name ~= "Currency" and self.WalletOnly[child] == nil then
-			self.WalletOnly[child] = child.Visible
-			child.Visible = false
-		end
-	end
+	self.WalletOnly = true
+	HudStage.hide(WALLET)
 	-- Drawn above the reward window: its corner covers the counters' spot on wide screens.
 	self.WalletOrder = self.WalletOrder or gui.DisplayOrder
 	gui.DisplayOrder = math.max(self.WalletOrder, WALLET_ORDER)
@@ -61,10 +58,8 @@ end
 
 function Controller:Close()
 	if self.WalletOnly then
-		for child, visible in self.WalletOnly do
-			child.Visible = visible
-		end
 		self.WalletOnly = nil
+		HudStage.show(WALLET)
 	end
 	if self.WalletOrder then
 		self.Gui.DisplayOrder, self.WalletOrder = self.WalletOrder, nil
@@ -181,6 +176,72 @@ function Controller:FlushGains()
 	end
 end
 
+-- What may keep the HUD put away right now, or nil when the lobby is free: no match, queue, results or watch, no window,
+-- menu, claim card, opening or offer popup.
+function Controller:Busy(): string?
+	local pg = self.Player.PlayerGui
+	if hudHidden(pg) then
+		return "match"
+	elseif self.Screen then
+		return "window"
+	end
+	local topbar = self.Controllers.TopbarController
+	local onboarding = self.Controllers.OnboardingController
+	local deals = self.Controllers.DealsController
+	local card = pg:FindFirstChild("WelcomeScreen")
+	if topbar and topbar.Open then
+		return "menu"
+	elseif
+		onboarding
+		and (onboarding.ClaimKind or onboarding.ClaimPending or onboarding.ClaimLoading or onboarding.Revealing)
+	then
+		return "onboarding"
+	elseif card and card:IsA("ScreenGui") and card.Enabled then
+		return "claim card"
+	elseif deals and deals.PopupOpen and deals:PopupOpen() then
+		return "offer popup"
+	end
+	return nil
+end
+
+-- Invariant: in a free lobby the HUD and its tiles are on screen. Whatever left them away (a hold nobody released, a
+-- close that never ran) is repaired here, with a warning so it can be found. Checked every second (a reset can't do it:
+-- the HUD survives respawns); the lobby has to stay free for a moment first, so a menu that is just opening is let be.
+local FREE_SECONDS = 1
+function Controller:CheckHud()
+	local gui = self.Gui
+	if not gui or self:Busy() then
+		self.FreeSince = nil
+		return
+	end
+	local now = os.clock()
+	self.FreeSince = self.FreeSince or now
+	if now - self.FreeSince < FREE_SECONDS then
+		return
+	end
+	local wrong = {}
+	if self.PanelOpen then
+		table.insert(wrong, "PanelOpen")
+	end
+	if HudStage.held() then
+		table.insert(wrong, "held by " .. table.concat(HudStage.reset(), ", "))
+	end
+	self.WalletOnly = nil
+	if not gui.Enabled then
+		table.insert(wrong, "LobbyHUD disabled")
+	end
+	for _, child in gui:GetChildren() do
+		if child:IsA("GuiObject") and child.Name ~= "Currency" and child.Visible ~= HudStage.natural(child) then
+			table.insert(wrong, child.Name .. (if child.Visible then " shown" else " hidden"))
+		end
+	end
+	if #wrong > 0 then
+		warn("[LobbyHUD] repaired in a free lobby: " .. table.concat(wrong, "; "))
+		self:Close()
+		HudStage.apply()
+	end
+end
+
 function Controller:Start()
 	local pg = self.Player.PlayerGui
 	local hud = LobbyHud.new(function(kind)
@@ -204,7 +265,7 @@ function Controller:Start()
 	end
 	-- The "step on a pad" hint is noise once you're already standing on one.
 	pg:GetAttributeChangedSignal("Queued"):Connect(function()
-		self.Hint.Visible = not pg:GetAttribute("Queued")
+		self.Hint.Visible = not pg:GetAttribute("Queued") and not HudStage.held()
 	end)
 	pg:GetAttributeChangedSignal("InMatch"):Connect(inMatch)
 	pg:GetAttributeChangedSignal("Queued"):Connect(inMatch)
@@ -325,6 +386,15 @@ function Controller:Start()
 		end
 	end)
 	Remotes.RequestProfile:FireServer()
+	task.spawn(function()
+		while true do
+			task.wait(1)
+			local ok, err = pcall(self.CheckHud, self)
+			if not ok then
+				warn("[LobbyHUD] " .. tostring(err))
+			end
+		end
+	end)
 	if RunService:IsStudio() then
 		local dev = U.make("BindableFunction", self.Player.PlayerScripts, { Name = "LobbyClientDev" })
 		dev.OnInvoke = function(action, value)

@@ -81,8 +81,11 @@ session, from these findings). Lune 265/265 before each commit.
   bars carry the meaning. In the Shop header on phones the Marble "+" now sits over the end of the Marble counter
   ("10,000" is partly covered next to the close diamond, [A06](after/a06_kiln_odds_phone.jpg)); sent to the
   monetization session.
-- **Starter Pack auto-open, once on the A06:** with the Shop open about 3 s after onboarding was skipped, the Starter
-  popup appeared and the Shop was gone (not reproduced in two more runs); sent to the monetization session.
+- **Shop closed by itself after the welcome card (fixed):** once on the A06 the Shop vanished a few seconds after it
+  opened. The cause was the onboarding claim retry (`OnboardingController`, `ClaimRetrySeconds` = 5): when no opening
+  follows a claim, it gives the lobby back with `LobbyController:Close()`, which also closed a window the player had
+  opened meanwhile (the wallet's "+" opens the Shop). It now leaves an open window alone. Studio, laptop: welcome card
+  up, onboarding finished, Shop opened 0.3 s later, still open 12 s on (before: gone after about 5 s).
 - **Monetization session:** its fixes for 23 and 24 were in its working tree at the end of this pass; re-check once pushed.
 - **Not reachable in this pass:** another player's profile (needs a second player; the read-only view uses the same
   screen), watching a match and its STOP WATCHING button, the Crown Hill board and line chip, the group stand prompt,

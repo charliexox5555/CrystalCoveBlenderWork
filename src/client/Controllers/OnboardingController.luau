@@ -396,7 +396,8 @@ function Controller:Keep()
 		self.ClaimPending = nil
 	elseif self.ClaimPending and now - self.ClaimPending > O.ClaimRetrySeconds then
 		self.ClaimPending = nil -- no opening came: give the lobby back (the card comes again if it is still due)
-		if lobby and lobby.Gui then
+		-- A window the player opened meanwhile (the wallet's "+" opens the Shop) stays; closing it gives the HUD back.
+		if lobby and lobby.Gui and not lobby.Screen then
 			lobby:Close()
 		end
 	end

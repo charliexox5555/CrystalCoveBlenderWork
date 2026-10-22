@@ -9,7 +9,7 @@ Done:
 - Studio: `MultiplayerLauncher.run()` (6/6 stages) and `.watch()` pass with zero errors; new `tools/studio/verify_release_remotes.luau` flood (180 malformed calls per remote) granted nothing; 14 bot matches / 74 rounds with flat server instance counts and no errors or warnings; no products held for price mismatches.
 - Fixed: the multiplayer harness was stale (onboarding gate, range-limited snapshots), 7d3e791; offline profile reads stop when the GetAsync budget is low, f8069d2; a failed settings read no longer lets the save overwrite stored settings, 96d2bb0. Lune 267/267.
 Next (creator):
-- `Config/Testing.TesterMarbles` is ON in live (10,000 Marbles to every joiner, kept). Off before Saturday.
+- Tester Marbles were ON in live (10,000 to every joiner); the creator turned them off with a fresh `GlassClash_v3` store meanwhile (5eb60a6).
 - Save + publish with Rojo connected; maturity questionnaire; Kids & Select steps (until then only 16+ can play); server size 16, Console/VR off.
 - Decide: TOP SUPPORTERS boards vs GAME_DESIGN §10 "no spending leaderboards"; client-judged Perfect release (accepted risk?).
 

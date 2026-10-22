@@ -9,6 +9,7 @@ local DailyStore = if Shared then require(Shared.DailyStoreRules) else require("
 local Rules = if script then require(script.Parent.OnboardingRules) else require("./OnboardingRules")
 local Boards = if script then require(script.Parent.LeaderboardRules) else require("./LeaderboardRules")
 local Levels = if Shared then require(Shared.LevelRules) else require("../../shared/LevelRules")
+local BadgeRules = if script then require(script.Parent.BadgeRules) else require("./BadgeRules")
 
 function Schema.copy(value)
 	if type(value) ~= "table" then
@@ -66,6 +67,8 @@ function Schema.new(now)
 		RecentMatches = {},
 		-- Daily Featured store: today's locked offers, open Robux intents, bundle purchases.
 		Store = { Version = 0, Day = -1, Offers = {}, Intents = {}, Bundles = {} },
+		-- Badges (decision 118, BadgeRules): earned by the rules, awarded once Roblox confirmed.
+		Badges = { Earned = {}, Awarded = {} },
 	}
 	-- No starter glassies (decision 102): the welcome opens are a new player's first three.
 	RoundCosmetics.reconcile(data)
@@ -151,6 +154,7 @@ function Schema.reconcile(data, now)
 	Boards.reconcile(data)
 	RoundCosmetics.reconcile(data)
 	DailyStore.reconcile(data)
+	BadgeRules.reconcile(data)
 	return data
 end
 

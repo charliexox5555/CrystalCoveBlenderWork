@@ -314,6 +314,13 @@ function Service:Dispatch(entry, now)
 					end
 					if entry.Runner:FightEnded(fight.Winner, workspace:GetServerTimeNow()) then
 						entry.ActualWins[fight.Winner] += 1
+						if self.Services.BadgeService then
+							-- First Win (decision 118): only a round won over another player.
+							self.Services.BadgeService:RoundWon(
+								entry.Players[fight.Winner],
+								entry.Players[3 - fight.Winner]
+							)
+						end
 						local winner = fight.Fighters[fight.Winner]
 						entry.Chip[3 - fight.Winner] += math.clamp(1 - winner.Hp / math.max(winner.MaxHp, 1), 0, 1)
 						if Glassies.get(match.Sides[3 - fight.Winner].Pick).Type == "Heavy" then

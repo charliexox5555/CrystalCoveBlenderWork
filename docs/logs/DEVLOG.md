@@ -2,6 +2,25 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-22 — Claude (badges session) — Five launch badges: icons, server awarding, Open Cloud tool (decision 118, Proposed)
+Done:
+- Research (cited in docs/design/BADGES.md): Creator Docs Badges guide (5 free a day, then 100 R$; 512x512, circular crop), BadgeService API (server-only award, IsEnabled first, pcall, 50 + 35 x players/min, Studio only tests disabled badges), Open Cloud Badges API (create needs legacy-universe.badge:manage-and-spend-robux; expectedCost guards cost), live badges.roblox.com metadata/quota, top games' public badge lists (Doors, PS99, MM2, Arsenal, Tower of Hell, Grow a Garden).
+- Picks: Welcome to Glass Clash!, First Win! (a round over a player, not a bot), Legendary Find, Level 10, Midnight's Week.
+- Icons: tools/ui/badge_art.py, a round stained-glass medallion template with item-picture symbols, into assets/badges/png and preview.png (after the crop, light and dark backgrounds).
+- Code: Config/Badges (ids nil until created), Data/BadgeRules (pure; Earned/Awarded sets in the profile), Services/BadgeService (cache, retries, IsEnabled, ownership check, 20 s sweep; Studio mock plus ServerStorage.BadgeDev). Hooks in DataService (join, match recorded), MatchService (fight won over a player), KilnService and GroupRewardService (rarities pulled), RetentionService (claims).
+- Tests: BadgeTests (6). Lune 265/265, and RunAll on the Play server 265/265. Studio Play through BadgeDev:
+  - Welcome on join.
+  - A bot round gives nothing; a round over a player gives First Win.
+  - Common/Epic gives nothing; Mythic gives Legendary Find.
+  - Level 1 → 10 through recorded matches gives Level 10.
+  - Granting Midnight gives the week badge.
+  - Re-earning everything plus a 20 s sweep awards nothing new (5 awards in total).
+- Sims unchanged (no Balance, Glassies or Powers changes).
+Next:
+- Creator: add the key scope legacy-universe.badge:manage-and-spend-robux, then `zsh -i -c 'python3 tools/opencloud/badges.py create'` (free, writes the ids), commit Config/Badges, and test an award on a live server.
+Problems / questions for the user:
+- Creating badges is blocked: the key has 403 "Scope not authorized" for create. Update and icon scopes work.
+
 ## 2026-10-21 — Claude (live-ops session) — Post-launch live-ops plan (docs only)
 Done:
 - Research first, cited in the doc: Roblox Creator Docs (Discovery, Retention, Events and updates), the Jun 15 and Aug 6 2026 DevForum announcements (28-day retention windows, Saturday traffic peak), the GameAnalytics 2025 Roblox report, Grow a Garden and Adopt Me weekly schedules, Ball VS Ball's cadence, Balatro's solo-dev burnout. No official "Updated" sort or update-spike size exists in the docs; unverified third-party numbers were not used.

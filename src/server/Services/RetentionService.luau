@@ -73,6 +73,9 @@ function Service:Request(player, kind, id)
 	if ok then
 		self.Services.DataService:Sync(player)
 		self.Services.DataService.Profiles[player].Profile:Save()
+		if self.Services.BadgeService then
+			self.Services.BadgeService:Check(player) -- Midnight's Week, Level 10 (decision 118)
+		end
 	end
 	Remotes.RetentionResult:FireClient(player, {
 		Ok = ok,

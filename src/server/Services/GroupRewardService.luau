@@ -13,6 +13,7 @@ local GroupService = game:GetService("GroupService")
 local AnalyticsService = game:GetService("AnalyticsService")
 local RunService = game:GetService("RunService")
 local Config = require(RS.Shared.Config.GroupReward)
+local Glassies = require(RS.Shared.Config.Glassies)
 local Remotes = require(RS.Shared.Remotes)
 local Rules = require(script.Parent.Parent.Data.GroupRewardRules)
 local Schema = require(script.Parent.Parent.Data.ProfileSchema)
@@ -137,6 +138,10 @@ function Service:Claim(player)
 	if id then
 		table.insert(results, Schema.grant(profile, id, rainbow, os.time()))
 		profile.Stats.KilnPulls += 1
+		if self.Services.BadgeService then
+			-- Legendary Find (decision 118): the gift is a Kiln open too.
+			self.Services.BadgeService:Pulled(player, { Glassies.ById[id] and Glassies.ById[id].Rarity })
+		end
 	end
 	self.Services.DataService:Sync(player)
 	self.Services.DataService.Profiles[player].Profile:Save()

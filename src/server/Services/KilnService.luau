@@ -180,6 +180,17 @@ function Service:Pull(player, count, token, category, currency)
 	if category == "Glassies" and self.Services.RetentionService then
 		self.Services.RetentionService:Pulled(player, count)
 	end
+	if self.Services.BadgeService then
+		-- Legendary Find (decision 118): any Kiln, any currency.
+		local rarityOf, rarities = {}, {}
+		for _, entry in odds do
+			rarityOf[entry.Id] = entry.Rarity
+		end
+		for _, pull in pulls do
+			table.insert(rarities, rarityOf[pull.Id])
+		end
+		self.Services.BadgeService:Pulled(player, rarities)
+	end
 	self.Services.DataService:Sync(player)
 	self.Services.DataService.Profiles[player].Profile:Save()
 	Remotes.KilnResult:FireClient(player, {

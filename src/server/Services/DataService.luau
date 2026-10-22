@@ -130,6 +130,9 @@ function Service:Load(player)
 	if self.Services.GroupRewardService then
 		self.Services.GroupRewardService:Loaded(player)
 	end
+	if self.Services.BadgeService then
+		self.Services.BadgeService:Check(player) -- Welcome and any badge earned before (decision 118)
+	end
 	local granted = Schema.testerGrant(profile.Data, require(RS.Shared.Config.Testing).TesterMarbles)
 	if granted > 0 then
 		player:SetAttribute("TesterMarblesGranted", granted)
@@ -149,6 +152,9 @@ function Service:RecordMatch(player, id, match, side, rewards, observed)
 	if changed then
 		if self.Services.RetentionService then
 			self.Services.RetentionService:MatchRecorded(player, match, side, observed or {})
+		end
+		if self.Services.BadgeService then
+			self.Services.BadgeService:Check(player) -- Level 10 (decision 118)
 		end
 		self:Sync(player)
 		self.Profiles[player].Profile:Save()

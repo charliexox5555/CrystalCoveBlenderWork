@@ -1,5 +1,6 @@
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
+local DataStoreService = game:GetService("DataStoreService")
 local RS = game:GetService("ReplicatedStorage")
 local Balance = require(RS.Shared.Config.Balance)
 local Remotes = require(RS.Shared.Remotes)
@@ -174,6 +175,14 @@ function Service:PublicProfile(userId)
 	local cached = self.ViewCache[userId]
 	if cached and os.clock() - cached.At < Balance.Levels.ViewCacheSeconds then
 		return cached.View, cached.Name
+	end
+	-- Store reads share the server's read budget with profile loads (UpdateAsync spends it too): never drain it.
+	if
+		not self.Mock
+		and DataStoreService:GetRequestBudgetForRequestType(Enum.DataStoreRequestType.GetAsync)
+			< Balance.Levels.ViewReadReserve
+	then
+		return nil
 	end
 	local ok, profile = pcall(function()
 		return self.Store:GetAsync("Player_" .. userId)

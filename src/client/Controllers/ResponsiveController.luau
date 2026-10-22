@@ -200,7 +200,26 @@ function Controller:WatchWindow(gui)
 end
 
 -- Touch: the coin/Marble counters sit where the thumbstick appears; put them top right instead.
+-- PLAY keeps a finger-sized minimum, so on short screens it grows up into its "joins the nearest free arena" hint;
+-- lift the hint clear of it.
+function Controller:FitPlayHint(gui)
+	local hint, play = gui:FindFirstChild("Hint"), gui:FindFirstChild("PlayButton")
+	if not hint or not play or not hint:IsA("GuiObject") or not play:IsA("GuiObject") then
+		return
+	end
+	self.HintHome = self.HintHome or hint.Position
+	hint.Position = self.HintHome
+	task.defer(function()
+		local gap = math.max(4, math.floor(play.AbsoluteSize.Y * 0.08)) -- the button's art fills its whole box
+		local overlap = hint.AbsolutePosition.Y + hint.AbsoluteSize.Y + gap - play.AbsolutePosition.Y
+		if overlap > 0 then
+			hint.Position = self.HintHome - UDim2.fromOffset(0, math.ceil(overlap))
+		end
+	end)
+end
+
 function Controller:FitLobbyHud(gui)
+	self:FitPlayHint(gui)
 	local currency = gui:FindFirstChild("Currency")
 	if not currency or not currency:IsA("GuiObject") then
 		return

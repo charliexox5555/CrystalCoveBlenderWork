@@ -195,6 +195,7 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 - [ ] **B:** fixed release art roster: 24 playable glassies, including 12 existing-model revisions and 12 new models; source/export/icon/shard/import checklist in the combat handoff
 - [ ] **U:** maturity questionnaire, icon, thumbnails, description; cross-promote from your other game
 - [x] **C:** creator-requested T3a/T3b/T5a bacon avatar variants, including hand correction to classic block arms; new files and prompts in assets/marketing/thumbnails/avatar_edits_2026_10_21/. Creator review/upload remains above.
+- [x] **C:** T4a collection thumbnail bottom-crop repair; full front row in final/T4a_v2_full_lineup.png, original retained; Lune265/265 and image QA pass.
 
 ## After launch
 

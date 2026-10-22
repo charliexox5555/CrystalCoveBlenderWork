@@ -2,6 +2,14 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-22 — Codex — Collection thumbnail bottom-crop repair
+Done:
+- Repaired the supplied T4a artwork: removed the wide purple foreground panel and pulled the collection display back so all six front-row glassies and their bases are fully visible, including the rightmost pickle jar. Preserved the lineup, Kiln, logo and style; original T4a.jpg retained.
+- New final: `assets/marketing/thumbnails/final/T4a_v2_full_lineup.png`, native1672x941 PNG, 1,955,033bytes. Exact built-in imagegen prompt/reference roles and visual QA: `assets/marketing/thumbnails/T4a_crop_fix_2026_10_22.md`. No code-based image edits, resizing, Studio or gameplay changes.
+- Verification: image decode/dimensions and full-row visual checks pass; Lune265 passed,0failed.
+Next:
+- Use the new full-lineup file for the selected collection slot in the creator's thumbnail test.
+
 ## 2026-10-22 — Claude (ui-audit session) — Phone layouts for the Kiln odds and the Inventory pane (decision 119)
 Done:
 - Creator approved both phone-only changes from the UI audit (findings 12 and 13):

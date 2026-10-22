@@ -1,5 +1,6 @@
 -- Same quoted crate structure for Glassies, Finishers and Flyers.
 local S = require(script.Parent.Parent.Components.StainedGlass)
+local U = require(script.Parent.Parent.Components.Util)
 local Theme = require(script.Parent.Parent.Theme)
 local Pools = require(script.Parent.ShopPools)
 local CratePanel = require(script.Parent.Parent.Components.CrateShopPanel)
@@ -295,7 +296,7 @@ function Shop.bind(self, data)
 		local p = self.Window.Panel
 		if p:FindFirstChild("Coins") then
 			p.Coins.CoinsAmount.Text, p.Marbles.MarblesAmount.Text =
-				tostring(profile.Coins), tostring(profile.Marbles or 0)
+				U.commas(profile.Coins), U.commas(profile.Marbles or 0)
 		end
 		for _, view in self.CrateViews or {} do
 			view:Wallet(self.Data, self.Data.Free or { Glassies = self.Data.Welcome }, self.Data.Welcome)

@@ -11,6 +11,7 @@ local HandRoll = require(script.Parent.Parent.Components.HandRoll)
 local Kit = require(script.Parent.Parent.Components.MatchKit)
 local GamepadNav = require(script.Parent.Parent.Components.GamepadNav)
 local Motion = require(script.Parent.Parent.Components.Motion)
+local U = require(script.Parent.Parent.Components.Util)
 local UiAudio = require(script.Parent.Parent.Components.UiAudio)
 local Window = require(script.Parent.Parent.Components.Window)
 local Confirm = require(script.Parent.Parent.Components.PickAnyConfirm)
@@ -50,8 +51,9 @@ local function buildCard(parent, name)
 		card,
 		"Power",
 		"",
-		UDim2.fromScale(0.72, 0.1),
-		UDim2.fromScale(0.14, 0.855),
+		-- As wide as the card's glass allows and clear of its bottom edge: the longer powers need three lines.
+		UDim2.fromScale(0.84, 0.1),
+		UDim2.fromScale(0.08, 0.848),
 		{ Font = Theme.Fonts.Body, MaxSize = 18, Outline = false }
 	)
 	power.TextWrapped = true
@@ -309,7 +311,7 @@ function Screen:Controls()
 	self.RerollButton.Visible = rerollable
 	Kit.enable(self.RerollButton, ready)
 	Kit.setCost(self.RerollButton, data.RerollCost or 3)
-	Motion.countTo(self.WalletAmount, data.Marbles or 0)
+	Motion.countTo(self.WalletAmount, data.Marbles or 0, U.commas)
 	local count = 0
 	for _ in data.Collection do
 		count += 1

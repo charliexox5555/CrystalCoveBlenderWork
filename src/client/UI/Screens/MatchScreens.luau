@@ -51,17 +51,19 @@ function Screens.queue(data, leave)
 		Kit.gem(panel, "Leave", "LEAVE", "ruby", UDim2.fromScale(0.25, 0.14), UDim2.fromScale(0.38, 0.79)),
 		leave
 	)
-	self:Connect(
-		Kit.gem(panel, "Invite", "INVITE FRIEND", "sapphire", UDim2.fromScale(0.22, 0.11), UDim2.fromScale(0.64, 0.79)),
-		function()
-			local ok = pcall(function()
-				SocialService:PromptGameInvite(Players.LocalPlayer)
-			end)
-			if not ok then
-				self.Timer.Text = "Invite a friend from the Roblox menu"
-			end
+	local invite =
+		Kit.gem(panel, "Invite", "INVITE FRIEND", "sapphire", UDim2.fromScale(0.22, 0.11), UDim2.fromScale(0.64, 0.79))
+	-- Still a finger-sized target on a phone (it was 30 px tall on a Galaxy A06).
+	local ratio = invite:FindFirstChildOfClass("UIAspectRatioConstraint").AspectRatio
+	U.make("UISizeConstraint", invite, { MinSize = Vector2.new(math.ceil(40 * ratio), 40) })
+	self:Connect(invite, function()
+		local ok = pcall(function()
+			SocialService:PromptGameInvite(Players.LocalPlayer)
+		end)
+		if not ok then
+			self.Timer.Text = "Invite a friend from the Roblox menu"
 		end
-	)
+	end)
 	self.Data = data
 	-- Controller: B leaves the queue; nothing is pre-selected so a stray A press never leaves by accident.
 	self.Nav = GamepadNav.push(panel, { Close = leave, AutoSelect = false })

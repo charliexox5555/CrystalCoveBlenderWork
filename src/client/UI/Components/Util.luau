@@ -123,4 +123,14 @@ function Util.text(parent, name, text, size, position, font, transient)
 	Util.make("UITextSizeConstraint", label, { MinTextSize = Theme.TextFit.Min, MaxTextSize = Theme.TextSize.Label })
 	return label
 end
+
+-- 12500 -> "12,500": every wallet and price reads the same way.
+function Util.commas(n)
+	local text = tostring(math.floor(n))
+	local count
+	repeat
+		text, count = text:gsub("^(-?%d+)(%d%d%d)", "%1,%2")
+	until count == 0
+	return text
+end
 return Util

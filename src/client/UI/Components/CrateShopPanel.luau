@@ -150,7 +150,7 @@ function Panel.new(parent, category, offers, callbacks)
 			local b = Button.new(
 				pane,
 				"Open" .. count,
-				"OPEN " .. count .. "\n" .. cost .. " " .. string.upper(currency),
+				"OPEN " .. count .. "\n" .. U.commas(cost) .. " " .. string.upper(currency),
 				if currency == "Coins" then "Yellow" else "Blue",
 				UDim2.fromScale(0.455, 0.17),
 				UDim2.fromScale(0.025 + (i - 1) * 0.495, 0.8)
@@ -158,8 +158,8 @@ function Panel.new(parent, category, offers, callbacks)
 			U.make("UISizeConstraint", b, { MinSize = Vector2.new(44, 44) })
 			setOpenText(
 				b,
-				"OPEN " .. count .. "\n" .. cost .. " " .. string.upper(currency),
-				"OPEN " .. count .. " · " .. cost
+				"OPEN " .. count .. "\n" .. U.commas(cost) .. " " .. string.upper(currency),
+				"OPEN " .. count .. " · " .. U.commas(cost)
 			)
 			table.insert(
 				self.Connections,
@@ -215,13 +215,13 @@ function Panel:Wallet(data, frees, welcome)
 					and (welcome or 0) > 0
 				then "WELCOME · FREE"
 				elseif free then "OPEN 1\nFREE"
-				else "OPEN " .. count .. "\n" .. cost .. " " .. string.upper(currency)
+				else "OPEN " .. count .. "\n" .. U.commas(cost) .. " " .. string.upper(currency)
 			local short = if free
 					and self.Category == "Glassies"
 					and (welcome or 0) > 0
 				then "WELCOME · FREE"
 				elseif free then "OPEN 1 · FREE"
-				else "OPEN " .. count .. " · " .. cost
+				else "OPEN " .. count .. " · " .. U.commas(cost)
 			setOpenText(button, text, short)
 			local label = button:FindFirstChild("Label") or button
 			label.TextTransparency = if (data[currency] or 0) >= cost then 0 else 0.28

@@ -8,5 +8,6 @@ return {
 	EdgeMargin = 0.02, -- gap kept between a window's decorations and the screen edge (share of height)
 	CompactHeadline = 0.12, -- phone: PULL BACK / countdown headline height (share of screen; authored 0.2)
 	BillboardReferenceHeight = 600, -- player billboards grow on screens shorter than this (px)...
-	BillboardMaxScale = 1.6, -- ...up to this factor
+	BillboardMaxScale = 1.8, -- ...up to this factor
+	BillboardMinScale = 1.5, -- every screen: at the authored 5 x 2.5 studs the glassy chip and HP line were ~6 px
 }

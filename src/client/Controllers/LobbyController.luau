@@ -36,6 +36,8 @@ local function hudHidden(pg)
 		or fightHudShown(pg)
 end
 
+local WALLET_ORDER = 30 -- above windows (20) and top bar screens, under toasts and claim effects
+
 -- Reward screens (top bar Daily / Playtime / Codes) keep only the coin and Marble counters on screen, so claimed
 -- currency has somewhere visible to fly to. Close() puts the rest of the HUD back.
 function Controller:ShowWallet()
@@ -50,6 +52,9 @@ function Controller:ShowWallet()
 			child.Visible = false
 		end
 	end
+	-- Drawn above the reward window: its corner covers the counters' spot on wide screens.
+	self.WalletOrder = self.WalletOrder or gui.DisplayOrder
+	gui.DisplayOrder = math.max(self.WalletOrder, WALLET_ORDER)
 	gui.Enabled = true
 	self:FlushGains()
 end
@@ -60,6 +65,9 @@ function Controller:Close()
 			child.Visible = visible
 		end
 		self.WalletOnly = nil
+	end
+	if self.WalletOrder then
+		self.Gui.DisplayOrder, self.WalletOrder = self.WalletOrder, nil
 	end
 	if self.Screen then
 		self.Screen:Destroy()
@@ -151,7 +159,7 @@ function Controller:ApplyWallet(profile)
 		-- A repeat snapshot with the same balance must not cancel a gain that is waiting for the HUD.
 		else
 			self.PendingGain[kind] = nil
-			Motion.countTo(label, value)
+			Motion.countTo(label, value, U.commas)
 		end
 	end
 	self:FlushGains()
@@ -168,7 +176,7 @@ function Controller:FlushGains()
 		local origin = self.GainOrigin
 		local from = if origin and os.clock() - origin.At < 4 then origin.Position else nil
 		CurrencyGain.play(kind, amount, label, function()
-			Motion.countTo(label, self.Shown[kind])
+			Motion.countTo(label, self.Shown[kind], U.commas)
 		end, from)
 	end
 end

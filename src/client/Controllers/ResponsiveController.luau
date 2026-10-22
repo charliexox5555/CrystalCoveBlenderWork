@@ -19,7 +19,8 @@ function Controller:Class()
 	if GuiService:IsTenFootInterface() then
 		return "TV"
 	end
-	if math.min(size.X, size.Y) < Tuning.CompactShortSide then
+	-- A camera that isn't sized yet (first frames after joining) is not a phone.
+	if size.X > 50 and size.Y > 50 and math.min(size.X, size.Y) < Tuning.CompactShortSide then
 		return "Compact"
 	end
 	return "Regular"
@@ -62,6 +63,7 @@ function Controller:FitWindow(gui)
 	if not panel or not aspect or not panel:IsA("GuiObject") then
 		return
 	end
+	self:PhoneLayout(gui, panel)
 	local entry = self.Windows[panel]
 	if not entry then
 		if panel.AbsoluteSize.Y < 2 then
@@ -101,35 +103,57 @@ function Controller:FitWindow(gui)
 	panel.Position = UDim2.new(0.5, 0, 0.5, math.floor(shown * (entry.Up - entry.Down) / 2))
 end
 
--- Phone layouts for screens whose authored rows are too small to tap (applied before the window is fitted).
+-- Phone layouts for screens whose authored rows are too small to tap: [screen][child][property] = phone value.
+-- They are applied (or taken back) on every fit, so a window built while the class read differently heals itself.
 local PHONE_LAYOUTS = {
 	-- Shop: the five tabs shared a short row with the coin/Marble pills (~14 px tall on a phone). The pills move up
 	-- into the title strip, like the SHOP banner, and the tabs take the whole row.
-	KilnScreen = function(panel)
-		local tabs, coins, marbles =
-			panel:FindFirstChild("Tabs"), panel:FindFirstChild("Coins"), panel:FindFirstChild("Marbles")
-		if not tabs or not coins or not marbles then
-			return
-		end
-		tabs.Position, tabs.Size = UDim2.fromScale(0.035, 0.09), UDim2.fromScale(0.93, 0.115)
-		coins.Position = UDim2.fromScale(0.545, -0.005)
-		marbles.Position = UDim2.fromScale(0.72, -0.005)
-	end,
+	KilnScreen = {
+		Tabs = { Position = UDim2.fromScale(0.035, 0.09), Size = UDim2.fromScale(0.93, 0.115) },
+		Coins = { Position = UDim2.fromScale(0.545, -0.005) },
+		Marbles = { Position = UDim2.fromScale(0.72, -0.005) },
+	},
 }
 
 function Controller:PhoneLayout(gui, panel)
 	local layout = PHONE_LAYOUTS[gui.Name]
-	if not layout or self:Class() ~= "Compact" then
+	if not layout then
 		return
 	end
-	layout(panel)
-	-- Content added later (the Shop's Marbles tab resizes the tab row) gets the phone layout again.
-	local tabs = panel:FindFirstChild("Tabs")
+	local class = self:Class()
+	local compact = class == "Compact"
+	panel:SetAttribute("ResponsiveClass", class) -- read by UI audits
+	self.Layouts = self.Layouts or setmetatable({}, { __mode = "k" }) -- [child] = { Home = {}, Set = {} }
+	for name, props in layout do
+		local child = panel:FindFirstChild(name)
+		if not child then
+			continue
+		end
+		local state = self.Layouts[child]
+		if not state then
+			state = { Home = {}, Set = {} }
+			self.Layouts[child] = state
+		end
+		for prop, phone in props do
+			-- A value we didn't set is the screen's own (the Shop resizes its tab row for the Marbles tab).
+			if state.Set[prop] == nil or child[prop] ~= state.Set[prop] then
+				state.Home[prop] = child[prop]
+			end
+			local value = if compact then phone else state.Home[prop]
+			child[prop] = value
+			state.Set[prop] = value
+		end
+	end
+end
+
+-- Content added later (the Shop's Marbles tab resizes the tab row) gets the layout again.
+function Controller:WatchLayout(gui, panel)
+	local tabs = PHONE_LAYOUTS[gui.Name] and panel:FindFirstChild("Tabs")
 	if tabs then
 		table.insert(
 			self.Connections[gui],
 			tabs.ChildAdded:Connect(function()
-				task.defer(layout, panel)
+				task.defer(self.PhoneLayout, self, gui, panel)
 			end)
 		)
 	end
@@ -171,7 +195,7 @@ function Controller:WatchWindow(gui)
 			self.Connections[gui] = nil
 		end),
 	}
-	self:PhoneLayout(gui, panel)
+	self:WatchLayout(gui, panel)
 	fit()
 end
 
@@ -240,19 +264,25 @@ function Controller:FitFightHud(gui)
 	end
 end
 
--- Player billboards are sized in studs, so their text is unreadable in a short phone viewport.
+-- Player billboards are sized in studs: grown everywhere so the chip and HP line read, more on short phone screens.
 function Controller:FitBillboard(gui)
 	if gui:GetAttribute("ResponsiveScaled") then
 		return
 	end
 	local camera = workspace.CurrentCamera
 	local short = camera and math.min(camera.ViewportSize.X, camera.ViewportSize.Y) or 720
-	local factor = math.clamp(Tuning.BillboardReferenceHeight / math.max(1, short), 1, Tuning.BillboardMaxScale)
+	local factor = math.clamp(
+		Tuning.BillboardReferenceHeight / math.max(1, short),
+		Tuning.BillboardMinScale,
+		Tuning.BillboardMaxScale
+	)
 	if factor > 1.01 then
 		gui:SetAttribute("ResponsiveScaled", true)
 		local size = gui.Size
 		gui.Size =
 			UDim2.new(size.X.Scale * factor, size.X.Offset * factor, size.Y.Scale * factor, size.Y.Offset * factor)
+		-- Grow upwards: the bottom edge stays where it was, clear of the avatar's head.
+		gui.StudsOffset += Vector3.yAxis * size.Y.Scale * (factor - 1) / 2
 	end
 end
 

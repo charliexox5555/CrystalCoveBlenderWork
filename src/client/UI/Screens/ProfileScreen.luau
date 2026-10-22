@@ -75,15 +75,16 @@ function Screen.winRate(stats)
 end
 
 -- Owned glassies that count toward the collection (the release list), and the list's size.
+-- Same list as the Inventory (release glassies plus the Daily / Starter Pack ones), so both show the same total.
 function Screen.collection(owned)
-	local count = 0
-	for _, def in Glassies.ReleaseList do
+	local count, list = 0, Glassies.visible(owned)
+	for _, def in list do
 		local entry = owned and owned[def.Id]
 		if entry and (entry.Count == nil or entry.Count > 0) then
 			count += 1
 		end
 	end
-	return count, #Glassies.ReleaseList
+	return count, #list
 end
 
 -- One string per collection that changes what its grid shows (profile refreshes leave unchanged grids alone).

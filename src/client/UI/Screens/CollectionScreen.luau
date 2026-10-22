@@ -80,9 +80,10 @@ function Screen:Refresh(profile)
 	self.TypeButton.Text, self.RarityButton.Text, self.SortButton.Text =
 		types[self.Type], rarities[self.Rarity], "Sort: " .. sorts[self.Sort]
 	local ownedCount, entries = 0, {}
-	for _, def in Glassies.visible(profile.Glassies) do
+	local visible = Glassies.visible(profile.Glassies)
+	for _, def in visible do
 		local owned = profile.Glassies[def.Id]
-		if owned and Glassies.isRelease(def.Id) then
+		if owned then
 			ownedCount += 1
 		end
 		if
@@ -107,7 +108,7 @@ function Screen:Refresh(profile)
 		end
 		return a.Name < b.Name
 	end)
-	self.Count.Text = ownedCount .. " / " .. #Glassies.ReleaseList .. " discovered • Tap for powers & stats"
+	self.Count.Text = ownedCount .. " / " .. #visible .. " discovered • Tap for powers & stats"
 	if self.TileRoot then
 		self.TileRoot:Destroy()
 	else

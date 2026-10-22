@@ -284,7 +284,7 @@ function Featured:Refresh()
 		if offer.Purchased then
 			Card.button(card, "sold", "SOLD OUT")
 		elseif offer.Currency == "Coins" then
-			Card.button(card, "coins", offer.Price .. " COINS")
+			Card.button(card, "coins", U.commas(offer.Price) .. " COINS")
 		elseif offer.Available and offer.RobuxPrice then
 			Card.button(card, "robux", ROBUX .. " " .. offer.RobuxPrice)
 		else

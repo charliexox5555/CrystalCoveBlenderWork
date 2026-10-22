@@ -7,8 +7,31 @@ Done:
 - Created two Glass Clash icon options from existing I1/I2 and T1a/T2a render assets: Phoenix–Comet clash and Dragon shatter. Recommended duel v2 enlarges both faces and reduces background/debris after a small-size check; no text or logo.
 - Selected opaque PNGs are in assets/marketing/icons/final/, native 1254x1254. Original references retained. Exact built-in imagegen prompts, official Roblox guidance, provenance and size-check preview: assets/marketing/icons/2026_10_22/.
 - Verification: full-size and browser 150/300px framing/face checks, PNG decode/dimensions; Lune 266 passed, 0 failed. No code-based image edits, gameplay/Studio changes or Roblox uploads.
+- Integrated concurrent remote HUD/data changes while preserving both devlog entries. Post-merge Lune: 266 passed, 0 failed. Required sims exit 0: Pop/Jam/Dragon mirrors 25.5/30.2/27.7 s, 0% timeouts, side-one bias 48%; economy match 5.7 min, 4 day-one/105 day-30 pulls, 16/29 unique glassies by day 7/30. No balance tuning in this art task.
 Next:
 - Creator chooses the first icon; compare Glass Clash results separately from previous Cookie Inc tests.
+
+## 2026-10-22 — Claude (hud-bug session) — Lobby HUD no longer disappears for good (creator, mobile)
+Done:
+- Bug: after a match, only the coin and Marble counters were left on screen. PLAY, the Shop / Inventory column and the Daily / Starter tiles never came back, not after a reset or another match.
+- Root cause: three pieces of code each hid the lobby HUD's children and later put back the Visible values they had saved:
+  - `LobbyController.ShowWallet` (Daily / Playtime / Codes screens, claim cards)
+  - `KilnScreen.OpeningHud` (Kiln openings)
+  - `DealScreens` popups (Starter, Daily Glassy, Need Marbles)
+  Those saves don't nest. If two overlapped and closed in the other order, one of them saved "hidden" and put it back last. Example: a Starter popup, then the Daily Rewards screen; close the popup, then close Daily. The HUD survives respawns, so a reset couldn't fix it.
+- Reproduced on the old code in Studio Play on the iPhone 17 Pro preset: all HUD children hidden, still hidden after a full bot match and a reset. Captures: docs/testing/hud_bug/.
+- Fix:
+  - New `UI/HudStage.luau` is one owner set for the "only the wallet" stage, like TouchGate. All three now hold and release it there.
+  - Nothing is saved. The last release puts each child back to its natural state: shown, except offer tiles marked DealHidden and the Hint while queued.
+- Invariant: `LobbyController:CheckHud` runs every second. If the lobby has been free for 1 s (no match, queue, results, watch, window, top bar menu, claim card, onboarding opening or offer popup), it repairs a disabled HUD, a stray PanelOpen, a leftover stage hold or a wrong child, and warns `[LobbyHUD] repaired in a free lobby: ...`.
+- Verified on the fixed code, iPhone 17 Pro preset:
+  - Both orders (popup + Daily, popup over a Shop Kiln opening) bring the full HUD back within 0.3 s, with no watchdog repair needed.
+  - A forced leaked hold plus PanelOpen is repaired in about 1 s, with the warning.
+  - A reset is fine, and the full HUD returns after a bot match.
+- Lune 267/267.
+Next:
+- Next Studio slot: three back-to-back matches on desktop and on the phone, plus the onboarding first match (YOU WON card, then opening).
+- Other sessions: any new UI that hides lobby HUD buttons must use `HudStage.hide(owner)` / `HudStage.show(owner)`, never save and restore `Visible` itself.
 
 ## 2026-10-22 — Codex — Collection thumbnail bottom-crop repair
 Done:

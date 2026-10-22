@@ -17,6 +17,7 @@ local function safe(fn, ...)
 	return if ok then result else nil
 end
 local TouchGate = require(script.Parent.Parent.TouchGate)
+local HudStage = require(script.Parent.Parent.HudStage)
 local Screens = {}
 
 local ROBUX = utf8.char(0xE002)
@@ -113,14 +114,8 @@ local function popup(name, title, tint, aspect, width, close)
 	})
 	TouchGate.acquire(self)
 	-- A clean stage: the lobby HUD keeps only the wallet while a popup is open (bought Marbles fly into it).
-	local hud = game.Players.LocalPlayer.PlayerGui:FindFirstChild("LobbyHUD")
-	self.Hidden = {}
-	for _, child in hud and hud:GetChildren() or {} do
-		if child:IsA("GuiObject") and child.Name ~= "Currency" and child.Visible then
-			self.Hidden[child] = true
-			child.Visible = false
-		end
-	end
+	self.StageName = "offer popup " .. name
+	HudStage.hide(self)
 	Kit.popIn(panel)
 	return self
 end
@@ -136,12 +131,8 @@ function Popup:Close()
 	self.Closed = true
 	self.Nav.Pop()
 	TouchGate.release(self)
-	for child in self.Hidden or {} do
-		-- Tiles that went away meanwhile (the Starter Pack once bought) stay hidden.
-		if child.Parent and not child:GetAttribute("DealHidden") then
-			child.Visible = true
-		end
-	end
+	-- Tiles that went away meanwhile (the Starter Pack once bought) stay hidden (DealHidden).
+	HudStage.show(self)
 	for _, connection in self.Connections do
 		connection:Disconnect()
 	end

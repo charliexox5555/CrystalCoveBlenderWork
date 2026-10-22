@@ -1,5 +1,6 @@
 local Window = require(script.Parent.Parent.Components.Window)
 local Opening = require(script.Parent.Parent.Components.KilnOpening)
+local HudStage = require(script.Parent.Parent.HudStage)
 local Screen = {}
 Screen.__index = Screen
 function Screen.new(data, close, pull, refresh, initialTab)
@@ -62,25 +63,14 @@ function Screen:OpeningHud(show)
 	if show then
 		if self.HudRestore == nil then
 			self.HudRestore = hud.Enabled
-			self.HudVisibility = {}
 			-- A clean stage: only the wallet stays (Inventory returns when the cards fly into it).
-			for _, name in { "PlayButton", "Hint", "Navigation" } do
-				local object = hud:FindFirstChild(name)
-				if object then
-					self.HudVisibility[object] = object.Visible
-					object.Visible = false
-				end
-			end
+			self.StageName = "kiln opening"
+			HudStage.hide(self)
 		end
 		hud.Enabled = true
 	elseif self.HudRestore ~= nil then
 		hud.Enabled, self.HudRestore = self.HudRestore, nil
-		for object, visible in self.HudVisibility do
-			if object.Parent then
-				object.Visible = visible
-			end
-		end
-		self.HudVisibility = nil
+		HudStage.show(self)
 	end
 end
 -- The reveal's card frames (one per rarity), fetched while the server answers so cards never land empty.

@@ -101,6 +101,11 @@ local ok, err = xpcall(function()
 		ownedBefore[p] = table.clone(data.Glassies)
 	end
 	table.insert(output.Stages, "two isolated profiles; invalid remote inputs rejected")
+	-- Decision 100: a new profile opens its claim card instead of queueing, so the QA players skip the tutorial.
+	local Onboarding = require(services.OnboardingService)
+	for _, p in { a, b } do
+		Onboarding:SetStep(p, "Done")
+	end
 	local arena = Arena.Arenas[1]
 	-- Pads queue through their "Join Battle" ProximityPrompt; a server script can't trigger one, so stand on the
 	-- pad and take the same authoritative path the prompt's Triggered handler calls.
@@ -274,6 +279,12 @@ local ok, err = xpcall(function()
 		Data:Get(joined).Coins == 0 and next(Data:Get(joined).Glassies) == nil,
 		"Fresh client inherited another profile"
 	)
+	-- Snapshots only reach players near an arena (FightService:Interested), so the joiner walks up to arena 2 first.
+	local character = waitFor(function()
+		return joined.Character and joined.Character:FindFirstChild("HumanoidRootPart") and joined.Character
+	end, 20, "late joiner character")
+	character:PivotTo(CFrame.new(spectate.Pads[1].Position + Vector3.new(0, 4, 0)))
+	task.wait(1.5)
 	command:FireClient(joined, "InspectWorld")
 	local world = waitFor(function()
 		return reports[tostring(joined.UserId)].Spectator

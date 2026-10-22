@@ -750,6 +750,7 @@ Balance.Levels = {
 	StepXp = 70, -- EconomySim: Lv 10 after ~42 matches (40 min/day, 50% wins, 40% bots, 1 Perfect)
 	ViewRateSeconds = 1, -- RequestPlayerProfile (another player's read-only profile)
 	ViewCacheSeconds = 60, -- offline profiles read from the store are reused this long
+	ViewReadReserve = 40, -- offline profile reads stop while the server's GetAsync budget is this low (profile loads first)
 }
 
 -- Sky lobby recovery; no combat or economy tuning.

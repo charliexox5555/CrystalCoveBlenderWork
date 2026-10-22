@@ -1,5 +1,5 @@
--- Marbles page of the shop window: a scrolling page with Daily Marbles (decision 116) on top and the
--- Marble packs (Config/MarbleShop) below, on the shared ShopCard. The "+" on the HUD and shop-window
+-- Marbles page of the shop window: a scrolling page with the Marble packs (Config/MarbleShop) on top
+-- and Daily Marbles (decision 116) below them, on the shared ShopCard. The "+" on the HUD and shop-window
 -- Marble counters opens the shop on this page. Packs are bought through StoreService (BuyMarblePack ->
 -- intent -> Robux prompt -> receipt); Daily Marbles through DealsController.
 local RS = game:GetService("ReplicatedStorage")
@@ -106,14 +106,14 @@ function MarbleShop:Daily(canvas)
 		"DailyHeader",
 		"DAILY MARBLES",
 		UDim2.fromScale(0.5, 0.045),
-		UDim2.fromScale(0.02, 0),
+		UDim2.fromScale(0.02, 0.6),
 		Theme.Fonts.Heading
 	)
 	header.TextXAlignment = Enum.TextXAlignment.Left
 	local frame = U.make("Frame", canvas, {
 		Name = "DailyCard",
 		BackgroundTransparency = 1,
-		Position = UDim2.fromScale(0.02, 0.05),
+		Position = UDim2.fromScale(0.02, 0.65),
 		Size = UDim2.fromScale(0.3, 0.33),
 	})
 	local card = Card.new(frame)
@@ -123,7 +123,7 @@ function MarbleShop:Daily(canvas)
 	local strip = U.make("Frame", canvas, {
 		Name = "Ladder",
 		BackgroundTransparency = 1,
-		Position = UDim2.fromScale(0.34, 0.07),
+		Position = UDim2.fromScale(0.34, 0.67),
 		Size = UDim2.fromScale(0.64, 0.29),
 	})
 	U.make("UIListLayout", strip, {
@@ -162,7 +162,7 @@ function MarbleShop:Daily(canvas)
 		cells[i] = cell
 	end
 	local note =
-		U.text(canvas, "LadderNote", "", UDim2.fromScale(0.64, 0.035), UDim2.fromScale(0.34, 0.36), Theme.Fonts.Caption)
+		U.text(canvas, "LadderNote", "", UDim2.fromScale(0.64, 0.035), UDim2.fromScale(0.34, 0.955), Theme.Fonts.Caption)
 	note.TextColor3 = Theme.Palette.amberLight
 	self.DailyCard, self.Ladder, self.LadderNote = card, cells, note
 	table.insert(
@@ -210,7 +210,8 @@ function MarbleShop:ShowDaily(view)
 	self:Step()
 end
 
--- Builds the Marbles page inside `page`: a scrolling page with Daily Marbles on top and the packs below.
+-- Builds the Marbles page inside `page`: a scrolling page with the packs on top and Daily Marbles below them
+-- (creator, 2026-10-22).
 -- `say` shows a status line. Returns a CrateViews-style view.
 function MarbleShop.page(page, say)
 	local self = setmetatable({ Page = page, Connections = {}, Cards = {}, Say = say, Packs = {} }, MarbleShop)
@@ -231,7 +232,7 @@ function MarbleShop.page(page, say)
 		"Header",
 		"MARBLE PACKS",
 		UDim2.fromScale(0.5, 0.045),
-		UDim2.fromScale(0.02, 0.405),
+		UDim2.fromScale(0.02, 0),
 		Theme.Fonts.Heading
 	)
 	header.TextXAlignment = Enum.TextXAlignment.Left
@@ -240,7 +241,7 @@ function MarbleShop.page(page, say)
 		"Note",
 		"Marbles pay for Pick Any and other Marble items",
 		UDim2.fromScale(0.46, 0.035),
-		UDim2.fromScale(0.52, 0.41),
+		UDim2.fromScale(0.52, 0.005),
 		Theme.Fonts.Caption
 	)
 	note.TextXAlignment, note.TextColor3 = Enum.TextXAlignment.Right, Theme.Palette.amberLight
@@ -248,7 +249,7 @@ function MarbleShop.page(page, say)
 	local grid = U.make("Frame", canvas, {
 		Name = "Packs",
 		BackgroundTransparency = 1,
-		Position = UDim2.fromScale(0.02, 0.455),
+		Position = UDim2.fromScale(0.02, 0.05),
 		Size = UDim2.fromScale(0.96, 0.54),
 	})
 	U.make("UIGridLayout", grid, {

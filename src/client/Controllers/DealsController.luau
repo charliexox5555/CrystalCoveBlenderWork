@@ -68,6 +68,8 @@ function Controller:OpenStarter()
 	end
 	self.Popup = screens().starter(self.State, self.State.ServerNow or self:Now(), function(kind, button)
 		self:Buy(kind, button)
+	end, function()
+		self:Reapply()
 	end)
 end
 
@@ -77,6 +79,17 @@ function Controller:OpenDailyGlassy()
 	end
 	self.Popup = screens().dailyGlassy(self.State, self.State.ServerNow or self:Now(), function(kind, button)
 		self:Buy(kind, button)
+	end, function()
+		self:Reapply()
+	end)
+end
+
+-- A popup closed: put the tiles back as the latest state says (an update may have come in while it was open).
+function Controller:Reapply()
+	task.defer(function()
+		if self.State then
+			self:Apply(self.State)
+		end
 	end)
 end
 
@@ -90,15 +103,26 @@ function Controller:NeedMarbles(shortfall, more, done)
 	local suggestion = Rules.suggest(math.max(1, shortfall), self.State and self.State.DailyMarbles, function(pack)
 		return held[tostring(pack.ProductId)] ~= nil
 	end)
-	self.Need = screens().needMarbles(shortfall, suggestion, function(s, button)
-		if s.Kind == "DailyMarbles" then
-			self:Buy("DailyMarbles", button)
-		else
-			button.Label.Text = "…"
-			Kit.enable(button, false)
-			Remotes.BuyMarblePack:FireServer(s.Id)
+	self.Need = screens().needMarbles(
+		shortfall,
+		suggestion,
+		function(s, button)
+			if s.Kind == "DailyMarbles" then
+				self:Buy("DailyMarbles", button)
+			else
+				button.Label.Text = "…"
+				Kit.enable(button, false)
+				Remotes.BuyMarblePack:FireServer(s.Id)
+			end
+		end,
+		more,
+		function()
+			self:Reapply()
+			if done then
+				done()
+			end
 		end
-	end, more, done)
+	)
 	return self.Need
 end
 
@@ -132,32 +156,52 @@ end
 function Controller:BuildTiles(hud)
 	local nav = hud:WaitForChild("Navigation")
 	local inventory = nav:WaitForChild("InventoryButton")
-	-- Daily Glassy: same size as Inventory.
-	local daily = tile(hud, "DailyGlassyTile", "amethyst", UDim2.fromScale(0.08, 0.19), "Daily")
+	-- Daily Glassy (creator, 2026-10-22): at the top of the left column, a tap opens the Robux prompt straight away. Roblox's
+	-- paid random items policy wants the odds disclosed before purchase, and allows the per-glassy list behind a
+	-- labelled "Info"/"Details" button "visible and accessible prior to purchase" (its example shows the rarity-tier
+	-- odds on screen next to such a button). So the tile keeps a small rarity-odds strip on screen at all times and its
+	-- own ODDS button, which opens the full table with every glassy's chance.
+	local daily = tile(hud, "DailyGlassyTile", "amethyst", UDim2.fromScale(0.08, 0.19), "")
+	daily.LabelPlaque.Visible = false
 	local picture = safe(
 		Presentation.crate,
 		daily,
 		"Glassies",
 		"Marbles",
-		UDim2.fromScale(0.74, 0.62),
-		UDim2.fromScale(0.13, 0.1),
+		UDim2.fromScale(0.72, 0.6),
+		UDim2.fromScale(0.14, 0.08),
 		"Picture"
 	)
 	if picture and picture:IsA("GuiObject") then
 		picture.ZIndex = 3
 	end
-	local odds = Kit.tag(daily, "OddsTag", "ODDS", "aqua", UDim2.fromScale(0.62, 0.17), UDim2.fromScale(-0.08, -0.02))
-	odds.ZIndex = 6
-	local price = Kit.tag(
-		daily,
-		"PriceTag",
-		utf8.char(0xE002) .. " 9",
-		"emerald",
-		UDim2.fromScale(0.6, 0.18),
-		UDim2.fromScale(0.5, 0.62)
-	)
-	price.ZIndex = 6
-	self.DailyTile = daily
+	local once = Kit.tag(daily, "DailyTag", "DAILY", "amber", UDim2.fromScale(0.62, 0.16), UDim2.fromScale(0.19, -0.05))
+	once.ZIndex = 6
+	-- The price: a full-width emerald gem with the Robux glyph, big enough to read at a glance.
+	local gem =
+		Kit.icon(daily, "PriceGem", "button/gem_emerald", UDim2.fromScale(1.12, 0.34), UDim2.fromScale(0.5, 0.9))
+	gem.AnchorPoint, gem.ZIndex = Vector2.new(0.5, 0.5), 6
+	local price =
+		Kit.label(gem, "Price", utf8.char(0xE002) .. " 9", UDim2.fromScale(0.76, 0.7), UDim2.fromScale(0.12, 0.14), {
+			MaxSize = 40,
+		})
+	price.ZIndex = 7
+	self.DailyPrice = price
+	-- Odds strip beside the tile: the ODDS button on top, one rarity pill per row under it.
+	local strip = Kit.frame(hud, "DailyOdds", UDim2.fromOffset(100, 100), UDim2.new(), Vector2.new(0, 0.5))
+	local oddsButton = Kit.gem(strip, "OddsButton", "ODDS", "aqua", UDim2.fromScale(1, 0.3), UDim2.fromScale(0.5, 0.15))
+	oddsButton.UIAspectRatioConstraint:Destroy()
+	oddsButton.Label.UITextSizeConstraint.MaxTextSize = 30
+	local rows = Kit.frame(strip, "Rows", UDim2.fromScale(1, 0.68), UDim2.fromScale(0, 0.32))
+	local list = Instance.new("UIListLayout")
+	list.SortOrder, list.Padding, list.Parent = Enum.SortOrder.LayoutOrder, UDim.new(0.02, 0), rows
+	self.DailyTile, self.DailyOdds, self.DailyOddsRows = daily, strip, rows
+	daily.Activated:Connect(function()
+		self:BuyDaily()
+	end)
+	oddsButton.Activated:Connect(function()
+		self:OpenDailyGlassy()
+	end)
 	-- Starter Pack: a bigger amber tile on the right edge with the pack's glassy.
 	local starter = tile(hud, "StarterTile", "amber", UDim2.fromScale(0.1, 0.24), "Starter")
 	local tag = Kit.tag(
@@ -172,38 +216,45 @@ function Controller:BuildTiles(hud)
 	local new = Kit.tag(starter, "NewTag", "-%", "ruby", UDim2.fromScale(0.62, 0.17), UDim2.fromScale(-0.08, -0.02))
 	new.ZIndex = 6
 	self.StarterTile = starter
-	daily.Activated:Connect(function()
-		self:OpenDailyGlassy()
-	end)
 	starter.Activated:Connect(function()
 		self:OpenStarter()
 	end)
+	-- The Daily tile takes the Shop's old slot and Shop / Inventory move down one step; while the tile is hidden
+	-- (bought today, or paid random items restricted) they go back up. Same layout on desktop, touch and console.
+	local home = nav.Position
+	local shop = nav:WaitForChild("ShopButton")
+	local inventoryHome = inventory.Position
 	local function place()
+		local navSize = nav.Size
+		local step = navSize.Y.Scale * (inventoryHome.Y.Scale - shop.Position.Y.Scale)
+		local shown = daily.Visible
 		local responsive = self.Controllers.ResponsiveController
 		local touch = if responsive and responsive.Touch
 			then responsive:Touch()
 			else UIS.TouchEnabled and not UIS.MouseEnabled
-		local navPos, navSize = nav.Position, nav.Size
-		local shop = nav:FindFirstChild("ShopButton")
-		if touch and shop then
-			-- Right of Shop, same row.
-			daily.Position = UDim2.fromScale(
-				navPos.X.Scale + navSize.X.Scale * 1.3,
-				navPos.Y.Scale + navSize.Y.Scale * shop.Position.Y.Scale
-			)
-		else
-			-- Under Inventory, one button-step lower.
-			local step = navSize.Y.Scale * (inventory.Position.Y.Scale - (shop and shop.Position.Y.Scale or 0.215))
-			daily.Position = UDim2.fromScale(
-				navPos.X.Scale + navSize.X.Scale * inventory.Position.X.Scale,
-				navPos.Y.Scale + navSize.Y.Scale * inventory.Position.Y.Scale + step
-			)
-		end
-		daily.Size = UDim2.fromScale(navSize.X.Scale * inventory.Size.X.Scale, navSize.Y.Scale * inventory.Size.Y.Scale)
+		-- Touch: Inventory sits beside Shop instead of under it, so nothing reaches down to the thumbstick.
+		inventory.Position = if touch and shown
+			then UDim2.new(shop.Position.X.Scale + 1.08, 0, shop.Position.Y.Scale, 0)
+			else inventoryHome
+		nav.Position = if shown
+			then UDim2.new(home.X.Scale, home.X.Offset, home.Y.Scale + step, home.Y.Offset)
+			else home
+		daily.Position = UDim2.fromScale(
+			home.X.Scale + navSize.X.Scale * shop.Position.X.Scale,
+			home.Y.Scale + navSize.Y.Scale * shop.Position.Y.Scale
+		)
+		daily.Size = UDim2.fromScale(navSize.X.Scale * shop.Size.X.Scale, navSize.Y.Scale * shop.Size.Y.Scale)
+		local w, h = daily.AbsoluteSize.X, daily.AbsoluteSize.Y
+		strip.Visible = shown
+		strip.Position = UDim2.new(daily.Position.X.Scale, math.floor(w * 0.62), daily.Position.Y.Scale, 0)
+		strip.Size = UDim2.fromOffset(math.floor(math.max(78, w * 0.9)), math.floor(math.max(84, h * 0.92)))
 		-- Centre-anchored (Motion keeps buttons on their centre); the aspect constraint sets the real width.
 		starter.Position = UDim2.new(0.985, -math.floor(starter.AbsoluteSize.X / 2), 0.45, 0)
 		starter.Size = UDim2.fromScale(daily.Size.X.Scale * 1.15, daily.Size.Y.Scale * 1.15)
 	end
+	self.PlaceTiles = place
+	daily:GetPropertyChangedSignal("Visible"):Connect(place)
+	daily:GetPropertyChangedSignal("AbsoluteSize"):Connect(place)
 	place()
 	task.defer(place)
 	starter:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
@@ -243,6 +294,59 @@ function Controller:StarterPicture(state)
 	end
 end
 
+local RARITY_TAG = { Rare = "sapphire", Epic = "amethyst", Legendary = "amber", Mythic = "ruby" }
+local RARITY_SHORT = { Rare = "Rare", Epic = "Epic", Legendary = "Leg", Mythic = "Myth" }
+
+-- The always-visible odds: one coloured pill per rarity, rarest last ("Rare 60%" ... "Myth 1.5%").
+function Controller:OddsStrip(rarities)
+	local rows = self.DailyOddsRows
+	if not rows then
+		return
+	end
+	local key = ""
+	for _, row in rarities do
+		key ..= row.Rarity .. row.Chance
+	end
+	if rows:GetAttribute("Key") == key then
+		return
+	end
+	rows:SetAttribute("Key", key)
+	for _, child in rows:GetChildren() do
+		if child:IsA("GuiObject") then
+			child:Destroy()
+		end
+	end
+	for i, row in rarities do
+		local pill = Kit.tag(
+			rows,
+			"Row" .. row.Rarity,
+			RARITY_SHORT[row.Rarity] .. " " .. string.format("%.3g%%", row.Chance * 100),
+			RARITY_TAG[row.Rarity] or "slate",
+			UDim2.fromScale(1, 0.23),
+			UDim2.new()
+		)
+		pill.UIAspectRatioConstraint:Destroy()
+		pill.LayoutOrder = i
+		pill.Label.UITextSizeConstraint.MaxTextSize = 22
+	end
+end
+
+-- One tap on the tile: straight to the Robux prompt (the odds are already on screen beside it).
+function Controller:BuyDaily()
+	local state = self.State and self.State.DailyGlassy
+	if self.DailyBusy or not state or not state.Available then
+		return
+	end
+	self.DailyBusy = true
+	self.DailyPrice.Text = "…"
+	Remotes.Deals:FireServer("Buy", "DailyGlassy")
+	task.delay(4, function()
+		if self.DailyBusy and self.State then
+			self:Apply(self.State)
+		end
+	end)
+end
+
 function Controller:PopupOpen()
 	return (self.Popup ~= nil and not self.Popup.Closed) or (self.Need ~= nil and not self.Need.Closed)
 end
@@ -261,14 +365,15 @@ function Controller:Apply(view)
 			S.tag(off, if s.Value and s.Value.Off > 0 then "-" .. s.Value.Off .. "%" else "NEW", "ruby")
 		end
 		local dailyState = view.DailyGlassy
-		self.DailyTile:SetAttribute("DealHidden", not dailyState.Visible)
-		self.DailyTile.Visible = dailyState.Visible and not self:PopupOpen()
-		Kit.enable(self.DailyTile, true)
+		-- Gone once bought until the next 00:00 UTC reset; never shown where paid random items are restricted.
+		local showDaily = dailyState.Visible and not dailyState.BoughtToday
+		self.DailyTile:SetAttribute("DealHidden", not showDaily)
+		self.DailyTile.Visible = showDaily and not self:PopupOpen()
+		self.DailyBusy = false
+		Kit.enable(self.DailyTile, dailyState.Available)
 		self.DailyTile.Artwork.ImageTransparency = if dailyState.Available then 0 else 0.35
-		local price = self.DailyTile:FindFirstChild("PriceTag")
-		if price then
-			price.Visible = dailyState.Available
-		end
+		self.DailyPrice.Text = if dailyState.Available then utf8.char(0xE002) .. " " .. dailyState.Price else "SOON"
+		self:OddsStrip(dailyState.Rarities or {})
 	end
 	if self.Popup and not self.Popup.Closed and self.Popup.Render then
 		self.Popup.Render(view)
@@ -384,10 +489,6 @@ function Controller:Start()
 			local view = self.State
 			if view and self.DailyTile then
 				local now = self:Now()
-				local daily = self.DailyTile.LabelPlaque.Label
-				daily.Text = if view.DailyGlassy.BoughtToday
-					then screens().duration(view.DailyGlassy.NextReset - now)
-					else "Daily"
 				local starter = self.StarterTile.LabelPlaque.Label
 				local ends = view.Starter.EndsAt
 				starter.Text = if ends and ends - now < 86400 then screens().duration(ends - now) else "Starter"

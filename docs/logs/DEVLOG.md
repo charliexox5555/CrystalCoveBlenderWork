@@ -3,6 +3,16 @@
 Newest at the top. One entry per work session. Keep it short.
 
 ```
+## 2026-10-22 — Claude (monetization session) — Creator's Daily Glassy and Marble page changes (decision 116)
+Done:
+- Daily Glassy tile moved to the top of the left HUD column (Shop / Inventory step down; on touch Inventory sits beside Shop, away from the thumbstick). A tap opens the Robux prompt straight away; once bought the tile hides until 00:00 UTC. Price is a full-width emerald ⏣ 9 gem; DAILY tag; a larger ODDS button opens the odds table.
+- Odds rule: Roblox's paid random items page allows the itemized list in a pop-up behind a labelled "Info"/"Details" button "visible and accessible prior to purchase", and its example shows the rarity-tier odds on screen. So a rarity odds strip (Rare 60% / Epic 32% / Leg 6.5% / Myth 1.5%) stays visible beside the tile, and every glassy's chance is one labelled tap away. Still hidden where paid random items are restricted.
+- Marbles page: packs first, Daily Marbles below.
+- Fixed: a state update during an open popup could leave the tile hidden after it closed.
+- Studio Play (live products now): tap → prompt → receipt once (replay no-op) → Kiln reveal → tile hidden → back the next day; desktop and iPhone 17 Pro captures, before/after in docs/testing/monetization/REPORT.md. Lune 259/259. Sims unchanged (no numbers changed).
+Next:
+- Creator: look at the before/after (captures 14 and 15) and the phone row layout (19).
+
 ## 2026-10-21 — Claude (main session) — Duplicate avatar at spawn fixed
 Done:
 - Creator saw a copy of their character at spawn doing riding animations. It was a lobby flyer-showcase rider (`Showcase_Flyers.ShowcaseAvatar`). The rider is cloned where the player's avatar stands, and was only moved onto its flyer by the first on-screen `Ride:Step`. Since the perf pass (decision 108) culls off-screen displays, a rider whose display was behind the camera stayed at spawn.

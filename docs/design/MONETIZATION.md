@@ -14,8 +14,8 @@ idempotent `ProcessReceipt`.
 | Offer | Price | What you get | Limit | Where |
 |---|---|---|---|---|
 | **Starter Pack** | 49 R$ | Sunny (Epic glassy), Daybreak (Epic finisher), Dawn Kite (Epic flyer), 150 Marbles | once ever, for 3 days after you first see it | HUD tile (right edge), tile beside the open Shop, pack popup; opens by itself twice at most |
-| **Daily Glassy** | 9 R$ | one random glassy from the Kiln pool: Rare 60%, Epic 32%, Legendary 6.5%, Mythic 1.5% | once per UTC day | HUD tile under Inventory (next to Shop on touch); odds popup before buying |
-| **Daily Marbles** | 49 R$ | 60 → 65 → 70 → 75 → 80 → 85 → 100 Marbles (each day you buy, the next buy gives more; 100 repeats) | once per UTC day; a missed day keeps your place | top of the Marbles page (now a scrolling page) |
+| **Daily Glassy** | 9 R$ | one random glassy from the Kiln pool: Rare 60%, Epic 32%, Legendary 6.5%, Mythic 1.5% | once per UTC day | HUD tile at the top of the left column; a tap opens the Robux prompt; the rarity odds and an ODDS button sit beside it; the tile hides once bought until 00:00 UTC |
+| **Daily Marbles** | 49 R$ | 60 → 65 → 70 → 75 → 80 → 85 → 100 Marbles (each day you buy, the next buy gives more; 100 repeats) | once per UTC day; a missed day keeps your place | under the Marble packs on the Marbles page (a scrolling page) |
 | **Marble packs** | 99 – 8,999 R$ | 100 – 13,000 Marbles (table in §5) | none | Marbles page |
 | **Daily store** | 49 – 699 R$ | one named glassy, finisher and flyer a day (decision 76) | one per slot per day | Featured page |
 | **Hollowlight Collection** | 699 R$ (was 499) | Hollowlight + Moonlantern Carriage + Lantern Eclipse | once | Featured page / bundle preview |
@@ -119,8 +119,19 @@ Ball VS Ball's Beginner Pack ball is widely called pay-to-win; ours is tuned to 
 
 - **Odds** (per glassy, the Kiln pool, evenly within a rarity): Rare 60% (7 × 8.57%), Epic 32% (5 × 6.4%), Legendary
   6.5% (3 × 2.17%), Mythic 1.5% (3 × 0.5%). No Commons or Uncommons. Each glassy is rarer than every glassy of a lower
-  rarity, as in the Kiln (tested). The popup shows the rarity table with each glassy's own chance and a **DETAILS**
-  button listing every glassy with its percentage, before the BUY button, every time.
+  rarity, as in the Kiln (tested).
+- **One tap to buy, odds always on screen** (creator, 2026-10-22). The tile sits at the top of the left HUD column
+  (Shop and Inventory move down one step; on touch Inventory sits beside Shop, clear of the thumbstick). A tap opens
+  the Robux prompt. Next to the tile, always visible, are a larger **ODDS** button and the rarity odds (Rare 60%, Epic
+  32%, Leg 6.5%, Myth 1.5%). ODDS opens the table with each rarity's per-glassy chance, and its **DETAILS** lists every
+  glassy with its exact percentage. Once bought, the tile, strip and button hide until the next 00:00 UTC reset.
+- **Why this meets Roblox's rule.** The [paid random items policy](https://create.roblox.com/docs/production/monetization/paid-random-items)
+  requires "all possible outcomes and the actual numerical odds" before purchase. It lets the itemized list sit in "a
+  clickable pop-up with an 'Info' or 'Details' icon visible and accessible prior to purchase" (a bare (i) is not
+  enough), and its example shows the odds by rarity tier on screen next to a clickable "Details" button. A labelled ODDS
+  button alone would arguably qualify. The rarity strip keeps the tier odds on screen at the moment of the tap anyway,
+  and each glassy's chance is one labelled tap away. The earlier version (odds popup first, then BUY) was stricter than
+  the policy asks.
 - **Policy.** Hidden (tile and popup) when `ArePaidRandomItemsRestricted` is true **or unknown**; the server refuses the
   intent too.
 - **Fairness.** 9 R$ is a loss-leader: 30 a month at most (270 R$). It beats a Marble Kiln pull (30 Marbles ≈ 30 R$,

@@ -2,6 +2,23 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-22 — Claude (mesh-reupload session) — Three rejected meshes rebuilt, re-uploaded and swapped in
+Done:
+- Phoenix body, Gumball crank and Carousel PonyCore were `Rejected` by moderation, so they rendered invisible. Each was rebuilt with small shape changes and uploaded once. All three new meshes are Approved and applied to all 7 MeshParts, with Size, CFrame, material and colour unchanged. Old → new ids, research and captures: docs/testing/mesh_reupload/REPORT.md.
+- Research (cited in REPORT): Roblox blocks re-uploads of the "same or similar" content and escalates repeat violations, so each mesh got one real edit, not a hash tweak. Appeals: Violations & Appeals, within 30 days, one review each. Models and meshes are moderated separately, so the mesh ids are what get checked.
+- Shapes: alone, each mesh read as a "shaft plus bulb".
+  - Phoenix: fused the two unwelded halves (which left a slit) and eased the neck.
+  - Crank: the knob is now a cylinder grip and the ball a wheel.
+  - Pony core: now a faceted crystal.
+  - Exact bounds were kept. Files are in assets/blender/mesh_reupload, made by tools/blender/mesh_reupload_tweaks.py.
+- Studio Play: the Phoenix shows in a fight, the crank in the Gumball show, the pony while ridden and on the lobby display. No "not approved" errors. Item pictures were unchanged visibly, so not re-rendered; mesh_map.json maps the new ids.
+- Lune 265/265. Sims unchanged (no Balance, Glassies or Powers changes).
+Next:
+- Creator: **save/publish the place** (the new MeshIds live there). Check Violations & Appeals for the three old rejections and appeal any that are listed.
+- Re-check the three new mesh ids' moderation in about a day. If one turns Rejected, appeal; don't upload a third time.
+Problems:
+- The original .blend sources still hold the old shapes. Use assets/blender/mesh_reupload for these three parts.
+
 ## 2026-10-22 — Claude (badges session) — Badges created on Roblox (decision 118)
 Done:
 - The creator added the create scope and said "Ok lets go". `tools/opencloud/badges.py create` made all 5 free (quota 5 → 0, expectedCost=0, nothing spent) and wrote the ids into Config/Badges:

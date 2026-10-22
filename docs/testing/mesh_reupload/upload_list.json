@@ -1,0 +1,8 @@
+{
+ "Record": "assets/blender/mesh_reupload/roblox_assets.json",
+ "Items": [
+  {"Key": "glass_phoenix_body", "Path": "assets/blender/mesh_reupload/glass_phoenix_body.fbx", "Type": "Model", "Name": "Glass Phoenix body", "Description": "Glass Clash original art: the glass phoenix glassy's body."},
+  {"Key": "fv4_gumball_crank", "Path": "assets/blender/mesh_reupload/fv4_gumball_crank.fbx", "Type": "Model", "Name": "Gumball machine crank", "Description": "Glass Clash original art: the turning crank of the gumball machine finisher."},
+  {"Key": "carousel_ponycore", "Path": "assets/blender/mesh_reupload/carousel_ponycore.fbx", "Type": "Model", "Name": "Carousel pony crystal core", "Description": "Glass Clash original art: the crystal core inside the carousel pony ride."}
+ ]
+}

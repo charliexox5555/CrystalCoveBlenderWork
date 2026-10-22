@@ -139,6 +139,10 @@
 "file": "assets/blender/round_cosmetics/flyers_v3/skyboard/skyboard.fbx",
 "object": "LiftGlow_L"
 },
+"104157165128911": {
+"file": "assets/blender/mesh_reupload/carousel_ponycore.fbx",
+"object": "PonyCore"
+},
 "104212811681956": {
 "file": "assets/blender/glassies/glass_top/v4/glass_top_bundle.fbx",
 "object": "Tip"
@@ -1543,6 +1547,10 @@
 "file": "assets/blender/glassies/lemonade_bottle/v4/lemonade_bottle_bundle.fbx",
 "object": "LemonSlice"
 },
+"136258092046043": {
+"file": "assets/blender/mesh_reupload/glass_phoenix_body.fbx",
+"object": "Body"
+},
 "136283675261762": {
 "file": "assets/blender/glassies/glass_unicorn/v4/glass_unicorn_bundle.fbx",
 "object": "Mane_2"
@@ -1950,6 +1958,10 @@
 "74203265854093": {
 "file": "assets/blender/round_cosmetics/flyers_v3/dragonfly/dragonfly.fbx",
 "object": "Wing_FL"
+},
+"74273603014636": {
+"file": "assets/blender/mesh_reupload/fv4_gumball_crank.fbx",
+"object": "FV4_GumballCrank"
 },
 "74287244319944": {
 "file": "assets/blender/round_cosmetics/finishers_v4/finishers_v4.fbx",

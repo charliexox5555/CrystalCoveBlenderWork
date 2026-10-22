@@ -1,0 +1,26 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "glass_phoenix_body": {
+   "AssetId": "102305428953672",
+   "Path": "assets/blender/mesh_reupload/glass_phoenix_body.fbx",
+   "Sha256": "fe4da6722402227be05150d480963242f28df29c7513428f4ab61cc7b2f4b17a",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-22T03:56:56"
+  },
+  "fv4_gumball_crank": {
+   "AssetId": "95292147980589",
+   "Path": "assets/blender/mesh_reupload/fv4_gumball_crank.fbx",
+   "Sha256": "0e3a0ec28f3005dbbe3f66e583cd080529511ea2299fc6d6590b0eb57f432edb",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-22T03:57:14"
+  },
+  "carousel_ponycore": {
+   "AssetId": "103439823201618",
+   "Path": "assets/blender/mesh_reupload/carousel_ponycore.fbx",
+   "Sha256": "f0446ed4f32058d39d88c148a520074a7cc536c41e585ab6ac57173e6497c3e8",
+   "Moderation": "Approved",
+   "Uploaded": "2026-10-22T03:57:29"
+  }
+ }
+}

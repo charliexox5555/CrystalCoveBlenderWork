@@ -4,6 +4,7 @@
 local RS = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local Icons = require(RS.Shared.Config.ItemIcons)
+local Sheets = require(RS.Shared.Config.ItemIconSheets)
 local ItemIcon = {}
 
 -- Studio A/B switches (docs/testing/viewports): workspace attribute ItemIconsOff = true shows every viewport again;
@@ -66,9 +67,24 @@ function ItemIcon.viewportSlot(parent, name)
 	end
 end
 
-local function pick(image, entry)
+-- Small slots (reels, pick-any tiles, reward cells) show the item's cell of a sprite sheet: one small download that
+-- loads behind the loading screen and stays warm (Config/ItemIconSheets, decision 120). Bigger slots get the 512 px
+-- picture, and slots over LargeAbovePixels the 1024 px one. Studio A/B: workspace attribute ItemIconSheetsOff.
+local function pick(image, entry, category, id)
 	local size = image.AbsoluteSize
-	local large = entry.Large and math.max(size.X, size.Y) > Icons.LargeAbovePixels
+	local longest = math.max(size.X, size.Y)
+	local sheet, offset, rect
+	if
+		longest <= Sheets.MaxSlotPixels and not (RunService:IsStudio() and workspace:GetAttribute("ItemIconSheetsOff"))
+	then
+		sheet, offset, rect = Sheets.get(category, id)
+	end
+	if sheet then
+		image.Image, image.ImageRectOffset, image.ImageRectSize = sheet, offset :: Vector2, rect :: Vector2
+		return
+	end
+	image.ImageRectOffset, image.ImageRectSize = Vector2.zero, Vector2.zero
+	local large = entry.Large and longest > Icons.LargeAbovePixels
 	image.Image = if large then entry.Large :: string else entry.Small
 end
 
@@ -102,15 +118,13 @@ function ItemIcon.mount(parent, name, category, id, size, position, center)
 	if category == "Glassies" then
 		image:SetAttribute("GlassyId", id)
 	end
-	pick(image, entry)
+	pick(image, entry, category, id)
 	if resizeBindings[image] then
 		resizeBindings[image]:Disconnect()
 	end
-	resizeBindings[image] = if entry.Large
-		then image:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
-			pick(image, entry)
-		end)
-		else nil
+	resizeBindings[image] = image:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+		pick(image, entry, category, id)
+	end)
 	return image
 end
 

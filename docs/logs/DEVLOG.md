@@ -2,6 +2,14 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-22 — Codex — Glass Clash new thumbnail hooks
+Done:
+- Created three new logo-free tests after the creator's early weak ads report: Incoming Blade (Honey Bear/Prism Blade pre-impact), Pull to Smash (bacon avatars + one aiming path), Lucky Kiln Pull (original Dragon + actual Kiln). Used existing game asset renders/Studio captures; competitor references informed composition only.
+- Native 1672x941 RGB PNGs, each under 3 MB, in assets/marketing/thumbnails/tests_2026_10_22_new_hooks/. Exact built-in imagegen prompts, primary Roblox research, file provenance and size-check preview are alongside the finals. Previous art retained; no code-based image edits, Studio/gameplay/campaign changes or uploads.
+- QA: full-size subject/strings/block-arm checks and browser 320/180px composition review; image decode/metadata pass; Lune 270 passed, 0 failed.
+Next:
+- Creator can test Incoming Blade and Pull to Smash against the current best, with the Kiln reveal as a different collecting hook. Await asset-level impressions/clicks/plays; 1.5 credits alone cannot establish confidence or thumbnail causality. Keep ad CTR and organic Home qPTR separate.
+
 ## 2026-10-22 — Claude (release-qa session) — Release-candidate QA pass
 Done:
 - Checklist with cited Roblox sources, pass / fixed / creator marks and a go / no-go list: docs/testing/release_candidate/CHECKLIST.md.

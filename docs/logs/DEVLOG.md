@@ -2,6 +2,14 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-23 — Codex — Six Glass Vs Glass reserve creatives
+Done:
+- Recorded the early reset results: Pick One 13/583 clicks/impressions (2.23% calculated), Bottle Smash 8/657 (1.22%), Jar Vs Sword 8/597 (1.34%). Pick One is the current provisional comparison point; original file unchanged. Creator requested multiple reserve ads, not another pause for small-sample certainty.
+- Created a lineup edit, Perfect Release, You Win, Your Next Glass/Kiln reveal, 1v1 Me and Cast Now using built-in imagegen. Native 1672x941 PNGs under 3 MB, exact prompts, provenance, gallery and naming advice in assets/marketing/thumbnails/reserve_2026_10_23/. Read-only correct-Studio probes/captures saved arena/Kiln reference JPEGs; code inspection confirms gold Perfect band and actual CAST/NOW timing.
+- Full-size ropes/Unicorn anatomy/block arms/wording checks, browser 320/180px checks and decode/metadata/hash checks pass; Lune 270 passed, 0 failed. No gameplay, place-content, campaign, upload, budget or live title changes; no code-based image edits. Unrelated working changes preserved.
+Next:
+- Creator review and ad tests alongside the original Pick One; track plays/CPP as well as CTR. Recommend keeping Glass vs Glass stable; optional single suffix ⚔️ discussed with official naming guidance, no claimed CTR lift.
+
 ## 2026-10-23 — Codex — Glass Vs Glass gameplay thumbnail reset
 Done:
 - Recorded the creator's public rename and four Plays-ad rows: 21,639 impressions, 226 observed clicks, 1.04% calculated CTR; no convincing concept separation. Saved a reusable findings/next-goal brief distinguishing measured outcomes, creator preferences and hypotheses; updated marketing direction instead of repeating the now-completed Plays-objective recommendation.

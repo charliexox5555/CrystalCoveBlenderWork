@@ -1,6 +1,6 @@
 # Glass Clash — three new thumbnail hooks
 
-Created 22 October 2026, after the creator reported weak early ads with 1.5 credits spent. No asset-level impressions/clicks were supplied yet, so this is a new creative test batch, not a measured explanation of the previous results.
+Created 22 October 2026, after the creator reported weak early ads with 1.5 credits spent. A subsequent screenshot supplies early asset-level impressions/CTR: see [EARLY_AD_RESULTS.md](EARLY_AD_RESULTS.md). The Unicorn shatter leads at 2.3% from 663 impressions; the ranking remains provisional. This batch is a set of creative hypotheses, not a measured explanation of the previous results.
 
 ## Finished artwork
 
@@ -27,7 +27,7 @@ Primary sources checked on 22 October 2026:
 
 ## Testing next
 
-Start with Incoming Blade and Pull to Smash alongside the current best as a control, keeping the same objective and comparable audience, dates and placements. Keep Lucky Kiln Pull as the distinct collecting test. Do not assume automated delivery gives each asset equal exposure.
+Revised after the screenshot: keep the existing Unicorn shatter as the control, and prioritize Incoming Blade and Lucky Kiln Pull. Pull to Smash is now a lower-priority mechanics/avatars test. Keep the same objective and comparable audience, dates and placements. Inspect actual per-asset exposure rather than assuming the observed samples are equal.
 
 Record each asset's impressions, clicks, CTR, plays, plays/impression, cost/play and subsequent playtime over the same reporting window. CTR = clicks / impressions × 100; it is not Home qualified play-through rate. Spend alone does not tell us the statistical sample size. Avoid a fixed credit/time cutoff or a promised CTR target; inspect the actual counts and uncertainty. A click increase with poorer joining/engagement should not be treated as an overall win.
 

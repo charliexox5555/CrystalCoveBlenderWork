@@ -2,6 +2,14 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-22 — Codex — Early Glass Clash ad results recorded
+Done:
+- Transcribed the creator's five Learning rows: crown 1.4%/138 impressions, two-player 0.5%/202, collection 1.1%/348, Unicorn shatter 2.3%/663, Phoenix/Comet 1.7%/238. Approximate click counts and illustrative Wilson intervals are labelled as inferred in tests_2026_10_22_new_hooks/EARLY_AD_RESULTS.md.
+- Revised the batch notes: preserve the existing Unicorn as the control; prioritize Incoming Blade and Lucky Kiln Pull, lower priority for Pull to Smash. Large-glassy clarity is a hypothesis; logo removal/daylight/avatars are not isolated by these results. No new artwork, gameplay, upload or campaign changes.
+- Verification: screenshot transcription and arithmetic reviewed, document diff check clean; Lune 270 passed, 0 failed.
+Next:
+- Compare clicks and plays over a common window; future creative priority is controlled Unicorn variants. The supplied crop has no plays column.
+
 ## 2026-10-22 — Codex — Glass Clash new thumbnail hooks
 Done:
 - Created three new logo-free tests after the creator's early weak ads report: Incoming Blade (Honey Bear/Prism Blade pre-impact), Pull to Smash (bacon avatars + one aiming path), Lucky Kiln Pull (original Dragon + actual Kiln). Used existing game asset renders/Studio captures; competitor references informed composition only.

@@ -2,6 +2,14 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-22 — Codex — Thumbnail direction corrected toward expressive action
+Done:
+- Creator rejected the first quiet Unicorn/bottle/Whiskers portrait drafts as boring and requested flashy treatment closer to their references. Reworked into Bear Panic (comic fear, incoming glowing blade) and Power Duel (large Phoenix/Comet, bacon reactions, one aiming path). Corrected the bear artwork to exactly two suspension strings.
+- Selected native 1672x941 RGB PNGs, under 3 MB, plus exact initial/revision prompts, research and provenance: assets/marketing/thumbnails/tests_2026_10_22_simple_subjects/. Rejected portraits remain archive-only. Persistent creator preference saved in assets/marketing/CREATIVE_DIRECTION.md.
+- QA: original subject identities, block arms, ropes and 420/180px browser checks pass; image decode/metadata pass; Lune 270 passed, 0 failed. No code-based image edits, Studio/gameplay/ad changes or uploads. Unrelated pre-existing working changes preserved.
+Next:
+- Creator visual review of the expressive revisions; preserve the existing Unicorn as the early-result control and collect comparable ad clicks/plays.
+
 ## 2026-10-22 — Codex — Early Glass Clash ad results recorded
 Done:
 - Transcribed the creator's five Learning rows: crown 1.4%/138 impressions, two-player 0.5%/202, collection 1.1%/348, Unicorn shatter 2.3%/663, Phoenix/Comet 1.7%/238. Approximate click counts and illustrative Wilson intervals are labelled as inferred in tests_2026_10_22_new_hooks/EARLY_AD_RESULTS.md.

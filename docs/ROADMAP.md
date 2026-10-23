@@ -201,6 +201,7 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 - [x] **C:** T4a collection thumbnail bottom-crop repair; full front row in final/T4a_v2_full_lineup.png, original retained; Lune265/265 and image QA pass.
 - [x] **C:** creator-requested square icons without logo: Phoenix–Comet clash v2 and Dragon shatter v1 in assets/marketing/icons/final/; official guidance, exact prompts and 150/300px display checks in icons/2026_10_22/. Lune 266/266; creator selection/upload remains above.
 - [x] **C:** three new thumbnail hooks using original game assets after early weak ads: Incoming Blade, Pull to Smash and Lucky Kiln Pull, in assets/marketing/thumbnails/tests_2026_10_22_new_hooks/ with exact prompts, research and small-size QA; Lune 270/270. Early ad screenshot recorded: Unicorn 2.3%/663 impressions is the provisional control; prioritize Incoming Blade/Kiln tests. Continued metrics/plays remain pending.
+- [x] **C:** revised the creator-rejected quiet portraits toward expressive flashy action: Bear Panic v2 and Power Duel in assets/marketing/thumbnails/tests_2026_10_22_simple_subjects/; exact prompts, references, rope/block-arm/small-size QA and Lune 270/270. Creator preferences recorded in CREATIVE_DIRECTION.md; visual review/ad testing remain.
 
 ## After launch
 

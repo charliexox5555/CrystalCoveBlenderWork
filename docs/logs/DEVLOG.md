@@ -2,6 +2,14 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-22 — Codex — Bear Panic square icon
+Done:
+- Created the requested square icon in the revised flashy thumbnail style: large panicking Honey Bear and glowing incoming Prism Blade, with one rope per glassy and no text/logo.
+- Final: assets/marketing/icons/final/glass_clash_icon_bear_panic_v1.png, native 1254x1254 RGB PNG, 2,087,046 bytes. Built-in imagegen prompt/provenance and preview in icons/bear_panic_2026_10_22/. No code-based image edits; older art preserved.
+- Full-size and browser 150/300px face/action/corner checks pass; image decode/metadata pass; Lune 270 passed, 0 failed. No gameplay/Studio/campaign/upload changes; unrelated existing working changes preserved.
+Next:
+- Creator review/selection of the icon.
+
 ## 2026-10-22 — Codex — Thumbnail direction corrected toward expressive action
 Done:
 - Creator rejected the first quiet Unicorn/bottle/Whiskers portrait drafts as boring and requested flashy treatment closer to their references. Reworked into Bear Panic (comic fear, incoming glowing blade) and Power Duel (large Phoenix/Comet, bacon reactions, one aiming path). Corrected the bear artwork to exactly two suspension strings.

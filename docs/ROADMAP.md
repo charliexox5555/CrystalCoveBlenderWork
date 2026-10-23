@@ -203,6 +203,7 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 - [x] **C:** three new thumbnail hooks using original game assets after early weak ads: Incoming Blade, Pull to Smash and Lucky Kiln Pull, in assets/marketing/thumbnails/tests_2026_10_22_new_hooks/ with exact prompts, research and small-size QA; Lune 270/270. Early ad screenshot recorded: Unicorn 2.3%/663 impressions is the provisional control; prioritize Incoming Blade/Kiln tests. Continued metrics/plays remain pending.
 - [x] **C:** revised the creator-rejected quiet portraits toward expressive flashy action: Bear Panic v2 and Power Duel in assets/marketing/thumbnails/tests_2026_10_22_simple_subjects/; exact prompts, references, rope/block-arm/small-size QA and Lune 270/270. Creator preferences recorded in CREATIVE_DIRECTION.md; visual review/ad testing remain.
 - [x] **C:** creator-requested Bear Panic square icon in the same expressive style: icons/final/glass_clash_icon_bear_panic_v1.png, native 1254 square, logo-free; prompts/provenance and 150/300px framing QA in icons/bear_panic_2026_10_22/. Lune 270/270; creator selection/upload remain.
+- [x] **C:** Oct 23 Engagement-ad results and two story-hook thumbnails: Last Heart and Bottle Breaks Dragon in assets/marketing/thumbnails/tests_2026_10_23_stakes/; exact prompts, anatomy/rope/block-arm/320/180px QA, native PNG provenance and separate Plays-objective test plan. Lune 270/270; creator review and ad testing remain.
 
 ## After launch
 

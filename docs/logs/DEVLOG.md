@@ -2,6 +2,14 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-23 — Codex — Engagement results and two new thumbnail stakes
+Done:
+- Recorded all ten paused Engagement-ad rows, inferred rounded-click ranges and reporting limits; current provisional CTR leaders are Power Duel 2.4%/327 and Bear Panic 2.1%/283. Updated persistent direction to supersede the old Unicorn snapshot. Official objective guidance supports a separate Plays test with those same creatives for the creator's cheaper-acquisition goal; no campaign changes performed.
+- Built Last Heart (Unicorn/Prism Blade, real three-heart cue) and Bottle Breaks Dragon (Pop/Dragon and bacon reactions) with built-in imagegen and original assets. Corrected an extra Unicorn leg; final four-leg/two-rope/block-arm inspection and browser 320/180px checks pass. Native 1672x941 PNGs, exact prompts, provenance and test plan: assets/marketing/thumbnails/tests_2026_10_23_stakes/.
+- Image decode/metadata/hash checks pass; Lune 270 passed, 0 failed. No gameplay, Studio, uploads or code-based image edits; unrelated existing working changes preserved.
+Next:
+- Creator review and comparable Plays/Engagement acquisition results. Test one new challenger at a time and track actual plays/cost per play, not CTR alone; 4–5% CTR remains a target.
+
 ## 2026-10-22 — Codex — Bear Panic square icon
 Done:
 - Created the requested square icon in the revised flashy thumbnail style: large panicking Honey Bear and glowing incoming Prism Blade, with one rope per glassy and no text/logo.

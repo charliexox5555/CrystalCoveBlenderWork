@@ -204,6 +204,7 @@ Goal: on Arena 1, aim → release → an erratic, readable 3D fight with spins, 
 - [x] **C:** revised the creator-rejected quiet portraits toward expressive flashy action: Bear Panic v2 and Power Duel in assets/marketing/thumbnails/tests_2026_10_22_simple_subjects/; exact prompts, references, rope/block-arm/small-size QA and Lune 270/270. Creator preferences recorded in CREATIVE_DIRECTION.md; visual review/ad testing remain.
 - [x] **C:** creator-requested Bear Panic square icon in the same expressive style: icons/final/glass_clash_icon_bear_panic_v1.png, native 1254 square, logo-free; prompts/provenance and 150/300px framing QA in icons/bear_panic_2026_10_22/. Lune 270/270; creator selection/upload remain.
 - [x] **C:** Oct 23 Engagement-ad results and two story-hook thumbnails: Last Heart and Bottle Breaks Dragon in assets/marketing/thumbnails/tests_2026_10_23_stakes/; exact prompts, anatomy/rope/block-arm/320/180px QA, native PNG provenance and separate Plays-objective test plan. Lune 270/270; creator review and ad testing remain.
+- [x] **C:** Glass Vs Glass rename acknowledged and Plays-ad findings saved (226 clicks/21,639 impressions, 1.04% CTR); three new concept families—Bottle Smash, Pick One, Jar Vs Sword—in assets/marketing/thumbnails/tests_2026_10_23_gameplay_reset/ with exact prompts, reusable findings brief, rope/native-file/320/180px QA and Lune 270/270. Creator review/comparable acquisition tests remain.
 
 ## After launch
 

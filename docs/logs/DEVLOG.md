@@ -2,6 +2,14 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-23 — Codex — Glass Vs Glass gameplay thumbnail reset
+Done:
+- Recorded the creator's public rename and four Plays-ad rows: 21,639 impressions, 226 observed clicks, 1.04% calculated CTR; no convincing concept separation. Saved a reusable findings/next-goal brief distinguishing measured outcomes, creator preferences and hypotheses; updated marketing direction instead of repeating the now-completed Plays-objective recommendation.
+- Built three distinct concepts using original Pop/Jam/Prism Blade/Dragon references: Bottle Smash, Pick One and Jar Vs Sword. Built-in imagegen; selected opaque native 1672x941 PNGs under 3 MB, exact prompts/provenance and 320/180px preview in assets/marketing/thumbnails/tests_2026_10_23_gameplay_reset/. Corrected the smash draft to one string per glassy; no avatars/hands in this set.
+- Full-size/320/180px checks and image decode/metadata/hash checks pass; Lune 270 passed, 0 failed. Only Crystal Cove Studio was connected: inspected read-only to identify it, no scene changes or captures used. No gameplay, live rename, uploads, campaign, budget or code-based image edits; unrelated working changes preserved.
+Next:
+- Creator review; compare the new concepts against one existing Plays baseline under steady settings, track attributed plays/CPP and subsequent engagement. First new challenger recommendation is Bottle Smash; no promised CTR.
+
 ## 2026-10-23 — Codex — Engagement results and two new thumbnail stakes
 Done:
 - Recorded all ten paused Engagement-ad rows, inferred rounded-click ranges and reporting limits; current provisional CTR leaders are Power Duel 2.4%/327 and Bear Panic 2.1%/283. Updated persistent direction to supersede the old Unicorn snapshot. Official objective guidance supports a separate Plays test with those same creatives for the creator's cheaper-acquisition goal; no campaign changes performed.

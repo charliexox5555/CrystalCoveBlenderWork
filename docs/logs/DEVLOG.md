@@ -2,6 +2,14 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-23 — Codex — Contrast, close call and Lid Block thumbnails
+Done:
+- Creator reported another ad credit spent with falling CTR; recorded as qualitative feedback without inventing updated rows. Built Cast Contrast, Cracked Close Call and Lid Block using original Pop/Jam/Prism Blade assets and built-in imagegen. Source inspection confirms Jam's raised gold-tinted lid shield; conceptual expressions are labelled as marketing treatment.
+- Final native 1672x941 RGB PNGs (1.61–1.67 MB), exact prompts/generated-source provenance, hash/metadata checks and gallery saved in assets/marketing/thumbnails/tests_2026_10_23_contrast_and_block/. Revised Block headline/rope overlap and background clutter; full-size and 320/180px review pass. No code-based image edits.
+- Lune 270 passed, 0 failed. No gameplay, Studio content, uploads or campaign changes; unrelated working changes preserved.
+Next:
+- Compare Lid Block/Cracked Close Call story challengers and Cast presentation variant with retained controls, matching dates and actual acquisition/progression results. These creatives are unmeasured; no CTR guarantee.
+
 ## 2026-10-23 — Codex — Thumbnail evidence and audience audit
 Done:
 - Recorded latest six rows (128 clicks/7,318 impressions, 1.75% CTR) and confirmed same-date 761 clicks/212 ad-attributed unique players; documented repeat-click, attribution and spend-denominator limits.

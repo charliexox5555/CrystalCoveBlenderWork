@@ -1,0 +1,32 @@
+[
+  {
+    "file": "01_cast_contrast.png",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB",
+    "format": "PNG",
+    "bytes": 1664154,
+    "alpha_extrema": null,
+    "sha256": "fb18d5102b98bf3ebc99657b43dddc69065d8e0399d58a8654ab434b791ad650"
+  },
+  {
+    "file": "02_cracked_close_call.png",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB",
+    "format": "PNG",
+    "bytes": 1645910,
+    "alpha_extrema": null,
+    "sha256": "afa22cd5ea73581015a0e4242fb252d5ff70939e534895bf3767ac412e4d3bd3"
+  },
+  {
+    "file": "03_lid_block.png",
+    "width": 1672,
+    "height": 941,
+    "mode": "RGB",
+    "format": "PNG",
+    "bytes": 1614930,
+    "alpha_extrema": null,
+    "sha256": "4817d71ab44935196573d145fceb82179f1a5e2e588cba983a75e42881f8b5b0"
+  }
+]

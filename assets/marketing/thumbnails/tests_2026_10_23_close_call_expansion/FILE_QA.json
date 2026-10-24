@@ -1,0 +1,78 @@
+{
+  "new_images": [
+    {
+      "file": "01_closer_blade.png",
+      "width": 1672,
+      "height": 941,
+      "format": "PNG",
+      "mode": "RGB",
+      "bytes": 1678813,
+      "alpha_extrema": null,
+      "sha256": "cead8ad6f5fb39f7fe8ecf815a4cbf11ea571d884cd4b2c6b52ce196bf60b9ae"
+    },
+    {
+      "file": "02_bigger_fracture.png",
+      "width": 1672,
+      "height": 941,
+      "format": "PNG",
+      "mode": "RGB",
+      "bytes": 1701363,
+      "alpha_extrema": null,
+      "sha256": "d6e34d7b1a07c937d7f0315ae56da30fc8490305621436264bb893883e72ccf7"
+    },
+    {
+      "file": "03_smug_rival.png",
+      "width": 1672,
+      "height": 940,
+      "format": "PNG",
+      "mode": "RGB",
+      "bytes": 1670472,
+      "alpha_extrema": null,
+      "sha256": "acd753e2bac344bfecf4bfec81f755a50423b08eceb69714263d7a9a2e04856e"
+    },
+    {
+      "file": "04_frost_panic.png",
+      "width": 1672,
+      "height": 941,
+      "format": "PNG",
+      "mode": "RGB",
+      "bytes": 1749398,
+      "alpha_extrema": null,
+      "sha256": "b04c7e5dee4abadc08ba1b647684b7ee2dd3721fba666a3d2a2773745c65c017"
+    },
+    {
+      "file": "05_bomb_panic.png",
+      "width": 1672,
+      "height": 941,
+      "format": "PNG",
+      "mode": "RGB",
+      "bytes": 1595099,
+      "alpha_extrema": null,
+      "sha256": "07ea78545766c019c92fd3998b7a5546ff481d0300af7f9f70fdabc472560b59"
+    },
+    {
+      "file": "06_heart_race.png",
+      "width": 1672,
+      "height": 941,
+      "format": "PNG",
+      "mode": "RGB",
+      "bytes": 1715181,
+      "alpha_extrema": null,
+      "sha256": "a097cf39d77d077b934f616aa251ff5a4698479c8611e46e7703ae0eecb87670"
+    },
+    {
+      "file": "07_bumper_rebound.png",
+      "width": 1672,
+      "height": 941,
+      "format": "PNG",
+      "mode": "RGB",
+      "bytes": 1688339,
+      "alpha_extrema": null,
+      "sha256": "ffd8f28bcbd00ae385da2161fabf839041735912b3a7d67c0268956078ea0831"
+    }
+  ],
+  "original_control": {
+    "file": "C:\\Users\\charl\\Documents\\CrystalCoveBlenderWork\\assets\\marketing\\thumbnails\\tests_2026_10_23_contrast_and_block\\02_cracked_close_call.png",
+    "sha256": "afa22cd5ea73581015a0e4242fb252d5ff70939e534895bf3767ac412e4d3bd3"
+  }
+}

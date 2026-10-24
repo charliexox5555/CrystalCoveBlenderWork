@@ -2,6 +2,15 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-23 — Codex — Seven Close Call and new-story thumbnail tests
+Done:
+- Creator approved Close Call, raised the ad CTR goal to 5–8% and requested new concepts beyond variants. Kept the current control unchanged; made nearer blade, stronger fracture, smug rival, frost attack, attached Bomb, healing-orb race and Bumpers rebound using original assets and built-in imagegen.
+- Reviewed official Roblox thumbnail guidance/Hypershot creative case and their actual ad examples; no private competitor CTR claims. Read-only correct-Studio Edit check and source inspection ground frost/Bomb/Patch/Bumpers. No scene changes or fresh native-render claim.
+- Saved seven opaque native PNGs (1672x940/941, 1.60–1.75 MB), exact prompts/provenance, research, gallery and file hashes in assets/marketing/thumbnails/tests_2026_10_23_close_call_expansion/. Full-size anatomy/rope/identity checks and browser 320/180px comparison pass; original control hash unchanged. No code-based image edits.
+- Lune 280 passed, 0 failed. No gameplay code, account, campaign or upload changes by this session; unrelated working changes preserved.
+Next:
+- Compare Bomb/Heal story challengers and focused 01/02 variants with the unchanged Close Call; actual acquisition/engagement determines usefulness. Seven designs are unmeasured, not promised 5–8% CTR. Match round-revamp creative promises to the published build.
+
 ## 2026-10-23 — Claude — PLAY AGAIN after a match (decision 124)
 Done:
 - `PlayAgainController` + `UI/Screens/PlayAgain`: big pulsing PLAY AGAIN above PLAY after each normal match and after the first-match win prize; hides on press, queue, menu or 30 s. `ArenaService:Replay` falls back to the nearest free arena instead of a "busy" notice and logs `PlayAgain`.

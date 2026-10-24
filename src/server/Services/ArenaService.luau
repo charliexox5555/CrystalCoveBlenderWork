@@ -10,6 +10,7 @@
 local Players = game:GetService("Players")
 local CollectionService = game:GetService("CollectionService")
 local RunService = game:GetService("RunService")
+local AnalyticsService = game:GetService("AnalyticsService")
 local RS = game:GetService("ReplicatedStorage")
 local Balance = require(RS.Shared.Config.Balance)
 local Remotes = require(RS.Shared.Remotes)
@@ -365,9 +366,13 @@ function Service:Replay(player)
 	if self.Services.MatchService.ByPlayer[player] or self.ByPlayer[player] then
 		return
 	end
+	-- PLAY AGAIN (decision 124) always lands somewhere: the last arena if it is free, else the nearest free one.
+	pcall(function()
+		AnalyticsService:LogCustomEvent(player, "PlayAgain")
+	end)
 	local recent = self.Recent[player]
 	if not recent or recent.Arena.Busy then
-		Remotes.MatchState:FireClient(player, { Phase = "Notice", Text = "That arena is busy. Try a free pad." })
+		self:JoinNearest(player)
 		return
 	end
 	local arena, side = recent.Arena, recent.Side
@@ -375,7 +380,7 @@ function Service:Replay(player)
 		side = 3 - side
 	end
 	if arena.Queue[side] then
-		Remotes.MatchState:FireClient(player, { Phase = "Notice", Text = "That arena just filled up. Try a free pad." })
+		self:JoinNearest(player)
 		return
 	end
 	self:Queue(player, arena, side, workspace:GetServerTimeNow())

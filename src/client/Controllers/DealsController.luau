@@ -391,6 +391,8 @@ function Controller:MaybeAutoOpen()
 					or pg:GetAttribute("Queued")
 					or pg:GetAttribute("ResultsOpen")
 					or pg:GetAttribute("Watching")
+					-- PLAY AGAIN goes first (decision 124): the offer waits until the player is back in the lobby.
+					or pg:GetAttribute("PlayAgainShown")
 				)
 				and self.Player:GetAttribute("OnboardingStep") == "Done"
 				and not GamepadNav.hasMenu()

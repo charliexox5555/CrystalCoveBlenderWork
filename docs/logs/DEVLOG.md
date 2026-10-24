@@ -2,6 +2,14 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-23 — Claude — PLAY AGAIN after a match (decision 124)
+Done:
+- `PlayAgainController` + `UI/Screens/PlayAgain`: big pulsing PLAY AGAIN above PLAY after each normal match and after the first-match win prize; hides on press, queue, menu or 30 s. `ArenaService:Replay` falls back to the nearest free arena instead of a "busy" notice and logs `PlayAgain`.
+- Found the Starter Pack auto-open landing right on top of it after the tutorial; the offer now waits while PLAY AGAIN shows. The onboarding PLAY pointer stays quiet meanwhile.
+- Studio Play (MCP-synced, hash-verified): button shows after a match result, a real click queued the player, analytics event fired, no new errors. Lune 280 passed.
+Next:
+- Watch `PlayAgain` and the funnel's Second Match Started step after publishing.
+
 ## 2026-10-23 — Claude — Balance pass for the revamp, simple loading screen (decision 123)
 Done:
 - New `tools/arena_report` (mirror rounds on the real swing): glints, twists, PUSH, Last Glass. Fixed Bomb (66.7% → ~56–60%), Frost (42% → ~49–54%, now brittle), Zoom (50% → ~54–58%), Last Glass (69–79% → 55.6%, now a 5% shield), PUSH (no real value → 56.9% vs never, clash window ×1.08), twist lengths 12–25 s → 14–20 s, one grab reach for all glassies. `PushSkill` fighter field (0 = never pushes) for measuring.

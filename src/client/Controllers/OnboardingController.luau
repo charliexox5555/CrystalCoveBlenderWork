@@ -441,7 +441,11 @@ function Controller:Keep()
 		end
 	end
 	-- PLAY pulses for a still player on the Arena step, and once more right after the tutorial (the second match).
-	local after = step == "Done" and self.DoneAt and now - self.DoneAt < O.DoneNudgeSeconds
+	-- PLAY AGAIN (decision 124) is the bigger prompt for the second match; no pointer on PLAY while it shows.
+	local after = step == "Done"
+		and self.DoneAt
+		and now - self.DoneAt < O.DoneNudgeSeconds
+		and not pg:GetAttribute("PlayAgainShown")
 	if matchUi then
 		self.DoneAt = nil -- the next match started: the tutorial's last nudge is spent
 	end

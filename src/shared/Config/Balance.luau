@@ -1014,6 +1014,9 @@ Balance.Match = {
 	CountdownSeconds = 3, -- long enough to read the twist banner
 	RoundEndSeconds = 4.5, -- the finisher (rise, flight, impact, show) still fits
 	QueueBotAfterSeconds = 30, -- an empty arena slot fills with a bot after this long
+	-- PLAY AGAIN after a match (decision 124): shows this long after the match ends, stays up this long.
+	PlayAgainDelaySeconds = 1.2,
+	PlayAgainSeconds = 30,
 	BotSkillMin = 0.2,
 	BotSkillMax = 0.7,
 	-- Remote rate limits (seconds between accepted calls per player)

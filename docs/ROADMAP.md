@@ -14,7 +14,7 @@ Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DES
 - [ ] **U/CL:** PUSH on keyboard and touch in a real match, a bot match with each twist, phone layout of PUSH beside CAST.
 - [x] **CL:** balance pass (decision 123): arena layer measured with `tools/arena_report` (glints 49–62%, Last Glass 55.6%, PUSH 56.9% vs never, twists 14–20 s); predictive projectile aim; kits retuned live-style (`equal:bot0.5`) to 39/40 in 45–55%.
 - [x] **CL:** simple loading screen (black, white pen with two clinking balls, name, thin bar; Frames only) and the name Glass vs Glass on it. Studio Play: closes cleanly, no errors.
-- [ ] **U:** decide on a PLAY AGAIN button / auto-requeue after a match (43% of new players never start a second match).
+- [x] **CL:** PLAY AGAIN after each match and the win prize (decision 124): one tap requeues (last arena or nearest free one); the Starter Pack auto-open waits while it shows. Studio: shown after a match, a real click queued the player, `PlayAgain` event fired.
 - [ ] **CL:** Glass Phoenix live-style 57.7% (its strength is the rebirth, not the shot); give the tuner a rebirth knob.
 - [ ] **U:** creator feel check (fight speed, glint pictures, bumper look, setup timers), then publish and watch `MatchLeft*` events and matches per session against the week before.
 

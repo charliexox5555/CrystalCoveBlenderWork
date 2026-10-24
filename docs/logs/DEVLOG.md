@@ -2,6 +2,14 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-23 — Codex — First contrast/block ad checkpoint
+Done:
+- Recorded creator screenshot: Cast 5/603 (0.83%), Lid Block 9/648 (1.39%), Close Call 18/644 (2.80%), each 0.04 ad credits and Learning. Close Call is the provisional leader at similar exposure; 18 clicks are still limited evidence.
+- Saved EARLY_RESULTS.md and updated pack notes/preview and persistent marketing direction. Danger/expression/fragility is a combined hypothesis; typography/background effects and conversion are not isolated.
+- Lune 279 passed, 0 failed on the current working tree. Unrelated round-revamp work preserved; no new art or ad changes.
+Next:
+- Keep the current Close Call unchanged for another comparable checkpoint; evaluate plays/engagement when available and prioritize single-feature danger variants if the lead holds.
+
 ## 2026-10-23 — Codex — Contrast, close call and Lid Block thumbnails
 Done:
 - Creator reported another ad credit spent with falling CTR; recorded as qualitative feedback without inventing updated rows. Built Cast Contrast, Cracked Close Call and Lid Block using original Pop/Jam/Prism Blade assets and built-in imagegen. Source inspection confirms Jam's raised gold-tinted lid shield; conceptual expressions are labelled as marketing treatment.

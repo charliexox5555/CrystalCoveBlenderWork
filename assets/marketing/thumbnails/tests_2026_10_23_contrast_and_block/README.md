@@ -1,5 +1,5 @@
 # Glass vs Glass — contrast and ability tests
-23 October 2026. Three finished ad thumbnails, created using the built-in imagegen tool from saved original game assets. These are new marketing illustrations; they have no measured CTR results yet.
+23 October 2026. Three finished ad thumbnails, created using the built-in imagegen tool from saved original game assets. [First results](EARLY_RESULTS.md): Cracked Close Call 18/644 (2.80%), Lid Block 9/648 (1.39%), Cast Contrast 5/603 (0.83%). Close Call is the provisional leader; attributed plays are outside the crop.
 
 ## Ready files
 
@@ -21,7 +21,7 @@ The shield is grounded in the current source: Jam uses shield / Lid Shield; Hero
 
 ## Suggested comparison
 
-Start with **Lid Block** as the distinct ability challenger and **Cracked Close Call** as the simple danger challenger. Use **Cast Contrast** beside unchanged original Cast Now to assess presentation. Multiple tests are supported; no campaign, budget or naming change was performed.
+The first checkpoint favors **Cracked Close Call**. Keep its current file unchanged as the next comparison point; if that lead holds, prioritize danger-story variants with one major feature changed at a time. Lid Block and Cast Contrast trail at similar early exposure. The original Cast still needs a matched-date comparison before attributing any effect to its presentation changes.
 
 Compare matching-date clicks, attributed plays and cost, plus first/second fight progression. A higher CTR alone is not a completed acquisition result. The current 16+ access constraint and qualification-vs-retention distinction remain documented in the [assessment](../../reviews/2026_10_23_assessment/ASSESSMENT.md). No promised 4–5% CTR.
 

@@ -1,0 +1,59 @@
+{
+  "clientDate": "2026-10-23",
+  "timezone": "America/Chicago",
+  "sourceGamesAPI": "https://games.roblox.com/v1/games?universeIds=10685282333,10770493435",
+  "sourceThumbnailsAPI": "https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=10685282333&countPerUniverse=6&defaults=true&size=768x432&format=Png&isCircular=false",
+  "games": [
+    {
+      "id": 10685282333,
+      "name": "[🎃] Ball VS Ball",
+      "playing": 29373,
+      "visits": 155087365,
+      "created": "2026-08-12T02:57:56.96Z",
+      "updated": "2026-10-22T13:32:14.386Z"
+    },
+    {
+      "id": 10770493435,
+      "name": "Glass vs Glass ⚔️",
+      "playing": 6,
+      "visits": 250,
+      "created": "2026-10-12T07:48:25.715Z",
+      "updated": "2026-10-23T20:46:41.841Z"
+    }
+  ],
+  "thumbnails": {
+    "data": [
+      {
+        "universeId": 10685282333,
+        "error": null,
+        "thumbnails": [
+          {
+            "targetId": 78174035593650,
+            "state": "Completed",
+            "imageUrl": "https://tr.rbxcdn.com/180DAY-c7219574f41d6ffc0f88fde8d7b8c8f2/768/432/Image/Png/noFilter",
+            "version": "TN3"
+          },
+          {
+            "targetId": 108607891353390,
+            "state": "Completed",
+            "imageUrl": "https://tr.rbxcdn.com/180DAY-63cb04d03172ba0cb306b3a335246fdc/768/432/Image/Png/noFilter",
+            "version": "TN3"
+          },
+          {
+            "targetId": 129896028126940,
+            "state": "Completed",
+            "imageUrl": "https://tr.rbxcdn.com/180DAY-ace34518cb6790d9388c731a7b0dc092/768/432/Image/Png/noFilter",
+            "version": "TN3"
+          },
+          {
+            "targetId": 122284758465549,
+            "state": "Completed",
+            "imageUrl": "https://tr.rbxcdn.com/180DAY-bd407b3d9b5450dcb63d122cc994f60f/768/432/Image/Png/noFilter",
+            "version": "TN3"
+          }
+        ]
+      }
+    ]
+  },
+  "limits": "Public point-in-time counts and gallery images; no private CTR, ad delivery or retention evidence. Images remain remotely hosted on Roblox CDN."
+}

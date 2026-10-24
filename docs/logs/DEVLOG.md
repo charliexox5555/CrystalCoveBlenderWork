@@ -2,6 +2,15 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-23 — Codex — Thumbnail evidence and audience audit
+Done:
+- Recorded latest six rows (128 clicks/7,318 impressions, 1.75% CTR) and confirmed same-date 761 clicks/212 ad-attributed unique players; documented repeat-click, attribution and spend-denominator limits.
+- Read-only Creator Dashboard verified current 16+ availability and 8/250 highly engaged players; qualification is not own-game retention. Checked correct Glass Studio identity, existing onboarding events, current dashboard limits and official Ads guidance without changing settings, campaigns or content.
+- Verified actual Ball VS Ball gallery images through Roblox public APIs; reference board, metadata and assessment/next briefs saved in assets/marketing/reviews/2026_10_23_assessment/. Inspected 320/180px against current art; competitor popularity is not creative CTR evidence. Updated persistent marketing direction; no new artwork this session.
+- Lune 270 passed, 0 failed. Existing unrelated working changes preserved.
+Next:
+- Match ad-player first/second fight progression to acquisition dates; distinguish general Plays acquisition from Kids & Select qualification. Next art tests should isolate contrast/subject scale in Cast Now and recognizable fragile-glass danger, retaining current comparators.
+
 ## 2026-10-23 — Codex — Six Glass Vs Glass reserve creatives
 Done:
 - Recorded the early reset results: Pick One 13/583 clicks/impressions (2.23% calculated), Bottle Smash 8/657 (1.22%), Jar Vs Sword 8/597 (1.34%). Pick One is the current provisional comparison point; original file unchanged. Creator requested multiple reserve ads, not another pause for small-sample certainty.

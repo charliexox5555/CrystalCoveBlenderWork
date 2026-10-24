@@ -2,6 +2,14 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-23 — Claude — Real players first, bots only when nobody is available (decision 125)
+Done:
+- ArenaService: PLAY / PLAY AGAIN join a waiting player first; lone waiters on different arenas are paired after 3 s; idle lobby players get a "wants to battle" notice; `BotWait` = 4 s alone in the server, 12 s for a new player's first match, else 30 s (Bot Play off still never gets a bot). No more instant Rookie Bot.
+- Fixed: a new player's first match against a real person never advanced onboarding (only the bot match counted). Every first match now counts; the bot match stays assisted; a finished first match against a person pays the first-win prize even when lost.
+- Studio (MCP-synced, hash-verified): solo first match queues at once, Rookie Bot joins after the solo wait, "First Match Started" logged, no errors. The Studio test profile had Bot Play off, which correctly waited. Lune 280 passed.
+Next:
+- Creator: two-player check in Studio (Test → Clients and Servers, 2 players): queue on two different arenas (paired in ~3 s), and PLAY while the other waits (joins them).
+
 ## 2026-10-23 — Codex — Seven Close Call and new-story thumbnail tests
 Done:
 - Creator approved Close Call, raised the ad CTR goal to 5–8% and requested new concepts beyond variants. Kept the current control unchanged; made nearer blade, stronger fracture, smug rival, frost attack, attached Bomb, healing-orb race and Bumpers rebound using original assets and built-in imagegen.

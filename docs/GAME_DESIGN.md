@@ -27,7 +27,7 @@ Walk up to an arena, roll three glassies from your collection, pick one, aim you
 ## 2. Match loop
 
 ```
-Lobby  →  step on an arena pad (1v1; a bot joins after 30 s)
+Lobby  →  PLAY or a pad (1v1 vs a real player; a bot only when nobody is available)
   → Round (repeat until someone loses 3 hearts):
        Match start: roll 3 equally likely, distinct owned glassies once; retain this hand all match.
        Each round: pick from that hand (12 s, then 8 s; no pick = last round's glassy), or use round-only Pick Any. Paid reroll replaces the hand.
@@ -41,7 +41,7 @@ Lobby  →  step on an arena pad (1v1; a bot joins after 30 s)
 
 | Phase | Time | Notes |
 |---|---|---|
-| Queue | until 2 players, or a bot after `QueueBotAfterSeconds` (30 s) | Standing on the pad = queued; stepping off leaves. |
+| Queue | until 2 players; PLAY joins someone already waiting, lone waiters on different arenas are paired after 3 s and idle lobby players are told; a bot only after `BotWait`: 4 s alone in the server, 12 s for a new player's first match, else 30 s (decision 125) | Joining locks you on the pad; Leave or a reset leaves. |
 | Roll | `RollSeconds` 12 s, `RollSecondsLater` 8 s | Initial hand is uniform from owned glassies with no repeats; retained across rounds. Paid rerolls replace all three. Pick Any chooses any owned glassy for this round without changing the hand. Timer out → last round's glassy if still in the hand, else the first offer. Picks are hidden until both lock in. |
 | Aim | `AimSeconds` 10 s | No aim → last round's aim (`AimDefault` in round 1). |
 | Countdown | 3 s | Shows the arena twist and MATCH POINT. |
@@ -208,7 +208,7 @@ Pop (Fizzy), Jam (Heavy) and Prism (Sharp) were the starters; since decision 102
 
 ## 6. Bots
 
-- Fill any pad after 15 s alone. Name them like players' pets ("Bottle Bot", original names only), with a small BOT tag.
+- **Real players first (decision 125).** A bot fills a pad only when nobody is available: 4 s when you are alone in the server, 12 s for a new player's first match (then the assisted Rookie Bot), otherwise 30 s, and never with Bot Play off. Name them like players' pets ("Bottle Bot", original names only), with a small BOT tag.
 - **Collection:** random glassies up to the player's best rarity, same size as the player's collection, at least 3 (`MatchLogic.botCollection`).
 - **Skill** 0.2–0.7 (`BotSkillMin/Max`): aim error and smarter picks (counter the player's last type). Bots auto-fire specials.
 - Rewards vs bots: same coins as vs players, +5 trophies on a win, never lose trophies.

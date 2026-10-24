@@ -1013,7 +1013,12 @@ Balance.Match = {
 	AimSeconds = 10, -- starts from last round's aim
 	CountdownSeconds = 3, -- long enough to read the twist banner
 	RoundEndSeconds = 4.5, -- the finisher (rise, flight, impact, show) still fits
-	QueueBotAfterSeconds = 30, -- an empty arena slot fills with a bot after this long
+	-- Real players first (decision 125): a bot fills an empty side only when nobody is available.
+	QueueBotAfterSeconds = 30, -- waiting this long with nobody to pair with: a bot joins
+	BotAloneSeconds = 4, -- nobody else in the server at all: a bot joins this fast
+	FirstMatchBotSeconds = 12, -- a new player's first match waits this long for a real player before the Rookie Bot
+	PairAfterSeconds = 3, -- two players waiting on different arenas are put together after this long
+	WaitingCallSeconds = 3, -- then players idle in the lobby are told someone is waiting (PLAY joins them)
 	-- PLAY AGAIN after a match (decision 124): shows this long after the match ends, stays up this long.
 	PlayAgainDelaySeconds = 1.2,
 	PlayAgainSeconds = 30,

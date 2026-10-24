@@ -1,6 +1,8 @@
 -- Arena queues. Players join a side with the ProximityPrompt on its pad (or PLAY / Rematch),
 -- are fixed to that spot facing the arena until the match ends or they leave (LeaveQueue or a
--- reset), and a bot fills an empty side after Balance.Match.QueueBotAfterSeconds.
+-- reset). Real players first (decision 125): PLAY joins someone already waiting, two lone waiters on different
+-- arenas are put together, idle lobby players are told someone is waiting, and a bot fills an empty side only after
+-- BotWait (short when nobody else is in the server, longer otherwise).
 --
 -- MatchState messages sent to the queued player (the client moves the camera and shows Leave):
 --   { Phase = "Queue", ArenaId, Side, Deadline, Locked = true, CanLeave = true,
@@ -63,8 +65,35 @@ function Service:BotsAllowed(arena)
 	return solo == nil or settings == nil or settings:Get(solo).BotPlay ~= false
 end
 
--- Onboarding (decision 100): a new player's first match waits in the nearest free arena with a bot ready.
--- Nobody else can queue there while it is reserved; the reserved player starts at once.
+-- How long a lone waiter in `arena` waits before a bot joins (decision 125: real players first). Alone in the server
+-- there is nobody to wait for; a new player's first match gives a real player a short chance before the Rookie Bot.
+function Service:BotWait(arena)
+	if #Players:GetPlayers() <= 1 then
+		return Balance.Match.BotAloneSeconds
+	end
+	return if arena.FirstMatch then Balance.Match.FirstMatchBotSeconds else Balance.Match.QueueBotAfterSeconds
+end
+
+-- An arena with exactly one player waiting (not Crown Hill), the one waiting longest first: where PLAY sends you.
+function Service:Waiting(except)
+	local best
+	for _, arena in self.Arenas do
+		local a, b = arena.Queue[1], arena.Queue[2]
+		if
+			arena ~= except
+			and not arena.Hill
+			and not arena.Busy
+			and (a == nil) ~= (b == nil)
+			and (not best or arena.QueuedAt < best.QueuedAt)
+		then
+			best = arena
+		end
+	end
+	return best
+end
+
+-- Onboarding (decision 100): a new player's first match waits in the nearest free arena. Nobody else can queue there
+-- while it is reserved (the guide beam points at it); once the new player is on the pad anyone can join them.
 function Service:ReservedFor(player)
 	local entry = self.Reserved[player]
 	if entry and (os.clock() > entry.Until or entry.Arena.Busy) then
@@ -133,9 +162,9 @@ function Service:QueueBoard(arena, now)
 		then "Reserved for " .. holder.DisplayName .. "!"
 		elseif count == 0 then "Walk up to a pad and press to join!"
 		elseif not self:BotsAllowed(arena) then "Waiting for a player…"
-		else "Bot joins in " .. math.max(
+		else "Waiting for a player… bot in " .. math.max(
 			0,
-			math.ceil((arena.QueuedAt or now) + Balance.Match.QueueBotAfterSeconds - now)
+			math.ceil((arena.QueuedAt or now) + self:BotWait(arena) - now)
 		) .. "s"
 	Board.update(arena.Board, {
 		Title = self:Title(arena),
@@ -301,15 +330,12 @@ function Service:Queue(player, arena, side, now)
 	arena.Queue[side] = player
 	arena.QueuedAt = arena.QueuedAt or now
 	self.ByPlayer[player] = { Arena = arena, Side = side }
-	if holder == player then
-		-- The new player's reserved arena: the bot is already waiting.
-		self.Reserved[player] = nil
-		arena.QueuedAt = now - Balance.Match.QueueBotAfterSeconds
-		arena.FirstMatch = player
-	elseif not arena.Hill and not arena.Queue[3 - side] and onboarding and onboarding:IsFirstMatch(player) then
-		-- A new player who walked to another free arena: the bot comes at once there too; the reservation is freed.
+	if not arena.Hill and not arena.Queue[3 - side] and onboarding and onboarding:IsFirstMatch(player) then
+		-- A new player's first match: a real player gets a short chance (BotWait), then the Rookie Bot comes.
 		self:Unreserve(player)
 		arena.FirstMatch = player
+	elseif holder == player then
+		self.Reserved[player] = nil
 	end
 	self:PadState(arena)
 	self:QueueBoard(arena, now)
@@ -317,8 +343,10 @@ function Service:Queue(player, arena, side, now)
 		Phase = "Queue",
 		ArenaId = arena.Id,
 		Side = side,
-		Deadline = if not arena.Hill and self:BotsAllowed(arena)
-			then arena.QueuedAt + Balance.Match.QueueBotAfterSeconds
+		Deadline = if not arena.Hill
+				and self:BotsAllowed(arena)
+				and not arena.Queue[3 - side]
+			then arena.QueuedAt + self:BotWait(arena)
 			else nil,
 		Locked = true,
 		CanLeave = true,
@@ -335,13 +363,13 @@ function Service:StartArena(arena, now, options)
 	for _, player in players do
 		self.ByPlayer[player] = nil -- the lock stays on until Release
 	end
-	arena.Queue, arena.QueuedAt, arena.Busy = {}, nil, true
+	arena.Queue, arena.QueuedAt, arena.Busy, arena.Called = {}, nil, true, nil
 	self:PadState(arena)
 	self.Services.MatchService:StartMatch(arena, players, now, false, options)
 end
 
 function Service:Release(arena, players)
-	arena.Busy, arena.Queue, arena.QueuedAt = false, {}, nil
+	arena.Busy, arena.Queue, arena.QueuedAt, arena.Called = false, {}, nil, nil
 	for side, player in players do
 		self:Unlock(player)
 		if player.Parent == Players then
@@ -371,7 +399,8 @@ function Service:Replay(player)
 		AnalyticsService:LogCustomEvent(player, "PlayAgain")
 	end)
 	local recent = self.Recent[player]
-	if not recent or recent.Arena.Busy then
+	-- Someone waiting beats your old arena (JoinNearest joins them first, decision 125).
+	if not recent or recent.Arena.Busy or self:Waiting(recent.Arena) then
 		self:JoinNearest(player)
 		return
 	end
@@ -404,6 +433,8 @@ function Service:Step(now)
 			self:Unlock(player)
 		end
 	end
+	self:Pair(now)
+	self:Call(now)
 	for _, arena in self.Arenas do
 		self:PadState(arena)
 		if arena.Hill and self.Services.HillService then
@@ -415,16 +446,54 @@ function Service:Step(now)
 		end
 		local a, b = arena.Queue[1], arena.Queue[2]
 		if not a and not b then
-			arena.QueuedAt = nil
-		elseif
-			a and b
-			or arena.FirstMatch
-			or (now - arena.QueuedAt >= Balance.Match.QueueBotAfterSeconds and self:BotsAllowed(arena))
-		then
+			arena.QueuedAt, arena.Called = nil, nil
+		elseif a and b or (now - arena.QueuedAt >= self:BotWait(arena) and self:BotsAllowed(arena)) then
 			self:StartArena(arena, now)
 			continue
 		end
 		self:QueueBoard(arena, now)
+	end
+end
+
+-- Two players waiting alone on different arenas play each other (decision 125): after PairAfterSeconds the one who
+-- came later moves to the other's free side. If that fails they go back to where they were.
+function Service:Pair(now)
+	while true do
+		local host = self:Waiting()
+		local guest = host and self:Waiting(host)
+		if not host or not guest or now - guest.QueuedAt < Balance.Match.PairAfterSeconds then
+			return
+		end
+		local player = guest.Queue[1] or guest.Queue[2]
+		local from = if guest.Queue[1] then 1 else 2
+		self:Leave(player, "Paired")
+		if not self:Queue(player, host, if host.Queue[1] then 2 else 1, now) then
+			self:Queue(player, guest, from, now)
+			return
+		end
+		Remotes.MatchState:FireClient(
+			player,
+			{ Phase = "Notice", Text = "Found a player! Battle on " .. self:Title(host) .. "." }
+		)
+	end
+end
+
+-- Someone has been waiting alone for WaitingCallSeconds: players free in the lobby are told once, so PLAY (which
+-- joins a waiting player first) turns a would-be bot match into a real one.
+function Service:Call(now)
+	local arena = self:Waiting()
+	if not arena or arena.Called or now - arena.QueuedAt < Balance.Match.WaitingCallSeconds then
+		return
+	end
+	arena.Called = true
+	local waiting = arena.Queue[1] or arena.Queue[2]
+	for _, player in Players:GetPlayers() do
+		if player ~= waiting and not self.ByPlayer[player] and not self.Services.MatchService.ByPlayer[player] then
+			Remotes.MatchState:FireClient(
+				player,
+				{ Phase = "Notice", Text = waiting.DisplayName .. " wants to battle! Press PLAY to join." }
+			)
+		end
 	end
 end
 
@@ -435,6 +504,12 @@ function Service:JoinNearest(player)
 	end
 	local root = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 	if not root then
+		return
+	end
+	-- Someone is already waiting: play them (decision 125), wherever they are.
+	local waiting = self:Waiting()
+	if waiting and self:Queue(player, waiting, if waiting.Queue[1] then 2 else 1, workspace:GetServerTimeNow()) then
+		self:Unreserve(player)
 		return
 	end
 	local best, nearestSide, distance = nil, nil, math.huge

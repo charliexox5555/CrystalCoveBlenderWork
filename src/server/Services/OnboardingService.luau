@@ -128,18 +128,21 @@ function Service:DailyClaimed(player)
 end
 
 -- MatchService: a match with `player` in it started / finished. `tutorial` = the assisted first match.
-function Service:MatchStarted(player, tutorial)
+-- `first`: this is the player's first match (against the assisted Rookie Bot or a real player, decision 125).
+function Service:MatchStarted(player, first)
 	local step = self:Step(player)
-	if tutorial and step ~= "Match" and Rules.isFirstMatch(step) then
+	if first and step ~= "Match" and Rules.isFirstMatch(step) then
 		self:Track(player, "FirstMatchStarted")
 		self:SetStep(player, "Match")
-	elseif not tutorial and step == "Done" then
+	elseif not first and step == "Done" then
 		self:Track(player, "SecondMatchStarted")
 	end
 end
 
-function Service:MatchFinished(player, won, tutorial)
-	if not tutorial then
+-- `finishedVsPlayer`: a first match against a real player played to the end; it pays the first-win prize even when
+-- lost (the assist only exists against the bot, and a new player losing to a person shouldn't lose the prize too).
+function Service:MatchFinished(player, won, first, finishedVsPlayer)
+	if not first then
 		if self:Step(player) == "Done" then
 			self:Track(player, "SecondMatchFinished")
 		end
@@ -151,8 +154,9 @@ function Service:MatchFinished(player, won, tutorial)
 	if won then
 		self:Track(player, "FirstMatchWon")
 	end
-	-- Lost, left or forfeited: a fresh reserved arena waits. Won: the claim card for the free Kiln open.
-	self:SetStep(player, if won then "Win" else "Arena")
+	-- Lost to the bot, left or forfeited: a fresh reserved arena waits. Won, or finished against a player: the claim
+	-- card for the free Kiln open.
+	self:SetStep(player, if won or finishedVsPlayer then "Win" else "Arena")
 end
 
 -- The win claim's OPEN: pick (never owned), grant and play the opening.

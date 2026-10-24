@@ -142,6 +142,9 @@ function Service:StartMatch(arena, players, now, spectate, options)
 			if tutorial then { RollSeconds = Balance.Onboarding.RollSeconds } else nil
 		),
 		Tutorial = tutorial,
+		-- Every new player's first match counts for onboarding, against a bot or a real player (decision 125);
+		-- only the bot match is assisted (Tutorial).
+		FirstMatch = {},
 		Perfects = { 0, 0 },
 		ActualWins = { 0, 0 },
 		HeavyShatters = { 0, 0 },
@@ -176,7 +179,8 @@ function Service:StartMatch(arena, players, now, spectate, options)
 	Stage.start(entry)
 	if onboarding then
 		for _, player in players do
-			onboarding:MatchStarted(player, tutorial ~= nil and tutorial.Player == player)
+			entry.FirstMatch[player] = onboarding:IsFirstMatch(player)
+			onboarding:MatchStarted(player, entry.FirstMatch[player])
 		end
 	end
 	self:Dispatch(entry, now)
@@ -242,14 +246,16 @@ function Service:Finish(entry)
 			ArenaId = entry.Arena.Id,
 			Names = names,
 			Quests = self.Services.RetentionService and self.Services.RetentionService:View(player).Quests or {},
-			FirstMatch = entry.Tutorial ~= nil and entry.Tutorial.Player == player,
+			FirstMatch = entry.FirstMatch[player] == true,
 			Xp = { Gained = observed.XpGained or 0, LevelsGained = observed.LevelsGained or 0 },
 		})
 		if self.Services.OnboardingService then
 			self.Services.OnboardingService:MatchFinished(
 				player,
 				match.Winner == side and not entry.Forfeited[side],
-				entry.Tutorial ~= nil and entry.Tutorial.Player == player
+				entry.FirstMatch[player] == true,
+				-- A first match against a real player pays the first-win prize when finished, won or lost.
+				eligible and not entry.Forfeited[side] and entry.Players[3 - side] ~= nil
 			)
 		end
 	end
@@ -294,8 +300,12 @@ function Service:Dispatch(entry, now)
 			local setup = Logic.fightSetup(match)
 			if entry.Tutorial then
 				setup.Assist = OnboardingRules.assist(match.Round, entry.Tutorial.Side)
-				if match.Round == 1 then
-					self.Services.OnboardingService:Track(entry.Tutorial.Player, "FirstFightStarted")
+			end
+			if match.Round == 1 then
+				for player, first in entry.FirstMatch do
+					if first then
+						self.Services.OnboardingService:Track(player, "FirstFightStarted")
+					end
 				end
 			end
 			for side, state in match.Sides do
@@ -339,8 +349,12 @@ function Service:Dispatch(entry, now)
 			meta.Id = entry.FightId
 			local setup = Logic.fightSetup(match)
 			meta.RoundWinner = match.History[#match.History].Winner
-			if entry.Tutorial and #match.History == 1 then
-				self.Services.OnboardingService:Track(entry.Tutorial.Player, "FirstRoundFinished")
+			if #match.History == 1 then
+				for player, first in entry.FirstMatch do
+					if first then
+						self.Services.OnboardingService:Track(player, "FirstRoundFinished")
+					end
+				end
 			end
 			Remotes.MatchState:FireAllClients(self.Services.FightService:Describe(entry.Arena, setup, meta))
 		elseif change.Phase == "MatchEnd" then

@@ -145,7 +145,7 @@ The legacy passive/burst tables below describe dormant definitions. The 24 relea
 | Perfect vs worst aim | 53–75% |
 | Luck | winner was behind at some point in 35–80% of rounds; ≥ 1 lead change a round; 1.2–3 powers per glassy; 20–50% of aimed powers miss |
 | Mythic vs Common at equal kit strength, 5 stars vs 0 | ~55% / ≤ 62% (DECISIONS 86) |
-| Every release glassy at equal stats vs the field, **real swing** (`tools/release_matrix.sh`) | 45–55% |
+| Every release glassy at equal stats vs the field, **real swing**, live-style casting (`tools/release_matrix.sh` mode `equal:bot0.5`, decision 123) | 45–55% |
 | Timed CAST vs auto-only, same glassy | 55–62% |
 
 These run against **FightModel**, a stand-in for the swing. When the real swing works in Studio, log real hits per second and speeds and update `Balance.SimModel` so the simulator stays honest.

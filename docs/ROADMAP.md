@@ -12,7 +12,10 @@ Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DES
 - [x] **CL:** client: `ArenaFX` (glints, held Smash/Bubble, bombs, posts, wind, Heat bar, twist/MATCH POINT banner, On Fire, heart coin pop) and the PUSH button.
 - [x] **CL:** synced into the Glass vs Glass place by MCP (hash-verified, Rojo was disconnected); Studio Play RunAll 279 passed; a spectated Bumpers bot fight shows posts, glints, twist banner and Heat bar with no new errors.
 - [ ] **U/CL:** PUSH on keyboard and touch in a real match, a bot match with each twist, phone layout of PUSH beside CAST.
-- [ ] **CL:** retune the kits that fall outside 45–55% on the real swing with glints and PUSH (release matrix).
+- [x] **CL:** balance pass (decision 123): arena layer measured with `tools/arena_report` (glints 49–62%, Last Glass 55.6%, PUSH 56.9% vs never, twists 14–20 s); predictive projectile aim; kits retuned live-style (`equal:bot0.5`) to 39/40 in 45–55%.
+- [x] **CL:** simple loading screen (black, white pen with two clinking balls, name, thin bar; Frames only) and the name Glass vs Glass on it. Studio Play: closes cleanly, no errors.
+- [ ] **U:** decide on a PLAY AGAIN button / auto-requeue after a match (43% of new players never start a second match).
+- [ ] **CL:** Glass Phoenix live-style 57.7% (its strength is the rebirth, not the shot); give the tuner a rebirth knob.
 - [ ] **U:** creator feel check (fight speed, glint pictures, bumper look, setup timers), then publish and watch `MatchLeft*` events and matches per session against the week before.
 
 ### Release overhaul (Oct 18–23) — [plan](design/RELEASE_OVERHAUL_PLAN.md)

@@ -93,6 +93,7 @@ local function apply(state: any, side: number, kind: string, emit: (any, any) ->
 		foe.GlintSlowUntil = state.Time + k.Seconds
 	elseif kind == "Zoom" then
 		table.insert(state.Arena.Impulses, { Side = side, Kind = "Zoom", Speed = k.Speed })
+		f.GlintZoomUntil = state.Time + k.Seconds
 	end
 	return nil
 end
@@ -121,16 +122,30 @@ function ArenaRules.new(state: any, setup: any, emit: (any, any) -> ())
 		f.GlintSlowUntil = -1
 		local fighterSetup = if side == 1 then setup.A else setup.B
 		if fighterSetup.LastGlass then
-			local kind = A.LastGlass[math.floor(state.Rng() * #A.LastGlass) + 1]
-			apply(state, side, kind, emit)
-			emit(state, { Type = "GlintGrab", Side = side, Kind = kind, LastGlass = true })
+			-- Shown as a Bubble that pops when the shield is used up.
+			f.GlassShield = f.MaxHp * A.LastGlassShield
+			emit(state, { Type = "GlintGrab", Side = side, Kind = "Bubble", LastGlass = true })
 		end
 	end
 end
 
--- Damage multiplier for `attacker`'s next body hit (Smash). Consumed by `afterHit`.
-function ArenaRules.hitMultiplier(state: any, attacker: any): number
-	return if attacker.GlintSmash then G.Kinds.Smash.DamageMult else 1
+-- Damage multiplier for `attacker`'s body hit on `defender`: a held Smash (used up by `afterHit`), the Zoom and
+-- PUSH windows, and a frosted (brittle) defender.
+function ArenaRules.hitMultiplier(state: any, attacker: any, defender: any): number
+	local t, mult = state.Time, A.Twists[ArenaRules.twist(state)].DamageMult or 1
+	if attacker.GlintSmash then
+		mult *= G.Kinds.Smash.DamageMult
+	end
+	if t < (attacker.GlintZoomUntil or -1) then
+		mult *= G.Kinds.Zoom.DamageMult
+	end
+	if t < (attacker.PushHitUntil or -1) then
+		mult *= A.Push.HitMult
+	end
+	if defender and t < (defender.GlintSlowUntil or -1) then
+		mult *= G.Kinds.Frost.Brittle
+	end
+	return mult
 end
 
 function ArenaRules.afterHit(state: any)
@@ -139,14 +154,24 @@ function ArenaRules.afterHit(state: any)
 	end
 end
 
--- A Bubble eats the next damage. Returns true if it blocked `target`'s damage.
-function ArenaRules.block(state: any, target: any, emit: (any, any) -> ()): boolean
-	if not target.GlintBubble then
-		return false
+-- What is left of `amount` after a Bubble (eats all of it) or the Last Glass shield (soaks up to its pool).
+-- GlintBlock is emitted when a Bubble pops or the shield runs out.
+function ArenaRules.absorb(state: any, target: any, amount: number, emit: (any, any) -> ()): number
+	if target.GlintBubble then
+		target.GlintBubble = nil
+		emit(state, { Type = "GlintBlock", Side = target.Side })
+		return 0
 	end
-	target.GlintBubble = nil
-	emit(state, { Type = "GlintBlock", Side = target.Side })
-	return true
+	local shield = target.GlassShield
+	if shield and shield > 0 then
+		local soaked = math.min(shield, amount)
+		target.GlassShield = shield - soaked
+		if target.GlassShield <= 0 then
+			emit(state, { Type = "GlintBlock", Side = target.Side, LastGlass = true })
+		end
+		return amount - soaked
+	end
+	return amount
 end
 
 function ArenaRules.swingMultiplier(state: any, side: number): number
@@ -210,6 +235,7 @@ function ArenaRules.requestPush(state: any, side: number, emit: (any, any) -> ()
 		push.NextCharge = state.Time + A.Push.RechargeSeconds
 	end
 	table.insert(arena.Impulses, { Side = side, Kind = "Push", Speed = A.Push.Speed })
+	state.Fighters[side].PushHitUntil = state.Time + A.Push.HitSeconds
 	emit(state, { Type = "Push", Side = side, Charges = push.Charges })
 	return true
 end
@@ -364,7 +390,7 @@ function ArenaRules.presentation(state: any): { any }
 		if f.GlintSmash then
 			table.insert(out, { Type = "GlintGrab", Side = side, Kind = "Smash", Held = true, Time = state.Time })
 		end
-		if f.GlintBubble then
+		if f.GlintBubble or (f.GlassShield or 0) > 0 then
 			table.insert(out, { Type = "GlintGrab", Side = side, Kind = "Bubble", Held = true, Time = state.Time })
 		end
 	end

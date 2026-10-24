@@ -20,6 +20,23 @@
 
 Real-swing probe after the build (108 rounds, all 24 kits, twists rolled): fight **mean 18.4 s, p90 24.9 s**, contacts 0.56 a second (was 0.47), dead air **13% → 0%**, longest quiet stretch median 2.0 s (was 4.8 s); about 9 glints a round, nearly all grabbed.
 
+### Balance pass (Oct 23, `tools/arena_report`)
+
+Mirror rounds on the real swing (each glassy vs itself), so any edge comes from the arena layer.
+
+| | First build | After the pass | Change |
+|---|---|---|---|
+| Grabber win rate (50% = no effect) | Bomb 66.7, Bubble 59.9, Frost **42.2**, Patch 58.7, Smash 57.7, Zoom **50.3** | Bomb 60.4, Bubble 62.1, Frost 48.9, Patch 59.3, Smash 56.8, Zoom 54.4 | Bomb 8% → 5% max HP; Frost also makes the other glass brittle (×1.35 clash damage) for 1.8 s; Zoom adds ×1.3 clash damage for 1.5 s; Patch 10% → 8%; every glassy grabs within the same reach (it used to scale with glassy size) |
+| Last Glass vs none | **69%** (Smash or Bubble) | **55.6%** | a held Smash/Bubble decided the opening clash, the biggest of a round; now a thin shield that soaks 5% of max HP, shown as the Bubble |
+| PUSH vs never | 53.7% (always pushing: 50.9%) | **56.9%** (always pushing: 63.9%) | speed 6, and a clash within 0.8 s of your push hits ×1.08 for you, so pushing into a clash pays |
+| Round length by twist | Bouncy 12.1 s ... Bumpers 24.8 s (2.8% timeouts) | 14.2–19.7 s, no timeouts | Bouncy restitution 0.85 / knockback 1.12; Magnet force 7; Bumpers boost 4.5 and clashes ×1.2 |
+
+Ranged kits mostly missed after the faster swing (Prism Blade's smart casts did nothing 73% of the time). Projectiles and volleys now aim where the foe's swing will be when the shot gets there (the pendulum prediction zones already use, timed by the shot's speed) instead of a straight 0.18 s lead: Prism Blade auto-cast duds 79% → 55%.
+
+**Kit retune** (`tools/release_autotune`, damped steps on each out-of-band kit's main knob between real-swing matrices, with twists rolled). It is measured **live-style** (`equal:bot0.5`: every side casts like a skill-0.5 bot), because the no-policy matrix leaves out armed payoffs: Pickle Jar's ContactBonus never applies without a cast policy, so the no-policy tuner had pushed it to 2.4 (reverted to 0.5). Result: **39/40 in 45–55%** (45.2–57.7%), rounds 16.5 s, 0.1% timeouts. Glass Phoenix stays a little high (57.7%; its damage knob hardly moves it, the rebirth is the strength). The no-policy matrix on the same numbers reads 36/40.
+
+Sharp glassies still grab ~20% fewer glints per glassy than Heavy/Fizzy (they swing higher and spend less time in the clash zone); the kit retune (measured with glints on) covers it.
+
 Changes from the proposal below: the Charge and Twister glints became **Zoom** (a big shove) because "power Ready now" means something different for every kit; the Double Trouble twist was dropped for the same reason; the full finisher stays on every round. Sections 1–4 are the original proposal.
 
 ## 1. What's wrong (measured, not guessed)

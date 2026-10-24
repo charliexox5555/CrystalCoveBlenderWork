@@ -27,7 +27,8 @@ local KNOBS = {
 	orbit = { Key = "Damage" },
 	contact = { Key = "ContactBonus" },
 	armed_contact = { Key = "ContactBonus" },
-	slow_contact = { Key = "ContactBonus" },
+	-- Without a cast policy (the matrix) a slow contact never adds its ContactBonus, so tune how long the slow lasts.
+	slow_contact = { Key = "StatusSeconds", Cap = 6 },
 	drain_contact = { Key = "ContactBonus" },
 	boost = { Key = "ContactBonus" },
 	mark_contact = { Key = "MarkDamage" },

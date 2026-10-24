@@ -236,6 +236,21 @@ local function zoneCenter(sim, cast)
 	return Pendulum.center(sim, cast.Side)
 end
 
+-- Where a projectile should fly: the foe's swing predicted along its arc for as long as the shot takes to get
+-- there (shots fly at a steady Range per Duration, or per half Duration out and back), refined twice.
+-- A straight-line 0.18 s lead missed most shots once swings got faster (decision 122).
+local function aimPoint(sim, cast, origin)
+	local p = cast.Params
+	local speed = p.Range / (if p.Path == "return" then p.Duration / 2 else p.Duration)
+	local foe = 3 - cast.Side
+	local target = Pendulum.center(sim, foe)
+	for _ = 1, 2 do
+		local seconds = math.min((target - origin).Magnitude / speed, p.Duration)
+		target = Pendulum.predictCenter(sim, foe, seconds)
+	end
+	return target
+end
+
 local function attacks(sim, dt)
 	for _, cast in Rules.drainCasts(sim.Fight) do
 		if sim.Fight.Over then
@@ -252,11 +267,7 @@ local function attacks(sim, dt)
 			origin = (Pendulum.center(sim, 1) + Pendulum.center(sim, 2)) / 2
 		end
 		if cast.Shape == "projectile" or cast.Shape == "volley" then
-			direction = (
-				Pendulum.center(sim, 3 - cast.Side)
-				+ sim.Bodies[3 - cast.Side].V * Balance.CombatRelease.ProjectileLeadSeconds
-				- origin
-			).Unit
+			direction = (aimPoint(sim, cast, origin) - origin).Unit
 		end
 		if not Rules.releaseCast(sim.Fight, cast, array(origin), array(direction)) then
 			continue
@@ -355,10 +366,7 @@ local function arenaAfter(sim)
 		local best, bestDistance = nil, math.huge
 		for side = 1, 2 do
 			local distance = (Pendulum.center(sim, side) - point).Magnitude
-			if
-				distance < Balance.Arena.Glints.Radius + fight.Fighters[side].Radius * M.GlassyScale
-				and distance < bestDistance
-			then
+			if distance < Balance.Arena.Glints.Radius + Balance.Arena.Glints.GrabReach and distance < bestDistance then
 				best, bestDistance = side, distance
 			end
 		end

@@ -38,6 +38,7 @@ export type FighterSetup = {
 	-- "smart" / "auto" / "mash". nil = powers cast as soon as they trigger.
 	CastPolicy: string?,
 	CastSkill: number?, -- bots: 0..1
+	PushSkill: number?, -- bot / simulator PUSH skill 0..1 (defaults to CastSkill); 0 = never pushes
 	LastGlass: boolean?, -- on their last heart: starts the round holding a glint (decision 122)
 	OnFire: boolean?, -- won the last rounds in a row (cosmetic only)
 }
@@ -67,6 +68,7 @@ export type Fighter = {
 	BodyCenter: number?,
 	CastPolicy: string?,
 	CastSkill: number?,
+	PushSkill: number?,
 	Signature: any?,
 	Side: number,
 	Id: string,
@@ -205,6 +207,7 @@ local function newFighter(side: number, setup: FighterSetup, sweetSpot: number?,
 		Side = side,
 		CastPolicy = setup.CastPolicy,
 		CastSkill = setup.CastSkill,
+		PushSkill = setup.PushSkill,
 		Id = def.Id,
 		Name = def.Name,
 		Type = def.Type,
@@ -357,7 +360,11 @@ end
 
 -- Applies damage to `target`, honouring shields and Sturdy. Returns the damage actually taken.
 local function takeDamage(state: State, target: Fighter, amount: number, kind: string?): number
-	if amount <= 0 or state.Time < target.ShieldUntil or Arena.block(state, target, emit) then
+	if amount <= 0 or state.Time < target.ShieldUntil then
+		return 0
+	end
+	amount = Arena.absorb(state, target, amount, emit) -- Bubble glint, Last Glass shield (decision 122)
+	if amount <= 0 then
 		return 0
 	end
 	if target.Passive == "sturdy" then
@@ -401,7 +408,7 @@ function FightRules.hitDamage(
 		* variance
 		* (if crit then F.CritMultiplier else 1)
 		* overtimeMultiplier(state)
-		* Arena.hitMultiplier(state, attacker)
+		* Arena.hitMultiplier(state, attacker, defender)
 
 	if attacker.FirstHitPending then
 		amount *= F.PerfectFirstHitMult

@@ -2,6 +2,18 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-23 — Claude — Balance pass for the revamp, simple loading screen (decision 123)
+Done:
+- New `tools/arena_report` (mirror rounds on the real swing): glints, twists, PUSH, Last Glass. Fixed Bomb (66.7% → ~56–60%), Frost (42% → ~49–54%, now brittle), Zoom (50% → ~54–58%), Last Glass (69–79% → 55.6%, now a 5% shield), PUSH (no real value → 56.9% vs never, clash window ×1.08), twist lengths 12–25 s → 14–20 s, one grab reach for all glassies. `PushSkill` fighter field (0 = never pushes) for measuring.
+- Ranged kits mostly missed after the faster swing (Prism Blade 73–79% duds): projectiles/volleys now aim at the predicted swing for their travel time (Prism Blade auto duds 79% → 55%).
+- `tools/release_autotune` + `release_matrix_win.sh`: kits retuned in damped passes. No-policy matrix reached 36/40, but it leaves out armed payoffs (the tuner had pushed Pickle Jar's unused ContactBonus to 2.4; reverted). Retuned live-style (`equal:bot0.5`): **39/40 in 45–55%**, 16.5 s rounds, 0.1% timeouts; Glass Phoenix 57.7%.
+- Loading screen: black, a white pen with two clinking glass balls (`LoadingScreen/Mini`), "GLASS VS GLASS", thin bar; Frames only (the old one could sit blank 4 s waiting for art). Old `Art`/`Clash` modules unused, left in place.
+- Funnel read (74 new players): 2.7% leave before the welcome card; 25% during the first match; 43% never start a second match.
+- Studio (MCP, hash-verified): loading screen and all balance changes in; Play RunAll 280 passed, loading screen closes cleanly. Lune 280 passed.
+Next:
+- Creator: PLAY AGAIN / auto-requeue after a match? Delete the unused loading-screen art modules? Phone check of the loading screen and PUSH.
+- Glass Phoenix rebirth knob; Sharp glassies grab ~20% fewer glints (covered by the kit retune for now).
+
 ## 2026-10-23 — Codex — First contrast/block ad checkpoint
 Done:
 - Recorded creator screenshot: Cast 5/603 (0.83%), Lid Block 9/648 (1.39%), Close Call 18/644 (2.80%), each 0.04 ad credits and Learning. Close Call is the provisional leader at similar exposure; 18 clicks are still limited evidence.

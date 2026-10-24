@@ -123,11 +123,67 @@ return function(t, d)
 		t.near(Rules.swingMultiplier(s, 2), math.max(floor, before * A.Glints.Kinds.Frost.SwingMult), 1e-6, "frosted")
 	end)
 
-	t.test("Last Glass starts the round holding a glint", function()
-		local s = fight({ LastGlassA = true })
+	t.test("a clash right after a PUSH or a Zoom hits harder, and a frosted glass is brittle", function()
+		local function hit(prepare)
+			local s = fight({ Seed = 8, Managed = true })
+			Rules.drainEvents(s)
+			prepare(s)
+			Rules.hit(s, 20, 0.5)
+			return find(Rules.drainEvents(s), "Hit").Damage[2]
+		end
+		local base = hit(function() end)
+		t.near(
+			hit(function(s)
+				Rules.requestPush(s, 1)
+			end),
+			base * A.Push.HitMult,
+			1e-6,
+			"push window"
+		)
+		local late = hit(function(s)
+			Rules.requestPush(s, 1)
+			Rules.tick(s, A.Push.HitSeconds + 0.05)
+		end)
+		t.ok(late < base * A.Push.HitMult - 1e-6, "the push window closes")
+		t.near(
+			hit(function(s)
+				s.Arena.Glints = { { Id = 1, Kind = "Zoom", Point = { 0, 0, 0 }, Until = 9 } }
+				Rules.grabGlint(s, 1, 1)
+			end),
+			base * A.Glints.Kinds.Zoom.DamageMult,
+			1e-6,
+			"zoom window"
+		)
+		t.near(
+			hit(function(s)
+				s.Arena.Glints = { { Id = 1, Kind = "Frost", Point = { 0, 0, 0 }, Until = 9 } }
+				Rules.grabGlint(s, 1, 1)
+			end),
+			base * A.Glints.Kinds.Frost.Brittle,
+			1e-6,
+			"brittle"
+		)
+	end)
+
+	t.test("Last Glass starts the round with a thin shield that soaks some damage, then pops", function()
+		local s = fight({ LastGlassA = true, Managed = true })
 		local grab = find(Rules.drainEvents(s), "GlintGrab")
-		t.ok(grab ~= nil and grab.Side == 1 and grab.LastGlass, "held from the release")
-		t.ok(s.Fighters[1].GlintSmash or s.Fighters[1].GlintBubble, "smash or bubble")
+		t.ok(grab ~= nil and grab.Side == 1 and grab.LastGlass, "shown from the release")
+		local f = s.Fighters[1]
+		local pool = f.MaxHp * A.LastGlassShield
+		t.near(f.GlassShield, pool, 1e-9, "pool")
+		local plain = fight({ Seed = 3, Managed = true })
+		Rules.hit(plain, 20, 0.5)
+		local full = find(Rules.drainEvents(plain), "Hit").Damage[1]
+		Rules.hit(s, 20, 0.5)
+		local first = find(Rules.drainEvents(s), "Hit").Damage[1]
+		t.near(first, math.max(0, full - pool), 1e-6, "the shield soaked the hit")
+		local popped = false
+		for _ = 1, 6 do
+			Rules.hit(s, 20, 0.5)
+			popped = popped or find(Rules.drainEvents(s), "GlintBlock") ~= nil
+		end
+		t.ok(f.GlassShield <= 0 and (popped or first > 0), "used up")
 	end)
 
 	t.test("matches roll a twist each round, keep last pick and aim, and flag Last Glass and On Fire", function()

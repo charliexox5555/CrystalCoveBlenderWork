@@ -16,10 +16,10 @@ function Brain.step(sim, center, velocity)
 	end
 	sim.NextPushThink = fight.Time + P.BrainSeconds
 	for side, f in fight.Fighters do
-		if f.CastPolicy == "player" or Arena.pushCharges(fight, side) <= 0 then
+		if f.CastPolicy == "player" or f.PushSkill == 0 or Arena.pushCharges(fight, side) <= 0 then
 			continue
 		end
-		local skill = f.CastSkill or 0.5
+		local skill = f.PushSkill or f.CastSkill or 0.5
 		local me = center(sim, side)
 		local toFoe = center(sim, 3 - side) - me
 		local distance = toFoe.Magnitude

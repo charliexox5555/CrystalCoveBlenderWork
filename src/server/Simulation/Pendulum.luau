@@ -8,6 +8,8 @@ local Geometry = if script then require(script.Parent.AttackGeometry) else requi
 local Turnaround = if script then require(script.Parent.Turnaround) else require("./Turnaround")
 local SignatureAttacks = if script then require(script.Parent.SignatureAttacks) else require("./SignatureAttacks")
 local CastBrain = if script then require(script.Parent.CastBrain) else require("./CastBrain")
+local PushBrain = if script then require(script.Parent.PushBrain) else require("./PushBrain")
+local Arena = if Shared then require(Shared.ArenaRules) else require("../../shared/ArenaRules")
 local V = if script then Vector3 else require("@lune/roblox").Vector3
 local M = Balance.Motion
 local Pendulum = {}
@@ -85,6 +87,12 @@ function Pendulum.new(setup, seed, gap)
 			<= cast.Params.Range + target.Radius * M.GlassyScale
 	end
 	sim.Fight = Rules.new(setup)
+	if Arena.twist(sim.Fight) == "Bumpers" then
+		sim.Posts, sim.BumpReady = {}, { {}, {} }
+		for _, p in Arena.posts(gap or M.HookGap) do
+			table.insert(sim.Posts, V.new(p[1], p[2], p[3]))
+		end
+	end
 	for side, f in sim.Fight.Fighters do
 		sim.Bodies[side] = {
 			P = Pendulum.pull(f.Aim, f.AimYaw, side),
@@ -159,6 +167,9 @@ local function integrate(sim, side, dt)
 		-M.Gravity,
 		b.Wander * (if frozen then 0 else 1) - b.P.Z * M.OutOfPlaneDamping - b.V.Z * M.OutOfPlaneDamping
 	) + drive - b.V * drag
+	local toFoe = Pendulum.center(sim, 3 - side) - Pendulum.center(sim, side)
+	local ax, ay, az = Arena.force(sim.Fight, side, toFoe.X, toFoe.Y, toFoe.Z)
+	force += V.new(ax, ay, az)
 	if sim.Well and sim.Fight.Time < sim.Well.Until then
 		local delta = sim.Well.Origin - Pendulum.center(sim, side)
 		if delta.Magnitude > 0.01 and delta.Magnitude <= sim.Well.Range then
@@ -294,11 +305,107 @@ local function attacks(sim, dt)
 	SignatureAttacks.step(sim, dt, Pendulum.center)
 end
 
+-- Arena layer (decision 122): the stand frame's half of glints, PUSH and bumpers.
+local function reach(sim, side)
+	local center = sim.Fight.Fighters[side].BodyCenter or M.BodyCenter
+	return M.StringLength * (1 + center * M.GlassyScale / M.StringLength)
+end
+
+-- A glint sits in the clash zone: between the two swing spheres, so both glassies can get there.
+local function glintPoint(sim)
+	local G = Balance.Arena.Glints
+	local x = (sim.Rng() * 2 - 1) * G.SpreadX
+	local z = (sim.Rng() * 2 - 1) * G.SpreadZ
+	local y = 0
+	for side = 1, 2 do
+		local dx = x - sim.Hooks[side].X
+		y -= math.sqrt(math.max(0, reach(sim, side) ^ 2 - dx * dx - z * z)) / 2
+	end
+	return { x, y + G.Lift, z }
+end
+
+local function shove(sim, side, speed)
+	local b = sim.Bodies[side]
+	local direction = b.V
+	if direction.Magnitude < Balance.Arena.Push.MinSpeed then
+		direction = tangent(Pendulum.center(sim, 3 - side) - Pendulum.center(sim, side), b.P.Unit)
+	end
+	if direction.Magnitude > 0.001 then
+		b.V += direction.Unit * speed
+		constrain(b)
+	end
+end
+
+local function arenaBefore(sim)
+	local fight = sim.Fight
+	for _, impulse in Arena.drainImpulses(fight) do
+		shove(sim, impulse.Side, impulse.Speed)
+	end
+	for _, glint in Arena.drainRequests(fight) do
+		Rules.placeGlint(fight, glint, glintPoint(sim))
+	end
+end
+
+local function arenaAfter(sim)
+	local fight = sim.Fight
+	local glints = Arena.glints(fight)
+	for i = #glints, 1, -1 do
+		local glint = glints[i]
+		local point = V.new(glint.Point[1], glint.Point[2], glint.Point[3])
+		local best, bestDistance = nil, math.huge
+		for side = 1, 2 do
+			local distance = (Pendulum.center(sim, side) - point).Magnitude
+			if
+				distance < Balance.Arena.Glints.Radius + fight.Fighters[side].Radius * M.GlassyScale
+				and distance < bestDistance
+			then
+				best, bestDistance = side, distance
+			end
+		end
+		if best then
+			Rules.grabGlint(fight, best, glint.Id)
+		end
+	end
+	if not sim.Posts then
+		return
+	end
+	local K = Balance.Arena.Twists.Bumpers
+	for side = 1, 2 do
+		local b = sim.Bodies[side]
+		local scale = 1 + (fight.Fighters[side].BodyCenter or M.BodyCenter) * M.GlassyScale / M.StringLength
+		local limit = K.Radius + fight.Fighters[side].Radius * M.GlassyScale
+		for index, post in sim.Posts do
+			local delta = Pendulum.center(sim, side) - post
+			local distance = delta.Magnitude
+			if distance >= limit or distance < 0.0001 then
+				continue
+			end
+			local n = delta / distance
+			b.P += n * (limit - distance) / scale
+			local v = b.V * scale
+			local into = v:Dot(n)
+			if into < 0 and fight.Time >= (sim.BumpReady[side][index] or 0) then
+				sim.BumpReady[side][index] = fight.Time + K.Cooldown
+				v -= n * into * (1 + K.Restitution)
+				v += n * K.Boost
+				b.V = v / scale
+				local at = Pendulum.center(sim, side)
+				table.insert(
+					sim.MotionEvents,
+					{ Type = "Bump", Time = fight.Time, Side = side, Post = index, Point = { at.X, at.Y, at.Z } }
+				)
+			end
+			constrain(b)
+		end
+	end
+end
+
 function Pendulum.step(sim, dt)
 	if sim.Fight.Over then
 		return
 	end
 	CastBrain.step(sim, Pendulum.center)
+	PushBrain.step(sim, Pendulum.center, Pendulum.centerVelocity)
 	for _ = 1, M.Substeps do
 		local h = dt / M.Substeps
 		for side, body in sim.Bodies do
@@ -316,8 +423,13 @@ function Pendulum.step(sim, dt)
 		if sim.Fight.Over then
 			break
 		end
+		arenaBefore(sim)
 		integrate(sim, 1, h)
 		integrate(sim, 2, h)
+		arenaAfter(sim)
+		if sim.Fight.Over then
+			break
+		end
 		attacks(sim, h)
 		if sim.Fight.Over then
 			break
@@ -350,7 +462,7 @@ function Pendulum.step(sim, dt)
 			if approach > 0 then
 				sim.LastCollision = sim.Fight.Time
 				local qualifies = approach >= M.MinHitSpeed and sim.Fight.Time - sim.LastHit >= M.HitCooldown
-				local impulse = normal * ((1 + M.Restitution) * approach / inverseMass)
+				local impulse = normal * ((1 + Arena.restitution(sim.Fight)) * approach / inverseMass)
 				local slip = tangent(relative, normal)
 				local friction = slip * M.HitFriction / inverseMass
 				local deflect = V.new(0, 0, (sim.Rng() * 2 - 1) * approach * M.HitDeflect / inverseMass)
@@ -454,6 +566,9 @@ function Pendulum.presentation(sim)
 				Seconds = math.max(0, s.EchoUntil - sim.Fight.Time),
 			})
 		end
+	end
+	for _, e in Arena.presentation(sim.Fight) do
+		table.insert(events, e)
 	end
 	return events
 end

@@ -15,6 +15,7 @@
 --     PickAny        (RemoteEvent)  id, matchId, round, selectionRevision, expectedCost
 --     SetAim         (RemoteEvent)  aim: number, yaw: number (radians; clamped by FightRules.clampAim / clampYaw)
 --     CastPower      (RemoteEvent)  (no args) cast your Ready power now (FightService; decision 85)
+--     Push           (RemoteEvent)  (no args) shove your glassy; charges in ArenaRules (FightService; decision 122)
 --     LeaveQueue     (RemoteEvent)  (no args) leave the queue, or forfeit the live match (ArenaService)
 --     RequestFightState (RemoteEvent) late-join/respawn bootstrap (no args)
 --     RequestStore   (RemoteEvent)  (no args) -> StoreOffers: today's daily offers + featured bundle
@@ -46,6 +47,7 @@ local reliable = {
 	"PickAny",
 	"SetAim",
 	"CastPower",
+	"Push",
 	"LeaveQueue",
 	"JoinNearestArena",
 	"RequestRematch",

@@ -18,7 +18,8 @@ function Runner:StartRound(now)
 			Logic.autoPick(self.Match, side)
 		end
 	end
-	self:PhaseTo("Rolling", now, self.RollSeconds or Balance.Match.RollSeconds)
+	local default = if self.Match.Round > 1 then Balance.Match.RollSecondsLater else Balance.Match.RollSeconds
+	self:PhaseTo("Rolling", now, self.RollSeconds or default)
 end
 
 -- options: { RollSeconds = n? } (the onboarding first match picks more slowly).

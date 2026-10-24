@@ -18,6 +18,7 @@ local Orbit = require(script.Parent.FightOrbit)
 local FinisherCamera = require(script.Parent.FinisherCamera)
 local MatchCamera = require(script.Parent.MatchCamera)
 local CombatFeel = require(script.Parent.CombatFeel)
+local ArenaFX = require(script.Parent.ArenaFX)
 local Theme = require(script.Parent.Parent.UI.Theme)
 local Audio = require(RS.Shared.Config.Audio)
 local M, Feel = Balance.Motion, Balance.Feel
@@ -93,6 +94,9 @@ function Controller:ExitView()
 	if self.Scene then
 		self.Scene:SetViewing(false)
 	end
+	if self.Arena then
+		self.Arena.Viewing = false
+	end
 	if self.Viewing then
 		CAS:UnbindAction("FightMovement")
 		CAS:UnbindAction("StopWatching")
@@ -137,6 +141,10 @@ function Controller:EndFight()
 		self.Feel:Destroy()
 		self.Feel = nil
 	end
+	if self.Arena then
+		self.Arena:Destroy()
+		self.Arena = nil
+	end
 	if self.Scene then
 		self.Scene:Destroy()
 		self.Scene = nil
@@ -172,10 +180,22 @@ function Controller:Begin(data)
 	self.Side = table.find(data.PlayerIds or {}, self.Player.UserId)
 		or (if data.UserId == self.Player.UserId then 1 else 0)
 	self.Participant = self.Side > 0
+	local own = if self.Side == 1 then data.A elseif self.Side == 2 then data.B else nil
+	if own and data.Phase == "Aiming" and own.Aim then
+		-- The server starts each round's aim from last round's (decision 122).
+		self.Aim, self.Yaw = Rules.clampAim(own.Aim), Rules.clampYaw(own.AimYaw or 0)
+	end
 	self.Viewing = self.Participant or data.Spectate
 	self.Maxima = maxima
 	for _, fighter in self.Scene.Fighters do
 		fighter.LowDetail = not self.Viewing
+	end
+	-- Glints, posts, wind and the Heat (decision 122); a late joiner gets what is live right now.
+	self.Arena = ArenaFX.new(self.Scene, data, self.Viewing)
+	self.BannerHidden = false
+	for _, e in data.SignatureState or {} do
+		e.Bootstrap = true
+		self.Arena:Event(e, nil)
 	end
 	if self.Viewing then
 		self:EnterView()
@@ -190,6 +210,9 @@ end
 function Controller:EnterView()
 	local data = self.Data
 	self.Scene:SetViewing(true)
+	if self.Arena then
+		self.Arena.Viewing = true
+	end
 	-- Outward shots can face the sunset; keep rays from washing out glass and billboards.
 	self.SunRays = {}
 	for _, effect in Lighting:GetChildren() do
@@ -318,6 +341,10 @@ function Controller:State(data)
 	end
 	if self.Hud then
 		self.Hud:Phase(data.Phase, if data.Phase == "Aiming" and self.Participant then "PULL BACK" else "")
+		if self.Arena and (data.Phase == "Aiming" or data.Phase == "Countdown") then
+			self.Arena.Data = data
+			self.Arena:Banner(self.Hud, true) -- the twist (and MATCH POINT) while players aim
+		end
 		-- Music cues for MusicController: the release time (tension sting) and a last-heart round (Overtime bed).
 		self.Hud.Gui:SetAttribute("ReleaseAt", data.ReleaseAt)
 		if data.Hearts and (data.Phase == "Aiming" or data.Phase == "Countdown") then
@@ -407,6 +434,9 @@ function Controller:Event(e)
 	if e.Type == "Shatter" and self:HoldKO(e) then
 		return
 	end
+	if self.Arena and self.Arena:Event(e, self.Hud) then
+		return
+	end
 	if self.Hud then
 		self.Hud.Gui:SetAttribute("LastEvent", e.Type)
 		self.Hud.Gui:SetAttribute("Last" .. e.Type, e.Time)
@@ -484,6 +514,26 @@ function Controller:ShowRoundResult()
 	local winner = self.FinalSide and self.Scene and self.Scene.Fighters[3 - self.FinalSide]
 	if winner and not winner.Broken then
 		winner.Glints:Emit(Feel.VictoryGlints)
+	end
+	-- Decision 122: a heart taken while still behind (or level) shows the coins it already earned, so staying pays.
+	local hearts = self.Hud and self.Hud.Hearts
+	if
+		self.Participant
+		and hearts
+		and self.FinalSide == 3 - self.Side
+		and hearts[self.Side] <= hearts[3 - self.Side]
+	then
+		local at = self.Data.HeartPositions and self.Data.HeartPositions[self.Side]
+		if at then
+			self.Hud:Popup(
+				"+" .. Balance.Match.Rewards.LossHeartCoins .. " COINS",
+				at + Vector3.yAxis * 6,
+				Color3.fromHex("#FFE45C"),
+				0,
+				"HeartCoins",
+				1.2
+			)
+		end
 	end
 	if self.Participant and self.MatchController and self.Data then
 		self.MatchController:ShatterShown(self.Data.Id)
@@ -582,6 +632,9 @@ function Controller:Render(dt)
 			end
 			self.Scene:Pose(side, pull(aim, yaw, side), 0, Vector3.zero)
 		end
+		if self.Arena then
+			self.Arena:Step(dt, 0, self.Hud, self.Phase)
+		end
 		if self.Hud then
 			if self.Phase == "Aiming" then
 				if self.Participant then
@@ -668,6 +721,13 @@ function Controller:Render(dt)
 			self:Settle(latest, dt * rate)
 		end
 		self.Scene:Update(r, self.RenderTime)
+		if self.Arena then
+			self.Arena:Step(dt, self.RenderTime, self.Hud, self.Phase)
+			if not self.BannerHidden and self.Phase == "Fighting" and self.RenderTime > 1.6 then
+				self.BannerHidden = true
+				self.Arena:HideBanner(self.Hud)
+			end
+		end
 		self.Feel:Update(r, now)
 		if self.Hud then
 			self.Hud:Update(r)

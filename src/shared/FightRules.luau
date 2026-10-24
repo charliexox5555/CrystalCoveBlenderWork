@@ -26,6 +26,7 @@ local Glassies = if script then require(script.Parent.Config.Glassies) else requ
 local Powers = if script then require(script.Parent.Config.Powers) else require("./Config/Powers")
 local Formula = if script then require(script.Parent.Formula) else require("./Formula")
 local Signatures = if script then require(script.Parent.SignatureRules) else require("./SignatureRules")
+local Arena = if script then require(script.Parent.ArenaRules) else require("./ArenaRules")
 
 export type FighterSetup = {
 	Id: string,
@@ -37,6 +38,8 @@ export type FighterSetup = {
 	-- "smart" / "auto" / "mash". nil = powers cast as soon as they trigger.
 	CastPolicy: string?,
 	CastSkill: number?, -- bots: 0..1
+	LastGlass: boolean?, -- on their last heart: starts the round holding a glint (decision 122)
+	OnFire: boolean?, -- won the last rounds in a row (cosmetic only)
 }
 
 export type Setup = {
@@ -47,6 +50,7 @@ export type Setup = {
 	B: FighterSetup,
 	Rng: () -> number,
 	SweetSpot: number?, -- centre of the Perfect Release band; nil = no band this round
+	Twist: string?, -- this round's arena twist (Balance.Arena.Twists); nil = Calm
 	-- Optional: does an aimed power fired by `side` reach the other glass right now? The swing
 	-- code answers from the 3D positions. Without it, Params.LandChance is rolled.
 	PowerLands: ((side: number, powerId: string) -> boolean)?,
@@ -271,6 +275,7 @@ function FightRules.new(setup: Setup): State
 			emit(state, { Type = "PerfectRelease", Side = f.Side })
 		end
 	end
+	Arena.new(state, setup, emit)
 	return state
 end
 
@@ -286,7 +291,7 @@ end
 -- Multiplier on a glassy's target swing height right now (Big Swing, Sticky). 1 = normal.
 function FightRules.swingMultiplier(state: State, side: number): number
 	local f = state.Fighters[side]
-	local mult = 1
+	local mult = Arena.swingMultiplier(state, side)
 	if state.Time < f.PumpUntil then
 		mult *= f.SpecialParams.SwingMult
 	end
@@ -312,8 +317,8 @@ function FightRules.isFrozen(state: State, side: number): boolean
 	return state.Time < state.Fighters[side].FrozenUntil
 end
 
--- How hard `side` gets knocked back in a hit right now (Slam from the other side). 1 = normal.
-function FightRules.knockbackMultiplier(state: State, side: number, qualifies: boolean?): number
+-- How hard `side` gets knocked back in a hit right now (Slam from the other side, the Bouncy twist). 1 = normal.
+local function knockback(state: State, side: number, qualifies: boolean?): number
 	local foe = state.Fighters[other(side)]
 	local signature = foe.Signature
 	if signature and qualifies ~= false and state.Time < (signature.BoostUntil or -1) then
@@ -333,6 +338,10 @@ function FightRules.knockbackMultiplier(state: State, side: number, qualifies: b
 	return 1
 end
 
+function FightRules.knockbackMultiplier(state: State, side: number, qualifies: boolean?): number
+	return knockback(state, side, qualifies) * Arena.knockback(state)
+end
+
 function FightRules.isShielded(state: State, side: number): boolean
 	return state.Time < state.Fighters[side].ShieldUntil
 end
@@ -348,7 +357,7 @@ end
 
 -- Applies damage to `target`, honouring shields and Sturdy. Returns the damage actually taken.
 local function takeDamage(state: State, target: Fighter, amount: number, kind: string?): number
-	if amount <= 0 or state.Time < target.ShieldUntil then
+	if amount <= 0 or state.Time < target.ShieldUntil or Arena.block(state, target, emit) then
 		return 0
 	end
 	if target.Passive == "sturdy" then
@@ -392,6 +401,7 @@ function FightRules.hitDamage(
 		* variance
 		* (if crit then F.CritMultiplier else 1)
 		* overtimeMultiplier(state)
+		* Arena.hitMultiplier(state, attacker)
 
 	if attacker.FirstHitPending then
 		amount *= F.PerfectFirstHitMult
@@ -549,6 +559,7 @@ function FightRules.hit(state: State, speed: number, shareA: number, x: number?,
 		fighters[side].NextPowerAt -= F.PowerHitAdvance -- every hit brings the next power closer
 	end
 	Signatures.afterContact(state)
+	Arena.afterHit(state)
 	resolveKnockouts(state, before)
 end
 
@@ -840,9 +851,37 @@ function FightRules.tick(state: State, dt: number)
 		state.InOvertime = true
 		emit(state, { Type = "Overtime" })
 	end
+	Arena.tick(state, emit, function(owner, target, fraction)
+		local before =
+			{ state.Fighters[1].Hp / state.Fighters[1].MaxHp, state.Fighters[2].Hp / state.Fighters[2].MaxHp }
+		local victim = state.Fighters[target]
+		local dealt = takeDamage(state, victim, victim.MaxHp * fraction * overtimeMultiplier(state))
+		state.Fighters[owner].DamageDealt += dealt
+		resolveKnockouts(state, before)
+		return dealt
+	end)
+	if state.Over then
+		return
+	end
 	if state.Time >= F.RoundTimeout then
 		timeout(state)
 	end
+end
+
+-- Arena layer (decision 122) --------------------------------------------------------------------
+
+-- PUSH from `side` (player remote or bot brain). False when out of charges or cooling down.
+function FightRules.requestPush(state: State, side: number): boolean
+	return Arena.requestPush(state, side, emit)
+end
+
+-- The swing places a requested glint at `point` (stand frame) and reports who touched it first.
+function FightRules.placeGlint(state: State, glint: any, point: { number })
+	Arena.placeGlint(state, glint, point, emit)
+end
+
+function FightRules.grabGlint(state: State, side: number, id: number): boolean
+	return Arena.grab(state, side, id, emit)
 end
 
 -- Compact HP / charge / effect state for clients.

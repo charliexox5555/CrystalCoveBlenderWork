@@ -52,7 +52,7 @@ Balance.CombatRelease = {
 			Duration = 0.35,
 		},
 		pickle_jar = {
-			ContactBonus = 0.5,
+			ContactBonus = 0.65,
 			Trigger = "contact",
 			Every = 2,
 			Shape = "slow_contact",
@@ -89,7 +89,7 @@ Balance.CombatRelease = {
 			Range = 5.5,
 			Radius = 0.15,
 			Arc = 1.1,
-			Damage = 0.46,
+			Damage = 0.322,
 			Windup = 0.3,
 			Duration = 0.3,
 			LandChance = 0.7,
@@ -104,7 +104,7 @@ Balance.CombatRelease = {
 			Radius = 0.18,
 			Arc = 0.5,
 			Pulses = 3,
-			Damage = 0.64,
+			Damage = 0.832,
 			Windup = 0.35,
 			Duration = 0.65,
 			LandChance = 0.65,
@@ -114,7 +114,7 @@ Balance.CombatRelease = {
 			Threshold = 0.08,
 			Every = 1,
 			Shape = "armed_contact",
-			ContactBonus = 0.75,
+			ContactBonus = 0.525,
 			Windup = 0,
 			Duration = 4,
 		},
@@ -123,7 +123,7 @@ Balance.CombatRelease = {
 			Trigger = "threshold",
 			Shape = "boost",
 			Drive = 1.18,
-			ContactBonus = 0.7,
+			ContactBonus = 0.91,
 			ContinuousBonus = true,
 			Windup = 0.25,
 			Duration = 3.5,
@@ -176,7 +176,7 @@ Balance.CombatRelease = {
 			Range = 5.5,
 			Radius = 0.15,
 			Arc = 0.95,
-			Damage = 0.48,
+			Damage = 0.406,
 			Slow = 0.72,
 			StatusSeconds = 1.5,
 			Immunity = 2.5,
@@ -192,7 +192,7 @@ Balance.CombatRelease = {
 			Pulses = 2,
 			Range = 7,
 			Radius = 0.4,
-			Damage = 0.54,
+			Damage = 0.702,
 			Windup = 0.3,
 			Duration = 1.05,
 			LandChance = 0.65,
@@ -203,7 +203,7 @@ Balance.CombatRelease = {
 			Shape = "boost",
 			Drive = 1.22,
 			Impulse = 1.8,
-			ContactBonus = 0.45,
+			ContactBonus = 0.519,
 			Rebound = 1.2,
 			Windup = 0.3,
 			Duration = 2.5,
@@ -214,7 +214,7 @@ Balance.CombatRelease = {
 			Shape = "guard",
 			Mitigation = 1,
 			Windup = 0.12,
-			Duration = 3,
+			Duration = 2.201,
 		},
 		comet = {
 			Trigger = "contact",
@@ -238,7 +238,7 @@ Balance.CombatRelease = {
 			Radius = 0.15,
 			Arc = 0.9,
 			Pulses = 3,
-			Damage = 0.52,
+			Damage = 0.676,
 			Windup = 0.5,
 			Duration = 0.5,
 			LandChance = 0.7,
@@ -252,7 +252,7 @@ Balance.CombatRelease = {
 			Range = 4.2,
 			Radius = 0.15,
 			Force = 2.5,
-			Damage = 0.65,
+			Damage = 0.57,
 			Windup = 0.5,
 			Duration = 1.2,
 			LandChance = 0.75,
@@ -275,13 +275,13 @@ Balance.CombatRelease = {
 		pop = {
 			Trigger = "contact",
 			Every = 3,
-			ContactBonus = 1.05,
+			ContactBonus = 0.887,
 			Rebound = 1.35,
 			Windup = 0,
 			Shape = "contact",
 			Duration = 0.14,
 		},
-		jam = { Trigger = "turnaround", Every = 2, Windup = 0.15, Shape = "guard", Duration = 2, Mitigation = 0.65 },
+		jam = { Trigger = "turnaround", Every = 2, Windup = 0.15, Shape = "guard", Duration = 1.61, Mitigation = 0.65 },
 		prism = {
 			Trigger = "timer",
 			First = 5.5,
@@ -291,7 +291,7 @@ Balance.CombatRelease = {
 			Shape = "ray",
 			Range = 8,
 			Radius = 0.14,
-			Damage = 0.42,
+			Damage = 0.546,
 			Duration = 0.14,
 			LandChance = 0.65,
 		},
@@ -326,7 +326,7 @@ Balance.CombatRelease = {
 			Pulses = 2,
 			Range = 6,
 			Radius = 0.3,
-			Damage = 0.95,
+			Damage = 1.235,
 			Windup = 0.25,
 			Duration = 1.0,
 			LandChance = 0.65,
@@ -352,7 +352,7 @@ Balance.CombatRelease = {
 			Arc = 6.28,
 			Range = 2.2,
 			Radius = 0.5,
-			Damage = 0.75,
+			Damage = 0.934,
 			Windup = 0.4,
 			Hold = 0.6,
 			Duration = 0.5,
@@ -369,7 +369,7 @@ Balance.CombatRelease = {
 			Lead = 0.25,
 			Range = 1.2,
 			Radius = 0.1,
-			Damage = 0.44,
+			Damage = 0.54,
 			Windup = 0.3,
 			Duration = 4,
 			LandChance = 0.55,
@@ -384,7 +384,7 @@ Balance.CombatRelease = {
 			Radius = 0.16,
 			Arc = 0.45,
 			Pulses = 3,
-			Damage = 1.2,
+			Damage = 1.001,
 			Windup = 0.3,
 			Duration = 0.6,
 			LandChance = 0.65,
@@ -394,7 +394,7 @@ Balance.CombatRelease = {
 			Every = 2,
 			Shape = "drain_contact",
 			Drain = 0.5,
-			ContactBonus = 0.8,
+			ContactBonus = 0.621,
 			Windup = 0.15,
 			Duration = 4,
 		},
@@ -418,7 +418,7 @@ Balance.CombatRelease = {
 			At = "self",
 			Range = 1.5,
 			Radius = 0.1,
-			Damage = 0.28,
+			Damage = 0.237,
 			Slow = 0.78,
 			StatusSeconds = 1.4,
 			Immunity = 2.5,
@@ -449,7 +449,7 @@ Balance.CombatRelease = {
 			Shape = "guard",
 			Mitigation = 0.45,
 			Windup = 0.15,
-			Duration = 3,
+			Duration = 2.358,
 			Riposte = {
 				Shape = "pulse",
 				Range = 5,
@@ -506,7 +506,7 @@ Balance.CombatRelease = {
 			Pulses = 2,
 			Range = 6.5,
 			Radius = 0.28,
-			Damage = 1.75,
+			Damage = 1.479,
 			Slow = 0.75,
 			StatusSeconds = 1.2,
 			Immunity = 2.5,
@@ -544,7 +544,7 @@ Balance.CombatRelease = {
 			Radius = 0.2,
 			Arc = 0.55,
 			Pulses = 3,
-			Damage = 1.5,
+			Damage = 1.179,
 			Slow = 0.8,
 			StatusSeconds = 1.0,
 			Immunity = 2.5,
@@ -559,7 +559,7 @@ Balance.CombatRelease = {
 			Shape = "ray",
 			Range = 12,
 			Radius = 0.18,
-			Damage = 0.6,
+			Damage = 0.45,
 			Duration = 0.14,
 			LandChance = 0.65,
 		},
@@ -794,7 +794,7 @@ Balance.Motion = {
 	-- The swing uses Glassy.Radius * GlassyScale. The stand model's hooks sit at +-1.5 today;
 	-- move them to +-HookGap/2 in Studio (DECISIONS 30).
 	GlassyScale = 1.75,
-	Gravity = 77, -- "game gravity": with StringLength 7 one full swing takes ~1.9 s
+	Gravity = 88, -- "game gravity": with StringLength 7 one full swing takes ~1.8 s (decision 122)
 	StringLength = 7,
 	HookGap = 6, -- distance between the two hooks on the crossbar
 	MassByType = { Heavy = 1.3, Fizzy = 1.0, Sharp = 0.85 },
@@ -835,7 +835,7 @@ Balance.Fight = {
 	RefSpeed = 20, -- approach speed that counts as a "normal" hit
 	SpeedExponent = 1.4, -- damage ~ (speed / RefSpeed) ^ SpeedExponent; >1 makes big swings smash
 	SpeedFactorMax = 2.5,
-	DamageScale = 0.27, -- damage per Power at RefSpeed
+	DamageScale = 0.29, -- damage per Power at RefSpeed (decision 122: ~18 s rounds)
 	ShareBase = 0.6, -- the glassy that moved more into the hit deals more: ShareBase + ShareWeight * share
 	ShareWeight = 0.8,
 	MassExponent = 0.1, -- heavier glass hits harder: (2 m / (m + m_other)) ^ MassExponent
@@ -856,10 +856,82 @@ Balance.Fight = {
 	PowerHitAdvance = 0.5, -- seconds closer per hit
 	PowerMaxPerRound = 3,
 	PerfectPowerAdvance = 3, -- a Perfect Release makes the first power come 3 s sooner
-	-- Round end
-	OvertimeAt = 45, -- seconds; after this, damage grows to stop endless rounds
-	OvertimePerSecond = 0.06, -- +6% damage per second of overtime
-	RoundTimeout = 75, -- winner = higher HP fraction
+	-- Round end. Overtime is the Heat's MELTDOWN (decision 122): damage climbs every second after it.
+	OvertimeAt = 15, -- seconds
+	OvertimePerSecond = 0.08, -- +8% damage per second of meltdown
+	RoundTimeout = 40, -- winner = higher HP fraction
+}
+
+-- The arena layer of a round (decision 122, docs/design/ROUND_REVAMP.md): glints both glassies race for,
+-- the Heat, one arena twist per round, PUSH and Last Glass. Rules in ArenaRules; the swing places glints
+-- and applies the motion. Distances are studs in the stand frame (origin between the hooks, Y up).
+Balance.Arena = {
+	Glints = {
+		FirstAt = 2, -- seconds after the release
+		IntervalMin = 2.5, -- seconds between spawns
+		IntervalMax = 4,
+		Lifetime = 3.5, -- a glint nobody touches fades
+		MaxLive = 2,
+		Radius = 0.8, -- the gem; a glassy grabs it when their surfaces touch
+		SpreadX = 2.2, -- how far either side of the middle a glint can sit
+		SpreadZ = 1.4, -- in front of / behind the stand's plane
+		Lift = 0.4, -- above the middle of the two swing spheres
+		-- Stand-in simulator only (no positions): chance a glint gets grabbed, after this many seconds.
+		SimGrabChance = 0.75,
+		SimGrabSeconds = 1.2,
+		Kinds = {
+			Smash = { Weight = 1.2, DamageMult = 1.8 }, -- your next hit
+			Bubble = { Weight = 1 }, -- blocks the next damage you would take
+			Patch = { Weight = 0.8, Heal = 0.1 }, -- of max HP
+			Bomb = { Weight = 1, Fuse = 1.2, Damage = 0.08 }, -- sticks to the other glass; max HP fraction
+			Frost = { Weight = 0.8, Seconds = 1.5, SwingMult = 0.55 }, -- the other glass swings low
+			Zoom = { Weight = 1, Speed = 9 }, -- a big shove for your glassy (studs/s)
+		},
+	},
+	Heat = {
+		WarmAt = 8, -- "HEATING UP!": glints come faster
+		WarmIntervalMult = 0.6,
+		-- MELTDOWN at Fight.OvertimeAt: the glass glows and swings a little higher
+		MeltdownSwingMult = 1.12,
+	},
+	Push = {
+		Charges = 3,
+		RechargeSeconds = 4, -- one charge comes back every this many seconds
+		Cooldown = 0.6, -- between two pushes
+		Speed = 6, -- studs/s added along the swing
+		MinSpeed = 1.5, -- slower than this, the push goes toward the other glass instead
+		-- Bots (and simulator sides) push with their cast skill: they check every BrainSeconds.
+		BrainSeconds = 0.25,
+		BotApproachMin = 3.5, -- push while closing in from this far...
+		BotApproachMax = 8, -- ...to this far
+		BotGlintReach = 3, -- or when a glint is this close ahead
+	},
+	LastGlass = { "Smash", "Bubble" }, -- a player on their last heart starts the round holding one
+	OnFireStreak = 2, -- round wins in a row that light the string (cosmetic)
+	Twists = {
+		-- One per round, rolled at the countdown and never the same twice in a row.
+		Calm = { Weight = 0.8 },
+		Windy = { Weight = 1, Force = 14, GustSeconds = 1.2, IntervalMin = 2.2, IntervalMax = 3.5 },
+		Bouncy = { Weight = 1, Restitution = 0.92, Knockback = 1.25 },
+		Magnet = { Weight = 1, Force = 9, Range = 12 },
+		GlintRain = { Weight = 1, IntervalMult = 0.5, MaxLive = 3 },
+		Bumpers = {
+			Weight = 1,
+			Radius = 0.75,
+			Restitution = 0.95,
+			Boost = 2.5, -- studs/s added away from the post
+			Cooldown = 0.25,
+			-- Crystal posts: one behind each glassy's backswing, one in front of and behind the clash.
+			Posts = {
+				{ -8.6, -6.6, 0 },
+				{ 8.6, -6.6, 0 },
+				{ -4.5, -7.6, 3.8 },
+				{ 4.5, -7.6, 3.8 },
+				{ -4.5, -7.6, -3.8 },
+				{ 4.5, -7.6, -3.8 },
+			},
+		},
+	},
 }
 
 -- BALANCE SIMULATOR ONLY. A stand-in for the real swing: one exchange of hits every
@@ -922,21 +994,24 @@ Balance.Match = {
 	RequestRateSeconds = 0.5,
 	Hearts = 3,
 	RollChoices = 3, -- glassies offered from your collection each round
-	RollSeconds = 25, -- time to pick; auto-picks the first offer when it runs out
+	-- Decision 122 (shortens decision 64): round 1 picks from a fresh hand, later rounds keep last pick by default.
+	RollSeconds = 12, -- time to pick; auto-picks last round's glassy (or the first offer) when it runs out
+	RollSecondsLater = 8,
 	FreeRerollsPerMatch = 0,
 	RerollMarbleCosts = { 3, 3, 6, 6, 9 }, -- per match; the last value repeats
 	FreePickAnyPerMatch = 1,
 	PickAnyMarbleCosts = { 6, 9, 12 }, -- after the free pick; the last value repeats
 	RerollReserveSeconds = 2.6, -- don't charge when the reveal cannot finish before selection closes
-	AimSeconds = 15,
-	CountdownSeconds = 4,
-	RoundEndSeconds = 6,
-	QueueBotAfterSeconds = 15, -- an empty arena slot fills with a bot after this long
+	AimSeconds = 10, -- starts from last round's aim
+	CountdownSeconds = 3, -- long enough to read the twist banner
+	RoundEndSeconds = 4.5, -- the finisher (rise, flight, impact, show) still fits
+	QueueBotAfterSeconds = 30, -- an empty arena slot fills with a bot after this long
 	BotSkillMin = 0.2,
 	BotSkillMax = 0.7,
 	-- Remote rate limits (seconds between accepted calls per player)
 	PickRateSeconds = 0.25,
 	CastRateSeconds = 0.15, -- CastPower (decision 85)
+	PushRateSeconds = 0.15, -- Push (decision 122); ArenaRules also enforces Arena.Push.Cooldown
 	RerollRateSeconds = 0.5,
 	PickAnyRateSeconds = 0.5,
 	AimRateSeconds = 0.05,
@@ -1008,7 +1083,7 @@ Balance.EconomyModel = {
 	Days = 30,
 	WinRate = 0.5,
 	BotMatchShare = 0.4, -- fraction of matches against bots (high at launch, lower later)
-	RoundSecondsEstimate = 27, -- average fight length; BalanceSim prints the real one
+	RoundSecondsEstimate = 18, -- average fight length; tools/pacing_report prints the real one (decision 122)
 	SecondsBetweenMatches = 25, -- results screen, walking to a pad, queue
 	QuestsCompletedPerDay = 0, -- quests are hidden until their redesign (decision 99); was 2
 	LossChipPerRound = 0.8, -- average share of the winner's HP a loser chips off (FightModel ~0.82)

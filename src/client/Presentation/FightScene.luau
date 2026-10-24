@@ -410,8 +410,8 @@ function Scene:Event(e, hud)
 			hud:Phase("RoundEnd", "")
 		end
 	elseif e.Type == "Overtime" and hud then
-		hud:Phase("Fighting", "OVERTIME • HITS GET STRONGER!")
-		hud.Gui:SetAttribute("Overtime", true) -- MusicController crossfades to the Overtime bed
+		-- MELTDOWN (decision 122): ArenaFX shouts it; MusicController crossfades to the Overtime bed.
+		hud.Gui:SetAttribute("Overtime", true)
 	end
 end
 

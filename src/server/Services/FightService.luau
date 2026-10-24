@@ -3,6 +3,7 @@ local RunService = game:GetService("RunService")
 local RS = game:GetService("ReplicatedStorage")
 local Balance = require(RS.Shared.Config.Balance)
 local Rules = require(RS.Shared.FightRules)
+local Arena = require(RS.Shared.ArenaRules)
 local Rng = require(RS.Shared.Rng)
 local Remotes = require(RS.Shared.Remotes)
 local Codec = require(RS.Shared.SnapshotCodec)
@@ -63,6 +64,7 @@ function Service:Describe(arena, setup, metadata)
 	local inward = workspace.Lobby.SpawnLocation.Position - frame.Position
 	out.CameraFacing = if inward:Dot(frame.ZVector) >= 0 then 1 else -1
 	out.SweetSpot, out.ArenaId = setup.SweetSpot, arena.Id
+	out.Twist = setup.Twist or "Calm" -- shown from the countdown (decision 122)
 	return out
 end
 
@@ -151,10 +153,10 @@ function Service:Step(session, dt, now)
 	end
 end
 
-function Service:BotVsBot(a, b, seed, spectate, prototype)
+function Service:BotVsBot(a, b, seed, spectate, prototype, twist)
 	assert(RunService:IsStudio(), "Dev helper is Studio-only")
 	if not self.Sessions then
-		return game.ServerStorage.FightDev:Invoke("BotVsBot", a, b, seed, spectate, prototype)
+		return game.ServerStorage.FightDev:Invoke("BotVsBot", a, b, seed, spectate, prototype, twist)
 	end
 	local arena = self.Services.ArenaService.Arenas[1]
 	if arena.Busy then
@@ -173,6 +175,7 @@ function Service:BotVsBot(a, b, seed, spectate, prototype)
 		B = { Id = b, Aim = Rules.botAim(sweet, 0.45, rng), AimYaw = (rng() * 2 - 1) * M.AimYawMax },
 		Rng = rng,
 		SweetSpot = sweet,
+		Twist = twist or Arena.rollTwist(rng),
 	}
 	self.Serial += 1
 	local id = "dev-" .. self.Serial
@@ -226,9 +229,30 @@ function Service:Cast(player)
 	return false
 end
 
+-- Push (decision 122): the player's own side in a running fight shoves its glassy. Charges and the
+-- cooldown live in ArenaRules; this only rate-limits and finds the side.
+function Service:Push(player)
+	if not self.Guard:Allow(player, "Push", Balance.Match.PushRateSeconds) then
+		return false
+	end
+	for _, session in self.Sessions do
+		local fight = session.Sim.Fight
+		if session.Data.Phase == "Fighting" and not fight.Over then
+			local side = table.find(session.Data.PlayerIds or {}, player.UserId)
+			if side and player.UserId ~= 0 then
+				return Rules.requestPush(fight, side)
+			end
+		end
+	end
+	return false
+end
+
 function Service:Start()
 	Remotes.CastPower.OnServerEvent:Connect(function(player)
 		self:Cast(player)
+	end)
+	Remotes.Push.OnServerEvent:Connect(function(player)
+		self:Push(player)
 	end)
 	Remotes.RequestFightState.OnServerEvent:Connect(function(player)
 		if self.Guard:Allow(player, "Sync", Balance.Data.RequestRateSeconds) then

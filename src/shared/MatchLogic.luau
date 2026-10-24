@@ -15,6 +15,7 @@
 local Balance = if script then require(script.Parent.Config.Balance) else require("./Config/Balance")
 local Glassies = if script then require(script.Parent.Config.Glassies) else require("./Config/Glassies")
 local FightRules = if script then require(script.Parent.FightRules) else require("./FightRules")
+local ArenaRules = if script then require(script.Parent.ArenaRules) else require("./ArenaRules")
 
 -- A player's collection: glassy id -> { Stars, Rainbow }. Short collections are topped up with Glassies.Fallback.
 export type Owned = { Stars: number?, Rainbow: boolean? }
@@ -42,6 +43,9 @@ export type Side = {
 	Aim: number?,
 	AimYaw: number?,
 	LastPick: string?,
+	LastAim: number?, -- the next round's aim starts here (decision 122)
+	LastYaw: number?,
+	Streak: number, -- round wins in a row (On Fire)
 }
 
 export type Match = {
@@ -49,6 +53,7 @@ export type Match = {
 	Rng: () -> number,
 	Round: number,
 	SweetSpot: number?,
+	Twist: string?, -- this round's arena twist (decision 122)
 	Over: boolean,
 	Winner: number?,
 	History: { { Picks: { string }, Winner: number } },
@@ -115,6 +120,7 @@ function MatchLogic.new(players: { PlayerSetup }, rng: () -> number): Match
 			Aim = nil,
 			AimYaw = nil,
 			LastPick = nil,
+			Streak = 0,
 		}
 	end
 	return { Sides = sides, Rng = rng, Round = 0, SweetSpot = nil, Over = false, Winner = nil, History = {} }
@@ -133,6 +139,7 @@ function MatchLogic.startRound(match: Match)
 		side.AimYaw = nil
 	end
 	match.SweetSpot = FightRules.rollSweetSpot(match.Rng)
+	match.Twist = ArenaRules.rollTwist(match.Rng, match.Twist)
 end
 
 -- Rerolls ------------------------------------------------------------------------------------
@@ -234,7 +241,8 @@ function MatchLogic.autoPick(match: Match, sideIndex: number): string
 	if side.Pick then
 		return side.Pick
 	end
-	local choice = side.Offers[1]
+	-- A player who doesn't pick keeps last round's glassy when it is still in the hand (decision 122).
+	local choice = if side.LastPick and table.find(side.Offers, side.LastPick) then side.LastPick else side.Offers[1]
 	if side.IsBot and match.Rng() < side.Skill then
 		local foeLast = match.Sides[3 - sideIndex].LastPick
 		local foeType = if foeLast then Glassies.get(foeLast).Type else nil
@@ -267,7 +275,7 @@ function MatchLogic.setAim(match: Match, sideIndex: number, aim: any, yaw: any):
 	return side.Aim :: number, side.AimYaw :: number
 end
 
--- Bots aim when the aim phase starts; players who never aimed get AimDefault.
+-- Bots aim when the aim phase starts; players who never aimed keep last round's aim (AimDefault in round 1).
 function MatchLogic.autoAim(match: Match, sideIndex: number): number
 	local side = match.Sides[sideIndex]
 	if side.Aim then
@@ -277,9 +285,15 @@ function MatchLogic.autoAim(match: Match, sideIndex: number): number
 		side.Aim = FightRules.botAim(match.SweetSpot, side.Skill, match.Rng)
 		side.AimYaw = FightRules.clampYaw((match.Rng() * 2 - 1) * Balance.Motion.AimYawMax)
 	else
-		side.Aim = Balance.Motion.AimDefault
+		side.Aim, side.AimYaw = MatchLogic.startAim(match, sideIndex)
 	end
 	return side.Aim :: number
+end
+
+-- Where a player's aim starts this round: last round's, or AimDefault.
+function MatchLogic.startAim(match: Match, sideIndex: number): (number, number)
+	local side = match.Sides[sideIndex]
+	return side.LastAim or Balance.Motion.AimDefault, side.LastYaw or 0
 end
 
 -- Setup for FightRules.new. Both sides must have picked.
@@ -297,9 +311,12 @@ function MatchLogic.fightSetup(match: Match): FightRules.Setup
 			-- Players press CAST (or it fires by itself); bots press with their skill (decision 85).
 			CastPolicy = if side.IsBot then "bot" else "player",
 			CastSkill = side.Skill,
+			-- Decision 122: down to the last heart while the other side isn't, and two round wins in a row.
+			LastGlass = side.Hearts == 1 and match.Sides[3 - i].Hearts > 1,
+			OnFire = side.Streak >= Balance.Arena.OnFireStreak,
 		}
 	end
-	return { A = fighter(1), B = fighter(2), Rng = match.Rng, SweetSpot = match.SweetSpot }
+	return { A = fighter(1), B = fighter(2), Rng = match.Rng, SweetSpot = match.SweetSpot, Twist = match.Twist }
 end
 
 -- Round end ----------------------------------------------------------------------------------
@@ -317,7 +334,10 @@ function MatchLogic.endRound(match: Match, winnerSide: number): boolean
 	})
 	for _, side in match.Sides do
 		side.LastPick = side.Pick
+		side.LastAim, side.LastYaw = side.Aim, side.AimYaw
 	end
+	winner.Streak += 1
+	loser.Streak = 0
 	if loser.Hearts <= 0 then
 		match.Over = true
 		match.Winner = winnerSide

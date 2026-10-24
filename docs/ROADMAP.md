@@ -3,6 +3,18 @@
 Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DESIGN v0.3](GAME_DESIGN.md).
 **Current milestone: F5 — integration polish.** Wave1 imports, fitted fences and the native multiplayer/security pass are complete. Real-phone checks, final UI artwork and publishing remain with the creator; Marble packs, gamepasses and Marble Kiln purchases stay disabled; creator-approved match selection spends are implemented.
 
+- [x] Enabled normal arena bot queue wait increased to 30 seconds (creator request, Oct 22); Studio Rojo reconnect/publish pending.
+
+### Round revamp (Oct 23) — [design](design/ROUND_REVAMP.md), decision 122
+
+- [x] **CL:** measured why rounds feel boring (`tools/pacing_report`: 28 s fights, a contact every ~2.1 s, 13% dead air) and wrote the revamp; creator chose ~18 s fights, glints/Heat/twists, PUSH, stakes and Bumpers.
+- [x] **CL:** rules and swing: `ArenaRules` (glints, Heat, twists, PUSH, Last Glass), Pendulum glint geometry, bumpers, wind, magnet, bot `PushBrain`; faster pacing and shorter setup; last pick/aim kept; `Push` remote; `MatchLeft<Phase>` analytics. Lune 279 passed.
+- [x] **CL:** client: `ArenaFX` (glints, held Smash/Bubble, bombs, posts, wind, Heat bar, twist/MATCH POINT banner, On Fire, heart coin pop) and the PUSH button.
+- [x] **CL:** synced into the Glass vs Glass place by MCP (hash-verified, Rojo was disconnected); Studio Play RunAll 279 passed; a spectated Bumpers bot fight shows posts, glints, twist banner and Heat bar with no new errors.
+- [ ] **U/CL:** PUSH on keyboard and touch in a real match, a bot match with each twist, phone layout of PUSH beside CAST.
+- [ ] **CL:** retune the kits that fall outside 45–55% on the real swing with glints and PUSH (release matrix).
+- [ ] **U:** creator feel check (fight speed, glint pictures, bumper look, setup timers), then publish and watch `MatchLeft*` events and matches per session against the week before.
+
 ### Release overhaul (Oct 18–23) — [plan](design/RELEASE_OVERHAUL_PLAN.md)
 
 - [x] **CL:** audit + research ([report](research/COMBAT_OVERHAUL_RESEARCH.md)); creator decisions 85–89.

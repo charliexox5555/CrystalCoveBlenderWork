@@ -7,14 +7,10 @@ local Guard = if script
 
 return function(t, d)
 	local function new()
-		return Runner.new(
-			{
-				{ Collection = { milk_bottle = {}, pickle_jar = {}, ketchup_bottle = {}, glass_cup = {} } },
-				{ Collection = {} },
-			},
-			d.Rng.new(42),
-			0
-		)
+		return Runner.new({
+			{ Collection = { milk_bottle = {}, pickle_jar = {}, ketchup_bottle = {}, glass_cup = {} } },
+			{ Collection = {} },
+		}, d.Rng.new(42), 0)
 	end
 	t.test("picks and locks control phase transitions, with timeout defaults", function()
 		local r = new()
@@ -50,21 +46,32 @@ return function(t, d)
 		t.eq(r.Phase, "Rolling")
 		t.eq(r.Match.Round, 2)
 	end)
-	t.test("selection waits 25 seconds and aiming 15 before safe automatic defaults", function()
+	t.test("selection and aiming wait their timers before safe automatic defaults", function()
+		local m = d.Balance.Match
 		local r = new()
-		t.eq(r.Deadline, 25)
-		r:Step(24.9)
+		t.eq(r.Deadline, m.RollSeconds)
+		r:Step(m.RollSeconds - 0.1)
 		t.eq(r.Phase, "Rolling")
-		r:Step(25)
+		r:Step(m.RollSeconds)
 		t.eq(r.Phase, "Aiming")
-		t.eq(r.Deadline, 40)
-		r:Step(39.9)
+		local aimEnd = m.RollSeconds + m.AimSeconds
+		t.eq(r.Deadline, aimEnd)
+		r:Step(aimEnd - 0.1)
 		t.eq(r.Phase, "Aiming")
-		r:Step(40)
+		r:Step(aimEnd)
 		t.eq(r.Phase, "Countdown")
 		t.eq(r.Match.Sides[1].Aim, d.Balance.Motion.AimDefault)
-		r:Step(44)
+		r:Step(aimEnd + m.CountdownSeconds)
 		t.eq(r.Phase, "Fighting")
+		r:FightEnded(1, aimEnd + m.CountdownSeconds + 5)
+		r:Step(aimEnd + m.CountdownSeconds + 5 + m.RoundEndSeconds)
+		t.eq(r.Phase, "Rolling")
+		t.near(
+			r.Deadline,
+			aimEnd + m.CountdownSeconds + 5 + m.RoundEndSeconds + m.RollSecondsLater,
+			1e-6,
+			"later rounds pick faster"
+		)
 	end)
 	t.test("runner executes validated actions; service owns charging", function()
 		local r = new()

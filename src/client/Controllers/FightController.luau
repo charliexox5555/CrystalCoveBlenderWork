@@ -14,6 +14,7 @@ local Isolation = require(script.Parent.Parent.Presentation.StageIsolation)
 local ViewCull = require(script.Parent.Parent.Presentation.ViewCull)
 local bystanderEvery
 local CastButton = require(script.Parent.Parent.UI.Screens.CastButton)
+local PushButton = require(script.Parent.Parent.UI.Screens.PushButton)
 local Controller = {}
 function Controller:Init(controllers)
 	self.Controllers, self.Views, self.SnapshotCount, self.Keys = controllers, {}, 0, {}
@@ -293,8 +294,13 @@ function Controller:CastEvents(view, events)
 		return
 	end
 	for _, e in events do
+		-- PUSH (decision 122): charges follow the server.
+		if (e.Type == "Push" or e.Type == "PushCharge") and e.Side == view.Side then
+			self.PushUi:SetCharges(e.Charges)
+		end
 		if e.Type == "Shatter" or e.Type == "End" then
 			self.CastUi:Clear()
+			self.PushUi:Show(false)
 		elseif e.Side == view.Side then
 			if e.Type == "SignatureReady" then
 				if e.Requested then
@@ -327,10 +333,20 @@ function Controller:Start()
 	self.CastUi = CastButton.new(function()
 		Remotes.CastPower:FireServer()
 	end)
+	self.PushUi = PushButton.new(function()
+		Remotes.Push:FireServer()
+	end)
 	Remotes.MatchState.OnClientEvent:Connect(function(data)
 		local mine = self.Views[data.Id]
 		if data.Phase ~= "Fighting" and mine and mine.Participant then
 			self.CastUi:Clear()
+			self.PushUi:Show(false)
+		end
+		if data.Phase == "Fighting" and table.find(data.PlayerIds or {}, Players.LocalPlayer.UserId) then
+			if not data.JoinedLate then
+				self.PushUi:Reset()
+			end
+			self.PushUi:Show(true)
 		end
 		if table.find(data.PlayerIds or {}, Players.LocalPlayer.UserId) and data.MatchId then
 			self.OwnMatch = { MatchId = data.MatchId, PlayerIds = data.PlayerIds, StageName = data.StageName }
@@ -461,6 +477,7 @@ function Controller:Start()
 	end)
 	Players.LocalPlayer.CharacterRemoving:Connect(function()
 		self.CastUi:Clear()
+		self.PushUi:Show(false)
 		self:StopWatching()
 		for _, view in self.Views do
 			view:EndFight()
@@ -527,6 +544,7 @@ function Controller:Start()
 		end
 		if active and active.Participant and active.Phase == "Fighting" then
 			self.CastUi:Update(active)
+			self.PushUi:Update()
 		end
 		local aiming = active ~= nil
 			and active.Participant

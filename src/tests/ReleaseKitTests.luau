@@ -276,13 +276,23 @@ return function(t, d)
 		local cast = R.drainCasts(sim.Fight)[1]
 		R.releaseCast(sim.Fight, cast, { 1, 2, 3 }, { 1, 0, 0 })
 		R.resolveAbility(sim.Fight, cast.Id, false, nil, 1)
-		local events = Pendulum.presentation(sim)
+		-- Only the cast entries; the arena layer adds its own (twist, heat, push charges).
+		local function casts()
+			local out = {}
+			for _, e in Pendulum.presentation(sim) do
+				if e.Type == "CastRelease" then
+					table.insert(out, e)
+				end
+			end
+			return out
+		end
+		local events = casts()
 		t.eq(#events, 1)
 		t.eq(events[1].Origin[3], 3)
 		t.eq(events[1].Resolved[1], true)
 		R.resolveAbility(sim.Fight, cast.Id, false, nil, 2)
 		R.resolveAbility(sim.Fight, cast.Id, false, nil, 3)
-		t.eq(#Pendulum.presentation(sim), 0, "expired volley not replayed")
+		t.eq(#casts(), 0, "expired volley not replayed")
 	end)
 	t.test("all release kits complete deterministic swings with unique results and fixed strings", function()
 		for i, def in d.Glassies.ReleaseList do

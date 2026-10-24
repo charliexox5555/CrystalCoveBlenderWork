@@ -10,6 +10,17 @@ Done:
 Next:
 - Keep the current Close Call unchanged for another comparable checkpoint; evaluate plays/engagement when available and prioritize single-feature danger variants if the lead holds.
 
+## 2026-10-23 — Claude — Round revamp: faster, busier rounds (decision 122)
+Done:
+- Creator report: rounds boring and too long, players leave mid-round. New `tools/pacing_report` on the real swing: 28.3 s fights (p90 37.9), 0.47 contacts/s, 13% dead air, plus ~50 s setup a round. Proposal docs/design/ROUND_REVAMP.md; creator chose ~18 s fights, glints/Heat/twists, PUSH, stakes, Bumpers as a twist.
+- Built `ArenaRules` + `Balance.Arena` (6 glints, Heat, 6 twists, PUSH charges, Last Glass), Pendulum geometry (glint placement/grabs, 6 bumper posts, wind, magnet, shoves), `PushBrain`, MatchLogic twist roll / last pick + aim / Last Glass / On Fire, `Push` remote, `MatchLeft<Phase>` analytics, shorter timers (12/8, 10, 3, 4.5 s). Client `ArenaFX` + `PushButton`. New ArenaTests; balance/economy/runner tests moved to the new targets.
+- Probe after: 18.4 s mean, p90 24.9 s, 0.56 contacts/s, 0% dead air, ~9 glints a round. BalanceSim (stand-in): mirrors 17–26 s, side bias 51%. EconomySim: match ~3.5 min at full timers (was ~5.4), 17.3 matches/h, pulls day 1 5, day 30 131 (was ~105), first Legendary 4.0 h. Lune 279 passed, 0 failed.
+- Rojo plugin was disconnected (the `rojo serve` started this session holds port 34872), so the 24 changed files went into the Glass vs Glass place by MCP as verified line patches; every Studio script hash matches the repo. Studio Play RunAll 279 passed, 0 failed; a spectated Pop vs Jam Bumpers bot fight drew the 6 posts, glints, twist banner and Heat bar and ended in a shatter (31.5 s, 19 hits) with no new console errors.
+- Release matrix (real swing, twists rolled, 6 rounds a pair): only 18/40 in 45–55% (ranged kits low: Prism Blade 21%, Lemonade 31%, Glass Dragon 33%; hit-triggered kits high: Mason Jar 73%, Water Jug 64%). New `tools/release_autotune` applied one damped step to 24 kits' main knob (Damage / ContactBonus / guard Duration); not yet re-measured.
+Next:
+- Run tools/release_matrix_win.sh + release_autotune two more passes and a 10-round check; sync Balance to Studio again.
+- Creator: PUSH on keyboard/touch, phone layout, a bot match per twist; feel check of speed, glints and setup timers; publish and watch `MatchLeft*`.
+
 ## 2026-10-23 — Codex — Contrast, close call and Lid Block thumbnails
 Done:
 - Creator reported another ad credit spent with falling CTR; recorded as qualitative feedback without inventing updated rows. Built Cast Contrast, Cracked Close Call and Lid Block using original Pop/Jam/Prism Blade assets and built-in imagegen. Source inspection confirms Jam's raised gold-tinted lid shield; conceptual expressions are labelled as marketing treatment.

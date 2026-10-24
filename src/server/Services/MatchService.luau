@@ -15,6 +15,7 @@ local Stage = require(script.Parent.Parent.Util.MatchStage)
 local CosmeticConfig = require(RS.Shared.Config.RoundCosmetics)
 local CosmeticRules = require(RS.Shared.RoundCosmeticRules)
 local PolicyService = game:GetService("PolicyService")
+local AnalyticsService = game:GetService("AnalyticsService")
 local OnboardingRules = require(script.Parent.Parent.Data.OnboardingRules)
 local Service = {}
 
@@ -268,6 +269,9 @@ function Service:Dispatch(entry, now)
 				)
 			end
 			entry.FightId = entry.Id .. "-round-" .. match.Round
+			if entry.Tutorial then
+				match.Twist = "Calm" -- the assisted first match keeps the arena plain (decision 122)
+			end
 			for side, player in entry.Players do
 				Remotes.MatchState:FireClient(player, meta)
 				self:Offer(entry, side)
@@ -281,8 +285,9 @@ function Service:Dispatch(entry, now)
 						state.Aim, state.AimYaw = nil, nil
 					end
 				end
-				setup.A.Aim, setup.A.AimYaw, setup.B.Aim, setup.B.AimYaw =
-					Balance.Motion.AimDefault, 0, Balance.Motion.AimDefault, 0
+				-- Each player's aim starts from last round's (decision 122).
+				setup.A.Aim, setup.A.AimYaw = Logic.startAim(match, 1)
+				setup.B.Aim, setup.B.AimYaw = Logic.startAim(match, 2)
 			end
 			Remotes.MatchState:FireAllClients(self.Services.FightService:Describe(entry.Arena, setup, meta))
 		elseif change.Phase == "Fighting" then
@@ -358,9 +363,21 @@ function Service:Request(player, action, interval, callback)
 	callback(owned.Entry, owned.Side)
 end
 
+-- Decision 122: how many players walk out, and in which phase (custom events "MatchLeft<Phase>", value = round).
+function Service:LogLeave(player, entry)
+	local phase, round = entry.Runner.Phase, entry.Runner.Match.Round
+	if RunService:IsStudio() then
+		print(string.format("[GlassClash] %s left in %s, round %d", player.Name, tostring(phase), round))
+	end
+	pcall(function()
+		AnalyticsService:LogCustomEvent(player, "MatchLeft" .. tostring(phase), round)
+	end)
+end
+
 function Service:Forfeit(player)
 	local owned = self.ByPlayer[player]
 	if owned and not owned.Entry.Finished then
+		self:LogLeave(player, owned.Entry)
 		owned.Entry.Forfeited[owned.Side] = true
 		owned.Entry.Runner:Forfeit(owned.Side, workspace:GetServerTimeNow())
 		self:Dispatch(owned.Entry, workspace:GetServerTimeNow())

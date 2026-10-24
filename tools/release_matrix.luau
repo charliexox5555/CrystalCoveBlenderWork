@@ -14,6 +14,7 @@ local Glassies = require("../src/shared/Config/Glassies")
 local Rng = require("../src/shared/Rng")
 local Rules = require("../src/shared/FightRules")
 local Pendulum = require("../src/server/Simulation/Pendulum")
+local Arena = require("../src/shared/ArenaRules")
 
 local shard, shards = tonumber(process.args[1]) or 0, tonumber(process.args[2]) or 1
 local rounds = tonumber(process.args[3]) or 8
@@ -96,7 +97,9 @@ local function play(a, b, seed, swap)
 	if swap then
 		first, second = second, first
 	end
-	local sim = Pendulum.new({ A = first, B = second, SweetSpot = sweet, Rng = rng }, seed)
+	-- Every round has an arena twist (decision 122), like a real match.
+	local twist = Arena.rollTwist(rng)
+	local sim = Pendulum.new({ A = first, B = second, SweetSpot = sweet, Rng = rng, Twist = twist }, seed)
 	while not sim.Fight.Over do
 		Pendulum.step(sim, 1 / M.StepRate)
 		Pendulum.events(sim)

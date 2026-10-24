@@ -107,6 +107,9 @@ return function(t, deps)
 	end)
 
 	t.test("powers fire by themselves, repeat, and come sooner with hits", function()
+		-- Legacy powers repeat every 9-18 s, longer than today's 40 s rounds allow (decision 122).
+		local timeout = F.RoundTimeout
+		F.RoundTimeout = 75
 		local s = fight("pop", "jam")
 		local fired, firstAt = { 0, 0 }, nil
 		while not s.Over and s.Time < 60 do
@@ -124,6 +127,7 @@ return function(t, deps)
 		)
 		t.eq(fired[1], F.PowerMaxPerRound, "side 1 hits the per-round cap")
 		t.eq(fired[2], F.PowerMaxPerRound, "side 2 hits the per-round cap")
+		F.RoundTimeout = timeout
 		local again, why = FightRules.triggerPower(s, 1)
 		t.ok(not again and (why == "max" or why == "over"), "capped")
 		t.ok(not FightRules.triggerPower(fight("pop", "jam"), 3), "bad side")

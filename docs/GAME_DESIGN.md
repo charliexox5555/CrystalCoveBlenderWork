@@ -1,5 +1,6 @@
 # Glass Clash — Game Design Doc (v0.3)
 
+> **v0.4 (Oct 23, decision 122):** rounds are faster (~18 s fights) and busier: glints to race for, the Heat, one arena twist per round, a PUSH button, Last Glass and On Fire ([ROUND_REVAMP](design/ROUND_REVAMP.md), section 3.9).
 > **v0.3.1 (Oct 14):** powers fire by themselves at random moments (no button), and the swing is erratic and 3D with spin. Luck and suspense are a pillar.
 > **v0.3 (Oct 13) replaces the Pokémon-style structure** (routes, trainers, catching, evolution) with **lobby arena matches**, inspired by the success of *Ball VS Ball* ([research brief](research/BALL_VS_BALL.md)). Older versions are in git history.
 > Working names: **Glass Clash** (game), **glassies** (collectibles), **Marbles** (premium currency), **the Kiln** (gacha). All can change.
@@ -17,7 +18,7 @@ Walk up to an arena, roll three glassies from your collection, pick one, aim you
 ### Pillars
 
 1. **The shatter is the reward.** Every round ends in a slow-motion, loud, sparkly shatter. If a change makes it less satisfying, don't make it.
-2. **Simple to play, fun to watch.** Two decisions per round (which glassy, and how and where to pull it back). Everything after the release is a show. Anyone watching the arena should understand it in 3 seconds.
+2. **Simple to play, fun to watch.** Two decisions per round (which glassy, and how and where to pull it back), then two optional buttons (CAST, PUSH) for players who want to steer the fight; a player who only watches still gets a fair fight. Anyone watching the arena should understand it in 3 seconds.
 3. **Luck and suspense.** Like Ball VS Ball, the best glassy doesn't always win. Swings miss, powers fire at good or bad moments and can whiff, a lucky smash turns a round around. Strong glassies win more often, never every time.
 4. **From kitchen to fantasy.** Common glassies are things from your kitchen; rare ones are swords, unicorns and dragons. Players see the fantasy ones from day one (the Kiln, other players' fights) so they have something to chase.
 5. **Fair and readable.** Rarity adds flair and a small edge, never an auto-win. Every glassy has one clear gimmick you can see happen.
@@ -26,13 +27,13 @@ Walk up to an arena, roll three glassies from your collection, pick one, aim you
 ## 2. Match loop
 
 ```
-Lobby  →  step on an arena pad (1v1; a bot joins after 15 s)
+Lobby  →  step on an arena pad (1v1; a bot joins after 30 s)
   → Round (repeat until someone loses 3 hearts):
        Match start: roll 3 equally likely, distinct owned glassies once; retain this hand all match.
-       Each round: pick from that hand (8 s), or use round-only Pick Any. Paid reroll replaces the hand.
-       Aim: drag to pull your glassy back: how far (a Perfect band glows) and which way (6 s)
-       3-2-1 → both release at once
-       Fight: they swing, smash, miss, spin; passives and powers fire by themselves (no input)
+       Each round: pick from that hand (12 s, then 8 s; no pick = last round's glassy), or use round-only Pick Any. Paid reroll replaces the hand.
+       Aim: drag to pull your glassy back: how far (a Perfect band glows) and which way (10 s, starts from last round's aim)
+       3-2-1 (the round's arena twist is shown) → both release at once
+       Fight: they swing, smash, miss, spin, race for glints; powers fire by themselves or on CAST; PUSH shoves your glassy
        Shatter → the loser's heart pops
   → Results: coins (+ trophies vs players), quest progress
   → the Kiln (coins → new glassy, odds shown) → back to the pads
@@ -40,14 +41,14 @@ Lobby  →  step on an arena pad (1v1; a bot joins after 15 s)
 
 | Phase | Time | Notes |
 |---|---|---|
-| Queue | until 2 players, or a bot after `QueueBotAfterSeconds` (15 s) | Standing on the pad = queued; stepping off leaves. |
-| Roll | `RollSeconds` 8 s | Initial hand is uniform from owned glassies with no repeats; retained across rounds. Paid rerolls replace all three. Pick Any chooses any owned glassy for this round without changing the hand. Timer out → first offer. Picks are hidden until both lock in. |
-| Aim | `AimSeconds` 6 s | No aim → `AimDefault`. |
-| Countdown | 3 s | Shows both picks with type icons ("Fizzy beats Heavy!"). |
-| Fight | ~15–45 s (avg ~27) | Section 3. Overtime after 45 s, timeout at 75 s. |
-| Round end | 4 s | Shatter, heart pops, short replay of the final blow. |
+| Queue | until 2 players, or a bot after `QueueBotAfterSeconds` (30 s) | Standing on the pad = queued; stepping off leaves. |
+| Roll | `RollSeconds` 12 s, `RollSecondsLater` 8 s | Initial hand is uniform from owned glassies with no repeats; retained across rounds. Paid rerolls replace all three. Pick Any chooses any owned glassy for this round without changing the hand. Timer out → last round's glassy if still in the hand, else the first offer. Picks are hidden until both lock in. |
+| Aim | `AimSeconds` 10 s | No aim → last round's aim (`AimDefault` in round 1). |
+| Countdown | 3 s | Shows the arena twist and MATCH POINT. |
+| Fight | ~10–30 s (avg ~18) | Section 3. MELTDOWN (overtime) after 15 s, timeout at 40 s. |
+| Round end | 4.5 s | Shatter, finisher, heart pops. |
 
-A match is **first to make the other lose 3 hearts** (3–5 rounds, ~3.7 min on average). Numbers: `Balance.Match`.
+A match is **first to make the other lose 3 hearts** (3–5 rounds, about 2–3 min). Numbers: `Balance.Match`.
 
 **Example 10-minute session:** claim the daily streak, play 3 matches (win 2), pull the Kiln twice (a Rare light bulb!), finish a "Win 3 rounds with a Sharp glassy" quest, watch a friend's fight while waiting, leave.
 
@@ -132,13 +133,13 @@ The legacy passive/burst tables below describe dormant definitions. The 24 relea
 - HP comes from base stats × rarity × stars (`Formula.stats`). Crack stages at 75 / 50 / 25 % HP.
 - **Shatter:** HP 0 → slow-mo shatter, the loser's heart pops.
 - **Double KO:** if both drop to 0 on the same hit, the one with more HP *before* the hit survives on 1 HP (a clutch moment).
-- **Overtime** after 45 s: damage grows 6% per second. **Timeout** at 75 s: higher HP % wins (rare: <1% in the sim).
+- **MELTDOWN** (overtime) after 15 s: damage grows 8% per second and the glass swings a little higher. **Timeout** at 40 s: higher HP % wins (rare: 0% in the real-swing probe).
 
 ### 3.7 Balance targets (checked by `lune run tools/run_tests`)
 
 | Target | Value |
 |---|---|
-| Round length | 15–45 s, 6–40 hits; timeouts < 5% |
+| Round length (decision 122) | stand-in 10–30 s, 4–30 hits; real swing mean ~18 s, p90 ≤ 25 s, dead air ≤ 6% (`tools/pacing_report`); timeouts < 5% |
 | Side bias | 42–58% |
 | Starter triangle | each starter beats one, loses to one (52–90%) |
 | Perfect vs worst aim | 53–75% |
@@ -151,9 +152,19 @@ These run against **FightModel**, a stand-in for the swing. When the real swing 
 
 ### 3.8 Server authority and anti-exploit
 
-- The server runs the swing and `FightRules`; clients only render. Inputs: `PickGlassy`, `Reroll`, `SetAim`, `LeaveQueue`. Validate types and ranges, and **rate-limit every remote** (`Balance.Match.*RateSeconds`).
+- The server runs the swing and `FightRules`; clients only render. Inputs: `PickGlassy`, `Reroll`, `PickAny`, `SetAim`, `CastPower`, `Push`, `LeaveQueue`. Validate types and ranges, and **rate-limit every remote** (`Balance.Match.*RateSeconds`).
 - Rewards are granted by the server from `MatchLogic.rewards`. Bots never take trophies.
 - Log suspicious patterns (e.g. Perfect Release rate per player) for review.
+
+### 3.9 The arena layer: always something going on (decision 122)
+
+Rules in `ArenaRules` (pure), numbers in `Balance.Arena`, geometry in `Pendulum`, visuals in `ArenaFX`. Full write-up: [design/ROUND_REVAMP.md](design/ROUND_REVAMP.md).
+
+- **Glints:** every 2.5–4 s a glowing gem pops into the clash zone between the two glassies; whoever swings through it first grabs it. Smash (next hit ×1.8), Bubble (blocks the next damage), Patch (+10% HP), Bomb (sticks to the other glass, pops for 8% max HP after 1.2 s), Frost (the other glass swings low for 1.5 s), Zoom (a big shove). One picture each, no words. At most 2 at once.
+- **The Heat:** a kiln bar fills over the round. HEATING UP at 8 s (glints come faster), MELTDOWN at 15 s (overtime: damage climbs, swings go higher).
+- **Arena twists:** one per round, shown while aiming and at the countdown, never twice in a row: Calm, Windy (gusts), Bouncy (harder bounces), Magnet (glassies pull together), Glint Rain (twice the glints), Bumpers (six crystal posts glassies ricochet off). The tutorial match is Calm.
+- **PUSH:** a second button beside CAST shoves your glassy along its swing. 3 charges, one back every 4 s, never automatic. Bots push too.
+- **Stakes:** Last Glass (down to your last heart while the other player isn't: start holding Smash or Bubble), On Fire (2 round wins in a row light your glassy, cosmetic), MATCH POINT on a last-heart round, and "+10 COINS" when you take a heart while still behind.
 
 ## 4. Glassies and collection
 

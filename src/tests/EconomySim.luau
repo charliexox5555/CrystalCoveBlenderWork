@@ -28,8 +28,9 @@ end
 
 function EconomySim.matchSeconds(): number
 	local m, e = Balance.Match, Balance.EconomyModel
-	local perRound = m.RollSeconds + m.AimSeconds + m.CountdownSeconds + e.RoundSecondsEstimate + m.RoundEndSeconds
-	return EconomySim.expectedRounds(0.5) * perRound + e.SecondsBetweenMatches
+	-- Round 1 picks from a fresh hand; later rounds have the shorter pick (decision 122).
+	local perRound = m.RollSecondsLater + m.AimSeconds + m.CountdownSeconds + e.RoundSecondsEstimate + m.RoundEndSeconds
+	return EconomySim.expectedRounds(0.5) * perRound + (m.RollSeconds - m.RollSecondsLater) + e.SecondsBetweenMatches
 end
 
 -- Coins from one match, drawn at random for a player with the model's win rate.

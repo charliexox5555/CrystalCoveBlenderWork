@@ -20,7 +20,7 @@ function Hud.new(data, maxima, lock, stop)
 	self.Hearts = data.Hearts or { Balance.Match.Hearts, Balance.Match.Hearts }
 	self.Gui = Kit.gui("FightHud", 20)
 	self.Gui:SetAttribute("FightId", data.Id)
-	self.Billboards = require(script.Parent.FightBillboards).new(data)
+	self.Billboards = require(script.Parent.FightBillboards).new(data, self.Gui)
 	-- Countdown / "PULL BACK" / "LET GO!"
 	self.Headline = Kit.label(
 		self.Gui,
@@ -33,7 +33,7 @@ function Hud.new(data, maxima, lock, stop)
 	self.Instruction = Kit.label(
 		self.Gui,
 		"Instruction",
-		"Drag to pull • aim for gold",
+		"Pull back & release - aim for gold",
 		UDim2.fromScale(0.7, 0.06),
 		UDim2.fromScale(0.15, 0.84),
 		{ Font = Theme.Fonts.Body, MaxSize = Theme.TextSize.Label, Outline = 2 }
@@ -108,9 +108,8 @@ function Hud:Aim(aim, yaw, perfect)
 	self.AimText.Text = if perfect
 		then "PERFECT!"
 		else string.format(
-			"PULL %d%%  •  %d°",
-			(aim - Balance.Motion.AimMin) / (Balance.Motion.AimMax - Balance.Motion.AimMin) * 100,
-			math.deg(yaw)
+			"PULL %d%%",
+			(aim - Balance.Motion.AimMin) / (Balance.Motion.AimMax - Balance.Motion.AimMin) * 100
 		)
 	self.AimText.TextColor3 = if perfect then Theme.Colors.Highlight else Theme.Colors.Text
 end
@@ -138,14 +137,11 @@ function Hud:Instruct()
 	local input = InputKind.current()
 	self.Instruction.Text = if aiming
 		then (if input == Enum.PreferredInput.Gamepad
-			then "Left stick to pull • aim for gold"
-			elseif input == Enum.PreferredInput.KeyboardAndMouse then "Drag or arrows to pull • aim for gold"
-			else "Drag to pull • aim for gold")
-		elseif phase == "Fighting" then (if input == Enum.PreferredInput.Touch
-			then "Swipe to rotate the camera"
-			elseif input == Enum.PreferredInput.Gamepad then "Right stick to rotate the camera"
-			else "Drag or Q / E to rotate the camera")
-		elseif self.Spectator and phase == "Aiming" then "WATCHING • players are aiming"
+			then "Left stick to pull - aim for gold"
+			elseif input == Enum.PreferredInput.KeyboardAndMouse then "Drag & release, or arrows + LOCK - aim for gold"
+			else "Pull back & release - aim for gold")
+		elseif phase == "Fighting" then "AUTO POWERS - SHATTER TO WIN"
+		elseif self.Spectator and phase == "Aiming" then "WATCHING - players are aiming"
 		else ""
 end
 

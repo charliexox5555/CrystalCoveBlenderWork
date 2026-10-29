@@ -8,6 +8,7 @@ local Rng = require(RS.Shared.Rng)
 local Remotes = require(RS.Shared.Remotes)
 local Runner = require(script.Parent.Parent.Simulation.MatchRunner)
 local Guard = require(script.Parent.Parent.Util.RemoteGuard)
+local Metrics = require(script.Parent.Parent.Util.MatchAnalytics)
 local Assets = require(script.Parent.Parent.Util.AssetCatalog)
 local Glassies = require(RS.Shared.Config.Glassies)
 local Bots = require(RS.Shared.Config.Bots)
@@ -114,11 +115,17 @@ function Service:StartMatch(arena, players, now, spectate, options)
 		end
 	end
 	for side = 1, 2 do
+		local profile = players[side] and self.Services.DataService and self.Services.DataService:Get(players[side])
 		setups[side] = {
 			Collection = players[side] and self:Collection(players[side])
 				or Assets.collection(Logic.botCollection(humanCollection, rng)),
 			IsBot = players[side] == nil,
-			Hearts = options and options.Hearts,
+			Hearts = if tutorial then Balance.Onboarding.Hearts else options and options.Hearts,
+			FirstOffer = if not tutorial
+					and not (options and options.Hill)
+					and profile
+				then profile.Onboarding.ReplayGlassy
+				else nil,
 			Skill = if options
 					and options.BotSkill
 					and players[side] == nil
@@ -134,7 +141,8 @@ function Service:StartMatch(arena, players, now, spectate, options)
 		Seed = seed,
 		Spectate = spectate == true,
 		Hill = options ~= nil and options.Hill == true,
-		MaxHearts = options and options.Hearts,
+		MaxHearts = if tutorial then Balance.Onboarding.Hearts else options and options.Hearts,
+		StartedAt = now,
 		Runner = Runner.new(
 			setups,
 			rng,
@@ -183,6 +191,9 @@ function Service:StartMatch(arena, players, now, spectate, options)
 			onboarding:MatchStarted(player, entry.FirstMatch[player])
 		end
 	end
+	if not entry.Hill then
+		Metrics.step(entry, 1)
+	end
 	self:Dispatch(entry, now)
 	return true, entry.Id
 end
@@ -194,6 +205,10 @@ function Service:Finish(entry)
 	entry.Finished = true
 	local match = entry.Runner.Match
 	local eligible = entry.ActualWins[1] + entry.ActualWins[2] > 0
+	local completed = eligible and not entry.Forfeited[1] and not entry.Forfeited[2]
+	if completed and not entry.Hill then
+		Metrics.step(entry, 4)
+	end
 	local names = self:Meta(entry).Names
 	if entry.FightId then
 		self.Services.FightService:Stop(entry.FightId, { MatchId = entry.Id, ArenaId = entry.Arena.Id, Over = true })
@@ -249,13 +264,24 @@ function Service:Finish(entry)
 			FirstMatch = entry.FirstMatch[player] == true,
 			Xp = { Gained = observed.XpGained or 0, LevelsGained = observed.LevelsGained or 0 },
 		})
+		Metrics.ended(
+			entry,
+			player,
+			side,
+			if completed
+				then "Completed"
+				elseif entry.Forfeited[side] then "Forfeit"
+				elseif entry.Forfeited[3 - side] then "OpponentLeft"
+				else "Cancelled"
+		)
 		if self.Services.OnboardingService then
 			self.Services.OnboardingService:MatchFinished(
 				player,
 				match.Winner == side and not entry.Forfeited[side],
 				entry.FirstMatch[player] == true,
 				-- A first match against a real player pays the first-win prize when finished, won or lost.
-				eligible and not entry.Forfeited[side] and entry.Players[3 - side] ~= nil
+				eligible and not entry.Forfeited[side] and entry.Players[3 - side] ~= nil,
+				completed
 			)
 		end
 	end
@@ -297,6 +323,9 @@ function Service:Dispatch(entry, now)
 			end
 			Remotes.MatchState:FireAllClients(self.Services.FightService:Describe(entry.Arena, setup, meta))
 		elseif change.Phase == "Fighting" then
+			if not entry.Hill then
+				Metrics.step(entry, 2)
+			end
 			local setup = Logic.fightSetup(match)
 			if entry.Tutorial then
 				setup.Assist = OnboardingRules.assist(match.Round, entry.Tutorial.Side)
@@ -329,6 +358,9 @@ function Service:Dispatch(entry, now)
 					end
 					if entry.Runner:FightEnded(fight.Winner, workspace:GetServerTimeNow()) then
 						entry.ActualWins[fight.Winner] += 1
+						if not entry.Hill then
+							Metrics.step(entry, 3)
+						end
 						if self.Services.BadgeService then
 							-- First Win (decision 118): only a round won over another player.
 							self.Services.BadgeService:RoundWon(
@@ -388,10 +420,21 @@ function Service:LogLeave(player, entry)
 	end)
 end
 
-function Service:Forfeit(player)
+function Service:Forfeit(player, reason)
 	local owned = self.ByPlayer[player]
+	if owned and not owned.Entry.Finished and owned.Entry.Runner.Match.Over then
+		-- The authoritative final shatter already settled this match. A reset during its finisher is
+		-- not a forfeit; settle a disconnect before DataService releases the player's profile.
+		if reason == "Disconnect" then
+			self:Finish(owned.Entry)
+		end
+		return
+	end
 	if owned and not owned.Entry.Finished then
 		self:LogLeave(player, owned.Entry)
+		if not owned.Entry.Hill then
+			Metrics.ended(owned.Entry, player, owned.Side, reason or "Forfeit")
+		end
 		owned.Entry.Forfeited[owned.Side] = true
 		owned.Entry.Runner:Forfeit(owned.Side, workspace:GetServerTimeNow())
 		self:Dispatch(owned.Entry, workspace:GetServerTimeNow())
@@ -479,13 +522,13 @@ function Service:Start()
 			local humanoid = character:WaitForChild("Humanoid", 5)
 			if humanoid then
 				humanoid.Died:Once(function()
-					self:Forfeit(player)
+					self:Forfeit(player, "Reset")
 				end)
 			end
 		end
 		self.CharacterConnections[player] = {
 			player.CharacterRemoving:Connect(function()
-				self:Forfeit(player)
+				self:Forfeit(player, "CharacterRemoved")
 			end),
 			player.CharacterAdded:Connect(watch),
 		}
@@ -532,7 +575,7 @@ function Service:Start()
 		end)
 	end)
 	Players.PlayerRemoving:Connect(function(player)
-		self:Forfeit(player)
+		self:Forfeit(player, "Disconnect")
 		for _, connection in self.CharacterConnections[player] or {} do
 			connection:Disconnect()
 		end

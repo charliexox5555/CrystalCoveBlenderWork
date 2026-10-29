@@ -214,6 +214,9 @@ end
 
 -- CastPower (decision 85): the player's own side in a running fight casts its Ready power.
 function Service:Cast(player)
+	if Balance.CombatRelease.Cast.ManualEnabled == false then
+		return false
+	end
 	if not self.Guard:Allow(player, "Cast", Balance.Match.CastRateSeconds) then
 		return false
 	end
@@ -232,6 +235,9 @@ end
 -- Push (decision 122): the player's own side in a running fight shoves its glassy. Charges and the
 -- cooldown live in ArenaRules; this only rate-limits and finds the side.
 function Service:Push(player)
+	if not Balance.Arena.Enabled then
+		return false
+	end
 	if not self.Guard:Allow(player, "Push", Balance.Match.PushRateSeconds) then
 		return false
 	end

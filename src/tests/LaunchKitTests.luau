@@ -4,6 +4,8 @@ local Pendulum = if script
 	else require("../server/Simulation/Pendulum")
 
 return function(t, deps)
+	local previousManual = deps.Balance.CombatRelease.Cast.ManualEnabled
+	deps.Balance.CombatRelease.Cast.ManualEnabled = true -- legacy requested-cast fixture
 	local Rules, Balance = deps.FightRules, deps.Balance
 	local function fight(a, b, policyA)
 		return Rules.new({
@@ -221,4 +223,5 @@ return function(t, deps)
 			t.ok(releases > 0, pair[1] .. " released in a real round")
 		end
 	end)
+	deps.Balance.CombatRelease.Cast.ManualEnabled = previousManual
 end

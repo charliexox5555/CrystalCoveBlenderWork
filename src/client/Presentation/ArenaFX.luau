@@ -68,6 +68,9 @@ function FX.new(scene, data, viewing)
 	self.Root.Name = "ArenaFX"
 	self.Root.Parent = scene.Root
 	self.Twist = data.Twist or "Calm"
+	if not A.Enabled then
+		return self
+	end
 	if self.Twist == "Bumpers" then
 		self:BuildPosts()
 	end
@@ -125,6 +128,9 @@ end
 
 -- The twist banner (countdown and the first moments of the fight) and MATCH POINT on a last-heart round.
 function FX:Banner(hud, show)
+	if not A.Enabled then
+		return false
+	end
 	if not hud then
 		return
 	end
@@ -433,6 +439,9 @@ end
 
 -- Returns true for the arena events it drew (FightView sends everything here first).
 function FX:Event(e, hud)
+	if not A.Enabled then
+		return false
+	end
 	local kind = e.Type
 	if kind == "GlintSpawn" then
 		self:Spawn(e)
@@ -518,6 +527,9 @@ function FX:EndRound()
 end
 
 function FX:Step(dt, time, hud, phase)
+	if not A.Enabled then
+		return false
+	end
 	self.Phase = phase
 	local now = os.clock()
 	for _, glint in self.Glints do

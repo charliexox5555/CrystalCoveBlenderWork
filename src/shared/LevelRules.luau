@@ -3,7 +3,7 @@
 -- Profiles store only the total XP (`data.Xp`); the level and progress are derived from it, so a curve change
 -- never needs a migration. Numbers live in Balance.Levels.
 --
---   LevelRules.matchXp({ Won = true, RoundsWon = 3, Perfects = 1, VsBot = false })  --> 145
+--   LevelRules.matchXp({ Won = true, RoundsWon = 3, Perfects = 1, VsBot = false })  --> 130
 --   LevelRules.view(total)  --> { Level = 4, Xp = 120, XpNext = 220, Total = total }
 local Balance = if script then require(script.Parent.Config.Balance) else require("./Config/Balance")
 local L = Balance.Levels

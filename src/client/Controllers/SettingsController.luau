@@ -266,6 +266,17 @@ function Controller:Wire(gui)
 		return
 	end
 	self.Rows = rows
+	-- Casting is automatic in classic combat. Keep the saved preference for compatibility,
+	-- but do not show an obsolete combat-control toggle.
+	local auto = rows:FindFirstChild("AutoCast")
+	if auto and require(RS.Shared.Config.Balance).CombatRelease.Cast.ManualEnabled == false then
+		auto.Visible = false
+		for _, control in auto:GetDescendants() do
+			if control:IsA("GuiButton") then
+				control.Active, control.Selectable = false, false
+			end
+		end
+	end
 	for _, row in rows:GetChildren() do
 		local control = row:FindFirstChild("Slider") or row:FindFirstChild("Toggle")
 		if control and control:IsA("GuiButton") then

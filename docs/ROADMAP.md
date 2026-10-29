@@ -1,9 +1,26 @@
 # Roadmap
 
 Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DESIGN v0.3](GAME_DESIGN.md).
-**Current milestone: F5 — integration polish.** Wave1 imports, fitted fences and the native multiplayer/security pass are complete. Real-phone checks, final UI artwork and publishing remain with the creator; Marble packs, gamepasses and Marble Kiln purchases stay disabled; creator-approved match selection spends are implemented.
+**Current milestone: classic loop retention rebuild (decision 127).** Core simplification and first-session/replay changes are implemented. Validate with unfamiliar mobile players and comparable published cohorts next. Source audit confirms eligible Marble packs/Kiln and configured offers are active; gamepasses have no configured sales path. Older disabled-purchase notes below are historical.
+
+### Classic loop rebuild (Oct 29)
+
+- [x] Creator confirmed the Glass vs Glass place, aiming plus automatic powers, and broad core-loop improvements; work directly through Roblox MCP without Rojo.
+- [x] Complete the earlier simplification: disable CAST/PUSH/modifiers on server and client, one-round assisted bot intro, faster setup, drag-release aiming, closer camera and stable HP/hearts.
+- [x] Automatically collect existing Day 1 after welcome; keep calendar idempotency and remote limits; fix first-clash reward wording.
+- [x] Include the first prize in the next owned hand, survive reconnects, show one replay/collection/Day 2 goal and defer automatic Starter exposure until that match naturally finishes.
+- [x] Version natural-completion telemetry; prevent a final-shatter reset from rewriting the settled result. Phone input, replay hand and reset scenarios checked; Lune/Studio 287 tests pass.
+- [x] Parallel primary-source research, flow audit and real-swing auto-power balance pass: [plan](design/CLASSIC_LOOP_2026_10_29.md), [research](research/CORE_LOOP_RESEARCH_2026_10_29.md), [balance](testing/CLASSIC_BALANCE_2026_10_29.md).
+- [x] Publish verified Edit place: Studio confirms version **700**.
+- [ ] Unfamiliar real-phone sessions and native two-client PvP; compare new-build replay/natural completion and mature D1 cohorts. Investigate concentrated Hot Sauce/Prism Blade timeout matchups and external purchases without intents.
 
 - [x] Enabled normal arena bot queue wait increased to 30 seconds (creator request, Oct 22); Studio Rojo reconnect/publish pending.
+
+### Retention diagnostic (Oct 26) - [findings](research/RETENTION_DIAGNOSTIC_2026_10_26.md), proposal 126
+
+- [x] **C:** reviewed the 826-player funnel, current Studio onboarding/fight/replay, source and saved creative results; saved full diagnostic and staged masterplan. Lune and Studio: 280 passed, 0 failed. No gameplay changes.
+- [ ] **U/C:** select a streamlined intro experiment, confirm published build/funnel window, correct completion analytics, and test with unfamiliar mobile players. Accepted decisions remain unchanged.
+
 
 ### Round revamp (Oct 23) — [design](design/ROUND_REVAMP.md), decision 122
 

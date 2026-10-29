@@ -1,0 +1,36 @@
+Glass Clash economy report (2000 players, 40 min a day for 30 days, 50% wins, 40% bot matches)
+
+Match length ~2.9 min (4.12 rounds), 20.8 matches per hour
+Kiln: 300 coins a pull, 36 glassies inside
+Pulls on day 1: 5   by day 30: 145
+Unique glassies (of 36 in the Kiln): day 7 20, day 30 31
+Levels: Lv 5 after day 1, Lv 14 by day 7, Lv 30 by day 30; Lv 5 after 10 matches, Lv 10 after 49
+
+Median play time to a player's first:
+  Rare      32 min  (100% of players get one within 30 days)
+  Epic      40 min  (100% of players get one within 30 days)
+  Legendary 4.0 h of play  (100% of players get one within 30 days)
+  Mythic    not within the sim (median player never)  (32% of players get one within 30 days)
+
+Kiln odds shown to players:
+  Common    56.25%
+  Uncommon  22.00%
+  Rare      14.00%
+  Epic      6.00%
+  Legendary 1.50%
+  Mythic    0.25%
+
+Crown Hill economy (decision 105): sudden death, 5-defence cap, daily cap 500
+Hill fight ~44 s; normal play earns 20.6 coins/min from matches
+  15 min on the hill, empty line: 22.8 coins/min on the hill (1.11x normal), 339 coins/day there, 5.3 crowns/day, 2% of reigns retire; day total +4% vs all-normal
+  15 min on the hill, ~1 ahead in line: 14.7 coins/min on the hill (0.71x normal), 219 coins/day there, 3.4 crowns/day, 2% of reigns retire; day total -11% vs all-normal
+  40 min on the hill (whole session), empty line: 12.7 coins/min on the hill (0.62x normal), 500 coins/day there, 13.7 crowns/day, 3% of reigns retire; day total -39% vs all-normal
+
+Payer report (600 players each, 40 min a day for 30 days; Marbles all into Marble Kiln pulls)
+persona       R$/30d    pulls   unique7  unique30   Leg by7   Mythic30   edge d7  edge d30
+Free               0      145        22        33       47%        31%      0.0%      0.0%
+Starter           49      150        25        34       60%        32%      0.1%      0.0%
+Occasional       247      156        26        34       67%        35%      0.2%      0.0%
+Daily           1789      244        31        37       92%        83%      0.9%      0.6%
+Whale          23807     1111        38        39      100%       100%      3.0%      1.1%
+(Kiln holds 36 glassies; unique counts include Daily and Starter glassies. HP edge = best three glassies' HP over a free player's; the cap is +6.1%: Mythic x5 stars.)

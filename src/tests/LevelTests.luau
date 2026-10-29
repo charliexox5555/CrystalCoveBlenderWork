@@ -40,16 +40,21 @@ return function(t, d)
 	end)
 
 	t.test("levels: pacing matches the creator's targets", function()
-		-- Two wins against a bot (the assisted first match is a 3-1 win against Rookie Bot) reach Lv 2.
+		-- Two normal three-round bot wins reach Lv 2; the introductory bot duel is one round.
 		local botWin = Levels.matchXp({ Won = true, RoundsWon = 3, VsBot = true })
 		t.eq(Levels.level(botWin), 1)
 		t.eq(Levels.level(2 * botWin), 2)
-		-- The economy model's player (Balance.EconomyModel): about Lv 5 after the first session, Lv 10 after ~40
+		-- The economy model's player (Balance.EconomyModel): about Lv 5 after the first session, Lv 10 after about 2.4 hours of
 		-- matches, and still climbing at day 30.
 		local Sim = if script then require(script.Parent.EconomySim) else require("./EconomySim")
 		local pace = Sim.levels()
 		t.between(pace.Day1, 4, 5, "level after day 1")
-		t.between(pace.ToLv10, 30, 45, "matches to Lv 10")
+		t.between(
+			pace.ToLv10 * Sim.matchSeconds() / 60,
+			90,
+			160,
+			"minutes to Lv 10; shorter matches preserve time pacing"
+		)
 		t.ok(pace["Day" .. d.Balance.EconomyModel.Days] > pace.Day7, "still climbing")
 		-- No cap, and each level keeps getting a little longer.
 		t.ok(Levels.need(60) > Levels.need(59))

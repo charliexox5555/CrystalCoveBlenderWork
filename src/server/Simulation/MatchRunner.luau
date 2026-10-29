@@ -19,7 +19,7 @@ function Runner:StartRound(now)
 		end
 	end
 	local default = if self.Match.Round > 1 then Balance.Match.RollSecondsLater else Balance.Match.RollSeconds
-	self:PhaseTo("Rolling", now, self.RollSeconds or default)
+	self:PhaseTo("Rolling", now, if self.Match.Round == 1 then self.RollSeconds or default else default)
 end
 
 -- options: { RollSeconds = n? } (the onboarding first match picks more slowly).

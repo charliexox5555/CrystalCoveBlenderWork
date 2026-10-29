@@ -329,8 +329,9 @@ function Nav.setEditing(release)
 	end
 end
 
-function Nav.hasMenu(): boolean
-	return top() ~= nil
+function Nav.hasMenu(exceptRoot): boolean
+	local entry = top()
+	return entry ~= nil and entry.Root ~= exceptRoot
 end
 
 -- Called with true/false when a menu opens or the last one closes (e.g. the top bar turns its D-pad shortcut off,

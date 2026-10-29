@@ -2,6 +2,29 @@
 
 Newest at the top. One entry per work session. Keep it short.
 
+## 2026-10-29 — Codex — Classic loop rebuild, published v700
+Done:
+- Creator confirmed Glass vs Glass (129420351303019), automatic powers without CAST/PUSH/events, broad loop changes and direct MCP sync without Rojo. Finished the pre-existing classic patch; three background agents handled competitor research, flow review and real-swing balance. Existing UI style/map/art and saved ownership retained.
+- One-shatter assisted bot introduction, short setup/drag-release aim, stable HP/hearts and closer fight camera. Welcome COLLECT secures the existing Day 1 reward through a trusted idempotent path. First-clash prize survives reconnects and appears first in the next owned hand; replay shows that item, coin goal and Day 2 Whiskers. Fixed gamepad B dismissal, duplicate PLAY/hint and misleading PvP-loss reward text; automatic Starter popup waits for the new-unlock match to finish.
+- New server-owned ClassicMatchV1 natural-completion funnel plus ClassicMatchDurationV1 outcomes. Mid-match reset cannot count as second completion; final-shatter reset cannot retroactively forfeit a settled result. Phone input/replay/reset integration checked; Lune and Studio **287 passed, 0 failed**; 28 script sources verified equal after MCP sync.
+- Real swing equal:auto: 6,240 baseline rounds, mean20.9s,2.3%timeouts,31/40 kits in45–55%. Focus retune Hot Sauce/Prism Blade measured49.4%/53.0% (624 rounds/kit); their subset still has22.2%timeouts, not a whole-roster rate. No final full-matrix claim.
+- Required stand-in BalanceSim: mirror16.8–26s, side1 51%, Perfect/worst60%, 5-star Pop52%; field geometry differs from real swing. EconomySim (assumes40min/day): normal match2.9min,20.8matches/h,5day1 pulls/145day30, Lv5after10matches/Lv10after49; first Legendary4h,32%Mythic within30days. Full outputs/research/limits in docs/testing/CLASSIC_INTEGRATION_2026_10_29.md and linked reports.
+- Published the verified Edit place using Studio File > Publish; native Output confirms **v700**. Changed script backups retained in ServerStorage.ClassicBefore20261029. Studio returned to Edit/default viewport. Git commit/push follows this entry.
+Next / limitations:
+- Observe unfamiliar real-phone players, native two-client PvP and post-v700 comparable cohorts; production events/D1 lift remain unverified. Investigate concentrated slow matchups. Monetization audit corrected stale disabled-purchase roadmap text; saved-intent-free external purchases can remain pending and need a separate fix before promotion.
+- Old asset203785492 type warning remains; no new gameplay errors in final test session. Temporary probe errors were isolated to earlier discarded play sessions. Local .codex preferences left untouched.
+
+## 2026-10-26 - Codex - Retention diagnostic and proposed streamlined introduction
+Done:
+- Supplied 826-player funnel: 610 first-round finishes -> 394 First Match Won; 336 prize collectors -> 187 second starts -> 123 second finishes (14.89% of Joined). Win can be backfilled; second finish can count an in-game forfeit; Joined starts after profile readiness. Funnel date/build mix unknown.
+- Inspected correct Glass vs Glass Studio place (129420351303019, reported version 691), fresh mock onboarding through first prize and working PLAY AGAIN requeue; returned to Edit. Glassies are small relative to frame/PUSH. Tutorial pick override allows 40 s every round; input advances early.
+- Saved full creator masterplan and summary in docs/research/RETENTION_DIAGNOSTIC_2026_10_26.md. Proposal 126: faster one-round introduction, automatic-power presentation, tighter camera, one continuation goal. Approved designs, monetization, code and scene unchanged. Existing rewards, Day 2 Whiskers, product IDs and replay accounted for.
+- Lune and Studio RunAll: 280 passed, 0 failed each. Real-swing baseline (36 rounds): mean 18.2 s, median 17.0, p90 27.1; 0.56 contacts/s, 1.89 events/s, modeled dead air 0%; 8.3 glints and 10.2 pushes/round. No Balance/Glassies/Powers changes. Studio asset-type warnings for rbxassetid://203785492; literal not found in src.
+Next / blocked:
+- Creator selects an experiment before reversing accepted decisions. Establish true-completion telemetry and published build window; unfamiliar mobile tests, then controlled rollout.
+- Git pull failed: .git/FETCH_HEAD not writable; remote verification failed on GitHub DNS. Commit/push blocked. No Rojo server started, gameplay/config/scene/campaign changes or publish.
+
+
 ## 2026-10-23 — Claude — Real players first, bots only when nobody is available (decision 125)
 Done:
 - ArenaService: PLAY / PLAY AGAIN join a waiting player first; lone waiters on different arenas are paired after 3 s; idle lobby players get a "wants to battle" notice; `BotWait` = 4 s alone in the server, 12 s for a new player's first match, else 30 s (Bot Play off still never gets a bot). No more instant Rookie Bot.

@@ -146,6 +146,10 @@ function Schema.reconcile(data, now)
 	data.Flags.WelcomePullUsed = data.Flags.WelcomePullUsed == true
 	data.Flags.GroupRewardClaimed = data.Flags.GroupRewardClaimed == true -- group reward (decision 114)
 	data.Onboarding.Funnel = math.min(#Rules.Funnel, integer(data.Onboarding.Funnel, 0))
+	local replay = data.Onboarding.ReplayGlassy
+	if type(replay) ~= "string" or not Glassies.ById[replay] or not data.Glassies[replay] then
+		data.Onboarding.ReplayGlassy = nil
+	end
 	for category in data.FreePulls do
 		data.FreePulls[category] = integer(data.FreePulls[category], 0)
 	end

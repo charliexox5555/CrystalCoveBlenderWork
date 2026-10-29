@@ -5,6 +5,8 @@ local Pendulum = if script
 
 return function(t, d)
 	local Rules, Arena, A = d.FightRules, d.ArenaRules, d.Balance.Arena
+	local previousArena = A.Enabled
+	A.Enabled = true -- dormant arena package remains covered, explicitly opt-in
 
 	local function fight(opts: { [string]: any }?)
 		local o = opts or {}
@@ -267,4 +269,5 @@ return function(t, d)
 		t.eq(again.Bump, bumps.Bump, "deterministic")
 		t.eq(again.Hit, bumps.Hit, "deterministic hits")
 	end)
+	A.Enabled = previousArena
 end

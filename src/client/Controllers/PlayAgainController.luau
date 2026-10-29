@@ -21,7 +21,15 @@ end
 -- Anything else on screen that the button must not cover or compete with.
 function Controller:Busy(): boolean
 	local pg = self.Player.PlayerGui
-	if pg:GetAttribute("InMatch") or pg:GetAttribute("Queued") or pg:GetAttribute("Watching") then
+	if self.Player:GetAttribute("ClientLoaded") ~= true then
+		return true
+	end
+	if
+		pg:GetAttribute("InMatch")
+		or pg:GetAttribute("Queued")
+		or pg:GetAttribute("Watching")
+		or pg:GetAttribute("ResultsOpen")
+	then
 		return true
 	end
 	-- The first-match win prize card comes first (OnboardingStep "Win" until it is collected).
@@ -30,12 +38,25 @@ function Controller:Busy(): boolean
 	end
 	local lobby, topbar = self.Controllers.LobbyController, self.Controllers.TopbarController
 	-- GamepadNav knows every open window and card (shop, deals, claim cards...).
-	return (lobby and lobby.PanelOpen) or (topbar and topbar.Open) or GamepadNav.hasMenu() or false
+	return (lobby and lobby.PanelOpen) or (topbar and topbar.Open) or GamepadNav.hasMenu(self.Screen.Gui) or false
+end
+
+function Controller:LobbyPlay(on)
+	local hud = self.Player.PlayerGui:FindFirstChild("LobbyHUD")
+	local play = hud and hud:FindFirstChild("PlayButton")
+	if play then
+		play.Visible = on
+	end
+	local hint = hud and hud:FindFirstChild("Hint")
+	if hint then
+		hint.Visible = on
+	end
 end
 
 function Controller:Hide()
 	self.Pending, self.ShownAt = false, nil
 	self.Screen:Hide()
+	self:LobbyPlay(true)
 	self.Player.PlayerGui:SetAttribute("PlayAgainShown", false)
 end
 
@@ -51,6 +72,8 @@ function Controller:Step()
 				self:Hide()
 			else
 				self.Screen:Hide()
+				self:LobbyPlay(true)
+				self.Player.PlayerGui:SetAttribute("PlayAgainShown", false)
 				self.ShownAt = nil
 			end
 		end
@@ -61,7 +84,9 @@ function Controller:Step()
 	end
 	if not self.ShownAt then
 		self.ShownAt = now
+		self.Screen:Update(self.Profile, self.Player:GetAttribute("OnboardingRewardGlassy"))
 		self.Screen:Show()
+		self:LobbyPlay(false)
 		self.Player.PlayerGui:SetAttribute("PlayAgainShown", true)
 	elseif now - self.ShownAt > Balance.Match.PlayAgainSeconds then
 		self:Hide()
@@ -75,7 +100,21 @@ function Controller:Start()
 		end
 		self:Hide()
 		Remotes.RequestRematch:FireServer()
+	end, function()
+		self:Hide()
 	end)
+	Remotes.ProfileSnapshot.OnClientEvent:Connect(function(profile)
+		self.Profile = profile
+		self.Screen:Update(profile, self.Player:GetAttribute("OnboardingRewardGlassy"))
+	end)
+	local function rewardReady()
+		if self.Player:GetAttribute("OnboardingRewardGlassy") then
+			self.Pending = true
+			self.ReadyAt = os.clock() + Balance.Match.PlayAgainDelaySeconds
+		end
+	end
+	self.Player:GetAttributeChangedSignal("OnboardingRewardGlassy"):Connect(rewardReady)
+	rewardReady()
 	Remotes.MatchResult.OnClientEvent:Connect(function()
 		-- A beat after the match ends, so the last heart pop and the lobby camera land first.
 		self.Pending, self.ShownAt = true, nil

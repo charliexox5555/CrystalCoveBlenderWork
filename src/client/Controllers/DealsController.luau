@@ -166,7 +166,7 @@ function Controller:BuildTiles(hud)
 	-- odds sit behind the ODDS button on top of the tile, always visible with it. Roblox's paid random items policy
 	-- allows the itemized odds in "a clickable pop-up with an 'Info' or 'Details' icon visible and accessible prior to
 	-- purchase" when a descriptive word labels it (docs/design/MONETIZATION.md §4).
-	local daily = tile(hud, "DailyGlassyTile", "amethyst", UDim2.fromScale(0.08, 0.19), "Daily")
+	local daily = tile(hud, "DailyGlassyTile", "amethyst", UDim2.fromScale(0.08, 0.19), "Daily Glassy")
 	local picture = safe(
 		Presentation.crate,
 		daily,
@@ -395,6 +395,8 @@ function Controller:MaybeAutoOpen()
 					or pg:GetAttribute("PlayAgainShown")
 				)
 				and self.Player:GetAttribute("OnboardingStep") == "Done"
+				-- Give the first free unlock a chance to be played before an automatic sales popup.
+				and self.Player:GetAttribute("OnboardingRewardGlassy") == nil
 				and not GamepadNav.hasMenu()
 				and not (self.Popup and not self.Popup.Closed)
 				and not (self.Need and not self.Need.Closed)

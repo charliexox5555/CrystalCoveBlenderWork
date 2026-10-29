@@ -26,6 +26,7 @@ export type PlayerSetup = {
 	IsBot: boolean?,
 	Skill: number?, -- bots only, 0..1
 	Hearts: number?, -- defaults to Balance.Match.Hearts (Crown Hill fights use 1, decision 105)
+	FirstOffer: string?, -- first-win unlock: available to try in the next match's hand
 }
 
 export type Side = {
@@ -115,7 +116,11 @@ function MatchLogic.new(players: { PlayerSetup }, rng: () -> number): Match
 			PickAnyUsed = 0,
 			HandRevision = 0,
 			SelectionRevision = 0,
-			Offers = {},
+			Offers = if p.FirstOffer
+					and p.Collection[p.FirstOffer]
+					and Glassies.ById[p.FirstOffer]
+				then { p.FirstOffer }
+				else {},
 			Pick = nil,
 			Aim = nil,
 			AimYaw = nil,
@@ -131,8 +136,15 @@ function MatchLogic.startRound(match: Match)
 	assert(not match.Over, "match is over")
 	match.Round += 1
 	for _, side in match.Sides do
-		if #side.Offers == 0 then
-			side.Offers = MatchLogic.rollOffers(side.Collection, B.RollChoices, match.Rng)
+		if #side.Offers < B.RollChoices then
+			for _, id in MatchLogic.rollOffers(side.Collection, #MatchLogic.ownedIds(side.Collection), match.Rng) do
+				if not table.find(side.Offers, id) then
+					table.insert(side.Offers, id)
+				end
+				if #side.Offers >= B.RollChoices then
+					break
+				end
+			end
 		end
 		side.Pick = nil
 		side.Aim = nil
@@ -312,8 +324,8 @@ function MatchLogic.fightSetup(match: Match): FightRules.Setup
 			CastPolicy = if side.IsBot then "bot" else "player",
 			CastSkill = side.Skill,
 			-- Decision 122: down to the last heart while the other side isn't, and two round wins in a row.
-			LastGlass = side.Hearts == 1 and match.Sides[3 - i].Hearts > 1,
-			OnFire = side.Streak >= Balance.Arena.OnFireStreak,
+			LastGlass = Balance.Arena.Enabled and side.Hearts == 1 and match.Sides[3 - i].Hearts > 1,
+			OnFire = Balance.Arena.Enabled and side.Streak >= Balance.Arena.OnFireStreak,
 		}
 	end
 	return { A = fighter(1), B = fighter(2), Rng = match.Rng, SweetSpot = match.SweetSpot, Twist = match.Twist }

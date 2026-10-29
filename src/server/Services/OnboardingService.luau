@@ -127,6 +127,17 @@ function Service:DailyClaimed(player)
 	end
 end
 
+-- Day 1 is the existing calendar reward, collected without an extra modal before the first smash.
+-- The calendar's once-per-UTC-day rule also handles reconnects and players who already claimed it.
+function Service:FinishWelcome(player)
+	if self:Step(player) ~= "Daily" then
+		return
+	end
+	if self.Services.RetentionService:CompleteWelcomeDaily(player) then
+		self:DailyClaimed(player)
+	end
+end
+
 -- MatchService: a match with `player` in it started / finished. `tutorial` = the assisted first match.
 -- `first`: this is the player's first match (against the assisted Rookie Bot or a real player, decision 125).
 function Service:MatchStarted(player, first)
@@ -141,10 +152,12 @@ end
 
 -- `finishedVsPlayer`: a first match against a real player played to the end; it pays the first-win prize even when
 -- lost (the assist only exists against the bot, and a new player losing to a person shouldn't lose the prize too).
-function Service:MatchFinished(player, won, first, finishedVsPlayer)
+function Service:MatchFinished(player, won, first, finishedVsPlayer, completed)
 	if not first then
-		if self:Step(player) == "Done" then
+		if completed and self:Step(player) == "Done" then
 			self:Track(player, "SecondMatchFinished")
+			data(self, player).Onboarding.ReplayGlassy = nil
+			player:SetAttribute("OnboardingRewardGlassy", nil)
 		end
 		return
 	end
@@ -172,6 +185,8 @@ function Service:OpenWin(player)
 	self:Track(player, "WinOpened")
 	self:SetStep(player, "Done")
 	if pick then
+		profile.Onboarding.ReplayGlassy = pick
+		player:SetAttribute("OnboardingRewardGlassy", pick)
 		self:Reveal(player, "Win", { pick })
 	end
 end
@@ -184,6 +199,10 @@ function Service:Loaded(player)
 		data(self, player).Onboarding.Step = step
 	end
 	player:SetAttribute("OnboardingStep", step) -- after the fix-up, or the client would wait on a match that is gone
+	player:SetAttribute("OnboardingRewardGlassy", data(self, player).Onboarding.ReplayGlassy)
+	if step == "Daily" then
+		self:FinishWelcome(player)
+	end
 	if step == "Arena" then
 		self:Reserve(player)
 	end
@@ -201,11 +220,17 @@ function Service:Start()
 			self:OpenWelcome(player)
 		elseif action == "OpenWin" then
 			self:OpenWin(player)
+		elseif action == "CompleteWelcome" then
+			local profile = data(self, player)
+			if profile and profile.Onboarding.Funnel >= Rules.funnelStep(0, "WelcomeOpened") then
+				self:FinishWelcome(player)
+			end
 		elseif action == "Collected" then
 			-- The client closed an onboarding opening (welcome or win). Only counts right after an open.
 			local funnel = data(self, player) and data(self, player).Onboarding.Funnel
 			if funnel == Rules.funnelStep(0, "WelcomeOpened") or funnel == Rules.funnelStep(0, "WinOpened") then
 				self:Track(player, "Collected")
+				self:FinishWelcome(player)
 			end
 		end
 	end)

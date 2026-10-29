@@ -40,6 +40,9 @@ end
 
 -- The twist for a new round (MatchLogic.startRound). Never the same as `last`.
 function ArenaRules.rollTwist(rng: () -> number, last: string?): string
+	if not A.Enabled then
+		return "Calm"
+	end
 	return weighted(rng, A.Twists, last)
 end
 
@@ -99,6 +102,9 @@ local function apply(state: any, side: number, kind: string, emit: (any, any) ->
 end
 
 function ArenaRules.new(state: any, setup: any, emit: (any, any) -> ())
+	if not A.Enabled then
+		return
+	end
 	local twist = setup.Twist
 	if type(twist) ~= "string" or not A.Twists[twist] then
 		twist = "Calm"
@@ -246,6 +252,9 @@ end
 
 -- Shoves (Push, Zoom) for the swing to apply this step.
 function ArenaRules.drainImpulses(state: any): { any }
+	if not state.Arena then
+		return {}
+	end
 	local list = state.Arena.Impulses
 	state.Arena.Impulses = {}
 	return list
@@ -253,6 +262,9 @@ end
 
 -- Glints the swing should place now: call `placeGlint` with a point for each.
 function ArenaRules.drainRequests(state: any): { Glint }
+	if not state.Arena then
+		return {}
+	end
 	local list = state.Arena.Requests
 	state.Arena.Requests = {}
 	return list
@@ -276,7 +288,7 @@ end
 
 -- `side` touched glint `id` (the swing decides who got there first).
 function ArenaRules.grab(state: any, side: number, id: number, emit: (any, any) -> ()): boolean
-	if state.Over then
+	if state.Over or not state.Arena then
 		return false
 	end
 	for i, glint in state.Arena.Glints do

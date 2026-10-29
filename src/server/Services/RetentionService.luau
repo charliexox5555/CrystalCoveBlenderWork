@@ -58,21 +58,18 @@ function Service:MatchRecorded(player, match, side, observed)
 	end
 end
 function Service:Pulled() end -- hook reserved for future quest rotations; no extra reward
-function Service:Request(player, kind, id)
-	if not self.Guard:Allow(player, "Claim", Balance.Retention.ClaimRateSeconds) then
-		return
-	end
+-- One grant/save/result path for remote requests and trusted onboarding. The latter must not
+-- lose Day 1 just because an unrelated claim consumed the remote rate-limit slot.
+local function claim(self, player, kind, id)
 	local data = self.Services.DataService:Get(player)
-	if not data or type(kind) ~= "string" or #kind > 16 then
-		return
+	local profile = self.Services.DataService.Profiles[player]
+	if not data or not profile or type(kind) ~= "string" or #kind > 16 then
+		return false
 	end
 	local ok, message, reward, item = Rules.claim(data, kind, id, os.time())
-	if ok and kind == "Daily" and self.Services.OnboardingService then
-		self.Services.OnboardingService:DailyClaimed(player) -- onboarding step 2 -> 3 (decision 100)
-	end
 	if ok then
 		self.Services.DataService:Sync(player)
-		self.Services.DataService.Profiles[player].Profile:Save()
+		profile.Profile:Save()
 		if self.Services.BadgeService then
 			self.Services.BadgeService:Check(player) -- Midnight's Week, Level 10 (decision 118)
 		end
@@ -85,6 +82,33 @@ function Service:Request(player, kind, id)
 		Reward = if type(reward) == "table" then reward else nil,
 		Item = item,
 	})
+	return ok
+end
+
+function Service:Request(player, kind, id)
+	if not self.Guard:Allow(player, "Claim", Balance.Retention.ClaimRateSeconds) then
+		return false
+	end
+	local ok = claim(self, player, kind, id)
+	if ok and kind == "Daily" and self.Services.OnboardingService then
+		-- The grant and save request precede advancing the tutorial.
+		self.Services.OnboardingService:DailyClaimed(player)
+	end
+	return ok
+end
+
+-- Internal-only: there is no remote argument that can invoke this path. Rules.claimDaily
+-- retains the once-per-UTC-day gate, including reconnects and a prior manual claim.
+function Service:CompleteWelcomeDaily(player)
+	local data = self.Services.DataService:Get(player)
+	if not data or data.Onboarding.Step ~= "Daily" then
+		return false
+	end
+	if Rules.calendar(data, os.time()).ClaimedToday then
+		return true
+	end
+	claim(self, player, "Daily")
+	return Rules.calendar(data, os.time()).ClaimedToday
 end
 function Service:Start()
 	local props = workspace.Lobby:FindFirstChild("GlassClashProps")

@@ -20,7 +20,10 @@ function Signatures.new(state, fighter)
 		LastReady = 0,
 		BusyUntil = -1,
 		-- Optional cast (decision 85): "player", "bot", "smart", "auto" or "mash"; nil casts at once.
-		Policy = if Cast.Enabled then fighter.CastPolicy else nil,
+		Policy = if not Cast.Enabled
+			then nil
+			elseif Cast.ManualEnabled == false and fighter.CastPolicy ~= nil then "auto"
+			else fighter.CastPolicy,
 		Skill = fighter.CastSkill or 0,
 		-- Cycle kits (Potion Flask): the brew order repeats from a random start each round.
 		CycleOffset = if kit.Cycle then math.floor(state.Rng() * #kit.Cycle) else 0,
@@ -70,7 +73,9 @@ local function hold(state, side, emit, overrides, arm)
 	local shape = overrides and overrides.Shape or s.Kit.Shape
 	-- The onboarding first match gives the new player a longer CAST window (FightRules Assist.CastSeconds).
 	local assist = state.Assist
-	local seconds = assist and assist.CastSeconds and assist.CastSeconds[side] or Cast.AutoSeconds
+	local seconds = if Cast.ManualEnabled == false
+		then Cast.AutoSeconds
+		else assist and assist.CastSeconds and assist.CastSeconds[side] or Cast.AutoSeconds
 	s.Ready = {
 		Id = state.ReadySerial,
 		Overrides = overrides,
@@ -243,6 +248,9 @@ end
 
 -- The player (or a bot/tool policy) asks to cast the Ready power. Applied on the next tick.
 function Signatures.requestCast(state, side)
+	if Cast.ManualEnabled == false then
+		return false
+	end
 	local f = state.Fighters[side]
 	local s = f and f.Signature
 	if state.Over or not s or not s.Ready or s.Ready.Requested then

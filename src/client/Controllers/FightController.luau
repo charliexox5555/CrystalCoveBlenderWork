@@ -13,8 +13,6 @@ local View = require(script.Parent.Parent.Presentation.FightView)
 local Isolation = require(script.Parent.Parent.Presentation.StageIsolation)
 local ViewCull = require(script.Parent.Parent.Presentation.ViewCull)
 local bystanderEvery
-local CastButton = require(script.Parent.Parent.UI.Screens.CastButton)
-local PushButton = require(script.Parent.Parent.UI.Screens.PushButton)
 local Controller = {}
 function Controller:Init(controllers)
 	self.Controllers, self.Views, self.SnapshotCount, self.Keys = controllers, {}, 0, {}
@@ -286,37 +284,6 @@ function Controller:BindLock(on)
 	)
 end
 
--- CAST button (decision 85): follows our own side's Ready / cast events.
-local CLEARS = { ReadyCancel = true, CastStart = true, SignatureArmed = true, Shatter = true, End = true }
-
-function Controller:CastEvents(view, events)
-	if not view or not view.Participant or not view.Side then
-		return
-	end
-	for _, e in events do
-		-- PUSH (decision 122): charges follow the server.
-		if (e.Type == "Push" or e.Type == "PushCharge") and e.Side == view.Side then
-			self.PushUi:SetCharges(e.Charges)
-		end
-		if e.Type == "Shatter" or e.Type == "End" then
-			self.CastUi:Clear()
-			self.PushUi:Show(false)
-		elseif e.Side == view.Side then
-			if e.Type == "SignatureReady" then
-				if e.Requested then
-					self.CastUi:Clear()
-				else
-					self.CastUi:Ready(e)
-				end
-			elseif CLEARS[e.Type] and (e.Type ~= "ReadyCancel" or e.ReadyId == self.CastUi.ReadyId) then
-				if e.Type ~= "CastStart" or e.Held then
-					self.CastUi:Clear()
-				end
-			end
-		end
-	end
-end
-
 local Feel = Balance.Feel
 function bystanderEvery(view, camera): number
 	if view.Viewing or view.Participant or not view.Scene or not camera or ViewCull.off() then
@@ -330,24 +297,7 @@ function bystanderEvery(view, camera): number
 end
 
 function Controller:Start()
-	self.CastUi = CastButton.new(function()
-		Remotes.CastPower:FireServer()
-	end)
-	self.PushUi = PushButton.new(function()
-		Remotes.Push:FireServer()
-	end)
 	Remotes.MatchState.OnClientEvent:Connect(function(data)
-		local mine = self.Views[data.Id]
-		if data.Phase ~= "Fighting" and mine and mine.Participant then
-			self.CastUi:Clear()
-			self.PushUi:Show(false)
-		end
-		if data.Phase == "Fighting" and table.find(data.PlayerIds or {}, Players.LocalPlayer.UserId) then
-			if not data.JoinedLate then
-				self.PushUi:Reset()
-			end
-			self.PushUi:Show(true)
-		end
 		if table.find(data.PlayerIds or {}, Players.LocalPlayer.UserId) and data.MatchId then
 			self.OwnMatch = { MatchId = data.MatchId, PlayerIds = data.PlayerIds, StageName = data.StageName }
 		end
@@ -386,9 +336,6 @@ function Controller:Start()
 				self.Views[data.Id] = view
 			end
 			view:State(data)
-			if data.Phase == "Fighting" and data.SignatureState then
-				self:CastEvents(view, data.SignatureState)
-			end
 			local watch = self.Watch
 			if watch and watch.View ~= view and data.ArenaId == watch.ArenaId and not view.Participant then
 				if data.MatchId == watch.MatchId then
@@ -424,7 +371,6 @@ function Controller:Start()
 		local view = self.Views[packet.Id]
 		if view then
 			view:Queue(packet)
-			self:CastEvents(view, packet.Events or {})
 		end
 	end)
 	UIS.InputBegan:Connect(function(input, processed)
@@ -456,6 +402,7 @@ function Controller:Start()
 				and drag.Input.UserInputType == Enum.UserInputType.MouseButton1
 		then
 			local delta = Vector2.new(input.Position.X, input.Position.Y) - drag.Origin
+			drag.Distance = delta.Magnitude
 			view.Aim = Rules.clampAim(
 				Balance.Motion.AimMin
 					+ delta.Magnitude / Balance.Feel.AimDragPixels * (Balance.Motion.AimMax - Balance.Motion.AimMin)
@@ -466,7 +413,15 @@ function Controller:Start()
 	UIS.InputEnded:Connect(function(input)
 		local view = self:Active()
 		if view and view.Drag and input == view.Drag.Input then
+			local drag = view.Drag
 			view.Drag = nil
+			local distance = drag.Distance or 0
+			if distance >= Balance.Feel.AimReleasePixels and view.Phase == "Aiming" and not view.Locked then
+				view:Lock()
+				if view.Hud then
+					view.Hud:LockPressed()
+				end
+			end
 		end
 	end)
 	UIS.WindowFocusReleased:Connect(function()
@@ -476,8 +431,6 @@ function Controller:Start()
 		end
 	end)
 	Players.LocalPlayer.CharacterRemoving:Connect(function()
-		self.CastUi:Clear()
-		self.PushUi:Show(false)
 		self:StopWatching()
 		for _, view in self.Views do
 			view:EndFight()
@@ -541,10 +494,6 @@ function Controller:Start()
 			else
 				view:Render(dt)
 			end
-		end
-		if active and active.Participant and active.Phase == "Fighting" then
-			self.CastUi:Update(active)
-			self.PushUi:Update()
 		end
 		local aiming = active ~= nil
 			and active.Participant

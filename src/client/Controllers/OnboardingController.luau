@@ -77,7 +77,7 @@ end
 -- random items are restricted), offered while the server says the gift is Ready.
 local CLAIMS = {
 	Welcome = { Title = "WELCOME!", Count = "x3", Action = "OpenWelcome" },
-	Win = { Title = "YOU WON!", Action = "OpenWin" },
+	Win = { Title = "FIRST CLASH REWARD!", Action = "OpenWin" },
 	Group = { Title = "GROUP GIFT!", Group = true },
 }
 
@@ -222,7 +222,7 @@ function Controller:PlayReveal(reveal)
 	end
 	local data = reveal.Data
 	local status = if data.Kind == "Win"
-		then "YOU WON! A FREE KILN OPEN"
+		then "YOUR FIRST CLASH REWARD"
 		elseif data.Kind == "Group" then "THANKS FOR JOINING!"
 		elseif data.Kind == "Daily" then "YOUR DAILY GLASSY!" -- the 9 R$ Daily Glassy (decision 116)
 		else "YOUR FIRST GLASSIES!"
@@ -247,30 +247,12 @@ function Controller:RevealDone(reveal)
 	if reveal.Data.Kind == "Welcome" or reveal.Data.Kind == "Win" then
 		Remotes.OnboardingAction:FireServer("Collected") -- funnel: the opening was closed
 	end
-	if self.Player:GetAttribute("OnboardingStep") == "Daily" then
-		self:ShowDaily()
-	end
 end
 
 -- Step 2 ------------------------------------------------------------------------------------------------------
 function Controller:ShowDaily()
-	local topbar = self.Controllers.TopbarController
-	if not topbar then
-		return
-	end
-	topbar:OpenScreen("DailyRewardsScreen")
-	local pg = self.Player.PlayerGui
-	local gui = pg:FindFirstChild("DailyRewardsScreen")
-	task.delay(0.5, function()
-		if not gui or self.Player:GetAttribute("OnboardingStep") ~= "Daily" then
-			return
-		end
-		for _, cell in gui:FindFirstChild("Days", true) and gui:FindFirstChild("Days", true):GetChildren() or {} do
-			if cell:GetAttribute("State") == "Today" then
-				self:Hint("daily", cell:FindFirstChild("ClaimButton"), true)
-			end
-		end
-	end)
+	-- The server collects Day 1 after the welcome opening; the calendar stays available in Rewards.
+	Remotes.OnboardingAction:FireServer("CompleteWelcome")
 end
 
 -- Step 3 ------------------------------------------------------------------------------------------------------
@@ -341,6 +323,9 @@ end
 
 -- Step 4 ------------------------------------------------------------------------------------------------------
 function Controller:WatchMatch()
+	if Balance.CombatRelease.Cast.ManualEnabled == false then
+		return
+	end
 	local pg = self.Player.PlayerGui
 	if self.MatchWatch then
 		return

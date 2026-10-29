@@ -1,0 +1,4 @@
+mode=equal:auto rounds=1232 avg 27.4 s, 8.6 hits, 22.2% timeouts
+  prism_blade      Epic      Sharp  53.0%  (n=624)  worst pickle_jar 12%, best rocket_pop 94%
+  hot_sauce        Uncommon  Fizzy  49.4%  (n=624)  worst prism_blade 12%, best water_jug 88%
+in 45-55% band: 2/40, spread 49.4%-53.0%

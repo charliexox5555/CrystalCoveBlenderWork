@@ -1,4 +1,3 @@
-local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
 local Glassies = require(RS.Shared.Config.Glassies)
 local S = require(script.Parent.Parent.Components.StainedGlass)
@@ -8,42 +7,45 @@ local TweenService = game:GetService("TweenService")
 local Debris = game:GetService("Debris")
 local Feel = require(RS.Shared.Config.Balance).Feel
 local Billboards = {}
-function Billboards.new(data)
+-- Stable screen panels keep HP/hearts readable while the glassies swing in 3D.
+function Billboards.new(data, parent)
 	local list = {}
 	for side, setup in { data.A, data.B } do
 		local d = Glassies.get(setup.Id)
-		local gui = RS.Assets.UI.FightBillboard:Clone()
-		gui.Name = "FightPlayer" .. side
-		gui.AlwaysOnTop = false
-		gui.LightInfluence = 0
-		gui.Body.OwnerName.Text = data.Names and data.Names[side] or (if side == 1 then "YOU" else "BOT")
-		S.tag(gui.Body.GlassyTag, d.Name, S.Types[d.Type])
-		-- The name wears its arena side's colour (matches the queue pad glow); the HP line gets the same ink outline.
-		gui.Body.OwnerName.TextColor3 = Theme.Sides[side]
-		local amount = gui.Body:FindFirstChild("HpAmount")
+		local gui = Instance.new("Frame")
+		gui.Name, gui.BackgroundTransparency = "FightPlayer" .. side, 1
+		gui.Size = UDim2.fromScale(Feel.FightPanelWidth, Feel.FightPanelHeight)
+		gui.AnchorPoint = Vector2.new(if side == 1 then 0 else 1, 0)
+		gui.Position =
+			UDim2.fromScale(if side == 1 then Feel.FightPanelInset else 1 - Feel.FightPanelInset, Feel.FightPanelTop)
+		gui.Parent = parent
+		local body = RS.Assets.UI.FightBillboard.Body:Clone()
+		body.Parent = gui
+		body.OwnerName.Text = data.Names and data.Names[side] or (if side == 1 then "YOU" else "BOT")
+		body.OwnerName.TextColor3 = Theme.Sides[side]
+		-- The world tag's aspect constraint shrank long names to "Crystal..." on phone screens.
+		local tag = body.GlassyTag
+		local aspect = tag:FindFirstChildOfClass("UIAspectRatioConstraint")
+		if aspect then
+			aspect:Destroy()
+		end
+		S.tag(body.GlassyTag, d.Name, S.Types[d.Type])
+		local amount = body:FindFirstChild("HpAmount")
 		if amount then
 			amount.FontFace, amount.TextColor3 = Theme.Fonts.Body, Theme.Palette.milkLight
 			Kit.outline(amount, 1.5)
 		end
-		local player = data.PlayerIds and Players:GetPlayerByUserId(data.PlayerIds[side])
-		local head = player and player.Character and player.Character:FindFirstChild("Head")
-		local position = if data.AvatarPositions
-			then data.AvatarPositions[side] + Vector3.yAxis * 2
-			elseif head then head.Position
-			else (
-				data.HeartPositions and data.HeartPositions[side]
-				or data.HookPositions and data.HookPositions[side]
-				or Vector3.zero
-			) + Vector3.yAxis * 3
-		local offset = Vector3.zero
-		local anchor = Instance.new("Part")
-		anchor.Name = "FightBillboardAnchor" .. side
-		anchor.Anchored, anchor.CanCollide, anchor.CanTouch, anchor.CanQuery, anchor.Transparency =
-			true, false, false, false, 1
-		anchor.Position, anchor.Parent = position + offset, workspace
-		gui.Adornee, gui.Enabled, gui.Parent = anchor, true, Players.LocalPlayer.PlayerGui
+		local track = Instance.new("Frame")
+		track.Name, track.BorderSizePixel, track.BackgroundTransparency = "HpTrack", 0, 0.25
+		track.BackgroundColor3 = Theme.Colors.Shadow
+		track.Size = UDim2.fromScale(body.GlassyTag.Size.X.Scale, Feel.FightHpBarHeight)
+		track.Position = UDim2.fromScale(body.GlassyTag.Position.X.Scale, Feel.FightHpBarY)
+		track.Parent = body
+		local fill = Instance.new("Frame")
+		fill.Name, fill.BorderSizePixel, fill.Size = "Fill", 0, UDim2.fromScale(1, 1)
+		fill.BackgroundColor3, fill.Parent = Theme.Sides[side], track
 		S.bindSlices(gui)
-		list[side] = { Gui = gui, Anchor = anchor, Head = head, Offset = offset, Max = data.MaxHearts }
+		list[side] = { Gui = gui, Fill = fill, Max = data.MaxHearts }
 	end
 	return list
 end
@@ -81,6 +83,7 @@ function Billboards.update(list, hearts, hp, maxima)
 		local amount = item.Gui.Body:FindFirstChild("HpAmount")
 		if amount and hp then
 			amount.Text = string.format("%d / %d HP", math.ceil(math.max(0, hp[side])), math.ceil(maxima[side]))
+			item.Fill.Size = UDim2.fromScale(math.clamp(hp[side] / math.max(1, maxima[side]), 0, 1), 1)
 		end
 		if item.Head and item.Head.Parent then
 			item.Anchor.Position = item.Head.Position + item.Offset

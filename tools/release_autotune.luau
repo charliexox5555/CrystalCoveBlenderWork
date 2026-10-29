@@ -34,6 +34,7 @@ local KNOBS = {
 	mark_contact = { Key = "MarkDamage" },
 	heal = { Key = "Heal", Cap = 0.25 },
 	guard = { Key = "Duration", Cap = 5 },
+mirror = { Key = "Duration", Cap = 5 },
 }
 
 local per = {}

@@ -1,5 +1,6 @@
-# Glass Clash — Game Design Doc (v0.3)
+# Glass vs Glass — Game Design Doc
 
+> **Current: classic combat (Oct 29, decision 127).** Pick, aim and release; signature powers fire automatically. CAST, PUSH and the arena event layer are disabled. One-round assisted bot introduction, faster setup, first-prize replay hand and true-completion analytics. [Current implementation](design/CLASSIC_LOOP_2026_10_29.md). Historical notes below describe superseded versions.
 > **v0.4 (Oct 23, decision 122):** rounds are faster (~18 s fights) and busier: glints to race for, the Heat, one arena twist per round, a PUSH button, Last Glass and On Fire ([ROUND_REVAMP](design/ROUND_REVAMP.md), section 3.9).
 > **v0.3.1 (Oct 14):** powers fire by themselves at random moments (no button), and the swing is erratic and 3D with spin. Luck and suspense are a pillar.
 > **v0.3 (Oct 13) replaces the Pokémon-style structure** (routes, trainers, catching, evolution) with **lobby arena matches**, inspired by the success of *Ball VS Ball* ([research brief](research/BALL_VS_BALL.md)). Older versions are in git history.
@@ -18,7 +19,7 @@ Walk up to an arena, roll three glassies from your collection, pick one, aim you
 ### Pillars
 
 1. **The shatter is the reward.** Every round ends in a slow-motion, loud, sparkly shatter. If a change makes it less satisfying, don't make it.
-2. **Simple to play, fun to watch.** Two decisions per round (which glassy, and how and where to pull it back), then two optional buttons (CAST, PUSH) for players who want to steer the fight; a player who only watches still gets a fair fight. Anyone watching the arena should understand it in 3 seconds.
+2. **Simple to play, fun to watch.** Two decisions per round (which glassy, and how and where to pull it back), then automatic powers and a readable glass duel. Anyone watching the arena should understand it in 3 seconds.
 3. **Luck and suspense.** Like Ball VS Ball, the best glassy doesn't always win. Swings miss, powers fire at good or bad moments and can whiff, a lucky smash turns a round around. Strong glassies win more often, never every time.
 4. **From kitchen to fantasy.** Common glassies are things from your kitchen; rare ones are swords, unicorns and dragons. Players see the fantasy ones from day one (the Kiln, other players' fights) so they have something to chase.
 5. **Fair and readable.** Rarity adds flair and a small edge, never an auto-win. Every glassy has one clear gimmick you can see happen.
@@ -90,15 +91,9 @@ Crit chance = `CritBase + CritPerSwing × Swing` (max 30%), plus Lucky. All in `
 | Fizzy | 20 / 110 / 10 | 1.0 | Balanced |
 | Sharp | 21 / 105 / 14 | 0.85 | Swings high, crits more, cracks a bit sooner |
 
-### 3.5 Powers (automatic, with an optional CAST)
+### 3.5 Powers (automatic)
 
-Every glassy has **one signature power** with its own trigger (contacts, swing turnarounds, a timer, low HP, hits taken). When the trigger fires, the power becomes **Ready** and a big **CAST** button lights up (DECISIONS 85, revising 33):
-
-- **Tap CAST** to fire it now. The button glows gold and says NOW! at a good moment (the glassies closing in, or a smash about to land), so timing is learnable.
-- **Ignore it** and it fires by itself after `Cast.AutoSeconds` (1.6 s). Young players can just watch; pressing as soon as it lights up is never worse than waiting (real swing: 52% vs auto).
-- **Contact powers** (Pop, Pickle Jar, Ketchup, Briar Flask, Mason Jar) **arm** instead: the next contact within `Cast.ArmedSeconds` (3 s) pays off. Arm right before a smash; an arm with no contact fades.
-- Bots press CAST with a reaction delay and moment-reading that scale with their skill.
-- Target: a quick player who times casts beats an auto-only player 55–62% with the same glassy. Skill matters, never decides alone.
+Every glassy has one signature power with its own trigger. Live fighters fire automatically after the common Ready delay; contact powers arm and pay off at their next valid contact. No CAST timing or input is required from players or bots (decision 127). Unique power effects, physical hits and shatters remain.
 
 The legacy passive/burst tables below describe dormant definitions. The 24 release kits live in `Balance.CombatRelease.Kits`. Glassies can rename them ("Lid Shield", "Prism Beam", "Hot Streak"). Numbers live in `Config/Powers.luau`.
 
@@ -146,7 +141,7 @@ The legacy passive/burst tables below describe dormant definitions. The 24 relea
 | Luck | winner was behind at some point in 35–80% of rounds; ≥ 1 lead change a round; 1.2–3 powers per glassy; 20–50% of aimed powers miss |
 | Mythic vs Common at equal kit strength, 5 stars vs 0 | ~55% / ≤ 62% (DECISIONS 86) |
 | Every release glassy at equal stats vs the field, **real swing**, live-style casting (`tools/release_matrix.sh` mode `equal:bot0.5`, decision 123) | 45–55% |
-| Timed CAST vs auto-only, same glassy | 55–62% |
+| Manual CAST | Disabled (decision 127) |
 
 These run against **FightModel**, a stand-in for the swing. When the real swing works in Studio, log real hits per second and speeds and update `Balance.SimModel` so the simulator stays honest.
 
@@ -156,15 +151,9 @@ These run against **FightModel**, a stand-in for the swing. When the real swing 
 - Rewards are granted by the server from `MatchLogic.rewards`. Bots never take trophies.
 - Log suspicious patterns (e.g. Perfect Release rate per player) for review.
 
-### 3.9 The arena layer: always something going on (decision 122)
+### 3.9 Classic arena
 
-Rules in `ArenaRules` (pure), numbers in `Balance.Arena`, geometry in `Pendulum`, visuals in `ArenaFX`. Full write-up: [design/ROUND_REVAMP.md](design/ROUND_REVAMP.md).
-
-- **Glints:** every 2.5–4 s a glowing gem pops into the clash zone between the two glassies; whoever swings through it first grabs it. Smash (next hit ×1.8), Bubble (blocks the next damage), Patch (+10% HP), Bomb (sticks to the other glass, pops for 8% max HP after 1.2 s), Frost (the other glass swings low for 1.5 s), Zoom (a big shove). One picture each, no words. At most 2 at once.
-- **The Heat:** a kiln bar fills over the round. HEATING UP at 8 s (glints come faster), MELTDOWN at 15 s (overtime: damage climbs, swings go higher).
-- **Arena twists:** one per round, shown while aiming and at the countdown, never twice in a row: Calm, Windy (gusts), Bouncy (harder bounces), Magnet (glassies pull together), Glint Rain (twice the glints), Bumpers (six crystal posts glassies ricochet off). The tutorial match is Calm.
-- **PUSH:** a second button beside CAST shoves your glassy along its swing. 3 charges, one back every 4 s, never automatic. Bots push too.
-- **Stakes:** Last Glass (down to your last heart while the other player isn't: start holding Smash or Bubble), On Fire (2 round wins in a row light your glassy, cosmetic), MATCH POINT on a last-heart round, and "+10 COINS" when you take a heart while still behind.
+Decision 127 disables the arena modifier layer: no glints, Heat UI, random twists, PUSH, bumpers or Last Glass bonuses. The automatic signature powers and core damage overtime remain. Historical implementation is retained for recovery; see [ROUND_REVAMP](design/ROUND_REVAMP.md).
 
 ## 4. Glassies and collection
 

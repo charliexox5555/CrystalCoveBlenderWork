@@ -7,6 +7,8 @@ local CastTiming = if script then require(game.ReplicatedStorage.Shared.CastTimi
 return function(t, deps)
 	local Rules, Balance = deps.FightRules, deps.Balance
 	local C = Balance.CombatRelease.Cast
+	local previousManual = C.ManualEnabled
+	C.ManualEnabled = true -- explicit legacy manual-cast coverage
 	local function fight(a, b, policyA, policyB)
 		return Rules.new({
 			A = { Id = a, CastPolicy = policyA },
@@ -147,4 +149,5 @@ return function(t, deps)
 		t.ok(manual[1] > 0, "smart side cast by hand")
 		t.ok(manual[2] > 0, "bot side cast by hand")
 	end)
+	C.ManualEnabled = previousManual
 end

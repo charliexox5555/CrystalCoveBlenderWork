@@ -1,0 +1,19 @@
+{
+  "DeadFraction": 0.1453726367566323,
+  "DeadSeconds": 345.46111111121314,
+  "Events": 1465,
+  "EventsPerSecond": 0.6164830309363108,
+  "FirstContactMedian": 0.466666666666666,
+  "FirstContactP90": 0.4999999999999992,
+  "Hits": 1135,
+  "HitsPerSecond": 0.4776165461520224,
+  "LongestQuietMedian": 4.500000000000703,
+  "LongestQuietP90": 6.716666666667717,
+  "MeanSeconds": 22.00354938271805,
+  "MedianSeconds": 21.37777777777984,
+  "P90Seconds": 28.53888888889207,
+  "Powers": 537,
+  "Rounds": 108,
+  "Seconds": 2376.383333333549,
+  "Timeouts": 3
+}

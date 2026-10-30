@@ -1,5 +1,11 @@
 # Dev log
 
+## 2026-10-29 — Codex — Continuous-loop readability and pacing
+- Restored missing damage/blocked/powered-clash/status feedback through the existing FightHud popup presenter; preserved no power banners. Added YOU marker, removed redundant center instruction. Private snapshot playback now interpolates motion/HP and delivers events at the drawn contact time; clears between duels and flushes final shatter.
+- Lune/Studio **294 passed, 0 failed**, including two new timing/final-flush regressions. Galaxy A06 actual queued-switch click passed after compensating the MCP mouse offset. EXIT's44px target stays inside the safe GUI bounds; actual Galaxy and desktop exit clicks restored Custom camera and removed the lab. Phone hardware/novice results remain unverified.
+- New `tools/loop_lab_report`:36 default-aim real-swing fixtures, median12.73s/p9018.02s; first impact0.51s/p900.52s; first power4.01s/p907.68s among34/36 with a power. One timeout. Cup/Ketchup slow tails40.01s/4 contacts and35.84s/9 contacts remain; no production Balance changes. Review/limits/novice observation protocol: docs/testing/CONTINUOUS_LOOP_REVIEW.md.
+- Next: creator/physical-phone/novice review and targeted Cup boost/contact investigation. No new metagame, saved progression, production service changes or publishing.
+
 ## 2026-10-29 — Codex — Creator correction: seamless automatic loop
 - Creator explicitly rejected repeated re-aim as friction. Removed A from the active lab UI/server Start path; old pure runner/tests retained only as historical prototype code.
 - Active lab: pick/launch once, automatic duel,1.25s shatter beat, immediate next opponent using prior aim. Optional bottom-row selection queues a glassy for the next duel without interrupting the current one. No replay/aim/menu/lobby gates between duels.

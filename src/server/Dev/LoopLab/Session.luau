@@ -71,6 +71,7 @@ function Session:launch(aim, yaw, now)
 		self.Sim.Fight.Fighters[side].Aim, self.Sim.Fight.Fighters[side].AimYaw = a, y
 	end
 	self.Shots += 1
+	self.LaunchAt = self.LaunchAt or now
 	self.Phase, self.ShotStarted = "Flight", self.Sim.Fight.Time
 	self.Deadline = now + C.ShotSeconds
 	table.insert(self.Trace, { Shot = self.Shots, Aim = aim, Yaw = yaw, At = now - self.Started })
@@ -113,7 +114,11 @@ function Session:step(dt, now)
 		table.insert(self.Events, e)
 		if e.Type == "Hit" then
 			self.Contacts += 1
+			self.FirstImpactSeconds = self.FirstImpactSeconds or e.Time
 			hit = true
+		end
+		if e.Type == "CastRelease" or e.Type == "SignatureContact" or e.Type == "SignatureBlock" then
+			self.FirstPowerSeconds = self.FirstPowerSeconds or e.Time
 		end
 	end
 	if self.Sim.Fight.Over then
@@ -154,6 +159,9 @@ function Session:packet()
 		Winner = self.Winner,
 		Reason = self.Reason,
 		Duration = self.Duration,
+		FirstImpactSeconds = self.FirstImpactSeconds,
+		FirstPowerSeconds = self.FirstPowerSeconds,
+		FightSeconds = self.Sim.Fight.Time,
 		Snapshot = snapshot,
 		Events = events,
 		NextId = self.NextId,

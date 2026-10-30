@@ -2,7 +2,43 @@ local Session = if script
 	then require(game.ServerScriptService.Server.Dev.LoopLab.Session)
 	else require("../server/Dev/LoopLab/Session")
 local C = if script then require(game.ReplicatedStorage.Shared.Config.LoopLab) else require("../shared/Config/LoopLab")
+local Playback = if script
+	then require(game.StarterPlayer.StarterPlayerScripts.Client.Dev.LoopLabPlayback)
+	else require("../client/Dev/LoopLabPlayback")
 return function(t, d)
+	local function frame(time, x, hp)
+		return {
+			T = time,
+			B = { { x, -5, 0, 1, 0, 0, 0, 0, 0, 0 }, { -x, -5, 0, -1, 0, 0, 0, 0, 0, 0 } },
+			R = { Hp = { hp, hp }, Power = { 0, 0 } },
+		}
+	end
+	t.test("lab smooths motion and HP while delivering feedback once at the drawn contact", function()
+		local p = Playback.new(0.1, 0.1, 8)
+		p:push(frame(0, 0, 100), {}, 0, false)
+		p:push(frame(0.1, 0.1, 90), { { Type = "Hit", Time = 0.1 } }, 0.1, false)
+		local middle, early = p:sample(0.15)
+		t.ok(math.abs(middle.B[1][1] - 0.05) < 0.0001)
+		t.ok(math.abs(middle.R.Hp[1] - 95) < 0.0001)
+		t.eq(#early, 0)
+		p:push(frame(0.2, 0.2, 80), {}, 0.2, false)
+		local _, due = p:sample(0.2)
+		t.eq(#due, 1)
+		local _, repeatEvents = p:sample(0.21)
+		t.eq(#repeatEvents, 0)
+	end)
+	t.test("lab final snapshot flushes shatter and each new playback discards old feedback", function()
+		local p = Playback.new(0.1, 0.05, 8)
+		p:push(frame(1, 1, 0), { { Type = "Shatter", Time = 1 } }, 1, true)
+		local final, events = p:sample(1)
+		t.eq(final.T, 1)
+		t.eq(#events, 1)
+		local fresh = Playback.new(0.1, 0.05, 8)
+		t.eq(fresh:sample(2), nil)
+		fresh:push(frame(0, 0, 100), {}, 2, false)
+		local _, nextEvents = fresh:sample(2)
+		t.eq(#nextEvents, 0)
+	end)
 	t.test("continuous play starts the next duel without an aiming or replay gate", function()
 		local s = Session.new("B", "pop", 42, 0)
 		s:launch(0.7, 0.1, 0)

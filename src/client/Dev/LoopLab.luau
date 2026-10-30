@@ -18,6 +18,9 @@ function Lab.start()
 	Shatter:Init()
 	local remote = RS:WaitForChild("LoopLabRuntime"):WaitForChild("Action")
 	local gui = Kit.gui("LoopLab", 100)
+	local feedback = require(script.Parent.LoopLabFeedback).new(gui)
+	local Playback = require(script.Parent.LoopLabPlayback)
+	local playback
 	local saved =
 		{ Type = camera.CameraType, Subject = camera.CameraSubject, Fov = camera.FieldOfView, Frame = camera.CFrame }
 	local connections, hidden = {}, {}
@@ -62,11 +65,13 @@ function Lab.start()
 		connect(hit.Activated, callback)
 	end
 	local function resetScene()
+		feedback:Reset()
 		if scene then
 			scene:Destroy()
 			scene = nil
 		end
 		seed, packet = nil, nil
+		playback = nil
 	end
 	local function menu(nextMode)
 		remote:FireServer("Stop")
@@ -107,7 +112,7 @@ function Lab.start()
 			remote:FireServer("Switch", "B", id)
 		end)
 	end
-	local exit = Kit.gem(gui, "Exit", "EXIT LAB", "ruby", UDim2.fromScale(0.21, 0.09), UDim2.fromScale(0.83, 0.055))
+	local exit = Kit.gem(gui, "Exit", "EXIT LAB", "ruby", UDim2.fromScale(0.21, 0.09), UDim2.new(0.87, 0, 0.055, 22))
 	local function release()
 		if packet and packet.Phase == "Aim" then
 			remote:FireServer("Launch", aim, yaw)
@@ -118,6 +123,7 @@ function Lab.start()
 		if data.Seed ~= seed then
 			resetScene()
 			seed = data.Seed
+			playback = Playback.new(B.Feel.InterpolationDelay, C.SnapshotSeconds, B.Feel.SnapshotBuffer)
 			local maxima = {
 				Formula.stats(G.get(data.Id), {}).HP * C.HpScale,
 				Formula.stats(G.get(data.Rival), {}).HP * C.HpScale,
@@ -129,6 +135,7 @@ function Lab.start()
 			)
 			scene.OwnFight = true
 			scene:SetViewing(true)
+			scene:Tag(1, "YOU", Theme.Sides[1])
 			local bar = Instance.new("Part")
 			bar.Name, bar.Anchored, bar.CanCollide = "LabCrossbar", true, false
 			bar.Size, bar.CFrame = Vector3.new(20, 0.6, 0.6), frame
@@ -140,6 +147,7 @@ function Lab.start()
 				Color3.fromRGB(30, 42, 58), Enum.Material.SmoothPlastic, scene.Root
 		end
 		packet = data
+		playback:push(data.Snapshot, data.Events, os.clock(), data.Phase == "Result")
 		gui:SetAttribute("LabGlassy", data.Id)
 		gui:SetAttribute("LabSeed", data.Seed)
 		gui:SetAttribute("LabPhase", data.Phase)
@@ -162,9 +170,6 @@ function Lab.start()
 		nextChoice.Visible = data.Phase ~= "Aim"
 		shoot.Visible = data.Phase == "Aim"
 		require(client.UI.Components.StainedGlass).buttonText(shoot, "RELEASE")
-		for _, e in data.Events do
-			scene:Event(e, nil)
-		end
 	end)
 	local UIS = game:GetService("UserInputService")
 	connect(UIS.InputBegan, function(input, processed)
@@ -255,8 +260,12 @@ function Lab.start()
 		if not scene or not packet then
 			return
 		end
-		for side, b in packet.Snapshot.B do
+		local snapshot, events = playback:sample(os.clock())
+		for side, b in snapshot.B do
 			local p = Vector3.new(b[1], b[2], b[3])
+			if p.Magnitude > 0 then
+				p = p.Unit * B.Motion.StringLength
+			end
 			if packet.Phase == "Aim" then
 				local a, y = if side == 1 then aim else B.Motion.AimDefault, if side == 1 then yaw else 0
 				p = Vector3.new(
@@ -267,8 +276,11 @@ function Lab.start()
 			end
 			scene:Pose(side, p, b[7], Vector3.new(b[9], 0, b[10]))
 		end
-		scene:Update(packet.Snapshot.R, packet.Snapshot.T)
-		local h = packet.Snapshot.R.Hp
+		for _, e in events do
+			scene:Event(e, feedback)
+		end
+		scene:Update(snapshot.R, snapshot.T)
+		local h = snapshot.R.Hp
 		hp.Text = string.format(
 			"%s %d HP     %s %d HP",
 			string.upper(G.get(packet.Id).Name),
@@ -285,7 +297,7 @@ function Lab.start()
 			elseif packet.Phase == "Result" then (if packet.Winner == 1 then "YOU WIN" else "RIVAL WINS")
 				.. " - NEXT DUEL..."
 			elseif packet.Phase == "Recover" then packet.LastShot or "CLASH"
-			else "AUTOMATIC POWERS - WATCH THE GLASS"
+			else ""
 	end)
 	function Lab.Stop()
 		remote:FireServer("Stop")

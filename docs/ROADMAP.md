@@ -10,7 +10,8 @@
 - [x] Galaxy A06 choice/drag-release smoke and minimum44px hit areas. Desktop Space works.
 - [x] Continuous automatic handoff, queued switching, desktop exit and iPhone 13 landscape emulator input/reset smoke; Lune/Studio **292 passed, 0 failed**. Role descriptions/queued-choice highlight added.
 - [x] Galaxy A06 queued-switch check, restored damage/block/status feedback, smoothed snapshot/event playback and targeted36-fixture pacing report; Lune/Studio **294 passed, 0 failed**. [Review](testing/CONTINUOUS_LOOP_REVIEW.md).
-- [ ] Investigate slow Cup/Ketchup fights; physical-phone and unfamiliar-player checks of power payoff/meaningful choice; creator direction approval before broader changes.
+- [x] Diagnose Cup/Ketchup near-miss stalls; private7.5-stud anchor spacing, matched client geometry, original-case Studio checks and216 additional seed/aim fixtures. Lune/Studio **295 passed,0 failed**. [Evidence/tradeoffs](testing/CONTINUOUS_CONTACT_PACING.md).
+- [ ] Physical-phone and unfamiliar-player checks of power payoff/meaningful choice and remaining quiet stretches; creator direction approval before broader changes.
 - Exact resume/start instructions: [CORE_LOOP_PROTOTYPES](design/CORE_LOOP_PROTOTYPES.md). **Do not publish the lab.**
 
 Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DESIGN v0.3](GAME_DESIGN.md).

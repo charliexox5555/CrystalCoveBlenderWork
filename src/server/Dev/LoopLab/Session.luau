@@ -32,7 +32,7 @@ function Session.new(mode, id, seed, now)
 		SweetSpot = -10, -- no hidden gold-band damage bonus in either prototype; aiming moves the launch
 		Rng = Rng.new(seed),
 	}
-	local sim = Pendulum.new(setup, seed)
+	local sim = Pendulum.new(setup, seed, C.HookGap)
 	for _, fighter in sim.Fight.Fighters do
 		fighter.MaxHp *= C.HpScale
 		fighter.Hp = fighter.MaxHp
@@ -151,6 +151,7 @@ function Session:packet()
 		Id = self.Id,
 		Rival = self.Rival,
 		Seed = self.Seed,
+		HookGap = (self.Sim.Hooks[2] - self.Sim.Hooks[1]).Magnitude,
 		Phase = self.Phase,
 		Deadline = self.Deadline,
 		Shots = self.Shots,

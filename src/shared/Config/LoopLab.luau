@@ -15,6 +15,7 @@ return {
 	ContinueSeconds = 1.25, -- brief shatter payoff, then directly into the next automatic duel
 	MaxShots = 10,
 	HpScale = 0.6,
+	HookGap = 7.5, -- private stage spacing; avoids the known Cup/Ketchup near-miss lock at six studs
 	RateSeconds = 0.15,
 	Step = 1 / 60,
 	SnapshotSeconds = 1 / 20,

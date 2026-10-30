@@ -10,6 +10,7 @@ Creator approved these prototypes October 29. **Live v700 stays unchanged. Do no
 - A's repeated-clash runner remains historical code, inaccessible from the active lab. Do not resume it.
 - Six existing glassies: Pop, Jam, Prism, Glass Cup, Water Jug, Ketchup Bottle. Existing models, powers, cracks, audio and shatter are reused. No newly redesigned six-kit roster yet.
 - Isolated 60% HP; production Balance is untouched. No hidden Perfect/gold-band damage bonus. Server validates roster/mode, finite/clamped aim, phase and request rate.
+- Private hook spacing is7.5 studs, using the existing per-simulation gap parameter; client strings use the server-reported anchor span. Production stays6. Known Cup/Ketchup stalls now finish around10s; [evidence and limits](../testing/CONTINUOUS_CONTACT_PACING.md).
 - Smoothed snapshot playback synchronizes visible motion/HP with damage, block/status and shatter feedback. Reuses existing HUD popups without adding aim controls or power banners. A YOU marker distinguishes mirror fights.
 - Manual Studio-only entry points; nothing in Main/Services/Controllers requires the lab. Temporary remotes/sessions, no profiles/rewards/purchases/live analytics. Disposable local stage above lobby. Exit restores camera, movement/touch gate, GUIs and blur/depth-of-field state.
 
@@ -46,11 +47,11 @@ If Studio reopens from live v700, install these source files through MCP first (
 
 ## Verified
 
-- Lune and Studio: **294 passed, 0 failed**. Seven lab tests cover validation, historical state continuity, real-swing resolution, bounds, automatic next-duel/queued-choice continuity, interpolated HP/motion and exactly-once feedback timing/final-shatter flush.
+- Lune and Studio: **295 passed, 0 failed**. Eight lab tests cover validation, historical state continuity, real-swing resolution, bounds, automatic next-duel/queued-choice continuity, interpolated HP/motion, feedback timing/final-shatter flush, and both original Cup/Ketchup stalls.
 - Continuous desktop run completed at least three consecutive duels with one launch each and no new aim/replay prompt. Actual queued Jam click left the current Pop duel running, then Jam entered the next duel automatically. Exit removed the lab UI/scene and restored Custom camera.
 - iPhone 13 landscape emulator: actual initial choice/release and queued Jam clicks worked; current Pop stayed unchanged until the next duel. Completed reports contained Pop then Jam, and Jam continued without a release gate. Role text, green queued-choice highlight and separated bottom note were visually checked. Character reset removed the lab GUI/scene and restored Custom camera. Emulator checks are not physical-phone or novice testing.
 - Galaxy A06 landscape: initial choice/release and queued switching work. The test tool offsets horizontal mouse coordinates by47px on this preset; an adjusted actual click queued Prism during the current fight. The44px EXIT target now stays fully inside the safe GUI bounds; an actual click removed the lab and restored Custom camera. This is an emulator check, not a physical-phone result.
-- Targeted36-fixture pacing sample: median12.73s/p9018.02s, first contact median0.51s, first power median4.01s. Cup/Ketchup has35.84–40.01s outliers; no production tuning applied. [Review protocol and limitations](../testing/CONTINUOUS_LOOP_REVIEW.md).
+- Current36-fixture sample: median10.12s/p9017.20s versus baseline12.73s/18.02s; known Cup/Ketchup fixtures9.75s/10.04s. Additional216 fixtures at three launch settings had no timeout or25s+ fight (max22.83s); some contact-gap metrics worsened, so no guarantee for every seed/angle. [Full comparison](../testing/CONTINUOUS_CONTACT_PACING.md). No production tuning/publication.
 - Initial A smoke: Pop/Glass Cup, seed291027, **30.45s,5 launches,5 contacts**, rival shatter win. B: Jam/Water Jug, seed291028, **15.55s,1 launch,8 contacts**, player win. Different fixtures before pairing patch: these prove technical completion, not preference or a valid A/B comparison.
 - Both modes opened with actual clicks; Space advanced A before timeout. Exit removed GUI/scene and restored Custom camera. Final display has no claim-screen blur and a dark backing for readable glass.
 - No new runtime stack traces in initial A/B smoke; old asset203785492 warnings remain. No live publication.
@@ -59,7 +60,7 @@ If Studio reopens from live v700, install these source files through MCP first (
 
 1. Review the continuous prototype with the creator. Automatic handoff, queued switching and exit/reset smoke checks are complete; do not resume the rejected A comparison.
 2. Physical-phone checks. Galaxy A06 queued switching and iPhone13 landscape initial release/switch/reset emulator checks passed; hit targets are at least44px. Lab gamepad navigation remains pending.
-3. Investigate slow Cup/Ketchup contact tails; review power payoff/choice understanding with a person. Pacing sample and observation protocol are in CONTINUOUS_LOOP_REVIEW. Each new duel inherits previous aim; do not add another mandatory control step.
+3. Review power payoff/choice understanding with a person and inspect remaining quiet stretches. Known Cup/Ketchup stalls are covered by the new geometry/regression; do not re-run the gap search. Observation protocol is in CONTINUOUS_LOOP_REVIEW. Each new duel inherits previous aim; do not add another mandatory control step.
 4. Refine only seamless-play blockers, meaningful choice and visible power payoff. No new metagame or cosmetic rebuild.
 5. Prepare unfamiliar-player tests of voluntary continued play, switching strategies and understanding outcomes. No unfamiliar-player results exist yet. Never confuse automatic duel3 starting with voluntary replay/engagement.
 6. Return findings to creator for direction approval before broader redesign/production rollout.

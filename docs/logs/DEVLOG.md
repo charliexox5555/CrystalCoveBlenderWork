@@ -1,5 +1,11 @@
 # Dev log
 
+## 2026-10-29 — Codex — Private stage contact pacing
+- Diagnosed original Cup/Ketchup stalls as geometric near misses:26.83s/18.22s contact droughts at six-stud hooks. Selected7.5-stud spacing for the private lab using existing Pendulum gap support; network packet carries actual span and client renders matching anchors. Production Balance/integrator/powers unchanged; no forced damage, new controls or timer cut-off.
+- Exact original fixtures now9.75s/10.04s versus40.01s/35.84s, seven contacts each. Actual Studio clicked launches reproduced both; automatic handoff/queued Jam still worked in Galaxy emulation, anchor span7.5 verified, desktop/phone framing checked.
+- Added original-case regression; Lune/Studio **295 passed,0 failed**.36-fixture median10.12s/p9017.20s versus12.73s/18.02s, timeouts0 versus1.216 extra seed/aim fixtures:0 timeouts or25s+ fights, max22.83s; baseline1 timeout/two25s+ fights. Default-aim contact-gap p90 worsened4.85s→6.74s, so remaining quiet stretches are explicit, not a universal fix/fairness/engagement claim. Full methods: docs/testing/CONTINUOUS_CONTACT_PACING.md.
+- Next: creator/physical-phone/novice review of choice/power payoff and remaining gaps. No publication or saved progression changes; private sources/checkpoint retained.
+
 ## 2026-10-29 — Codex — Continuous-loop readability and pacing
 - Restored missing damage/blocked/powered-clash/status feedback through the existing FightHud popup presenter; preserved no power banners. Added YOU marker, removed redundant center instruction. Private snapshot playback now interpolates motion/HP and delivers events at the drawn contact time; clears between duels and flushes final shatter.
 - Lune/Studio **294 passed, 0 failed**, including two new timing/final-flush regressions. Galaxy A06 actual queued-switch click passed after compensating the MCP mouse offset. EXIT's44px target stays inside the safe GUI bounds; actual Galaxy and desktop exit clicks restored Custom camera and removed the lab. Phone hardware/novice results remain unverified.

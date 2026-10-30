@@ -2,17 +2,24 @@
 local Session = require("../src/server/Dev/LoopLab/Session")
 local C = require("../src/shared/Config/LoopLab")
 local B = require("../src/shared/Config/Balance")
+local process = require("@lune/process")
+local gap = tonumber(process.args[1]) or C.HookGap or B.Motion.HookGap
 local function percentile(values, p)
 	table.sort(values)
 	return values[math.max(1, math.ceil(#values * p))] or 0
 end
 local fights, impacts, powers, timeouts = {}, {}, {}, 0
 print("36 private lab fixtures: default aim, isolated 60% HP, existing automatic powers")
+print("Hook gap: " .. gap)
 for _, id in C.Roster do
 	local durations, wins = {}, 0
 	for rivalIndex = 1, #C.Roster do
 		local seed = C.Seed + ((rivalIndex - 1 - C.Seed) % #C.Roster)
 		local session = Session.new("B", id, seed, 0)
+		local originalGap = (session.Sim.Hooks[2] - session.Sim.Hooks[1]).Magnitude
+		for side, hook in session.Sim.Hooks do
+			session.Sim.Hooks[side] = hook * (gap / originalGap)
+		end
 		session:launch(B.Motion.AimDefault, 0, 0)
 		local now = 0
 		while session.Phase ~= "Result" and now < 100 do

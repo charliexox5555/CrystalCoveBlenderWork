@@ -128,11 +128,16 @@ function Lab.start()
 				Formula.stats(G.get(data.Id), {}).HP * C.HpScale,
 				Formula.stats(G.get(data.Rival), {}).HP * C.HpScale,
 			}
-			scene = Scene.new(
-				{ Id = "LoopLab", Frame = frame, A = { Id = data.Id }, B = { Id = data.Rival } },
-				maxima,
-				Shatter
-			)
+			scene = Scene.new({
+				Id = "LoopLab",
+				Frame = frame,
+				A = { Id = data.Id },
+				B = { Id = data.Rival },
+				HookPositions = {
+					frame:PointToWorldSpace(Vector3.new(-data.HookGap / 2, 0, 0)),
+					frame:PointToWorldSpace(Vector3.new(data.HookGap / 2, 0, 0)),
+				},
+			}, maxima, Shatter)
 			scene.OwnFight = true
 			scene:SetViewing(true)
 			scene:Tag(1, "YOU", Theme.Sides[1])

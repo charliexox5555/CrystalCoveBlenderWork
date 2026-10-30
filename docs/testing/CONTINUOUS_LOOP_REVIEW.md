@@ -8,7 +8,7 @@ No publication, saved rewards, new economy, or live-player results. Launch instr
 - Motion and HP now interpolate between snapshots; impact/status/shatter events wait for the drawn fight time. A final snapshot flushes shatter promptly. A new duel clears the old timeline and popups. Added a YOU marker for mirror fights.
 - Queued choices still apply only to the following duel. No repeated aiming, replay prompt, result claim, or selection pause was added.
 
-## Small pacing sample
+## Baseline pacing sample (before the stage-spacing change)
 
 Reproduce: `lune run tools/loop_lab_report`. Thirty-six deterministic fixtures: each of six glassies versus all six rivals, one fixed seed per rival, default initial aim, isolated 60% HP, existing automatic powers. This is a targeted pacing check, not a balance matrix, device performance benchmark, player preference study, or retention result. Per-glassy win counts are debugging output, not fairness estimates.
 
@@ -20,11 +20,11 @@ Reproduce: `lune run tools/loop_lab_report`. Thirty-six deterministic fixtures: 
 
 All36 fixtures had a physical contact;34 had a power event before ending. First-power percentiles exclude the two without a power event. Automatic transition is configured at1.25s; initial selection/aim time and network/render delays are excluded from these simulation timings. Runtime reports now separate wall duration, initial setup, simulated fight length and first impact/power times.
 
-**Known pacing problem:** Cup vs Ketchup (seed291029) reached the40.01s timeout with only4 contacts. Ketchup vs Cup (seed291027) took35.84s/9 contacts and ended DoubleKO. Fixing UI cannot solve these sparse-contact tails. Investigate motion/contact geometry and the Cup boost before proposing changes to production balance; do not conceal them with fabricated engagement claims or another control gate.
+**Baseline pacing problem, addressed in the current private stage:** Cup vs Ketchup (seed291029) reached40.01s with4 contacts; the reverse took35.84s/9 contacts. Current7.5-stud hook spacing brings those exact fixtures to9.75s/10.04s with7 contacts each, without a forced finish. [Diagnosis, additional216-fixture check and tradeoffs](CONTINUOUS_CONTACT_PACING.md). Production geometry remains unchanged; some quiet stretches persist.
 
 ## Creator review
 
-Try Pop, queue Jam while it fights, then try Prism. Check whether the damage/block/beam payoff explains why you would change glassy, whether the next opponent starts naturally, and whether the brief shatter beat is enough. Inspect the slow Cup/Ketchup fixtures separately; a good average does not make those fights acceptable.
+Try Pop, queue Jam while it fights, then try Prism. Check whether the damage/block/beam payoff explains why you would change glassy, whether the next opponent starts naturally, and whether the brief shatter beat is enough. Revisit the formerly slow Cup/Ketchup fixtures at the current spacing. A shorter fight alone does not establish that the choices are interesting.
 
 ## Unfamiliar-player observation
 

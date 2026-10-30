@@ -6,6 +6,29 @@ local Playback = if script
 	then require(game.StarterPlayer.StarterPlayerScripts.Client.Dev.LoopLabPlayback)
 	else require("../client/Dev/LoopLabPlayback")
 return function(t, d)
+	t.test("private stage spacing resolves both known Cup Ketchup stalls without a second launch", function()
+		for _, fixture in { { "glass_cup", 291029 }, { "ketchup_bottle", 291027 } } do
+			local s = Session.new("B", fixture[1], fixture[2], 0)
+			t.eq(s:packet().HookGap, C.HookGap, "client anchors use the actual server spacing")
+			t.eq(d.Balance.Motion.HookGap, 6, "production stage spacing remains unchanged")
+			s:launch(d.Balance.Motion.AimDefault, 0, 0)
+			local now, last, longest = 0, 0, 0
+			while s.Phase ~= "Result" and now < 25 do
+				now += C.Step
+				s:step(C.Step, now)
+				for _, event in s:packet().Events do
+					if event.Type == "Hit" then
+						longest = math.max(longest, event.Time - last)
+						last = event.Time
+					end
+				end
+			end
+			t.eq(s.Phase, "Result")
+			t.ok(s.Reason ~= "Timeout")
+			t.eq(s.Shots, 1)
+			t.ok(math.max(longest, s.Sim.Fight.Time - last) < 8, "no long contact drought")
+		end
+	end)
 	local function frame(time, x, hp)
 		return {
 			T = time,

@@ -1,5 +1,20 @@
 # Dev log
 
+## 2026-10-29 — Codex — Creator correction: seamless automatic loop
+- Creator explicitly rejected repeated re-aim as friction. Removed A from the active lab UI/server Start path; old pure runner/tests retained only as historical prototype code.
+- Active lab: pick/launch once, automatic duel,1.25s shatter beat, immediate next opponent using prior aim. Optional bottom-row selection queues a glassy for the next duel without interrupting the current one. No replay/aim/menu/lobby gates between duels.
+- Added session-next regression; Lune and Studio **292 passed, 0 failed**. Desktop continuous run completed three or more duels with one launch per duel; queued Jam entered only the following duel. Actual exit restored Custom camera and removed GUI/scene.
+- iPhone 13 landscape emulator: choice/release, queued Jam, next-duel handoff and character-reset cleanup passed. Added both fighters' role descriptions, green queued-choice highlight and separated bottom note. Minimum44px hit areas; physical phones/gamepad and Galaxy queued-switch input remain pending. No novice/retention claim.
+- Source synced through MCP, no publication; Studio returned to Edit/default viewport. Updated resume checkpoint to prioritize continuous flow. Earlier one-time continuation was configured for9:15PM Central; do not create duplicates. Live published build remains unchanged.
+
+## 2026-10-29 — Codex — Private core-loop prototypes checkpoint
+Done:
+- Creator approved two private prototypes before a larger redesign; requested efficient usage and continuation after reset. Built Studio-only LoopLab server/session/client and separate config, six existing glassies/powers, temporary stage/remotes, no saved rewards or production service changes. A re-aims after clashes; B launches once. Latest pairing keeps opponent/seed when switching modes with the same glassy.
+- Actual clicks ran A (30.45s/5 launches) and B (15.55s/1 launch); those initial fixtures differed, so not an A/B result. Space launches; exit removes GUI/scene and restores Custom camera. Improved isolated stage contrast and restores blur/depth-of-field on exit.
+- Lune/Studio: 291 passed,0 failed. Four new tests cover validation, state persistence, auto resolution and bounds. No live publish; v700 remains unchanged.
+Next:
+- Resume from docs/design/CORE_LOOP_PROTOTYPES.md: matched fixtures, phone input/choice screen, rapid switch/reset cleanup and meaningful shot feedback; then unfamiliar-player comparison and creator direction decision. Do not re-run the broad audit, build progression or publish the lab.
+
 Newest at the top. One entry per work session. Keep it short.
 
 ## 2026-10-29 — Codex — Classic loop rebuild, published v700

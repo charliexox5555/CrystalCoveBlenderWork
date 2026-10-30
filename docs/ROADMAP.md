@@ -1,5 +1,17 @@
 # Roadmap
 
+### Current work: private continuous-loop prototype (decisions 128–129)
+
+**Latest creator correction (decision 129): reject repeated re-aim. Active lab is continuous automatic duels with optional queued glassy switching; do not resume the A/B direction below.**
+
+- [x] Creator approved private A/B prototypes; live v700 stays unchanged.
+- [x] A re-aims after clashes; B uses one automatic duel. Six existing glassies, Studio-only server/client, no saved rewards.
+- [x] Smoke both modes, Space input and exit cleanup; Lune/Studio **291 passed, 0 failed**.
+- [x] Galaxy A06 choice/drag-release smoke and minimum44px hit areas. Desktop Space works.
+- [x] Continuous automatic handoff, queued switching, desktop exit and iPhone 13 landscape emulator input/reset smoke; Lune/Studio **292 passed, 0 failed**. Role descriptions/queued-choice highlight added.
+- [ ] Galaxy queued-switch and physical-phone checks; power payoff/meaningful-choice evaluation, unfamiliar-player playtest and creator direction approval before broader changes.
+- Exact resume/start instructions: [CORE_LOOP_PROTOTYPES](design/CORE_LOOP_PROTOTYPES.md). **Do not publish the lab.**
+
 Tick items as they're done (`- [x]`). One milestone at a time. Design: [GAME_DESIGN v0.3](GAME_DESIGN.md).
 **Current milestone: classic loop retention rebuild (decision 127).** Core simplification and first-session/replay changes are implemented. Validate with unfamiliar mobile players and comparable published cohorts next. Source audit confirms eligible Marble packs/Kiln and configured offers are active; gamepasses have no configured sales path. Older disabled-purchase notes below are historical.
 

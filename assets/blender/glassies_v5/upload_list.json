@@ -1,0 +1,77 @@
+{
+ "Record": "assets/blender/glassies_v5/roblox_assets.json",
+ "Items": [
+  {
+   "Key": "pop",
+   "Path": "assets/blender/glassies_v5/pop_bundle.fbx",
+   "Type": "Model",
+   "Name": "GvG Buddy v5 pop"
+  },
+  {
+   "Key": "jam",
+   "Path": "assets/blender/glassies_v5/jam_bundle.fbx",
+   "Type": "Model",
+   "Name": "GvG Buddy v5 jam"
+  },
+  {
+   "Key": "prism",
+   "Path": "assets/blender/glassies_v5/prism_bundle.fbx",
+   "Type": "Model",
+   "Name": "GvG Buddy v5 prism"
+  },
+  {
+   "Key": "glass_cup",
+   "Path": "assets/blender/glassies_v5/glass_cup_bundle.fbx",
+   "Type": "Model",
+   "Name": "GvG Buddy v5 glass_cup"
+  },
+  {
+   "Key": "water_jug",
+   "Path": "assets/blender/glassies_v5/water_jug_bundle.fbx",
+   "Type": "Model",
+   "Name": "GvG Buddy v5 water_jug"
+  },
+  {
+   "Key": "ketchup_bottle",
+   "Path": "assets/blender/glassies_v5/ketchup_bottle_bundle.fbx",
+   "Type": "Model",
+   "Name": "GvG Buddy v5 ketchup_bottle"
+  },
+  {
+   "Key": "icon_pop",
+   "Path": "assets/icons/glassies_v5/pop.png",
+   "Type": "Decal",
+   "Name": "GvG Buddy v5 icon pop"
+  },
+  {
+   "Key": "icon_jam",
+   "Path": "assets/icons/glassies_v5/jam.png",
+   "Type": "Decal",
+   "Name": "GvG Buddy v5 icon jam"
+  },
+  {
+   "Key": "icon_prism",
+   "Path": "assets/icons/glassies_v5/prism.png",
+   "Type": "Decal",
+   "Name": "GvG Buddy v5 icon prism"
+  },
+  {
+   "Key": "icon_glass_cup",
+   "Path": "assets/icons/glassies_v5/glass_cup.png",
+   "Type": "Decal",
+   "Name": "GvG Buddy v5 icon glass_cup"
+  },
+  {
+   "Key": "icon_water_jug",
+   "Path": "assets/icons/glassies_v5/water_jug.png",
+   "Type": "Decal",
+   "Name": "GvG Buddy v5 icon water_jug"
+  },
+  {
+   "Key": "icon_ketchup_bottle",
+   "Path": "assets/icons/glassies_v5/ketchup_bottle.png",
+   "Type": "Decal",
+   "Name": "GvG Buddy v5 icon ketchup_bottle"
+  }
+ ]
+}

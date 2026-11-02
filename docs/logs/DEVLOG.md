@@ -1,5 +1,16 @@
 # Dev log
 
+## 2026-11-02 — Claude — Relaunch diagnosis, Glass Buddies and the Gauntlet slice
+Done:
+- Creator: game flopped, idea is good, re-engineer models and everything. Installed the LihFolk asset pack to `~/LihFolk-Assets` (the plugin was already present). Played the live first session and read the funnel. Plan: docs/design/RELAUNCH_PLAN.md. Report and screenshots: docs/testing/relaunch/REPORT.md.
+- New models (`tools/blender/build_buddies_v5.py`): six glassies with faces, saturated liquid in clear glass and four expression meshes, uploaded by Open Cloud and installed to `Assets.GlassiesV5` (`tools/studio/install_buddies_v5.luau`). Live `Assets.Glassies` untouched.
+- Private slice (`Dev/Gauntlet*`, `GauntletRules`, `Config/Gauntlet`): win shards of what you smash, unlock it, three hearts, automatic flow, STRONG counter tag, liquid-level HP, shelf behind the fight. Reuses the real swing and powers.
+- Lune/Studio **302 passed, 0 failed**. Two tool-driven runs: 82 s and 68 s, 7 duels, 4 wins, 1 unlock each; first shatter 15.2 s and 5.8 s. A real click on PLAY AGAIN kept the unlock.
+Next:
+- Creator plays it and decides direction. Then phones and unfamiliar players, before any production work.
+Problems:
+- Not played by anyone unfamiliar, not checked on phones. Studio has a stub for crack rows and unformatted copies of the new modules; Rojo connect fixes both. The place reports version 709 while the last devlog named 700, so Studio may hold published work newer than the repo: compare before any Rojo sync. Not published. `Balance`, `Glassies` and `Powers` unchanged, so no simulator run.
+
 ## 2026-10-29 — Codex — Private stage contact pacing
 - Diagnosed original Cup/Ketchup stalls as geometric near misses:26.83s/18.22s contact droughts at six-stud hooks. Selected7.5-stud spacing for the private lab using existing Pendulum gap support; network packet carries actual span and client renders matching anchors. Production Balance/integrator/powers unchanged; no forced damage, new controls or timer cut-off.
 - Exact original fixtures now9.75s/10.04s versus40.01s/35.84s, seven contacts each. Actual Studio clicked launches reproduced both; automatic handoff/queued Jam still worked in Galaxy emulation, anchor span7.5 verified, desktop/phone framing checked.

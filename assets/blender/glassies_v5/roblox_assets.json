@@ -1,0 +1,89 @@
+{
+ "Group": "11116787",
+ "Assets": {
+  "pop": {
+   "AssetId": "89666168724292",
+   "Path": "assets/blender/glassies_v5/pop_bundle.fbx",
+   "Sha256": "03139b9bf9337226c71fe6c65882e853af7e817b8cb02dae9b8007e3f046f389",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T01:00:30"
+  },
+  "jam": {
+   "AssetId": "80478873695989",
+   "Path": "assets/blender/glassies_v5/jam_bundle.fbx",
+   "Sha256": "8f8d25fc79bed32801278a6816ee22a2ea4af5fd79f03f7d2dea62d5700a8144",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T01:00:50"
+  },
+  "prism": {
+   "AssetId": "104252975578425",
+   "Path": "assets/blender/glassies_v5/prism_bundle.fbx",
+   "Sha256": "078401de957c144a9c6a57f8587d19a4c1a48f4091b77bc4fecdb4568f63ff83",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T01:00:55"
+  },
+  "glass_cup": {
+   "AssetId": "120158899370566",
+   "Path": "assets/blender/glassies_v5/glass_cup_bundle.fbx",
+   "Sha256": "f6b4394baacb3b73d8728a2992ae8d00517deab98b309e4956a4d2b29af3102e",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T01:01:07"
+  },
+  "water_jug": {
+   "AssetId": "136014486642992",
+   "Path": "assets/blender/glassies_v5/water_jug_bundle.fbx",
+   "Sha256": "11a819ab5402981a4298dc0c6e20575b91936b3a4853f7d03f27fd11f0708790",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T01:01:12"
+  },
+  "ketchup_bottle": {
+   "AssetId": "95459940693266",
+   "Path": "assets/blender/glassies_v5/ketchup_bottle_bundle.fbx",
+   "Sha256": "441b6f695b9c487ac47683abc9eb8cc28afae4314c7522e657bf712db62cb99b",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T01:01:25"
+  },
+  "icon_pop": {
+   "AssetId": "71611199568587",
+   "Path": "assets/icons/glassies_v5/pop.png",
+   "Sha256": "dc579df683f9beb80973177ea69b7d7b2637a556a4ac50cb8840babc76001e4c",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T01:15:34"
+  },
+  "icon_jam": {
+   "AssetId": "125583536349751",
+   "Path": "assets/icons/glassies_v5/jam.png",
+   "Sha256": "0f218101b18f3f7bb30c265ff4cfd09da640ac17f4e8f4d28ce08dc92e6d0cb1",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T01:15:36"
+  },
+  "icon_prism": {
+   "AssetId": "134982699744721",
+   "Path": "assets/icons/glassies_v5/prism.png",
+   "Sha256": "86c966781c051ee062b925dfa0f6e7ce21dd3a034b22bd07feb4e05370cd08c8",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T01:15:39"
+  },
+  "icon_glass_cup": {
+   "AssetId": "91201526208555",
+   "Path": "assets/icons/glassies_v5/glass_cup.png",
+   "Sha256": "4c2df63e041204fcf82ffbd572c70032744ea25726eb56aaac08ef01f6ab239b",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T01:15:42"
+  },
+  "icon_water_jug": {
+   "AssetId": "107941539010109",
+   "Path": "assets/icons/glassies_v5/water_jug.png",
+   "Sha256": "0abf66ac4fb9d8d7921dc09628c3e72e1aa5a145cb95a7bc9dab005f4427384c",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T01:15:45"
+  },
+  "icon_ketchup_bottle": {
+   "AssetId": "112995457690810",
+   "Path": "assets/icons/glassies_v5/ketchup_bottle.png",
+   "Sha256": "0c79283ed692c5df2615e73906cedba8f7f04696a567c90d408c8a185547fd98",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T01:15:48"
+  }
+ }
+}

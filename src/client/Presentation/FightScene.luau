@@ -61,7 +61,8 @@ function Scene.new(data, maxima, shatter)
 		local hook = Instance.new("Attachment")
 		hook.Name, hook.Parent = "StringHook", anchor
 		local def = Glassies.get(setup.Id)
-		local library = if data.ReleasePrototype then RS.Assets.CombatReleasePreview.Glassies else RS.Assets.Glassies
+		local library = data.Library
+			or if data.ReleasePrototype then RS.Assets.CombatReleasePreview.Glassies else RS.Assets.Glassies
 		local renderId = if library:FindFirstChild(def.Asset)
 			then def.Asset
 			else if def.Type == "Heavy" then "jam" elseif def.Type == "Sharp" then "prism" else "pop"
@@ -95,7 +96,14 @@ function Scene.new(data, maxima, shatter)
 			template:Clone().Parent = templates
 		end
 		for _, template in (source:FindFirstChild("Details") and source.Details:GetChildren() or {}) do
-			if not template.Name:find("Bubble") and not template:GetAttribute("EffectOnly") then
+			-- v5 faces and liquid leave with the shatter's flash; they never fly as loose pieces.
+			if
+				not template.Name:find("Bubble")
+				and not template:GetAttribute("EffectOnly")
+				and not template:GetAttribute("BuddyFace")
+				and template.Name ~= "Fill"
+				and template.Name ~= "Fizz"
+			then
 				template:Clone().Parent = templates
 			end
 		end

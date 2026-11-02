@@ -1,6 +1,18 @@
 # Roadmap
 
-### Current work: private continuous-loop prototype (decisions 128–129)
+### Current work: relaunch (proposed, decisions 130-132) - [plan](design/RELAUNCH_PLAN.md), [evidence](testing/relaunch/REPORT.md)
+
+**Do not publish the slice.** Live stays as is until the creator approves a release.
+
+- [x] LihFolk asset pack installed; live first session played and diagnosed.
+- [x] Six Glass Buddies (v5) in Blender, uploaded and installed to `Assets.GlassiesV5`; Kiln Room stage first pass.
+- [x] Private Gauntlet slice: collect what you smash, hearts, counter tag, liquid HP, shelf, one PLAY AGAIN. Lune/Studio **302 passed, 0 failed**.
+- [ ] **U:** creator plays the slice and picks a direction.
+- [ ] Phone emulator and real-phone check; 5 to 8 unfamiliar players, no coaching.
+- [ ] Sync crack rows (Rojo connect, after comparing Studio to the repo) and tune rung HP, shards and counter strength on real runs.
+- [ ] Phase 2 once approved: saved progress, new first session, 12 more glassies, telemetry.
+
+### Earlier: private continuous-loop prototype (decisions 128–129)
 
 **Latest creator correction (decision 129): reject repeated re-aim. Active lab is continuous automatic duels with optional queued glassy switching; do not resume the A/B direction below.**
 

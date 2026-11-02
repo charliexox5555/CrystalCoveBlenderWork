@@ -36,6 +36,7 @@ local order = {
 	"OnboardingTests",
 	"ClassicCombatTests",
 	"LoopLabTests",
+	"GauntletTests",
 	"LeaderboardTests",
 	"DailyStoreTests",
 	"GlassyMotionTests",

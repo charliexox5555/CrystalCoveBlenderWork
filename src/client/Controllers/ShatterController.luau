@@ -102,7 +102,9 @@ function Shatter:SetCracks(fighter, hp, maxHP)
 		return stage > 0
 	end
 	local id = fighter.RenderId or fighter.Id
-	for _, path in (if fighter.ReleaseArt then ReleaseCrackPaths[id] else CrackPaths[id] or ExtraCrackPaths[id]) or {} do
+	local paths = fighter.CrackPaths
+		or (if fighter.ReleaseArt then ReleaseCrackPaths[id] else CrackPaths[id] or ExtraCrackPaths[id])
+	for _, path in paths or {} do
 		if path[7] <= stage then
 			local scale = fighter.Scale or 1
 			local a, b = Vector3.new(path[1], path[2], path[3]) * scale, Vector3.new(path[4], path[5], path[6]) * scale

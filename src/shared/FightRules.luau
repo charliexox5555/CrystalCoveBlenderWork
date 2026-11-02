@@ -699,6 +699,17 @@ function FightRules.conceptDamage(state: State, side: number, factor: number): n
 	return amount
 end
 
+-- Healing from a concept ability: never above full, never a revive. Returns the HP actually restored.
+function FightRules.conceptHeal(state: State, side: number, amount: number): number
+	local f = state.Fighters[side]
+	if state.Over or f.Hp <= 0 then
+		return 0
+	end
+	local healed = math.min(f.MaxHp - f.Hp, amount)
+	f.Hp += healed
+	return healed
+end
+
 -- Powers -------------------------------------------------------------------------------------
 
 -- Does an aimed power reach the other glass? The swing code knows (PowerLands); otherwise roll.

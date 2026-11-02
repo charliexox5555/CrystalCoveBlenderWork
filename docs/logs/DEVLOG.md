@@ -1,5 +1,20 @@
 # Dev log
 
+## 2026-11-02 — Claude — Overnight: second wave and release pass (decision 134)
+Done:
+- Creator went to bed and asked for everything as close to release as possible; they check and test in the morning. Not published.
+- Six more concept abilities and models (Milk, Pickle, Lemonade, Mason, Tumbler, Hot Sauce): 12 of 40 converted. Old models in `ServerStorage.GlassiesBeforeV5`; `tools/studio/install_buddies_v5.luau` installs all twelve.
+- Fixes: popups stay solid before fading and have a stronger outline; running effects clear at the shatter; lighter effects for bystanders; finishers only show a v5 hero's idle face; no per-step table allocation in ConceptKits.
+- Found in a real first session: a new player's three free opens could all be old glassies. The welcome hand now prefers concept glassies.
+- Economy: `RoundSecondsEstimate` 33. Win 125 coins, loss cap 50, XP up about 25%: 141 Kiln pulls by day 30 (was 145 before longer rounds), Lv 10 pace held.
+Balance and simulators:
+- Real swing `equal:bot0.5`, 4,680 rounds, 234 per glassy: mean 32.2 s, 43.6-56.8%, 34/40 in 45-55%.
+- EconomySim: match about 3.9 min, 15.3 matches per hour, 5 pulls on day 1, 141 by day 30. BalanceSim stand-in cannot run concepts and skips them for fairness.
+Next:
+- Creator: docs/logs/MORNING.md. Then the next wave of 28, phones, and unfamiliar players.
+Problems:
+- See MORNING for what is unverified. Studio changes are unsaved until the creator saves the place.
+
 ## 2026-11-02 — Claude — Concept abilities and longer rounds in the real arena (decision 133)
 Done:
 - Creator rejected the shards/Gauntlet concept and the dark Kiln Room, liked the new models, called fights too quick, and pointed at Ball VS Ball: same format, better concept abilities and execution. Keep the arena, map and Kiln spin. Gauntlet code removed (history at 6d83939).

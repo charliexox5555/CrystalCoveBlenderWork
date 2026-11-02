@@ -62,6 +62,16 @@ function Rules.welcomePicks(owned, available, rng)
 	local picks, chosen, types = {}, {}, {}
 	for _, rarity in O.WelcomeRarities do
 		local pool = shuffle(candidates(owned, available, rarity, chosen), rng)
+		-- A new player's first hand should show off concept abilities wherever this rarity has any (decision 134).
+		local showcase = {}
+		for _, id in pool do
+			if Balance.Concepts.Kits[id] then
+				table.insert(showcase, id)
+			end
+		end
+		if #showcase > 0 then
+			pool = showcase
+		end
 		local pick
 		for _, id in pool do
 			if not types[Glassies.ById[id].Type] then

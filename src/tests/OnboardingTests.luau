@@ -48,7 +48,8 @@ return function(t, d)
 				count += 1
 			end
 		end
-		t.ok(count >= 40, "distinct trios " .. count)
+		-- Lower than before decision 134: the first two cards now come from the concept glassies only.
+		t.ok(count >= 20, "distinct trios " .. count)
 	end)
 	t.test("welcome opens fall back when a rarity is all owned", function()
 		local owned = table.clone(starters)
@@ -73,6 +74,22 @@ return function(t, d)
 			counts[rarity] += 1
 		end
 		t.ok(math.abs(counts.Rare / 2000 - 0.7) < 0.05, "Rare share " .. counts.Rare / 2000)
+	end)
+	t.test("the welcome hand shows concept abilities wherever the rarity has them", function()
+		local available = {}
+		for _, def in d.Glassies.List do
+			available[def.Id] = true
+		end
+		for seed = 1, 30 do
+			local picks = Rules.welcomePicks({}, available, d.Rng.new(seed))
+			local shown = 0
+			for _, id in picks do
+				if d.Balance.Concepts.Kits[id] then
+					shown += 1
+				end
+			end
+			t.ok(shown >= 2, "seed " .. seed .. " shows " .. shown)
+		end
 	end)
 	t.test("new profiles start at Welcome; players who have played skip", function()
 		t.eq(Rules.initial({ Stats = { MatchWins = 0, MatchLosses = 0 }, Flags = {} }), "Welcome")

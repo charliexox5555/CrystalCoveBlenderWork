@@ -25,10 +25,21 @@ A concept ability follows three rules:
 | Jug | Rising Tide | Each clash raises real water in the pen | A wave sweeps across; a glass swung high rides over it | Water slows what it touches |
 | Ketchup | Big Squeeze | Splats stick to the rival | Six splats go SPLAT, with a shove | Squeezes grow: 3, 4, 5, 6 drops |
 
+## The second six
+
+| Glassy | Ability | Builds up | Payoff | Escalation |
+|---|---|---|---|---|
+| Milk | Top Up | Foam burst when it pours | Refills its own glass, so its liquid visibly rises | Pours grow, and stop at overtime so rounds still end |
+| Pickle | Pickle Drop | Pickles appear at the crossbar | Fall on the rival; a glass can swing clear | Drops grow: 2, 3, 4, 5, 6 |
+| Lemonade | Zest Ring | Slices appear in orbit | Slices cut the rival when they pass | One more slice every 6 s, up to 5 |
+| Mason | Firefly Swarm | Each clash frees fireflies | They chase the rival and sting | 1, then 2, then 3 per clash |
+| Tumbler | Ice Field | Clashes leave cubes in the air | Swinging into one hurts and chills | Up to 6 cubes hang at once |
+| Hot Sauce | Hot Streak | Aura grows every 4 s | Burns the rival when it is close | Bigger and hotter, to MAX HEAT |
+
 ## Next
 
 1. Creator plays these in real matches and says which feel right. Numbers and looks are first passes.
-2. Convert the next wave of glassies once the first six feel right. Each needs a concept that passes the three rules, then the v5 model treatment so the roster matches.
+2. Convert the next wave of glassies once these twelve feel right. 28 remain, starting with Cookie Jar, Fishbowl, Bubble Wand, Glass Top, Chime and Piggy Bank. Each needs a concept that passes the three rules, then the v5 model treatment so the roster matches.
 3. Check on phones and with unfamiliar players, then publish when the creator chooses.
 4. Kiln spin polish, return hooks and monetization come after fights hold attention.
 

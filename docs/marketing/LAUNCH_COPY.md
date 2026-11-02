@@ -1,5 +1,28 @@
 # Glass Clash: launch copy
 
+## Update draft, 2026-11-02 (not posted; the older copy below still mentions CAST, which no longer exists)
+
+Title idea: `[UPD] Glass vs Glass`
+
+```
+🔮 12 glassies REBUILT with crazy new powers!
+
+💥 Pop blasts its cap off
+🌈 Prism's ray splits into 8
+🌊 Jug floods the arena and sends a wave
+🍯 Jam glues rivals in place
+🍋 Lemonade spins a ring of slices
+🧊 Tumbler fills the air with ice
+
+Pull back, let go, and watch them smash. Win coins, spin the Kiln (odds always shown) and collect them all!
+```
+
+Update note for the group:
+
+```
+Big update! 12 glassies have brand new looks and brand new powers, fights last longer so powers have time to go wild, and wins pay more coins. Which new power is your favourite?
+```
+
 Drafted 2026-10-21 for the group test (Thu Oct 22) and the public release (Sat Oct 24). Kid-friendly, no links in the
 experience description (Roblox strips or flags them), no promises of free Robux.
 

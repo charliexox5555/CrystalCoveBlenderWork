@@ -15,7 +15,7 @@ return {
 		Name = "Cap Blast",
 		Color = "#39D2FF", -- signature colour (power VFX v2)
 		Accent = "#FF4A5A",
-		Description = "Clashes shake it up until the cap blasts off. It blows sooner every time.",
+		Description = "Clashes shake it up until the cap blasts off, sooner each time.",
 		ReleaseSound = "BubblePop",
 		ContactSound = "ClinkHeavy",
 		MeshA = "Ring",
@@ -72,20 +72,20 @@ return {
 		MeshB = "CrystalChip",
 	},
 	milk_bottle = {
-		Name = "Fresh Seal",
+		Name = "Top Up",
 		Color = "#FFF6E0", -- signature colour (power VFX v2)
 		Accent = "#6FB7FF",
-		Description = "Foams over to seal a little damage once.",
+		Description = "Refills its own glass, more every time.",
 		ReleaseSound = "BubblePop",
 		ContactSound = "ClinkLightB",
 		MeshA = "Ring",
 		MeshB = "BubbleDome",
 	},
 	pickle_jar = {
-		Name = "Brine Line",
+		Name = "Pickle Drop",
 		Color = "#5ECB3A", -- signature colour (power VFX v2)
 		Accent = "#D8FF8A",
-		Description = "Clashes leave a brief sticky brine tether.",
+		Description = "Pickles rain from above, more every time. Swing clear!",
 		ReleaseSound = "WaterSlap",
 		ContactSound = "BubblePop",
 		MeshA = "Droplet",
@@ -122,20 +122,20 @@ return {
 		MeshB = "Droplet",
 	},
 	lemonade_bottle = {
-		Name = "Zest Volley",
+		Name = "Zest Ring",
 		Color = "#FFD21F", -- signature colour (power VFX v2)
 		Accent = "#6CC93A",
-		Description = "Fires a fan of three zesty glass pips.",
+		Description = "Lemon slices orbit it and slice the rival. It keeps adding more.",
 		ReleaseSound = "BubblePop",
 		ContactSound = "ClinkLightB",
 		MeshA = "Droplet",
 		MeshB = "Ring",
 	},
 	mason_jar = {
-		Name = "Screw-Top Counter",
+		Name = "Firefly Swarm",
 		Color = "#5FB4FF", -- signature colour (power VFX v2)
 		Accent = "#FFC23D",
-		Description = "Taking a heavy hit charges its next clash.",
+		Description = "Clashes free fireflies that hunt the rival. The swarm grows.",
 		ReleaseSound = "LidClick",
 		ContactSound = "ClinkHeavy",
 		MeshA = "HalfRing",
@@ -145,17 +145,17 @@ return {
 		Name = "Hot Streak",
 		Color = "#FF4A2A", -- signature colour (power VFX v2)
 		Accent = "#FFC24B",
-		Description = "Heats up below half health for one fiery rush.",
+		Description = "Heats up all round. Its burning aura keeps growing.",
 		ReleaseSound = "PressureAir",
 		ContactSound = "ClinkHeavy",
 		MeshA = "Thorn",
 		MeshB = "HalfRing",
 	},
 	crystal_tumbler = {
-		Name = "Mirror Catch",
+		Name = "Ice Field",
 		Color = "#E6F2FF", -- signature colour (power VFX v2)
 		Accent = "#6FC4FF",
-		Description = "Catches part of a ray and returns a glint.",
+		Description = "Clashes leave ice cubes in the air. Swing into one and it hurts.",
 		ReleaseSound = "ClinkLightA",
 		ContactSound = "ClinkLightB",
 		MeshA = "GuardPlate",

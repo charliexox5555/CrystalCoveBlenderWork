@@ -84,6 +84,90 @@
    "Sha256": "0c79283ed692c5df2615e73906cedba8f7f04696a567c90d408c8a185547fd98",
    "Moderation": "Approved",
    "Uploaded": "2026-11-02T01:15:48"
+  },
+  "milk_bottle": {
+   "AssetId": "82843203997134",
+   "Path": "assets/blender/glassies_v5/milk_bottle_bundle.fbx",
+   "Sha256": "84c2b04e427427aa0d741c67304ae44379c6434ea65bd16b84d2771e06727e9b",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T02:23:27"
+  },
+  "icon_milk_bottle": {
+   "AssetId": "125322960230809",
+   "Path": "assets/icons/glassies_v5/milk_bottle.png",
+   "Sha256": "c7c0f4e00180a64cffca202cc426d91f82c69b81013638b880d2ea0110f4e838",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T02:23:29"
+  },
+  "pickle_jar": {
+   "AssetId": "120701254461667",
+   "Path": "assets/blender/glassies_v5/pickle_jar_bundle.fbx",
+   "Sha256": "03db45123534d5ebf62dd739f9f255a4fe73ada73f0359aa7e1869ad39fb678d",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T02:23:42"
+  },
+  "icon_pickle_jar": {
+   "AssetId": "140526686895713",
+   "Path": "assets/icons/glassies_v5/pickle_jar.png",
+   "Sha256": "897175086d0782b55d9c58aa9b0fd4da1954f34cbcf35b0fa1e8051d26f8a640",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T02:23:47"
+  },
+  "lemonade_bottle": {
+   "AssetId": "70492197805450",
+   "Path": "assets/blender/glassies_v5/lemonade_bottle_bundle.fbx",
+   "Sha256": "4f249b6c4bcfad02427eb60a53533376e2415dcb98aa5928bef83c0084bc9de2",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T02:23:58"
+  },
+  "icon_lemonade_bottle": {
+   "AssetId": "93007911577061",
+   "Path": "assets/icons/glassies_v5/lemonade_bottle.png",
+   "Sha256": "97e6c0754e63b241acf5adb3f8550a7dcdd97f191556a04d9e707bd4550013d9",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T02:24:00"
+  },
+  "mason_jar": {
+   "AssetId": "98257169784668",
+   "Path": "assets/blender/glassies_v5/mason_jar_bundle.fbx",
+   "Sha256": "08b6786059aedaa20d2dc841e32055168c9fdc49c02a1a82d538a5d1ea1f1a19",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T02:24:05"
+  },
+  "icon_mason_jar": {
+   "AssetId": "86704009938002",
+   "Path": "assets/icons/glassies_v5/mason_jar.png",
+   "Sha256": "ac1094ea167f183d21e9b6b2d0d716dc9f852d588021b1822bec7b563cec8eeb",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T02:24:08"
+  },
+  "crystal_tumbler": {
+   "AssetId": "100712345524610",
+   "Path": "assets/blender/glassies_v5/crystal_tumbler_bundle.fbx",
+   "Sha256": "820223d5b1f7f342b16a44b1a71fdb308c23c22b7660c8dc28ecd2f41abd1383",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T02:24:25"
+  },
+  "icon_crystal_tumbler": {
+   "AssetId": "80113702685914",
+   "Path": "assets/icons/glassies_v5/crystal_tumbler.png",
+   "Sha256": "cabe559b17426937f6cc39667c9d2548fabdf48468270fa7ce61c0153f3dd3d3",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T02:24:27"
+  },
+  "hot_sauce": {
+   "AssetId": "83629797085280",
+   "Path": "assets/blender/glassies_v5/hot_sauce_bundle.fbx",
+   "Sha256": "fc00f9ba789a77378aeec761be77c383baf3b20d438f96ab3c446a87957768e1",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T02:24:41"
+  },
+  "icon_hot_sauce": {
+   "AssetId": "89987832989857",
+   "Path": "assets/icons/glassies_v5/hot_sauce.png",
+   "Sha256": "6a8f55aa450c9b77a322ba9d1b21fe100c641ac7146ce566bb4e424cced87d3b",
+   "Moderation": "Approved",
+   "Uploaded": "2026-11-02T02:24:43"
   }
  }
 }

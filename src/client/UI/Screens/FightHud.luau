@@ -203,16 +203,19 @@ function Hud:Popup(text, position, tint, lane, key, scale)
 			label.Size.Y.Offset * scale
 		)
 	end
-	U.make("UIStroke", label, { Thickness = 1.5, Color = Theme.Colors.Shadow, Transparency = 0.15 })
+	U.make("UIStroke", label, { Thickness = 2.5, Color = Theme.Colors.Shadow, Transparency = 0 })
+	-- Rise right away; stay solid for most of the time so the number can be read, then fade fast.
 	TweenService:Create(
 		label,
-		TweenInfo.new(Balance.Feel.PopupSeconds),
-		{ Position = label.Position - UDim2.fromScale(0, 0.1), TextTransparency = 1, TextStrokeTransparency = 1 }
+		TweenInfo.new(Balance.Feel.PopupSeconds, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+		{ Position = label.Position - UDim2.fromScale(0, 0.1) }
 	):Play()
+	local fade = TweenInfo.new(Balance.Feel.PopupSeconds, Enum.EasingStyle.Quart, Enum.EasingDirection.In)
+	TweenService:Create(label, fade, { TextTransparency = 1, TextStrokeTransparency = 1 }):Play()
 	-- Authored popups may use UIStroke as well as the legacy text stroke.
 	for _, stroke in label:GetDescendants() do
 		if stroke:IsA("UIStroke") then
-			TweenService:Create(stroke, TweenInfo.new(Balance.Feel.PopupSeconds), { Transparency = 1 }):Play()
+			TweenService:Create(stroke, fade, { Transparency = 1 }):Play()
 		end
 	end
 	Debris:AddItem(label, Balance.Feel.PopupSeconds)

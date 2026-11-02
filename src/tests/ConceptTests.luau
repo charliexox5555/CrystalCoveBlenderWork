@@ -32,7 +32,7 @@ return function(t, d)
 	end
 
 	t.test("Pop's pressure blasts its cap, sooner each time", function()
-		local log = run("pop", "milk_bottle", 30)
+		local log = run("pop", "fishbowl", 30)
 		t.ok(log.Blast and #log.Blast >= 2, "several blasts in a round")
 		t.eq(log.Pressure[1].Needed, C.pop.Pressure[1])
 		local last = log.Pressure[#log.Pressure]
@@ -40,7 +40,7 @@ return function(t, d)
 	end)
 
 	t.test("Jam's blobs glue the rival, then let go", function()
-		local log, sim = run("jam", "milk_bottle", 30)
+		local log, sim = run("jam", "fishbowl", 30)
 		t.ok(log.Glue and #log.Glue >= 2, "glued more than once")
 		t.ok(log.GlueTick and #log.GlueTick > 2, "being stuck hurts")
 		t.ok(log.GlueEnd ~= nil, "it lets go")
@@ -48,7 +48,7 @@ return function(t, d)
 	end)
 
 	t.test("Prism's shots split further every time", function()
-		local log = run("prism", "milk_bottle", 30)
+		local log = run("prism", "fishbowl", 30)
 		t.ok(log.Rays and #log.Rays >= 5, "fires on a steady beat")
 		for i, shot in log.Rays do
 			t.eq(#shot.Rays, C.prism.Rays[math.min(i, #C.prism.Rays)])
@@ -57,14 +57,14 @@ return function(t, d)
 	end)
 
 	t.test("Cup winds up and really swings faster", function()
-		local log, sim = run("glass_cup", "milk_bottle", 30)
+		local log, sim = run("glass_cup", "fishbowl", 30)
 		t.eq(sim.Concept[1].Stacks, C.glass_cup.MaxStacks)
 		t.ok(#log.Wind == C.glass_cup.MaxStacks, "one wind per stack, then capped")
 		t.ok(sim.Fight.Hits > 5, "still clashes at speed: " .. sim.Fight.Hits)
 	end)
 
 	t.test("Jug floods the pen and sends a wave", function()
-		local log, sim = run("water_jug", "milk_bottle", 30)
+		local log, sim = run("water_jug", "fishbowl", 30)
 		t.ok(log.Tide and #log.Tide >= 4, "the water rises")
 		t.ok(log.Wave and #log.Wave >= 1, "full water sends a wave")
 		t.ok(log.WaveHit ~= nil or log.WaveDodge ~= nil, "a wave resolves")
@@ -72,7 +72,7 @@ return function(t, d)
 	end)
 
 	t.test("Ketchup squeezes more each time and bursts at full splats", function()
-		local log = run("ketchup_bottle", "milk_bottle", 30)
+		local log = run("ketchup_bottle", "fishbowl", 30)
 		t.ok(log.Squeeze and #log.Squeeze >= 3)
 		for i, squeeze in log.Squeeze do
 			t.eq(#squeeze.Drops, C.ketchup_bottle.Drops[math.min(i, #C.ketchup_bottle.Drops)])
@@ -80,9 +80,54 @@ return function(t, d)
 		t.ok(log.Burst and #log.Burst >= 1, "splats burst")
 	end)
 
+	t.test("Milk refills itself, but never past full or as a revive", function()
+		local _, damaged = run("milk_bottle", "fishbowl", 1)
+		local f = damaged.Fight.Fighters[1]
+		f.Hp = f.MaxHp * 0.5
+		t.near(d.FightRules.conceptHeal(damaged.Fight, 1, f.MaxHp * 2), f.MaxHp * 0.5, 1e-6)
+		f.Hp = 0
+		t.eq(d.FightRules.conceptHeal(damaged.Fight, 1, 10), 0, "no revive")
+		local log, sim = run("milk_bottle", "pop", nil, 21)
+		t.ok(log.TopUp and #log.TopUp >= 1, "pours during a round")
+		for _, e in log.TopUp do
+			t.ok(e.Time < d.Balance.Fight.OvertimeAt, "no pour in overtime")
+		end
+		t.ok(sim.Fight.Over, "a refill cannot hold a round open")
+	end)
+	t.test("Pickles fall in growing drops", function()
+		local log = run("pickle_jar", "fishbowl", 30)
+		t.ok(log.Rain and #log.Rain >= 4)
+		for i, drop in log.Rain do
+			t.eq(#drop.Drops, C.pickle_jar.Drops[math.min(i, #C.pickle_jar.Drops)])
+		end
+		t.ok(log.PickleHit ~= nil, "a pickle can land")
+	end)
+	t.test("Lemonade adds slices that really cut", function()
+		local log, sim = run("lemonade_bottle", "fishbowl", 40)
+		t.eq(sim.Concept[1].Stacks, C.lemonade_bottle.MaxSlices)
+		t.ok(log.ZestHit ~= nil, "slices land")
+	end)
+	t.test("Mason swarm grows with clashes and hunts the rival", function()
+		local log = run("mason_jar", "fishbowl", 30)
+		t.ok(log.Flies and #log.Flies >= 3)
+		t.eq(log.Flies[1].Count, 1)
+		t.eq(log.Flies[#log.Flies].Count, C.mason_jar.MaxPerClash)
+		t.ok(log.FlyHit ~= nil, "flies sting")
+	end)
+	t.test("Tumbler cubes stay until something swings into them", function()
+		local log, sim = run("crystal_tumbler", "fishbowl", 40)
+		t.ok(log.Cube and #log.Cube >= 3)
+		t.ok(log.CubeHit ~= nil, "a cube can be hit")
+		t.ok(#sim.Concept[1].Cubes <= C.crystal_tumbler.MaxCubes, "capped")
+	end)
+	t.test("Hot Sauce aura grows and burns in range", function()
+		local log, sim = run("hot_sauce", "fishbowl", 40)
+		t.eq(sim.Concept[1].Stacks, C.hot_sauce.MaxHeat)
+		t.ok(log.Burn ~= nil, "burns when close")
+	end)
 	t.test("rounds run long enough to see abilities, and always end", function()
 		local total, rounds = 0, 0
-		local ids = { "pop", "jam", "prism", "glass_cup", "water_jug", "ketchup_bottle", "milk_bottle" }
+		local ids = { "pop", "jam", "prism", "glass_cup", "water_jug", "ketchup_bottle", "milk_bottle", "hot_sauce" }
 		for i, a in ids do
 			for j, b in ids do
 				local _, sim = run(a, b, nil, i * 100 + j)

@@ -2,6 +2,7 @@
 local RS = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
 local Debris = game:GetService("Debris")
+local RunService = game:GetService("RunService")
 local Audio = require(RS.Shared.Config.Audio)
 local FX = {}
 FX.__index = FX
@@ -13,6 +14,12 @@ local COLORS = {
 	glass_cup = Color3.fromHex("#8CF53A"),
 	water_jug = Color3.fromHex("#10CFC0"),
 	ketchup_bottle = Color3.fromHex("#F2212F"),
+	milk_bottle = Color3.fromHex("#FFF7E6"),
+	pickle_jar = Color3.fromHex("#58A92C"),
+	lemonade_bottle = Color3.fromHex("#FFD21F"),
+	mason_jar = Color3.fromHex("#FFF27A"),
+	crystal_tumbler = Color3.fromHex("#9FE8FF"),
+	hot_sauce = Color3.fromHex("#FF6A14"),
 }
 local RAINBOW = {
 	Color3.fromHex("#FF5A7A"),
@@ -28,7 +35,7 @@ function FX.new(scene)
 	local root = Instance.new("Folder")
 	root.Name = "Concepts"
 	root.Parent = scene.Root
-	return setmetatable({ Scene = scene, Root = root, Sides = { {}, {} } }, FX)
+	return setmetatable({ Scene = scene, Root = root, Sides = { {}, {} }, Connections = {} }, FX)
 end
 
 function FX:World(a)
@@ -75,7 +82,7 @@ function FX:Burst(position, color, count, speed)
 	e.SpreadAngle = Vector2.new(180, 180)
 	e.Acceleration = Vector3.new(0, -30, 0)
 	e.LightEmission, e.Rate, e.Parent = 0.4, 0, at
-	e:Emit(count)
+	e:Emit(if self.Scene.Viewing then count else math.ceil(count / 4))
 	Debris:AddItem(at, 1.2)
 end
 
@@ -228,38 +235,108 @@ function FX:Rays(side, e)
 	self:Ring(origin, Color3.new(1, 1, 1), 5, 0.3)
 end
 
+-- Thrown or falling pieces follow the same arc as the server's: start, velocity, gravity.
+function FX:Toss(origin, velocity, gravity, life, delay, size, color, shape)
+	task.delay(delay, function()
+		if not self.Root.Parent then
+			return
+		end
+		local piece =
+			self:Part("ConceptShot", size, origin, color, Enum.Material.SmoothPlastic, shape or Enum.PartType.Ball)
+		local turn = if shape then CFrame.Angles(0, 0, math.pi / 2) else CFrame.identity
+		local born = os.clock()
+		local connection
+		connection = RunService.RenderStepped:Connect(function()
+			local t = os.clock() - born
+			if t > life or not piece.Parent then
+				connection:Disconnect()
+				piece:Destroy()
+				return
+			end
+			piece.CFrame = CFrame.new(origin + velocity * t + Vector3.new(0, -gravity / 2 * t * t, 0)) * turn
+		end)
+		table.insert(self.Connections, connection)
+	end)
+end
+
 function FX:Drops(side, e)
 	local here = self.Scene.Frame
 	local origin = self:World(e.Origin)
 	for _, d in e.Drops do
-		task.delay(d[4], function()
-			if not self.Root.Parent then
-				return
-			end
-			local drop = self:Part(
-				"KetchupDrop",
-				Vector3.one * 0.8,
-				origin,
-				COLORS.ketchup_bottle,
-				Enum.Material.SmoothPlastic,
-				Enum.PartType.Ball
-			)
-			local velocity = here:VectorToWorldSpace(Vector3.new(d[1], d[2], d[3]))
-			local gravity, born = e.Gravity, os.clock()
-			local connection
-			connection = game:GetService("RunService").RenderStepped:Connect(function()
-				local t = os.clock() - born
-				if t > e.Life or not drop.Parent then
-					connection:Disconnect()
-					drop:Destroy()
-					return
-				end
-				drop.Position = origin + velocity * t + Vector3.new(0, -gravity / 2 * t * t, 0)
-			end)
-			self.Connections = self.Connections or {}
-			table.insert(self.Connections, connection)
-		end)
+		local velocity = here:VectorToWorldSpace(Vector3.new(d[1], d[2], d[3]))
+		self:Toss(origin, velocity, e.Gravity, e.Life, d[4], Vector3.one * 0.8, COLORS.ketchup_bottle)
 	end
+end
+
+function FX:Rain(side, e)
+	local here = self.Scene.Frame
+	for _, d in e.Drops do
+		local origin = here:PointToWorldSpace(Vector3.new(d[1], d[2], d[3]))
+		local velocity = here:VectorToWorldSpace(Vector3.new(d[4], d[5], d[6]))
+		self:Toss(
+			origin,
+			velocity,
+			e.Gravity,
+			e.Life,
+			d[7],
+			Vector3.new(1.7, 0.85, 0.85),
+			COLORS.pickle_jar,
+			Enum.PartType.Cylinder
+		)
+	end
+end
+
+-- Fireflies chase the rival's glass on screen; the server decides each sting.
+function FX:Flies(side, e)
+	local state = self.Sides[side]
+	state.Flies = state.Flies or {}
+	local foe = self:Foe(side)
+	local origin = self:World(e.Origin)
+	for _ = 1, e.Count do
+		local fly =
+			self:Part("Firefly", Vector3.one * 0.42, origin, COLORS.mason_jar, Enum.Material.Neon, Enum.PartType.Ball)
+		local spin = Vector3.new(math.random() * 2 - 1, math.random() * 2 - 1, 0.01)
+		table.insert(state.Flies, {
+			Part = fly,
+			Velocity = spin.Unit * e.Speed,
+			Speed = e.Speed,
+			Until = os.clock() + e.Life,
+			Foe = foe,
+		})
+		Debris:AddItem(fly, e.Life + 0.1)
+	end
+end
+
+function FX:StepFlies(state, dt)
+	for i = #(state.Flies or {}), 1, -1 do
+		local fly = state.Flies[i]
+		if os.clock() > fly.Until or not fly.Part.Parent then
+			table.remove(state.Flies, i)
+		else
+			local toward = fly.Foe.Body.Position - fly.Part.Position
+			if toward.Magnitude > 0.01 then
+				fly.Velocity = fly.Velocity:Lerp(toward.Unit * fly.Speed, math.min(1, dt * 3.5))
+			end
+			fly.Part.Position += fly.Velocity * dt
+		end
+	end
+end
+
+function FX:Cube(side, e)
+	local state = self.Sides[side]
+	state.Cubes = state.Cubes or {}
+	local at = self:World(e.Point)
+	local cube = self:Part("IceCube", Vector3.one * 0.1, at, COLORS.crystal_tumbler, Enum.Material.Glass)
+	cube.Transparency = 0.25
+	cube.CFrame = CFrame.new(at) * CFrame.Angles(math.random() * 3, math.random() * 3, 0)
+	TweenService
+		:Create(
+			cube,
+			TweenInfo.new(e.Arm, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+			{ Size = Vector3.one * 1.5 }
+		)
+		:Play()
+	state.Cubes[e.Id] = cube
 end
 
 function FX:Event(e, hud)
@@ -394,6 +471,110 @@ function FX:Event(e, hud)
 		self:Sound(Audio.WaterSlap, side, 1.5, 0.35)
 	elseif a == "Splat" then
 		self:Stick(side, math.min(e.Count, e.Max), color)
+	elseif a == "TopUp" then
+		self:Burst(f.Body.Position, color, 26, 12)
+		self:Ring(f.Body.Position, color, 8, 0.45)
+		self:Say(hud, "TOP UP!", f.Body.Position, Color3.fromHex("#6FE3FF"))
+		if hud and e.Healed > 0 then
+			hud:Popup(
+				string.format("+%d", math.ceil(e.Healed)),
+				f.Body.Position,
+				Color3.fromHex("#7DFF6A"),
+				1,
+				"ConceptHeal",
+				1.25
+			)
+		end
+		self:Sound(Audio.Bubbles, side, 1, 0.9)
+	elseif a == "Rain" then
+		self:Rain(side, e)
+		self:Say(hud, #e.Drops .. " PICKLES!", foe.Body.Position, color)
+		self:Sound(Audio.RisingWhoosh, side, 1.3, 0.5)
+	elseif a == "PickleHit" then
+		local at = self:World(e.Point)
+		self:Burst(at, color, 12, 13)
+		self:Number(hud, e.Amount, at, color)
+		self:Sound(Audio.ToyBlockA, side, 1, 0.7)
+		self:Shake(0.3)
+	elseif a == "Zest" then
+		local state = self.Sides[side]
+		state.Zest = state.Zest or { Parts = {} }
+		state.Zest.Speed, state.Zest.Distance = e.Speed, e.Distance
+		while #state.Zest.Parts < e.Count do
+			local slice = self:Part(
+				"LemonSlice",
+				Vector3.new(0.3, 1.5, 1.5),
+				f.Body.Position,
+				color,
+				Enum.Material.SmoothPlastic,
+				Enum.PartType.Cylinder
+			)
+			table.insert(state.Zest.Parts, slice)
+		end
+		self:Ring(f.Body.Position, color, 6, 0.3)
+		if e.Count > 1 then
+			self:Say(hud, e.Count .. " SLICES!", f.Body.Position, color)
+		end
+		self:Sound(Audio.FN_GlassPing, side, 1 + e.Count * 0.08, 0.5)
+	elseif a == "ZestHit" then
+		local at = self:World(e.Point)
+		self:Burst(at, color, 12, 15)
+		self:Number(hud, e.Amount, at, color)
+		self:Sound(Audio.ClinkLightB, side, 1.3, 0.6)
+	elseif a == "Flies" then
+		self:Flies(side, e)
+		if e.Count >= 3 then
+			self:Say(hud, "SWARM!", f.Body.Position, color)
+		end
+		self:Sound(Audio.FN_BeeBuzz, side, 1.2, 0.35)
+	elseif a == "FlyHit" then
+		local at = self:World(e.Point)
+		local flies = self.Sides[side].Flies
+		if flies and flies[1] then
+			flies[1].Part:Destroy()
+			table.remove(flies, 1)
+		end
+		self:Burst(at, color, 6, 9)
+		self:Number(hud, e.Amount, at, color)
+	elseif a == "Cube" then
+		self:Cube(side, e)
+		self:Sound(Audio.FN_IceCrackle, side, 1.2, 0.5)
+	elseif a == "CubeHit" then
+		local at = self:World(e.Point)
+		local cubes = self.Sides[side].Cubes
+		if cubes and cubes[e.Id] then
+			cubes[e.Id]:Destroy()
+			cubes[e.Id] = nil
+		end
+		self:Burst(at, color, 24, 18)
+		self:Ring(at, Color3.new(1, 1, 1), 5, 0.3)
+		self:Say(hud, "FROZEN!", at, color)
+		self:Number(hud, e.Amount, at, color)
+		self:Sound(Audio.SafetyGlass, side, 1.2, 0.8)
+		self:Shake(0.4)
+	elseif a == "CubeGone" then
+		local cubes = self.Sides[side].Cubes
+		if cubes and cubes[e.Id] then
+			cubes[e.Id]:Destroy()
+			cubes[e.Id] = nil
+		end
+	elseif a == "Heat" then
+		local state = self.Sides[side]
+		if not state.Aura then
+			state.Aura =
+				self:Part("HeatAura", Vector3.one, f.Body.Position, color, Enum.Material.Neon, Enum.PartType.Ball)
+			state.Aura.Transparency = 0.82
+		end
+		state.AuraSize = (e.Radius + f.Body.Size.X * 0.5) * 2
+		self:Ring(f.Body.Position, color, state.AuraSize + 1, 0.3)
+		if e.Stacks == e.Max then
+			self:Say(hud, "MAX HEAT!", f.Body.Position, color)
+		end
+		self:Sound(Audio.RisingWhoosh, side, 0.8 + e.Stacks * 0.08, 0.4)
+	elseif a == "Burn" then
+		local at = self:World(e.Point)
+		self:Burst(at, color, 7, 8)
+		self:Number(hud, e.Amount, at, color)
 	elseif a == "Burst" then
 		local at = self:World(e.Point)
 		self:Stick(side, 0, color)
@@ -406,9 +587,11 @@ function FX:Event(e, hud)
 	end
 end
 
--- Runs after Pose each frame: things that follow the glass.
-function FX:Update()
+-- Runs after Pose each frame: things that follow the glass. `time` is the fight clock, so orbits match the server.
+function FX:Update(time)
 	local now = os.clock()
+	local dt = now - (self.LastUpdate or now)
+	self.LastUpdate = now
 	for side, state in self.Sides do
 		local f = self.Scene.Fighters[side]
 		if f.Broken then
@@ -430,11 +613,49 @@ function FX:Update()
 		if state.ChargeUntil and now < state.ChargeUntil and f.Glints then
 			f.Glints:Emit(state.ChargeRays or 1)
 		end
+		if state.Zest and time then
+			local count = #state.Zest.Parts
+			for i, slice in state.Zest.Parts do
+				local angle = time * state.Zest.Speed + (i - 1) * 2 * math.pi / count
+				local offset = Vector3.new(math.cos(angle), math.sin(angle), 0) * state.Zest.Distance
+				slice.CFrame = CFrame.new(f.Body.Position + self.Scene.Frame:VectorToWorldSpace(offset))
+					* CFrame.Angles(0, math.pi / 2, angle * 2)
+			end
+		end
+		if state.Aura then
+			state.Aura.Position = f.Body.Position
+			state.Aura.Size = Vector3.one * (state.AuraSize or 1) * (1 + math.sin(now * 9) * 0.04)
+		end
+		self:StepFlies(state, dt)
+	end
+end
+
+-- The shatter ends every running effect but leaves the water and cubes where they are.
+function FX:RoundOver()
+	for side, state in self.Sides do
+		self:Strand(side, false)
+		for _, stuck in state.Stuck or {} do
+			stuck.Part:Destroy()
+		end
+		state.Stuck = nil
+		state.Shake = 0
+		for _, slice in (state.Zest and state.Zest.Parts) or {} do
+			slice:Destroy()
+		end
+		state.Zest = nil
+		if state.Aura then
+			state.Aura:Destroy()
+			state.Aura = nil
+		end
+		for _, fly in state.Flies or {} do
+			fly.Part:Destroy()
+		end
+		state.Flies = nil
 	end
 end
 
 function FX:Destroy()
-	for _, c in self.Connections or {} do
+	for _, c in self.Connections do
 		c:Disconnect()
 	end
 	self.Root:Destroy()

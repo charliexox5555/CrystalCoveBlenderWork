@@ -2,11 +2,11 @@
  "Group": "11116787",
  "Assets": {
   "sheet/glassies": {
-   "AssetId": "96805701077288",
+   "AssetId": "89070630039487",
    "Path": "assets/icons/items/sheets/glassies.png",
-   "Sha256": "5dceaf0aac3c39da60481bada2b5a97919863d14b9a9c692fa0b67f367f753cf",
+   "Sha256": "f48063276fd80e6b610e9cf129c0fe91650dcd3ca7438ca0a275e95be5b7e3c7",
    "Moderation": "Approved",
-   "Uploaded": "2026-11-02T01:48:28"
+   "Uploaded": "2026-11-02T02:24:48"
   },
   "sheet/cosmetics": {
    "AssetId": "124470029472244",

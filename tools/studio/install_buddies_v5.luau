@@ -1,6 +1,6 @@
--- Installs the Glass Buddies v5 bundles into ReplicatedStorage.Assets.GlassiesV5 (Edit mode, MCP).
+-- Installs the Glass Buddies v5 bundles into ReplicatedStorage.Assets.Glassies (Edit mode, MCP).
 -- Asset ids: assets/blender/glassies_v5/roblox_assets.json. Colours: tools/blender/build_buddies_v5.py.
--- Rerunning replaces only GlassiesV5; Assets.Glassies (live art) is never touched.
+-- What it replaces goes to ServerStorage.GlassiesBeforeV5, so an older model is never lost.
 local IS = game:GetService("InsertService")
 local RS = game:GetService("ReplicatedStorage")
 local BUDDIES = {
@@ -10,14 +10,17 @@ local BUDDIES = {
 	glass_cup = { Asset = 120158899370566, Fill = "#6FE01F", Glass = "#E2FFC9" },
 	water_jug = { Asset = 136014486642992, Fill = "#10CFC0", Glass = "#C8FFF7", Top = "#FFFFFF" },
 	ketchup_bottle = { Asset = 95459940693266, Fill = "#F2212F", Glass = "#FFD2D2", Top = "#FFD23C" },
+	milk_bottle = { Asset = 82843203997134, Fill = "#F6EFDF", Glass = "#FFFFFF", Top = "#4FA8F0" },
+	pickle_jar = { Asset = 120701254461667, Fill = "#58A92C", Glass = "#E4F7CC", Top = "#E9E2C8" },
+	lemonade_bottle = { Asset = 70492197805450, Fill = "#FFD21F", Glass = "#FFF6C9", Top = "#46C24A" },
+	mason_jar = { Asset = 98257169784668, Fill = "#1F4F86", Glass = "#D5E8FF", Top = "#C9CED6" },
+	crystal_tumbler = { Asset = 100712345524610, Fill = "#7FDFFF", Glass = "#EAFBFF" },
+	hot_sauce = { Asset = 83629797085280, Fill = "#E8390E", Glass = "#FFD9C9", Top = "#2FAE3C" },
 }
 local FACE_SWAP = CFrame.Angles(0, math.pi, 0) -- FBX brings Blender's -Y front in as -Z; the fight camera sits at +Z
-local library = RS.Assets:FindFirstChild("GlassiesV5")
-if library then
-	library:Destroy()
-end
-library = Instance.new("Folder")
-library.Name = "GlassiesV5"
+local library = RS.Assets.Glassies
+local backup = game.ServerStorage:FindFirstChild("GlassiesBeforeV5") or Instance.new("Folder")
+backup.Name, backup.Parent = "GlassiesBeforeV5", game.ServerStorage
 local report = {}
 for id, spec in BUDDIES do
 	local ok, loaded = pcall(IS.LoadAsset, IS, spec.Asset)
@@ -71,9 +74,16 @@ for id, spec in BUDDIES do
 		end
 	end
 	loaded:Destroy()
+	local old = library:FindFirstChild(id)
+	if old then
+		if old:GetAttribute("BuddyVersion") then
+			old:Destroy()
+		else
+			old.Parent = backup
+		end
+	end
 	root.Parent = library
 	report[#report + 1] = id .. ":" .. count
 	task.wait()
 end
-library.Parent = RS.Assets
 return table.concat(report, " ")

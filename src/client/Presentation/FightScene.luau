@@ -223,6 +223,7 @@ end
 -- The round is over: casts of both sides (ray lenses, weapons, guard lids...) stop here. The render clock stops at
 -- the final snapshot, so their end times never arrive and they would hang in the air until the scene goes Idle.
 function Scene:EndRoundEffects()
+	self.Concept:RoundOver()
 	if not self.Combat then
 		return
 	end
@@ -256,7 +257,7 @@ end
 local WHITE, FROZEN, RAGE = Color3.new(1, 1, 1), Color3.fromHex("#B3F4FF"), Color3.fromHex("#FF5533")
 
 function Scene:Update(r, time)
-	self.Concept:Update()
+	self.Concept:Update(time)
 	for side, f in self.Fighters do
 		Health.update(f, r.Hp[side], self.Viewing)
 		if f.Buddy then

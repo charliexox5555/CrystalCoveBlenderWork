@@ -315,7 +315,8 @@ function Rig:GlassyHero(id, height)
 	local sources = { body }
 	local details = model:FindFirstChild("Details")
 	for _, d in details and details:GetDescendants() or {} do
-		if d:IsA("BasePart") and not d.Name:match("^Hang") then
+		local state = d:GetAttribute("BuddyFace")
+		if d:IsA("BasePart") and not d.Name:match("^Hang") and (not state or state == "Idle") then
 			table.insert(sources, d)
 		end
 	end

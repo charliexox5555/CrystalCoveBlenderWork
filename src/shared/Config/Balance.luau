@@ -744,10 +744,10 @@ Balance.Data = {
 -- XP from level L to L + 1 = BaseXp + StepXp * (L - 1): Lv 2 after ~2 matches, Lv 5 in the first session,
 -- Lv 10 after ~40 matches, then a slow climb with no cap. No level rewards yet.
 Balance.Levels = {
-	WinXp = 90, -- shorter setup: preserve XP pace per minute, not per match
-	LossXp = 36,
-	RoundWonXp = 9, -- per round won
-	PerfectXp = 13, -- per Perfect release
+	WinXp = 115, -- longer rounds (decision 133): preserve XP pace per minute, not per match
+	LossXp = 46,
+	RoundWonXp = 11, -- per round won
+	PerfectXp = 16, -- per Perfect release
 	BotScale = 0.5, -- matches against a bot
 	BaseXp = 100,
 	StepXp = 70, -- same earned-level curve; new XP awards retain roughly 2.4 hours to Lv 10
@@ -1041,12 +1041,12 @@ Balance.Match = {
 		-- LossChipCoins per glassy's worth of chip damage in rounds you lost (fights are close, so
 		-- chip is weighted lightly) + LossPerfectCoins per Perfect Release, capped at LossMaxCoins.
 		-- Quitting (reset or Leave mid-match) pays the quitter 0.
-		MatchWinCoins = 100,
-		LossBaseCoins = 8,
-		LossHeartCoins = 10,
-		LossChipCoins = 5,
-		LossPerfectCoins = 2,
-		LossMaxCoins = 40,
+		MatchWinCoins = 125, -- raised with the longer rounds of decision 133, so the Kiln spin pace holds
+		LossBaseCoins = 10,
+		LossHeartCoins = 12,
+		LossChipCoins = 6,
+		LossPerfectCoins = 3,
+		LossMaxCoins = 50,
 		WinTrophies = 20,
 		LossTrophies = 8, -- subtracted, never below 0
 		BotWinTrophies = 5, -- bots never take trophies
@@ -1103,7 +1103,7 @@ Balance.EconomyModel = {
 	Days = 30,
 	WinRate = 0.5,
 	BotMatchShare = 0.4, -- fraction of matches against bots (high at launch, lower later)
-	RoundSecondsEstimate = 18, -- average fight length; tools/pacing_report prints the real one (decision 122)
+	RoundSecondsEstimate = 33, -- average fight length; tools/release_matrix prints the real one (decision 133)
 	SecondsBetweenMatches = 25, -- results screen, walking to a pad, queue
 	QuestsCompletedPerDay = 0, -- quests are hidden until their redesign (decision 99); was 2
 	LossChipPerRound = 0.8, -- average share of the winner's HP a loser chips off (FightModel ~0.82)
@@ -1400,6 +1400,64 @@ Balance.Concepts = {
 			WaveLift = 10,
 			WaterDrag = 0.15,
 			WaterAmp = 0.98,
+		},
+		milk_bottle = {
+			First = 4,
+			Interval = 7,
+			RetrySeconds = 0.5,
+			HealBelow = 0.85,
+			Heals = { 0.035, 0.05, 0.065, 0.08 }, -- share of max HP per Top Up: each pour is bigger
+		},
+		pickle_jar = {
+			First = 4,
+			Interval = 6,
+			Drops = { 2, 3, 4, 5, 6 }, -- pickles per drop
+			StartY = -1.5,
+			FallSpeed = 4,
+			FallSeconds = 0.7,
+			Gravity = 26,
+			Spacing = 2.2,
+			Gap = 0.08,
+			DropRadius = 0.5,
+			DropDamage = 0.11,
+		},
+		lemonade_bottle = {
+			First = 3,
+			Interval = 6,
+			MaxSlices = 5, -- one more slice every Interval
+			OrbitSpeed = 2.6,
+			OrbitDistance = 3.6,
+			SliceRadius = 0.55,
+			SliceDamage = 0.085,
+			SliceCooldown = 1.2,
+		},
+		mason_jar = {
+			ClashesPerFly = 3, -- each clash frees more: 1 at the start, up to MaxPerClash
+			MaxPerClash = 3,
+			FlySpeed = 11,
+			FlyTurn = 3.5,
+			FlyLife = 2.4,
+			FlyRadius = 0.3,
+			FlyDamage = 0.025,
+		},
+		crystal_tumbler = {
+			Cooldown = 1.8,
+			MaxCubes = 6, -- cubes hang where glass clashed until something swings into them
+			ArmSeconds = 0.7,
+			Scatter = 1.6,
+			CubeRadius = 0.55,
+			CubeDamage = 0.1,
+			SlowSeconds = 1.5,
+			SlowAmp = 0.95,
+		},
+		hot_sauce = {
+			First = 2,
+			Interval = 4,
+			MaxHeat = 6,
+			BaseRadius = 0.2,
+			RadiusPerHeat = 0.28,
+			TickSeconds = 0.5,
+			TickDamage = 0.021, -- per heat level, per tick
 		},
 		ketchup_bottle = {
 			First = 3.5,

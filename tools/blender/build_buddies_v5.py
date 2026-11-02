@@ -57,6 +57,36 @@ BUDDIES = {
         "Profile": [(0.44, 0.22), (0.48, 0.56), (0.62, 0.84), (1.12, 1.30), (1.40, 1.90), (1.42, 2.46), (1.20, 2.86), (0.0, 2.96)],
         "FillZ": (1.02, 2.84), "EyeZ": 1.86, "EyeR": 0.27, "EyeA": 0.42,
     },
+    "milk_bottle": {
+        "Name": "Milk", "Fill": "#F6EFDF", "Glass": "#FFFFFF", "Mood": "sleepy", "Top": "#4FA8F0",
+        "Profile": [(0.40, 0.22), (0.42, 0.56), (0.60, 0.86), (0.92, 1.30), (1.02, 1.95), (0.98, 2.50), (0.78, 2.84), (0.0, 2.90)],
+        "FillZ": (0.98, 2.76), "EyeZ": 1.82, "EyeR": 0.24, "EyeA": 0.46,
+    },
+    "pickle_jar": {
+        "Name": "Pickle", "Fill": "#58A92C", "Glass": "#E4F7CC", "Mood": "cool", "Top": "#E9E2C8",
+        "Profile": [(1.06, 0.26), (1.20, 0.46), (1.36, 0.80), (1.42, 1.40), (1.36, 2.10), (1.10, 2.56), (0.0, 2.64)],
+        "FillZ": (0.66, 2.54), "EyeZ": 1.44, "EyeR": 0.27, "EyeA": 0.40,
+    },
+    "lemonade_bottle": {
+        "Name": "Lemonade", "Fill": "#FFD21F", "Glass": "#FFF6C9", "Mood": "excited", "Top": "#46C24A",
+        "Profile": [(0.32, 0.20), (0.34, 0.50), (0.44, 0.74), (0.92, 1.12), (1.08, 1.70), (1.04, 2.34), (0.82, 2.66), (0.0, 2.72)],
+        "FillZ": (0.92, 2.60), "EyeZ": 1.62, "EyeR": 0.25, "EyeA": 0.46,
+    },
+    "mason_jar": {
+        "Name": "Mason", "Fill": "#1F4F86", "Glass": "#D5E8FF", "Mood": "friendly", "Top": "#C9CED6",
+        "Profile": [(0.98, 0.22), (1.10, 0.40), (1.26, 0.70), (1.30, 1.30), (1.30, 2.00), (1.08, 2.42), (0.0, 2.50)],
+        "FillZ": (0.60, 2.40), "EyeZ": 1.36, "EyeR": 0.27, "EyeA": 0.42,
+    },
+    "crystal_tumbler": {
+        "Name": "Tumbler", "Fill": "#7FDFFF", "Glass": "#EAFBFF", "Mood": "eager", "Top": None,
+        "Profile": [(1.12, 0.10), (1.08, 0.40), (1.00, 1.10), (0.92, 1.70), (0.82, 1.92), (0.0, 2.00)],
+        "FillZ": (0.58, 1.92), "EyeZ": 1.06, "EyeR": 0.25, "EyeA": 0.48, "Sides": 12,
+    },
+    "hot_sauce": {
+        "Name": "Hot Sauce", "Fill": "#E8390E", "Glass": "#FFD9C9", "Mood": "angry", "Top": "#2FAE3C",
+        "Profile": [(0.20, 0.30), (0.22, 0.56), (0.26, 0.74), (0.70, 1.20), (0.84, 1.90), (0.84, 2.60), (0.64, 2.92), (0.0, 2.98)],
+        "FillZ": (0.96, 2.88), "EyeZ": 1.94, "EyeR": 0.21, "EyeA": 0.50,
+    },
     "ketchup_bottle": {
         "Name": "Ketchup", "Fill": "#F2212F", "Glass": "#FFD2D2", "Mood": "angry", "Top": "#FFD23C",
         "Profile": [(0.20, 0.30), (0.24, 0.62), (0.50, 0.86), (0.80, 1.34), (0.94, 2.00), (0.96, 2.52), (0.76, 2.80), (0.0, 2.86)],
@@ -357,6 +387,17 @@ def top_piece(gid, d, profile):
         parts.append(("Cap", obj_from_bm("Cap", lathe("Cap", nozzle, segments=20))))
     elif gid == "glass_cup":
         parts.append(("Rim", ring_mesh("Rim", 0.96, 0.075, 0.10)))
+    elif gid == "crystal_tumbler":
+        parts.append(("Rim", ring_mesh("Rim", 1.10, 0.08, 0.10)))
+    elif gid in ("milk_bottle", "lemonade_bottle"):
+        cap = [(0.0, 0.0), (0.34, 0.02), (0.46, 0.08), (0.46, 0.22), (0.36, 0.26)]
+        parts.append(("Cap", obj_from_bm("Cap", lathe("Cap", cap, segments=20))))
+    elif gid in ("pickle_jar", "mason_jar"):
+        lid = [(0.0, 0.0), (0.88, 0.02), (1.06, 0.06), (1.12, 0.16), (1.12, 0.30), (1.0, 0.34)]
+        parts.append(("Lid", obj_from_bm("Lid", lathe("Lid", lid))))
+    elif gid == "hot_sauce":
+        nozzle = [(0.0, 0.0), (0.10, 0.02), (0.14, 0.16), (0.26, 0.26), (0.30, 0.40), (0.22, 0.46)]
+        parts.append(("Cap", obj_from_bm("Cap", lathe("Cap", nozzle, segments=20))))
     return parts
 
 
@@ -390,7 +431,7 @@ def details_for(gid, d, profile):
     """Small touches inside the fill: fizz, seeds, sparkle facets."""
     out = []
     rnd = random.Random(hash(gid) & 0xffff if False else sum(map(ord, gid)))
-    if gid in ("pop", "water_jug", "glass_cup"):
+    if gid in ("pop", "water_jug", "glass_cup", "lemonade_bottle", "mason_jar", "crystal_tumbler"):
         bm = bmesh.new()
         layer = bm.loops.layers.color.new("Col")
         for _ in range(9):

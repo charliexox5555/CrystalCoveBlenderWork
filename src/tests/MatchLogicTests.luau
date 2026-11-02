@@ -178,7 +178,7 @@ return function(t, deps)
 		t.eq(fizzy, 50, "always takes the type advantage")
 	end)
 
-	t.test("rewards: a win always pays 100, a loss pays for performance, bots never take trophies", function()
+	t.test("rewards: a win always pays MatchWinCoins, a loss pays for performance, bots never take trophies", function()
 		local R = B.Rewards
 		local m = MatchLogic.new({ { Collection = big }, { Collection = big } }, Rng.new(5))
 		for _, w in { 1, 1, 2, 1 } do
@@ -186,8 +186,8 @@ return function(t, deps)
 			MatchLogic.endRound(m, w)
 		end
 		local win, loss = MatchLogic.rewards(m, 1, 100), MatchLogic.rewards(m, 2, 3)
-		t.eq(win.Coins, 100, "a win pays 100")
-		t.eq(R.MatchWinCoins, 100)
+		t.eq(win.Coins, R.MatchWinCoins, "a win pays the full amount")
+		t.eq(R.MatchWinCoins, 125)
 		t.eq(loss.Coins, R.LossBaseCoins + R.LossHeartCoins, "loss defaults to hearts taken from the match")
 		t.ok(loss.Coins > 0 and loss.Coins < win.Coins, "both earn, winner more")
 		t.eq(win.Trophies, R.WinTrophies, "win trophies")
@@ -203,7 +203,11 @@ return function(t, deps)
 		t.eq(MatchLogic.rewards(m, 2, 3, true, { Hearts = 2, Chip = 3, Perfects = 5 }).Coins, R.LossMaxCoins, "capped")
 		t.ok(R.LossMaxCoins <= R.MatchWinCoins / 2, "a loss is capped well below a win")
 		t.eq(MatchLogic.rewards(m, 2, 3, true, { Hearts = 2, Forfeited = true }).Coins, 0, "quitting pays nothing")
-		t.eq(MatchLogic.rewards(m, 1, 100, true, { Hearts = 0, Chip = 0 }).Coins, 100, "a win pays 100 no matter what")
+		t.eq(
+			MatchLogic.rewards(m, 1, 100, true, { Hearts = 0, Chip = 0 }).Coins,
+			R.MatchWinCoins,
+			"a win pays the same no matter what"
+		)
 		local vb = MatchLogic.new({ { Collection = big }, { Collection = big, IsBot = true } }, Rng.new(6))
 		for _ = 1, 3 do
 			MatchLogic.startRound(vb)
@@ -218,7 +222,7 @@ return function(t, deps)
 			MatchLogic.endRound(beat, 1)
 		end
 		local botWin = MatchLogic.rewards(beat, 1, 50)
-		t.eq(botWin.Coins, 100, "beating a bot also pays 100")
+		t.eq(botWin.Coins, R.MatchWinCoins, "beating a bot pays the same")
 		t.eq(botWin.Trophies, R.BotWinTrophies)
 		t.eq(MatchLogic.rewards(beat, 1, 50, false).Coins, 0, "no contest still pays nothing")
 	end)

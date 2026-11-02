@@ -1,55 +1,58 @@
-# Current handoff — 2026-10-14 (evening, Claude polish pass)
+# Morning checklist — 2026-11-02
 
-**Playtested polish pass complete:** fight clarity fixes, Watch any nearby fight, arena state/signs, lobby lane and lighting, faster forfeit, −83% snapshot bandwidth, −30% fight render cost, and a calibrated simulator. Code is committed and pushed (`634554a` … latest). **World/UI instances live in the place and need a Studio save.** [Full report with before/after screenshots](../testing/POLISH_PASS.md).
+**Nothing is published.** The live game is unchanged until you publish. All code is on the branch `claude/relaunch-gauntlet`.
 
-## Your next actions
+## 1. Save first
 
-1. **Save the place in Studio now.** This pass changed StarterGui templates (RoundEnd banner, FightHud side stripes, STOP WATCHING), Lighting, added Workspace.Lobby.Paths and levelled one lobby collision slab. Backups: ServerStorage.UIBackups.Polish_2026_10_14 and ServerStorage.WorldBackups.Lighting_2026_10_14. Studio is left in Edit mode.
-2. Studio is free for Codex's **lobby-v2 import** (furnace Kiln, leaderboard frames, Blender fences) — see assets/blender/map/lobby_v2/README.md. Claude did not touch the fences, Kiln or leaderboards.
-3. On a real phone: a full match (pick → aim for gold → shatter → round banner → results), **Watch** a nearby fight and STOP, and low-end frame rate/MicroProfiler. Gamepad B/close still needs a manual check (MCP cannot press it).
-4. Decide on balance note: Rocket Pop / Momentum sits near the fairness floor (real swing 39%). Suggested lever: Momentum +5% per hit instead of +4%. Not applied. Decisions 45–47 are Proposed.
-5. Final UI art/styling under **StarterGui**; new styleable elements are listed in [EDITING_UI](../ui/EDITING_UI.md). Publish manually, then verify ProfileStore session locking and global boards in a published server. Group/Index rewards still need your configuration; paid features and free Marbles stay disabled.
+The changes are only in your open Glass vs Glass Studio window. **Press File > Save** before anything else. Saving doesn't change the live game. If Studio closed overnight and they're gone, tell me and I'll reinstall them from the repo.
 
-## This pass (Claude)
+## 2. Play for 10 minutes (about what matters most)
 
-- **Bugs fixed from play:** gold Perfect band was frozen at the template position (PERFECT! could show outside it); round banner and heart pop appeared before the shatter; no way to tell your glassy in mirror matches (now owner names, pad-coloured stripes and an in-world YOU ▼); survivor froze mid-air; distant fights froze; reset forfeited 5 s late; invisible 1.4-stud ledge on the spawn→bridge path; idle arenas had no sign and distant signs stacked; lobby hint stayed up while queued; greyed Kiln pulls gave no reason; every bot was "Glint Bot".
-- **New:** Watch prompt at each busy stand (camera + HUD, follows rounds, STOP WATCHING); pad glows open/waiting/busy; countdown ticks, release whoosh, heart-pop sound; stepping-stone lane with spurs to every pad; calmer saturation with low bloom.
-- **Performance:** 7 fights — fight render 0.80 → 0.55 ms mean, max 4.0 → 2.8 ms; idle Highlights 14 → 0; snapshot payload ~750 → 128 bytes. Desktop numbers; the earlier "15 FPS" client samples were Studio throttling an unfocused/minimized window.
-- **Calibration:** the F1 candidate's failures were model artifacts. Real swing: Jam mirrors 33–35 s, Prism Blade 55%. FightModel is now size- and slowdown-aware, fitted to 31 real mirrors; tests pass honestly. [Review](../testing/CALIBRATION_REVIEW.md).
-- **Verified:** 76 tests in Lune and Studio; native two-client PvP/drop/replay/disconnect/late-join with zero errors; 39 layout states on A06/iPhone/iPad; simulators run (economy unchanged).
+Press Play and play like a new player. The Studio test profile starts fresh each time.
 
-## Earlier: fences, Wave1 and the reward rule
+1. Do the three free spins on the welcome card show mostly the new glass?
+2. Is the first match clear? Can you tell what your glass is doing?
+3. **Do fights feel long enough now?** They average about 32 seconds, up from about 21. If they drag, tell me and I'll shorten them.
+4. Press PLAY AGAIN and play a full match. Do you want another one?
+5. Win some coins and spin the Kiln.
 
+To see any matchup, press Play and run this in the Server command bar:
 
-[Fence/import/reward report and screenshots](../testing/FENCES_AND_WAVE1_NATIVE.md):
+```lua
+require(game.ServerScriptService.Server.Services.FightService):BotVsBot("pop", "water_jug", 1, true)
+```
 
-- All five exact grass rims fitted with the creator's 3-stud brown-post/two-rail style, ~5-stud spacing, .9-stud inset and 11-stud bridge gates. Matching bridge rails; 232 posts, 464 rails, 232 invisible safety colliders. Zero post-corner overhang. Originals preserved in **ServerStorage.Unsorted.OriginalPerimeterFences**.
-- All-pad walk: 33 visits, no falls/blockages; featured pad 13.95 s. Real character blocked from walking off at X=45.20.
-- Nine new glassies installed and native-validated, **12 playable total**. Each has Body/Details, 16 shards and surface cracks. Eight sky assets normalized; native Kiln hero, arch, crystals/clouds placed. Raw sources and previous Kiln preserved.
-- Real single/ten Kiln pulls, duplicate stars and used-quote rejection passed with Studio mock coins. Actual pool has nine installed non-starters; Rare+ models remain unbuilt/unavailable. Odds reflect this pool.
-- Your accepted rule: no rewards/progress/welcome eligibility before a real round completes. Early disconnect gives zero coins/trophies and leaves match stats/streaks unchanged. Existing amounts after a completed round stay unchanged.
-- Native two-client PvP/replay/disconnect plus third staggered join passes with zero errors. Seven moving fights: server 59.98 FPS, .168 ms simulation/frame. Client Studio samples ~59/15 FPS with spikes; real-phone verification remains open.
-- **74 tests pass in Lune and Studio.** Final Output clean. Studio left in Edit.
+The 12 new ids: `pop`, `jam`, `prism`, `glass_cup`, `water_jug`, `ketchup_bottle`, `milk_bottle`, `pickle_jar`, `lemonade_bottle`, `mason_jar`, `crystal_tumbler`, `hot_sauce`.
 
-## Earlier backlog completed
+Watch for: which abilities feel exciting, which feel weak, and any that are confusing or too busy.
 
-| Item | Result | Evidence |
+## 3. What I couldn't check
+
+- **Fun.** I can test that things work, but only you and real players can judge this.
+- **Sound.** I picked each ability's sounds from your existing library without hearing them. They may need swaps.
+- **Phones.** Not tested. Check a phone or Studio's device emulator before publishing, mainly the card text and the callouts.
+- **Abilities I saw on screen vs test-only:**
+  - Seen in the arena: Prism rays, Jug water, Jam blob, Lemonade slices, Tumbler's FROZEN hit, Pickle drops, Mason fireflies, Hot Sauce aura, Milk (in a fight, not at the moment it pours).
+  - Tests only: Pop's cap flying, Jam's full glue strand, Cup's TOP SPEED, Jug's wave, Ketchup's squeeze and SPLAT.
+- **Spectators** who start watching mid-round won't see water or blobs from before they arrived.
+
+## 4. Choices that are yours
+
+| Decision | What I did | Change it if |
 |---|---|---|
-| F1 fight | Custom server 3D pendulums, pass-bys/spin/tumble, auto powers, aim/LOCK, interpolation, layered hits/cracks, slow-mo shards. 80 Lune + 40 Studio calibration rounds, ten live watched rounds. | [F1](../testing/F1_FIGHT.md) |
-| F2 matches | Seven arenas, pad queues/bots, full rounds/hearts/results, free rerolls, replay, reset/disconnect and nearby spectator fights. | [F2](../testing/F2_MATCH_FLOW.md) |
-| F3 data/UI | Reviewed pinned ProfileStore, locked production profiles, starter grants, idempotent settlement, saved collection/stats, coin Kiln/reveal, collection filters/details/Index. Native pulls now verified. | [F3](../testing/F3_DATA_KILN.md), [vendor review](../vendor/ProfileStore_REVIEW.md) |
-| UI placeholders | Fourteen editable scale-based templates. 39 layout states on A06, iPhone and iPad pass safe-screen and 44 px target checks. Authored geometry preserved by controller binding. Final art is yours. | [F5](../testing/F5_MULTIPLAYER_SECURITY.md), [editing](../ui/EDITING_UI.md) |
-| Blender | Eight sky props + nine glassies exported/imported; 17 bundles / 183 meshes. Original source scenes/starters preserved. | [Asset wave](../testing/ASSET_WAVE1.md), [native follow-up](../testing/FENCES_AND_WAVE1_NATIVE.md) |
-| Free F4 | Three daily quests, playtime gifts, first observed win bonus, check-in streak, one-use Studio code, Daily/Codes kiosks and Trophies/Wins/Shatters boards. | [F4](../testing/F4_FREE_RETENTION.md) |
-| Security/cleanup | Remote floods/malformed inputs limited; private fields hidden. Late-join hook replication, double-KO flash leak and distant final-event drain fixed. Twenty cleanup cycles / 123 checks pass. | [F5](../testing/F5_MULTIPLAYER_SECURITY.md) |
+| Coins | Win 125 (was 100), loss cap 50 (was 40), so Kiln spins per hour hold with longer matches | You want spins slower or faster |
+| Welcome hand | Free spins favour the new glassies | You want the full random pool back |
+| Ability callouts | Short text like "CAP BLAST!" pops up, though the old brief said no power banners | You find them noisy |
+| Mixed roster | 12 new, 28 old. Old ones were kept, none removed | You'd rather wait and convert more before release |
 
-## Reproducible world work
+## 5. To release
 
-- Fences: `tools/studio/fit_island_fences.luau` refuses existing fitted fences. Exact rim regeneration: `python tools/map/export_fence_paths.py`. Read-only checks: `tools/studio/verify_fences.luau`.
-- Imports: `stage_wave1_imports.luau` → `install_wave1_glassies.luau` → `install_wave1_sky.luau`. Already done; do not rerun builders over manual edits.
-- Native mesh IDs/transforms: `assets/blender/import_wave1/studio_assets.json`. Raw imported sources remain in ServerStorage.Wave1ImportedSources.
-- Manual decor/LegacyKit remain preserved. Original fences and previous Kiln are recoverable backups, not deleted.
+1. Save, then **File > Publish to Roblox**. I didn't publish because you wanted to test first.
+2. The old models stay in `ServerStorage.GlassiesBeforeV5` as a backup; the code is in git.
+3. Update text is drafted at the top of [LAUNCH_COPY](../marketing/LAUNCH_COPY.md). The older description below it still says CAST, which is gone, so replace that too.
+4. Your current thumbnails show the old models. Fresh ones would match the update.
+5. After publishing, watch the `ClassicMatchV1` funnel and D1 for a few days before comparing, and compare against players from the same period.
 
-## Calibration (resolved)
+## Results
 
-The measured F1 candidate's failures (Jam mirror 45.9 s, Prism Blade 63%) came from the stand-in model, not the game: on the real integrator Jam mirrors last 33–35 s and Prism Blade wins 55%. FightModel now uses a size- and slowdown-aware pass-by chance fitted to 31 real mirrors; all tests pass without retuning Fight/Powers/rarity/economy. Evidence and reproduce steps: [CALIBRATION_REVIEW.md](../testing/CALIBRATION_REVIEW.md).
+Evidence and screenshots: [testing/relaunch/REPORT.md](../testing/relaunch/REPORT.md). Plan: [design/RELAUNCH_PLAN.md](../design/RELAUNCH_PLAN.md).

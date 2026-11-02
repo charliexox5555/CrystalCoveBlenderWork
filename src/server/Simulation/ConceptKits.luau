@@ -6,7 +6,7 @@ local Rules = if Shared then require(Shared.FightRules) else require("../../shar
 local Balance = if Shared then require(Shared.Config.Balance) else require("../../shared/Config/Balance")
 local Geometry = if script then require(script.Parent.AttackGeometry) else require("./AttackGeometry")
 local V = if script then Vector3 else require("@lune/roblox").Vector3
-local C, M = Balance.Concepts, Balance.Motion
+local C, M, F = Balance.Concepts, Balance.Motion, Balance.Fight
 local Kits = {}
 
 local function array(v)
@@ -36,6 +36,8 @@ function Kits.new(sim)
 				Casts = 0,
 				NextAt = kit.First or math.huge,
 				Stacks = 0,
+				Cubes = {},
+				Cooldowns = {},
 			}
 		end
 	end
@@ -138,6 +140,14 @@ function Kits.hit(sim)
 			end
 		elseif s.Id == "water_jug" then
 			raiseTide(sim, side, s)
+		elseif s.Id == "mason_jar" then
+			s.Count += 1
+			s.PendingFlies = math.min(s.Kit.MaxPerClash, math.ceil(s.Count / s.Kit.ClashesPerFly))
+		elseif s.Id == "crystal_tumbler" then
+			if sim.Fight.Time >= (s.ReadyAt or 0) then
+				s.ReadyAt = sim.Fight.Time + s.Kit.Cooldown
+				s.PendingCube = true
+			end
 		elseif s.Id == "ketchup_bottle" then
 			s.Count += 1
 			say(sim, side, "Splat", { Count = s.Count, Max = s.Kit.Splats })
@@ -226,6 +236,12 @@ local function stepShots(sim, dt, center)
 		if shot.Gravity then
 			shot.Velocity += V.new(0, -shot.Gravity, 0) * dt
 		end
+		if shot.Homing then
+			local toward = center(sim, 3 - shot.Side) - shot.Position
+			if toward.Magnitude > 0.01 then
+				shot.Velocity = shot.Velocity:Lerp(toward.Unit * shot.Homing, math.min(1, dt * shot.Turn))
+			end
+		end
 		shot.Position += shot.Velocity * dt
 		shot.Life -= dt
 		local foe = 3 - shot.Side
@@ -256,14 +272,163 @@ local function stepShots(sim, dt, center)
 	sim.Concept.Shots = if sim.Fight.Over then {} else kept
 end
 
+local function rain(sim, side, s, center, predict)
+	local kit = s.Kit
+	s.Casts += 1
+	local count = kit.Drops[math.min(s.Casts, #kit.Drops)]
+	local aim = predict(sim, 3 - side, kit.FallSeconds)
+	local drops = {}
+	for i = 1, count do
+		local x = aim.X + (i - (count + 1) / 2) * kit.Spacing
+		local origin = V.new(x, kit.StartY, aim.Z)
+		local velocity = V.new(0, -kit.FallSpeed, 0)
+		local delay = (i - 1) * kit.Gap
+		table.insert(sim.Concept.Shots, {
+			Side = side,
+			Kind = "Pickle",
+			Position = origin,
+			Velocity = velocity,
+			Gravity = kit.Gravity,
+			Life = kit.FallSeconds * 1.6,
+			Radius = kit.DropRadius,
+			Damage = kit.DropDamage,
+			Delay = delay,
+		})
+		drops[i] = { origin.X, origin.Y, origin.Z, velocity.X, velocity.Y, velocity.Z, delay }
+	end
+	say(sim, side, "Rain", { Drops = drops, Gravity = kit.Gravity, Life = kit.FallSeconds * 1.6 })
+end
+
+local function releaseFlies(sim, side, s, center)
+	local kit = s.Kit
+	local count = s.PendingFlies
+	s.PendingFlies = nil
+	local origin = center(sim, side)
+	for _ = 1, count do
+		local spread = V.new(sim.Rng() * 2 - 1, sim.Rng() * 2 - 1, (sim.Rng() * 2 - 1) * 0.3).Unit
+		table.insert(sim.Concept.Shots, {
+			Side = side,
+			Kind = "Fly",
+			Position = origin,
+			Velocity = spread * kit.FlySpeed,
+			Homing = kit.FlySpeed,
+			Turn = kit.FlyTurn,
+			Life = kit.FlyLife,
+			Radius = kit.FlyRadius,
+			Damage = kit.FlyDamage,
+		})
+	end
+	say(sim, side, "Flies", { Origin = array(origin), Count = count, Speed = kit.FlySpeed, Life = kit.FlyLife })
+end
+
+local function placeCube(sim, side, s, center)
+	local kit = s.Kit
+	s.PendingCube = false
+	s.Serial = (s.Serial or 0) + 1
+	local mid = (center(sim, side) + center(sim, 3 - side)) / 2
+	local point = mid + V.new((sim.Rng() * 2 - 1) * kit.Scatter, (sim.Rng() * 2 - 1) * kit.Scatter, 0)
+	table.insert(s.Cubes, { Id = s.Serial, Point = point, ArmAt = sim.Fight.Time + kit.ArmSeconds })
+	say(sim, side, "Cube", { Id = s.Serial, Point = array(point), Arm = kit.ArmSeconds })
+	if #s.Cubes > kit.MaxCubes then
+		say(sim, side, "CubeGone", { Id = table.remove(s.Cubes, 1).Id })
+	end
+end
+
+local function stepCubes(sim, side, s, center, effect)
+	local kit = s.Kit
+	local foe = 3 - side
+	local target = center(sim, foe)
+	local radius = hitRadius(sim, foe, kit.CubeRadius)
+	for i = #s.Cubes, 1, -1 do
+		local cube = s.Cubes[i]
+		if sim.Fight.Time >= cube.ArmAt and (cube.Point - target).Magnitude <= radius then
+			table.remove(s.Cubes, i)
+			local dealt = Rules.conceptDamage(sim.Fight, side, kit.CubeDamage)
+			s.SlowUntil = sim.Fight.Time + kit.SlowSeconds
+			say(sim, side, "CubeHit", { Id = cube.Id, Point = array(cube.Point), Amount = dealt })
+		end
+	end
+	if sim.Fight.Time < (s.SlowUntil or -1) then
+		effect[foe].Amp = kit.SlowAmp
+	end
+end
+
+local function stepZest(sim, side, s, center)
+	local kit = s.Kit
+	if sim.Fight.Time >= s.NextAt and s.Stacks < kit.MaxSlices then
+		s.Stacks += 1
+		s.NextAt = sim.Fight.Time + kit.Interval
+		say(sim, side, "Zest", { Count = s.Stacks, Speed = kit.OrbitSpeed, Distance = kit.OrbitDistance })
+	end
+	if s.Stacks == 0 then
+		return
+	end
+	local owner, target = center(sim, side), center(sim, 3 - side)
+	local radius = hitRadius(sim, 3 - side, kit.SliceRadius)
+	for i = 1, s.Stacks do
+		local angle = sim.Fight.Time * kit.OrbitSpeed + (i - 1) * 2 * math.pi / s.Stacks
+		local point = owner + V.new(math.cos(angle), math.sin(angle), 0) * kit.OrbitDistance
+		if (point - target).Magnitude <= radius and sim.Fight.Time >= (s.Cooldowns[i] or 0) then
+			s.Cooldowns[i] = sim.Fight.Time + kit.SliceCooldown
+			local dealt = Rules.conceptDamage(sim.Fight, side, kit.SliceDamage)
+			say(sim, side, "ZestHit", { Point = array(point), Amount = dealt })
+			if sim.Fight.Over then
+				return
+			end
+		end
+	end
+end
+
+local function stepHeat(sim, side, s, center)
+	local kit = s.Kit
+	if sim.Fight.Time >= s.NextAt and s.Stacks < kit.MaxHeat then
+		s.Stacks += 1
+		s.NextAt = sim.Fight.Time + kit.Interval
+		s.NextTick = s.NextTick or sim.Fight.Time + kit.TickSeconds
+		say(
+			sim,
+			side,
+			"Heat",
+			{ Stacks = s.Stacks, Max = kit.MaxHeat, Radius = kit.BaseRadius + kit.RadiusPerHeat * s.Stacks }
+		)
+	end
+	if s.Stacks == 0 or sim.Fight.Time < s.NextTick then
+		return
+	end
+	s.NextTick = sim.Fight.Time + kit.TickSeconds
+	local target = center(sim, 3 - side)
+	local reach = kit.BaseRadius + kit.RadiusPerHeat * s.Stacks + hitRadius(sim, 3 - side, 0)
+	if (target - center(sim, side)).Magnitude <= reach then
+		local dealt = Rules.conceptDamage(sim.Fight, side, kit.TickDamage * s.Stacks)
+		say(sim, side, "Burn", { Point = array(target), Amount = dealt })
+	end
+end
+
+local function stepTopUp(sim, side, s)
+	local kit, f = s.Kit, sim.Fight.Fighters[side]
+	if sim.Fight.Time < s.NextAt then
+		return
+	end
+	-- Never during overtime, so a refill can't hold a round open forever.
+	if sim.Fight.Time >= F.OvertimeAt or f.Hp / f.MaxHp > kit.HealBelow then
+		s.NextAt = sim.Fight.Time + kit.RetrySeconds
+		return
+	end
+	s.Casts += 1
+	s.NextAt = sim.Fight.Time + kit.Interval
+	local amount = Rules.conceptHeal(sim.Fight, side, f.MaxHp * kit.Heals[math.min(s.Casts, #kit.Heals)])
+	say(sim, side, "TopUp", { Healed = amount, Cast = s.Casts })
+end
+
 function Kits.step(sim, dt, center, predict)
 	local concept = sim.Concept
 	if not concept then
 		return
 	end
 	local now = sim.Fight.Time
-	concept.Effect = { {}, {} }
 	local effect = concept.Effect
+	table.clear(effect[1])
+	table.clear(effect[2])
 	for side = 1, 2 do
 		local s = concept[side]
 		if not s or sim.Fight.Over then
@@ -345,6 +510,26 @@ function Kits.step(sim, dt, center, predict)
 				effect[foe].Drag = kit.WaterDrag
 				effect[foe].Amp = kit.WaterAmp
 			end
+		elseif s.Id == "milk_bottle" then
+			stepTopUp(sim, side, s)
+		elseif s.Id == "pickle_jar" then
+			if now >= s.NextAt then
+				s.NextAt = now + kit.Interval
+				rain(sim, side, s, center, predict)
+			end
+		elseif s.Id == "lemonade_bottle" then
+			stepZest(sim, side, s, center)
+		elseif s.Id == "mason_jar" then
+			if s.PendingFlies then
+				releaseFlies(sim, side, s, center)
+			end
+		elseif s.Id == "crystal_tumbler" then
+			if s.PendingCube then
+				placeCube(sim, side, s, center)
+			end
+			stepCubes(sim, side, s, center, effect)
+		elseif s.Id == "hot_sauce" then
+			stepHeat(sim, side, s, center)
 		elseif s.Id == "ketchup_bottle" then
 			if now >= s.NextAt then
 				s.NextAt = now + kit.Interval

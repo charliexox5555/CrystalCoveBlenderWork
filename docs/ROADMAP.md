@@ -4,12 +4,13 @@
 
 **Unpublished.** Keep the lobby, arenas, hand, aim, hearts and Kiln spin. Gauntlet and Kiln Room are rejected (decisions 130, 132).
 
-- [x] Six v5 glassies with faces and liquid HP running in the real arenas.
-- [x] Concept abilities for Pop, Jam, Prism, Cup, Jug and Ketchup; rounds about 30 s.
-- [x] Balance for the six on the real swing, 48-57% vs the field.
-- [ ] **U:** creator playtests real matches and picks what to change.
+- [x] v5 glassies with faces and liquid HP running in the real arenas.
+- [x] Concept abilities and new models for 12 glassies: every Common except Cookie Jar and Fishbowl, plus three Uncommons (decisions 133-134).
+- [x] Rounds about 32 s; whole roster on the real swing 43.6-56.8%, 34/40 in 45-55%.
+- [x] Kiln and level pace held against longer rounds; readable popups; welcome hand shows the new abilities.
+- [ ] **U:** creator playtests real matches, then publishes when happy. Checklist: [MORNING](logs/MORNING.md).
 - [ ] Phone check, then unfamiliar players.
-- [ ] Next wave of glassies on concept abilities and v5 models.
+- [ ] Next wave: the 28 remaining glassies on concept abilities and v5 models.
 
 ### Earlier: private continuous-loop prototype (decisions 128–129)
 

@@ -64,6 +64,7 @@ return function(t, d)
 		local expected = s.Fighters[1].Power
 			* kit.SeedDamage
 			* kit.MaxSeeds
+			* d.Balance.Fight.AbilityScale
 			* d.Formula.typeMultiplier("Heavy", "Heavy")
 		t.near(before - foe.Hp, expected, 0.001)
 	end)

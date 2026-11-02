@@ -1,5 +1,6 @@
 # Glass vs Glass — Game Design Doc
 
+> **Current: concept abilities (Nov 2, decision 133).** Same core format. Six glassies use abilities that build up, escalate and change the fight, and rounds run about 30 s. [Plan](design/RELAUNCH_PLAN.md).
 > **Current: classic combat (Oct 29, decision 127).** Pick, aim and release; signature powers fire automatically. CAST, PUSH and the arena event layer are disabled. One-round assisted bot introduction, faster setup, first-prize replay hand and true-completion analytics. [Current implementation](design/CLASSIC_LOOP_2026_10_29.md). Historical notes below describe superseded versions.
 > **v0.4 (Oct 23, decision 122):** rounds are faster (~18 s fights) and busier: glints to race for, the Heat, one arena twist per round, a PUSH button, Last Glass and On Fire ([ROUND_REVAMP](design/ROUND_REVAMP.md), section 3.9).
 > **v0.3.1 (Oct 14):** powers fire by themselves at random moments (no button), and the swing is erratic and 3D with spin. Luck and suspense are a pillar.

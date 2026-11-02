@@ -29,7 +29,8 @@ return function(t, deps)
 	t.test("power stat products are close across types (fair base stats)", function()
 		for _, g in Glassies.List do
 			local product = g.Base.Power * g.Base.HP
-			t.between(product, 2100, 2350, g.Id .. " Power x HP")
+			-- Wide on purpose: abilities differ in strength, so HP is the balance lever (tools/release_matrix).
+			t.between(product, 1950, 2500, g.Id .. " Power x HP")
 		end
 	end)
 

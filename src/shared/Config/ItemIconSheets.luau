@@ -52,7 +52,7 @@ ItemIconSheets.Sheets = {
 		},
 	},
 	Glassies = {
-		Image = "rbxassetid://125581570416221",
+		Image = "rbxassetid://93034940286183",
 		Cell = 128,
 		Columns = 8,
 		Items = {

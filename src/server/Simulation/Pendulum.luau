@@ -9,6 +9,7 @@ local Turnaround = if script then require(script.Parent.Turnaround) else require
 local SignatureAttacks = if script then require(script.Parent.SignatureAttacks) else require("./SignatureAttacks")
 local CastBrain = if script then require(script.Parent.CastBrain) else require("./CastBrain")
 local PushBrain = if script then require(script.Parent.PushBrain) else require("./PushBrain")
+local ConceptKits = if script then require(script.Parent.ConceptKits) else require("./ConceptKits")
 local Arena = if Shared then require(Shared.ArenaRules) else require("../../shared/ArenaRules")
 local V = if script then Vector3 else require("@lune/roblox").Vector3
 local M = Balance.Motion
@@ -108,6 +109,7 @@ function Pendulum.new(setup, seed, gap)
 			Turnaround = Turnaround.new(Pendulum.pull(f.Aim, f.AimYaw, side).Y),
 		}
 	end
+	ConceptKits.new(sim)
 	return sim
 end
 
@@ -147,9 +149,13 @@ local function integrate(sim, side, dt)
 		b.NextWander = sim.Fight.Time + M.WanderIntervalMin + sim.Rng() * (M.WanderIntervalMax - M.WanderIntervalMin)
 	end
 	local frozen = Rules.isFrozen(sim.Fight, side)
-	local amp = math.min(M.MaxAngle, Rules.targetAmplitude(f.Swing) * Rules.swingMultiplier(sim.Fight, side))
+	local concept = ConceptKits.effect(sim, side) or {}
+	local amp = math.min(
+		M.MaxAngle,
+		Rules.targetAmplitude(f.Swing) * Rules.swingMultiplier(sim.Fight, side) * (concept.Amp or 1)
+	)
 	local energy = b.V.Magnitude ^ 2 / 2 + M.Gravity * (b.P.Y + M.StringLength)
-	local target = M.Gravity * M.StringLength * (1 - math.cos(amp))
+	local target = M.Gravity * M.StringLength * (1 - math.cos(amp)) * (concept.Energy or 1)
 	local drive = V.zero
 	if not frozen and b.V.Magnitude > 0.1 then
 		drive = b.V.Unit
@@ -158,8 +164,9 @@ local function integrate(sim, side, dt)
 				-M.DriveAcceleration,
 				M.DriveAcceleration
 			)
+			* (concept.Drive or 1)
 	end
-	local drag = M.AirDrag + (if frozen then M.FrozenDamping else 0)
+	local drag = M.AirDrag + (if frozen then M.FrozenDamping else 0) + (concept.Drag or 0)
 	local foe = sim.Bodies[3 - side]
 	local phase = if frozen then 0 else -(b.P.X + foe.P.X) * M.PhaseCoupling - (b.V.X + foe.V.X) * M.PhaseDamping
 	local force = V.new(
@@ -170,6 +177,9 @@ local function integrate(sim, side, dt)
 	local toFoe = Pendulum.center(sim, 3 - side) - Pendulum.center(sim, side)
 	local ax, ay, az = Arena.force(sim.Fight, side, toFoe.X, toFoe.Y, toFoe.Z)
 	force += V.new(ax, ay, az)
+	if concept.Force then
+		force += concept.Force
+	end
 	if sim.Well and sim.Fight.Time < sim.Well.Until then
 		local delta = sim.Well.Origin - Pendulum.center(sim, side)
 		if delta.Magnitude > 0.01 and delta.Magnitude <= sim.Well.Range then
@@ -190,6 +200,7 @@ local function integrate(sim, side, dt)
 	sim.Metrics.MaxRadiusError = math.max(sim.Metrics.MaxRadiusError, math.abs(b.P.Magnitude - M.StringLength))
 	if Turnaround.step(b.Turnaround, sim.Fight.Time, previousVy, b.V.Y, b.P.Y, sim.LastCollision) then
 		Rules.turnaround(sim.Fight, side)
+		ConceptKits.turnaround(sim, side)
 	end
 end
 
@@ -431,6 +442,10 @@ function Pendulum.step(sim, dt)
 		if sim.Fight.Over then
 			break
 		end
+		ConceptKits.step(sim, h, Pendulum.center, Pendulum.predictCenter)
+		if sim.Fight.Over then
+			break
+		end
 		arenaBefore(sim)
 		integrate(sim, 1, h)
 		integrate(sim, 2, h)
@@ -490,6 +505,7 @@ function Pendulum.step(sim, dt)
 					table.insert(sim.Metrics.Speeds, approach)
 					table.insert(sim.Metrics.Shares, share)
 					Rules.hit(sim.Fight, approach, share, (ca.X + cb.X) / 2, (ca.Y + cb.Y) / 2, (ca.Z + cb.Z) / 2)
+					ConceptKits.hit(sim)
 				end
 			end
 		elseif

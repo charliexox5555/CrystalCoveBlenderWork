@@ -6,7 +6,8 @@ local Kit = require(script.Parent.Kit)
 local Modules = require(script.Parent.Modules)
 local Show = {}
 
-local PEACH, ROSE, GOLD, LILAC = Color3.fromHex("#FF9E7A"), Color3.fromHex("#FF5D7E"), Color3.fromHex("#FFD45C"), Color3.fromHex("#C7A6FF")
+local PEACH, ROSE, GOLD, LILAC =
+	Color3.fromHex("#FF9E7A"), Color3.fromHex("#FF5D7E"), Color3.fromHex("#FFD45C"), Color3.fromHex("#C7A6FF")
 local SUN, WHITE = Color3.fromHex("#FFF1B0"), Color3.new(1, 1, 1)
 
 function Show.build(rig, s)
@@ -35,15 +36,24 @@ function Show.build(rig, s)
 		}),
 	}
 	-- The glass sun and its rays.
-	rig.Sun = rig:Actor("Sun", { Shape = Enum.PartType.Ball, Size = Vector3.one * s.SunSize, Color = GOLD, Transparency = 0.05 })
-	rig.SunCore = rig:Actor("SunCore", { Shape = Enum.PartType.Ball, Size = Vector3.one * s.SunSize * 0.7, Color = SUN, Transparency = 0 })
+	rig.Sun = rig:Actor(
+		"Sun",
+		{ Shape = Enum.PartType.Ball, Size = Vector3.one * s.SunSize, Color = GOLD, Transparency = 0.05 }
+	)
+	rig.SunCore = rig:Actor(
+		"SunCore",
+		{ Shape = Enum.PartType.Ball, Size = Vector3.one * s.SunSize * 0.7, Color = SUN, Transparency = 0 }
+	)
 	rig.Rays = {}
 	for i = 1, (if rig.Low then 8 else s.Rays) do
-		table.insert(rig.Rays, rig:Actor("SunRay", {
-			Size = Vector3.new(0.35, 1, 0.12),
-			Color = if i % 2 == 0 then PEACH else GOLD,
-			Transparency = 0.15,
-		}))
+		table.insert(
+			rig.Rays,
+			rig:Actor("SunRay", {
+				Size = Vector3.new(0.35, 1, 0.12),
+				Color = if i % 2 == 0 then PEACH else GOLD,
+				Transparency = 0.15,
+			})
+		)
 	end
 	if rig.Rooster then
 		for _, p in rig.Rooster.Parts do
@@ -207,7 +217,8 @@ function Show.step(rig, t, s)
 		alpha = 1 - Kit.smooth(t / 0.08)
 	elseif t < s.BowAt then
 		local puff = Kit.smooth((t - s.PeakAt + 0.18) / 0.18)
-		local crow = Kit.window(t, s.PeakAt - 0.02, s.PeakAt + 0.06) * (1 - Kit.window(t, s.PeakAt + 0.5, s.PeakAt + 0.7))
+		local crow = Kit.window(t, s.PeakAt - 0.02, s.PeakAt + 0.06)
+			* (1 - Kit.window(t, s.PeakAt + 0.5, s.PeakAt + 0.7))
 		pitch = -0.28 * puff * (1 - crow) + 0.18 * crow
 		wings = math.max(puff * 0.5, crow)
 		hop = 0.35 * crow * math.abs(math.sin(after * 10))

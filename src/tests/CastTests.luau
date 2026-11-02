@@ -5,6 +5,7 @@ local Pendulum = if script
 local CastTiming = if script then require(game.ReplicatedStorage.Shared.CastTiming) else require("../shared/CastTiming")
 
 return function(t, deps)
+	local restoreConcepts = deps.Balance.Concepts.useCastKits()
 	local Rules, Balance = deps.FightRules, deps.Balance
 	local C = Balance.CombatRelease.Cast
 	local previousManual = C.ManualEnabled
@@ -150,4 +151,5 @@ return function(t, deps)
 		t.ok(manual[2] > 0, "bot side cast by hand")
 	end)
 	C.ManualEnabled = previousManual
+	restoreConcepts()
 end

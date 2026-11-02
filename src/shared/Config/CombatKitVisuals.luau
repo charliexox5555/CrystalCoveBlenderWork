@@ -12,30 +12,30 @@ return {
 		MeshB = "CrystalChip",
 	},
 	pop = {
-		Name = "Pressure Pop",
+		Name = "Cap Blast",
 		Color = "#39D2FF", -- signature colour (power VFX v2)
 		Accent = "#FF4A5A",
-		Description = "Every third clash pops a pressure burst.",
+		Description = "Clashes shake it up until the cap blasts off. It blows sooner every time.",
 		ReleaseSound = "BubblePop",
 		ContactSound = "ClinkHeavy",
 		MeshA = "Ring",
 		MeshB = "BubbleDome",
 	},
 	jam = {
-		Name = "Lid Guard",
+		Name = "Sticky Trap",
 		Color = "#FFC23D", -- signature colour (power VFX v2)
 		Accent = "#FF5C86",
-		Description = "Raises its lid to soften the next clash.",
+		Description = "Clashes stick jam on the rival. Three blobs glue them together.",
 		ReleaseSound = "LidClick",
 		ContactSound = "LidBlock",
 		MeshA = "GuardPlate",
 		MeshB = "Ring",
 	},
 	prism = {
-		Name = "Refraction Ray",
+		Name = "Split Light",
 		Color = "#FFFFFF", -- signature colour (power VFX v2)
 		Accent = "#C9A8FF",
-		Description = "Charges a narrow prism ray that can miss.",
+		Description = "Its ray splits every shot: 1, 2, 3, 5, then 8 at once.",
 		ReleaseSound = "ChargeGlass",
 		ContactSound = "ClinkLightA",
 		MeshA = "Ring",
@@ -92,30 +92,30 @@ return {
 		MeshB = "Ring",
 	},
 	ketchup_bottle = {
-		Name = "Splat Pop",
+		Name = "Big Squeeze",
 		Color = "#FF6A3D", -- signature colour (power VFX v2)
 		Accent = "#FFD27A",
-		Description = "Sticks a splat that pops on the next clash.",
+		Description = "Squirts more every time. Three splats go SPLAT!",
 		ReleaseSound = "WaterSlap",
 		ContactSound = "BubblePop",
 		MeshA = "Droplet",
 		MeshB = "SplashSheet",
 	},
 	glass_cup = {
-		Name = "Rim Rush",
+		Name = "Spin Cycle",
 		Color = "#6FD3FF", -- signature colour (power VFX v2)
 		Accent = "#FFFFFF",
-		Description = "Builds a bigger swing after two turnarounds.",
+		Description = "Every swing winds it up. It never stops getting faster.",
 		ReleaseSound = "ChargeGlass",
 		ContactSound = "ClinkHeavy",
 		MeshA = "HalfRing",
 		MeshB = "Ring",
 	},
 	water_jug = {
-		Name = "Sloshback",
+		Name = "Rising Tide",
 		Color = "#2FA8FF", -- signature colour (power VFX v2)
 		Accent = "#BFF0FF",
-		Description = "Stores two hits, then splashes back.",
+		Description = "Clashes flood the pen and slow the rival, then a huge wave hits.",
 		ReleaseSound = "WaterSlap",
 		ContactSound = "WaterSlap",
 		MeshA = "SplashSheet",

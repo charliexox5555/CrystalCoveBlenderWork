@@ -1,5 +1,20 @@
 # Dev log
 
+## 2026-11-02 — Claude — Concept abilities and longer rounds in the real arena (decision 133)
+Done:
+- Creator rejected the shards/Gauntlet concept and the dark Kiln Room, liked the new models, called fights too quick, and pointed at Ball VS Ball: same format, better concept abilities and execution. Keep the arena, map and Kiln spin. Gauntlet code removed (history at 6d83939).
+- New `Simulation/ConceptKits`, `Presentation/ConceptFX`, `Balance.Concepts`: Cap Blast (Pop), Sticky Trap (Jam), Split Light (Prism), Spin Cycle (Cup), Rising Tide (Jug), Big Squeeze (Ketchup). Each builds up visibly, escalates in the round and changes the fight. Cast engine stays for the other 34 and keeps its tests through `Concepts.useCastKits`.
+- v5 models replace the old six in `Assets.Glassies`, with faces, liquid-level HP (`BuddyRig`) and generated cracks (`BuddyCracks`). Old six backed up in `ServerStorage.GlassiesBeforeV5`. Item icons and reel sheet updated.
+- DamageScale 0.29 to 0.19, AbilityScale 0.65, overtime 30 s, timeout 60 s. Removed stale "Tap CAST" copy.
+- Synced through Roblox MCP only; creator's Rojo server on 34872 serves another game and was left alone. 25 sampled Studio scripts matched the repo before editing, so version 709 vs the logged 700 was not a source drift there. Not published.
+Balance and simulators:
+- Real swing `equal:bot0.5`, 3,120 rounds: mean 33.6 s, 17.2 hits, 2.2% timeouts; 41.0-57.7%, 29/40 in 45-55% after one HP pass on 11 older glassies (potion_flask 68% and mason_jar 35% before it). Six reworked, 312 rounds each: 48.4-56.7%.
+- BalanceSim stand-in cannot run concepts: its fairness check skips those six. EconomySim: 145 pulls by day 30, but it still assumes 2.9 min matches, so coin pacing is optimistic; update it before retuning prices.
+Next:
+- Creator plays real matches and picks changes. Then phones, unfamiliar players, and the next wave of concepts and v5 models.
+Problems:
+- Six glassies look new beside 34 old ones. Ability damage ended low to stay fair; big moments rest on visuals and knockback. Some abilities verified by tests only, not seen on screen. Details: docs/testing/relaunch/REPORT.md.
+
 ## 2026-11-02 — Claude — Relaunch diagnosis, Glass Buddies and the Gauntlet slice
 Done:
 - Creator: game flopped, idea is good, re-engineer models and everything. Installed the LihFolk asset pack to `~/LihFolk-Assets` (the plugin was already present). Played the live first session and read the funnel. Plan: docs/design/RELAUNCH_PLAN.md. Report and screenshots: docs/testing/relaunch/REPORT.md.

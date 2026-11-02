@@ -17,7 +17,7 @@ function Rig.new(fighter)
 			end
 		end
 	end
-	local self = setmetatable({
+	return setmetatable({
 		Fighter = fighter,
 		Faces = faces,
 		Fill = fill,
@@ -29,7 +29,6 @@ function Rig.new(fighter)
 		BlinkUntil = 0,
 		Liquid = 1,
 	}, Rig)
-	return self
 end
 
 function Rig:Hurt()
@@ -52,7 +51,7 @@ end
 
 function Rig:Update(hpFraction)
 	local f = self.Fighter
-	if f.Broken or f.Finishing then
+	if f.Broken then
 		for _, part in self.Faces do
 			part.Transparency = 1
 		end
@@ -74,7 +73,8 @@ function Rig:Update(hpFraction)
 		state = "Blink"
 	end
 	self:Show(state)
-	if self.Fill and f.Pivot then
+	-- During a finisher the model is flown by FightFinisher; the liquid rides along as it stands.
+	if self.Fill and f.Pivot and not f.Finishing then
 		self.Liquid += (math.clamp(hpFraction, 0, 1) - self.Liquid) * 0.14
 		local level = MIN_LIQUID + (1 - MIN_LIQUID) * self.Liquid
 		local size = self.FillSize

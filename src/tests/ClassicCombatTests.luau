@@ -7,6 +7,7 @@ local Runner = if script
 	else require("../server/Simulation/MatchRunner")
 
 return function(t, d)
+	local restoreConcepts = d.Balance.Concepts.useCastKits()
 	local B, Rules, Arena = d.Balance, d.FightRules, d.ArenaRules
 	t.test("first-win unlock is offered next match, with ownership checks and no duplicate cards", function()
 		local Logic = d.MatchLogic
@@ -165,4 +166,5 @@ return function(t, d)
 		t.eq(r.Phase, "Rolling")
 		t.eq(r.Deadline, 50 + B.Match.RoundEndSeconds + B.Match.RollSecondsLater)
 	end)
+	restoreConcepts()
 end

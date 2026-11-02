@@ -9,6 +9,9 @@ local Audio = require(RS.Shared.Config.Audio)
 local Health = require(script.Parent.FightHealth)
 local AbilityNumbers = require(script.Parent.AbilityNumbers)
 local Hero = require(script.Parent.HeroPowers)
+local BuddyRig = require(script.Parent.BuddyRig)
+local ConceptFX = require(script.Parent.ConceptFX)
+local BuddyCracks = require(RS.Shared.Config.BuddyCracks)
 local M, Feel = Balance.Motion, Balance.Feel
 local Scene = {}
 Scene.__index = Scene
@@ -61,8 +64,7 @@ function Scene.new(data, maxima, shatter)
 		local hook = Instance.new("Attachment")
 		hook.Name, hook.Parent = "StringHook", anchor
 		local def = Glassies.get(setup.Id)
-		local library = data.Library
-			or if data.ReleasePrototype then RS.Assets.CombatReleasePreview.Glassies else RS.Assets.Glassies
+		local library = if data.ReleasePrototype then RS.Assets.CombatReleasePreview.Glassies else RS.Assets.Glassies
 		local renderId = if library:FindFirstChild(def.Asset)
 			then def.Asset
 			else if def.Type == "Heavy" then "jam" elseif def.Type == "Sharp" then "prism" else "pop"
@@ -155,7 +157,12 @@ function Scene.new(data, maxima, shatter)
 		}
 		Health.new(self.Fighters[side], self.Root)
 		trail.Lifetime = Balance.CombatVFX.SwingTrailSeconds
+		if source:GetAttribute("BuddyVersion") then
+			self.Fighters[side].CrackPaths = BuddyCracks[renderId] or {}
+			self.Fighters[side].Buddy = BuddyRig.new(self.Fighters[side])
+		end
 	end
+	self.Concept = ConceptFX.new(self)
 	if data.ReleasePrototype or Balance.CombatRelease.Enabled then
 		self.Combat = require(script.Parent.CombatEffects).new(self)
 		self.Combat.Time = data.Snapshot and data.Snapshot.T or 0
@@ -174,6 +181,10 @@ function Scene:Pose(side, p, twist, tilt)
 	local up = -self.Frame:VectorToWorldSpace(p.Unit)
 	local right = self.Frame.RightVector - up * self.Frame.RightVector:Dot(up)
 	right = right.Unit
+	-- v5 faces are the point of the character, so the string twist only turns them part of the way.
+	if f.Buddy then
+		twist = math.clamp(twist * 0.3, -0.45, 0.45)
+	end
 	f.Twist = twist
 	f.Pivot = CFrame.fromMatrix(f.Hook.WorldPosition + self.Frame:VectorToWorldSpace(p), right, up, right:Cross(up))
 		* CFrame.Angles(tilt.X, twist, tilt.Z)
@@ -245,8 +256,12 @@ end
 local WHITE, FROZEN, RAGE = Color3.new(1, 1, 1), Color3.fromHex("#B3F4FF"), Color3.fromHex("#FF5533")
 
 function Scene:Update(r, time)
+	self.Concept:Update()
 	for side, f in self.Fighters do
 		Health.update(f, r.Hp[side], self.Viewing)
+		if f.Buddy then
+			f.Buddy:Update(r.Hp[side] / f.Stats.MaxHP)
+		end
 		if f.Broken or f.Finishing then
 			continue
 		end
@@ -309,6 +324,21 @@ function Scene:Ray(side, id, missed, event)
 end
 
 function Scene:Event(e, hud)
+	if e.Type == "Concept" then
+		self.Concept:Event(e, hud)
+		return
+	elseif e.Type == "Hit" then
+		for _, fighter in self.Fighters do
+			if fighter.Buddy then
+				fighter.Buddy:Hurt()
+			end
+		end
+	elseif e.Type == "Shatter" and e.Side then
+		local winner = self.Fighters[3 - e.Side]
+		if winner and winner.Buddy then
+			winner.Buddy:Win()
+		end
+	end
 	if self.Combat and self.Combat:Event(e) then
 		AbilityNumbers.event(self, e, hud)
 		return
@@ -477,6 +507,7 @@ function Scene:GetStand()
 end
 
 function Scene:Destroy()
+	self.Concept:Destroy()
 	if self.Combat then
 		self.Combat:Destroy()
 	end

@@ -46,7 +46,10 @@ return function(t, d)
 			end
 		end
 		for _, rarity in { "Rare", "Epic", "Legendary" } do
-			t.ok(table.find(d.Formula.kilnPool(rarity), "sunny_rooster") == nil, "not in the " .. rarity .. " Kiln pool")
+			t.ok(
+				table.find(d.Formula.kilnPool(rarity), "sunny_rooster") == nil,
+				"not in the " .. rarity .. " Kiln pool"
+			)
 		end
 		for _, ids in DailyStoreRules.catalog().Glassies do
 			t.ok(table.find(ids, "sunny_rooster") == nil, "never in the daily store")
@@ -63,7 +66,10 @@ return function(t, d)
 		local kit = B.CombatRelease.Kits.sunny_rooster
 		t.ok(kit ~= nil and kit.Shape == "volley" and kit.Pulses == 3, "Wake-Up Call is a three-sun volley")
 		t.ok(kit.Slow and kit.Slow < 1 and kit.StatusSeconds > 0, "landed suns dazzle (slow)")
-		t.ok(Geometry.sunny_rooster ~= nil and math.abs(Geometry.sunny_rooster.Radius - G.get("sunny_rooster").Radius) < 0.01)
+		t.ok(
+			Geometry.sunny_rooster ~= nil
+				and math.abs(Geometry.sunny_rooster.Radius - G.get("sunny_rooster").Radius) < 0.01
+		)
 		t.ok(Cracks.sunny_rooster ~= nil and #Cracks.sunny_rooster > 20, "crack paths")
 		t.ok(Motion.Glassies.sunny_rooster ~= nil, "idle/hit motion")
 		t.ok(Visuals.sunny_rooster ~= nil and Visuals.sunny_rooster.Name == "Wake-Up Call")

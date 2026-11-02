@@ -1,16 +1,15 @@
 # Roadmap
 
-### Current work: relaunch (proposed, decisions 130-132) - [plan](design/RELAUNCH_PLAN.md), [evidence](testing/relaunch/REPORT.md)
+### Current work: concept abilities (decision 133) - [plan](design/RELAUNCH_PLAN.md), [evidence](testing/relaunch/REPORT.md)
 
-**Do not publish the slice.** Live stays as is until the creator approves a release.
+**Unpublished.** Keep the lobby, arenas, hand, aim, hearts and Kiln spin. Gauntlet and Kiln Room are rejected (decisions 130, 132).
 
-- [x] LihFolk asset pack installed; live first session played and diagnosed.
-- [x] Six Glass Buddies (v5) in Blender, uploaded and installed to `Assets.GlassiesV5`; Kiln Room stage first pass.
-- [x] Private Gauntlet slice: collect what you smash, hearts, counter tag, liquid HP, shelf, one PLAY AGAIN. Lune/Studio **302 passed, 0 failed**.
-- [ ] **U:** creator plays the slice and picks a direction.
-- [ ] Phone emulator and real-phone check; 5 to 8 unfamiliar players, no coaching.
-- [ ] Sync crack rows (Rojo connect, after comparing Studio to the repo) and tune rung HP, shards and counter strength on real runs.
-- [ ] Phase 2 once approved: saved progress, new first session, 12 more glassies, telemetry.
+- [x] Six v5 glassies with faces and liquid HP running in the real arenas.
+- [x] Concept abilities for Pop, Jam, Prism, Cup, Jug and Ketchup; rounds about 30 s.
+- [x] Balance for the six on the real swing, 48-57% vs the field.
+- [ ] **U:** creator playtests real matches and picks what to change.
+- [ ] Phone check, then unfamiliar players.
+- [ ] Next wave of glassies on concept abilities and v5 models.
 
 ### Earlier: private continuous-loop prototype (decisions 128–129)
 

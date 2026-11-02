@@ -4,6 +4,7 @@ local Pendulum = if script
 	else require("../server/Simulation/Pendulum")
 
 return function(t, deps)
+	local restoreConcepts = deps.Balance.Concepts.useCastKits()
 	local previousManual = deps.Balance.CombatRelease.Cast.ManualEnabled
 	deps.Balance.CombatRelease.Cast.ManualEnabled = true -- legacy requested-cast fixture
 	local Rules, Balance = deps.FightRules, deps.Balance
@@ -224,4 +225,5 @@ return function(t, deps)
 		end
 	end)
 	deps.Balance.CombatRelease.Cast.ManualEnabled = previousManual
+	restoreConcepts()
 end

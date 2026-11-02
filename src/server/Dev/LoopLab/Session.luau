@@ -22,24 +22,20 @@ local function finite(n)
 	return type(n) == "number" and n == n and math.abs(n) < math.huge
 end
 
-function Session.new(mode, id, seed, now, opts)
+function Session.new(mode, id, seed, now)
 	assert(mode == "A" or mode == "B", "unknown prototype")
 	assert(table.find(C.Roster, id), "not a lab glassy")
-	local rival = opts and opts.Rival or C.Roster[seed % #C.Roster + 1]
+	local rival = C.Roster[seed % #C.Roster + 1]
 	local setup = {
 		A = { Id = id, Aim = B.Motion.AimDefault, CastPolicy = "auto" },
 		B = { Id = rival, Aim = B.Motion.AimDefault, CastPolicy = "auto" },
 		SweetSpot = -10, -- no hidden gold-band damage bonus in either prototype; aiming moves the launch
 		Rng = Rng.new(seed),
 	}
-	local sim = Pendulum.new(setup, seed, opts and opts.HookGap or C.HookGap)
-	for side, fighter in sim.Fight.Fighters do
-		local scale = if not opts then C.HpScale elseif side == 1 then opts.PlayerHp else opts.RivalHp
-		fighter.MaxHp *= scale
+	local sim = Pendulum.new(setup, seed, C.HookGap)
+	for _, fighter in sim.Fight.Fighters do
+		fighter.MaxHp *= C.HpScale
 		fighter.Hp = fighter.MaxHp
-		if opts and opts.Radius then
-			fighter.Radius = opts.Radius[if side == 1 then id else rival]
-		end
 	end
 	return setmetatable({
 		Mode = mode,
@@ -49,7 +45,7 @@ function Session.new(mode, id, seed, now, opts)
 		Sim = sim,
 		Setup = setup,
 		Phase = "Aim",
-		Deadline = now + (opts and opts.AimSeconds or C.AimSeconds),
+		Deadline = now + C.AimSeconds,
 		Started = now,
 		Shots = 0,
 		Contacts = 0,
@@ -156,7 +152,6 @@ function Session:packet()
 		Rival = self.Rival,
 		Seed = self.Seed,
 		HookGap = (self.Sim.Hooks[2] - self.Sim.Hooks[1]).Magnitude,
-		MaxHp = { self.Sim.Fight.Fighters[1].MaxHp, self.Sim.Fight.Fighters[2].MaxHp },
 		Phase = self.Phase,
 		Deadline = self.Deadline,
 		Shots = self.Shots,

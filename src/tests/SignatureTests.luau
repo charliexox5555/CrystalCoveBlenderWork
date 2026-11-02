@@ -10,6 +10,7 @@ local Turnaround = if script
 local V = if script then Vector3 else require("@lune/roblox").Vector3
 
 return function(t, deps)
+	local restoreConcepts = deps.Balance.Concepts.useCastKits()
 	local Rules = deps.FightRules
 	local function fight(a, b)
 		return Rules.new({
@@ -59,7 +60,10 @@ return function(t, deps)
 		Rules.resolveAbility(s, cast.Id, true, { 1, 0, 0 })
 		t.near(
 			before - s.Fighters[1].Hp,
-			s.Fighters[2].Power * cast.Params.Damage * deps.Formula.typeMultiplier("Sharp", "Heavy"),
+			s.Fighters[2].Power
+				* cast.Params.Damage
+				* deps.Balance.Fight.AbilityScale
+				* deps.Formula.typeMultiplier("Sharp", "Heavy"),
 			1e-6
 		)
 		t.ok(s.Fighters[1].Signature.GuardUntil > s.Time, "ray did not consume guard")
@@ -179,4 +183,5 @@ return function(t, deps)
 		t.eq(owned.perfume.Stars, 3)
 		t.ok(table.find(deps.MatchLogic.ownedIds(owned), "perfume") ~= nil, "legacy ownership not excluded")
 	end)
+	restoreConcepts()
 end

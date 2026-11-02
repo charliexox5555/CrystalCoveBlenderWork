@@ -836,7 +836,8 @@ Balance.Fight = {
 	RefSpeed = 20, -- approach speed that counts as a "normal" hit
 	SpeedExponent = 1.4, -- damage ~ (speed / RefSpeed) ^ SpeedExponent; >1 makes big swings smash
 	SpeedFactorMax = 2.5,
-	DamageScale = 0.29, -- damage per Power at RefSpeed (decision 122: ~18 s rounds)
+	DamageScale = 0.19, -- damage per Power at RefSpeed (decision 133: longer rounds, abilities carry them)
+	AbilityScale = 0.65, -- cast-kit damage, scaled with DamageScale so kits keep their share of a round
 	ShareBase = 0.6, -- the glassy that moved more into the hit deals more: ShareBase + ShareWeight * share
 	ShareWeight = 0.8,
 	MassExponent = 0.1, -- heavier glass hits harder: (2 m / (m + m_other)) ^ MassExponent
@@ -858,9 +859,9 @@ Balance.Fight = {
 	PowerMaxPerRound = 3,
 	PerfectPowerAdvance = 3, -- a Perfect Release makes the first power come 3 s sooner
 	-- Round end. Overtime is the Heat's MELTDOWN (decision 122): damage climbs every second after it.
-	OvertimeAt = 15, -- seconds
+	OvertimeAt = 30, -- seconds
 	OvertimePerSecond = 0.08, -- +8% damage per second of meltdown
-	RoundTimeout = 40, -- winner = higher HP fraction
+	RoundTimeout = 60, -- winner = higher HP fraction
 }
 
 -- The arena layer of a round (decision 122, docs/design/ROUND_REVAMP.md): glints both glassies race for,
@@ -1346,5 +1347,98 @@ Balance.Crates = {
 	CoinWeights = { Common = 60, Uncommon = 25, Rare = 10, Epic = 4, Legendary = 1 },
 	MarbleWeights = { Common = 25, Uncommon = 30, Rare = 25, Epic = 15, Legendary = 5, Mythic = 1 },
 }
+
+-- Concept abilities (decision 133, Simulation/ConceptKits): powers that build in plain sight, escalate during the
+-- round and change the fight rather than add to a hit. Damage values multiply the glassy's Power, like cast kits.
+Balance.Concepts = {
+	Enabled = true,
+	Kits = {
+		pop = {
+			Pressure = { 6, 5, 5, 4 }, -- clashes to each Cap Blast: it blows sooner every time
+			ShotSpeed = 30,
+			ShotLife = 0.9,
+			ShotRadius = 0.7,
+			ShotAimSeconds = 0.2,
+			ShotDamage = 0.3,
+			ShotPush = 10,
+			JetSeconds = 0.9,
+			JetForce = 15,
+		},
+		jam = {
+			Blobs = 3, -- blobs on the rival before it is glued
+			BlobSlow = 0.05,
+			GlueSeconds = 3,
+			GlueForce = 90,
+			GlueSelf = 0.35,
+			TickSeconds = 0.5,
+			TickDamage = 0.05,
+			Cooldown = 5,
+		},
+		prism = {
+			First = 3,
+			Interval = 5,
+			Windup = 0.7,
+			Rays = { 1, 2, 3, 5, 8 }, -- rays per shot: each shot splits further
+			RaySpread = 0.16,
+			Range = 18,
+			RayRadius = 0.25,
+			RayDamage = 0.08,
+		},
+		glass_cup = {
+			MaxStacks = 8, -- one per swing; never lost during a round
+			EnergyPerStack = 0.08,
+			DrivePerStack = 0.18,
+		},
+		water_jug = {
+			Levels = { -13.5, -12.5, -11.5, -10.5, -9.5, -8.5 }, -- water height in stand space; the pen floor is at -15.35
+			WaveDelay = 1.2,
+			WaveSeconds = 1.1,
+			WaveWidth = 13,
+			WaveTop = -6, -- a glass swung above this rides over the wave
+			WaveDamage = 0.25,
+			WavePush = 12,
+			WaveLift = 10,
+			WaterDrag = 0.15,
+			WaterAmp = 0.98,
+		},
+		ketchup_bottle = {
+			First = 3.5,
+			Interval = 7,
+			Drops = { 3, 4, 5, 6 }, -- drops per squeeze
+			DropFlight = 0.7,
+			DropGravity = 30,
+			DropSpread = 1.6,
+			DropRadius = 0.35,
+			DropDamage = 0.015,
+			DropGap = 0.09,
+			Splats = 6,
+			BurstDamage = 0.2,
+			BurstPush = 7,
+			SlowSeconds = 2.5,
+			SlowAmp = 0.97,
+		},
+	},
+}
+-- These glassies run on concepts, so their cast kits never fire. (Their old numbers above are unused.)
+local castKits = {}
+for id in Balance.Concepts.Kits do
+	castKits[id] = Balance.CombatRelease.Kits[id]
+	Balance.CombatRelease.Kits[id] = { Trigger = "concept", Shape = "concept", Windup = 0, Duration = 0 }
+end
+-- For tests of the cast engine, which the other glassies still use. Returns a function that undoes it.
+function Balance.Concepts.useCastKits()
+	local saved = {}
+	for id, kit in castKits do
+		saved[id] = Balance.CombatRelease.Kits[id]
+		Balance.CombatRelease.Kits[id] = kit
+	end
+	Balance.Concepts.Enabled = false
+	return function()
+		for id, kit in saved do
+			Balance.CombatRelease.Kits[id] = kit
+		end
+		Balance.Concepts.Enabled = true
+	end
+end
 
 return Balance

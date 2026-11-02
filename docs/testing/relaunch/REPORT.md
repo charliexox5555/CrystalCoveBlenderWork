@@ -1,48 +1,46 @@
-# Relaunch slice: test report (2026-11-02)
+# Concept abilities in the real arena: test report (2026-11-02)
 
-Studio only, nothing saved, not published. Place 129420351303019, branch `claude/relaunch-gauntlet`.
+Studio only, not published. Place 129420351303019, branch `claude/relaunch-gauntlet`. Plan: [design/RELAUNCH_PLAN.md](../../design/RELAUNCH_PLAN.md).
 
-## Before and after
+The earlier Gauntlet slice was rejected and removed. Its screenshots here (`after_*.jpg`) are history, kept only for comparison.
 
-| Before (live) | After (slice) |
+## Screens
+
+| Rising Tide fills the pen | Split Light |
 |---|---|
-| ![pick](before_pick.jpg) | ![aim](after_aim_shelf.jpg) |
-| ![fight](before_fight.jpg) | ![fight](after_fight.jpg) |
+| ![tide](concept_tide.jpg) | ![rays](concept_rays.jpg) |
 
-| Liquid shows HP | Unlock | End of run | v5 roster in Studio |
-|---|---|---|---|
-| ![liquid](after_liquid_hp.jpg) | ![unlock](after_unlock.jpg) | ![run over](after_run_over.jpg) | ![roster](roster_v5_studio.jpg) |
+| Reaction faces and a jam blob | Real match from the lobby, mixed with an older model |
+|---|---|
+| ![faces](concept_faces.jpg) | ![match](concept_real_match.jpg) |
 
 ## Verified
 
-- Lune and Studio Play server: **302 passed, 0 failed** (295 before, plus 7 Gauntlet tests).
-- Two full runs in Studio, driven by tooling. Run 1: 82 s, 7 duels, 4 wins, 1 unlock, first shatter 15.2 s after starting. Run 2: 68 s, 7 duels, 4 wins, 1 unlock, first shatter 5.8 s. Most of the difference in first shatter is how quickly the launch was sent. These are two samples, not averages.
-- Space launch, switching mid-run (Cup entered the next duel without interrupting the fight), hearts, shard pips, unlock reveal and run-over summary. A real mouse click on PLAY AGAIN reset hearts to 3 and kept the unlock.
-- Models: six bundles uploaded and Approved, 1.6k to 3.6k visible tris each, 14 shards, four face states with working vertex colours.
-- Console clean after the Jam lid fix, apart from the old `203785492` warning.
-- `Balance`, `Glassies` and `Powers` untouched, so no simulator rerun is required. Live services do not require the slice. `FightScene` and `ShatterController` gained optional fields that are inert unless a v5 library is passed.
+- Lune and Studio Play server: **302 passed, 0 failed**. Seven new tests run each ability on the real swing and check that round length stays in range.
+- Round length on the real swing (`equal:bot0.5`, 3,120 rounds): **mean 33.6 s, 2.2% timeouts**. Before this pass, `tools/pacing_report` measured 21.6 s.
+- Balance on the real swing, 156 rounds per glassy: **41.0% to 57.7%, 29 of 40 inside 45-55%**. A separate run gave the six reworked glassies 312 rounds each: 48.4% to 56.7%. In the 40-glassy run, Cup, Jam, Pop and Prism landed in band, and Ketchup and Jug outside it. At these sample sizes a few points either way is noise.
+- Pop vs Jug, Prism vs Ketchup and Pop vs Jam in the real arena through the watched bot fight, plus one real first match from the lobby. Water, rays, reaction faces, blobs, liquid-level HP and new cracks were all seen. No new console errors; only the old `203785492` warning.
+- Models: six swapped into `Assets.Glassies`, with the old six backed up in `ServerStorage.GlassiesBeforeV5`. Item icons and the reel sprite sheet updated.
+- Simulators ran. EconomySim shows 145 pulls by day 30 and 2.9 min matches, but it still assumes the old fight length, so its coin pacing is optimistic. Matches are about 33 s per round now, so expect fewer coins per hour.
 
 ## Not verified
 
-- No unfamiliar player has played it and no real phone has run it. Layout was only seen on desktop; phone emulator checks are still to do.
-- **Crack rows are in the repo but stubbed in Studio** (`BuddyCracks` returns `{}` there) because of the paste size, so v5 cracks have not been seen in game. The next Rojo connect syncs them.
-- Studio source for the new modules matches the repo in behaviour, not byte for byte (StyLua ran only on the repo copy). A few repo-side tweaks to whitespace remain. Rojo connect aligns them.
-- Refusing a switch to an unowned glassy is in the server code, but the test didn't isolate it.
-- The stage sometimes captured darker in the first moments of a duel and lighter later. Cause not found; it may be a capture artifact or the combat colour grade. Check by eye.
-- Damage numbers read faint against the kiln glow.
-- Blink, Hurt and Happy faces swap by code, but screenshots only caught some of them. Check by eye.
-- Difficulty, shard pacing and counter strength are first guesses.
+- **Nobody but the creator has judged the feel, and I can't judge fun from a tool.** Numbers and effects are first passes.
+- Cap Blast, Sticky Trap's full glue, Spin Cycle's top speed, the wave and the Squeeze were exercised by tests and matches, but I only got screenshots of some of them. Check them by eye.
+- No phone or emulator check.
+- Bystanders who start watching mid-round miss earlier water or blobs until the next change.
+- Ability numbers were tuned hard downward to reach fairness, so hits read small (for example a 5 to 6 damage wave). The big moments are carried by visuals and knockback; damage may need raising alongside lower HP if they feel weak.
+- `BalanceSim` (the stand-in model) can't run concept abilities, so its fairness test now skips those six and uses a wide guard. `tools/release_matrix` is the fair check.
+- Power x HP test widened to 1950-2500 because HP is now the balance lever.
+- Other 34 glassies keep cast kits and old models, so the roster looks mixed until later waves.
+- Studio source for new modules matches the repo in behaviour, not byte for byte. Some are in a more compact format, because they were pasted through MCP. Rojo was not used.
 
 ## Run it
 
-Press Play in Studio, then run the first line in the **Server** command bar and the second in the **Client** command bar:
+Press Play in Studio and play normally. To watch a chosen matchup, run this in the Server command bar:
 
 ```lua
-require(game.ServerScriptService.Server.Dev.Gauntlet).start()
+require(game.ServerScriptService.Server.Services.FightService):BotVsBot("pop", "water_jug", 1, true)
 ```
 
-```lua
-require(game.Players.LocalPlayer.PlayerScripts.Client.Dev.Gauntlet).start()
-```
-
-Drag and release, or press Space. Timing reports: `game.ServerStorage.GauntletReport:Invoke()` on the server. Reinstall the models with `tools/studio/install_buddies_v5.luau` if the place reopens without them.
+Ids: `pop`, `jam`, `prism`, `glass_cup`, `water_jug`, `ketchup_bottle`.

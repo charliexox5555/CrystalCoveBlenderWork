@@ -1999,8 +1999,9 @@ local function dazzle(fx, side, target, seconds, start)
 			for i, p in suns do
 				local a = age * 5 + i / #suns * math.pi * 2
 				fx:Fit(p, size * 0.42 * pop * (1 + 0.15 * math.sin(age * 14 + i)))
-				p.CFrame = CFrame.new(pos + Vector3.new(math.cos(a) * size * 0.8, size * 0.95, math.sin(a) * size * 0.8))
-					* CFrame.Angles(0, a, age * 3)
+				p.CFrame = CFrame.new(
+					pos + Vector3.new(math.cos(a) * size * 0.8, size * 0.95, math.sin(a) * size * 0.8)
+				) * CFrame.Angles(0, a, age * 3)
 				p.Transparency = 0.05 + 0.95 * fx.smooth((k - 0.8) / 0.2)
 			end
 		end,
@@ -2011,7 +2012,12 @@ Kits.sunny_rooster = {
 	Windup = function(fx, side, e)
 		-- Sunny puffs up and leans back (Epic two-stage hush) while a little sun rises behind its head.
 		local color, accent = fx:Colors(side)
-		gather(fx, side, e, { MoteKind = "NovaStar", Motes = 6, MoteSize = 0.34, Motion = "rear", MotionAmount = 1.2, TwoStage = true })
+		gather(
+			fx,
+			side,
+			e,
+			{ MoteKind = "NovaStar", Motes = 6, MoteSize = 0.34, Motion = "rear", MotionAmount = 1.2, TwoStage = true }
+		)
 		local windup = math.max(0.1, e.Windup or 0.5)
 		local sun, crown = fx:Part("Ball", color), fx:Part("ShockCrown", accent)
 		fx:Spawn({
@@ -2050,7 +2056,15 @@ Kits.sunny_rooster = {
 			end,
 		})
 		for i, delay in { 0, 0.13, 0.26 } do
-			fx:Ring(side, ctx.Here, if i == 2 then accent else color, 0.6, 2.4 + i * 0.5, 0.32 + i * 0.06, { Delay = delay, Alpha = 0.3 })
+			fx:Ring(
+				side,
+				ctx.Here,
+				if i == 2 then accent else color,
+				0.6,
+				2.4 + i * 0.5,
+				0.32 + i * 0.06,
+				{ Delay = delay, Alpha = 0.3 }
+			)
 		end
 		fx:Spokes(side, ctx.Here, color, 8, 1.8, 0.3, { Alternate = WHITE, Width = 0.26 })
 		fx:Flash(side, ctx.Here, color, 1.5, 0.14)

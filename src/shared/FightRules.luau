@@ -652,6 +652,7 @@ function FightRules.resolveAbility(state: State, castId: number, landed: boolean
 			attacker.Power
 				* cast.Params.Damage
 				/ count
+				* F.AbilityScale
 				* Formula.typeMultiplier(attacker.Type, target.Type)
 				* overtimeMultiplier(state),
 			if cast.Params.Reflection then "reflection" else "ranged"
@@ -678,6 +679,24 @@ function FightRules.resolveAbility(state: State, castId: number, landed: boolean
 	})
 	resolveKnockouts(state, before)
 	return true
+end
+
+-- Damage from a concept ability (Simulation/ConceptKits). `factor` multiplies the attacker's Power.
+function FightRules.conceptDamage(state: State, side: number, factor: number): number
+	if state.Over then
+		return 0
+	end
+	local attacker, target = state.Fighters[side], state.Fighters[other(side)]
+	local before = { state.Fighters[1].Hp / state.Fighters[1].MaxHp, state.Fighters[2].Hp / state.Fighters[2].MaxHp }
+	local amount = takeDamage(
+		state,
+		target,
+		attacker.Power * factor * Formula.typeMultiplier(attacker.Type, target.Type) * overtimeMultiplier(state),
+		"ranged"
+	)
+	attacker.DamageDealt += amount
+	resolveKnockouts(state, before)
+	return amount
 end
 
 -- Powers -------------------------------------------------------------------------------------

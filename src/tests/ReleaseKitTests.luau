@@ -9,6 +9,7 @@ local Visuals = if script
 	else require("../shared/Config/CombatKitVisuals")
 local V = if script then Vector3 else require("@lune/roblox").Vector3
 return function(t, d)
+	local restoreConcepts = d.Balance.Concepts.useCastKits()
 	local R = d.FightRules
 	local function fight(a, b)
 		return R.new({
@@ -119,7 +120,11 @@ return function(t, d)
 		t.ok(s.Fighters[2].Signature.MirrorUntil < 0)
 		t.near(
 			before - s.Fighters[2].Hp,
-			s.Fighters[1].Power * c.Params.Damage * d.Formula.typeMultiplier("Sharp", "Sharp") * 0.55,
+			s.Fighters[1].Power
+				* c.Params.Damage
+				* d.Balance.Fight.AbilityScale
+				* d.Formula.typeMultiplier("Sharp", "Sharp")
+				* 0.55,
 			1e-6
 		)
 		R.tick(s, 0.26)
@@ -141,7 +146,10 @@ return function(t, d)
 			end
 			t.near(
 				before - s.Fighters[2].Hp,
-				s.Fighters[1].Power * c.Params.Damage * d.Formula.typeMultiplier(s.Fighters[1].Type, "Heavy"),
+				s.Fighters[1].Power
+					* c.Params.Damage
+					* d.Balance.Fight.AbilityScale
+					* d.Formula.typeMultiplier(s.Fighters[1].Type, "Heavy"),
 				1e-6
 			)
 			t.eq(s.AbilityResults[c.Id], nil)
@@ -174,7 +182,10 @@ return function(t, d)
 		t.ok(c.Results[1] and c.Results[2], "both swept legs hit")
 		t.near(
 			before - s.Fighters[2].Hp,
-			s.Fighters[1].Power * c.Params.Damage * d.Formula.typeMultiplier(s.Fighters[1].Type, "Heavy"),
+			s.Fighters[1].Power
+				* c.Params.Damage
+				* d.Balance.Fight.AbilityScale
+				* d.Formula.typeMultiplier(s.Fighters[1].Type, "Heavy"),
 			1e-6
 		)
 		t.ok(not R.resolveAbility(s, c.Id, true, { 3, 0, 0 }, 1), "no replay")
@@ -323,4 +334,5 @@ return function(t, d)
 			t.ok(sim.Metrics.MaxRadiusError < 0.00001, def.Id .. " string constraint")
 		end
 	end)
+	restoreConcepts()
 end

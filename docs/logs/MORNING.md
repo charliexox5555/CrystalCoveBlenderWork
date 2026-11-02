@@ -31,10 +31,15 @@ Watch for: which abilities feel exciting, which feel weak, and any that are conf
 - **Fun.** I can test that things work, but only you and real players can judge this.
 - **Sound.** I picked each ability's sounds from your existing library without hearing them. They may need swaps.
 - **Phones.** Not tested. Check a phone or Studio's device emulator before publishing, mainly the card text and the callouts.
-- **Abilities I saw on screen vs test-only:**
-  - Seen in the arena: Prism rays, Jug water, Jam blob, Lemonade slices, Tumbler's FROZEN hit, Pickle drops, Mason fireflies, Hot Sauce aura, Milk (in a fight, not at the moment it pours).
-  - Tests only: Pop's cap flying, Jam's full glue strand, Cup's TOP SPEED, Jug's wave, Ketchup's squeeze and SPLAT.
+- **Two abilities not seen on screen:** Cup's TOP SPEED and the moment Milk pours. Tests cover them, so give those a look. The other ten were confirmed in the arena, though for Jug's wave, Jam's strand and Ketchup's squirts I only confirmed the effects appear, not how they look.
+- **Real-phone frame rate.** Simulated clients in Studio ran at about 15 FPS while the server held 60. Earlier reports put this down to Studio throttling background clients, so check a real phone.
 - **Spectators** who start watching mid-round won't see water or blobs from before they arrived.
+
+## What did pass
+
+- 309 of 309 tests, both outside Studio and in a Studio Play server.
+- The two-player test: real pads, a full PvP match, rewards, PLAY AGAIN, a disconnect and a late joiner, with zero errors.
+- Balance: every glassy between 43.6% and 56.8%, with 34 of 40 inside the 45-55% target.
 
 ## 4. Choices that are yours
 
